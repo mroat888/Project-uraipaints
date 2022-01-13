@@ -35,7 +35,7 @@
                                             <th>ชื่อร้าน</th>
                                             <th>ชื่อผู้ติดต่อ</th>
                                             <th>Check-in</th>
-                                            <th>Check-out</th>
+                                            <th>CheckOut</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -97,7 +97,7 @@
             </div>
         </div>
     </div>
-@endsection    
+@endsection
 
 @section('footer')
     @include('layouts.footer')
@@ -108,7 +108,7 @@
     function getLocation() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition, showError);
-        } else { 
+        } else {
             x.innerHTML = "Geolocation is not supported by this browser.";
         }
     }
@@ -117,23 +117,23 @@
         x.innerHTML = "Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;
     }
 
-    function showError(error){  
-        switch(error.code){    
+    function showError(error){
+        switch(error.code){
             case error.PERMISSION_DENIED:
                 x.innerHTML="User denied the request for Geolocation."
-                reak;     
+                reak;
             case error.POSITION_UNAVAILABLE:
                 x.innerHTML="Location information is unavailable."
-                break;     
+                break;
             case error.TIMEOUT:
                 x.innerHTML="The request to get user location timed out."
-                break;     
+                break;
             case error.UNKNOWN_ERROR:
-                x.innerHTML="An unknown error occurred."       
-                break;    
-        }  
+                x.innerHTML="An unknown error occurred."
+                break;
+        }
     }
-    
+
 </script>
 
-@endsection  
+@endsection
