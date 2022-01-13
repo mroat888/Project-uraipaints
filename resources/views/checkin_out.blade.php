@@ -35,7 +35,7 @@
                                             <th>ชื่อร้าน</th>
                                             <th>ชื่อผู้ติดต่อ</th>
                                             <th>Check-in</th>
-                                            <th>CheckOut</th>
+                                            <th>CheckOUT</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
