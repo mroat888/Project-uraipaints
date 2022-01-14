@@ -13,13 +13,14 @@
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 
     <!-- Toggles CSS -->
-    <link href="{{ asset('public/template/vendors/jquery-toggles/css/toggles.css') }}" rel="stylesheet"
+    <link href="{{ asset('/template/vendors/jquery-toggles/css/toggles.css') }}" rel="stylesheet"
         type="text/css">
-    <link href="{{ asset('public/template/vendors/jquery-toggles/css/themes/toggles-light.css') }}" rel="stylesheet"
+    <link href="{{ asset('/template/vendors/jquery-toggles/css/themes/toggles-light.css') }}" rel="stylesheet"
         type="text/css">
 
     <!-- Custom CSS -->
-    <link href="{{ asset('public/template/dist/css/style.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('/template/dist/css/style.css') }}" rel="stylesheet" type="text/css">
+
 </head>
 
 <body>
@@ -29,13 +30,13 @@
         <!-- Main Content -->
         <div class="hk-pg-wrapper hk-auth-wrapper">
 
-            <div class="container-fluid">
+            <div class="container-fluid" style="background:#cdd9e2">
                 <div class="row">
                     <div class="col-xl-12 pa-0">
                         <div class="auth-form-wrap pt-xl-0 pt-70">
                             <div class="auth-form w-xl-35 w-lg-65 w-sm-85 w-100 card pa-25 shadow-lg">
                                 <a class="auth-brand text-center d-block mb-20" href="#">
-                                    <img class="brand-img" src="{{ asset('public/images/logo.png') }}"
+                                    <img class="brand-img" src="{{ asset('/images/logo.png') }}"
                                         alt="brand" />
                                 </a>
                                 <form method="POST" action="{{ route('login') }}">
@@ -52,7 +53,7 @@
                                     <div class="form-group">
                                         <label for="email">{{ __('E-Mail Address') }}</label>
                                         <input id="email" type="email"
-                                            class="form-control @error('email') is-invalid @enderror" name="email"
+                                            class="form-control @error('email') is-invalid @enderror forinput" name="email"
                                             value="{{ old('email') }}" required autocomplete="email" autofocus>
 
                                         @error('email')
@@ -64,7 +65,7 @@
                                     <div class="form-group">
                                         <label for="email">{{ __('Password') }}</label>
                                         <input id="password" type="password"
-                                            class="form-control @error('password') is-invalid @enderror" name="password"
+                                            class="form-control @error('password') is-invalid @enderror forinput" name="password"
                                             required autocomplete="current-password">
 
                                         @error('password')
@@ -100,23 +101,42 @@
     <!-- JavaScript -->
 
     <!-- jQuery -->
-    <script src="{{ asset('public/template/vendors/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('/template/vendors/jquery/dist/jquery.min.js') }}"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="{{ asset('public/template/vendors/popper.js/dist/umd/popper.min.js') }}"></script>
-    <script src="{{ asset('public/template/vendors/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('/template/vendors/popper.js/dist/umd/popper.min.js') }}"></script>
+    <script src="{{ asset('/template/vendors/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 
     <!-- Slimscroll JavaScript -->
-    <script src="{{ asset('public/template/dist/js/jquery.slimscroll.js') }}"></script>
+    <script src="{{ asset('/template/dist/js/jquery.slimscroll.js') }}"></script>
 
     <!-- Fancy Dropdown JS -->
-    <script src="{{ asset('public/template/dist/js/dropdown-bootstrap-extended.js') }}"></script>
+    <script src="{{ asset('/template/dist/js/dropdown-bootstrap-extended.js') }}"></script>
 
     <!-- FeatherIcons JavaScript -->
-    <script src="{{ asset('public/template/dist/js/feather.min.js') }}"></script>
+    <script src="{{ asset('/template/dist/js/feather.min.js') }}"></script>
 
     <!-- Init JavaScript -->
-    <script src="{{ asset('public/template/dist/js/init.js') }}"></script>
+    <script src="{{ asset('/template/dist/js/init.js') }}"></script>
+
+    <style>
+        .btn-success{
+            background:#295085;
+            border-color: #295085 ;
+        }
+
+        .btn-success:hover{
+            opacity: 90%;
+            background:#295085;
+            border-color: #295085 ;
+        }
+
+        .forinput:focus { 
+            outline: none !important;
+            /* border-color: #d6793d; */
+            border-color: #6972b5;
+        }
+    </style>
 </body>
 
 </html>
