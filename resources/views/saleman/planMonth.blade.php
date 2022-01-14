@@ -40,7 +40,7 @@
                                                     <th>แผนทำงาน</th>
                                                     <th>ลูกค้าใหม่</th>
                                                     <th>รวมงาน</th>
-                                                    <th>ดำเนินการแล้ว</th>
+                                                    {{-- <th>ดำเนินการแล้ว</th> --}}
                                                     <th>คงเหลือ</th>
                                                     <th>สำเร็จ %</th>
                                                     <th>เยี่ยมลูกค้า</th>
@@ -49,78 +49,46 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                @foreach ($monthly_plan as $key => $value)
                                                 <tr>
-                                                    <td>1</td>
-                                                    <td>มกราคม</td>
-                                                    <td>15</td>
-                                                    <td>6</td>
-                                                    <td>21</td>
-                                                    <td>14</td>
-                                                    <td>7</td>
-                                                    <td>77%</td>
-                                                    <td>15</td>
-                                                    <td><span class="badge badge-soft-warning"
-                                                            style="font-size: 12px;">Pending</span></td>
+                                                    <td>{{$key + 1}}</td>
+                                                    <td>{{$value->month_date}}</td>
+                                                    <td>{{$value->sale_plan_amount}}</td>
+                                                    <td>{{$value->cust_new_amount}}</td>
+                                                    <td>{{$value->total_plan}}</td>
+                                                    <td>{{$value->outstanding_plan}}</td>
+                                                    <td>{{$value->success_plan}}</td>
+                                                    <td>{{$value->cust_visits_amount}}</td>
+                                                    <td>
+                                                        @if ($value->status_approve == 0)
+                                                        <span class="badge badge-soft-secondary"
+                                                            style="font-size: 12px;">
+                                                            Draf
+                                                        </span>
+                                                            @elseif ($value->status_approve == 1)
+                                                            <span class="badge badge-soft-warning"
+                                                            style="font-size: 12px;">
+                                                            Pending
+                                                            </span>
+                                                            @else
+                                                            <span class="badge badge-soft-success"
+                                                            style="font-size: 12px;">
+                                                            Approve
+                                                            </span>
+                                                        @endif
+                                                        </span></td>
                                                     <td align="center">
                                                         <div class="button-list">
-                                                            <button class="btn btn-icon btn-warning" data-toggle="modal"
-                                                                data-target="#exampleModalLarge01">
+                                                            <a href="{{url('approve_monthly_plan', $monthly_plan_id)}}" class="btn btn-icon btn-teal">
                                                                 <span class="btn-icon-wrap"><i
-                                                                        data-feather="edit"></i></span></button>
+                                                                        data-feather="edit"></i></span></a>
                                                             <button class="btn btn-icon btn-danger">
                                                                 <span class="btn-icon-wrap"><i
                                                                         data-feather="pie-chart"></i></span></button>
                                                         </div>
                                                     </td>
                                                 </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>กุมภาพันธ์</td>
-                                                    <td>15</td>
-                                                    <td>6</td>
-                                                    <td>21</td>
-                                                    <td>14</td>
-                                                    <td>7</td>
-                                                    <td>77%</td>
-                                                    <td>15</td>
-                                                    <td><span class="badge badge-soft-warning"
-                                                            style="font-size: 12px;">Pending</span></td>
-                                                    <td align="center">
-                                                        <div class="button-list">
-                                                            <button class="btn btn-icon btn-warning" data-toggle="modal"
-                                                                data-target="#exampleModalLarge01">
-                                                                <span class="btn-icon-wrap"><i
-                                                                        data-feather="edit"></i></span></button>
-                                                            <button class="btn btn-icon btn-danger">
-                                                                <span class="btn-icon-wrap"><i
-                                                                        data-feather="pie-chart"></i></span></button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3</td>
-                                                    <td>มีนาคม</td>
-                                                    <td>15</td>
-                                                    <td>6</td>
-                                                    <td>21</td>
-                                                    <td>14</td>
-                                                    <td>7</td>
-                                                    <td>77%</td>
-                                                    <td>15</td>
-                                                    <td><span class="badge badge-soft-warning"
-                                                            style="font-size: 12px;">Pending</span></td>
-                                                    <td align="center">
-                                                        <div class="button-list">
-                                                            <button class="btn btn-icon btn-warning" data-toggle="modal"
-                                                                data-target="#exampleModalLarge01">
-                                                                <span class="btn-icon-wrap"><i
-                                                                        data-feather="edit"></i></span></button>
-                                                            <button class="btn btn-icon btn-danger">
-                                                                <span class="btn-icon-wrap"><i
-                                                                        data-feather="pie-chart"></i></span></button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -151,7 +119,16 @@
                                                 <span style="font-weight: bold; font-size: 18px;">แผนทำงาน</span>
                                             </div>
                                             <div class="mb-10">
-                                                <span style="font-weight: bold; font-size: 18px;">15</span>
+                                                <span style="font-weight: bold; font-size: 18px;">
+                                                    <?php
+                                                    $sum_saleplan = 0;
+                                                    foreach ($list_saleplan as $key => $value) {
+                                                    if ($monthly_plan_id == $value->monthly_plan_id) {
+                                                        $sum_saleplan++
+                                                    ?>
+                                                    <?php } } ?>
+                                                    {{$sum_saleplan}}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -175,7 +152,7 @@
                                                 <span style="font-weight: bold; font-size: 18px;">พบลูกค้าใหม่</span>
                                             </div>
                                             <div class="mb-10">
-                                                <span style="font-weight: bold; font-size: 18px;">6</span>
+                                                <span style="font-weight: bold; font-size: 18px;">{{$customer_new->count()}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -199,7 +176,16 @@
                                                 <span style="font-weight: bold; font-size: 18px;">เยี่ยมลูกค้า</span>
                                             </div>
                                             <div class="mb-10">
-                                                <span style="font-weight: bold; font-size: 18px;">15</span>
+                                                <span style="font-weight: bold; font-size: 18px;">
+                                                    <?php
+                                                    $sum_visit = 0;
+                                                    foreach ($list_visit as $key => $value) {
+                                                    if ($monthly_plan_id == $value->monthly_plan_id) {
+                                                        $sum_visit++
+                                                    ?>
+                                                    <?php } } ?>
+                                                    {{$sum_visit}}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -218,7 +204,6 @@
                             <div class="d-flex">
                             <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10" data-toggle="modal"
                                 data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button>
-                            {{-- <button type="button" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" id="btn_approve">ขออนุมัติ</button> --}}
                         </div>
                         </div>
                         <div class="row">
@@ -229,7 +214,7 @@
                                         </div>
                                     </div>
                                     <div class="table-responsive col-md-12">
-                                        <table  id="datable_1_2" class="table table-hover">
+                                        <table  id="datable_1" class="table table-hover">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
@@ -241,6 +226,9 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($list_saleplan as $key => $value)
+                                                <?php
+                                                if ($monthly_plan_id == $value->monthly_plan_id) {
+                                          ?>
                                                 <tr>
                                                     <td>{{$key + 1}}</td>
                                                     <td><span class="topic_purple">{{$value->sale_plans_title}}</span></td>
@@ -258,6 +246,7 @@
                                                         </div>
                                                     </td>
                                                 </tr>
+                                                <?php } ?>
                                                 @endforeach
                                             </tbody>
                                         </table>
@@ -286,14 +275,12 @@
                                         </div>
                                     </div>
                                     <div class="table-responsive col-md-12">
-                                        <table  id="datable_1" class="table table-hover">
+                                        <table  id="datable_1_2" class="table table-hover">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
                                                     <th>ชื่อร้าน</th>
                                                     <th>อำเภอ,จังหวัด</th>
-                                                    <th>วัตถุประสงค์</th>
-                                                    {{-- <th>วันที่</th> --}}
                                                     <th>สถานะ</th>
                                                     <th class="text-center">Action</th>
                                                 </tr>
@@ -304,7 +291,6 @@
                                                     <td>{{$key + 1}}</td>
                                                     <td>{{$value->shop_name}}</td>
                                                     <td>{{$value->PROVINCE_NAME}}</td>
-                                                    <td>เปิดตลาดใหม่</td>
                                                     <td>
                                                         <span class="badge badge-soft-indigo mt-15 mr-10"
                                                             style="font-size: 12px;">ลูกค้าใหม่</span>
@@ -348,14 +334,9 @@
                                     <div class="hk-pg-header mb-10 mt-10">
                                         <div>
                                         </div>
-                                        {{-- <div class="box_search d-flex">
-                                            <span class="txt_search">Search:</span>
-                                            <input type="text" name="" id="" class="form-control form-control-sm"
-                                                placeholder="ค้นหา">
-                                        </div> --}}
                                     </div>
                                     <div class="table-responsive col-md-12">
-                                        <table  id="datable_1_2" class="table table-hover">
+                                        <table  id="datable_1_3" class="table table-hover">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
@@ -369,13 +350,22 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($list_visit as $key => $value)
+
                                                 <tr>
                                                 <td>{{$key + 1}}</td>
                                                 <td>{{$value->shop_name}}</td>
                                                 <td>{{$value->PROVINCE_NAME}}</td>
                                                 <td>{{$value->customer_contact_name}}</td>
                                                 <td>-</td>
-                                                <td><span class="badge badge-soft-success mt-15 mr-10" style="font-weight: bold; font-size: 12px;">Finished</span></td>
+                                                <td>
+                                                    @if ($value->cust_visit_status == 0)
+                                                    <span class="badge badge-soft-secondary mt-15 mr-10" style="font-weight: bold; font-size: 12px;">ยังไม่เสร็จ</span>
+                                                    @elseif ($value->cust_visit_status == 1)
+                                                    <span class="badge badge-soft-success mt-15 mr-10" style="font-weight: bold; font-size: 12px;">สำเร็จ</span>
+                                                    @elseif ($value->cust_visit_status == 2)
+                                                    <span class="badge badge-soft-danger mt-15 mr-10" style="font-weight: bold; font-size: 12px;">ไม่สำเร็จ</span>
+                                                    @endif
+                                                </td>
                                                     <td>
                                                         <div class="button-list">
                                                             <a href="{{url('delete_visit', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
@@ -383,6 +373,7 @@
                                                         </div>
                                                     </td>
                                                 </tr>
+
                                                 @endforeach
                                             </tbody>
                                         </table>

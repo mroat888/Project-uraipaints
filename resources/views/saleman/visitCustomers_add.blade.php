@@ -17,8 +17,8 @@ $customer_shops = DB::table('customer_shops')
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                {{-- <form id="form_insert2" enctype="multipart/form-data"> --}}
-                    <form action="{{ url('create_visit') }}" method="post" enctype="multipart/form-data">
+                <form id="form_insert_visit" enctype="multipart/form-data">
+                    {{-- <form action="{{ url('create_visit') }}" method="post" enctype="multipart/form-data"> --}}
                     @csrf
                 <div class="modal-body">
                         <div class="row">
@@ -33,7 +33,7 @@ $customer_shops = DB::table('customer_shops')
                                 </select>
                             </div>
                         </div>
-                        <input type="text" name="shop_id" id="visit_id">
+                        <input type="hidden" name="shop_id" id="visit_id">
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ผู้ติดต่อ</label>
@@ -49,12 +49,12 @@ $customer_shops = DB::table('customer_shops')
                             <textarea class="form-control" id="visit_address" cols="30" rows="5" placeholder="" value=""
                                 type="text" readonly> </textarea>
                         </div>
-                        <div class="row">
+                        {{-- <div class="row">
                         <div class="col-md-6 form-group">
-                            <label for="firstName">วันที่</label>
-                            <input class="form-control" type="date" name="date" min="<?= date('Y-m-d') ?>" required/>
-                        </div>
-                        </div>
+                            <label for="firstName">วันที่</label> --}}
+                            <input class="form-control" type="hidden" name="date" min="<?= date('Y-m-d') ?>" value="<?= date('Y-m-d') ?>" required/>
+                        {{-- </div>
+                        </div> --}}
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="username">รายการนำเสนอ</label>
@@ -75,6 +75,7 @@ $customer_shops = DB::table('customer_shops')
                                 </select>
                             </div>
                         </div>
+                        <input type="hidden" name="id" value="{{$monthly_plan_id}}">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
@@ -86,14 +87,14 @@ $customer_shops = DB::table('customer_shops')
     </div>
 
     <script>
-        $("#form_insert2").on("submit", function (e) {
+        $("#form_insert_visit").on("submit", function (e) {
             e.preventDefault();
             // var formData = $(this).serialize();
             var formData = new FormData(this);
             //console.log(formData);
             $.ajax({
                 type:'POST',
-                url: '{{ url("/create_visit2") }}',
+                url: '{{ url("create_visit") }}',
                 data:formData,
                 cache:false,
                 contentType: false,

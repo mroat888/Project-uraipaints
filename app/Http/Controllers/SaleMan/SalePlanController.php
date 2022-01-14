@@ -17,38 +17,79 @@ class SalePlanController extends Controller
     public function index()
     {
         $list_saleplan = DB::table('sale_plans')
-        ->where('created_by', Auth::user()->id)
-        ->orderby('id', 'desc')
-        ->get();
+            ->where('created_by', Auth::user()->id)
+            ->orderby('id', 'desc')
+            ->get();
         return view('saleplan.salePlan', compact('list_saleplan'));
     }
 
+    // public function store(Request $request)
+    // {
+    //     // dd($request);
+    //     SalePlan::create([
+    //         'monthly_plan_id' => $request->id,
+    //         'customer_shop_id' => $request->shop_id,
+    //         'sale_plans_title' => $request->sale_plans_title,
+    //         'sale_plans_date' => $request->sale_plans_date,
+    //         'sale_plans_tags' => $request->sale_plans_tags,
+    //         'sale_plans_objective' => $request->sale_plans_objective,
+    //         'sale_plans_status' => 1,
+    //         'created_by' => Auth::user()->id,
+    //     ]);
+
+    //     // echo ("<script>alert('บันทึกข้อมูลสำเร็จ'); location.href='saleplan'; </script>");
+    //     return back();
+    // }
+
     public function store(Request $request)
     {
-        // dd($request);
-        SalePlan::create([
-            'customer_shop_id' => $request->shop_id,
-            'sale_plans_title' => $request->sale_plans_title,
-            'sale_plans_date' => $request->sale_plans_date,
-            'sale_plans_tags' => $request->sale_plans_tags,
-            'sale_plans_objective' => $request->sale_plans_objective,
-            'sale_plans_status' => 1,
-            'created_by' => Auth::user()->id,
-        ]);
+        DB::beginTransaction();
+        try {
 
-        // echo ("<script>alert('บันทึกข้อมูลสำเร็จ'); location.href='saleplan'; </script>");
-        return back();
+            SalePlan::create([
+                'monthly_plan_id' => $request->id,
+                'customer_shop_id' => $request->shop_id,
+                'sale_plans_title' => $request->sale_plans_title,
+                'sale_plans_date' => $request->sale_plans_date,
+                'sale_plans_tags' => $request->sale_plans_tags,
+                'sale_plans_objective' => $request->sale_plans_objective,
+                'sale_plans_status' => 1,
+                'created_by' => Auth::user()->id,
+            ]);
+
+            DB::commit();
+
+            //echo ("<script>alert('บันทึกข้อมูลสำเร็จ'); location.href='lead'; </script>");
+
+        } catch (\Exception $e) {
+
+            DB::rollback();
+        }
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'บันทึกข้อมูลสำเร็จ',
+            'data' => $request,
+        ]);
     }
+
 
     public function edit($id)
     {
         // $dataEdit = SalePlan::find($id);
         $dataEdit = SalePlan::join('customer_shops', 'sale_plans.customer_shop_id', '=', 'customer_shops.id')
-        ->where('sale_plans.id', $id)->select('customer_shops.contact_name',
-        'customer_shops.shop_phone', 'customer_shops.shop_address', 'customer_shops.id as shop_id',
-        'sale_plans.id', 'sale_plans.sale_plans_title',
-        'sale_plans.sale_plans_date', 'sale_plans.sale_plans_tags',
-        'sale_plans.sale_plans_objective', 'sale_plans.sale_plans_status')->first();
+            ->where('sale_plans.id', $id)->select(
+                'customer_shops.contact_name',
+                'customer_shops.shop_phone',
+                'customer_shops.shop_address',
+                'customer_shops.id as shop_id',
+                'sale_plans.id',
+                'sale_plans.sale_plans_title',
+                'sale_plans.sale_plans_date',
+                'sale_plans.sale_plans_tags',
+                'sale_plans.sale_plans_objective',
+                'sale_plans.sale_plans_status'
+            )->first();
 
         $data = array(
             'dataEdit'     => $dataEdit,
@@ -84,20 +125,19 @@ class SalePlanController extends Controller
 
             $data = Customer::where('shop_name', $request->search)->first();
         }
-            return $data;
-
-
+        return $data;
     }
 
-    public function fetch_customer_shops_saleplan($id){
+    public function fetch_customer_shops_saleplan($id)
+    {
         $result = DB::table('customer_shops')
-        ->join('customer_contacts', 'customer_contacts.customer_shop_id', 'customer_shops.id')
-        ->where('customer_shops.id', $id)
-        ->select([
-            'customer_contacts.*',
-            'customer_shops.*'
-        ])
-        ->first();
+            ->join('customer_contacts', 'customer_contacts.customer_shop_id', 'customer_shops.id')
+            ->where('customer_shops.id', $id)
+            ->select([
+                'customer_contacts.*',
+                'customer_shops.*'
+            ])
+            ->first();
 
         return response()->json($result);
     }
@@ -106,19 +146,38 @@ class SalePlanController extends Controller
     {
         // dd($request);
 
-        SalePlan::find($request->id)->update([
-            'status_result' => 1,
-        ]);
+        $chk_status = SalePlan::where('id', $request->id)->first();
 
-        $data = new SalePlanResult;
-        $data->sale_plan_id   = $request->id;
-        $data->sale_plan_checkin_date   = Carbon::now();
-        $data->sale_plan_checkin_latitude   = $request->lat;
-        $data->sale_plan_checkin_longitude   = $request->lon;
-        $data->created_by   = Auth::user()->id;
-        $data->save();
+        if ($chk_status->status_result == 1) {
+            SalePlan::find($request->id)->update([
+                'status_result' => 2,
+            ]);
 
-        // echo ("<script>alert('บันทึกข้อมูลสำเร็จ'); location.href='saleplan'; </script>");
-        return back();
+            $data2 = SalePlanResult::where('sale_plan_id', $request->id)->first();
+            $data2->sale_plan_checkout_date   = Carbon::now();
+            $data2->sale_plan_checkout_latitude   = $request->lat;
+            $data2->sale_plan_checkout_longitude   = $request->lon;
+            $data2->updated_by   = Auth::user()->id;
+            $data2->updated_at   = Carbon::now();
+            $data2->update();
+
+            return back();
+        }
+
+        // SalePlan::find($request->id)->update([
+        //     'status_result' => 1,
+        // ]);
+
+        // $data = new SalePlanResult;
+        // $data->sale_plan_id   = $request->id;
+        // $data->sale_plan_checkin_date   = Carbon::now();
+        // $data->sale_plan_checkin_latitude   = $request->lat;
+        // $data->sale_plan_checkin_longitude   = $request->lon;
+        // $data->created_by   = Auth::user()->id;
+        // $data->created_at   = Carbon::now();
+        // $data->save();
+
+        // // echo ("<script>alert('บันทึกข้อมูลสำเร็จ'); location.href='saleplan'; </script>");
+        // return back();
     }
 }

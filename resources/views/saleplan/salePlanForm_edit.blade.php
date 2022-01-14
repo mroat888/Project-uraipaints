@@ -52,10 +52,10 @@ $customer_shops = DB::table('customer_shops')
                                 type="text" readonly> </textarea>
                         </div>
                         <div class="row">
-                        <div class="col-md-6 form-group">
-                            <label for="firstName">วันที่</label>
-                            <input class="form-control" type="date" name="sale_plans_date" id="get_date" min="<?= date('Y-m-d') ?>"/>
-                        </div>
+                        {{-- <div class="col-md-6 form-group"> --}}
+                            {{-- <label for="firstName">วันที่</label> --}}
+                            <input class="form-control" type="hidden" name="sale_plans_date" id="get_date" min="<?= date('Y-m-d') ?>" value="<?= date('Y-m-d') ?>"/>
+                        {{-- </div> --}}
                         <div class="form-group col-md-6">
                             <label for="username">วัตถุประสงค์</label>
                             <select class="form-control custom-select" name="sale_plans_objective" id="get_objective">

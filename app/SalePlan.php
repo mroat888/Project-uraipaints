@@ -8,6 +8,7 @@ class SalePlan extends Model
 {
     Protected $table = 'sale_plans';
     protected $fillable = [
+        'monthly_plan_id',
         'customer_shop_id',
         'sale_plans_title',
         'sale_plans_date',
