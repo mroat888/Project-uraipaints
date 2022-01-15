@@ -48,6 +48,10 @@ License: You must have a valid license purchased only from themeforest to legall
     <link href="{{ asset('/template/dist/css/style.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('/template/dist/css/layout.css') }}" rel="stylesheet" type="text/css">
 
+    <!-- OAT -->
+    <!-- sweetalert2 -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body>
@@ -63,7 +67,7 @@ License: You must have a valid license purchased only from themeforest to legall
             <a id="navbar_toggle_btn" class="navbar-toggle-btn nav-link-hover" href="javascript:void(0);"><span
                     class="feather-icon"><i data-feather="menu"></i></span></a>
             <a class="navbar-brand" href="index.html">
-                <img class="brand-img d-inline-block" src="{{ asset('//images/logo.png') }}" alt="Uraipaint"
+                <img class="brand-img d-inline-block" src="{{ asset('/images/logo.png') }}" alt="Uraipaint"
                     style="max-height:30px;" />
                 {{-- URAI PAINTS --}}
             </a>
@@ -255,7 +259,7 @@ License: You must have a valid license purchased only from themeforest to legall
                                 <span class="nav-link-text">หน้าแรก</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link" href="{{ url('lead/planMonth') }}">
                                 <i class="ion ion-md-time" style="color: #044067;"></i>
                                 <span class="nav-link-text">แผนประจำเดือน</span>
@@ -272,7 +276,7 @@ License: You must have a valid license purchased only from themeforest to legall
                                 <i class="ion ion-md-calendar"></i>
                                 <span class="nav-link-text">ปฎิทินกิจกรรม</span>
                             </a>
-                        </li>
+                        </li> -->
                         <li class="nav-item">
                             <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
                                 data-target="#charts_drp2">
