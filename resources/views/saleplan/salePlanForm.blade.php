@@ -16,7 +16,8 @@ $customer_shops = DB::table('customer_shops')
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ url('create_saleplan') }}" method="post" enctype="multipart/form-data">
+                <form id="form_insert_saleplan" enctype="multipart/form-data">
+                {{-- <form action="{{ url('create_saleplan') }}" method="post" enctype="multipart/form-data"> --}}
                     @csrf
                 <div class="modal-body">
                         <div class="form-group">
@@ -52,10 +53,10 @@ $customer_shops = DB::table('customer_shops')
                                 type="text" readonly> </textarea>
                         </div>
                         <div class="row">
-                        <div class="col-md-6 form-group">
-                            <label for="firstName">วันที่</label>
-                            <input class="form-control" type="date" name="sale_plans_date" min="<?= date('Y-m-d') ?>"/>
-                        </div>
+                        {{-- <div class="col-md-6 form-group"> --}}
+                            {{-- <label for="firstName">วันที่</label> --}}
+                            <input class="form-control" type="hidden" name="sale_plans_date" min="<?= date('Y-m-d') ?>" value="<?= date('Y-m-d') ?>"/>
+                        {{-- </div> --}}
                         <div class="form-group col-md-6">
                             <label for="username">วัตถุประสงค์</label>
                             <select class="form-control custom-select" name="sale_plans_objective">
@@ -77,6 +78,7 @@ $customer_shops = DB::table('customer_shops')
                                 </select>
                             </div>
                         </div>
+                        <input type="hidden" name="id" value="{{$monthly_plan_id}}">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
@@ -85,6 +87,39 @@ $customer_shops = DB::table('customer_shops')
             </form>
             </div>
         </div>
+
+        <script>
+            $("#form_insert_saleplan").on("submit", function (e) {
+                e.preventDefault();
+                // var formData = $(this).serialize();
+                var formData = new FormData(this);
+                //console.log(formData);
+                $.ajax({
+                    type:'POST',
+                    url: '{{ url("create_saleplan") }}',
+                    data:formData,
+                    cache:false,
+                    contentType: false,
+                    processData: false,
+                    success:function(response){
+                        console.log(response);
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Your work has been saved',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        $("#addCustomer").modal('hide');
+                        location.reload();
+                    },
+                    error: function(response){
+                        console.log("error");
+                        console.log(response);
+                    }
+                });
+            });
+        </script>
+
 
         <script>
             $(document).ready(function() {

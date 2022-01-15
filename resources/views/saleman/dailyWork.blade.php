@@ -107,9 +107,6 @@
                                                     <span>คำสั่งงาน 8</span>
                                                 </span>
                                             </div>
-                                            {{-- <div>
-                                            <button type="button" class="btn btn-xs btn-outline-success btn-rounded">New</button>
-                                        </div> --}}
                                         </div>
                                         <div class="d-flex align-items-end justify-content-between mt-10">
                                             <div>
@@ -148,9 +145,6 @@
                                                     <span>บันทึกโน๊ต 3</span>
                                                 </span>
                                             </div>
-                                            {{-- <div>
-                                            <button type="button" class="btn btn-xs btn-outline-warning btn-rounded">New</button>
-                                        </div> --}}
                                         </div>
                                         <div class="d-flex align-items-end justify-content-between mt-10">
                                             <div>
@@ -190,9 +184,6 @@
                                                     <span>ลูกค้าใหม่ 6</span>
                                                 </span>
                                             </div>
-                                            {{-- <div>
-                                            <button type="button" class="btn btn-xs btn-outline-info btn-rounded">New</button>
-                                        </div> --}}
                                         </div>
                                         <div class="d-flex align-items-end justify-content-between mt-10">
                                             <div>
@@ -287,7 +278,7 @@
                                         </div>
                                     </div>
                                     <div class="table-responsive col-md-12">
-                                        <table id="datable_1_2" class="table table-hover">
+                                        <table  id="datable_1" class="table table-hover">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
@@ -299,6 +290,10 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($list_saleplan as $key => $value)
+                                                <?php $date = Carbon\Carbon::parse($value->sale_plans_date)->format('Y-m');
+                                                      $dateNow = Carbon\Carbon::today()->format('Y-m');
+                                                      if ($date == $dateNow && $value->sale_plans_status == 2) {
+                                                ?>
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
                                                         <td><span class="topic_purple">{{ $value->sale_plans_title }}</span></td>
@@ -350,6 +345,7 @@
                                                             </div>
                                                         </td>
                                                     </tr>
+                                                    <?php } ?>
                                                 @endforeach
                                             </tbody>
                                         </table>
@@ -375,14 +371,12 @@
                                         </div>
                                     </div>
                                     <div class="table-responsive col-md-12">
-                                        <table  id="datable_1" class="table table-hover">
+                                        <table  id="datable_1_2" class="table table-hover">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
                                                     <th>ชื่อร้าน</th>
                                                     <th>อำเภอ,จังหวัด</th>
-                                                    <th>วัตถุประสงค์</th>
-                                                    {{-- <th>วันที่</th> --}}
                                                     <th>สถานะ</th>
                                                     <th class="text-center">Action</th>
                                                 </tr>
@@ -393,8 +387,6 @@
                                                     <td>{{$key + 1}}</td>
                                                     <td>{{$value->shop_name}}</td>
                                                     <td>{{$value->PROVINCE_NAME}}</td>
-                                                    <td>เปิดตลาดใหม่</td>
-                                                    {{-- <td>01/11/2021</td> --}}
                                                     <td><span class="badge badge-soft-indigo mt-15 mr-10"
                                                         style="font-size: 12px;">ลูกค้าใหม่</span></td>
                                                     <td align="center">
@@ -439,14 +431,9 @@
                                     <div class="hk-pg-header mb-10 mt-10">
                                         <div>
                                         </div>
-                                        <div class="box_search d-flex">
-                                            <span class="txt_search">Search:</span>
-                                            <input type="text" name="" id="" class="form-control form-control-sm"
-                                                placeholder="ค้นหา">
-                                        </div>
                                     </div>
-                                    <div class="table-responsive">
-                                        <table class="table table-hover mb-0">
+                                    <div class="table-responsive col-md-12">
+                                        <table id="datable_1_3" class="table table-hover">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
