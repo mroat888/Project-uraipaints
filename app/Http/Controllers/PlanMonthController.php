@@ -47,8 +47,11 @@ class PlanMonthController extends Controller
 
 
 
-        $data['list_saleplan'] = DB::table('sale_plans')->join('customer_shops', 'sale_plans.customer_shop_id', '=', 'customer_shops.id')
+        $data['list_saleplan'] = DB::table('sale_plans')
+        ->join('customer_shops', 'sale_plans.customer_shop_id', '=', 'customer_shops.id')
+        ->leftjoin('sale_plan_results', 'sale_plans.id', '=', 'sale_plan_results.sale_plan_id')
             ->select(
+                'sale_plan_results.sale_plan_status',
                 'customer_shops.shop_name',
                 'sale_plans.*'
             )
@@ -62,7 +65,7 @@ class PlanMonthController extends Controller
             $date = Carbon::parse($value->sale_plans_date)->format('Y-m');
             $dateNow = Carbon::today()->format('Y-m');
             if ($date == $dateNow) {
-                if ($value->status_result == 3) {
+                if ($value->sale_plan_status == 3) {
                     $result_plan++;
                 } else {
                     $remain_plan++;
@@ -163,6 +166,20 @@ class PlanMonthController extends Controller
 
     public function approve($id)
     {
-        dd($id);
+        // dd($id);
+
+            $request_approval = SalePlan::where('monthly_plan_id', $id)->first();
+            $request_approval->sale_plans_status   = 1;
+            $request_approval->updated_by   = Auth::user()->id;
+            $request_approval->updated_at   = Carbon::now();
+            $request_approval->update();
+
+            $request_approval_month = MonthlyPlan::find($id);
+            $request_approval_month->status_approve   = 1;
+            $request_approval_month->updated_by   = Auth::user()->id;
+            $request_approval_month->updated_at   = Carbon::now();
+            $request_approval_month->update();
+
+        return back();
     }
 }

@@ -1,9 +1,15 @@
 <?php $objective = App\ObjectiveSaleplan::all();
 
 $customer_shops = DB::table('customer_shops')
-        ->whereIn('shop_status', [0, 1]) // ดึงเฉพาะ ลูกค้าเป้าหมายและทะเบียนลูกค้า
-        ->where('created_by',Auth::user()->id)
-        ->orderby('shop_name','asc')
+        ->join('customer_contacts', 'customer_shops.id', '=', 'customer_contacts.customer_shop_id')
+        ->whereIn('customer_shops.shop_status', [0, 1]) // ดึงเฉพาะ ลูกค้าเป้าหมายและทะเบียนลูกค้า
+        ->where('customer_shops.created_by',Auth::user()->id)
+        ->orderby('customer_shops.shop_name','asc')
+        ->select(
+                'customer_contacts.customer_contact_name',
+                'customer_contacts.customer_contact_phone',
+                'customer_shops.*'
+                )
         ->get();
 
         ?>
@@ -27,7 +33,6 @@ $customer_shops = DB::table('customer_shops')
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ค้นหาชื่อร้าน</label>
-                                {{-- <input class="form-control" id="searchShop" placeholder="" value="" type="text"> --}}
                                 <select name="sel_searchShop2" id="sel_searchShop2" class="form-control custom-select select2">
                                     <option value="" selected disabled>กรุณาเลือกชื่อร้านค้า</option>
                                     @foreach ($customer_shops as $value)
@@ -135,8 +140,8 @@ $customer_shops = DB::table('customer_shops')
                         success: function(response){
                             console.log(response)
                             $('#saleplan_id').val(response.id);
-                            $('#saleplan_contact_name').val(response.contact_name);
-                            $('#saleplan_phone').val(response.shop_phone);
+                            $('#saleplan_contact_name').val(response.customer_contact_name);
+                            $('#saleplan_phone').val(response.customer_contact_phone);
                             $('#saleplan_address').val(response.shop_address);
                         },
                         error: function(response){

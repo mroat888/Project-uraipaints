@@ -5,7 +5,8 @@
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
             <li class="breadcrumb-item"><a href="#">Page</a></li>
-            <li class="breadcrumb-item active" aria-current="page">การขออนุมัติ</li>
+            <li class="breadcrumb-item active">การขออนุมัติ</li>
+            <li class="breadcrumb-item active" aria-current="page">รายการข้อมูลการขออนุมัติ</li>
         </ol>
     </nav>
     <!-- /Breadcrumb -->
@@ -17,10 +18,12 @@
         <div class="hk-pg-header mb-10">
             <div>
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                    data-feather="file-text"></i></span></span>บันทึกข้อมูลการขออนุมัติ</h4>
+                    data-feather="file-text"></i></span></span>รายการข้อมูลการขออนุมัติ</h4>
             </div>
             <div class="d-flex">
                 <button type="button" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" id="btn_approve">อนุมัติ</button>
+
+                <button type="button" class="btn btn_purple btn-danger btn-sm btn-rounded px-3 ml-5">ไม่อนุมัติ</button>
             </div>
         </div>
         <!-- /Title -->
@@ -50,7 +53,7 @@
                     </div>
                     <div class="row mb-2">
                             <div class="col-md-3">
-                                <h5 class="hk-sec-title">ตารางข้อมูลการขออนุมัติ</h5>
+                                <h5 class="hk-sec-title">ตารางรายการข้อมูลการขออนุมัติ</h5>
                             </div>
                             <div class="col-md-9">
 
@@ -72,7 +75,7 @@
                                             </th>
                                             <th>#</th>
                                             <th>วันที่</th>
-                                            {{-- <th>เรื่อง</th> --}}
+                                            <th>เรื่อง</th>
                                             <th>พนักงาน</th>
                                             <th>การอนุมัติ</th>
                                             <th>Action</th>
@@ -81,30 +84,33 @@
                                     <tbody>
                                         @foreach ($request_approval as $key => $value)
                                         <tr>
+                                            {{-- <form id="form_insert_saleplan" enctype="multipart/form-data"> --}}
                                             <td>
                                                 <div class="custom-control custom-checkbox checkbox-info">
                                                     <input type="checkbox" class="custom-control-input checkapprove"
-                                                        name="checkapprove" id="customCheck41" value="1">
+                                                        name="checkapprove[]" id="customCheck41" value="1">
                                                     <label class="custom-control-label" for="customCheck41"></label>
                                                 </div>
                                             </td>
+                                            {{-- </form> --}}
                                             <td>{{$key + 1}}</td>
                                             <td>{{$value->assign_request_date}}</td>
-                                            {{-- <td>
+                                            <td>
+
                                                 @if ($value->assign_is_hot == 1)
                                                 <span class="badge badge-soft-danger" style="font-size: 12px;">HOT</span>
                                                 @endif
 
                                                 {{$value->assign_title}}
-                                            </td> --}}
+                                            </td>
                                             <td>{{$value->name}}</td>
                                             <td>
                                                 <span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>
                                             </td>
                                             <td>
-                                                <a href="{{url('lead/approval_general_detail', $value->id)}}" class="btn btn-icon btn-primary btn-link btn_showplan pt-5" value="3">
-                                                    <i data-feather="file-text"></i>
-                                                </a>
+                                                <button type="button" class="btn btn-icon btn-primary btn-link btn_showplan" value="3">
+                                                    <i data-feather="message-square"></i>
+                                                </button>
                                             </td>
                                         </tr>
                                         @endforeach
@@ -130,6 +136,38 @@
 @endsection('content')
 
 @section('scripts')
+
+ {{-- <script>
+            $("#form_approval").on("submit", function (e) {
+                e.preventDefault();
+                // var formData = $(this).serialize();
+                var formData = new FormData(this);
+                //console.log(formData);
+                $.ajax({
+                    type:'POST',
+                    url: '{{ url("lead/approvalUpdate") }}',
+                    data:formData,
+                    cache:false,
+                    contentType: false,
+                    processData: false,
+                    success:function(response){
+                        console.log(response);
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Your work has been saved',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        $("#addCustomer").modal('hide');
+                        location.reload();
+                    },
+                    error: function(response){
+                        console.log("error");
+                        console.log(response);
+                    }
+                });
+            });
+        </script> --}}
 
 <script>
     $(document).on('click', '.btn_showplan', function(){
