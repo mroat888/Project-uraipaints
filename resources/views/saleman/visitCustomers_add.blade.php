@@ -1,9 +1,15 @@
 <?php $objective = App\ObjectiveSaleplan::all();
 
 $customer_shops = DB::table('customer_shops')
-        ->whereIn('shop_status', [0, 1]) // ดึงเฉพาะ ลูกค้าเป้าหมายและทะเบียนลูกค้า
-        ->where('created_by',Auth::user()->id)
-        ->orderby('shop_name','asc')
+->join('customer_contacts', 'customer_shops.id', '=', 'customer_contacts.customer_shop_id')
+        ->whereIn('customer_shops.shop_status', [0, 1]) // ดึงเฉพาะ ลูกค้าเป้าหมายและทะเบียนลูกค้า
+        ->where('customer_shops.created_by',Auth::user()->id)
+        ->orderby('customer_shops.shop_name','asc')
+        ->select(
+                'customer_contacts.customer_contact_name',
+                'customer_contacts.customer_contact_phone',
+                'customer_shops.*'
+                )
         ->get();
 
         ?>
@@ -134,8 +140,8 @@ $customer_shops = DB::table('customer_shops')
                     success: function(response){
                         console.log(response)
                         $('#visit_id').val(response.id);
-                        $('#visit_contact_name').val(response.contact_name);
-                        $('#visit_phone').val(response.shop_phone);
+                        $('#visit_contact_name').val(response.customer_contact_name);
+                        $('#visit_phone').val(response.customer_contact_phone);
                         $('#visit_address').val(response.shop_address);
                     },
                     error: function(response){

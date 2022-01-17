@@ -78,11 +78,13 @@ class SalePlanController extends Controller
     {
         // $dataEdit = SalePlan::find($id);
         $dataEdit = SalePlan::join('customer_shops', 'sale_plans.customer_shop_id', '=', 'customer_shops.id')
+            ->join('customer_contacts', 'customer_shops.id', '=', 'customer_contacts.customer_shop_id')
             ->where('sale_plans.id', $id)->select(
-                'customer_shops.contact_name',
-                'customer_shops.shop_phone',
+                'customer_contacts.customer_contact_name',
+                'customer_contacts.customer_contact_phone',
                 'customer_shops.shop_address',
                 'customer_shops.id as shop_id',
+                'customer_shops.shop_name',
                 'sale_plans.id',
                 'sale_plans.sale_plans_title',
                 'sale_plans.sale_plans_date',

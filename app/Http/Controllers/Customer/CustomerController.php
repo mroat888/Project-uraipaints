@@ -91,8 +91,7 @@ class CustomerController extends Controller
             $data->save();
 
             $sql_shops = DB::table('customer_shops')
-            ->orderBy('customer_shops.id', 'desc')
-            ->first();
+            ->orderBy('customer_shops.id', 'desc')->first();
 
             DB::table('customer_contacts')
             ->insert([
@@ -100,7 +99,7 @@ class CustomerController extends Controller
                 'customer_contact_name' => $request->contact_name,
                 'customer_contact_phone' => $request->shop_phone,
                 'created_by' => Auth::user()->id,
-                'created_at' => date('Y-m-d H:i:s'),
+                'created_at' => Carbon::now(),
             ]);
 
             DB::commit();

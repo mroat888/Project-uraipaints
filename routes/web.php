@@ -74,6 +74,7 @@ Route::get('delete_approval/{id}', 'SaleMan\RequestApprovalController@destroy');
 
 // NOTE
 Route::get('note', 'NoteController@note_sale');
+Route::get('status_pin_update/{id}', 'NoteController@status_pin_update');
 Route::post('create_note', 'NoteController@store');
 Route::get('edit_note/{id}', 'NoteController@edit');
 Route::post('update_note', 'NoteController@update');
@@ -107,7 +108,10 @@ Route::get('lead/viewAssignmentDetail', function () { return view('leadManager.v
 Route::get('/approvalsaleplan', function () { return view('leadManager.approval_saleplan'); });
 Route::get('/approvalsaleplan/detail', function () { return view('leadManager.approval_saleplan_detail'); });
 
-Route::get('/approvalgeneral', function () { return view('leadManager.approval_general'); });
+// Route::get('/approvalgeneral', function () { return view('leadManager.approval_general'); });
+Route::get('/approvalgeneral', 'LeadManager\ApprovalController@index');
+Route::get('lead/approval_general_detail/{id}', 'LeadManager\ApprovalController@approval_general_detail');
+Route::post('lead/approvalUpdate', 'LeadManager\ApprovalController@approvalUpdate');
 Route::get('/approvalgeneral/history', function () { return view('leadManager.approval_general_history'); });
 
 // Assignment

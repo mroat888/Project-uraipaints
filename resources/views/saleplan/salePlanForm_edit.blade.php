@@ -1,9 +1,15 @@
 <?php $objective = App\ObjectiveSaleplan::all();
 
 $customer_shops = DB::table('customer_shops')
-        ->whereIn('shop_status', [0, 1]) // ดึงเฉพาะ ลูกค้าเป้าหมายและทะเบียนลูกค้า
-        ->where('created_by',Auth::user()->id)
-        ->orderby('shop_name','asc')
+        ->join('customer_contacts', 'customer_shops.id', '=', 'customer_contacts.customer_shop_id')
+        ->whereIn('customer_shops.shop_status', [0, 1]) // ดึงเฉพาะ ลูกค้าเป้าหมายและทะเบียนลูกค้า
+        ->where('customer_shops.created_by',Auth::user()->id)
+        ->orderby('customer_shops.shop_name','asc')
+        ->select(
+                'customer_contacts.customer_contact_name',
+                'customer_contacts.customer_contact_phone',
+                'customer_shops.*'
+                )
         ->get();
 
         ?>
@@ -102,8 +108,8 @@ $customer_shops = DB::table('customer_shops')
                         $('#get_objective').val(data.dataEdit.sale_plans_objective);
                         $('#get_tag').val(data.dataEdit.sale_plans_tags);
                         $('#saleplan_id_edit').val(data.dataEdit.shop_id);
-                        $('#saleplan_contact_name_edit').val(data.dataEdit.contact_name);
-                        $('#saleplan_phone_edit').val(data.dataEdit.shop_phone);
+                        $('#saleplan_contact_name_edit').val(data.dataEdit.customer_contact_name);
+                        $('#saleplan_phone_edit').val(data.dataEdit.customer_contact_phone);
                         $('#saleplan_address_edit').val(data.dataEdit.shop_address);
 
                         $('#saleplanEdit').modal('toggle');

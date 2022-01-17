@@ -41,27 +41,6 @@
                                 <div class="hk-pg-header mb-10">
                                     <div>
                                     </div>
-                                    {{-- <div class="col-sm-12 col-md-9">
-                                        <!-- ------ -->
-                                        <span class="form-inline pull-right pull-sm-center">
-                                            <div class="box_search d-flex">
-                                                <span class="txt_search">Search:</span>
-                                                    <input type="text" name="" id="" class="form-control form-control-sm" placeholder="ค้นหา">
-                                                </div>
-
-                                            <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกวันที่</button>
-                                            <span id="selectdate" style="display:none;">
-
-                                            Date : <input type="month" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateFrom" value="<?= date('Y-m-d'); ?>" />
-
-                                                to <input type="month" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" value="<?= date('Y-m-d'); ?>" />
-
-                                                <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button>
-                                            </span>
-
-                                        </span>
-                                        <!-- ------ -->
-                                    </div> --}}
                                 </div>
                                 <div class="table-responsive col-md-12">
                                     <table id="datable_1" class="table table-hover">
