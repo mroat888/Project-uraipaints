@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\DB;
 
 class LoginController extends Controller
 {
@@ -39,29 +40,44 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    // public function login(Request $request){
-    //     $input = $request->all();
+    public function login(Request $request){
+        $input = $request->all();
 
-    //     $this->validate($request, [
-    //         'email' => 'required|email',
-    //         'password' =>'required'
-    //     ]);
+        $this->validate($request, [
+            'email' => 'required|email',
+            'password' =>'required'
+        ]);
 
-    //     if (auth()->attempt((array('email' => $input['email'], 'password' => $input['password'])))) {
-    //         if (auth()->user()->status == 0) {
-    //             return redirect('dashboard');
-    //         }elseif (auth()->user()->status == 1) {
-    //             return redirect('leadManager');
-    //         }elseif (auth()->user()->status == 2) {
-    //             return redirect('headManage');
-    //         }elseif (auth()->user()->status == 3){
-    //             return redirect('admin');
-    //         }else{
-    //             return back()->with('error', 'ไม่มีอีเมล์นี้อยู่ในระบบ!');
-    //         }
-    //     }else{
-    //         return back()->with('error', 'อีเมล์หรือรหัสผ่านไม่ถูกต้อง!');
-    //     }
+ 
+        if (auth()->attempt((array('email' => $input['email'], 'password' => $input['password'])))) {
+            // DB::beginTransaction();
+            // try {
+            //     $user_id = auth()->user()->id;
+            //     DB::table('users')
+            //     ->where('id', $user_id)
+            //     ->update([
+            //         'api_token' => '123456'
+            //     ]);
+            //     DB::commit();
+            // } catch (\Exception $e) {
 
-    // }
+            //     DB::rollback();
+            // }
+
+        //     if (auth()->user()->status == 0) {
+                return redirect('dashboard');
+        //     }elseif (auth()->user()->status == 1) {
+        //         return redirect('leadManager');
+        //     }elseif (auth()->user()->status == 2) {
+        //         return redirect('headManage');
+        //     }elseif (auth()->user()->status == 3){
+        //         return redirect('admin');
+        //     }else{
+        //         return back()->with('error', 'ไม่มีอีเมล์นี้อยู่ในระบบ!');
+        //     }
+        }else{
+             return back()->with('error', 'อีเมล์หรือรหัสผ่านไม่ถูกต้อง!');
+        }
+
+    }
 }

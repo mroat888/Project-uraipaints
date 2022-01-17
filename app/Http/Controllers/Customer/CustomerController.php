@@ -27,6 +27,7 @@ class CustomerController extends Controller
         ->get();
         $data['customer_contacts'] = DB::table('customer_contacts')->orderBy('id','desc')->get();
 
+        // dd($data);
         return view('customer.customer', $data);
     }
 

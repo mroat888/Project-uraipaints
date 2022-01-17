@@ -257,6 +257,13 @@ Route::get('/customer/autocomplete',[CustomerController::class, 'fetch_autocompl
 
 Auth::routes();
 // Route::get('/', function () { return view('saleman.dashboard'); });
+Route::get('/home', function () { return view('saleman.dashboard'); });
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/', 'HomeController@index')->name('home');
+
+
+
+// API
+
+Route::get('/customer-api','Customer\ApiCustomerController@index');
