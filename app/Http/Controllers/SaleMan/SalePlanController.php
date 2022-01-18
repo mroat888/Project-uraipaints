@@ -50,7 +50,7 @@ class SalePlanController extends Controller
                 'monthly_plan_id' => $request->id,
                 'customer_shop_id' => $request->shop_id,
                 'sale_plans_title' => $request->sale_plans_title,
-                'sale_plans_date' => $request->sale_plans_date,
+                'sale_plans_date' => Carbon::now()->addMonth(1),
                 'sale_plans_tags' => $request->sale_plans_tags,
                 'sale_plans_objective' => $request->sale_plans_objective,
                 'sale_plans_status' => 1,

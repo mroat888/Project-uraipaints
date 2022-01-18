@@ -85,96 +85,34 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox checkbox-info">
-                                                        <input type="checkbox" class="custom-control-input checkapprove"
-                                                            name="checkapprove" id="customCheck41" value="1">
-                                                        <label class="custom-control-label" for="customCheck41"></label>
-                                                    </div>
-                                                </td>
-                                                <td>1</td>
-                                                <td>11/10/2021</td>
-                                                <td>เกรียงไกร</td>
-                                                <td><span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span></td>
-                                                <td>
-                                                    <a href="{{ url('/approvalsaleplan/detail') }}" type="button" class="btn btn-icon btn-primary pt-5">
-                                                        <i data-feather="file-text"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox checkbox-info">
-                                                        <input type="checkbox" class="custom-control-input checkapprove"
-                                                            name="checkapprove" id="customCheck41" value="1">
-                                                        <label class="custom-control-label" for="customCheck41"></label>
-                                                    </div>
-                                                </td>
-                                                <td>2</td>
-                                                <td>12/10/2021</td>
-                                                <td>ชัยวุฒิ</td>
-                                                <td><span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span></td>
-                                                <td>
-                                                    <a href="{{ url('/approvalsaleplan/detail') }}" type="button" class="btn btn-icon btn-primary pt-5">
-                                                        <i data-feather="file-text"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox checkbox-info">
-                                                        <input type="checkbox" class="custom-control-input checkapprove"
-                                                            name="checkapprove" id="customCheck41" value="1">
-                                                        <label class="custom-control-label" for="customCheck41"></label>
-                                                    </div>
-                                                </td>
-                                                <td>3</td>
-                                                <td>14/10/2021</td>
-                                                <td>จารุวรรณ</td>
-                                                <td><span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span></td>
-                                                <td>
-                                                    <a href="{{ url('/approvalsaleplan/detail') }}" type="button" class="btn btn-icon btn-primary pt-5">
-                                                        <i data-feather="file-text"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox checkbox-info">
-                                                        <input type="checkbox" class="custom-control-input checkapprove"
-                                                            name="checkapprove" id="customCheck41" value="1">
-                                                        <label class="custom-control-label" for="customCheck41"></label>
-                                                    </div>
-                                                </td>
-                                                <td>4</td>
-                                                <td>14/10/2021</td>
-                                                <td>อมรชัย</td>
-                                                <td><span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span></td>
-                                                <td>
-                                                    <a href="{{ url('/approvalsaleplan/detail') }}" type="button" class="btn btn-icon btn-primary pt-5">
-                                                        <i data-feather="file-text"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox checkbox-info">
-                                                        <input type="checkbox" class="custom-control-input checkapprove"
-                                                            name="checkapprove" id="customCheck41" value="1">
-                                                        <label class="custom-control-label" for="customCheck41"></label>
-                                                    </div>
-                                                </td>
-                                                <td>5</td>
-                                                <td>14/10/2021</td>
-                                                <td>ทิพวรรณ</td>
-                                                <td><span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span></td>
-                                                <td>
-                                                    <a href="{{ url('/approvalsaleplan/detail') }}" type="button" class="btn btn-icon btn-primary pt-5">
-                                                        <i data-feather="file-text"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
+                                            @foreach ($monthly_plan as $key => $value)
+                                            <?php
+                                            $date = Carbon\Carbon::parse($value->month_date)->format('Y-m');
+                                            $dateNow = Carbon\Carbon::today()->addMonth(1)->format('Y-m');
+                                            // if ($date == $dateNow) {
+                                      ?>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="custom-control custom-checkbox checkbox-info">
+                                                                <input type="checkbox" class="custom-control-input checkapprove"
+                                                                    name="checkapprove" id="customCheck41" value="1">
+                                                                <label class="custom-control-label" for="customCheck41"></label>
+                                                            </div>
+                                                        </td>
+                                                        <td>{{$key + 1}}</td>
+                                                        <td>{{$value->month_date}}</td>
+                                                        <td>{{$value->name}}</td>
+                                                        <td><span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span></td>
+                                                        <td>
+                                                            <a href="{{ url('/approvalsaleplan_detail', $value->id) }}" type="button" class="btn btn-icon btn-primary pt-5">
+                                                                <i data-feather="file-text"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                    <?php
+                                                // }
+                                                ?>
+                                                @endforeach
                                         </tbody>
                                     </table>
                                 </div>

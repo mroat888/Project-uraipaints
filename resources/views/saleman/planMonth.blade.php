@@ -164,7 +164,18 @@
                                             </div>
                                             <div class="mb-10">
                                                 <span
-                                                    style="font-weight: bold; font-size: 18px;">{{ $customer_new->count() }}</span>
+                                                    style="font-weight: bold; font-size: 18px;">
+                                                    <?php
+                                                    $sum_cust = 0;
+                                                    foreach ($customer_new as $key => $value) {
+                                                        $date = Carbon\Carbon::parse($value->shop_saleplan_date)->format('Y-m');
+                                                        $dateNow = Carbon\Carbon::today()->format('Y-m');
+                                                    if ($dateNow == $date) {
+                                                        $sum_cust++;
+                                                    } }
+
+                                                ?>
+                                                    {{ $sum_cust}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -239,8 +250,8 @@
                                             <tbody>
                                                 @foreach ($list_saleplan as $key => $value)
                                                     <?php
-                                                if ($monthly_plan_id == $value->monthly_plan_id) {
-                                          ?>
+                                                        if ($monthly_plan_id == $value->monthly_plan_id) {
+                                                    ?>
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
                                                         <td><span
@@ -306,6 +317,11 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($customer_new as $key => $value)
+                                                <?php
+                                                    $date = Carbon\Carbon::parse($value->shop_saleplan_date)->format('Y-m');
+                                                    $dateNow = Carbon\Carbon::today()->addMonth(1)->format('Y-m');
+                                                    if ($dateNow == $date) {
+                                                ?>
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
                                                         <td>{{ $value->shop_name }}</td>
@@ -334,6 +350,9 @@
                                                             </div>
                                                         </td>
                                                     </tr>
+                                                    <?php
+                                                         }
+                                                    ?>
                                                 @endforeach
                                             </tbody>
                                         </table>
@@ -376,7 +395,9 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($list_visit as $key => $value)
-
+                                                <?php
+                                                    if ($monthly_plan_id == $value->monthly_plan_id) {
+                                                ?>
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
                                                         <td>{{ $value->shop_name }}</td>
@@ -406,7 +427,7 @@
                                                             </div>
                                                         </td>
                                                     </tr>
-
+                                                    <?php } ?>
                                                 @endforeach
                                             </tbody>
                                         </table>
