@@ -20,7 +20,7 @@
             </div>
             <div class="d-flex">
                 <button type="button" class="btn btn-teal btn-sm btn-rounded px-3" data-toggle="modal"
-                    data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button>
+                    data-target="#modalInsert"> + เพิ่มใหม่ </button>
             </div>
         </div>
         <!-- /Title -->
@@ -43,40 +43,36 @@
                                 <tr>
                                     <th>#</th>
                                     <th>ชื่อ-นามสกุล</th>
-                                    <th>ชื่อผู้ใช้งาน</th>
+                                    <th>อีเมล์</th>
                                     <th>สิทธิ์การใช้งาน</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach($users as $value)
                                 <tr>
                                     <td>1</td>
-                                    <td>ศิริลักษณ์</td>
-                                    <td>siriluk</td>
-                                    <td><span class="badge badge-soft-info" style="font-size: 14px;">ผู้แทนขาย</span></td>
+                                    <td>{{ $value->name }}</td>
+                                    <td>{{ $value->email }}</td>
+                                    <td>
+                                        @php
+                                        foreach($master_permission as $value_permiss){
+                                            if($value->status ==  $value_permiss->id){
+                                                echo "<span class='badge badge-soft-violet' style='font-size: 14px;'>$value_permiss->permission_name</span>";
+                                            }
+                                        }
+                                        @endphp
+                                    </td>
                                     <td>
                                         <div class="button-list">
-                                            <button class="btn btn-icon btn-warning mr-10">
+                                            <button class="btn btn-icon btn-warning mr-10 btn_edit" value="{{ $value->id }}">
                                                 <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
                                             <button class="btn btn-icon btn-danger mr-10">
                                                 <span class="btn-icon-wrap"><i data-feather="trash-2"></i></span></button>
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>อิศรา</td>
-                                    <td>itsara</td>
-                                    <td><span class="badge badge-soft-indigo" style="font-size: 14px;">ผู้จัดการเขต</span></td>
-                                    <td>
-                                        <div class="button-list">
-                                            <button class="btn btn-icon btn-warning mr-10">
-                                                <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
-                                            <button class="btn btn-icon btn-danger mr-10">
-                                                <span class="btn-icon-wrap"><i data-feather="trash-2"></i></span></button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                @endforeach
                             </tbody>
                         </table>
                         </div>
@@ -88,7 +84,7 @@
     <!-- /Container -->
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModalLarge01" tabindex="-1" role="dialog" aria-labelledby="exampleModalLarge01"
+    <div class="modal fade" id="modalInsert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLarge01"
         aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -98,50 +94,145 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <form action="#">
+                <form id="form_insert" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12 form-group">
-                                <label for="firstName">ชื่อ-นามสกุล</label>
-                                <select class="select2 select2-multiple form-control"
-                                    data-placeholder="Choose">
-                                    <option aria-readonly="ff">เลือกข้อมูล</option>
-                                    {{-- <optgroup label="เลือกข้อมูล"> --}}
-                                        <option value="1">ศิริลักษณ์</option>
-                                        <option value="2">อิศรา</option>
-                                        <option value="3">ดวงดาว</option>
-                                    </optgroup>
-                                </select>
+                                <label for="firstName">ชื่อผู้ใช้งาน</label>
+                                <input type="text" name="tname" id="tname" class="form-control">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
-                                <label for="firstName">ชื่อผู้ใช้งาน</label>
-                                <input type="text" name="" id="" class="form-control">
+                                <label for="firstName">อีเมล์</label>
+                                <input type="email" name="temail" id="temail" class="form-control">
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="firstName">รหัสผ่าน</label>
-                                <input class="form-control" placeholder="" value="" type="date">
+                                <input type="password" name="tpassword" id="tpassword" class="form-control" placeholder="password">
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="username">สิทธิ์การใช้งาน</label>
-                                <select class="form-control custom-select">
-                                    <option selected>เลือกข้อมูล</option>
-                                    <option value="1">ผู้แทนขาย</option>
-                                    <option value="2">ผู้จัดการเขต</option>
-                                    <option value="3">ผู้จัดการฝ่าย</option>
+                                <select id="sel_status" name="sel_status" class="form-control custom-select">
+                                    <option selected disabled>เลือกข้อมูล</option>
+                                    @foreach($master_permission as $key => $value)
+                                        <option value="{{ $value->id }}">{{ $value->permission_name }}</option>
+                                    @endforeach
+                                    
                                 </select>
                             </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save</button>
-                </div>
+                            <div class="form-group col-md-6">
+                                <label for="username">ชื่อพนักงาน</label>
+                                <select name="sel_api_identify" id="sel_api_identify" class="form-control custom-select select2">
+                                    <option value="" selected disabled>เลือกข้อมูล</option>
+                                    @foreach ($sellers_api as $key => $value)
+                                        <option value="{{$sellers_api[$key]['id']}}">{{$sellers_api[$key]['name']}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+
             </div>
         </div>
     </div>
+
+    <!-- Modal modaledit -->
+    <div class="modal fade" id="modaledit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLarge01"aria-hidden="true">
+        @include('admin.user_permission_edit')
+    </div>
+    
+
+
+<script>
+
+    $(".btn_edit").on("click", function(e){
+        e.preventDefault();
+        let user_id = $(this).val();
+
+        $.ajax({
+            method: 'GET',
+            url: '{{ url("/admin/userPermissionEdit") }}/'+user_id,
+            datatype: 'json',
+            success: function(response){
+                console.log(response);
+                if(response.status == 200){
+                    $("#modaledit").modal('show');
+                    $('#edit_tuser_id').val(user_id);
+                    $('#edit_tname').val(response.dataUser.name);
+                    $('#edit_temail').val(response.dataUser.email);
+
+                    $.each(response.master_permission, function(key, value){
+                        if(value.id == response.dataUser.status){
+                            $('#edit_sel_status').append('<option value='+value.id+' selected>'+value.permission_name+'</option>');
+                        }else{
+                            $('#edit_sel_status').append('<option value='+value.id+'>'+value.permission_name+'</option>');
+                        }   
+                    });
+                    
+                    
+                    $.each(response.sellers_api, function(key, value){
+                        if(response.sellers_api[key]['id'] == response.dataUser.api_identify){
+                            $('#edit_sel_api_identify').append('<option value='+response.sellers_api[key]['id']+' selected>'+response.sellers_api[key]['name']+'</option>');
+                        }else{
+                            $('#edit_sel_api_identify').append('<option value='+response.sellers_api[key]['id']+'>'+response.sellers_api[key]['name']+'</option>');
+                        }   
+                    });
+
+                }
+            }
+        });
+    });
+
+    $("#form_insert").on("submit", function (e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        // console.log(formData);
+        $.ajax({
+            type:'POST',
+            url: '{{ url("/admin/userPermissionCreate") }}',
+            data:formData,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(response){
+                console.log(response);
+                if(response.status == 200){
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    $("#modalInsert").modal('hide');
+                    location.reload();
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Your work has been saved',
+                        text: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+            },
+            error: function(response){
+                console.log("error");
+                console.log(response);
+            }
+        });
+    });
+</script>
+
+
 @endsection
+
+

@@ -204,7 +204,13 @@ Route::get('admin/edit_promotion/{id}', 'PromotionController@edit');
 Route::post('admin/update_promotion', 'PromotionController@update');
 Route::get('admin/delete_promotion/{id}', 'PromotionController@destroy');
 
-Route::get('admin/userPermission', function () { return view('admin.user_permission'); });
+
+Route::get('/admin/userPermission', 'Admin\UserPermissionController@index');
+Route::post('/admin/userPermissionCreate', 'Admin\UserPermissionController@store');
+Route::get('/admin/userPermissionEdit/{id}', 'Admin\UserPermissionController@edit');
+Route::post('/admin/userPermissionUpdate', 'Admin\UserPermissionController@update');
+
+
 Route::get('admin/checkHistory', function () { return view('admin.check_history'); });
 
 Route::get('/admin/reportcustomer', function () { return view('reports.report_customer_admin'); });

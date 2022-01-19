@@ -62,31 +62,7 @@
                                     </div>
                                 </div>
                                 <div id="table_list" class="table-responsive col-md-12">
-                                    <table id="datable_1" class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th style="font-weight: bold;">#</th>
-                                                <th style="font-weight: bold;">รูปภาพ</th>
-                                                <th style="font-weight: bold;">ชื่อร้าน</th>
-                                                <th style="font-weight: bold;">ที่อยู่</th>
-                                                <!-- <th style="font-weight: bold;">ชื่อผู้ติดต่อ</th>
-                                                <th style="font-weight: bold;">เบอร์โทรศัพท์</th> -->
-                                            </tr>
-                                        </thead>
-                                        <tbody id="table_body">
-                                            @php 
-                                                @$row = count($customer_api)
-                                            @endphp
 
-                                            @for($i = 0; $i< $row; $i++)
-                                                <tr>
-                                                @foreach ($customer_api[$i] as $value)
-                                                    <td>{{ $value }}</td>
-                                                @endforeach
-                                                </tr>
-                                            @endfor
-                                        </tbody>
-                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -104,7 +80,7 @@
 
     <script>
         $( document ).ready(function() {
-            // api_fetch_customer_all();
+            api_fetch_customer_all();
         });
 
         function api_login(){
@@ -141,8 +117,6 @@
                                         <th style="font-weight: bold;">รูปภาพ</th>
                                         <th style="font-weight: bold;">ชื่อร้าน</th>
                                         <th style="font-weight: bold;">ที่อยู่</th>
-                                        <!-- <th style="font-weight: bold;">ชื่อผู้ติดต่อ</th>
-                                        <th style="font-weight: bold;">เบอร์โทรศัพท์</th> -->
                                     </tr>
                                 </thead>
                                 <tbody id="table_body">`;

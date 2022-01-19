@@ -111,9 +111,9 @@
                                 <!-- <input class="form-control" id="searchShop" placeholder="" value="" type="text"> -->
                                 <select name="sel_searchShop" id="sel_searchShop" class="form-control custom-select select2">
                                     <option value="" selected disabled>กรุณาเลือกชื่อร้านค้า</option>
-                                    @foreach ($customer_shops as $value)
-                                    <option value="{{$value->id}}">{{$value->shop_name}}</option>
-                                    @endforeach
+                                        @foreach ($customer_api as $key => $value)
+                                            <option value="{{$customer_api[$key]['id']}}">{{$customer_api[$key]['shop_name']}}</option>
+                                        @endforeach
                                 </select>
                             </div>
                         </div>
@@ -236,10 +236,10 @@
                     datatype: 'json',
                     success: function(response){
                         console.log(response)
-                        $('#get_id').val(response.id);
-                        $('#get_contact_name').val(response.contact_name);
-                        $('#get_phone').val(response.shop_phone);
-                        $('#get_address').val(response.shop_address);
+                        // $('#get_id').val(response.id);
+                        // $('#get_contact_name').val(response.contact_name);
+                        // $('#get_phone').val(response.shop_phone);
+                        // $('#get_address').val(response.shop_address);
                     },
                     error: function(response){
                         console.log("error");
