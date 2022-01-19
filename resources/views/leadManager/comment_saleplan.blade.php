@@ -76,17 +76,3 @@
         });
     }
 </script>
-
-
-<script>
-    $(document).on('click', '.bt_reject', function(){
-       // alert('ไม่อนุมัติ');
-       $('#Modalapprov_reject').modal("show");
-    });
-
-    $(document).on('click', '.bt_saveapprove', function(){
-       // alert('ไม่อนุมัติ');
-       $('#Modalapprov_approve').modal("show");
-    });
-
-</script>

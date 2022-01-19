@@ -118,7 +118,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ url('create_approval') }}" method="post" enctype="multipart/form-data">
+                {{-- <form action="{{ url('create_approval') }}" method="post" enctype="multipart/form-data"> --}}
+                    <form id="form_insert_request_approval" enctype="multipart/form-data">
                     @csrf
                 <div class="modal-body">
                         <div class="row">
@@ -228,6 +229,38 @@
     </div>
 
     {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script> --}}
+    <script>
+        $("#form_insert_request_approval").on("submit", function (e) {
+            e.preventDefault();
+            // var formData = $(this).serialize();
+            var formData = new FormData(this);
+            //console.log(formData);
+            $.ajax({
+                type:'POST',
+                url: '{{ url("create_approval") }}',
+                data:formData,
+                cache:false,
+                contentType: false,
+                processData: false,
+                success:function(response){
+                    console.log(response);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    $("#addCustomer").modal('hide');
+                    location.reload();
+                },
+                error: function(response){
+                    console.log("error");
+                    console.log(response);
+                }
+            });
+        });
+    </script>
+
     <script>
 
         //Edit

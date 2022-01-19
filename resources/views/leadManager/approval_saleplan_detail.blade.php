@@ -32,10 +32,9 @@
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><i
                             class="ion ion-md-analytics"></i></span>รายละเอียด Sale Plan</h4>
             </div>
-            <form name="form1" class="form1" id="form1" action="{{ url('lead/approval_saleplan_confirm') }}" method="POST"
+            <form action="{{ url('lead/approval_saleplan_confirm') }}" method="POST"
                 enctype="multipart/form-data">
                 @csrf
-                <input type="hidden" name="hdnCount" value="{{ $list_saleplan->count() }}">
                 <div class="d-flex">
                     {{-- <button type="button" class="btn btn-teal btn-sm btn-rounded px-3 mr-10" data-toggle="modal" data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button> --}}
                     <button type="submit" class="btn btn-teal btn-sm btn-rounded px-3" id="ss">อนุมัติ</button>
@@ -61,20 +60,18 @@
                                     <thead>
                                         <tr>
                                             <th>
-                                                <input type="checkbox" id='checkall' /> Select All
-
-                                                {{-- <div class="custom-control custom-checkbox checkbox-info">
-                                                <input type="checkbox" class="custom-control-input" name="CheckAll"
-                                                    id="CheckAll" onclick="chkAll(this);">
-                                                <label class="custom-control-label"
-                                                    for="CheckAll">ทั้งหมด</label>
-                                            </div> --}}
+                                                <div class="custom-control custom-checkbox checkbox-info">
+                                                    <input type="checkbox" class="custom-control-input"
+                                                        id="customCheck4" onclick="chkAll(this);" name="CheckAll" value="Y">
+                                                    <label class="custom-control-label"
+                                                        for="customCheck4">ทั้งหมด</label>
+                                                </div>
                                             </th>
                                             <th>#</th>
                                             <th>วันที่</th>
-                                            <th>พนักงานขาย</th>
+                                            <th>ชื่อพนักงาน</th>
                                             <th>การอนุมัติ</th>
-                                            <th>Action</th>
+                                            {{-- <th>Action</th> --}}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -87,30 +84,32 @@
                                             <tr>
 
                                                 <td>
-                                                    {{-- <input class="checkbox" name="emailid[]" id="chkbox{{ $key + 1 }}" type="checkbox" value="{{ $key + 1 }}" /> --}}
-                                                    {{-- <label class="custom-control-label" for="chkbox{{$key + 1}}"></label> --}}
-
                                                     <div class="custom-control custom-checkbox checkbox-info">
-                                                        <input type="checkbox" class="custom-control-input checkbox"
-                                                            name="checkapprove[]" id="checkapprove{{$key + 1}}" value="{{ $value->id }}">
-                                                        <label class="custom-control-label" for="checkapprove{{$key + 1}}"></label>
+                                                        <input type="checkbox" class="custom-control-input checkapprove"
+                                                            name="checkapprove[]" id="customCheck{{$key + 1}}" value="{{$value->id}}">
+                                                        <label class="custom-control-label" for="customCheck{{$key + 1}}"></label>
                                                     </div>
                                                 </td>
 
-                                                </form>
+
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $value->sale_plans_date }}</td>
                                                 <td>{{ $value->name }}</td>
                                                 <td><span class="badge badge-soft-warning"
                                                         style="font-size: 12px;">Pending</span></td>
                                                 <td>
-                                                    <button class="btn btn-icon btn-primary mr-10"
+                                                    <a href="{{ url('comment_saleplan', $value->id) }}" class="btn btn-icon btn-warning mr-10">
+                                                        <h4 class="btn-icon-wrap" style="color: white;">
+                                                            <i data-feather="message-square"></i>
+                                                        </h4>
+                                                    </a>
+                                                    {{-- <button class="btn btn-icon btn-primary mr-10"
                                                         onclick="edit_modal({{ $value->id }})" data-toggle="modal"
                                                         data-target="#exampleModalLarge02">
                                                         <h4 class="btn-icon-wrap" style="color: white;">
                                                             <i data-feather="message-square"></i>
                                                         </h4>
-                                                    </button>
+                                                    </button> --}}
                                                 </td>
                                             </tr>
                                             <?php
@@ -119,6 +118,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                            </form>
                             </div>
                         </div>
                     </div>
@@ -131,38 +131,27 @@
 
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModalLarge02" tabindex="-1" role="dialog">
+    {{-- <div class="modal fade" id="exampleModalLarge02" tabindex="-1" role="dialog">
         @include('leadManager.comment_saleplan')
-    </div>
+    </div> --}}
 
-    <script type='text/javascript'>
-        $(document).ready(function(){
-          // Check or Uncheck All checkboxes
-          $("#checkall").change(function(){
-            var checked = $(this).is(':checked');
-            if(checked){
-              $(".checkbox").each(function(){
-                $(this).prop("checked",true);
-              });
-            }else{
-              $(".checkbox").each(function(){
-                $(this).prop("checked",false);
-              });
+       <script type="text/javascript">
+        function chkAll(checkbox) {
+
+            var cboxes = document.getElementsByName('checkapprove[]');
+            var len = cboxes.length;
+
+            if (checkbox.checked == true) {
+                for (var i = 0; i < len; i++) {
+                    cboxes[i].checked = true;
+                }
+            } else {
+                for (var i = 0; i < len; i++) {
+                    cboxes[i].checked = false;
+                }
             }
-          });
-
-         // Changing state of CheckAll checkbox
-         $(".checkbox").click(function(){
-
-           if($(".checkbox").length == $(".checkbox:checked").length) {
-             $("#checkall").prop("checked", true);
-           } else {
-             $("#checkall").removeAttr("checked");
-           }
-
-         });
-       });
-       </script>
+        }
+    </script>
 
     <script>
         $("#form_approval_saleplan").on("submit", function(e) {

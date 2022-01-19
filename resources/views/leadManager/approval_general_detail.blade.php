@@ -137,38 +137,6 @@
 
 @section('scripts')
 
- {{-- <script>
-            $("#form_approval").on("submit", function (e) {
-                e.preventDefault();
-                // var formData = $(this).serialize();
-                var formData = new FormData(this);
-                //console.log(formData);
-                $.ajax({
-                    type:'POST',
-                    url: '{{ url("lead/approvalUpdate") }}',
-                    data:formData,
-                    cache:false,
-                    contentType: false,
-                    processData: false,
-                    success:function(response){
-                        console.log(response);
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Your work has been saved',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
-                        $("#addCustomer").modal('hide');
-                        location.reload();
-                    },
-                    error: function(response){
-                        console.log("error");
-                        console.log(response);
-                    }
-                });
-            });
-        </script> --}}
-
 <script>
     $(document).on('click', '.btn_showplan', function(){
         let plan_id = $(this).val();
