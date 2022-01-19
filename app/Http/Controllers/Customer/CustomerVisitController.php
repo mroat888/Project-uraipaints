@@ -36,7 +36,7 @@ class CustomerVisitController extends Controller
             'password' => 'testapi',
         ]);
         $res = $response->json();
-        $api_token = $res['data']['access_token'];
+        $api_token = $res['data'][0]['access_token'];
 
         $url_fetch = "api/v1/sellers/".Auth::user()->api_identify."/customers";
         $response = Http::get('http://49.0.64.92:8020/'.$url_fetch, [
