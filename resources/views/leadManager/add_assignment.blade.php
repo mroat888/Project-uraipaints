@@ -67,39 +67,42 @@
                                             <th>#</th>
                                             <th>เรื่อง</th>
                                             <th>วันที่</th>
-                                            <th>ลูกค้า</th>
-                                            <th>Sale</th>
+                                            <th>พนักงาน</th>
+                                            <th>สถานะ</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @foreach ($assignments as $key => $value)
                                         <tr>
-                                            <td>1</td>
-                                            <td>แนะนำสินค้า</td>
-                                            <td>11/10/2021</td>
-                                            <td>บจก. ชัยรุ่งเรือง เวิร์ลเพ็นท์</td>
-                                            <td>อิศรา</td>
+                                            <td>{{$key + 1}}</td>
+                                            <td>{{$value->assign_title}}</td>
+                                            <td>{{$value->assign_work_date}}</td>
+                                            <td>{{$value->assign_emp_id}}</td>
                                             <td>
-                                                <span class="badge badge-soft-danger" style="font-size: 12px;">Fail</span>
-                                                <span class="badge badge-soft-info" style="font-size: 12px;">Finished</span>
+                                                @if ($value->assign_result_status == 0)
+                                                    <span class="badge badge-soft-danger" style="font-size: 12px;">ยังไม่เสร็จ</span>
+                                                    @elseif ($value->assign_result_status == 1)
+                                                    <span class="badge badge-soft-info" style="font-size: 12px;">สำเร็จ</span>
+                                                    @elseif ($value->assign_result_status == 2)
+                                                    <span class="badge badge-soft-danger" style="font-size: 12px;">ไม่สำเร็จ</span>
+                                                    @elseif ($value->assign_result_status == 3)
+                                                    <span class="badge badge-soft-danger" style="font-size: 12px;">รอตัดสินใจ</span>
+                                                @endif
                                             </td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>แนะนำสินค้า Home Paint Outlet</td>
-                                            <td>20/10/2021</td>
-                                            <td>Home Paint Outlet</td>
-                                            <td>ศิริลักษณ์</td>
                                             <td>
-                                                <div class="button-list">
-                                                    <button class="btn btn-icon btn-warning"
-                                                        data-toggle="modal" data-target="#">
-                                                        <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
-                                                    <button class="btn btn-icon btn-danger">
-                                                        <span class="btn-icon-wrap"><i data-feather="trash-2"></i></span></button>
+                                                    <button onclick="edit_modal({{ $value->id }})"
+                                                        class="btn btn-icon btn-warning mr-10" data-toggle="modal"
+                                                        data-target="#modalEdit">
+                                                        <span class="btn-icon-wrap"><i
+                                                                data-feather="edit"></i></span></button>
+                                                    <a href="{{url('lead/delete_assignment', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
+                                                        <span class="btn-icon-wrap"><i data-feather="trash-2"></i></span></a>
                                                 </div>
+
                                             </td>
                                         </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -128,9 +131,9 @@
                 <div class="modal-body">
                         <div class="form-group">
                             <label for="firstName">เรื่อง</label>
-                            <input class="form-control" id="assign_title" placeholder="กรุณาใส่ชื่อเรื่อง" type="text">
+                            <input class="form-control" name="assign_title" placeholder="กรุณาใส่ชื่อเรื่อง" type="text">
                         </div>
-                        <div class="row">
+                        {{-- <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ค้นหาชื่อร้าน</label>
                                 <input class="form-control" id="searchShop" type="text">
@@ -151,13 +154,20 @@
                             <label for="username">ที่อยู่ร้าน</label>
                             <textarea class="form-control" id="get_address" cols="30" rows="5" placeholder="" value=""
                                 type="text" readonly> </textarea>
+                        </div> --}}
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <label for="username">รายละเอียด</label>
+                                <textarea class="form-control" cols="30" rows="5" placeholder="" name="assign_detail"
+                                    type="text" required> </textarea>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">วันที่</label>
                                 <input class="form-control" type="date" name="date" />
                             </div>
-                            <div class="form-group col-md-6">
+                            {{-- <div class="form-group col-md-6">
                                 <label for="username">วัตถุประสงค์</label>
                                 <select class="form-control custom-select" name="objective">
                                     <option selected>Select</option>
@@ -167,9 +177,9 @@
                                     <option value="3">พรีเซ้นต์คุณสมบัติเทียบกับแบรนด์อื่น</option>
                                     <option value="3">แนะนำวิธีการใช้งาน-การเก็บรักษา</option>
                                 </select>
-                            </div>
+                            </div> --}}
                         </div>
-                        <div class="row">
+                        {{-- <div class="row">
                             <div class="col-md-12 form-group">
                                 <label for="firstName">รายการนำเสนอ</label>
                                 <select class="select2 select2-multiple form-control" multiple="multiple"
@@ -180,15 +190,15 @@
                                     </optgroup>
                                 </select>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="row">
                             <div class="col-md-6 form-group">
-                                <label for="firstName">รูปภาพ</label>
+                                <label for="firstName">ไฟล์เอกสาร</label>
                                 <input type="file" name="image" id="" class="form-control">
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="firstName">สั่งงานให้</label>
-                                <select class="form-control custom-select" name="assign_emp_id">
+                                <select class="form-control custom-select" name="assign_emp_id" required>
                                     <option selected>กรุณาเลือก</option>
                                     <option value="1">ศิริลักษณ์</option>
                                     <option value="2">อิศรา</option>
@@ -199,12 +209,135 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-                    <button type="button" class="btn btn-primary">บันทึก</button>
+                    <button type="submit" class="btn btn-primary">บันทึก</button>
                 </div>
             </form>
             </div>
         </div>
     </div>
+
+    <!-- Modal Edit -->
+    <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEdit"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">ฟอร์มแก้ไขข้อมูลการสั่งงาน</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{ url('lead/update_assignment') }}" method="post" enctype="multipart/form-data">
+                    @csrf
+                <div class="modal-body">
+                    <input type="hidden" name="id" id="get_id">
+                        <div class="form-group">
+                            <label for="firstName">เรื่อง</label>
+                            <input class="form-control" name="assign_title" id="get_title" type="text">
+                        </div>
+                        {{-- <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">ค้นหาชื่อร้าน</label>
+                                <input class="form-control" id="searchShop" type="text">
+                            </div>
+                        </div>
+                        <input type="hidden" name="shop_id" id="get_id">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">ผู้ติดต่อ</label>
+                                <input class="form-control" id="get_contact_name" type="text" readonly>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">เบอร์โทรศัพท์</label>
+                                <input class="form-control" id="get_phone" type="text" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="username">ที่อยู่ร้าน</label>
+                            <textarea class="form-control" id="get_address" cols="30" rows="5" placeholder="" value=""
+                                type="text" readonly> </textarea>
+                        </div> --}}
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <label for="username">รายละเอียด</label>
+                                <textarea class="form-control" cols="30" rows="5" id="get_detail" name="assign_detail"
+                                    type="text" required> </textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">วันที่</label>
+                                <input class="form-control" type="date" name="date" id="get_date"/>
+                            </div>
+                            {{-- <div class="form-group col-md-6">
+                                <label for="username">วัตถุประสงค์</label>
+                                <select class="form-control custom-select" name="objective">
+                                    <option selected>Select</option>
+                                    <option value="1">นำเสนอสินค้าใหม่</option>
+                                    <option value="2">เพิ่มผลิตภัณฑ์ให้ร้านค้า</option>
+                                    <option value="3">เปิดลูกค้าใหม่</option>
+                                    <option value="3">พรีเซ้นต์คุณสมบัติเทียบกับแบรนด์อื่น</option>
+                                    <option value="3">แนะนำวิธีการใช้งาน-การเก็บรักษา</option>
+                                </select>
+                            </div> --}}
+                        </div>
+                        {{-- <div class="row">
+                            <div class="col-md-12 form-group">
+                                <label for="firstName">รายการนำเสนอ</label>
+                                <select class="select2 select2-multiple form-control" multiple="multiple"
+                                    data-placeholder="Choose" name="product">
+                                    <optgroup label="เลือกข้อมูล">
+                                        <option value="1">สีรองพื้นปูนกันชื้น</option>
+                                        <option value="2">4 in 1</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div> --}}
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">ไฟล์เอกสาร</label>
+                                <input type="file" name="image" id="" class="form-control">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">สั่งงานให้</label>
+                                <select class="form-control custom-select" name="assign_emp_id" id="get_emp" required>
+                                    <option selected>กรุณาเลือก</option>
+                                    <option value="1">ศิริลักษณ์</option>
+                                    <option value="2">อิศรา</option>
+                                    <option value="3">ดวงดาว</option>
+                                </select>
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary">บันทึก</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        //Edit
+        function edit_modal(id) {
+            $.ajax({
+                type: "GET",
+                url: "{!! url('lead/edit_assignment/"+id+"') !!}",
+                dataType: "JSON",
+                async: false,
+                success: function(data) {
+                    $('#get_id').val(data.dataEdit.id);
+                    $('#get_date').val(data.dataEdit.assign_work_date);
+                    $('#get_title').val(data.dataEdit.assign_title);
+                    $('#get_detail').val(data.dataEdit.assign_detail);
+                    $('#get_emp').val(data.dataEdit.assign_emp_id);
+
+                    $('#modalEdit').modal('toggle');
+                }
+            });
+        }
+    </script>
 
     <script>
         $(document).ready(function() {

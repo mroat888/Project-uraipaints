@@ -33,8 +33,8 @@ class PlanMonthController extends Controller
         $result_cust = 0;
         $remain_cust = 0;
         foreach ($data['customer_new'] as $value) {
-            $date = Carbon::parse($value->created_at)->format('Y-m');
-            $dateNow = Carbon::today()->format('Y-m');
+            $date = Carbon::parse($value->shop_saleplan_date)->format('Y-m');
+            $dateNow = Carbon::today()->addMonth(1)->format('Y-m');
             if ($date == $dateNow) {
                 if ($value->shop_status == 1) {
                     $result_cust++;
@@ -63,7 +63,7 @@ class PlanMonthController extends Controller
         $remain_plan = 0;
         foreach ($data['list_saleplan'] as $value) {
             $date = Carbon::parse($value->sale_plans_date)->format('Y-m');
-            $dateNow = Carbon::today()->format('Y-m');
+            $dateNow = Carbon::today()->addMonth(1)->format('Y-m');
             if ($date == $dateNow) {
                 if ($value->sale_plan_status == 3) {
                     $result_plan++;
@@ -92,7 +92,7 @@ class PlanMonthController extends Controller
         $cust_visits = 0;
         foreach ($data['list_visit'] as $value) {
             $date = Carbon::parse($value->customer_visit_date)->format('Y-m');
-            $dateNow = Carbon::today()->format('Y-m');
+            $dateNow = Carbon::today()->addMonth(1)->format('Y-m');
             if ($date == $dateNow) {
                 $cust_visits++;
             }
@@ -101,29 +101,32 @@ class PlanMonthController extends Controller
         $data['objective'] = ObjectiveSaleplan::all();
 
         $data['monthly_plan'] = MonthlyPlan::where('created_by', Auth::user()->id)->get(); //ตรวจสอบเดือนของแผนงานประจำเดือน
-        if ($data['monthly_plan']->count() > 0) {
-            foreach ($data['monthly_plan'] as $value) {
-                $date = Carbon::parse($value->month_date)->format('Y-m');
+        $data['monthly_plan2'] = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('id', 'desc')->first();
+        // return $data['monthly_plan2'];
+        if ($data['monthly_plan2']) {
+            // foreach ($data['monthly_plan2'] as $value) {
+                $date = Carbon::parse($data['monthly_plan2']->month_date)->format('Y-m');
                 // return $date;
                 $dateNow = Carbon::today()->addMonth(1)->format('Y-m');
                 if ($date == $dateNow) {
 
-                    // $data2 = MonthlyPlan::find($id);
-                    $value->sale_plan_amount    = $date_plan;
-                    $value->cust_new_amount     = $date_cust_new;
-                    $value->cust_visits_amount  = $cust_visits;
-                    $value->total_plan          = $date_plan + $date_cust_new;
-                    $value->success_plan        = $result_plan + $result_cust;
-                    $value->outstanding_plan    = $remain_plan + $remain_cust;
-                    $value->updated_by          = Auth::user()->id;
-                    $value->updated_at          = Carbon::now();
-                    $value->update();
+                    $data2 = MonthlyPlan::find($data['monthly_plan2']->id);
+                    $data2->sale_plan_amount    = $date_plan;
+                    $data2->cust_new_amount     = $date_cust_new;
+                    $data2->cust_visits_amount  = $cust_visits;
+                    $data2->total_plan          = $date_plan + $date_cust_new;
+                    $data2->success_plan        = $result_plan + $result_cust;
+                    $data2->outstanding_plan    = $remain_plan + $remain_cust;
+                    $data2->updated_by          = Auth::user()->id;
+                    $data2->updated_at          = Carbon::now();
+                    $data2->update();
 
-                    $data['monthly_plan_id'] = $value->id;
-                    $data['sale_plan_amount'] = $value->sale_plan_amount;
-                    $data['cust_new_amount'] = $value->cust_new_amount;
-                    $data['cust_visits_amount'] = $value->cust_visits_amount;
-                } else {
+                    $data['monthly_plan_id'] = $data2->id;
+                    $data['sale_plan_amount'] = $data2->sale_plan_amount;
+                    $data['cust_new_amount'] = $data2->cust_new_amount;
+                    $data['cust_visits_amount'] = $data2->cust_visits_amount;
+                }
+                else {
                     $plans = new MonthlyPlan;
                     $plans->month_date          = Carbon::now()->addMonth(1);
                     $plans->sale_plan_amount    = $date_plan;
@@ -141,7 +144,7 @@ class PlanMonthController extends Controller
                     $data['cust_new_amount'] = $plans->cust_new_amount;
                     $data['cust_visits_amount'] = $plans->cust_visits_amount;
                 }
-            }
+            // }
         } else {
             $plans = new MonthlyPlan;
             $plans->month_date          = Carbon::now()->addMonth(1);
@@ -165,7 +168,7 @@ class PlanMonthController extends Controller
     }
 
     public function approve($id)
-    {
+    { // ส่งอนุมัติให้ผู้จัดการเขต
         // dd($id);
 
             $request_approval = SalePlan::where('monthly_plan_id', $id)->first();

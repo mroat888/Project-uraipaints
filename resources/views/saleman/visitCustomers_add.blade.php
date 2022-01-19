@@ -55,12 +55,12 @@ $customer_shops = DB::table('customer_shops')
                             <textarea class="form-control" id="visit_address" cols="30" rows="5" placeholder="" value=""
                                 type="text" readonly> </textarea>
                         </div>
-                        {{-- <div class="row">
+                        <div class="row">
                         <div class="col-md-6 form-group">
-                            <label for="firstName">วันที่</label> --}}
-                            <input class="form-control" type="hidden" name="date" min="<?= date('Y-m-d') ?>" value="<?= date('Y-m-d') ?>" required/>
-                        {{-- </div>
-                        </div> --}}
+                            <label for="firstName">วันที่</label>
+                            <input class="form-control" type="date" name="date" min="<?= date('Y-m-d') ?>" required/>
+                        </div>
+                        </div>
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="username">รายการนำเสนอ</label>

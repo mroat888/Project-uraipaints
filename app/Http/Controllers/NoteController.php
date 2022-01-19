@@ -22,19 +22,28 @@ class NoteController extends Controller
 
     public function note_lead()
     {
-        $data = Note::orderBy('id', 'desc')->where('employee_id', Auth::user()->id)->get();
+        $data = DB::table('notes')
+        ->where('employee_id', Auth::user()->id)
+        // ->where('status_pin', 1)
+        ->orderBy('id', 'desc')->get();
         return view('leadManager.note', compact('data'));
     }
 
     public function note_head()
     {
-        $data = Note::orderBy('id', 'desc')->where('employee_id', Auth::user()->id)->get();
+        $data = DB::table('notes')
+        ->where('employee_id', Auth::user()->id)
+        // ->where('status_pin', 1)
+        ->orderBy('id', 'desc')->get();
         return view('headManager.note', compact('data'));
     }
 
     public function note_admin()
     {
-        $data = Note::orderBy('id', 'desc')->where('employee_id', Auth::user()->id)->get();
+        $data = DB::table('notes')
+        ->where('employee_id', Auth::user()->id)
+        // ->where('status_pin', 1)
+        ->orderBy('id', 'desc')->get();
         return view('admin.note', compact('data'));
     }
 

@@ -79,6 +79,16 @@
                                                     <td>{{ $date->format('d/m/Y') }}</td>
                                                     <td>
                                                         <div class="button-list">
+                                                            @if ($value->status_pin == 1)
+                                                            <a href="{{url('status_pin_update', $value->id)}}" class="btn btn-icon btn-secondary mr-10">
+                                                                <span class="btn-icon-wrap"><i
+                                                                        data-feather="feather"></i></span></a>
+                                                            @else
+                                                            <a href="{{url('status_pin_update', $value->id)}}" class="btn btn-icon btn-primary mr-10">
+                                                                <span class="btn-icon-wrap"><i
+                                                                        data-feather="feather"></i></span></a>
+                                                            @endif
+
                                                             <button class="btn btn-icon btn-primary mr-10">
                                                                 <span class="btn-icon-wrap"><i
                                                                         data-feather="feather"></i></span></button>

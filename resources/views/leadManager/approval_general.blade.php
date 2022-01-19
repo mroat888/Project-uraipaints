@@ -12,7 +12,15 @@
 
     <!-- Container -->
     <div class="container-fluid px-xxl-65 px-xl-20">
-
+        @if (session('error'))
+        <div class="alert alert-inv alert-inv-warning alert-wth-icon alert-dismissible fade show" role="alert">
+            <span class="alert-icon-wrap"><i class="zmdi zmdi-help"></i>
+            </span> {{ session('error') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
         <!-- Title -->
         <div class="hk-pg-header mb-10">
             <div>
@@ -20,7 +28,10 @@
                     data-feather="file-text"></i></span></span>บันทึกข้อมูลการขออนุมัติ</h4>
             </div>
             <div class="d-flex">
-                <button type="button" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" id="btn_approve">อนุมัติ</button>
+                <form action="{{ url('lead/approval_confirm_all') }}" method="POST"
+                enctype="multipart/form-data">
+                @csrf
+                <button type="submit" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" id="btn_approve">อนุมัติ</button>
             </div>
         </div>
         <!-- /Title -->
@@ -65,7 +76,7 @@
                                             <th>
                                                 <div class="custom-control custom-checkbox checkbox-info">
                                                     <input type="checkbox" class="custom-control-input"
-                                                        id="customCheck4" onclick="chkAll(this);">
+                                                        id="customCheck4" onclick="chkAll(this);" name="CheckAll" value="Y">
                                                     <label class="custom-control-label"
                                                         for="customCheck4">ทั้งหมด</label>
                                                 </div>
@@ -80,29 +91,24 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($request_approval as $key => $value)
+                                        <?php $chk =  App\Assignment::join('users', 'assignments.created_by', '=', 'users.id')
+                                        ->where('created_by', $value->created_by)->select('users.name', 'assignments.*')->first() ?>
                                         <tr>
                                             <td>
                                                 <div class="custom-control custom-checkbox checkbox-info">
                                                     <input type="checkbox" class="custom-control-input checkapprove"
-                                                        name="checkapprove" id="customCheck41" value="1">
-                                                    <label class="custom-control-label" for="customCheck41"></label>
+                                                        name="checkapprove[]" id="customCheck{{$key + 1}}" value="{{$chk->created_by}}">
+                                                    <label class="custom-control-label" for="customCheck{{$key + 1}}"></label>
                                                 </div>
                                             </td>
                                             <td>{{$key + 1}}</td>
-                                            <td>{{$value->assign_request_date}}</td>
-                                            {{-- <td>
-                                                @if ($value->assign_is_hot == 1)
-                                                <span class="badge badge-soft-danger" style="font-size: 12px;">HOT</span>
-                                                @endif
-
-                                                {{$value->assign_title}}
-                                            </td> --}}
-                                            <td>{{$value->name}}</td>
+                                            <td>{{$chk->assign_request_date}}</td>
+                                            <td>{{$chk->name}}</td>
                                             <td>
                                                 <span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>
                                             </td>
                                             <td>
-                                                <a href="{{url('lead/approval_general_detail', $value->id)}}" class="btn btn-icon btn-primary btn-link btn_showplan pt-5" value="3">
+                                                <a href="{{url('lead/approval_general_detail', $chk->created_by)}}" class="btn btn-icon btn-primary btn-link btn_showplan pt-5" value="3">
                                                     <i data-feather="file-text"></i>
                                                 </a>
                                             </td>
@@ -126,9 +132,25 @@
     @include('leadManager.saleplan_display')
 </div>
 
+<script type="text/javascript">
+    function chkAll(checkbox) {
 
-@endsection('content')
+        var cboxes = document.getElementsByName('checkapprove[]');
+        var len = cboxes.length;
 
+        if (checkbox.checked == true) {
+            for (var i = 0; i < len; i++) {
+                cboxes[i].checked = true;
+            }
+        } else {
+            for (var i = 0; i < len; i++) {
+                cboxes[i].checked = false;
+            }
+        }
+    }
+</script>
+
+@endsection
 @section('scripts')
 
 <script>

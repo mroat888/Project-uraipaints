@@ -27,7 +27,6 @@ class CustomerController extends Controller
         ->get();
         $data['customer_contacts'] = DB::table('customer_contacts')->orderBy('id','desc')->get();
 
-        // dd($data);
         return view('customer.customer', $data);
     }
 
@@ -86,6 +85,7 @@ class CustomerController extends Controller
             $data->shop_profile_image  = $image;
             $data->shop_fileupload     = $uploadfile;
             $data->shop_status         = 0;
+            $data->shop_saleplan_date  = Carbon::now()->addMonth(1);
             $data->created_by          = Auth::user()->id;
             $data->created_at          = Carbon::now();
             $data->save();

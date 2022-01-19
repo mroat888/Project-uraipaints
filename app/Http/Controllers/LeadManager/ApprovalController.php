@@ -6,19 +6,25 @@ use App\Assignment;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ApprovalController extends Controller
 {
 
     public function index()
     {
-        $data['request_approval'] = Assignment::join('users', 'assignments.created_by', '=', 'users.id')
-        ->select(
-            'users.name' ,
-            'assignments.*')
-        // ->where('assignments.created_by', Auth::user()->id)
+        // $data['request_approval'] = Assignment::join('users', 'assignments.created_by', '=', 'users.id')
+        // ->where('assignments.assign_status', 0)
+        // ->select(
+        //     'users.name' ,
+        //     'assignments.*')->get();
+
+
+        $data['request_approval'] = DB::table('assignments')
+        ->join('users', 'assignments.created_by', '=', 'users.id')
         ->where('assignments.assign_status', 0)
-        ->orderBy('id', 'desc')->get();
+            ->select('assignments.created_by')
+            ->distinct()->get();
 
         return view('leadManager.approval_general', $data);
     }
@@ -36,42 +42,43 @@ class ApprovalController extends Controller
         return view('leadManager.approval_general_detail', $data);
     }
 
-    public function approvalUpdate($id)
-    {
-        return $id;
-    }
+    // public function approvalUpdate($id)
+    // {
+    //     return $id;
+    // }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function approval_confirm_all(Request $request)
     {
-        //
-    }
+        // dd($request);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+        if ($request->checkapprove) {
+            $data = Assignment::get();
+            if ($request->CheckAll == "Y") {
+                // return "yy";
+                foreach ($data as $value) {
+                    foreach ($request->checkapprove as $key => $chk) {
+                        Assignment::where('created_by', $chk)->where('assign_status', 0)->update([
+                            'assign_status' => 1,
+                            'assign_approve_id' => Auth::user()->id,
+                            'updated_by' => Auth::user()->id,
+                        ]);
+                    }
+                }
+            } else {
+                foreach ($data as $value) {
+                    foreach ($request->checkapprove as $key => $chk) {
+                        Assignment::where('created_by', $chk)->where('assign_status', 0)->update([
+                            'assign_status' => 1,
+                            'assign_approve_id' => Auth::user()->id,
+                            'updated_by' => Auth::user()->id,
+                        ]);
+                    }
+                }
+            }
+        } else {
+            return back()->with('error', "กรุณาเลือกรายการอนุมัติ");
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return back();
     }
 }

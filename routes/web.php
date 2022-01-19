@@ -105,11 +105,16 @@ Route::get('lead/viewSaleDetail', function () { return view('leadManager.view_sa
 Route::get('lead/viewVisitDetail', function () { return view('leadManager.view_vist_customer'); });
 Route::get('lead/viewAssignmentDetail', function () { return view('leadManager.view_assignment'); });
 
-Route::get('/approvalsaleplan', function () { return view('leadManager.approval_saleplan'); });
-Route::get('/approvalsaleplan/detail', function () { return view('leadManager.approval_saleplan_detail'); });
+Route::get('/approvalsaleplan', 'LeadManager\ApprovalSalePlanController@index');
+Route::get('/approvalsaleplan_detail/{id}', 'LeadManager\ApprovalSalePlanController@approvalsaleplan_detail');
+Route::get('comment_saleplan/{id}', 'LeadManager\ApprovalSalePlanController@comment_saleplan');
+// Route::post('lead/create_comment_saleplan', 'LeadManager\ApprovalSalePlanController@create_comment_saleplan');
+Route::post('lead/create_comment_saleplan', 'LeadManager\ApprovalSalePlanController@create_comment_saleplan');
+Route::post('lead/approval_saleplan_confirm', 'LeadManager\ApprovalSalePlanController@approval_saleplan_confirm');
+Route::post('lead/approval_saleplan_confirm_all', 'LeadManager\ApprovalSalePlanController@approval_saleplan_confirm_all');
 
-// Route::get('/approvalgeneral', function () { return view('leadManager.approval_general'); });
 Route::get('/approvalgeneral', 'LeadManager\ApprovalController@index');
+Route::post('lead/approval_confirm_all', 'LeadManager\ApprovalController@approval_confirm_all');
 Route::get('lead/approval_general_detail/{id}', 'LeadManager\ApprovalController@approval_general_detail');
 Route::post('lead/approvalUpdate', 'LeadManager\ApprovalController@approvalUpdate');
 Route::get('/approvalgeneral/history', function () { return view('leadManager.approval_general_history'); });
@@ -124,6 +129,7 @@ Route::get('lead/delete_assignment/{id}', 'AssignmentController@destroy');
 
 // NOTE Lead Manage
 Route::get('/leadManage/note', 'NoteController@note_lead');
+Route::get('lead/status_pin_update/{id}', 'NoteController@status_pin_update');
 Route::post('lead/create_note', 'NoteController@store');
 Route::get('lead/edit_note/{id}', 'NoteController@edit');
 Route::post('lead/update_note', 'NoteController@update');
@@ -267,13 +273,6 @@ Route::get('/customer/autocomplete',[CustomerController::class, 'fetch_autocompl
 
 Auth::routes();
 // Route::get('/', function () { return view('saleman.dashboard'); });
-Route::get('/home', function () { return view('saleman.dashboard'); });
 
-// Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/', 'HomeController@index')->name('home');
-
-
-
-// API
-
-Route::get('/customer-api','Customer\ApiCustomerController@index');

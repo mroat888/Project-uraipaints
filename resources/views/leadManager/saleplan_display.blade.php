@@ -2,34 +2,23 @@
 <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title">ตาราง Sale Plan</h5>
+            <h5 class="modal-title">เพิ่มความคิดเห็น</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
             <div>
-                <span>วันที่ส่ง : 10/11/2021</span>
-            </div>
-            <div class="card mt-10">
-                <div class="card-body">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae sit dolorem laboriosam, ex mollitia odio ducimus sed placeat beatae velit tempore neque nulla ad molestiae modi error nobis? Consequuntur repudiandae voluptas dolor dicta porro unde? Sit temporibus molestiae, expedita dicta exercitationem recusandae obcaecati unde aliquid voluptas earum asperiores officia enim velit veritatis, aliquam impedit vero at delectus reiciendis aperiam consequuntur fugiat sint a fugit? Libero eos hic suscipit excepturi eligendi ex distinctio aliquam sequi qui. Sequi, in blanditiis? Perferendis non nulla repellendus earum culpa quod natus mollitia quam quas exercitationem recusandae quos distinctio obcaecati ipsum eveniet asperiores, repudiandae harum voluptate voluptatum tempora cum sapiente explicabo? Sint dolorum velit nihil dignissimos debitis corrupti nemo ex voluptatum distinctio illum quaerat rem recusandae possimus, similique deserunt consectetur pariatur sequi minus repudiandae cupiditate incidunt? Iure similique cupiditate amet sit atque libero vitae est quisquam voluptatum cum, praesentium quidem ullam, in porro expedita ratione adipisci facere, pariatur totam dignissimos provident fugit! Pariatur, est mollitia. Possimus, voluptatum! Consectetur asperiores animi facilis quidem quod eius rerum facere placeat saepe nostrum illo ullam quia quasi aliquam vero corrupti voluptatem, exercitationem vitae molestias tempora officia rem? Explicabo, ducimus corporis culpa repellat molestias maiores saepe cumque quia doloremque impedit quisquam.
-                </div>
-            </div>
-            <div>
                 <h5>ความคิดเห็น</h5>
             </div>
-            <div class="card mt-10">
                 <div class="card-body">
                     <textarea class="form-control" id="address" cols="30" rows="5" placeholder="" value=""
                     type="text"></textarea>
                 </div>
-            </div>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
-            {{-- <button type="button" class="btn btn-danger bt_reject"><i data-feather="x" style="width:18px;"></i> ปฎิเสธ</button>
-            <button type="button" class="btn btn-primary bt_saveapprove"><i data-feather="check" style="width:18px;"></i> อนุมัติ</button> --}}
+            <button type="submit" class="btn btn-primary">บันทึก</button>
         </div>
     </div>
 </div>
@@ -73,6 +62,23 @@
         </div>
     </div>
 </div>
+
+<script>
+    //Edit
+    function edit_modal(id) {
+        $.ajax({
+            type: "GET",
+            url: "{!! url('comment_saleplan/"+id+"') !!}",
+            dataType: "JSON",
+            async: false,
+            success: function(data) {
+                $('#get_id').val(data.dataEdit.id);
+
+                $('#exampleModalLarge02').modal('toggle');
+            }
+        });
+    }
+</script>
 
 
 <script>
