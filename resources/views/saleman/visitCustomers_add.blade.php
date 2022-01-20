@@ -24,8 +24,7 @@ $customer_shops = DB::table('customer_shops')
                     </button>
                 </div>
                 <form id="form_insert_visit" enctype="multipart/form-data">
-                    {{-- <form action="{{ url('create_visit') }}" method="post" enctype="multipart/form-data"> --}}
-                    @csrf
+                 @csrf
                 <div class="modal-body">
                         <div class="row">
                             <div class="col-md-6 form-group">
@@ -42,12 +41,14 @@ $customer_shops = DB::table('customer_shops')
                         <input type="hidden" name="shop_id" id="visit_id">
                         <div class="row">
                             <div class="col-md-6 form-group">
-                                <label for="firstName">ผู้ติดต่อ</label>
-                                <input class="form-control" id="visit_contact_name" type="text" readonly>
-                            </div>
-                            <div class="col-md-6 form-group">
+                                <!-- <label for="firstName">ผู้ติดต่อ</label>
+                                <input class="form-control" id="visit_contact_name" type="text" readonly> -->
                                 <label for="firstName">เบอร์โทรศัพท์</label>
                                 <input class="form-control" id="visit_phone" type="text" readonly>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">เบอร์มือถือ</label>
+                                <input class="form-control" id="visit_mobile" type="text" readonly>
                             </div>
                         </div>
                         <div class="form-group">
@@ -107,14 +108,25 @@ $customer_shops = DB::table('customer_shops')
                 processData: false,
                 success:function(response){
                     console.log(response);
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Your work has been saved',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                    $("#addCustomer").modal('hide');
-                    location.reload();
+                    if(response.status == 200){
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Your work has been saved',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        $("#addCustomer").modal('hide');
+                        location.reload();
+                    }else{
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Your work has been saved',
+                            text: response.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+                    
                 },
                 error: function(response){
                     console.log("error");
@@ -133,16 +145,22 @@ $customer_shops = DB::table('customer_shops')
                 e.preventDefault();
                 let shop_id = $(this).val();
                 console.log(shop_id);
+                $('#visit_id').val('');
+                // $('#get_contact_name').val(response.contact_name);
+                $('#visit_phone').val('');
+                $('#visit_mobile').val('');
+                $('#visit_address').val('');
                 $.ajax({
                     method: 'GET',
                     url: '{{ url("/fetch_customer_shops_visit") }}/'+shop_id,
                     datatype: 'json',
                     success: function(response){
-                        console.log(response)
-                        $('#visit_id').val(response.id);
-                        $('#visit_contact_name').val(response.customer_contact_name);
-                        $('#visit_phone').val(response.customer_contact_phone);
-                        $('#visit_address').val(response.shop_address);
+                        console.log(response[0])
+                        $('#visit_id').val(response[0].id);
+                        // $('#get_contact_name').val(response.contact_name);
+                        $('#visit_phone').val(response[0].shop_phone);
+                        $('#visit_mobile').val(response[0].shop_mobile);
+                        $('#visit_address').val(response[0].shop_address);
                     },
                     error: function(response){
                         console.log("error");
@@ -150,7 +168,6 @@ $customer_shops = DB::table('customer_shops')
                     }
                 });
             });
-
 
         });
 

@@ -413,10 +413,9 @@
     </div>
 
     <!-- Modal VisitCustomer -->
-     <div class="modal fade" id="addCustomerVisit" tabindex="-1" role="dialog" aria-labelledby="addCustomerVisit"
-     aria-hidden="true">
-     @include('saleman.visitCustomers_add')
- </div>
+    <div class="modal fade" id="addCustomerVisit" tabindex="-1" role="dialog" aria-labelledby="addCustomerVisit" aria-hidden="true">
+        @include('saleman.visitCustomers_add')
+    </div>
 
 
 

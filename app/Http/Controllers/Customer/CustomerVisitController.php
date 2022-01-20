@@ -69,23 +69,32 @@ class CustomerVisitController extends Controller
                     'customer_visit_tags' => $request->product,
                     'customer_visit_objective' => $request->visit_objective,
                     'created_by' => Auth::user()->id,
-                    // 'created_at' => Carbon::now(),
+                    'created_at' => date('Y-m-d H:i:s'),
                 ]);
 
             DB::commit();
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'บันทึกข้อมูลสำเร็จ',
+                'data' => $request->id,
+            ]);
 
             //echo ("<script>alert('บันทึกข้อมูลสำเร็จ'); location.href='lead'; </script>");
 
         } catch (\Exception $e) {
 
             DB::rollback();
+
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกได้',
+                'data' => $request->id,
+            ]);
+
         }
 
-        return response()->json([
-            'status' => 200,
-            'message' => 'บันทึกข้อมูลสำเร็จ',
-            'data' => $request,
-        ]);
+        
     }
 
 
