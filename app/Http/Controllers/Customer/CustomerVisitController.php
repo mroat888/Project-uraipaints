@@ -38,8 +38,7 @@ class CustomerVisitController extends Controller
         $res = $response->json();
         $api_token = $res['data'][0]['access_token'];
 
-        $url_fetch = "api/v1/sellers/".Auth::user()->api_identify."/customers";
-        $response = Http::get('http://49.0.64.92:8020/'.$url_fetch, [
+        $response = Http::get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers', [
             'token' => $api_token,
         ]);
         $res_api = $response->json();
@@ -55,7 +54,7 @@ class CustomerVisitController extends Controller
         }
         // -----  END API 
 
-        return view('saleman.visitCustomers', compact('objective', 'list_visit', 'customer_api'));
+        return view('saleman.visitCustomers', compact('objective', 'list_visit', 'customer_api', ));
     }
 
     public function VisitStore(Request $request)
@@ -169,11 +168,11 @@ class CustomerVisitController extends Controller
             'password' => 'testapi',
         ]);
         $res = $response->json();
-        $api_token = $res['data']['access_token'];
+        $api_token = $res['data'][0]['access_token'];
 
-        $url_fetch = "api/v1/sellers/".Auth::user()->api_identify."/customers";
-        $response = Http::get('http://49.0.64.92:8020/'.$url_fetch, [
+        $response = Http::get('http://49.0.64.92:8020/api/v1/customers/search', [
             'token' => $api_token,
+            'name' => $id
         ]);
         $res_api = $response->json();
 
@@ -183,8 +182,9 @@ class CustomerVisitController extends Controller
             [
                 'id' => $value['identify'],
                 'shop_name' => $value['title']." ".$value['name'],
-                'address' => $value['address1']." ".$value['adrress2'],
-                'telephone' => $value['telephone'],
+                'shop_address' => $value['address1']." ".$value['adrress2'],
+                'shop_phone' => $value['telephone'],
+                'shop_mobile' => $value['mobile'],
             ];
         }
         // -----  END API 
@@ -198,7 +198,7 @@ class CustomerVisitController extends Controller
         //     ])
         //     ->first();
         
-
-        return response()->json($result);
+        // return response()->json($result);
+        return response()->json($customer_api);
     }
 }

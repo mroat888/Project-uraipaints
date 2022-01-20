@@ -120,12 +120,14 @@
                         <input type="hidden" name="shop_id" id="get_id">
                         <div class="row">
                             <div class="col-md-6 form-group">
-                                <label for="firstName">ผู้ติดต่อ</label>
-                                <input class="form-control" id="get_contact_name" type="text" readonly>
-                            </div>
-                            <div class="col-md-6 form-group">
+                                <!-- <label for="firstName">ผู้ติดต่อ</label>
+                                <input class="form-control" id="get_contact_name" type="text" readonly> -->
                                 <label for="firstName">เบอร์โทรศัพท์</label>
                                 <input class="form-control" id="get_phone" type="text" readonly>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">เบอร์มือถือ</label>
+                                <input class="form-control" id="get_mobile" type="text" readonly>
                             </div>
                         </div>
                         <div class="form-group">
@@ -235,11 +237,12 @@
                     url: '{{ url("/fetch_customer_shops_visit") }}/'+shop_id,
                     datatype: 'json',
                     success: function(response){
-                        console.log(response)
-                        // $('#get_id').val(response.id);
+                        console.log(response[0])
+                        $('#get_id').val(response[0].id);
                         // $('#get_contact_name').val(response.contact_name);
-                        // $('#get_phone').val(response.shop_phone);
-                        // $('#get_address').val(response.shop_address);
+                        $('#get_phone').val(response[0].shop_phone);
+                        $('#get_mobile').val(response[0].shop_mobile);
+                        $('#get_address').val(response[0].shop_address);
                     },
                     error: function(response){
                         console.log("error");
