@@ -171,7 +171,7 @@
 </script>
 
 
-<script type="text/javascript">
+{{-- <script type="text/javascript">
     function chkAll(checkbox) {
 
         var cboxes = document.getElementsByName('checkapprove');
@@ -187,7 +187,7 @@
             }
         }
     }
-</script>
+</script> --}}
 
 <script>
     document.getElementById('btn_approve').onclick = function() {

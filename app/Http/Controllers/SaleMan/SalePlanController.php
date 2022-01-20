@@ -10,6 +10,7 @@ use App\SalePlanResult;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class SalePlanController extends Controller
 {
@@ -22,24 +23,6 @@ class SalePlanController extends Controller
             ->get();
         return view('saleplan.salePlan', compact('list_saleplan'));
     }
-
-    // public function store(Request $request)
-    // {
-    //     // dd($request);
-    //     SalePlan::create([
-    //         'monthly_plan_id' => $request->id,
-    //         'customer_shop_id' => $request->shop_id,
-    //         'sale_plans_title' => $request->sale_plans_title,
-    //         'sale_plans_date' => $request->sale_plans_date,
-    //         'sale_plans_tags' => $request->sale_plans_tags,
-    //         'sale_plans_objective' => $request->sale_plans_objective,
-    //         'sale_plans_status' => 1,
-    //         'created_by' => Auth::user()->id,
-    //     ]);
-
-    //     // echo ("<script>alert('บันทึกข้อมูลสำเร็จ'); location.href='saleplan'; </script>");
-    //     return back();
-    // }
 
     public function store(Request $request)
     {
@@ -58,8 +41,6 @@ class SalePlanController extends Controller
             ]);
 
             DB::commit();
-
-            //echo ("<script>alert('บันทึกข้อมูลสำเร็จ'); location.href='lead'; </script>");
 
         } catch (\Exception $e) {
 
@@ -132,25 +113,67 @@ class SalePlanController extends Controller
 
     public function fetch_customer_shops_saleplan($id)
     {
-        $result = DB::table('customer_shops')
-            ->join('customer_contacts', 'customer_contacts.customer_shop_id', 'customer_shops.id')
-            ->where('customer_shops.id', $id)
-            ->select([
-                'customer_contacts.*',
-                'customer_shops.*'
-            ])
-            ->first();
+        // $result = DB::table('customer_shops')
+        //     ->join('customer_contacts', 'customer_contacts.customer_shop_id', 'customer_shops.id')
+        //     ->where('customer_shops.id', $id)
+        //     ->select([
+        //         'customer_contacts.*',
+        //         'customer_shops.*'
+        //     ])
+        //     ->first();
 
-        return response()->json($result);
+        // -----  API
+        $response = Http::post('http://49.0.64.92:8020/api/auth/login', [
+            'username' => 'apiuser',
+            'password' => 'testapi',
+        ]);
+        $res = $response->json();
+        $api_token = $res['data'][0]['access_token'];
+
+        $response = Http::get('http://49.0.64.92:8020/api/v1/customers/search', [
+            'token' => $api_token,
+            'name' => $id
+        ]);
+        $res_api = $response->json();
+
+        $customer_api = array();
+        foreach ($res_api['data'] as $key => $value) {
+            $customer_api[$key] =
+            [
+                'id' => $value['identify'],
+                'shop_name' => $value['title']." ".$value['name'],
+                'shop_address' => $value['address1']." ".$value['adrress2'],
+                'shop_phone' => $value['telephone'],
+                'shop_mobile' => $value['mobile'],
+            ];
+        }
+
+        return response()->json($customer_api);
     }
 
     public function saleplan_checkin(Request $request)
-    {
+    { // เช็คอิน-เช็คเอ้าท์
         // dd($request);
 
         $chk_status = SalePlan::where('id', $request->id)->first();
 
-        if ($chk_status->status_result == 1) {
+        if ($chk_status->status_result == 0) {
+            SalePlan::find($request->id)->update([
+                'status_result' => 1,
+            ]);
+
+            $data2 = new SalePlanResult;
+            $data2->sale_plan_id = $request->id;
+            $data2->sale_plan_checkin_date   = Carbon::now();
+            $data2->sale_plan_checkin_latitude   = $request->lat;
+            $data2->sale_plan_checkin_longitude   = $request->lon;
+            $data2->created_by   = Auth::user()->id;
+            $data2->created_at   = Carbon::now();
+            $data2->save();
+            return back();
+        }
+        elseif ($chk_status->status_result == 1) {
+
             SalePlan::find($request->id)->update([
                 'status_result' => 2,
             ]);
@@ -166,20 +189,35 @@ class SalePlanController extends Controller
             return back();
         }
 
-        // SalePlan::find($request->id)->update([
-        //     'status_result' => 1,
-        // ]);
+    }
 
-        // $data = new SalePlanResult;
-        // $data->sale_plan_id   = $request->id;
-        // $data->sale_plan_checkin_date   = Carbon::now();
-        // $data->sale_plan_checkin_latitude   = $request->lat;
-        // $data->sale_plan_checkin_longitude   = $request->lon;
-        // $data->created_by   = Auth::user()->id;
-        // $data->created_at   = Carbon::now();
-        // $data->save();
+    public function saleplan_result_get($id)
+    {
+        $dataResult = SalePlanResult::where('sale_plan_id', $id)->first();
 
-        // // echo ("<script>alert('บันทึกข้อมูลสำเร็จ'); location.href='saleplan'; </script>");
-        // return back();
+
+    $data = array(
+        'dataResult'     => $dataResult,
+    );
+    echo json_encode($data);
+
+    }
+
+    public function saleplan_result(Request $request)
+    { // สรุปผลลัพธ์
+        // dd($request);
+
+        SalePlan::find($request->saleplan_id)->update([
+            'status_result' => 3,
+        ]);
+
+        $data2 = SalePlanResult::where('sale_plan_id', $request->saleplan_id)->first();
+        $data2->sale_plan_detail   = $request->saleplan_detail;
+        $data2->sale_plan_status   = $request->saleplan_result;
+        $data2->updated_by   = Auth::user()->id;
+        $data2->updated_at   = Carbon::now();
+        $data2->update();
+
+        return back();
     }
 }

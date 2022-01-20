@@ -32,9 +32,9 @@ class DailyWorkController extends Controller
             ->orderBy('customer_shops.id', 'desc')
             ->get();
 
-            $data['list_visit'] = CustomerVisit::join('customer_shops', 'customer_visits.customer_shop_id', '=', 'customer_shops.id')
-            ->join('customer_contacts', 'customer_shops.id', '=', 'customer_contacts.customer_shop_id')
-            ->join('province', 'customer_shops.shop_province_id', '=', 'province.PROVINCE_CODE')
+            $data['list_visit'] = CustomerVisit::leftjoin('customer_shops', 'customer_visits.customer_shop_id', '=', 'customer_shops.id')
+            ->leftjoin('customer_contacts', 'customer_shops.id', '=', 'customer_contacts.customer_shop_id')
+            ->leftjoin('province', 'customer_shops.shop_province_id', '=', 'province.PROVINCE_CODE')
             ->leftjoin('customer_visit_results', 'customer_visits.id', '=', 'customer_visit_results.customer_visit_id')
             ->select(
                 'province.PROVINCE_NAME',

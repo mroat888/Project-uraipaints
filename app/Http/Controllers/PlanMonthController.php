@@ -49,7 +49,7 @@ class PlanMonthController extends Controller
 
 
         $data['list_saleplan'] = DB::table('sale_plans')
-        ->join('customer_shops', 'sale_plans.customer_shop_id', '=', 'customer_shops.id')
+        ->leftjoin('customer_shops', 'sale_plans.customer_shop_id', '=', 'customer_shops.id')
         ->leftjoin('sale_plan_results', 'sale_plans.id', '=', 'sale_plan_results.sale_plan_id')
             ->select(
                 'sale_plan_results.sale_plan_status',
@@ -76,9 +76,9 @@ class PlanMonthController extends Controller
         }
 
 
-        $data['list_visit'] = CustomerVisit::join('customer_shops', 'customer_visits.customer_shop_id', '=', 'customer_shops.id')
-            ->join('customer_contacts', 'customer_shops.id', '=', 'customer_contacts.customer_shop_id')
-            ->join('province', 'customer_shops.shop_province_id', '=', 'province.PROVINCE_CODE')
+        $data['list_visit'] = CustomerVisit::leftjoin('customer_shops', 'customer_visits.customer_shop_id', '=', 'customer_shops.id')
+            ->leftjoin('customer_contacts', 'customer_shops.id', '=', 'customer_contacts.customer_shop_id')
+            ->leftjoin('province', 'customer_shops.shop_province_id', '=', 'province.PROVINCE_CODE')
             ->leftjoin('customer_visit_results', 'customer_visits.id', '=', 'customer_visit_results.customer_visit_id')
             ->select(
                 'province.PROVINCE_NAME',
@@ -195,7 +195,7 @@ class PlanMonthController extends Controller
 
     public function approve($id)
     { // ส่งอนุมัติให้ผู้จัดการเขต
-        // dd($id); //
+        // dd($id);
 
             $request_approval = SalePlan::where('monthly_plan_id', $id)->first();
             $request_approval->sale_plans_status   = 1;

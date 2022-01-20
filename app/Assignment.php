@@ -20,6 +20,7 @@ class Assignment extends Model
         'assign_status',
         'assign_result_detail',
         'assign_result_status',
+        'assignment_status',
         'created_by',
         'updated_by',
         'deleted_by',

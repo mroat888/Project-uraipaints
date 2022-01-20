@@ -74,6 +74,7 @@
                                                     @endif
                                                 </td>
                                                     <td>
+                                                        @if ($value->assign_status == 0)
                                                         <div class="button-list">
                                                             <button onclick="edit_modal({{ $value->id }})"
                                                                 class="btn btn-icon btn-warning mr-10" data-toggle="modal"
@@ -83,6 +84,10 @@
                                                             <a href="{{url('delete_approval', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
                                                                 <span class="btn-icon-wrap"><i data-feather="trash-2"></i></span></a>
                                                         </div>
+                                                        @elseif ($value->assign_status == 1)
+
+                                                        @endif
+
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -207,8 +212,8 @@
                                 <div class="col-md-6 form-group">
                                     <label for="firstName">เรื่องด่วน</label>
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck2" name="assign_is_hot" value="1">
-                                        <label class="custom-control-label" for="customCheck2">ขออนุมัติด่วน</label>
+                                        <input type="checkbox" class="custom-control-input" id="customCheck6" name="assign_is_hot" value="1">
+                                        <label class="custom-control-label" for="customCheck6">ขออนุมัติด่วน</label>
                                     </div>
                                 </div>
                         </div>
@@ -276,7 +281,10 @@
                     $('#get_title').val(data.dataEdit.assign_title);
                     $('#get_detail').val(data.dataEdit.assign_detail);
                     $('#get_for').val(data.dataEdit.approved_for);
-                    $('#get_hot').val(data.dataEdit.assign_is_hot);
+                    if (data.dataEdit.assign_is_hot == 1) {
+                        $('#customCheck6').val(data.dataEdit.assign_is_hot);
+                    }
+                    // $('#customCheck2').val(data.dataEdit.assign_is_hot);
 
                     $('#editApproval').modal('toggle');
                 }

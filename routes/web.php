@@ -27,7 +27,9 @@ Route::get('approve_monthly_plan/{id}', 'PlanMonthController@approve');
 Route::get('dailyWork', 'SaleMan\DailyWorkController@index');
 Route::get('/palncalendar', function () { return view('saleplan.salePalnCalendar'); });
 Route::get('/planDetail', function () { return view('saleplan.saleplanDetail'); });
-Route::get('assignment', function () { return view('saleman.assignment'); });
+Route::get('assignment', 'SaleMan\AssignmentController@index');
+Route::get('assignment_result_get/{id}', 'SaleMan\AssignmentController@assignment_result_get');
+Route::post('assignment_Result', 'SaleMan\AssignmentController@saleplan_result');
 
 
 // Visit Customer
@@ -65,6 +67,8 @@ Route::get('edit_saleplan/{id}', 'SaleMan\SalePlanController@edit');
 Route::post('update_saleplan', 'SaleMan\SalePlanController@update');
 Route::get('delete_saleplan/{id}', 'SaleMan\SalePlanController@destroy');
 Route::post('saleplan_checkin', 'SaleMan\SalePlanController@saleplan_checkin');
+Route::get('saleplan_result_get/{id}', 'SaleMan\SalePlanController@saleplan_result_get');
+Route::post('saleplan_Result', 'SaleMan\SalePlanController@saleplan_Result');
 
 // Request Approval
 Route::get('approval', 'SaleMan\RequestApprovalController@index');
@@ -121,7 +125,7 @@ Route::post('lead/approvalUpdate', 'LeadManager\ApprovalController@approvalUpdat
 Route::get('/approvalgeneral/history', function () { return view('leadManager.approval_general_history'); });
 
 // Assignment
-Route::get('assignment', 'AssignmentController@index');
+Route::get('add_assignment', 'AssignmentController@index');
 Route::get('lead/searchShop', 'SaleMan\SalePlanController@searchShop');
 Route::post('lead/create_assignment', 'AssignmentController@store');
 Route::get('lead/edit_assignment/{id}', 'AssignmentController@edit');

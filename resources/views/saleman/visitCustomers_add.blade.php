@@ -126,7 +126,7 @@ $customer_shops = DB::table('customer_shops')
                             timer: 1500
                         })
                     }
-                    
+
                 },
                 error: function(response){
                     console.log("error");

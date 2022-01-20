@@ -71,39 +71,36 @@
                                                 <th>เรื่อง</th>
                                                 <th>วันที่</th>
                                                 <th>ลูกค้า</th>
-                                                {{-- <th>การอนุมัติ</th> --}}
+                                                <th>สถานะ</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>แนะนำสินค้า</td>
-                                                <td>11/10/2021</td>
-                                                <td>บจก. ชัยรุ่งเรือง เวิร์ลเพ็นท์</td>
-                                                {{-- <td><span class="badge badge-success">Approval</span></td> --}}
-                                                <td>
-                                                    <span class="badge badge-soft-danger mt-15 mr-10" style="font-size: 12px;">Fail</span>
-                                                    <span class="badge badge-soft-info mt-15 mr-10" style="font-size: 12px;">Finished</span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>แนะนำสินค้า Home Paint Outlet</td>
-                                                <td>20/10/2021</td>
-                                                <td>Home Paint Outlet</td>
-                                                {{-- <td><span class="badge badge-success">Approval</span></td> --}}
-                                                <td>
-                                                    <div class="button-list">
-                                                        <button class="btn btn-icon btn-primary" data-toggle="modal" data-target="#Modalcheckin" onclick="getLocation()">
-                                                            <span class="btn-icon-wrap"><i data-feather="log-in"></i></span></button>
-                                                        <button class="btn btn-icon btn-pumpkin" data-toggle="modal" data-target="#Modalcheckin" onclick="getLocation()">
-                                                            <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
-                                                        <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#Modalvisit" onclick="getLocation()">
-                                                            <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
-                                                        </div>
-                                                </td>
-                                            </tr>
+                                            @foreach ($assignments as $key => $value)
+                                        <tr>
+                                            <td>{{$key + 1}}</td>
+                                            <td>{{$value->assign_title}}</td>
+                                            <td>{{$value->assign_work_date}}</td>
+                                            <td>{{$value->assign_emp_id}}</td>
+                                            <td>
+                                                @if ($value->assign_result_status == 0)
+                                                    <span class="badge badge-soft-danger" style="font-size: 12px;">ยังไม่เสร็จ</span>
+                                                    @elseif ($value->assign_result_status == 1)
+                                                    <span class="badge badge-soft-info" style="font-size: 12px;">สำเร็จ</span>
+                                                    @elseif ($value->assign_result_status == 2)
+                                                    <span class="badge badge-soft-danger" style="font-size: 12px;">ไม่สำเร็จ</span>
+                                                    @elseif ($value->assign_result_status == 3)
+                                                    <span class="badge badge-soft-danger" style="font-size: 12px;">รอตัดสินใจ</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <div class="button-list">
+                                                <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalResult" onclick="assignment_result({{$value->id}})">
+                                                <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -115,34 +112,29 @@
             <!-- /Row -->
     </div>
 
-
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModalLarge01" tabindex="-1" role="dialog" aria-labelledby="exampleModalLarge01" aria-hidden="true">
-        @include('saleplan.salePlanForm')
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="Modalvisit" tabindex="-1" role="dialog" aria-labelledby="Modalvisit" aria-hidden="true">
+     <!-- Modal Result -->
+<div class="modal fade" id="ModalResult" tabindex="-1" role="dialog" aria-labelledby="ModalResult" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">สรุปผลการเข้าพบ</h5>
+                    <h5 class="modal-title">สรุปผล Sale plan</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="#">
+                    <form action="{{ url('assignment_Result') }}" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="assign_id" id="get_assign_id">
                         <div class="form-group">
                             <label for="username">รายละเอียด</label>
-                            <textarea class="form-control" id="address" cols="30" rows="5" placeholder="" value=""
+                            <textarea class="form-control" id="get_detail" cols="30" rows="5" placeholder="" name="assign_detail"
                                 type="text"> </textarea>
                         </div>
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="username">สรุปผลลัพธ์</label>
-                                <select class="form-control custom-select">
+                                <select class="form-control custom-select" id="get_result" name="assign_result">
                                     <option selected>-- กรุณาเลือก --</option>
                                     <option value="1">ไม่สนใจ</option>
                                     <option value="2">รอตัดสินใจ</option>
@@ -150,20 +142,74 @@
                                 </select>
                             </div>
                         </div>
-                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-                    <button type="button" class="btn btn-primary">บันทึก</button>
+                    <button type="submit" class="btn btn-primary">บันทึก</button>
                 </div>
+            </form>
             </div>
         </div>
     </div>
 
-    @include('saleplan.salePlanCheckin')
+    <script>
+        //Edit
+        function assignment_result(id) {
+            // $("#get_assign_id").val(id);
+            $.ajax({
+                type: "GET",
+                url: "{!! url('assignment_result_get/"+id+"') !!}",
+                dataType: "JSON",
+                async: false,
+                success: function(data) {
+                    $('#get_assign_id').val(data.dataResult.id);
+                    $('#get_detail').val(data.dataResult.assign_result_detail);
+                    if (data.dataResult.assign_result_status != 0) {
+                        $('#get_result').val(data.dataResult.assign_result_status);
 
+                    }
 
-    {{-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" /> --}}
+                    $('#ModalResult').modal('toggle');
+                }
+            });
+        }
+    </script>
+
+    <script>
+        var x = document.getElementById("demo");
+
+        function getLocation(id) {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+            $("#id").val(id);
+        }
+
+        function showPosition(position) {
+            x.innerHTML = "Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;
+            $("#lat").val(position.coords.latitude);
+            $("#lon").val(position.coords.longitude);
+        }
+
+        function showError(error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    x.innerHTML = "User denied the request for Geolocation."
+                    reak;
+                case error.POSITION_UNAVAILABLE:
+                    x.innerHTML = "Location information is unavailable."
+                    break;
+                case error.TIMEOUT:
+                    x.innerHTML = "The request to get user location timed out."
+                    break;
+                case error.UNKNOWN_ERROR:
+                    x.innerHTML = "An unknown error occurred."
+                    break;
+            }
+        }
+    </script>
 
 
     <script>
