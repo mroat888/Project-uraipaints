@@ -10,6 +10,7 @@ use App\ObjectiveSaleplan;
 use App\MonthlyPlan;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class PlanMonthController extends Controller
 {
@@ -163,6 +164,31 @@ class PlanMonthController extends Controller
             $data['cust_new_amount'] = $plans->cust_new_amount;
             $data['cust_visits_amount'] = $plans->cust_visits_amount;
         }
+
+
+        // -----  API
+        $response = Http::post('http://49.0.64.92:8020/api/auth/login', [
+            'username' => 'apiuser',
+            'password' => 'testapi',
+        ]);
+        $res = $response->json();
+        $api_token = $res['data'][0]['access_token'];
+
+        $response = Http::get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers', [
+            'token' => $api_token,
+        ]);
+        $res_api = $response->json();
+        // $res_api = $res['data'];
+
+        $data['customer_api'] = array();
+        foreach ($res_api['data'] as $key => $value) {
+            $data['customer_api'][$key] =
+            [
+                'id' => $value['identify'],
+                'shop_name' => $value['title']." ".$value['name'],
+            ];
+        }
+        // -----  END API
 
         return view('saleman.planMonth', $data);
     }
