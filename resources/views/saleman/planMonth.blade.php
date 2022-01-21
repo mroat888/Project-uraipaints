@@ -51,24 +51,6 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-<<<<<<< HEAD
-                                                @foreach ($monthly_plan as $value)
-                                                <tr>
-                                                    <td></td>
-                                                    <td>{{$value->month_date}}</td>
-                                                    <td>{{$value->sale_plan_amount}}</td>
-                                                    <td>{{$value->cust_new_amount}}</td>
-                                                    <td>{{$value->total_plan}}</td>
-                                                    <td>{{$value->outstanding_plan}}</td>
-                                                    <td>{{$value->success_plan}}</td>
-                                                    <td>{{$value->cust_visits_amount}}</td>
-                                                    <td>
-                                                        @if ($value->status_approve == 0)
-                                                        <span class="badge badge-soft-secondary"
-                                                            style="font-size: 12px;">
-                                                            Draf
-                                                        </span>
-=======
                                                 @foreach ($monthly_plan as $key => $value)
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
@@ -85,7 +67,7 @@
                                                                     style="font-size: 12px;">
                                                                     Draf
                                                                 </span>
->>>>>>> 0716bea10b92d94569feb7be6bb30732bf3abc83
+
                                                             @elseif ($value->status_approve == 1)
                                                                 <span class="badge badge-soft-warning"
                                                                     style="font-size: 12px;">
@@ -98,21 +80,7 @@
                                                                 </span>
                                                             @endif
                                                             </span>
-<<<<<<< HEAD
-                                                        @endif
-                                                        </span></td>
-                                                    <td sryle="text-aling:center;">
-                                                        <div class="button-list">
-                                                            <a href="{{url('approve_monthly_plan', $value->id)}}" class="btn btn-icon btn-teal">
-                                                                <span class="btn-icon-wrap"><idata-feather="edit"></i></span>
-                                                            </a>
-                                                            <button class="btn btn-icon btn-danger">
-                                                                <span class="btn-icon-wrap"><idata-feather="pie-chart"></i></span>
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-=======
+
                                                         </td>
                                                         <td align="center">
                                                             <div class="button-list">
@@ -136,7 +104,6 @@
                                                             </div>
                                                         </td>
                                                     </tr>
->>>>>>> 0716bea10b92d94569feb7be6bb30732bf3abc83
                                                 @endforeach
                                             </tbody>
                                         </table>
@@ -169,13 +136,13 @@
                                             <div class="mb-10">
                                                 <span style="font-weight: bold; font-size: 18px;">
                                                     <?php
-                                                    $sum_saleplan = 0;
-                                                    foreach ($list_saleplan as $key => $value) {
-                                                    if ($monthly_plan_id == $value->monthly_plan_id) {
-                                                        $sum_saleplan++
+                                                    // $sum_saleplan = 0;
+                                                    // foreach ($list_saleplan as $key => $value) {
+                                                    // if ($monthly_plan_id == $value->monthly_plan_id) {
+                                                    //     $sum_saleplan++
                                                     ?>
-                                                    <?php } } ?>
-                                                    {{ $sum_saleplan }}
+                                                    <?php // } } ?>
+                                                    {{-- $sum_saleplan --}}
                                                 </span>
                                             </div>
                                         </div>
@@ -429,7 +396,6 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-<<<<<<< HEAD
                                                 @foreach ($customer_visit_api as $key => $value)
 
                                                 <tr>
@@ -445,42 +411,6 @@
                                                     </td>
                                                 </tr>
 
-=======
-                                                @foreach ($list_visit as $key => $value)
-                                                <?php
-                                                    if ($monthly_plan_id == $value->monthly_plan_id) {
-                                                ?>
-                                                    <tr>
-                                                        <td>{{ $key + 1 }}</td>
-                                                        <td>{{ $value->shop_name }}</td>
-                                                        <td>{{ $value->PROVINCE_NAME }}</td>
-                                                        <td>{{ $value->customer_contact_name }}</td>
-                                                        <td>-</td>
-                                                        <td>
-                                                            @if ($value->cust_visit_status == 0)
-                                                                <span class="badge badge-soft-secondary mt-15 mr-10"
-                                                                    style="font-weight: bold; font-size: 12px;">ยังไม่เสร็จ</span>
-                                                            @elseif ($value->cust_visit_status == 1)
-                                                                <span class="badge badge-soft-success mt-15 mr-10"
-                                                                    style="font-weight: bold; font-size: 12px;">สำเร็จ</span>
-                                                            @elseif ($value->cust_visit_status == 2)
-                                                                <span class="badge badge-soft-danger mt-15 mr-10"
-                                                                    style="font-weight: bold; font-size: 12px;">ไม่สำเร็จ</span>
-                                                            @endif
-                                                        </td>
-                                                        <td>
-                                                            <div class="button-list">
-                                                                <a href="{{ url('delete_visit', $value->id) }}"
-                                                                    class="btn btn-icon btn-danger mr-10"
-                                                                    onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
-                                                                    <h4 class="btn-icon-wrap" style="color: white;"><i
-                                                                            class="ion ion-md-trash"></i></h4>
-                                                                </a>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <?php } ?>
->>>>>>> 0716bea10b92d94569feb7be6bb30732bf3abc83
                                                 @endforeach
                                             </tbody>
                                         </table>
@@ -723,8 +653,9 @@
     </script>
 
 
+
 @section('footer')
     @include('layouts.footer')
-@endsection
+@endsection('footer')
 
 @endsection
