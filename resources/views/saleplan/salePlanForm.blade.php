@@ -35,8 +35,8 @@ $customer_shops = DB::table('customer_shops')
                                 <label for="firstName">ค้นหาชื่อร้าน</label>
                                 <select name="sel_searchShop2" id="sel_searchShop2" class="form-control custom-select select2">
                                     <option value="" selected disabled>กรุณาเลือกชื่อร้านค้า</option>
-                                    @foreach ($customer_shops as $value)
-                                    <option value="{{$value->id}}">{{$value->shop_name}}</option>
+                                    @foreach ($customer_api as $key => $value)
+                                        <option value="{{$customer_api[$key]['id']}}">{{$customer_api[$key]['shop_name']}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -126,7 +126,44 @@ $customer_shops = DB::table('customer_shops')
         </script>
 
 
-        <script>
+<script>
+    $(document).ready(function() {
+
+
+        $("#sel_searchShop2").on("change", function (e) {
+            //alert('ssdsd');
+            e.preventDefault();
+            let shop_id = $(this).val();
+            console.log(shop_id);
+            $('#saleplan_id').val('');
+            // $('#get_contact_name').val(response.contact_name);
+            $('#saleplan_contact_name').val('');
+            $('#saleplan_phone').val('');
+            $('#saleplan_address').val('');
+            $.ajax({
+                method: 'GET',
+                url: '{{ url("/searchShop_saleplan") }}/'+shop_id,
+                datatype: 'json',
+                success: function(response){
+                    console.log(response[0])
+                    $('#saleplan_id').val(response[0].id);
+                    // $('#get_contact_name').val(response.contact_name);
+                    $('#saleplan_phone').val(response[0].shop_phone);
+                    $('#visit_mobile').val(response[0].shop_mobile);
+                    $('#saleplan_address').val(response[0].shop_address);
+                },
+                error: function(response){
+                    console.log("error");
+                    console.log(response);
+                }
+            });
+        });
+
+    });
+
+</script>
+
+        {{-- <script>
             $(document).ready(function() {
                 $("#sel_searchShop2").on("change", function (e) {
                     //alert('ssdsd');
@@ -152,27 +189,4 @@ $customer_shops = DB::table('customer_shops')
                 });
             });
 
-        </script>
-
-        {{-- <script>
-            $(document).ready(function() {
-                $('#searchShop').on('keyup', function() {
-                    var query = $(this).val();
-                    $.ajax({
-                        url: "searchShop_saleplan",
-                        type: "GET",
-                        data: {
-                            'search': query
-                        },
-                        success: function(data) {
-                            // $('#search_list').html(data);
-                        $('#get_id').val(data.id);
-                        $('#get_contact_name').val(data.contact_name);
-                        $('#get_phone').val(data.shop_phone);
-                        $('#get_address').val(data.shop_address);
-                        }
-                    });
-                    // end of ajax call
-                });
-            });
         </script> --}}

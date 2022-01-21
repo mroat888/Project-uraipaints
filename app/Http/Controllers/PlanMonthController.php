@@ -36,8 +36,13 @@ class PlanMonthController extends Controller
             ->get();
 
         $data['list_saleplan'] = DB::table('sale_plans')
+<<<<<<< HEAD
             ->join('customer_shops', 'sale_plans.customer_shop_id', '=', 'customer_shops.id')
             ->leftjoin('sale_plan_results', 'sale_plans.id', '=', 'sale_plan_results.sale_plan_id')
+=======
+        ->leftjoin('customer_shops', 'sale_plans.customer_shop_id', '=', 'customer_shops.id')
+        ->leftjoin('sale_plan_results', 'sale_plans.id', '=', 'sale_plan_results.sale_plan_id')
+>>>>>>> 0716bea10b92d94569feb7be6bb30732bf3abc83
             ->select(
                 'sale_plan_results.sale_plan_status',
                 'customer_shops.shop_name',
@@ -47,9 +52,41 @@ class PlanMonthController extends Controller
             ->where('sale_plans.created_by', Auth::user()->id)
             ->orderBy('id', 'desc')->get();
 
+<<<<<<< HEAD
         $data['list_visit'] = CustomerVisit::where('customer_visits.created_by', Auth::user()->id)
             ->where('customer_visits.monthly_plan_id', $data['monthly_plan_next']->id) 
             ->select('customer_visits.*')
+=======
+        $date_plan = 0;
+        $result_plan = 0;
+        $remain_plan = 0;
+        foreach ($data['list_saleplan'] as $value) {
+            $date = Carbon::parse($value->sale_plans_date)->format('Y-m');
+            $dateNow = Carbon::today()->addMonth(1)->format('Y-m');
+            if ($date == $dateNow) {
+                if ($value->sale_plan_status == 3) {
+                    $result_plan++;
+                } else {
+                    $remain_plan++;
+                }
+                $date_plan++;
+            }
+        }
+
+
+        $data['list_visit'] = CustomerVisit::leftjoin('customer_shops', 'customer_visits.customer_shop_id', '=', 'customer_shops.id')
+            ->leftjoin('customer_contacts', 'customer_shops.id', '=', 'customer_contacts.customer_shop_id')
+            ->leftjoin('province', 'customer_shops.shop_province_id', '=', 'province.PROVINCE_CODE')
+            ->leftjoin('customer_visit_results', 'customer_visits.id', '=', 'customer_visit_results.customer_visit_id')
+            ->select(
+                'province.PROVINCE_NAME',
+                'customer_contacts.customer_contact_name',
+                'customer_visit_results.cust_visit_status',
+                'customer_shops.shop_name',
+                'customer_visits.*'
+            )
+            ->where('customer_visits.created_by', Auth::user()->id)
+>>>>>>> 0716bea10b92d94569feb7be6bb30732bf3abc83
             ->orderBy('id', 'desc')->get();
             
 
@@ -112,7 +149,7 @@ class PlanMonthController extends Controller
 
     public function approve($id)
     { // ส่งอนุมัติให้ผู้จัดการเขต
-        // dd($id); //
+        // dd($id);
 
             $request_approval = SalePlan::where('monthly_plan_id', $id)->first();
             $request_approval->sale_plans_status   = 1;

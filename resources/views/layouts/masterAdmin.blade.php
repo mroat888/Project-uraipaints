@@ -18,20 +18,20 @@
     <link rel="stylesheet" href="{{ asset('https://cdn.jsdelivr.net/npm/fullcalendar@3.9.0/dist/fullcalendar.min.css') }}" />
 
     <!-- Morris Charts CSS -->
-    <link href="{{ asset('/template/vendors/morris.js/morris.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('public/template/vendors/morris.js/morris.css') }}" rel="stylesheet" type="text/css" />
 
     <!-- select2 CSS -->
-    <link href="{{ asset('/template/vendors/select2/dist/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('public/template/vendors/select2/dist/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
 
     <!-- Data Table CSS -->
-    <link href="{{ asset('/template/vendors/datatables.net-dt/css/jquery.dataTables.min.css') }}"
+    <link href="{{ asset('public/template/vendors/datatables.net-dt/css/jquery.dataTables.min.css') }}"
         rel="stylesheet" type="text/css" />
-    <link href="{{ asset('/template/vendors/datatables.net-responsive-dt/css/responsive.dataTables.min.css') }}"
+    <link href="{{ asset('public/template/vendors/datatables.net-responsive-dt/css/responsive.dataTables.min.css') }}"
         rel="stylesheet" type="text/css" />
 
     <!-- Custom CSS -->
-    <link href="{{ asset('/template/dist/css/style.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('/template/dist/css/layout.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('public/template/dist/css/style.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('public/template/dist/css/layout.css') }}" rel="stylesheet" type="text/css">
 
     <!-- OAT -->
     <!-- sweetalert2 -->
@@ -73,7 +73,7 @@
                                 <div class="media">
                                     <div class="media-img-wrap">
                                         <div class="avatar avatar-sm">
-                                            <img src="{{ asset('/template/dist/img/avatar1.jpg') }}" alt="user"
+                                            <img src="{{ asset('public/template/dist/img/avatar1.jpg') }}" alt="user"
                                                 class="avatar-img rounded-circle">
                                         </div>
                                     </div>
@@ -91,7 +91,7 @@
                                 <div class="media">
                                 <div class="media-img-wrap">
                                         <div class="avatar avatar-sm">
-                                            <img src="{{ asset('/template/dist/img/avatar1.jpg') }}" alt="user"
+                                            <img src="{{ asset('public/template/dist/img/avatar1.jpg') }}" alt="user"
                                                 class="avatar-img rounded-circle">
                                         </div>
                                     </div>
@@ -174,7 +174,7 @@
                         <div class="media">
                             <div class="media-img-wrap">
                                 <div class="avatar">
-                                    <img src="{{ asset('/template/dist/img/avatar12.jpg') }}" alt="user" class="avatar-img rounded-circle">
+                                    <img src="{{ asset('public/template/dist/img/avatar12.jpg') }}" alt="user" class="avatar-img rounded-circle">
                                 </div>
                                 <span class="badge badge-success badge-indicator"></span>
                             </div>
@@ -522,8 +522,8 @@
                     <button id="reset_settings" class="btn btn-success btn-block btn-reset mt-30">Reset</button>
                 </div>
             </div>
-            <img class="d-none" src="{{ asset('/template/dist/img/logo-light.png') }}" alt="brand" />
-            <img class="d-none" src="{{ asset('/template/dist/img/logo-dark.png') }}" alt="brand" />
+            <img class="d-none" src="{{ asset('public/template/dist/img/logo-light.png') }}" alt="brand" />
+            <img class="d-none" src="{{ asset('public/template/dist/img/logo-dark.png') }}" alt="brand" />
         </div>
         <!-- /Setting Panel -->
 
@@ -543,79 +543,79 @@
     <!-- /HK Wrapper -->
 
     <!-- jQuery -->
-    <script src="{{ asset('/template/vendors/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('public/template/vendors/jquery/dist/jquery.min.js') }}"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="{{ asset('/template/vendors/popper.js/dist/umd/popper.min.js') }}"></script>
-    <script src="{{ asset('/template/vendors/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('public/template/vendors/popper.js/dist/umd/popper.min.js') }}"></script>
+    <script src="{{ asset('public/template/vendors/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 
     <!-- Slimscroll JavaScript -->
-    <script src="{{ asset('/template/dist/js/jquery.slimscroll.js') }}"></script>
+    <script src="{{ asset('public/template/dist/js/jquery.slimscroll.js') }}"></script>
 
     <!-- Fancy Dropdown JS -->
-    <script src="{{ asset('/template/dist/js/dropdown-bootstrap-extended.js') }}"></script>
+    <script src="{{ asset('public/template/dist/js/dropdown-bootstrap-extended.js') }}"></script>
 
     <!-- Morris Charts JavaScript -->
-    <script src="{{ asset('/template/vendors/raphael/raphael.min.js') }}"></script>
-    <script src="{{ asset('/template/vendors/morris.js/morris.min.js') }}"></script>
-    <script src="{{ asset('/template/dist/js/linecharts-data.js') }}"></script>
+    <script src="{{ asset('public/template/vendors/raphael/raphael.min.js') }}"></script>
+    <script src="{{ asset('public/template/vendors/morris.js/morris.min.js') }}"></script>
+    <script src="{{ asset('public/template/dist/js/linecharts-data.js') }}"></script>
 
     <!-- EChartJS JavaScript -->
-    <script src="{{ asset('/template/vendors/echarts/dist/echarts-en.min.js') }}"></script>
-    <script src="{{ asset('/template/dist/js/piecharts-data.js') }}"></script>
+    <script src="{{ asset('public/template/vendors/echarts/dist/echarts-en.min.js') }}"></script>
+    <script src="{{ asset('public/template/dist/js/piecharts-data.js') }}"></script>
 
     <!-- Easy pie chart JS -->
-    <script src="{{ asset('/template/vendors/easy-pie-chart/dist/jquery.easypiechart.min.js') }}"></script>
-    <script src="{{ asset('/template/dist/js/easypiechart-data.js') }}"></script>
+    <script src="{{ asset('public/template/vendors/easy-pie-chart/dist/jquery.easypiechart.min.js') }}"></script>
+    <script src="{{ asset('public/template/dist/js/easypiechart-data.js') }}"></script>
 
     <!-- FeatherIcons JavaScript -->
-    <script src="{{ asset('/template/dist/js/feather.min.js') }}"></script>
+    <script src="{{ asset('public/template/dist/js/feather.min.js') }}"></script>
 
     <!-- Toggles JavaScript -->
-    <script src="{{ asset('/template/vendors/jquery-toggles/toggles.min.js') }}"></script>
-    <script src="{{ asset('/template/dist/js/toggle-data.js') }}"></script>
+    <script src="{{ asset('public/template/vendors/jquery-toggles/toggles.min.js') }}"></script>
+    <script src="{{ asset('public/template/dist/js/toggle-data.js') }}"></script>
 
     <!-- Counter Animation JavaScript -->
-    <script src="{{ asset('/template/vendors/waypoints/lib/jquery.waypoints.min.js') }}"></script>
-    <script src="{{ asset('/template/vendors/jquery.counterup/jquery.counterup.min.js') }}"></script>
+    <script src="{{ asset('public/template/vendors/waypoints/lib/jquery.waypoints.min.js') }}"></script>
+    <script src="{{ asset('public/template/vendors/jquery.counterup/jquery.counterup.min.js') }}"></script>
 
     <!-- Sparkline JavaScript -->
-    <script src="{{ asset('/template/vendors/jquery.sparkline/dist/jquery.sparkline.min.js') }}"></script>
+    <script src="{{ asset('public/template/vendors/jquery.sparkline/dist/jquery.sparkline.min.js') }}"></script>
 
     <!-- Vector Maps template -->
-    <script src="{{ asset('/template/vendors/vectormap/jquery-jvectormap-2.0.3.min.js') }}"></script>
-    <script src="{{ asset('/template/vendors/vectormap/jquery-jvectormap-world-mill-en.js') }}"></script>
-    <script src="{{ asset('/template/dist/js/vectormap-data.js') }}"></script>
+    <script src="{{ asset('public/template/vendors/vectormap/jquery-jvectormap-2.0.3.min.js') }}"></script>
+    <script src="{{ asset('public/template/vendors/vectormap/jquery-jvectormap-world-mill-en.js') }}"></script>
+    <script src="{{ asset('public/template/dist/js/vectormap-data.js') }}"></script>
 
     <!-- Owl JavaScript -->
-    <script src="{{ asset('/template/vendors/owl.carousel/dist/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('public/template/vendors/owl.carousel/dist/owl.carousel.min.js') }}"></script>
 
     <!-- Owl Init JavaScript -->
-    <script src="{{ asset('/template/dist/js/owl-data.js') }}"></script>
+    <script src="{{ asset('public/template/dist/js/owl-data.js') }}"></script>
 
     <!-- Select2 JavaScript -->
-    <script src="{{ asset('/template/vendors/select2/dist/js/select2.full.min.js') }}"></script>
-    <script src="{{ asset('/template/dist/js/select2-data.js') }}"></script>
+    <script src="{{ asset('public/template/vendors/select2/dist/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('public/template/dist/js/select2-data.js') }}"></script>
 
     <!-- Bootstrap Tagsinput JavaScript -->
-    {{-- <script src="{{asset('/template/vendors/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js')}}"></script> --}}
+    {{-- <script src="{{asset('public/template/vendors/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js')}}"></script> --}}
 
     <!-- Jasny-bootstrap  JavaScript -->
-    <script src="{{ asset('/template/vendors/jasny-bootstrap/dist/js/jasny-bootstrap.min.js') }}"></script>
+    <script src="{{ asset('public/template/vendors/jasny-bootstrap/dist/js/jasny-bootstrap.min.js') }}"></script>
 
     <!-- Data Table JavaScript -->
-    <script src="{{ asset('/template/vendors/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('/template/vendors/datatables.net-responsive/js/dataTables.responsive.min.js') }}">
+    <script src="{{ asset('public/template/vendors/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('public/template/vendors/datatables.net-responsive/js/dataTables.responsive.min.js') }}">
     </script>
-    <script src="{{ asset('/template/dist/js/dataTables-data.js') }}"></script>
-    <script src="{{ asset('/template/vendors/datatables.net-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{ asset('public/template/dist/js/dataTables-data.js') }}"></script>
+    <script src="{{ asset('public/template/vendors/datatables.net-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@3.9.0/dist/fullcalendar.min.js"></script>
 
     <!-- Init JavaScript -->
-    <script src="{{ asset('/template/dist/js/init.js') }}"></script>
-    <script src="{{ asset('/template/dist/js/gmap-data.js') }}"></script>
+    <script src="{{ asset('public/template/dist/js/init.js') }}"></script>
+    <script src="{{ asset('public/template/dist/js/gmap-data.js') }}"></script>
 
     @yield('scripts')
 

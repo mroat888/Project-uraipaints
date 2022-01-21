@@ -31,7 +31,7 @@ class CustomerVisitController extends Controller
         //     ->orderby('shop_name', 'asc')
         //     ->get();
 
-        // -----  API 
+        // -----  API
         $response = Http::post('http://49.0.64.92:8020/api/auth/login', [
             'username' => 'apiuser',
             'password' => 'testapi',
@@ -47,13 +47,13 @@ class CustomerVisitController extends Controller
 
         $customer_api = array();
         foreach ($res_api['data'] as $key => $value) {
-            $customer_api[$key] = 
+            $customer_api[$key] =
             [
                 'id' => $value['identify'],
                 'shop_name' => $value['title']." ".$value['name'],
             ];
         }
-        // -----  END API 
+        // -----  END API
 
         return view('saleman.visitCustomers', compact('objective', 'list_visit', 'customer_api', ));
     }
@@ -128,7 +128,12 @@ class CustomerVisitController extends Controller
             ]);
 
         }
+<<<<<<< HEAD
         
+=======
+
+
+>>>>>>> 0716bea10b92d94569feb7be6bb30732bf3abc83
     }
 
 
@@ -205,7 +210,7 @@ class CustomerVisitController extends Controller
 
     public function fetch_customer_shops_visit($id)
     {
-        // -----  API 
+        // -----  API
         $response = Http::post('http://49.0.64.92:8020/api/auth/login', [
             'username' => 'apiuser',
             'password' => 'testapi',
@@ -220,7 +225,7 @@ class CustomerVisitController extends Controller
 
         $customer_api = array();
         foreach ($res_api['data'] as $key => $value) {
-            $customer_api[$key] = 
+            $customer_api[$key] =
             [
                 'id' => $value['identify'],
                 'shop_name' => $value['title']." ".$value['name'],
@@ -229,7 +234,7 @@ class CustomerVisitController extends Controller
                 'shop_mobile' => $value['mobile'],
             ];
         }
-        // -----  END API 
+        // -----  END API
 
         // $result = DB::table('customer_shops')
         //     ->join('customer_contacts', 'customer_contacts.customer_shop_id', 'customer_shops.id')
@@ -239,7 +244,7 @@ class CustomerVisitController extends Controller
         //         'customer_shops.*'
         //     ])
         //     ->first();
-        
+
         // return response()->json($result);
         return response()->json($customer_api);
     }
