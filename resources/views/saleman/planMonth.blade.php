@@ -1,7 +1,9 @@
 @extends('layouts.master')
 
 @section('content')
-
+    @php
+        $monthly_plan_id = $monthly_plan_next->id;
+    @endphp
     <!-- Breadcrumb -->
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
@@ -49,9 +51,9 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($monthly_plan as $key => $value)
+                                                @foreach ($monthly_plan as $value)
                                                 <tr>
-                                                    <td>{{$key + 1}}</td>
+                                                    <td></td>
                                                     <td>{{$value->month_date}}</td>
                                                     <td>{{$value->sale_plan_amount}}</td>
                                                     <td>{{$value->cust_new_amount}}</td>
@@ -77,14 +79,14 @@
                                                             </span>
                                                         @endif
                                                         </span></td>
-                                                    <td align="center">
+                                                    <td sryle="text-aling:center;">
                                                         <div class="button-list">
-                                                            <a href="{{url('approve_monthly_plan', $monthly_plan_id)}}" class="btn btn-icon btn-teal">
-                                                                <span class="btn-icon-wrap"><i
-                                                                        data-feather="edit"></i></span></a>
+                                                            <a href="{{url('approve_monthly_plan', $value->id)}}" class="btn btn-icon btn-teal">
+                                                                <span class="btn-icon-wrap"><idata-feather="edit"></i></span>
+                                                            </a>
                                                             <button class="btn btn-icon btn-danger">
-                                                                <span class="btn-icon-wrap"><i
-                                                                        data-feather="pie-chart"></i></span></button>
+                                                                <span class="btn-icon-wrap"><idata-feather="pie-chart"></i></span>
+                                                            </button>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -110,8 +112,7 @@
                                             <div>
                                                 <span class="d-block">
                                                     <button class="btn btn-icon btn-light btn-lg">
-                                                        <span class="btn-icon-wrap"><i data-feather="briefcase"></i>
-                                                        </span>
+                                                        <span class="btn-icon-wrap"><i data-feather="briefcase"></i></span>
                                                     </button>
                                                 </span>
                                             </div>
@@ -341,34 +342,22 @@
                                                 <tr>
                                                     <th>#</th>
                                                     <th>ชื่อร้าน</th>
-                                                    <th>อำเภอ,จังหวัด</th>
-                                                    <th>ผู้ติดต่อ</th>
+                                                    <th>ที่อยู่</th>
                                                     <th>วันสำคัญ</th>
-                                                    <th>สถานะ</th>
                                                     <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($list_visit as $key => $value)
+                                                @foreach ($customer_visit_api as $key => $value)
 
                                                 <tr>
-                                                <td>{{$key + 1}}</td>
-                                                <td>{{$value->shop_name}}</td>
-                                                <td>{{$value->PROVINCE_NAME}}</td>
-                                                <td>{{$value->customer_contact_name}}</td>
-                                                <td>-</td>
-                                                <td>
-                                                    @if ($value->cust_visit_status == 0)
-                                                    <span class="badge badge-soft-secondary mt-15 mr-10" style="font-weight: bold; font-size: 12px;">ยังไม่เสร็จ</span>
-                                                    @elseif ($value->cust_visit_status == 1)
-                                                    <span class="badge badge-soft-success mt-15 mr-10" style="font-weight: bold; font-size: 12px;">สำเร็จ</span>
-                                                    @elseif ($value->cust_visit_status == 2)
-                                                    <span class="badge badge-soft-danger mt-15 mr-10" style="font-weight: bold; font-size: 12px;">ไม่สำเร็จ</span>
-                                                    @endif
-                                                </td>
+                                                    <td>{{$key + 1}}</td>
+                                                    <td>{{$customer_visit_api[$key]['shop_name']}}</td>
+                                                    <td>{{$customer_visit_api[$key]['shop_address']}}</td>
+                                                    <td>-</td>
                                                     <td>
                                                         <div class="button-list">
-                                                            <a href="{{url('delete_visit', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
+                                                            <a href="{{url('delete_visit')}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
                                                                 <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-trash"></i></h4></a>
                                                         </div>
                                                     </td>
