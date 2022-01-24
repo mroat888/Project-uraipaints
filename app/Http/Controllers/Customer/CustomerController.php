@@ -79,22 +79,8 @@ class CustomerController extends Controller
                 $uploadfile = $file_name;
             }
 
-            $data = new Customer;
-            $data->shop_name           = $request->shop_name;
-            $data->shop_address        = $request->shop_address;
-            $data->shop_province_id    = $request->province;
-            $data->shop_amphur_id      = $request->amphur;
-            $data->shop_district_id    = $request->district;
-            $data->shop_zipcode        = $request->shop_zipcode;
-            $data->shop_profile_image  = $image;
-            $data->shop_fileupload     = $uploadfile;
-            $data->shop_status         = 0;
-            $data->shop_Customer_date  = Carbon::now()->addMonth(1);
-            $data->created_by          = Auth::user()->id;
-            $data->created_at          = Carbon::now();
-            $data->save();
-
             $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('id', 'desc')->first();
+            
             DB::table('customer_shops')
             ->insert([
                 'monthly_plan_id'     => $monthly_plan->id,
@@ -112,8 +98,12 @@ class CustomerController extends Controller
                 'created_at'          => Carbon::now(),
             ]);
 
-            $sql_shops = DB::table('customer_shops')
-                ->orderBy('customer_shops.id', 'desc')->first();
+            DB::table('monthly_plans')->where('id', $monthly_plan->id)
+            ->update([
+                'cust_new_amount' => $monthly_plan->cust_new_amount+1,
+            ]);
+
+            $sql_shops = DB::table('customer_shops')->orderBy('customer_shops.id', 'desc')->first();
 
             DB::table('customer_contacts')
                 ->insert([
@@ -126,18 +116,24 @@ class CustomerController extends Controller
 
             DB::commit();
 
-            //echo ("<script>alert('บันทึกข้อมูลสำเร็จ'); location.href='lead'; </script>");
+            return response()->json([
+                'status' => 200,
+                'message' => 'บันทึกข้อมูลสำเร็จ',
+                'data' => $request,
+            ]);
 
         } catch (\Exception $e) {
 
             DB::rollback();
+
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกข้อมูลได้',
+                'data' => $request,
+            ]);
         }
 
-        return response()->json([
-            'status' => 200,
-            'message' => 'บันทึกข้อมูลสำเร็จ',
-            'data' => $request,
-        ]);
+        
     }
 
     public function edit($id)
