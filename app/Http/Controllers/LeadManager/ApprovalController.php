@@ -37,6 +37,7 @@ class ApprovalController extends Controller
             'assignments.*')
         ->where('assignments.assign_status', 0)
         ->where('assignments.created_by', $id)
+        ->where('assignments.assign_request_date', '!=', "NULL")
         ->orderBy('id', 'desc')->get();
 
         return view('leadManager.approval_general_detail', $data);
@@ -51,34 +52,67 @@ class ApprovalController extends Controller
     {
         // dd($request);
 
-        if ($request->checkapprove) {
-            $data = Assignment::get();
-            if ($request->CheckAll == "Y") {
-                // return "yy";
-                foreach ($data as $value) {
-                    foreach ($request->checkapprove as $key => $chk) {
-                        Assignment::where('created_by', $chk)->where('assign_status', 0)->update([
-                            'assign_status' => 1,
-                            'assign_approve_id' => Auth::user()->id,
-                            'updated_by' => Auth::user()->id,
-                        ]);
-                    }
-                }
-            } else {
-                foreach ($data as $value) {
-                    foreach ($request->checkapprove as $key => $chk) {
-                        Assignment::where('created_by', $chk)->where('assign_status', 0)->update([
-                            'assign_status' => 1,
-                            'assign_approve_id' => Auth::user()->id,
-                            'updated_by' => Auth::user()->id,
-                        ]);
-                    }
-                }
-            }
-        } else {
-            return back()->with('error', "กรุณาเลือกรายการอนุมัติ");
-        }
 
-        return back();
+            if ($request->checkapprove) {
+                if ($request->approve) {
+                $data = Assignment::get();
+                if ($request->CheckAll == "Y") {
+                    // return "yy";
+                    foreach ($data as $value) {
+                        foreach ($request->checkapprove as $key => $chk) {
+                            Assignment::where('created_by', $chk)->where('assign_status', 0)->update([
+                                'assign_status' => 1,
+                                'assign_approve_id' => Auth::user()->id,
+                                'updated_by' => Auth::user()->id,
+                            ]);
+                        }
+                    }
+                    return back();
+                } else {
+                    foreach ($data as $value) {
+                        foreach ($request->checkapprove as $key => $chk) {
+                            Assignment::where('created_by', $chk)->where('assign_status', 0)->update([
+                                'assign_status' => 1,
+                                'assign_approve_id' => Auth::user()->id,
+                                'updated_by' => Auth::user()->id,
+                            ]);
+                        }
+                    }
+                    return back();
+                }
+        }else {
+            $data = Assignment::get();
+                if ($request->CheckAll == "Y") {
+                    // return "yy";
+                    foreach ($data as $value) {
+                        foreach ($request->checkapprove as $key => $chk) {
+                            Assignment::where('created_by', $chk)->where('assign_status', 0)->update([
+                                'assign_status' => 2,
+                                'assign_approve_id' => Auth::user()->id,
+                                'updated_by' => Auth::user()->id,
+                            ]);
+                        }
+                    }
+                    return back();
+                } else {
+                    foreach ($data as $value) {
+                        foreach ($request->checkapprove as $key => $chk) {
+                            Assignment::where('created_by', $chk)->where('assign_status', 0)->update([
+                                'assign_status' => 2,
+                                'assign_approve_id' => Auth::user()->id,
+                                'updated_by' => Auth::user()->id,
+                            ]);
+                        }
+                    }
+                    return back();
+                }
+        }
+    } else {
+        return back()->with('error', "กรุณาเลือกรายการ");
+    }
+
+
+
+
     }
 }

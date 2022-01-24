@@ -14,7 +14,7 @@ class AssignmentController extends Controller
 
     public function index()
     {
-        $assignments = Assignment::where('assign_emp_id', Auth::user()->id)->orderBy('id', 'desc')->get();
+        $assignments = Assignment::where('assign_emp_id', Auth::user()->id)->where('assign_status', "NULL")->orderBy('id', 'desc')->get();
         return view('saleman.assignment', compact('assignments'));
     }
 
