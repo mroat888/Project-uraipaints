@@ -82,7 +82,7 @@
                                                             </span>
 
                                                         </td>
-                                                        <td align="center">
+                                                        <td style="text-align:center">
                                                             <div class="button-list">
                                                                 {{-- <a href="{{url('approve_monthly_plan', $monthly_plan_id)}}" class="btn btn-icon btn-teal">
                                                                 <span class="btn-icon-wrap"><i
@@ -265,7 +265,7 @@
                                                         <td>{{ $value->shop_name }}</td>
                                                         <td><span class="badge badge-soft-indigo mt-15 mr-10"
                                                                 style="font-size: 12px;">Comment</span></td>
-                                                        <td align="center">
+                                                        <td style="text-align:center">
                                                             <div class="button-list">
                                                                 <button class="btn btn-icon btn-warning mr-10 btn_editshop"
                                                                     onclick="edit_modal({{ $value->id }})"
@@ -334,7 +334,7 @@
                                                             <span class="badge badge-soft-indigo mt-15 mr-10"
                                                                 style="font-size: 12px;">ลูกค้าใหม่</span>
                                                         </td>
-                                                        <td align="center">
+                                                        <td style="text-align:center">
                                                             <div class="button-list">
                                                                 {{-- <button class="btn btn-icon btn-warning mr-10"
                                                                 data-toggle="modal" data-target="#exampleModalLarge02">
