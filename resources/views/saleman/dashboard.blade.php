@@ -20,7 +20,7 @@
                     <h6 class="hk-sec-title mb-30" style="font-weight: bold;">แผนทำงานประจำเดือน มกราคม/2565</h6>
                     <div class="row">
                         <div class="col-md-4">
-                            <section class="hk-sec-wrapper">
+                            <section class="hk-sec-wrapper bg-light">
                                 <div class="row">
                                     <div class="col-sm">
                                         <div id="e_chart_1" style="height:140px;"></div>
@@ -34,27 +34,27 @@
                             </section>
                         </div>
                         <div class="col-md-4">
-                            <section class="hk-sec-wrapper">
+                            <section class="hk-sec-wrapper bg-light">
                                 <div class="row">
                                     <div class="col-sm">
                                         <div id="e_chart_5" style="height:140px;"></div>
                                     </div>
                                     <div class="col-sm mt-30" style="color: black;">
-                                            <p class="mb-10">แผนทำงาน 15</p>
-                                            <p class="mb-10">ทำแล้ว 10</p>
-                                            <p class="mb-10">รอดำเนินการ 5</p>
+                                            <p class="mb-10">ลูกค้าใหม่ 15</p>
+                                            <p class="mb-10">ผ่านแล้ว 10</p>
+                                            <p class="mb-10">ไม่ผ่าน 5</p>
                                     </div>
                                 </div>
                             </section>
                         </div>
                         <div class="col-md-4">
-                            <section class="hk-sec-wrapper">
+                            <section class="hk-sec-wrapper bg-light">
                                 <div class="row">
                                     <div class="col-sm">
                                         <div id="e_chart_3" style="height:140px;"></div>
                                     </div>
                                     <div class="col-sm mt-30" style="color: black;">
-                                            <p class="mb-10">แผนทำงาน 15</p>
+                                            <p class="mb-10">เยี่ยมลูกค้า 15</p>
                                             <p class="mb-10">ทำแล้ว 10</p>
                                             <p class="mb-10">รอดำเนินการ 5</p>
                                     </div>
@@ -69,18 +69,20 @@
                 <section class="hk-sec-wrapper">
                     <div class="row mt-30">
                         <div class="col-md-2">
-                            <div class="card card-sm">
-                                <div class="card-body" style="color: black;">
-                                    <span class="d-block font-11 font-weight-500 text-dark text-uppercase mb-10"><i data-feather="edit-2"></i>
-                                        <button type="button" class="btn btn-xs btn-outline-danger btn-rounded float-right">New</button></span>
-                                    <div class="d-flex align-items-end justify-content-between">
+                            <div class="card card-sm text-white bg-danger">
+                                <div class="card-body">
+                                    <span class="d-block font-16 font-weight-500 text-uppercase mb-10">
+                                        <button class="btn btn-icon btn-icon-circle btn-light btn-lg mr-25"><span class="btn-icon-wrap"><i
+                                            data-feather="edit-2"></i></span></button>
+                                        <span class="float-right">ขออนุมัติ {{$list_approval->count()}}</span></span>
+                                    {{-- <div class="d-flex align-items-end justify-content-between">
                                         <div>
                                             <span class="d-block">
                                                 <span>คำขออนุมัติ 5</span>
                                             </span>
                                         </div>
-                                    </div>
-                                    <div class="d-flex align-items-end justify-content-between mt-10">
+                                    </div> --}}
+                                    <div class="d-flex align-items-end justify-content-between mt-10 font-16">
                                         <div>
                                             <span class="d-block">
                                                 <span>อนุมัติ</span>
@@ -90,10 +92,18 @@
                                             <span>ด่วน</span>
                                         </div>
                                     </div>
-                                    <div class="d-flex align-items-end justify-content-between">
+                                    <div class="d-flex align-items-end justify-content-between font-16">
                                         <div>
                                             <span class="d-block">
-                                                <span>3</span>
+                                                <?php $approve = 0; ?>
+                                                <span>
+                                                    @foreach ($list_approval as $value)
+                                                        @if ($value->assign_status == 1)
+                                                            <?php $approve += 1 ?>
+
+                                                        @endif
+                                                    @endforeach
+                                                    {{$approve}} </span>
                                             </span>
                                         </div>
                                         <div>
@@ -106,38 +116,53 @@
                         </div>
 
                         <div class="col-md-2">
-                            <div class="card card-sm">
-                                <div class="card-body" style="color: black;">
-                                    <span class="d-block font-11 font-weight-500 text-dark text-uppercase mb-10"><i data-feather="user"></i>
-                                        <button type="button" class="btn btn-xs btn-outline-success btn-rounded float-right">New</button></span>
-                                    <div class="d-flex align-items-end justify-content-between">
+                            <div class="card card-sm text-white bg-success">
+                                <div class="card-body">
+                                    <span class="d-block font-16 font-weight-500 text-uppercase mb-10">
+                                            <button class="btn btn-icon btn-icon-circle btn-light btn-lg mr-25"><span class="btn-icon-wrap"><i
+                                                data-feather="clipboard"></i></span></button>
+                                        <span class="float-right">คำสั่งงาน {{ $assignments->count() }}</span></span>
+                                    {{-- <div class="d-flex align-items-end justify-content-between">
                                         <div>
                                             <span class="d-block">
                                                 <span>คำสั่งงาน 8</span>
                                             </span>
                                         </div>
-                                        {{-- <div>
-                                            <button type="button" class="btn btn-xs btn-outline-success btn-rounded">New</button>
-                                        </div> --}}
-                                    </div>
-                                    <div class="d-flex align-items-end justify-content-between mt-10">
+                                    </div> --}}
+                                    <div class="d-flex align-items-end justify-content-between mt-10 font-16">
                                         <div>
                                             <span class="d-block">
                                                 <span>ทำแล้ว</span>
                                             </span>
                                         </div>
                                         <div>
-                                            <span>ด่วน</span>
+                                            <span>รอดำเนินการ</span>
                                         </div>
                                     </div>
-                                    <div class="d-flex align-items-end justify-content-between">
+                                    <div class="d-flex align-items-end justify-content-between font-16">
                                         <div>
                                             <span class="d-block">
-                                                <span>6</span>
+                                                <?php $success = 0; ?>
+                                                <span>
+                                                    @foreach ($assignments as $value)
+                                                        @if ($value->assign_result_status != 0)
+                                                            <?php $success += 1 ?>
+
+                                                        @endif
+                                                    @endforeach
+                                                    {{$success}} </span>
                                             </span>
                                         </div>
                                         <div>
-                                            <span>2</span>
+                                            <?php $unfinished = 0; ?>
+                                            <span>
+                                                @foreach ($assignments as $value)
+                                                    @if ($value->assign_result_status == 0)
+                                                        <?php $unfinished += 1 ?>
+
+                                                    @endif
+                                                @endforeach
+                                                {{$unfinished}} </span>
                                         </div>
                                     </div>
                                 </div>
@@ -145,20 +170,18 @@
                         </div>
 
                         <div class="col-md-2">
-                            <div class="card card-sm">
-                                <div class="card-body" style="color: black;">
-                                    <span class="d-block font-11 font-weight-500 text-dark text-uppercase mb-10"><i data-feather="file"></i>
-                                        <button type="button" class="btn btn-xs btn-outline-warning btn-rounded float-right">New</button></span>
-                                    <div class="d-flex align-items-end justify-content-between">
-                                        <div>
+                            <div class="card card-sm text-white bg-warning">
+                                <div class="card-body">
+                                    <span class="d-block font-16 font-weight-500 text-uppercase mb-10">
+                                        <button class="btn btn-icon btn-icon-circle btn-light btn-lg mr-25"><span class="btn-icon-wrap"><i
+                                            data-feather="file"></i></span></button>
+                                        <span class="float-right">บันทึกโน๊ต {{ $notes->count() }}</span></span>
+                                        {{-- <div>
                                             <span class="d-block">
                                                 <span>บันทึกโน๊ต 3</span>
                                             </span>
                                         </div>
-                                        {{-- <div>
-                                            <button type="button" class="btn btn-xs btn-outline-warning btn-rounded">New</button>
-                                        </div> --}}
-                                    </div>
+                                    </div> --}}
                                     <div class="d-flex align-items-end justify-content-between mt-10">
                                         <div>
                                             <span class="d-block">
@@ -169,14 +192,30 @@
                                             <span>ปักหมุด</span>
                                         </div>
                                     </div>
-                                    <div class="d-flex align-items-end justify-content-between">
+                                    <div class="d-flex align-items-end justify-content-between font-16">
                                         <div>
                                             <span class="d-block">
-                                                <span>1</span>
+                                                <?php $disuse = 0; ?>
+                                            <span>
+                                                @foreach ($notes as $value)
+                                                    @if ($value->status_pin == "")
+                                                        <?php $disuse += 1 ?>
+
+                                                    @endif
+                                                @endforeach
+                                                {{$disuse}} </span>
                                             </span>
                                         </div>
                                         <div>
-                                            <span>2</span>
+                                            <?php $pin = 0; ?>
+                                            <span>
+                                                @foreach ($notes as $value)
+                                                    @if ($value->status_pin == 1)
+                                                        <?php $pin += 1 ?>
+
+                                                    @endif
+                                                @endforeach
+                                                {{$pin}} </span>
                                         </div>
                                     </div>
 
@@ -185,20 +224,19 @@
                         </div>
 
                         <div class="col-md-2">
-                            <div class="card card-sm">
-                                <div class="card-body" style="color: black;">
-                                    <span class="d-block font-11 font-weight-500 text-dark text-uppercase mb-10"><i data-feather="user"></i>
-                                        <button type="button" class="btn btn-xs btn-outline-info btn-rounded float-right">New</button></span>
-                                    <div class="d-flex align-items-end justify-content-between">
+                            <div class="card card-sm text-white bg-info">
+                                <div class="card-body">
+                                    <span class="d-block font-16 font-weight-500 text-uppercase mb-10">
+                                        <button class="btn btn-icon btn-icon-circle btn-light btn-lg mr-25"><span class="btn-icon-wrap"><i
+                                            data-feather="users"></i></span></button>
+                                        <span class="float-right">ลูกค้าใหม่ {{ $customer_shop->count() }}</span></span>
+                                    {{-- <div class="d-flex align-items-end justify-content-between">
                                         <div>
                                             <span class="d-block">
                                                 <span>ลูกค้าใหม่ 6</span>
                                             </span>
                                         </div>
-                                        {{-- <div>
-                                            <button type="button" class="btn btn-xs btn-outline-info btn-rounded">New</button>
-                                        </div> --}}
-                                    </div>
+                                    </div> --}}
                                     <div class="d-flex align-items-end justify-content-between mt-10">
                                         <div>
                                             <span class="d-block">
@@ -209,14 +247,30 @@
                                             <span>ตัดสินใจ</span>
                                         </div>
                                     </div>
-                                    <div class="d-flex align-items-end justify-content-between">
+                                    <div class="d-flex align-items-end justify-content-between font-16">
                                         <div>
                                             <span class="d-block">
-                                                <span>3</span>
+                                                <?php $fail = 0; ?>
+                                            <span>
+                                                @foreach ($customer_shop as $value)
+                                                    @if ($value->shop_result_status == 0)
+                                                        <?php $fail += 1 ?>
+
+                                                    @endif
+                                                @endforeach
+                                                {{$fail}} </span>
                                             </span>
                                         </div>
                                         <div>
-                                            <span>3</span>
+                                            <?php $wait = 0; ?>
+                                            <span>
+                                                @foreach ($customer_shop as $value)
+                                                    @if ($value->shop_result_status == 2)
+                                                        <?php $wait += 1 ?>
+
+                                                    @endif
+                                                @endforeach
+                                                {{$wait}} </span>
                                         </div>
                                     </div>
 
