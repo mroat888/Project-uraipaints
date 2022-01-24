@@ -7,11 +7,8 @@ use Illuminate\Http\Request;
 use App\Customer;
 use App\ObjectiveSaleplan;
 use App\CustomerVisit;
-<<<<<<< HEAD
 use App\CustomerVisitResult;
-=======
 use App\MonthlyPlan;
->>>>>>> d10bb97b14c71b7c89152f3705b701c0a74a4ff1
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -44,7 +41,7 @@ class CustomerVisitController extends Controller
         $api_token = $res['data'][0]['access_token'];
 
         $response = Http::withToken($api_token)
-                    ->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers'); 
+                    ->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers');
         $res_api = $response->json();
         // $res_api = $res['data'];
 
@@ -63,7 +60,7 @@ class CustomerVisitController extends Controller
 
     public function VisitStore(Request $request)
     {
-        // -- หา ID ของ MonthlyPlan 
+        // -- หา ID ของ MonthlyPlan
         list($year,$month,$day) = explode('-',$request->date);
         $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)
         ->whereYear('month_date', '=', $year)
@@ -89,7 +86,7 @@ class CustomerVisitController extends Controller
 
                 DB::table('customer_visits')
                 ->insert([
-                    'monthly_plan_id' => $monthly_plan->id, // ID ของ MonthlyPlan 
+                    'monthly_plan_id' => $monthly_plan->id, // ID ของ MonthlyPlan
                     'customer_shop_id' => $request->shop_id,
                     'customer_visit_date' => $request->date,
                     'customer_visit_tags' => $request->product,
@@ -101,7 +98,7 @@ class CustomerVisitController extends Controller
             }else{
                 DB::table('customer_visits')
                 ->insert([
-                    'monthly_plan_id' => $monthly_plan->id, // ID ของ MonthlyPlan 
+                    'monthly_plan_id' => $monthly_plan->id, // ID ของ MonthlyPlan
                     'customer_shop_id' => $request->shop_id,
                     'customer_visit_date' => $request->date,
                     'customer_visit_tags' => $request->product,
@@ -111,7 +108,7 @@ class CustomerVisitController extends Controller
                     'created_at' => date('Y-m-d H:i:s'),
                 ]);
             }
-            
+
             DB::commit();
 
             return response()->json([

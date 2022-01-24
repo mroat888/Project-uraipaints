@@ -17,7 +17,7 @@ class PlanMonthController extends Controller
 
     public function index()
     {
-    
+
         $data['monthly_plan'] = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('id', 'desc')->get();
         $data['monthly_plan_next'] = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('id', 'desc')->first();
 
@@ -36,7 +36,7 @@ class PlanMonthController extends Controller
             ->get();
 
             $data['list_saleplan'] = DB::table('sale_plans')
-            ->join('customer_shops', 'sale_plans.customer_shop_id', '=', 'customer_shops.id')
+            ->leftjoin('customer_shops', 'sale_plans.customer_shop_id', '=', 'customer_shops.id')
             ->leftjoin('sale_plan_results', 'sale_plans.id', '=', 'sale_plan_results.sale_plan_id')
                 ->select(
                     'sale_plan_results.sale_plan_status',
@@ -45,7 +45,7 @@ class PlanMonthController extends Controller
                 )
                 ->where('sale_plans.created_by', Auth::user()->id)
                 ->orderBy('id', 'desc')->get();
-    
+
             $date_plan = 0;
             $result_plan = 0;
             $remain_plan = 0;
@@ -75,7 +75,7 @@ class PlanMonthController extends Controller
         )
         ->where('customer_visits.created_by', Auth::user()->id)
         ->orderBy('id', 'desc')->get();
-         
+
         // -----  API ----------- //
         $response = Http::post('http://49.0.64.92:8020/api/auth/login', [
             'username' => 'apiuser',
@@ -101,7 +101,7 @@ class PlanMonthController extends Controller
 
         // ---- สร้างข้อมูล เยี่ยมลูกค้า โดย link กับ api
         $customer_visits = CustomerVisit::where('customer_visits.created_by', Auth::user()->id)
-            ->where('customer_visits.monthly_plan_id', $data['monthly_plan_next']->id) 
+            ->where('customer_visits.monthly_plan_id', $data['monthly_plan_next']->id)
             ->select('customer_visits.*')
             ->orderBy('id', 'desc')->get();
 
@@ -113,7 +113,7 @@ class PlanMonthController extends Controller
             $res_visit_api = $response_visit->json();
 
             $res_visit_api = $res_visit_api['data'][0];
-            $data['customer_visit_api'][$key] = 
+            $data['customer_visit_api'][$key] =
             [
                 'id' => $cus_visit->id,
                 'identify' => $res_visit_api['identify'],

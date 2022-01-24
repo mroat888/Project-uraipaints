@@ -119,9 +119,9 @@
                         <h5 class="hk-sec-title">แผนงานประจำเดือน มกราคม/2565</h5>
                         <div class="row mt-30">
                             <div class="col-md-4">
-                                <div class="card card-sm" style="background: rgb(184, 108, 255);">
-                                    <div class="card-body" style="color: black;">
-                                        <span class="d-block font-11 font-weight-500 text-dark text-uppercase"></span>
+                                <div class="card card-sm text-white bg-violet">
+                                    <div class="card-body">
+                                        <span class="d-block font-11 font-weight-500 text-uppercase"></span>
                                         <div class="d-flex align-items-end justify-content-between">
                                             <div>
                                                 <span class="d-block">
@@ -130,7 +130,7 @@
                                                     </button>
                                                 </span>
                                             </div>
-                                            <div class="mb-10">
+                                            <div class="mb-10 text-white">
                                                 <span style="font-weight: bold; font-size: 18px;">แผนทำงาน</span>
                                             </div>
                                             <div class="mb-10">
@@ -151,9 +151,9 @@
                             </div>
 
                             <div class="col-md-4">
-                                <div class="card card-sm" style="background: rgb(4, 196, 106);">
-                                    <div class="card-body" style="color: black;">
-                                        <span class="d-block font-11 font-weight-500 text-dark text-uppercase"></span>
+                                <div class="card card-sm text-white bg-teal">
+                                    <div class="card-body">
+                                        <span class="d-block font-11 font-weight-500 text-uppercase"></span>
                                         <div class="d-flex align-items-end justify-content-between">
                                             <div>
                                                 <span class="d-block">
@@ -187,9 +187,9 @@
                             </div>
 
                             <div class="col-md-4">
-                                <div class="card card-sm" style="background: rgb(255, 208, 108);">
-                                    <div class="card-body" style="color: black;">
-                                        <span class="d-block font-11 font-weight-500 text-dark text-uppercase"></span>
+                                <div class="card card-sm text-white bg-warning">
+                                    <div class="card-body">
+                                        <span class="d-block font-11 font-weight-500 text-uppercase"></span>
                                         <div class="d-flex align-items-end justify-content-between">
                                             <div>
                                                 <span class="d-block">
