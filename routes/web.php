@@ -17,10 +17,11 @@ use Illuminate\Support\Facades\Auth;
 */
 
 // Route::middleware(['auth', 'saleman'])->group(function () {
-Route::get('/index.html', function () { return view('saleman.dashboard'); });
+Route::get('/index.html', 'Saleman\DashboardController@index');
 
 // Sale
-Route::get('dashboard', function () { return view('saleman.dashboard'); });
+Route::get('dashboard',  'Saleman\DashboardController@index');
+
 // Route::get('/planMonth', function () { return view('saleman.planMonth'); });
 Route::get('planMonth', 'PlanMonthController@index');
 Route::get('approve_monthly_plan/{id}', 'PlanMonthController@approve');

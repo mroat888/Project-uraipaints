@@ -5,11 +5,18 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Customer;
+<<<<<<< HEAD
 use App\ObjectiveCustomer;
 use App\CustomerVisit;
+=======
+use App\ObjectiveSaleplan;
+// use App\CustomerVisit;
+use App\MonthlyPlan;
+>>>>>>> d10bb97b14c71b7c89152f3705b701c0a74a4ff1
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+
 // use DataTables;
 
 class CustomerController extends Controller
@@ -75,6 +82,7 @@ class CustomerController extends Controller
                 $uploadfile = $file_name;
             }
 
+<<<<<<< HEAD
             $data = new Customer;
             $data->shop_name           = $request->shop_name;
             $data->shop_address        = $request->shop_address;
@@ -89,6 +97,25 @@ class CustomerController extends Controller
             $data->created_by          = Auth::user()->id;
             $data->created_at          = Carbon::now();
             $data->save();
+=======
+            $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('id', 'desc')->first();
+            DB::table('customer_shops')
+            ->insert([
+                'monthly_plan_id'     => $monthly_plan->id,
+                'shop_name'           => $request->shop_name,
+                'shop_address'        => $request->shop_address,
+                'shop_province_id'    => $request->province,
+                'shop_amphur_id'      => $request->amphur,
+                'shop_district_id'    => $request->district,
+                'shop_zipcode'        => $request->shop_zipcode,
+                'shop_profile_image'  => $image,
+                'shop_fileupload'     => $uploadfile,
+                'shop_status'         => 0,
+                'shop_saleplan_date'  => Carbon::now()->addMonth(1),
+                'created_by'          => Auth::user()->id,
+                'created_at'          => Carbon::now(),
+            ]);
+>>>>>>> d10bb97b14c71b7c89152f3705b701c0a74a4ff1
 
             $sql_shops = DB::table('customer_shops')
                 ->orderBy('customer_shops.id', 'desc')->first();

@@ -7,7 +7,11 @@ use Illuminate\Http\Request;
 use App\Customer;
 use App\ObjectiveSaleplan;
 use App\CustomerVisit;
+<<<<<<< HEAD
 use App\CustomerVisitResult;
+=======
+use App\MonthlyPlan;
+>>>>>>> d10bb97b14c71b7c89152f3705b701c0a74a4ff1
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -39,9 +43,8 @@ class CustomerVisitController extends Controller
         $res = $response->json();
         $api_token = $res['data'][0]['access_token'];
 
-        $response = Http::get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers', [
-            'token' => $api_token,
-        ]);
+        $response = Http::withToken($api_token)
+                    ->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers'); 
         $res_api = $response->json();
         // $res_api = $res['data'];
 
@@ -60,28 +63,62 @@ class CustomerVisitController extends Controller
 
     public function VisitStore(Request $request)
     {
+        // -- หา ID ของ MonthlyPlan 
+        list($year,$month,$day) = explode('-',$request->date);
+        $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)
+        ->whereYear('month_date', '=', $year)
+        ->whereMonth('month_date', '=', $month)
+        ->orderBy('id', 'desc')
+        ->first();
+
         DB::beginTransaction();
         try {
 
-            CustomerVisit::create([
-                    'monthly_plan_id' => $request->id,
+            $date = Carbon::parse($monthly_plan->month_date)->format('Y-m');
+            $datenext = Carbon::today()->addMonth(1)->format('Y-m');
+            if ($date == $datenext) { // ถ้า MonthlyPlan ตรงกับเดือนหน้า ให้บวก จำนวนเยี่ยมลูกค้าใน MonthlyPlan
+
+                $visits_amount = $monthly_plan->cust_visits_amount+1;
+                DB::table('monthly_plans')
+                ->where('id',$monthly_plan->id)
+                ->update([
+                    'cust_visits_amount' => $visits_amount,
+                    'updated_by' => Auth::user()->id,
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ]);
+
+                DB::table('customer_visits')
+                ->insert([
+                    'monthly_plan_id' => $monthly_plan->id, // ID ของ MonthlyPlan 
                     'customer_shop_id' => $request->shop_id,
                     'customer_visit_date' => $request->date,
                     'customer_visit_tags' => $request->product,
                     'customer_visit_objective' => $request->visit_objective,
+                    'is_monthly_plan' => 'Y', // อยู่ในแผน
                     'created_by' => Auth::user()->id,
                     'created_at' => date('Y-m-d H:i:s'),
                 ]);
-
+            }else{
+                DB::table('customer_visits')
+                ->insert([
+                    'monthly_plan_id' => $monthly_plan->id, // ID ของ MonthlyPlan 
+                    'customer_shop_id' => $request->shop_id,
+                    'customer_visit_date' => $request->date,
+                    'customer_visit_tags' => $request->product,
+                    'customer_visit_objective' => $request->visit_objective,
+                    'is_monthly_plan' => 'N', // เพิ่มระหว่างเดือน
+                    'created_by' => Auth::user()->id,
+                    'created_at' => date('Y-m-d H:i:s'),
+                ]);
+            }
+            
             DB::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'บันทึกข้อมูลสำเร็จ',
-                'data' => $request->id,
+                'data' => $monthly_plan->id,
             ]);
-
-            //echo ("<script>alert('บันทึกข้อมูลสำเร็จ'); location.href='lead'; </script>");
 
         } catch (\Exception $e) {
 
@@ -90,12 +127,10 @@ class CustomerVisitController extends Controller
             return response()->json([
                 'status' => 404,
                 'message' => 'ไม่สามารถบันทึกได้',
-                'data' => $request->id,
+                'data' => $monthly_plan->id,
             ]);
 
         }
-
-
     }
 
 
@@ -180,10 +215,7 @@ class CustomerVisitController extends Controller
         $res = $response->json();
         $api_token = $res['data'][0]['access_token'];
 
-        $response = Http::get('http://49.0.64.92:8020/api/v1/customers/search', [
-            'token' => $api_token,
-            'name' => $id
-        ]);
+        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/customers/'.$id);
         $res_api = $response->json();
 
         $customer_api = array();

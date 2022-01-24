@@ -22,13 +22,9 @@ class UserPermissionController extends Controller
             'password' => 'testapi',
         ]);
         $res = $response->json();
-        // $api_token = $res['data']['access_token'];
         $api_token = $res['data'][0]['access_token'];
 
-
-        $response = Http::get('http://49.0.64.92:8020/api/v1/sellers', [
-            'token' => $api_token,
-        ]);
+        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/sellers');                   
         $res_api = $response->json();
 
         $sellers_api = array();
@@ -98,13 +94,9 @@ class UserPermissionController extends Controller
             'password' => 'testapi',
         ]);
         $res = $response->json();
-        // $api_token = $res['data']['access_token'];
         $api_token = $res['data'][0]['access_token'];
 
-
-        $response = Http::get('http://49.0.64.92:8020/api/v1/sellers', [
-            'token' => $api_token,
-        ]);
+        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/sellers');
         $res_api = $response->json();
 
         $sellers_api = array();

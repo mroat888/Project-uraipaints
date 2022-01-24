@@ -1,7 +1,9 @@
 @extends('layouts.master')
 
 @section('content')
-
+    @php
+        $monthly_plan_id = $monthly_plan_next->id;
+    @endphp
     <!-- Breadcrumb -->
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
@@ -65,6 +67,7 @@
                                                                     style="font-size: 12px;">
                                                                     Draf
                                                                 </span>
+
                                                             @elseif ($value->status_approve == 1)
                                                                 <span class="badge badge-soft-warning"
                                                                     style="font-size: 12px;">
@@ -77,6 +80,7 @@
                                                                 </span>
                                                             @endif
                                                             </span>
+
                                                         </td>
                                                         <td align="center">
                                                             <div class="button-list">
@@ -122,8 +126,7 @@
                                             <div>
                                                 <span class="d-block">
                                                     <button class="btn btn-icon btn-light btn-lg">
-                                                        <span class="btn-icon-wrap"><i data-feather="briefcase"></i>
-                                                        </span>
+                                                        <span class="btn-icon-wrap"><i data-feather="briefcase"></i></span>
                                                     </button>
                                                 </span>
                                             </div>
@@ -133,13 +136,13 @@
                                             <div class="mb-10">
                                                 <span style="font-weight: bold; font-size: 18px;">
                                                     <?php
-                                                    $sum_saleplan = 0;
-                                                    foreach ($list_saleplan as $key => $value) {
-                                                    if ($monthly_plan_id == $value->monthly_plan_id) {
-                                                        $sum_saleplan++
+                                                    // $sum_saleplan = 0;
+                                                    // foreach ($list_saleplan as $key => $value) {
+                                                    // if ($monthly_plan_id == $value->monthly_plan_id) {
+                                                    //     $sum_saleplan++
                                                     ?>
-                                                    <?php } } ?>
-                                                    {{ $sum_saleplan }}
+                                                    <?php // } } ?>
+                                                    {{-- $sum_saleplan --}}
                                                 </span>
                                             </div>
                                         </div>
@@ -387,48 +390,27 @@
                                                 <tr>
                                                     <th>#</th>
                                                     <th>ชื่อร้าน</th>
-                                                    <th>อำเภอ,จังหวัด</th>
-                                                    <th>ผู้ติดต่อ</th>
+                                                    <th>ที่อยู่</th>
                                                     <th>วันสำคัญ</th>
-                                                    <th>สถานะ</th>
                                                     <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($list_visit as $key => $value)
-                                                <?php
-                                                    if ($monthly_plan_id == $value->monthly_plan_id) {
-                                                ?>
-                                                    <tr>
-                                                        <td>{{ $key + 1 }}</td>
-                                                        <td>{{ $value->shop_name }}</td>
-                                                        <td>{{ $value->PROVINCE_NAME }}</td>
-                                                        <td>{{ $value->customer_contact_name }}</td>
-                                                        <td>-</td>
-                                                        <td>
-                                                            @if ($value->cust_visit_status == 0)
-                                                                <span class="badge badge-soft-secondary mt-15 mr-10"
-                                                                    style="font-weight: bold; font-size: 12px;">ยังไม่เสร็จ</span>
-                                                            @elseif ($value->cust_visit_status == 1)
-                                                                <span class="badge badge-soft-success mt-15 mr-10"
-                                                                    style="font-weight: bold; font-size: 12px;">สำเร็จ</span>
-                                                            @elseif ($value->cust_visit_status == 2)
-                                                                <span class="badge badge-soft-danger mt-15 mr-10"
-                                                                    style="font-weight: bold; font-size: 12px;">ไม่สำเร็จ</span>
-                                                            @endif
-                                                        </td>
-                                                        <td>
-                                                            <div class="button-list">
-                                                                <a href="{{ url('delete_visit', $value->id) }}"
-                                                                    class="btn btn-icon btn-danger mr-10"
-                                                                    onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
-                                                                    <h4 class="btn-icon-wrap" style="color: white;"><i
-                                                                            class="ion ion-md-trash"></i></h4>
-                                                                </a>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <?php } ?>
+                                                @foreach ($customer_visit_api as $key => $value)
+
+                                                <tr>
+                                                    <td>{{$key + 1}}</td>
+                                                    <td>{{$customer_visit_api[$key]['shop_name']}}</td>
+                                                    <td>{{$customer_visit_api[$key]['shop_address']}}</td>
+                                                    <td>-</td>
+                                                    <td>
+                                                        <div class="button-list">
+                                                            <a href="{{url('delete_visit')}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
+                                                                <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-trash"></i></h4></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
                                                 @endforeach
                                             </tbody>
                                         </table>
@@ -671,8 +653,9 @@
     </script>
 
 
+
 @section('footer')
     @include('layouts.footer')
-@endsection
+@endsection('footer')
 
 @endsection
