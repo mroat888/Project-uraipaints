@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Customer;
+use App\ObjectiveCustomer;
+use App\CustomerVisit;
 use App\ObjectiveSaleplan;
 // use App\CustomerVisit;
 use App\MonthlyPlan;
@@ -19,15 +21,15 @@ class CustomerController extends Controller
     public function index()
     {
         $data['customer_shop'] = DB::table('customer_shops')
-        ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
-        ->where('customer_shops.shop_status', 2) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
-        ->select(
-            'province.PROVINCE_NAME' ,
-            'customer_shops.*'
-        )
-        ->orderBy('customer_shops.id', 'desc')
-        ->get();
-        $data['customer_contacts'] = DB::table('customer_contacts')->orderBy('id','desc')->get();
+            ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
+            ->where('customer_shops.shop_status', 2) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
+            ->select(
+                'province.PROVINCE_NAME',
+                'customer_shops.*'
+            )
+            ->orderBy('customer_shops.id', 'desc')
+            ->get();
+        $data['customer_contacts'] = DB::table('customer_contacts')->orderBy('id', 'desc')->get();
 
         return view('customer.customer', $data);
     }
@@ -35,22 +37,22 @@ class CustomerController extends Controller
     public function customerLead()
     {
         $data['customer_shop'] = DB::table('customer_shops')
-        ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
-        //->join('customer_contacts', 'customer_contacts.customer_shop_id','customer_shops.id')
-        // ->join('customer_contacts', function ($join) {
-        //     $join->on('customer_shops.id', '=', 'customer_contacts.customer_shop_id')
-        //     ->orderBy('customer_contacts.id', 'desc');
-        // })
-        ->where('customer_shops.shop_status', 1) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
-        ->select(
-            'province.PROVINCE_NAME' ,
-            'customer_shops.*'
-        )
-        ->orderBy('customer_shops.id', 'desc')
-        ->get();
+            ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
+            //->join('customer_contacts', 'customer_contacts.customer_shop_id','customer_shops.id')
+            // ->join('customer_contacts', function ($join) {
+            //     $join->on('customer_shops.id', '=', 'customer_contacts.customer_shop_id')
+            //     ->orderBy('customer_contacts.id', 'desc');
+            // })
+            ->where('customer_shops.shop_status', 1) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
+            ->select(
+                'province.PROVINCE_NAME',
+                'customer_shops.*'
+            )
+            ->orderBy('customer_shops.id', 'desc')
+            ->get();
 
         $data['province'] = DB::table('province')->get();
-        $data['customer_contacts'] = DB::table('customer_contacts')->orderBy('id','desc')->get();
+        $data['customer_contacts'] = DB::table('customer_contacts')->orderBy('id', 'desc')->get();
 
         return view('customer.lead', $data);
     }
@@ -77,6 +79,21 @@ class CustomerController extends Controller
                 $uploadfile = $file_name;
             }
 
+            $data = new Customer;
+            $data->shop_name           = $request->shop_name;
+            $data->shop_address        = $request->shop_address;
+            $data->shop_province_id    = $request->province;
+            $data->shop_amphur_id      = $request->amphur;
+            $data->shop_district_id    = $request->district;
+            $data->shop_zipcode        = $request->shop_zipcode;
+            $data->shop_profile_image  = $image;
+            $data->shop_fileupload     = $uploadfile;
+            $data->shop_status         = 0;
+            $data->shop_Customer_date  = Carbon::now()->addMonth(1);
+            $data->created_by          = Auth::user()->id;
+            $data->created_at          = Carbon::now();
+            $data->save();
+
             $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('id', 'desc')->first();
             DB::table('customer_shops')
             ->insert([
@@ -96,16 +113,16 @@ class CustomerController extends Controller
             ]);
 
             $sql_shops = DB::table('customer_shops')
-            ->orderBy('customer_shops.id', 'desc')->first();
+                ->orderBy('customer_shops.id', 'desc')->first();
 
             DB::table('customer_contacts')
-            ->insert([
-                'customer_shop_id' => $sql_shops->id,
-                'customer_contact_name' => $request->contact_name,
-                'customer_contact_phone' => $request->shop_phone,
-                'created_by' => Auth::user()->id,
-                'created_at' => Carbon::now(),
-            ]);
+                ->insert([
+                    'customer_shop_id' => $sql_shops->id,
+                    'customer_contact_name' => $request->contact_name,
+                    'customer_contact_phone' => $request->shop_phone,
+                    'created_by' => Auth::user()->id,
+                    'created_at' => Carbon::now(),
+                ]);
 
             DB::commit();
 
@@ -127,23 +144,23 @@ class CustomerController extends Controller
     {
 
         $dataEdit = DB::table('customer_shops')
-        ->where('id',$id)
-        ->first();
+            ->where('id', $id)
+            ->first();
 
         $customer_contacts = DB::table('customer_contacts')
-        ->where('customer_shop_id',$id)
-        ->orderBy('id', 'desc')
-        ->first();
+            ->where('customer_shop_id', $id)
+            ->orderBy('id', 'desc')
+            ->first();
 
         $shop_province = DB::table('province')->get();
 
         $shop_amphur = DB::table('amphur')
-        ->where('PROVINCE_ID' , $dataEdit->shop_province_id)
-        ->get();
+            ->where('PROVINCE_ID', $dataEdit->shop_province_id)
+            ->get();
 
         $shop_district = DB::table('district')
-        ->where('AMPHUR_ID',$dataEdit->shop_amphur_id)
-        ->get();
+            ->where('AMPHUR_ID', $dataEdit->shop_amphur_id)
+            ->get();
 
         return response()->json([
             'status' => 200,
@@ -153,7 +170,6 @@ class CustomerController extends Controller
             'shop_amphur' => $shop_amphur,
             'shop_district' => $shop_district,
         ]);
-
     }
 
     public function update(Request $request)
@@ -205,7 +221,7 @@ class CustomerController extends Controller
         if ($image != '' && $uploadfile != '') {
 
             DB::beginTransaction();
-            try{
+            try {
                 $data2 = Customer::find($request->edit_shop_id);
                 $data2->shop_name           = $request->edit_shop_name;
                 $data2->shop_address        = $request->edit_shop_address;
@@ -220,22 +236,21 @@ class CustomerController extends Controller
                 $data2->update();
 
                 DB::table('customer_contacts')
-                ->where('id', $request->edit_cus_contacts_id)
-                ->update([
-                    'customer_contact_name' => $request->edit_contact_name,
-                    'customer_contact_phone' => $request->edit_customer_contact_phone,
-                    'updated_by' => Auth::user()->id,
-                    'updated_at' => date('Y-m-d H:i:s'),
-                ]);
+                    ->where('id', $request->edit_cus_contacts_id)
+                    ->update([
+                        'customer_contact_name' => $request->edit_contact_name,
+                        'customer_contact_phone' => $request->edit_customer_contact_phone,
+                        'updated_by' => Auth::user()->id,
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ]);
 
                 DB::commit();
-            }catch (\Exception $e) {
+            } catch (\Exception $e) {
                 DB::rollback();
             }
-
         } elseif ($image != '' && $uploadfile == '') {
             DB::beginTransaction();
-            try{
+            try {
                 $data2 = Customer::find($request->edit_shop_id);
                 $data2->shop_name           = $request->edit_shop_name;
                 $data2->shop_address        = $request->edit_shop_address;
@@ -249,21 +264,21 @@ class CustomerController extends Controller
                 $data2->update();
 
                 DB::table('customer_contacts')
-                ->where('id', $request->edit_cus_contacts_id)
-                ->update([
-                    'customer_contact_name' => $request->edit_contact_name,
-                    'customer_contact_phone' => $request->edit_customer_contact_phone,
-                    'updated_by' => Auth::user()->id,
-                    'updated_at' => date('Y-m-d H:i:s'),
-                ]);
+                    ->where('id', $request->edit_cus_contacts_id)
+                    ->update([
+                        'customer_contact_name' => $request->edit_contact_name,
+                        'customer_contact_phone' => $request->edit_customer_contact_phone,
+                        'updated_by' => Auth::user()->id,
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ]);
 
                 DB::commit();
-            }catch (\Exception $e) {
+            } catch (\Exception $e) {
                 DB::rollback();
             }
         } elseif ($image == '' && $uploadfile != '') {
             DB::beginTransaction();
-            try{
+            try {
                 $data2 = Customer::find($request->edit_shop_id);
                 $data2->shop_name           = $request->edit_shop_name;
                 $data2->shop_address        = $request->edit_shop_address;
@@ -277,21 +292,21 @@ class CustomerController extends Controller
                 $data2->update();
 
                 DB::table('customer_contacts')
-                ->where('id', $request->edit_cus_contacts_id)
-                ->update([
-                    'customer_contact_name' => $request->edit_contact_name,
-                    'customer_contact_phone' => $request->edit_customer_contact_phone,
-                    'updated_by' => Auth::user()->id,
-                    'updated_at' => date('Y-m-d H:i:s'),
-                ]);
+                    ->where('id', $request->edit_cus_contacts_id)
+                    ->update([
+                        'customer_contact_name' => $request->edit_contact_name,
+                        'customer_contact_phone' => $request->edit_customer_contact_phone,
+                        'updated_by' => Auth::user()->id,
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ]);
 
                 DB::commit();
-            }catch (\Exception $e) {
+            } catch (\Exception $e) {
                 DB::rollback();
             }
         } else {
             DB::beginTransaction();
-            try{
+            try {
                 $data2 = Customer::find($request->edit_shop_id);
                 $data2->shop_name           = $request->edit_shop_name;
                 $data2->shop_address        = $request->edit_shop_address;
@@ -304,16 +319,16 @@ class CustomerController extends Controller
                 $data2->update();
 
                 DB::table('customer_contacts')
-                ->where('id', $request->edit_cus_contacts_id)
-                ->update([
-                    'customer_contact_name' => $request->edit_contact_name,
-                    'customer_contact_phone' => $request->edit_customer_contact_phone,
-                    'updated_by' => Auth::user()->id,
-                    'updated_at' => date('Y-m-d H:i:s'),
-                ]);
+                    ->where('id', $request->edit_cus_contacts_id)
+                    ->update([
+                        'customer_contact_name' => $request->edit_contact_name,
+                        'customer_contact_phone' => $request->edit_customer_contact_phone,
+                        'updated_by' => Auth::user()->id,
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ]);
 
                 DB::commit();
-            }catch (\Exception $e) {
+            } catch (\Exception $e) {
                 DB::rollback();
             }
         }
@@ -324,39 +339,40 @@ class CustomerController extends Controller
             'message' => 'บันทึกข้อมูลสำเร็จ',
             'data' => $request,
         ]);
-
     }
 
-    public function show($id){
+    public function show($id)
+    {
         // dd($id);
 
         $data['customer_shops'] = DB::table('customer_shops')
-        ->where('id', $id)
-        ->first();
+            ->where('id', $id)
+            ->first();
 
         $data['customer_contacts'] = DB::table('customer_contacts')
-        ->where('customer_shop_id', $data['customer_shops']->id)
-        ->orderBy('id', 'desc')
-        ->first();
+            ->where('customer_shop_id', $data['customer_shops']->id)
+            ->orderBy('id', 'desc')
+            ->first();
 
         return view('customer.customer_detail', $data);
     }
 
-    public function lead_to_customer(Request $request){
+    public function lead_to_customer(Request $request)
+    {
 
         DB::beginTransaction();
-        try{
+        try {
 
             DB::table('customer_shops')
-            ->where('id', $request->shop_id)
-            ->update([
-                'shop_status' => '1',
-                'updated_by' => Auth::user()->id,
-                'updated_at' => date('Y-m-d H:i:s'),
-            ]);
+                ->where('id', $request->shop_id)
+                ->update([
+                    'shop_status' => '1',
+                    'updated_by' => Auth::user()->id,
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ]);
 
             DB::commit();
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollback();
         }
 
@@ -366,21 +382,22 @@ class CustomerController extends Controller
         ]);
     }
 
-    public function customer_delete(Request $request){
+    public function customer_delete(Request $request)
+    {
 
         DB::beginTransaction();
-        try{
+        try {
 
             DB::table('customer_shops')
-            ->where('id', $request->shop_id_delete)
-            ->update([
-                'shop_status' => '3',
-                'deleted_by' => Auth::user()->id,
-                'deleted_at' => date('Y-m-d H:i:s'),
-            ]);
+                ->where('id', $request->shop_id_delete)
+                ->update([
+                    'shop_status' => '3',
+                    'deleted_by' => Auth::user()->id,
+                    'deleted_at' => date('Y-m-d H:i:s'),
+                ]);
 
             DB::commit();
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollback();
         }
 
@@ -392,16 +409,16 @@ class CustomerController extends Controller
 
     public function destroy(Request $request)
     {
-            DB::table('customer_shops')
+        DB::table('customer_shops')
             ->where('id', $request->id)
             ->update([
                 'shop_status' => '3',
                 'deleted_by' => Auth::user()->id,
                 'deleted_at' => date('Y-m-d H:i:s'),
             ]);
-            DB::commit();
-            // return back();
-            echo ("<script>alert('ลบข้อมูลสำเร็จ'); location.href='planMonth'; </script>");
+        DB::commit();
+        // return back();
+        echo ("<script>alert('ลบข้อมูลสำเร็จ'); location.href='planMonth'; </script>");
     }
 
 
@@ -450,5 +467,58 @@ class CustomerController extends Controller
         //     }
         // }
         return Response::json($results);
+    }
+
+    public function customer_new_checkin(Request $request)
+    { // เช็คอิน-เช็คเอ้าท์
+        // dd($request);
+
+        $chk_status = Customer::where('id', $request->id)->first();
+        if ($chk_status->shop_checkin_date) {
+
+            $data2 = Customer::where('id', $request->id)->first();
+            $data2->shop_checkout_date   = Carbon::now();
+            $data2->checkout_latitude   = $request->lat;
+            $data2->checkout_longitude   = $request->lon;
+            $data2->updated_by   = Auth::user()->id;
+            $data2->updated_at   = Carbon::now();
+            $data2->update();
+            return back();
+        } else {
+            $data2 = Customer::where('id', $request->id)->first();
+            $data2->shop_checkin_date   = Carbon::now();
+            $data2->checkin_latitude   = $request->lat;
+            $data2->checkin_longitude   = $request->lon;
+            $data2->updated_by   = Auth::user()->id;
+            $data2->updated_at   = Carbon::now();
+            $data2->update();
+
+            return back();
+        }
+    }
+
+    public function customer_new_result_get($id)
+    {
+        $dataResult = Customer::find($id);
+
+
+        $data = array(
+            'dataResult'     => $dataResult,
+        );
+        echo json_encode($data);
+    }
+
+    public function customer_new_Result(Request $request)
+    { // สรุปผลลัพธ์
+        // dd($request);
+
+        $data2 = Customer::where('id', $request->cust_id)->first();
+        $data2->shop_result_detail   = $request->shop_result_detail;
+        $data2->shop_result_status   = $request->shop_result_status;
+        $data2->updated_by   = Auth::user()->id;
+        $data2->updated_at   = Carbon::now();
+        $data2->update();
+
+        return back();
     }
 }

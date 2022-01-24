@@ -31,7 +31,9 @@
                 <form action="{{ url('lead/approval_confirm_all') }}" method="POST"
                 enctype="multipart/form-data">
                 @csrf
-                <button type="submit" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" id="btn_approve">อนุมัติ</button>
+                <button type="submit" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" name="approve" value="approve">อนุมัติ</button>
+
+                <button type="submit" class="btn btn_purple btn-danger btn-sm btn-rounded px-3 ml-5" name="failed" value="failed">ไม่อนุมัติ</button>
             </div>
         </div>
         <!-- /Title -->
@@ -92,7 +94,7 @@
                                     <tbody>
                                         @foreach ($request_approval as $key => $value)
                                         <?php $chk =  App\Assignment::join('users', 'assignments.created_by', '=', 'users.id')
-                                        ->where('created_by', $value->created_by)->select('users.name', 'assignments.*')->first() ?>
+                                        ->where('assignments.created_by', $value->created_by)->select('users.name', 'assignments.*')->first() ?>
                                         <tr>
                                             <td>
                                                 <div class="custom-control custom-checkbox checkbox-info">

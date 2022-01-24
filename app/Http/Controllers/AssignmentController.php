@@ -13,7 +13,7 @@ class AssignmentController extends Controller
 
     public function index()
     {
-        $assignments = Assignment::where('created_by', Auth::user()->id)->orderBy('id', 'desc')->get();
+        $assignments = Assignment::where('created_by', Auth::user()->id)->where('assign_status', 3)->orderBy('id', 'desc')->get();
         return view('leadManager.add_assignment', compact('assignments'));
     }
 
@@ -25,7 +25,7 @@ class AssignmentController extends Controller
             'assign_title' => $request->assign_title,
             'assign_detail' => $request->assign_detail,
             'assign_emp_id' => $request->assign_emp_id,
-            'assign_status' => 1,
+            // 'assign_status' => 1,
             'assign_approve_id' => Auth::user()->id,
             'assign_result_status' => 0,
             'created_by' => Auth::user()->id,

@@ -6,13 +6,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\RequestApproval;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class RequestApprovalController extends Controller
 {
 
     public function index()
     {
-        $list_approval = RequestApproval::orderBy('id', 'desc')->get();
+        $list_approval = RequestApproval::where('created_by', Auth::user()->id)->orderBy('id', 'desc')->get();
         return view('saleman.requestApproval', compact('list_approval'));
     }
 
@@ -31,16 +32,13 @@ class RequestApprovalController extends Controller
             'assign_title' => $request->assign_title,
             'assign_detail' => $request->assign_detail,
             'approved_for' => $request->approved_for,
-            'assign_emp_id' => 1,
-            'assign_approve_id' => 2,
+            // 'assign_emp_id' => 1,
+            // 'assign_approve_id' => 2,
             'assign_is_hot' => $status,
             'assign_status' => 0,
             // 'assign_result_detail' => $request->assign_result_detail,
             // 'assign_result_status' => $request->assign_result_status,
-            'created_by' => 1,
-            'updated_by' => $request->updated_by,
-            'deleted_by' => $request->deleted_by,
-            'deleted_at' => $request->deleted_at,
+            'created_by' => Auth::user()->id,
         ]);
 
         echo ("<script>alert('บันทึกข้อมูลสำเร็จ'); location.href='approval'; </script>");
@@ -70,16 +68,13 @@ class RequestApprovalController extends Controller
             'assign_title' => $request->assign_title,
             'assign_detail' => $request->assign_detail,
             'approved_for' => $request->approved_for,
-            'assign_emp_id' => 1,
-            'assign_approve_id' => 2,
+            // 'assign_emp_id' => 1,
+            // 'assign_approve_id' => 2,
             'assign_is_hot' => $status,
             // 'assign_status' => 0,
             // 'assign_result_detail' => $request->assign_result_detail,
             // 'assign_result_status' => $request->assign_result_status,
-            'created_by' => 1,
-            'updated_by' => Carbon::now(),
-            'deleted_by' => $request->deleted_by,
-            'deleted_at' => $request->deleted_at,
+            'updated_by' => Auth::user()->id,
         ]);
 
         echo ("<script>alert('แก้ไขข้อมูลสำเร็จ'); location.href='approval'; </script>");

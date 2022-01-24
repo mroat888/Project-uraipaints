@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Customer;
 use App\ObjectiveSaleplan;
 use App\CustomerVisit;
+use App\CustomerVisitResult;
 use App\MonthlyPlan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -40,7 +41,7 @@ class CustomerVisitController extends Controller
         $api_token = $res['data'][0]['access_token'];
 
         $response = Http::withToken($api_token)
-                    ->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers'); 
+                    ->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers');
         $res_api = $response->json();
         // $res_api = $res['data'];
 
@@ -59,7 +60,7 @@ class CustomerVisitController extends Controller
 
     public function VisitStore(Request $request)
     {
-        // -- หา ID ของ MonthlyPlan 
+        // -- หา ID ของ MonthlyPlan
         list($year,$month,$day) = explode('-',$request->date);
         $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)
         ->whereYear('month_date', '=', $year)
@@ -85,7 +86,7 @@ class CustomerVisitController extends Controller
 
                 DB::table('customer_visits')
                 ->insert([
-                    'monthly_plan_id' => $monthly_plan->id, // ID ของ MonthlyPlan 
+                    'monthly_plan_id' => $monthly_plan->id, // ID ของ MonthlyPlan
                     'customer_shop_id' => $request->shop_id,
                     'customer_visit_date' => $request->date,
                     'customer_visit_tags' => $request->product,
@@ -97,7 +98,7 @@ class CustomerVisitController extends Controller
             }else{
                 DB::table('customer_visits')
                 ->insert([
-                    'monthly_plan_id' => $monthly_plan->id, // ID ของ MonthlyPlan 
+                    'monthly_plan_id' => $monthly_plan->id, // ID ของ MonthlyPlan
                     'customer_shop_id' => $request->shop_id,
                     'customer_visit_date' => $request->date,
                     'customer_visit_tags' => $request->product,
@@ -107,7 +108,7 @@ class CustomerVisitController extends Controller
                     'created_at' => date('Y-m-d H:i:s'),
                 ]);
             }
-            
+
             DB::commit();
 
             return response()->json([
@@ -238,5 +239,90 @@ class CustomerVisitController extends Controller
 
         // return response()->json($result);
         return response()->json($customer_api);
+    }
+
+    // public function customer_visit_checkin(Request $request)
+    // { // เช็คอิน-เช็คเอ้าท์
+    //     // dd($request);
+
+    //     $chk_status = CustomerVisitResult::where('id', $request->id)->first();
+    //     if ($chk_status->shop_checkin_date) {
+
+    //         $data2 = CustomerVisitResult::where('id', $request->id)->first();
+    //         $data2->shop_checkout_date   = Carbon::now();
+    //         $data2->checkout_latitude   = $request->lat;
+    //         $data2->checkout_longitude   = $request->lon;
+    //         $data2->updated_by   = Auth::user()->id;
+    //         $data2->updated_at   = Carbon::now();
+    //         $data2->update();
+    //         return back();
+    //     } else {
+    //         $data2 = CustomerVisitResult::where('id', $request->id)->first();
+    //         $data2->shop_checkin_date   = Carbon::now();
+    //         $data2->checkin_latitude   = $request->lat;
+    //         $data2->checkin_longitude   = $request->lon;
+    //         $data2->updated_by   = Auth::user()->id;
+    //         $data2->updated_at   = Carbon::now();
+    //         $data2->update();
+
+    //         return back();
+    //     }
+    // }
+
+    public function customer_visit_checkin(Request $request)
+    { // เช็คอิน-เช็คเอ้าท์
+        // dd($request);
+
+        $chk_status = CustomerVisitResult::where('customer_visit_id', $request->id)->first();
+
+        if ($chk_status) {
+
+            $data2 = CustomerVisitResult::where('customer_visit_id', $request->id)->first();
+            $data2->cust_visit_checkout_date   = Carbon::now();
+            $data2->cust_visit_checkout_latitude   = $request->lat;
+            $data2->cust_visit_checkout_longitude   = $request->lon;
+            $data2->updated_by   = Auth::user()->id;
+            $data2->updated_at   = Carbon::now();
+            $data2->update();
+            return back();
+
+        }
+        else{
+
+            $data2 = new CustomerVisitResult;
+            $data2->customer_visit_id = $request->id;
+            $data2->cust_visit_checkin_date   = Carbon::now();
+            $data2->cust_visit_checkin_latitude   = $request->lat;
+            $data2->cust_visit_checkin_longitude   = $request->lon;
+            $data2->created_by   = Auth::user()->id;
+            $data2->created_at   = Carbon::now();
+            $data2->save();
+            return back();
+        }
+    }
+
+    public function customer_visit_result_get($id)
+    {
+        $dataResult = CustomerVisitResult::find($id);
+
+
+        $data = array(
+            'dataResult'     => $dataResult,
+        );
+        echo json_encode($data);
+    }
+
+    public function customer_visit_Result(Request $request)
+    { // สรุปผลลัพธ์
+        // dd($request);
+
+        $data2 = CustomerVisitResult::where('customer_visit_id', $request->visit_id)->first();
+        $data2->cust_visit_detail   = $request->visit_result_detail;
+        $data2->cust_visit_status   = $request->visit_result_status;
+        $data2->updated_by   = Auth::user()->id;
+        $data2->updated_at   = Carbon::now();
+        $data2->update();
+
+        return back();
     }
 }

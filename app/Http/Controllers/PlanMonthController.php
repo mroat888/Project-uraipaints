@@ -17,7 +17,7 @@ class PlanMonthController extends Controller
 
     public function index()
     {
-    
+
         $data['monthly_plan'] = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('id', 'desc')->get();
         $data['monthly_plan_next'] = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('id', 'desc')->first();
 
@@ -36,32 +36,9 @@ class PlanMonthController extends Controller
             ->get();
 
         $data['list_saleplan'] = DB::table('sale_plans')
-            // ->join('customer_shops', 'sale_plans.customer_shop_id', '=', 'customer_shops.id')
-            // ->leftjoin('sale_plan_results', 'sale_plans.id', '=', 'sale_plan_results.sale_plan_id')
-            // ->select(
-            //     'sale_plan_results.sale_plan_status',
-            //     'customer_shops.shop_name',
-            //     'sale_plans.*'
-            // )
             ->where('sale_plans.monthly_plan_id', $data['monthly_plan_next']->id)
             ->where('sale_plans.created_by', Auth::user()->id)
             ->orderBy('id', 'desc')->get();
-    
-            // $date_plan = 0;
-            // $result_plan = 0;
-            // $remain_plan = 0;
-            // foreach ($data['list_saleplan'] as $value) {
-            //     $date = Carbon::parse($value->sale_plans_date)->format('Y-m');
-            //     $dateNow = Carbon::today()->addMonth(1)->format('Y-m');
-            //     if ($date == $dateNow) {
-            //         if ($value->sale_plan_status == 3) {
-            //             $result_plan++;
-            //         } else {
-            //             $remain_plan++;
-            //         }
-            //         $date_plan++;
-            //     }
-            // }
 
         $data['list_visit'] = CustomerVisit::join('customer_shops', 'customer_visits.customer_shop_id', '=', 'customer_shops.id')
             ->join('customer_contacts', 'customer_shops.id', '=', 'customer_contacts.customer_shop_id')
@@ -103,7 +80,7 @@ class PlanMonthController extends Controller
 
         // ---- สร้างข้อมูล เยี่ยมลูกค้า โดย link กับ api
         $customer_visits = CustomerVisit::where('customer_visits.created_by', Auth::user()->id)
-            ->where('customer_visits.monthly_plan_id', $data['monthly_plan_next']->id) 
+            ->where('customer_visits.monthly_plan_id', $data['monthly_plan_next']->id)
             ->select('customer_visits.*')
             ->orderBy('id', 'desc')->get();
 
@@ -115,7 +92,7 @@ class PlanMonthController extends Controller
             $res_visit_api = $response_visit->json();
 
             $res_visit_api = $res_visit_api['data'][0];
-            $data['customer_visit_api'][$key] = 
+            $data['customer_visit_api'][$key] =
             [
                 'id' => $cus_visit->id,
                 'identify' => $res_visit_api['identify'],
