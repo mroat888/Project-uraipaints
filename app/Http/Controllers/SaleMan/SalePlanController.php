@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\SalePlan;
 use App\Customer;
 use App\SalePlanResult;
+use App\MonthlyPlan;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -29,8 +30,22 @@ class SalePlanController extends Controller
         DB::beginTransaction();
         try {
 
-            SalePlan::create([
-                'monthly_plan_id' => $request->id,
+            // SalePlan::create([
+            //     'monthly_plan_id' => $monthly_plan->id,
+            //     'customer_shop_id' => $request->shop_id,
+            //     'sale_plans_title' => $request->sale_plans_title,
+            //     'sale_plans_date' => Carbon::now()->addMonth(1),
+            //     'sale_plans_tags' => $request->sale_plans_tags,
+            //     'sale_plans_objective' => $request->sale_plans_objective,
+            //     'sale_plans_status' => 1,
+            //     'created_by' => Auth::user()->id,
+            // ]);
+
+            $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('id', 'desc')->first();
+
+            DB::table('sale_plans')
+            ->insert([
+                'monthly_plan_id' => $monthly_plan->id,
                 'customer_shop_id' => $request->shop_id,
                 'sale_plans_title' => $request->sale_plans_title,
                 'sale_plans_date' => Carbon::now()->addMonth(1),
@@ -40,18 +55,27 @@ class SalePlanController extends Controller
                 'created_by' => Auth::user()->id,
             ]);
 
+            DB::table('monthly_plans')->where('id', $monthly_plan->id)
+            ->update([
+                'sale_plan_amount' => $monthly_plan->sale_plan_amount+1,
+            ]);
+
             DB::commit();
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'บันทึกข้อมูลสำเร็จ',
+            ]);
 
         } catch (\Exception $e) {
 
             DB::rollback();
-        }
 
-        return response()->json([
-            'status' => 200,
-            'message' => 'บันทึกข้อมูลสำเร็จ',
-            'data' => $request,
-        ]);
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกข้อมูลได้',
+            ]);
+        }
     }
 
 
@@ -130,10 +154,7 @@ class SalePlanController extends Controller
         $res = $response->json();
         $api_token = $res['data'][0]['access_token'];
 
-        $response = Http::get('http://49.0.64.92:8020/api/v1/customers/search', [
-            'token' => $api_token,
-            'name' => $id
-        ]);
+        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/customers/'.$id);
         $res_api = $response->json();
 
         $customer_api = array();

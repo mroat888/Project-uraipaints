@@ -116,7 +116,9 @@
                         title: 'Your work has been saved',
                         showConfirmButton: false,
                         timer: 1500
-                    })
+                    });
+                    $("#addCustomer").modal('hide');
+                    location.reload();
                 }else{
                     Swal.fire({
                         icon: 'error',
@@ -126,8 +128,6 @@
                         timer: 1500
                     })
                 }
-                $("#addCustomer").modal('hide');
-                location.reload();
             },
             error: function(response){
                 console.log("error");

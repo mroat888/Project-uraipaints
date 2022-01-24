@@ -298,7 +298,7 @@
                             </div>
                             <div class="d-flex">
                                 <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10"
-                                    data-toggle="modal" data-target="#exampleModalLarge02"> + เพิ่มใหม่ </button>
+                                    data-toggle="modal" data-target="#addCustomer"> + เพิ่มใหม่ </button>
                             </div>
                         </div>
                         <div class="row">
@@ -337,7 +337,7 @@
                                                         <td style="text-align:center">
                                                             <div class="button-list">
                                                                 {{-- <button class="btn btn-icon btn-warning mr-10"
-                                                                data-toggle="modal" data-target="#exampleModalLarge02">
+                                                                data-toggle="modal" data-target="#addCustomer">
                                                                 <span class="btn-icon-wrap"><i
                                                                         data-feather="edit"></i></span></button> --}}
                                                                 <button class="btn btn-icon btn-warning mr-10 btn_editshop"
@@ -439,7 +439,7 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModalLarge02" tabindex="-1" role="dialog" aria-labelledby="exampleModalLarge02"
+    <div class="modal fade" id="addCustomer" tabindex="-1" role="dialog" aria-labelledby="addCustomer"
         aria-hidden="true">
         @include('customer.lead_insert')
     </div>

@@ -108,14 +108,25 @@ $customer_shops = DB::table('customer_shops')
                     processData: false,
                     success:function(response){
                         console.log(response);
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Your work has been saved',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
-                        $("#addCustomer").modal('hide');
-                        location.reload();
+                        if(response.status == 200){
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Your work has been saved',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            $("#addCustomer").modal('hide');
+                            location.reload();
+                        }else{
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Your work has been saved',
+                                text: response.message,
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                        }
+                        
                     },
                     error: function(response){
                         console.log("error");
