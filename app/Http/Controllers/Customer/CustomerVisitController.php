@@ -39,9 +39,8 @@ class CustomerVisitController extends Controller
         $res = $response->json();
         $api_token = $res['data'][0]['access_token'];
 
-        $response = Http::get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers', [
-            'token' => $api_token,
-        ]);
+        $response = Http::withToken($api_token)
+                    ->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers'); 
         $res_api = $response->json();
         // $res_api = $res['data'];
 
@@ -128,12 +127,6 @@ class CustomerVisitController extends Controller
             ]);
 
         }
-<<<<<<< HEAD
-        
-=======
-
-
->>>>>>> 0716bea10b92d94569feb7be6bb30732bf3abc83
     }
 
 
@@ -218,9 +211,7 @@ class CustomerVisitController extends Controller
         $res = $response->json();
         $api_token = $res['data'][0]['access_token'];
 
-        $response = Http::get('http://49.0.64.92:8020/api/v1/customers/'.$id, [
-            'token' => $api_token,
-        ]);
+        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/customers/'.$id);
         $res_api = $response->json();
 
         $customer_api = array();

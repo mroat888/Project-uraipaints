@@ -76,7 +76,7 @@ class PlanMonthController extends Controller
         ->where('customer_visits.created_by', Auth::user()->id)
         ->orderBy('id', 'desc')->get();
          
-        // -----  API
+        // -----  API ----------- //
         $response = Http::post('http://49.0.64.92:8020/api/auth/login', [
             'username' => 'apiuser',
             'password' => 'testapi',
@@ -84,9 +84,9 @@ class PlanMonthController extends Controller
         $res = $response->json();
         $api_token = $res['data'][0]['access_token'];
 
-        $response = Http::get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers', [
-            'token' => $api_token,
-        ]);
+        $response = Http::withToken($api_token)
+                        ->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers');
+
         $res_api = $response->json();
         // $res_api = $res['data'];
 
@@ -99,9 +99,6 @@ class PlanMonthController extends Controller
             ];
         }
 
-        // -----  END API
-
-
         // ---- สร้างข้อมูล เยี่ยมลูกค้า โดย link กับ api
         $customer_visits = CustomerVisit::where('customer_visits.created_by', Auth::user()->id)
             ->where('customer_visits.monthly_plan_id', $data['monthly_plan_next']->id) 
@@ -111,25 +108,26 @@ class PlanMonthController extends Controller
         $data['customer_visit_api'] = array();
         foreach($customer_visits as $key => $cus_visit){
 
-            // $response_visit = Http::get('http://49.0.64.92:8020/api/v1/customers/search', [
-            $response_visit = Http::get('http://49.0.64.92:8020/api/v1/customers/'.$cus_visit->customer_shop_id, [
-                // 'name' => $cus_visit->customer_shop_id,
-                'token' => $api_token,
-            ]);
+            $response_visit = Http::withToken($api_token)
+                                ->get('http://49.0.64.92:8020/api/v1/customers/'.$cus_visit->customer_shop_id);
             $res_visit_api = $response_visit->json();
 
+            $res_visit_api = $res_visit_api['data'][0];
             $data['customer_visit_api'][$key] = 
             [
                 'id' => $cus_visit->id,
-                'id' => $cus_visit->customer_shop_id,
-                'shop_name' => $value['title']." ".$value['name'],
-                'shop_address' => $value['address1']." ".$value['adrress2'],
-                'shop_phone' => $value['telephone'],
-                'shop_mobile' => $value['mobile'],
+                'identify' => $res_visit_api['identify'],
+                'shop_name' => $res_visit_api['title']." ".$res_visit_api['name'],
+                'shop_address' => $res_visit_api['address1']." ".$res_visit_api['adrress2'],
+                'shop_phone' => $res_visit_api['telephone'],
+                'shop_mobile' => $res_visit_api['mobile'],
             ];
         }
 
-       // dd($data);
+         // -----  END API
+
+
+        // dd($data);
         return view('saleman.planMonth', $data);
     }
 

@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Customer;
 use App\ObjectiveSaleplan;
-use App\CustomerVisit;
+// use App\CustomerVisit;
+use App\MonthlyPlan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+
 // use DataTables;
 
 class CustomerController extends Controller
@@ -75,20 +77,23 @@ class CustomerController extends Controller
                 $uploadfile = $file_name;
             }
 
-            $data = new Customer;
-            $data->shop_name           = $request->shop_name;
-            $data->shop_address        = $request->shop_address;
-            $data->shop_province_id    = $request->province;
-            $data->shop_amphur_id      = $request->amphur;
-            $data->shop_district_id    = $request->district;
-            $data->shop_zipcode        = $request->shop_zipcode;
-            $data->shop_profile_image  = $image;
-            $data->shop_fileupload     = $uploadfile;
-            $data->shop_status         = 0;
-            $data->shop_saleplan_date  = Carbon::now()->addMonth(1);
-            $data->created_by          = Auth::user()->id;
-            $data->created_at          = Carbon::now();
-            $data->save();
+            $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('id', 'desc')->first();
+            DB::table('customer_shops')
+            ->insert([
+                'monthly_plan_id'     => $monthly_plan->id,
+                'shop_name'           => $request->shop_name,
+                'shop_address'        => $request->shop_address,
+                'shop_province_id'    => $request->province,
+                'shop_amphur_id'      => $request->amphur,
+                'shop_district_id'    => $request->district,
+                'shop_zipcode'        => $request->shop_zipcode,
+                'shop_profile_image'  => $image,
+                'shop_fileupload'     => $uploadfile,
+                'shop_status'         => 0,
+                'shop_saleplan_date'  => Carbon::now()->addMonth(1),
+                'created_by'          => Auth::user()->id,
+                'created_at'          => Carbon::now(),
+            ]);
 
             $sql_shops = DB::table('customer_shops')
             ->orderBy('customer_shops.id', 'desc')->first();

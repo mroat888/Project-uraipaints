@@ -111,13 +111,13 @@ $customer_shops = DB::table('customer_shops')
             success:function(response){
                 console.log(response);
                 if(response.status == 200){
+                    $("#addCustomer").modal('hide');
                     Swal.fire({
                         icon: 'success',
                         title: 'Your work has been saved',
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    $("#addCustomer").modal('hide');
                     location.reload();
                 }else{
                     Swal.fire({
@@ -151,7 +151,6 @@ $customer_shops = DB::table('customer_shops')
             $('#visit_mobile').val('');
             $('#visit_address').val('');
             $.ajax({
-<<<<<<< HEAD
                 method: 'GET',
                 url: '{{ url("/fetch_customer_shops_visit") }}/'+shop_id,
                 datatype: 'json',
@@ -162,35 +161,6 @@ $customer_shops = DB::table('customer_shops')
                     $('#visit_phone').val(response[0].shop_phone);
                     $('#visit_mobile').val(response[0].shop_mobile);
                     $('#visit_address').val(response[0].shop_address);
-=======
-                type:'POST',
-                url: '{{ url("create_visit") }}',
-                data:formData,
-                cache:false,
-                contentType: false,
-                processData: false,
-                success:function(response){
-                    console.log(response);
-                    if(response.status == 200){
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Your work has been saved',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
-                        $("#addCustomer").modal('hide');
-                        location.reload();
-                    }else{
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Your work has been saved',
-                            text: response.message,
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
-                    }
-
->>>>>>> 0716bea10b92d94569feb7be6bb30732bf3abc83
                 },
                 error: function(response){
                     console.log("error");
