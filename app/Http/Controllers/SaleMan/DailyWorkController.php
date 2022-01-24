@@ -40,11 +40,14 @@ class DailyWorkController extends Controller
                 'province.PROVINCE_NAME',
                 'customer_contacts.customer_contact_name',
                 'customer_visit_results.cust_visit_status',
+                'customer_visit_results.cust_visit_checkin_date',
+                'customer_visit_results.cust_visit_checkout_date',
+                'customer_visit_results.customer_visit_id',
                 'customer_shops.shop_name',
                 'customer_visits.*'
             )
             ->where('customer_visits.created_by', Auth::user()->id)
-            ->orderBy('id', 'desc')->get();
+            ->orderBy('customer_visits.id', 'desc')->get();
 
         return view('saleman.dailyWork', $data);
     }

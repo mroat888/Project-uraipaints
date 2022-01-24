@@ -41,6 +41,10 @@ Route::post('update_customerVisit', 'Customer\CustomerVisitController@update_cus
 Route::get('delete_visit/{id}', 'Customer\CustomerVisitController@destroy');
 Route::get('/fetch_customer_shops_visit/{id}','Customer\CustomerVisitController@fetch_customer_shops_visit');
 
+Route::post('customer_visit_checkin', 'Customer\CustomerVisitController@customer_visit_checkin');
+Route::get('customer_visit_result_get/{id}', 'Customer\CustomerVisitController@customer_visit_result_get');
+Route::post('customer_visit_Result', 'Customer\CustomerVisitController@customer_visit_Result');
+
 
 
 // Customer
@@ -57,6 +61,10 @@ Route::get('/customer-api','Customer\ApiCustomerController@index'); // OAT à¸—à¸
 
 Route::post('/leadtocustomer','Customer\CustomerController@lead_to_customer');
 Route::post('/customerdelete','Customer\CustomerController@customer_delete');
+
+Route::post('customer_new_checkin', 'Customer\CustomerController@customer_new_checkin');
+Route::get('customer_new_result_get/{id}', 'Customer\CustomerController@customer_new_result_get');
+Route::post('customer_new_Result', 'Customer\CustomerController@customer_new_Result');
 
 
 // Sale Plan

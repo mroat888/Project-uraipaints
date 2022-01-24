@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Customer;
 use App\ObjectiveSaleplan;
 use App\CustomerVisit;
+use App\CustomerVisitResult;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -209,5 +210,90 @@ class CustomerVisitController extends Controller
 
         // return response()->json($result);
         return response()->json($customer_api);
+    }
+
+    // public function customer_visit_checkin(Request $request)
+    // { // เช็คอิน-เช็คเอ้าท์
+    //     // dd($request);
+
+    //     $chk_status = CustomerVisitResult::where('id', $request->id)->first();
+    //     if ($chk_status->shop_checkin_date) {
+
+    //         $data2 = CustomerVisitResult::where('id', $request->id)->first();
+    //         $data2->shop_checkout_date   = Carbon::now();
+    //         $data2->checkout_latitude   = $request->lat;
+    //         $data2->checkout_longitude   = $request->lon;
+    //         $data2->updated_by   = Auth::user()->id;
+    //         $data2->updated_at   = Carbon::now();
+    //         $data2->update();
+    //         return back();
+    //     } else {
+    //         $data2 = CustomerVisitResult::where('id', $request->id)->first();
+    //         $data2->shop_checkin_date   = Carbon::now();
+    //         $data2->checkin_latitude   = $request->lat;
+    //         $data2->checkin_longitude   = $request->lon;
+    //         $data2->updated_by   = Auth::user()->id;
+    //         $data2->updated_at   = Carbon::now();
+    //         $data2->update();
+
+    //         return back();
+    //     }
+    // }
+
+    public function customer_visit_checkin(Request $request)
+    { // เช็คอิน-เช็คเอ้าท์
+        // dd($request);
+
+        $chk_status = CustomerVisitResult::where('customer_visit_id', $request->id)->first();
+
+        if ($chk_status) {
+
+            $data2 = CustomerVisitResult::where('customer_visit_id', $request->id)->first();
+            $data2->cust_visit_checkout_date   = Carbon::now();
+            $data2->cust_visit_checkout_latitude   = $request->lat;
+            $data2->cust_visit_checkout_longitude   = $request->lon;
+            $data2->updated_by   = Auth::user()->id;
+            $data2->updated_at   = Carbon::now();
+            $data2->update();
+            return back();
+
+        }
+        else{
+
+            $data2 = new CustomerVisitResult;
+            $data2->customer_visit_id = $request->id;
+            $data2->cust_visit_checkin_date   = Carbon::now();
+            $data2->cust_visit_checkin_latitude   = $request->lat;
+            $data2->cust_visit_checkin_longitude   = $request->lon;
+            $data2->created_by   = Auth::user()->id;
+            $data2->created_at   = Carbon::now();
+            $data2->save();
+            return back();
+        }
+    }
+
+    public function customer_visit_result_get($id)
+    {
+        $dataResult = CustomerVisitResult::find($id);
+
+
+        $data = array(
+            'dataResult'     => $dataResult,
+        );
+        echo json_encode($data);
+    }
+
+    public function customer_visit_Result(Request $request)
+    { // สรุปผลลัพธ์
+        // dd($request);
+
+        $data2 = CustomerVisitResult::where('customer_visit_id', $request->visit_id)->first();
+        $data2->cust_visit_detail   = $request->visit_result_detail;
+        $data2->cust_visit_status   = $request->visit_result_status;
+        $data2->updated_by   = Auth::user()->id;
+        $data2->updated_at   = Carbon::now();
+        $data2->update();
+
+        return back();
     }
 }

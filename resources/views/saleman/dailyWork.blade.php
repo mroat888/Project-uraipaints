@@ -391,34 +391,24 @@
                                                         style="font-size: 12px;">ลูกค้าใหม่</span></td>
                                                     <td align="center">
                                                         <div class="button-list">
-                                                            {{-- @if ($value->status_result == 1)
+                                                            @if ($value->shop_checkin_date != "" && $value->shop_checkout_date == "")
                                                                 <button class="btn btn-icon btn-primary"
                                                                     data-toggle="modal" data-target="#ModalcheckinCust" onclick="getLocation({{ $value->id }})" disabled>
                                                                     <span class="btn-icon-wrap"><i data-feather="log-in"></i></span></button>
                                                                 <button class="btn btn-icon btn-pumpkin"
                                                                 data-toggle="modal" data-target="#ModalcheckinCust" onclick="getLocation({{ $value->id }})">
                                                                 <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
-                                                                <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalResult" onclick="saleplan_result({{ $value->id }})" disabled>
+                                                                <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalCustResult" onclick="customer_new_result({{ $value->id }})" disabled>
                                                                 <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
 
-                                                            @elseif ($value->status_result == 2)
+                                                            @elseif ($value->shop_checkin_date != "" && $value->shop_checkout_date != "")
                                                                 <button class="btn btn-icon btn-primary"
                                                                 data-toggle="modal" data-target="#ModalcheckinCust" onclick="getLocation({{ $value->id }})" disabled>
                                                                 <span class="btn-icon-wrap"><i data-feather="log-in"></i></span></button>
                                                                 <button class="btn btn-icon btn-pumpkin"
                                                                 data-toggle="modal" data-target="#ModalcheckinCust" onclick="getLocation({{ $value->id }})" disabled>
                                                                 <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
-                                                                <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalResult" onclick="saleplan_result({{ $value->id }})">
-                                                                <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
-
-                                                            @elseif ($value->status_result == 3)
-                                                                <button class="btn btn-icon btn-primary"
-                                                                data-toggle="modal" data-target="#ModalcheckinCust" onclick="getLocation({{ $value->id }})" disabled>
-                                                                <span class="btn-icon-wrap"><i data-feather="log-in"></i></span></button>
-                                                                <button class="btn btn-icon btn-pumpkin"
-                                                                data-toggle="modal" data-target="#ModalcheckinCust" onclick="getLocation({{ $value->id }})" disabled>
-                                                                <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
-                                                                <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalResult" onclick="saleplan_result({{ $value->id }})">
+                                                                <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalCustResult" onclick="customer_new_result({{ $value->id }})">
                                                                 <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
 
                                                                 @else
@@ -428,9 +418,9 @@
                                                                     <button class="btn btn-icon btn-pumpkin"
                                                                     data-toggle="modal" data-target="#ModalcheckinCust" onclick="getLocation({{ $value->id }})" disabled>
                                                                     <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
-                                                                    <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalResult" onclick="saleplan_result({{ $value->id }})" disabled>
+                                                                    <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalCustResult" onclick="customer_new_result({{ $value->id }})" disabled>
                                                                     <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
-                                                            @endif --}}
+                                                            @endif
 
                                                         </div>
                                                     </td>
@@ -496,15 +486,40 @@
                                                                     style="font-weight: bold; font-size: 12px;">ไม่สำเร็จ</span>
                                                             @endif
                                                         </td>
-                                                        <td>
+                                                        <td align="center">
                                                             <div class="button-list">
-                                                                <a href="{{ url('delete_visit', $value->id) }}"
-                                                                    class="btn btn-icon btn-danger mr-10"
-                                                                    onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
-                                                                    <h4 class="btn-icon-wrap" style="color: white;"><i
-                                                                            class="ion ion-md-trash"></i></h4>
-                                                                </a>
-                                                            </div>
+                                                            @if ($value->cust_visit_checkin_date != "" && $value->cust_visit_checkout_date == "")
+
+                                                                <button class="btn btn-icon btn-primary"
+                                                            data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $value->id }})" disabled>
+                                                            <span class="btn-icon-wrap"><i data-feather="log-in"></i></span></button>
+                                                            <button class="btn btn-icon btn-pumpkin"
+                                                            data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $value->id }})">
+                                                            <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
+                                                            <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalVisitResult" onclick="customer_visit_result({{ $value->id }})" disabled>
+                                                            <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
+
+                                                            @elseif ($value->cust_visit_checkin_date != "" && $value->cust_visit_checkout_date != "")
+                                                                <button class="btn btn-icon btn-primary"
+                                                                data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $value->id }})" disabled>
+                                                                <span class="btn-icon-wrap"><i data-feather="log-in"></i></span></button>
+                                                                <button class="btn btn-icon btn-pumpkin"
+                                                                data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $value->id }})" disabled>
+                                                                <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
+                                                                <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalVisitResult" onclick="customer_visit_result({{ $value->id }})">
+                                                                <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
+
+                                                                @else
+                                                                    <button class="btn btn-icon btn-primary"
+                                                                    data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $value->id }})">
+                                                                    <span class="btn-icon-wrap"><i data-feather="log-in"></i></span></button>
+                                                                    <button class="btn btn-icon btn-pumpkin"
+                                                                    data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $value->id }})" disabled>
+                                                                    <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
+                                                                    <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalVisitResult" onclick="customer_visit_result({{ $value->id }})" disabled>
+                                                                    <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
+                                                            @endif
+
                                                         </td>
                                                     </tr>
                                                     <?php
@@ -561,7 +576,7 @@
     <div class="modal fade" id="ModalcheckinCust" tabindex="-1" role="dialog" aria-labelledby="ModalcheckinCust"
         aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
-            <form action="{{ url('coutomer_new_checkin') }}" method="post" enctype="multipart/form-data">
+            <form action="{{ url('customer_new_checkin') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
@@ -573,11 +588,42 @@
                     <div class="modal-body">
                         <div class="mt-20 text-center">
                             {{-- <button type="button" class="btn btn-primary" onclick="getLocation()">GetLocation</button> --}}
-                            <input type="hidden" id="lat" name="lat">
-                            <input type="hidden" id="lon" name="lon">
-                            <p id="demo"></p>
+                            <input type="hidden" id="cust_lat" name="lat">
+                            <input type="hidden" id="cust_lon" name="lon">
+                            <p id="cust_demo"></p>
                         </div>
-                        <input type="hidden" name="id" id="id">
+                        <input type="hidden" name="id" id="cust_id">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                        <button type="submit" class="btn btn-primary">บันทึก</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Check-in/Out Curtomer Visit -->
+    <div class="modal fade" id="ModalcheckinVisit" tabindex="-1" role="dialog" aria-labelledby="ModalcheckinVisit"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <form action="{{ url('customer_visit_checkin') }}" method="post" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Check-in 2 Check-out</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mt-20 text-center">
+                            {{-- <button type="button" class="btn btn-primary" onclick="getLocation()">GetLocation</button> --}}
+                            <input type="hidden" id="visit_lat" name="lat">
+                            <input type="hidden" id="visit_lon" name="lon">
+                            <p id="visit_demo"></p>
+                        </div>
+                        <input type="hidden" name="id" id="visit_id">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
@@ -628,6 +674,85 @@
         </div>
     </div>
 
+    <!-- Modal Customer Result -->
+<div class="modal fade" id="ModalCustResult" tabindex="-1" role="dialog" aria-labelledby="ModalCustResult" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">สรุปผลพบลูกค้าใหม่</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ url('customer_new_Result') }}" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="cust_id" id="get_cust_new_id">
+                        <div class="form-group">
+                            <label for="username">รายละเอียด</label>
+                            <textarea class="form-control" id="get_cust_detail" cols="30" rows="5" placeholder="" name="shop_result_detail"
+                                type="text"> </textarea>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="username">สรุปผลลัพธ์</label>
+                                <select class="form-control custom-select" id="get_cust_result" name="shop_result_status">
+                                    <option selected>-- กรุณาเลือก --</option>
+                                    <option value="0">ไม่สนใจ</option>
+                                    <option value="1">รอตัดสินใจ</option>
+                                    <option value="2">สนใจ/ตกลง</option>
+                                </select>
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary">บันทึก</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+      <!-- Modal Customer Vist Result -->
+<div class="modal fade" id="ModalVisitResult" tabindex="-1" role="dialog" aria-labelledby="ModalVisitResult" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">สรุปผลเยี่ยมลูกค้า</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ url('customer_visit_Result') }}" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <input type="text" name="visit_id" id="get_visit_id">
+                        <div class="form-group">
+                            <label for="username">รายละเอียด</label>
+                            <textarea class="form-control" id="get_visit_detail" cols="30" rows="5" placeholder="" name="visit_result_detail"
+                                type="text"> </textarea>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="username">สรุปผลลัพธ์</label>
+                                <select class="form-control custom-select" id="get_visit_result" name="visit_result_status">
+                                    <option selected>-- กรุณาเลือก --</option>
+                                    <option value="1">สำเร็จ</option>
+                                    <option value="2">ไม่สำเร็จ</option>
+                                </select>
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary">บันทึก</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
     <script>
         var x = document.getElementById("demo");
 
@@ -664,6 +789,78 @@
         }
     </script>
 
+<script>
+    var x = document.getElementById("cust_demo");
+
+    function getLocation(id) {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition, showError);
+        } else {
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+        $("#cust_id").val(id);
+    }
+
+    function showPosition(position) {
+        x.innerHTML = "Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;
+        $("#cust_lat").val(position.coords.latitude);
+        $("#cust_lon").val(position.coords.longitude);
+    }
+
+    function showError(error) {
+        switch (error.code) {
+            case error.PERMISSION_DENIED:
+                x.innerHTML = "User denied the request for Geolocation."
+                reak;
+            case error.POSITION_UNAVAILABLE:
+                x.innerHTML = "Location information is unavailable."
+                break;
+            case error.TIMEOUT:
+                x.innerHTML = "The request to get user location timed out."
+                break;
+            case error.UNKNOWN_ERROR:
+                x.innerHTML = "An unknown error occurred."
+                break;
+        }
+    }
+</script>
+
+
+<script>
+    var x = document.getElementById("visit_demo");
+
+    function getLocation(id) {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition, showError);
+        } else {
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+        $("#visit_id").val(id);
+    }
+
+    function showPosition(position) {
+        x.innerHTML = "Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;
+        $("#visit_lat").val(position.coords.latitude);
+        $("#visit_lon").val(position.coords.longitude);
+    }
+
+    function showError(error) {
+        switch (error.code) {
+            case error.PERMISSION_DENIED:
+                x.innerHTML = "User denied the request for Geolocation."
+                reak;
+            case error.POSITION_UNAVAILABLE:
+                x.innerHTML = "Location information is unavailable."
+                break;
+            case error.TIMEOUT:
+                x.innerHTML = "The request to get user location timed out."
+                break;
+            case error.UNKNOWN_ERROR:
+                x.innerHTML = "An unknown error occurred."
+                break;
+        }
+    }
+</script>
     {{-- <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
     <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 <script>
@@ -712,6 +909,46 @@
                 $('#get_result').val(data.dataResult.sale_plan_status);
 
                 $('#ModalResult').modal('toggle');
+            }
+        });
+    }
+</script>
+
+<script>
+    //Edit
+    function customer_new_result(id) {
+        // $("#get_cust_new_id").val(id);
+        $.ajax({
+            type: "GET",
+            url: "{!! url('customer_new_result_get/"+id+"') !!}",
+            dataType: "JSON",
+            async: false,
+            success: function(data) {
+                $('#get_cust_new_id').val(data.dataResult.id);
+                $('#get_cust_detail').val(data.dataResult.shop_result_detail);
+                $('#get_cust_result').val(data.dataResult.shop_result_status);
+
+                $('#ModalCustResult').modal('toggle');
+            }
+        });
+    }
+</script>
+
+<script>
+    //Edit
+    function customer_visit_result(id) {
+        // $("#get_cust_new_id").val(id);
+        $.ajax({
+            type: "GET",
+            url: "{!! url('customer_visit_result_get/"+id+"') !!}",
+            dataType: "JSON",
+            async: false,
+            success: function(data) {
+                $('#get_visit_id').val(data.dataResult.customer_visit_id);
+                $('#get_visit_detail').val(data.dataResult.cust_visit_detail);
+                $('#get_visit_result').val(data.dataResult.cust_visit_status);
+
+                $('#ModalVisitResult').modal('toggle');
             }
         });
     }

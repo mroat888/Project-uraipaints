@@ -54,7 +54,7 @@ class NoteController extends Controller
             'note_title' => $request->note_title,
             'note_detail' => $request->note_detail,
             'note_tags' => $request->note_tags,
-            'employee_id' => Auth::auth()->id,
+            'employee_id' => Auth::user()->id,
         ]);
 
         return back();
