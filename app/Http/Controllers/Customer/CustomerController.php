@@ -5,14 +5,11 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Customer;
-<<<<<<< HEAD
 use App\ObjectiveCustomer;
 use App\CustomerVisit;
-=======
 use App\ObjectiveSaleplan;
 // use App\CustomerVisit;
 use App\MonthlyPlan;
->>>>>>> d10bb97b14c71b7c89152f3705b701c0a74a4ff1
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -82,7 +79,6 @@ class CustomerController extends Controller
                 $uploadfile = $file_name;
             }
 
-<<<<<<< HEAD
             $data = new Customer;
             $data->shop_name           = $request->shop_name;
             $data->shop_address        = $request->shop_address;
@@ -97,7 +93,7 @@ class CustomerController extends Controller
             $data->created_by          = Auth::user()->id;
             $data->created_at          = Carbon::now();
             $data->save();
-=======
+
             $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('id', 'desc')->first();
             DB::table('customer_shops')
             ->insert([
@@ -115,7 +111,6 @@ class CustomerController extends Controller
                 'created_by'          => Auth::user()->id,
                 'created_at'          => Carbon::now(),
             ]);
->>>>>>> d10bb97b14c71b7c89152f3705b701c0a74a4ff1
 
             $sql_shops = DB::table('customer_shops')
                 ->orderBy('customer_shops.id', 'desc')->first();
