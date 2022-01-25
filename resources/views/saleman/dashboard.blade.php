@@ -72,16 +72,17 @@
                             <div class="card card-sm text-white bg-danger">
                                 <div class="card-body">
                                     <span class="d-block font-16 font-weight-500 text-uppercase mb-10">
-                                        <button class="btn btn-icon btn-icon-circle btn-light btn-lg mr-25"><span class="btn-icon-wrap"><i
+                                        <button class="btn btn-icon btn-icon-circle btn-light mr-25"><span class="btn-icon-wrap"><i
                                             data-feather="edit-2"></i></span></button>
-                                        <span class="float-right">ขออนุมัติ {{$list_approval->count()}}</span></span>
-                                    {{-- <div class="d-flex align-items-end justify-content-between">
+                                        {{-- <span class="float-right">ขออนุมัติ {{$list_approval->count()}}</span> --}}
+                                    </span>
+                                    <div class="d-flex align-items-end justify-content-between">
                                         <div>
                                             <span class="d-block">
                                                 <span>คำขออนุมัติ 5</span>
                                             </span>
                                         </div>
-                                    </div> --}}
+                                    </div>
                                     <div class="d-flex align-items-end justify-content-between mt-10 font-16">
                                         <div>
                                             <span class="d-block">
@@ -119,16 +120,17 @@
                             <div class="card card-sm text-white bg-success">
                                 <div class="card-body">
                                     <span class="d-block font-16 font-weight-500 text-uppercase mb-10">
-                                            <button class="btn btn-icon btn-icon-circle btn-light btn-lg mr-25"><span class="btn-icon-wrap"><i
+                                            <button class="btn btn-icon btn-icon-circle btn-light mr-25"><span class="btn-icon-wrap"><i
                                                 data-feather="clipboard"></i></span></button>
-                                        <span class="float-right">คำสั่งงาน {{ $assignments->count() }}</span></span>
-                                    {{-- <div class="d-flex align-items-end justify-content-between">
+                                        {{-- <span class="float-right">คำสั่งงาน {{ $assignments->count() }}</span> --}}
+                                    </span>
+                                    <div class="d-flex align-items-end justify-content-between">
                                         <div>
                                             <span class="d-block">
                                                 <span>คำสั่งงาน 8</span>
                                             </span>
                                         </div>
-                                    </div> --}}
+                                    </div>
                                     <div class="d-flex align-items-end justify-content-between mt-10 font-16">
                                         <div>
                                             <span class="d-block">

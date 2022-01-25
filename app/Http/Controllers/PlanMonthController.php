@@ -102,8 +102,26 @@ class PlanMonthController extends Controller
                 'shop_mobile' => $res_visit_api['mobile'],
             ];
         }
-
          // -----  END API
+
+         $data['saleplan_api'] = array();
+        foreach($data['list_saleplan'] as $key => $saleplan){
+
+            $response_saleplan = Http::withToken($api_token)
+                                ->get('http://49.0.64.92:8020/api/v1/customers/'.$saleplan->customer_shop_id);
+            $res_saleplan_api = $response_saleplan->json();
+
+            $res_saleplan_api = $res_saleplan_api['data'][0];
+            $data['saleplan_api'][$key] =
+            [
+                'id' => $saleplan->id,
+                'identify' => $res_saleplan_api['identify'],
+                'shop_name' => $res_saleplan_api['title']." ".$res_saleplan_api['name'],
+                'shop_address' => $res_saleplan_api['address1']." ".$res_saleplan_api['adrress2'],
+                'shop_phone' => $res_saleplan_api['telephone'],
+                'shop_mobile' => $res_saleplan_api['mobile'],
+            ];
+        }
 
 
         // dd($data);

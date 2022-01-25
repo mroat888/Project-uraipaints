@@ -253,16 +253,40 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($list_saleplan as $key => $value)
+                                                    <tr>
+                                                        <td>{{$key + 1}}</td>
+                                                        <td>{{ $value->sale_plans_title }}</td>
+                                                        <td>{{$saleplan_api[$key]['shop_name']}}</td>
+                                                        <td><span class="badge badge-soft-indigo mt-15 mr-10"
+                                                            style="font-size: 12px;">Comment</span>
+                                                        </td>
+                                                        <td style="text-align:center">
+                                                            <div class="button-list">
+                                                                <button class="btn btn-icon btn-warning mr-10 btn_editshop"
+                                                                    onclick="edit_modal({{ $value->id }})"
+                                                                    data-toggle="modal" data-target="#saleplanEdit">
+                                                                    <h4 class="btn-icon-wrap" style="color: white;"><i
+                                                                            class="ion ion-md-create"></i></h4>
+                                                                </button>
+                                                                <button class="btn btn-icon btn-danger mr-10">
+                                                                    <h4 class="btn-icon-wrap" style="color: white;"><i
+                                                                            class="ion ion-md-trash"></i></h4>
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                {{-- @foreach ($list_saleplan as $key => $value)
                                                     <?php
-                                                        if ($monthly_plan_id == $value->monthly_plan_id) {
+                                                        // if ($monthly_plan_id == $value->monthly_plan_id) {
                                                     ?>
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
                                                         <td><span
                                                                 class="topic_purple">{{ $value->sale_plans_title }}</span>
                                                         </td>
-                                                        {{-- <td>11/10/2021</td> --}}
-                                                        {{-- <td>{{ $value->shop_name }}</td> --}}
+                                                        <td>11/10/2021</td>
+                                                        <td>{{ $value->shop_name }}</td>
                                                         <td><span class="badge badge-soft-indigo mt-15 mr-10"
                                                                 style="font-size: 12px;">Comment</span></td>
                                                         <td style="text-align:center">
@@ -280,8 +304,10 @@
                                                             </div>
                                                         </td>
                                                     </tr>
-                                                    <?php } ?>
-                                                @endforeach
+                                                    <?php
+                                                //  }
+                                                 ?>
+                                                @endforeach --}}
                                             </tbody>
                                         </table>
                                     </div>
