@@ -13,7 +13,15 @@
 
     <!-- Container -->
     <div class="container-fluid px-xxl-65 px-xl-20">
-
+        @if (session('error'))
+        <div class="alert alert-inv alert-inv-warning alert-wth-icon alert-dismissible fade show" role="alert">
+            <span class="alert-icon-wrap"><i class="zmdi zmdi-help"></i>
+            </span> {{ session('error') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
         <!-- Title -->
         <div class="hk-pg-header mb-10">
             <div>
@@ -21,9 +29,12 @@
                     data-feather="file-text"></i></span></span>รายการข้อมูลการขออนุมัติ</h4>
             </div>
             <div class="d-flex">
-                <button type="button" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" id="btn_approve">อนุมัติ</button>
+                <form action="{{ url('lead/approval_confirm_detail') }}" method="POST"
+                enctype="multipart/form-data">
+                @csrf
+                <button type="submit" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" name="approve" value="approve">อนุมัติ</button>
 
-                <button type="button" class="btn btn_purple btn-danger btn-sm btn-rounded px-3 ml-5">ไม่อนุมัติ</button>
+                <button type="submit" class="btn btn_purple btn-danger btn-sm btn-rounded px-3 ml-5" name="failed" value="failed">ไม่อนุมัติ</button>
             </div>
         </div>
         <!-- /Title -->
@@ -52,7 +63,7 @@
                         </div>
                     </div>
                     <div class="row mb-2">
-                            <div class="col-md-3">
+                            <div class="col-md-12">
                                 <h5 class="hk-sec-title">ตารางรายการข้อมูลการขออนุมัติ</h5>
                             </div>
                             <div class="col-md-9">
@@ -68,7 +79,7 @@
                                             <th>
                                                 <div class="custom-control custom-checkbox checkbox-info">
                                                     <input type="checkbox" class="custom-control-input"
-                                                        id="customCheck4" onclick="chkAll(this);">
+                                                        id="customCheck4" onclick="chkAll(this);" name="CheckAll" value="Y">
                                                     <label class="custom-control-label"
                                                         for="customCheck4">ทั้งหมด</label>
                                                 </div>
@@ -84,15 +95,13 @@
                                     <tbody>
                                         @foreach ($request_approval as $key => $value)
                                         <tr>
-                                            {{-- <form id="form_insert_saleplan" enctype="multipart/form-data"> --}}
                                             <td>
                                                 <div class="custom-control custom-checkbox checkbox-info">
                                                     <input type="checkbox" class="custom-control-input checkapprove"
-                                                        name="checkapprove[]" id="customCheck41" value="1">
-                                                    <label class="custom-control-label" for="customCheck41"></label>
+                                                        name="checkapprove[]" id="customCheck{{$key + 1}}" value="{{$value->id}}">
+                                                    <label class="custom-control-label" for="customCheck{{$key + 1}}"></label>
                                                 </div>
                                             </td>
-                                            {{-- </form> --}}
                                             <td>{{$key + 1}}</td>
                                             <td>{{$value->assign_request_date}}</td>
                                             <td>
@@ -108,9 +117,11 @@
                                                 <span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-icon btn-primary btn-link btn_showplan" value="3">
-                                                    <i data-feather="message-square"></i>
-                                                </button>
+                                                <a href="{{ url('comment_approval', [$value->id, $value->created_by]) }}" class="btn btn-icon btn-info mr-10">
+                                                    <h4 class="btn-icon-wrap" style="color: white;">
+                                                        <i data-feather="message-square"></i>
+                                                    </h4>
+                                                </a>
                                             </td>
                                         </tr>
                                         @endforeach
@@ -122,6 +133,7 @@
                 </section>
             </div>
         </div>
+    </form>
         <!-- /Row -->
     </div>
     <!-- /Container -->
@@ -132,6 +144,23 @@
     @include('leadManager.saleplan_display')
 </div>
 
+<script type="text/javascript">
+    function chkAll(checkbox) {
+
+        var cboxes = document.getElementsByName('checkapprove[]');
+        var len = cboxes.length;
+
+        if (checkbox.checked == true) {
+            for (var i = 0; i < len; i++) {
+                cboxes[i].checked = true;
+            }
+        } else {
+            for (var i = 0; i < len; i++) {
+                cboxes[i].checked = false;
+            }
+        }
+    }
+</script>
 
 @endsection('content')
 

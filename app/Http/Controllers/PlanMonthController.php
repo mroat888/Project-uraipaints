@@ -54,7 +54,7 @@ class PlanMonthController extends Controller
             ->where('customer_visits.monthly_plan_id', $data['monthly_plan_next']->id)
             ->where('customer_visits.created_by', Auth::user()->id)
             ->orderBy('id', 'desc')->get();
-         
+
         // -----  API ----------- //
         $response = Http::post('http://49.0.64.92:8020/api/auth/login', [
             'username' => 'apiuser',

@@ -124,6 +124,7 @@
                 </section>
             </div>
         </div>
+    </form>
         <!-- /Row -->
     </div>
     <!-- /Container -->

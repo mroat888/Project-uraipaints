@@ -46,7 +46,9 @@
                 <form action="{{ url('lead/approval_saleplan_confirm_all') }}" method="POST"
                 enctype="multipart/form-data">
                 @csrf
-                <button type="submit" class="btn btn_purple btn-violet btn-sm btn-rounded px-3">อนุมัติ</button>
+                <button type="submit" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" name="approve" value="approve">อนุมัติ</button>
+
+                <button type="submit" class="btn btn_purple btn-danger btn-sm btn-rounded px-3 ml-5" name="failed" value="failed">ไม่อนุมัติ</button>
             </div>
         </div>
         <!-- /Title -->

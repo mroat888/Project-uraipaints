@@ -88,7 +88,7 @@
                                                                 <span class="btn-icon-wrap"><i
                                                                         data-feather="edit"></i></span></a> --}}
                                                                 <form action="{{ url('approve_monthly_plan', $value->id) }}" method="GET">
-                                                                    @if ($value->status_approve == 1)
+                                                                    @if ($value->status_approve == 1 || $value->status_approve == 2)
                                                                     <button type="button" class="btn btn-icon btn-secondary requestApproval" disabled>
                                                                         <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
                                                                         @else
@@ -262,7 +262,7 @@
                                                                 class="topic_purple">{{ $value->sale_plans_title }}</span>
                                                         </td>
                                                         {{-- <td>11/10/2021</td> --}}
-                                                        <td>{{ $value->shop_name }}</td>
+                                                        {{-- <td>{{ $value->shop_name }}</td> --}}
                                                         <td><span class="badge badge-soft-indigo mt-15 mr-10"
                                                                 style="font-size: 12px;">Comment</span></td>
                                                         <td style="text-align:center">

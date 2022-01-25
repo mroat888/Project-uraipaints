@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/index.html', 'Saleman\DashboardController@index');
 
 // Sale
-Route::get('dashboard',  'Saleman\DashboardController@index');
+Route::get('dashboard',  'SaleMan\DashboardController@index');
 
 // Route::get('/planMonth', function () { return view('saleman.planMonth'); });
 Route::get('planMonth', 'PlanMonthController@index');
@@ -121,7 +121,7 @@ Route::get('lead/viewAssignmentDetail', function () { return view('leadManager.v
 
 Route::get('/approvalsaleplan', 'LeadManager\ApprovalSalePlanController@index');
 Route::get('/approvalsaleplan_detail/{id}', 'LeadManager\ApprovalSalePlanController@approvalsaleplan_detail');
-Route::get('comment_saleplan/{id}', 'LeadManager\ApprovalSalePlanController@comment_saleplan');
+Route::get('comment_saleplan/{id}/{createID}', 'LeadManager\ApprovalSalePlanController@comment_saleplan');
 // Route::post('lead/create_comment_saleplan', 'LeadManager\ApprovalSalePlanController@create_comment_saleplan');
 Route::post('lead/create_comment_saleplan', 'LeadManager\ApprovalSalePlanController@create_comment_saleplan');
 Route::post('lead/approval_saleplan_confirm', 'LeadManager\ApprovalSalePlanController@approval_saleplan_confirm');
@@ -130,8 +130,12 @@ Route::post('lead/approval_saleplan_confirm_all', 'LeadManager\ApprovalSalePlanC
 Route::get('/approvalgeneral', 'LeadManager\ApprovalController@index');
 Route::post('lead/approval_confirm_all', 'LeadManager\ApprovalController@approval_confirm_all');
 Route::get('lead/approval_general_detail/{id}', 'LeadManager\ApprovalController@approval_general_detail');
+Route::post('lead/approval_confirm_detail', 'LeadManager\ApprovalController@approval_confirm_detail');
 Route::post('lead/approvalUpdate', 'LeadManager\ApprovalController@approvalUpdate');
-Route::get('/approvalgeneral/history', function () { return view('leadManager.approval_general_history'); });
+Route::get('comment_approval/{id}/{createID}', 'LeadManager\ApprovalController@comment_approval');
+Route::post('lead/create_comment_request_approval', 'LeadManager\ApprovalController@create_comment_request_approval');
+Route::get('/approvalgeneral/history', 'LeadManager\ApprovalController@approval_history');
+Route::get('lead/approval_general_history_detail/{id}', 'LeadManager\ApprovalController@approval_general_history_detail');
 
 // Assignment
 Route::get('add_assignment', 'AssignmentController@index');

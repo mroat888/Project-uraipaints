@@ -7,6 +7,7 @@ use App\AssignmentComment;
 use App\Http\Controllers\Controller;
 use App\MonthlyPlan;
 use App\SalePlan;
+use App\SaleplanComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -89,72 +90,42 @@ class ApprovalSalePlanController extends Controller
     //     ]);
     // }
 
-    public function comment_saleplan($id)
+    public function comment_saleplan($id, $createID)
     {
         // return $id;
 
-            $data = AssignmentComment::where('assign_id', $id)->first();
+            $data['data'] = SaleplanComment::where('saleplan_id', $id)->first();
+            $data['saleplanID'] = $id;
+            $data['createID'] = $createID;
             // return $data;
             if ($data) {
-                return view('leadManager.create_comment_saleplan', compact('data'));
+                return view('leadManager.create_comment_saleplan', $data);
             }else {
-                return view('leadManager.create_comment_saleplan', compact('data'));
+                return view('leadManager.create_comment_saleplan', $data);
             }
     }
 
     public function create_comment_saleplan(Request $request)
     {
-        dd($request);
-            $data = AssignmentComment::where('assign_id', $request->id)->first();
-            return $request->id;
+        // dd($request);
+            $data = SaleplanComment::where('saleplan_id', $request->id)->first();
+            // return $request->id;
             if ($data) {
-               $dataEdit = AssignmentComment::where('assign_id', $request->id)->update([
-                    'assign_comment_detail' => $request->comment,
+               $dataEdit = SaleplanComment::where('saleplan_id', $request->id)->update([
+                    'saleplan_comment_detail' => $request->comment,
                     'updated_by' => Auth::user()->id,
                 ]);
-                // return redirect(url('approvalsaleplan_detail',$request->id));
+                return redirect(url('approvalsaleplan_detail', $request->createID));
 
             } else {
-                AssignmentComment::create([
-                    'assign_id' => $request->id,
-                    'assign_comment_detail' => $request->comment,
+                SaleplanComment::create([
+                    'saleplan_id' => $request->id,
+                    'saleplan_comment_detail' => $request->comment,
                     'created_by' => Auth::user()->id,
                 ]);
+                return redirect(url('approvalsaleplan_detail', $request->createID));
             }
 
-    }
-
-    public function approval_saleplan_confirm(Request $request)
-    {
-        // dd($request);
-
-        if ($request->checkapprove) {
-            $data = SalePlan::get();
-            if ($request->CheckAll == "Y") {
-                // return "yy";
-                foreach ($data as $value) {
-                    foreach ($request->checkapprove as $key => $chk) {
-                        SalePlan::where('id', $chk)->update([
-                            'sale_plans_status' => 2,
-                            'updated_by' => Auth::user()->id,
-                        ]);
-                    }
-                }
-            } else {
-                foreach ($data as $value) {
-                    foreach ($request->checkapprove as $key => $chk) {
-                        SalePlan::where('id', $chk)->update([
-                            'sale_plans_status' => 2,
-                            'updated_by' => Auth::user()->id,
-                        ]);
-                    }
-                }
-            }
-        } else {
-            return back()->with('error', "กรุณาเลือกรายการอนุมัติ");
-        }
-
-        return back();
     }
 
     public function approval_saleplan_confirm_all(Request $request)
@@ -162,35 +133,115 @@ class ApprovalSalePlanController extends Controller
         // dd($request);
 
         if ($request->checkapprove) {
-            $data = SalePlan::get();
+            if ($request->approve) {
+            if ($request->CheckAll == "Y") {
+
+                    foreach ($request->checkapprove as $key => $chk) {
+                        SalePlan::where('monthly_plan_id', $chk)->update([
+                            'sale_plans_status' => 2,
+                            'updated_by' => Auth::user()->id,
+                        ]);
+                        MonthlyPlan::where('id', $chk)->update([
+                            'status_approve' => 2,
+                            'updated_by' => Auth::user()->id,
+                        ]);
+                    }
+            } else {
+                    foreach ($request->checkapprove as $key => $chk) {
+                        SalePlan::where('monthly_plan_id', $chk)->update([
+                            'sale_plans_status' => 2,
+                            'updated_by' => Auth::user()->id,
+                        ]);
+                        MonthlyPlan::where('id', $chk)->update([
+                            'status_approve' => 2,
+                            'updated_by' => Auth::user()->id,
+                        ]);
+                    }
+            }
+
+        }else {
             if ($request->CheckAll == "Y") {
                 // return "yy";
-                foreach ($data as $value) {
-                    foreach ($request->checkapprove as $key => $chk) {
-                        SalePlan::where('monthly_plan_id', $chk)->update([
-                            'sale_plans_status' => 2,
-                            'updated_by' => Auth::user()->id,
-                        ]);
-                        MonthlyPlan::where('id', $chk)->update([
-                            'status_approve' => 2,
-                            'updated_by' => Auth::user()->id,
-                        ]);
-                    }
+                foreach ($request->checkapprove as $key => $chk) {
+                    SalePlan::where('monthly_plan_id', $chk)->update([
+                        'sale_plans_status' => 3,
+                        'updated_by' => Auth::user()->id,
+                    ]);
+                    MonthlyPlan::where('id', $chk)->update([
+                        'status_approve' => 3,
+                        'updated_by' => Auth::user()->id,
+                    ]);
                 }
+                return back();
             } else {
-                foreach ($data as $value) {
+                foreach ($request->checkapprove as $key => $chk) {
+                    SalePlan::where('monthly_plan_id', $chk)->update([
+                        'sale_plans_status' => 3,
+                        'updated_by' => Auth::user()->id,
+                    ]);
+                    MonthlyPlan::where('id', $chk)->update([
+                        'status_approve' => 3,
+                        'updated_by' => Auth::user()->id,
+                    ]);
+                }
+                // return back();
+            }
+    }
+
+        } else {
+            return back()->with('error', "กรุณาเลือกรายการอนุมัติ");
+        }
+
+        return back();
+    }
+
+    public function approval_saleplan_confirm(Request $request)
+    {
+        // dd($request);
+
+        if ($request->checkapprove) {
+            if ($request->approve) {
+            if ($request->CheckAll == "Y") {
+                // return "yy";
                     foreach ($request->checkapprove as $key => $chk) {
-                        SalePlan::where('monthly_plan_id', $chk)->update([
+                        SalePlan::where('id', $chk)->update([
                             'sale_plans_status' => 2,
                             'updated_by' => Auth::user()->id,
                         ]);
-                        MonthlyPlan::where('id', $chk)->update([
-                            'status_approve' => 2,
+
+                        // MonthlyPlan::where('id', $chk)->update([
+                        //     'status_approve' => 2,
+                        //     'updated_by' => Auth::user()->id,
+                        // ]);
+                    }
+            } else {
+                    foreach ($request->checkapprove as $key => $chk) {
+                        SalePlan::where('id', $chk)->update([
+                            'sale_plans_status' => 2,
                             'updated_by' => Auth::user()->id,
                         ]);
                     }
-                }
             }
+        }else {
+                if ($request->CheckAll == "Y") {
+                    // return "yy";
+                        foreach ($request->checkapprove as $key => $chk) {
+                            SalePlan::where('id', $chk)->update([
+                                'sale_plans_status' => 3,
+                                'updated_by' => Auth::user()->id,
+                            ]);
+                        }
+                    return back();
+                } else {
+                        foreach ($request->checkapprove as $key => $chk) {
+                            SalePlan::where('id', $chk)->update([
+                                'sale_plans_status' => 3,
+                                'updated_by' => Auth::user()->id,
+                            ]);
+                        }
+                    return back();
+                }
+        }
         } else {
             return back()->with('error', "กรุณาเลือกรายการอนุมัติ");
         }

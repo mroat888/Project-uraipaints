@@ -36,8 +36,9 @@
                 enctype="multipart/form-data">
                 @csrf
                 <div class="d-flex">
-                    {{-- <button type="button" class="btn btn-teal btn-sm btn-rounded px-3 mr-10" data-toggle="modal" data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button> --}}
-                    <button type="submit" class="btn btn-teal btn-sm btn-rounded px-3" id="ss">อนุมัติ</button>
+                    <button type="submit" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" name="approve" value="approve">อนุมัติ</button>
+
+                    <button type="submit" class="btn btn_purple btn-danger btn-sm btn-rounded px-3 ml-5" name="failed" value="failed">ไม่อนุมัติ</button>
                 </div>
         </div>
         <!-- /Title -->
@@ -98,18 +99,11 @@
                                                 <td><span class="badge badge-soft-warning"
                                                         style="font-size: 12px;">Pending</span></td>
                                                 <td>
-                                                    <a href="{{ url('comment_saleplan', $value->id) }}" class="btn btn-icon btn-warning mr-10">
+                                                    <a href="{{ url('comment_saleplan', [$value->id, $value->created_by]) }}" class="btn btn-icon btn-info mr-10">
                                                         <h4 class="btn-icon-wrap" style="color: white;">
                                                             <i data-feather="message-square"></i>
                                                         </h4>
                                                     </a>
-                                                    {{-- <button class="btn btn-icon btn-primary mr-10"
-                                                        onclick="edit_modal({{ $value->id }})" data-toggle="modal"
-                                                        data-target="#exampleModalLarge02">
-                                                        <h4 class="btn-icon-wrap" style="color: white;">
-                                                            <i data-feather="message-square"></i>
-                                                        </h4>
-                                                    </button> --}}
                                                 </td>
                                             </tr>
                                             <?php

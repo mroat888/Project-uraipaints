@@ -6,7 +6,8 @@
         <ol class="breadcrumb breadcrumb-light bg-transparent">
             <li class="breadcrumb-item"><a href="#">Page</a></li>
             <li class="breadcrumb-item">การขออนุมัติ</li>
-            <li class="breadcrumb-item active" aria-current="page">ประวัติการขออนุมัติ</li>
+            <li class="breadcrumb-item">ประวัติการขออนุมัติ</li>
+            <li class="breadcrumb-item active" aria-current="page">รายละเอียดประวัติการขออนุมัติ</li>
         </ol>
     </nav>
     <!-- /Breadcrumb -->
@@ -18,7 +19,7 @@
         <div class="hk-pg-header mb-10">
             <div>
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                    data-feather="file-text"></i></span></span>ประวัติการขออนุมัติ</h4>
+                    data-feather="file-text"></i></span></span>รายละเอียดประวัติการขออนุมัติ</h4>
             </div>
         </div>
         <!-- /Title -->
@@ -48,7 +49,7 @@
                     </div>
                     <div class="row mb-2">
                             <div class="col-md-3">
-                                <h5 class="hk-sec-title">ตารางประวัติการขออนุมัติ</h5>
+                                <h5 class="hk-sec-title">ตารางรายละเอียดประวัติการขออนุมัติ</h5>
                             </div>
                             <div class="col-md-9">
                                 <!-- ------ -->
@@ -74,21 +75,21 @@
                                     <thead align="center">
                                         <tr>
                                             <th>#</th>
-                                            {{-- <th>วันที่อนุมัติ</th> --}}
-                                            {{-- <th>เรื่อง</th> --}}
+                                            <th>วันที่อนุมัติ</th>
+                                            <th>เรื่อง</th>
                                             <th>พนักงาน</th>
-                                            {{-- <th>การอนุมัติ</th> --}}
+                                            <th>การอนุมัติ</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody align="center">
-                                        @foreach ($approval_history as $key => $value)
+                                        @foreach ($history as $key => $value)
                                         <tr>
                                             <td>{{$key + 1}}</td>
-                                            {{-- <td>{{$value->assign_approve_date}}</td> --}}
-                                            {{-- <td>{{$value->assign_title}}</td> --}}
+                                            <td>{{$value->assign_approve_date}}</td>
+                                            <td>{{$value->assign_title}}</td>
                                             <td>{{$value->name}}</td>
-                                            {{-- <td>
+                                            <td>
                                                 @if ($value->assign_status == 1)
                                                     <span class="badge badge-soft-success" style="font-size: 12px;">Approval</span>
                                                 @elseif ($value->assign_status == 2)
@@ -98,11 +99,15 @@
                                                 @if ($value->assign_id)
                                                     <span class="badge badge-soft-indigo" style="font-size: 12px;">Comment</span>
                                                 @endif
-                                            </td> --}}
+                                            </td>
                                             <td>
-                                                <a href="{{url('lead/approval_general_history_detail', $value->created_by)}}" class="btn btn-icon btn-primary btn-link btn_showplan pt-5" value="3">
-                                                    <i data-feather="file-text"></i>
+                                                @if ($value->assign_id)
+                                                <a href="{{ url('comment_approval', [$value->id, $value->created_by]) }}" class="btn btn-icon btn-info mr-10">
+                                                    <h4 class="btn-icon-wrap" style="color: white;">
+                                                        <i data-feather="message-square"></i>
+                                                    </h4>
                                                 </a>
+                                                @endif
                                             </td>
                                         </tr>
                                         @endforeach
