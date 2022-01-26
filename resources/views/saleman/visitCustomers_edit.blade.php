@@ -101,7 +101,7 @@
 
     <script>
         $(document).ready(function() {
-             
+                        
             $("#sel_searchShop2").on("change", function (e) { 
                 e.preventDefault();
                 let shop_id = $(this).val();

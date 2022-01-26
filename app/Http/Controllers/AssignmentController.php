@@ -20,8 +20,9 @@ class AssignmentController extends Controller
         ->select('assignments.*', 'users.name')
         ->orderBy('assignments.id', 'desc')->get();
 
-        $user = DB::table('users')->get();
-        return view('leadManager.add_assignment', compact('assignments', 'user'));
+        $users = DB::table('users')->get();
+
+        return view('leadManager.add_assignment', compact('assignments', 'users'));
     }
 
     public function store(Request $request)

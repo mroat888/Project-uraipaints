@@ -23,7 +23,7 @@ Route::get('/index.html', 'Saleman\DashboardController@index');
 Route::get('dashboard',  'SaleMan\DashboardController@index');
 
 // Route::get('/planMonth', function () { return view('saleman.planMonth'); });
-Route::get('planMonth', 'PlanMonthController@index');
+Route::get('/planMonth', 'PlanMonthController@index');
 Route::get('approve_monthly_plan/{id}', 'PlanMonthController@approve');
 Route::get('dailyWork', 'SaleMan\DailyWorkController@index');
 Route::get('/palncalendar', function () { return view('saleplan.salePalnCalendar'); });
@@ -77,6 +77,7 @@ Route::get('saleplan', 'SaleMan\SalePlanController@index');
 Route::get('searchShop_saleplan/{id}', 'SaleMan\SalePlanController@fetch_customer_shops_saleplan');
 Route::post('create_saleplan', 'SaleMan\SalePlanController@store');
 Route::get('edit_saleplan/{id}', 'SaleMan\SalePlanController@edit');
+Route::post('/saleplanEdit_fetch', 'SaleMan\SalePlanController@edit_fetch'); // OAT ใช้ในหน้า planMonth เป็น Modal
 Route::post('update_saleplan', 'SaleMan\SalePlanController@update');
 Route::get('delete_saleplan/{id}', 'SaleMan\SalePlanController@destroy');
 Route::post('saleplan_checkin', 'SaleMan\SalePlanController@saleplan_checkin');

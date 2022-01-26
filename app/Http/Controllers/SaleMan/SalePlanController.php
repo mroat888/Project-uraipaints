@@ -53,6 +53,7 @@ class SalePlanController extends Controller
                 'sale_plans_objective' => $request->sale_plans_objective,
                 'sale_plans_status' => 1,
                 'created_by' => Auth::user()->id,
+                'created_at' => date('Y-m-d H:i:s'),
             ]);
 
             DB::table('monthly_plans')->where('id', $monthly_plan->id)
@@ -80,8 +81,8 @@ class SalePlanController extends Controller
 
 
     public function edit($id)
-    {
-        // $dataEdit = SalePlan::find($id);
+    { 
+        $dataEdit = SalePlan::find($id);
         $dataEdit = SalePlan::join('customer_shops', 'sale_plans.customer_shop_id', '=', 'customer_shops.id')
             ->join('customer_contacts', 'customer_shops.id', '=', 'customer_contacts.customer_shop_id')
             ->where('sale_plans.id', $id)->select(
@@ -101,7 +102,41 @@ class SalePlanController extends Controller
         $data = array(
             'dataEdit'     => $dataEdit,
         );
-        echo json_encode($data);
+
+        echo json_encode($data); 
+    }
+
+    public function edit_fetch(Request $request)
+    {
+        $saleplan = DB::table('sale_plans')->where('id', $request->id)->first();
+
+        // ------ API 
+        $response = Http::withToken($request->api_token)->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers');
+        $res_api = $response->json();
+
+        $customer_api = array();
+        foreach ($res_api['data'] as $key => $value) {
+            if($value['identify'] == $saleplan->customer_shop_id){
+                $shop_address   = $value['address1']." ".$value['adrress2'];
+                $shop_phone     = $value['telephone'];
+                $shop_mobile    = $value['mobile'];
+            }
+            $customer_api[$key] = 
+            [
+                'id' => $value['identify'],
+                'shop_name' => $value['title']." ".$value['name'],        
+            ];
+        }       
+        // -----  END API 
+
+        return response()->json([
+            'status' => 200,
+            'salepaln' => $saleplan,
+            'customer_api' => $customer_api,
+            'shop_address' => $shop_address,
+            'shop_phone' => $shop_phone,
+            'shop_mobile' => $shop_mobile,
+        ]);
     }
 
     public function update(Request $request)

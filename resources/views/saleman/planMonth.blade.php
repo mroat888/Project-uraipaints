@@ -229,22 +229,27 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($list_saleplan as $key => $value)
-
-                                                    <?php
-                                                        // if ($monthly_plan_id == $value->monthly_plan_id) {
-                                                            ?>
                                                     <tr>
-                                                        <td>{{$key + 1}}</td>
+                                                        <td>{{ $key + 1 }}</td>
                                                         <td>{{ $value->sale_plans_title }}</td>
-                                                        <td>{{$saleplan_api[$key]['shop_name']}}</td>
+                                                        <td>
+                                                            @php 
+                                                                $response_saleplan = Http::withToken($api_token)
+                                                                                        ->get('http://49.0.64.92:8020/api/v1/customers/'.$value->customer_shop_id);
+                                                                $res_saleplan_api = $response_saleplan->json();
+                                                                $res_saleplan_api = $res_saleplan_api['data'][0];
+                                                            @endphp
+                                                            @if(isset($res_saleplan_api))
+                                                                {{ $res_saleplan_api['title'] }} {{ $res_saleplan_api['name'] }}
+                                                            @endif
+                                                        </td>
                                                         <td><span class="badge badge-soft-indigo mt-15 mr-10"
                                                             style="font-size: 12px;">Comment</span>
                                                         </td>
                                                         <td style="text-align:center">
                                                             <div class="button-list">
-                                                                <button class="btn btn-icon btn-warning mr-10 btn_editshop"
-                                                                    onclick="edit_modal({{ $value->id }})"
-                                                                    data-toggle="modal" data-target="#saleplanEdit">
+                                                                <button class="btn btn-icon btn-warning mr-10 btn_editsalepaln" 
+                                                                    value="{{ $value->id }}">
                                                                     <h4 class="btn-icon-wrap" style="color: white;"><i
                                                                             class="ion ion-md-create"></i></h4>
                                                                 </button>
@@ -256,52 +261,6 @@
                                                         </td>
                                                     </tr>
                                                 @endforeach
-                                                {{-- @foreach ($list_saleplan as $key => $value)
-                                                    <?php
-                                                        // if ($monthly_plan_id == $value->monthly_plan_id) {
-                                                    ?>
-
-                                                    <tr>
-                                                        <td>{{ $key + 1 }}</td>
-                                                        <td><span
-                                                                class="topic_purple">{{ $value->sale_plans_title }}</span>
-                                                        </td>
-                                                        {{-- <td>11/10/2021</td> --}}
-                                                        <td>
-
-                                                        <?php
-                                                            // $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/customers/'.$value->customer_shop_id);
-                                                            // $res_api = $response->json();
-                                                            // $res_api = $res_api['data'][0];
-                                                        ?>
-                                                            {{-- {{ $res_api['title']." ".$res_api['name'] }}
-                                                        </td>
-                                                        <td>
-                                                            <span class="badge badge-soft-indigo mt-15 mr-10"style="font-size: 12px;">Comment</span>
-                                                        </td>
-                                                        <td>11/10/2021</td>
-                                                        <td>{{ $value->shop_name }}</td>
-                                                        <td><span class="badge badge-soft-indigo mt-15 mr-10"
-                                                                style="font-size: 12px;">Comment</span></td>
-                                                        <td style="text-align:center">
-                                                            <div class="button-list">
-                                                                <button class="btn btn-icon btn-warning mr-10 btn_editshop"
-                                                                    onclick="edit_modal({{ $value->id }})"
-                                                                    data-toggle="modal" data-target="#saleplanEdit">
-                                                                    <h4 class="btn-icon-wrap" style="color: white;"><i
-                                                                            class="ion ion-md-create"></i></h4>
-                                                                </button>
-                                                                <button class="btn btn-icon btn-danger mr-10">
-                                                                    <h4 class="btn-icon-wrap" style="color: white;"><i
-                                                                            class="ion ion-md-trash"></i></h4>
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <?php
-                                                //  }
-                                                 ?>
-                                                @endforeach --}}
                                             </tbody>
                                         </table>
                                     </div>
@@ -564,6 +523,48 @@
     </script>
 
     <script>
+
+        // -- SalePlan
+        $(document).on('click', '.btn_editsalepaln', function(e){
+            e.preventDefault();
+            let salepaln_id = $(this).val();
+            let api_token = '<?=$api_token?>';
+            console.log(salepaln_id);
+            $.ajax({
+                method: 'POST',
+                url: '{{ url("/saleplanEdit_fetch") }}',
+                data:{
+                    "_token": "{{ csrf_token() }}",
+                    'id': salepaln_id,
+                    'api_token': api_token
+                },
+                success: function(response){
+                    console.log(response);
+                    if(response.status == 200){
+                        $("#saleplanEdit").modal('show');
+                        $('#get_id2').val(salepaln_id);
+                        $('#saleplan_id_edit').val(response.salepaln.customer_shop_id);
+                        $('#get_title').val(response.salepaln.sale_plans_title);
+                        $('#get_objective').val(response.salepaln.sale_plans_objective);
+                        $('#get_tag').val(response.salepaln.sale_plans_tags)
+                        $('#saleplan_phone_edit').val(response.shop_phone);
+                        $('#saleplan_address_edit').val(response.shop_address);
+
+                        $.each(response.customer_api, function(key, value){                        
+                            if(response.customer_api[key]['id'] == response.salepaln.customer_shop_id){
+                                $('#sel_searchShopEdit').append('<option value='+response.customer_api[key]['id']+' selected>'+response.customer_api[key]['shop_name']+'</option>');
+                            }else{
+                                $('#sel_searchShopEdit').append('<option value='+response.customer_api[key]['id']+'>'+response.customer_api[key]['shop_name']+'</option>');
+                            }   
+                        });
+
+                    }
+                }
+            });
+        });
+            
+
+
         $(document).on('click', '#btn_update', function() {
             let shop_id = $(this).val();
             $('#shop_id').val(shop_id);

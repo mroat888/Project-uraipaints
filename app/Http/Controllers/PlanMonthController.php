@@ -23,6 +23,24 @@ class PlanMonthController extends Controller
 
         $data['objective'] = ObjectiveSaleplan::all();
 
+        // -----  API Login ----------- //
+        $response = Http::post('http://49.0.64.92:8020/api/auth/login', [
+            'username' => 'apiuser',
+            'password' => 'testapi',
+        ]);
+        $res = $response->json();
+        $api_token = $res['data'][0]['access_token'];
+        $data['api_token'] = $res['data'][0]['access_token'];
+        //--- End Api Login ------------ //
+
+        // -- ข้อมูล แผนงานงาน Saleplan
+        $data['list_saleplan'] = DB::table('sale_plans')
+        ->where('sale_plans.monthly_plan_id', $data['monthly_plan_next']->id)
+        ->where('sale_plans.created_by', Auth::user()->id)
+        ->orderBy('id', 'desc')->get();
+
+
+        // -- ข้อมูลลูกค้าใหม่ 
         $data['customer_new'] = DB::table('customer_shops')
             ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
             ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
@@ -35,38 +53,10 @@ class PlanMonthController extends Controller
             ->orderBy('customer_shops.id', 'desc')
             ->get();
 
-        $data['list_saleplan'] = DB::table('sale_plans')
-            ->where('sale_plans.monthly_plan_id', $data['monthly_plan_next']->id)
-            ->where('sale_plans.created_by', Auth::user()->id)
-            ->orderBy('id', 'desc')->get();
 
-        $data['list_visit'] = CustomerVisit::join('customer_shops', 'customer_visits.customer_shop_id', '=', 'customer_shops.id')
-            ->join('customer_contacts', 'customer_shops.id', '=', 'customer_contacts.customer_shop_id')
-            ->join('province', 'customer_shops.shop_province_id', '=', 'province.PROVINCE_CODE')
-            ->leftjoin('customer_visit_results', 'customer_visits.id', '=', 'customer_visit_results.customer_visit_id')
-            ->select(
-                'province.PROVINCE_NAME',
-                'customer_contacts.customer_contact_name',
-                'customer_visit_results.cust_visit_status',
-                'customer_shops.shop_name',
-                'customer_visits.*'
-            )
-            ->where('customer_visits.monthly_plan_id', $data['monthly_plan_next']->id)
-            ->where('customer_visits.created_by', Auth::user()->id)
-            ->orderBy('id', 'desc')->get();
+        // -----  API ลูกค้าที่ sale ดูแล ----------- //
 
-        // -----  API ----------- //
-        $response = Http::post('http://49.0.64.92:8020/api/auth/login', [
-            'username' => 'apiuser',
-            'password' => 'testapi',
-        ]);
-        $res = $response->json();
-        $api_token = $res['data'][0]['access_token'];
-        $data['api_token'] = $res['data'][0]['access_token'];
-
-        $response = Http::withToken($api_token)
-                        ->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers');
-
+        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers');
         $res_api = $response->json();
 
         $data['customer_api'] = array();
@@ -78,7 +68,8 @@ class PlanMonthController extends Controller
             ];
         }
         
-        // ---- สร้างข้อมูล เยี่ยมลูกค้า โดย link กับ api
+        // ---- สร้างข้อมูล เยี่ยมลูกค้า โดย link กับ api ------- //
+
         $customer_visits = CustomerVisit::where('customer_visits.created_by', Auth::user()->id)
             ->where('customer_visits.monthly_plan_id', $data['monthly_plan_next']->id)
             ->select('customer_visits.*')
@@ -87,8 +78,7 @@ class PlanMonthController extends Controller
         $data['customer_visit_api'] = array();
         foreach($customer_visits as $key => $cus_visit){
 
-            $response_visit = Http::withToken($api_token)
-                                ->get('http://49.0.64.92:8020/api/v1/customers/'.$cus_visit->customer_shop_id);
+            $response_visit = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/customers/'.$cus_visit->customer_shop_id);
             $res_visit_api = $response_visit->json();
 
             $res_visit_api = $res_visit_api['data'][0];
@@ -102,28 +92,9 @@ class PlanMonthController extends Controller
                 'shop_mobile' => $res_visit_api['mobile'],
             ];
         }
-         // -----  END API
+        // -----  END API
 
-         $data['saleplan_api'] = array();
-        foreach($data['list_saleplan'] as $key => $saleplan){
-
-            $response_saleplan = Http::withToken($api_token)
-                                ->get('http://49.0.64.92:8020/api/v1/customers/'.$saleplan->customer_shop_id);
-            $res_saleplan_api = $response_saleplan->json();
-
-            $res_saleplan_api = $res_saleplan_api['data'][0];
-            $data['saleplan_api'][$key] =
-            [
-                'id' => $saleplan->id,
-                'identify' => $res_saleplan_api['identify'],
-                'shop_name' => $res_saleplan_api['title']." ".$res_saleplan_api['name'],
-                'shop_address' => $res_saleplan_api['address1']." ".$res_saleplan_api['adrress2'],
-                'shop_phone' => $res_saleplan_api['telephone'],
-                'shop_mobile' => $res_saleplan_api['mobile'],
-            ];
-        }
-
-
+        
         // dd($data);
         return view('saleman.planMonth', $data);
     }
