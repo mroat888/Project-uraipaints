@@ -14,10 +14,14 @@ class AssignmentController extends Controller
 
     public function index()
     {
-        $assignments = Assignment::where('created_by', Auth::user()->id)->where('assign_status', 3)->orderBy('id', 'desc')->get();
-        $users = DB::table('users')->get();
-        
-        return view('leadManager.add_assignment', compact('assignments', 'users'));
+        $assignments = Assignment::join('users', 'assignments.assign_emp_id', 'users.id')
+        ->where('assignments.created_by', Auth::user()->id)
+        ->where('assignments.assign_status', 3)
+        ->select('assignments.*', 'users.name')
+        ->orderBy('assignments.id', 'desc')->get();
+
+        $user = DB::table('users')->get();
+        return view('leadManager.add_assignment', compact('assignments', 'user'));
     }
 
     public function store(Request $request)
@@ -28,7 +32,7 @@ class AssignmentController extends Controller
             'assign_title' => $request->assign_title,
             'assign_detail' => $request->assign_detail,
             'assign_emp_id' => $request->assign_emp_id,
-            // 'assign_status' => 1,
+            'assign_status' => 3,
             'assign_approve_id' => Auth::user()->id,
             'assign_result_status' => 0,
             'created_by' => Auth::user()->id,

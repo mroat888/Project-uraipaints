@@ -135,23 +135,31 @@ class ApprovalSalePlanController extends Controller
         if ($request->checkapprove) {
             if ($request->approve) {
             if ($request->CheckAll == "Y") {
-
+                // return "xx2";
                     foreach ($request->checkapprove as $key => $chk) {
                         SalePlan::where('monthly_plan_id', $chk)->update([
                             'sale_plans_status' => 2,
-                            'updated_by' => Auth::user()->id,
-                        ]);
-                        MonthlyPlan::where('id', $chk)->update([
-                            'status_approve' => 2,
                             'updated_by' => Auth::user()->id,
                         ]);
                     }
+                    MonthlyPlan::where('id', $chk)->update([
+                        'status_approve' => 2,
+                        'updated_by' => Auth::user()->id,
+                    ]);
+
             } else {
+                // return "xx";
                     foreach ($request->checkapprove as $key => $chk) {
                         SalePlan::where('monthly_plan_id', $chk)->update([
                             'sale_plans_status' => 2,
                             'updated_by' => Auth::user()->id,
                         ]);
+                    }
+
+                    $chkSaleplan = SalePlan::where('monthly_plan_id', $chk)
+                    ->where('sale_plans_status', 1)->count();
+
+                    if ($chkSaleplan == 0) {
                         MonthlyPlan::where('id', $chk)->update([
                             'status_approve' => 2,
                             'updated_by' => Auth::user()->id,
@@ -159,19 +167,20 @@ class ApprovalSalePlanController extends Controller
                     }
             }
 
-        }else {
+        }else { // ไม่อนุมัติ
             if ($request->CheckAll == "Y") {
-                // return "yy";
+                return "yy";
                 foreach ($request->checkapprove as $key => $chk) {
                     SalePlan::where('monthly_plan_id', $chk)->update([
                         'sale_plans_status' => 3,
                         'updated_by' => Auth::user()->id,
                     ]);
-                    MonthlyPlan::where('id', $chk)->update([
-                        'status_approve' => 3,
-                        'updated_by' => Auth::user()->id,
-                    ]);
                 }
+                MonthlyPlan::where('id', $chk)->update([
+                    'status_approve' => 3,
+                    'updated_by' => Auth::user()->id,
+                ]);
+
                 return back();
             } else {
                 foreach ($request->checkapprove as $key => $chk) {
@@ -179,12 +188,16 @@ class ApprovalSalePlanController extends Controller
                         'sale_plans_status' => 3,
                         'updated_by' => Auth::user()->id,
                     ]);
+                }
+                $chkSaleplan = SalePlan::where('monthly_plan_id', $chk)
+                ->where('sale_plans_status', 1)->count();
+
+                if ($chkSaleplan == 0) {
                     MonthlyPlan::where('id', $chk)->update([
-                        'status_approve' => 3,
+                        'status_approve' => 2,
                         'updated_by' => Auth::user()->id,
                     ]);
                 }
-                // return back();
             }
     }
 
@@ -208,16 +221,34 @@ class ApprovalSalePlanController extends Controller
                             'sale_plans_status' => 2,
                             'updated_by' => Auth::user()->id,
                         ]);
-
-                        // MonthlyPlan::where('id', $chk)->update([
-                        //     'status_approve' => 2,
-                        //     'updated_by' => Auth::user()->id,
-                        // ]);
                     }
+
+                    $month_id = SalePlan::where('id', $chk)->select('monthly_plan_id')->first();
+                    $chkSaleplan = SalePlan::where('monthly_plan_id', $month_id->monthly_plan_id)
+                    ->where('sale_plans_status', 1)->count();
+
+                    if ($chkSaleplan == 0) {
+                        MonthlyPlan::where('id', $month_id->monthly_plan_id)->update([
+                            'status_approve' => 2,
+                            'updated_by' => Auth::user()->id,
+                        ]);
+                    }
+
             } else {
                     foreach ($request->checkapprove as $key => $chk) {
                         SalePlan::where('id', $chk)->update([
                             'sale_plans_status' => 2,
+                            'updated_by' => Auth::user()->id,
+                        ]);
+                    }
+
+                    $month_id = SalePlan::where('id', $chk)->select('monthly_plan_id')->first();
+                    $chkSaleplan = SalePlan::where('monthly_plan_id', $month_id->monthly_plan_id)
+                    ->where('sale_plans_status', 1)->count();
+
+                    if ($chkSaleplan == 0) {
+                        MonthlyPlan::where('id', $month_id->monthly_plan_id)->update([
+                            'status_approve' => 2,
                             'updated_by' => Auth::user()->id,
                         ]);
                     }
@@ -231,11 +262,33 @@ class ApprovalSalePlanController extends Controller
                                 'updated_by' => Auth::user()->id,
                             ]);
                         }
+
+                        $month_id = SalePlan::where('id', $chk)->select('monthly_plan_id')->first();
+                        $chkSaleplan = SalePlan::where('monthly_plan_id', $month_id->monthly_plan_id)
+                        ->where('sale_plans_status', 1)->count();
+
+                        if ($chkSaleplan == 0) {
+                            MonthlyPlan::where('id', $month_id->monthly_plan_id)->update([
+                                'status_approve' => 2,
+                                'updated_by' => Auth::user()->id,
+                            ]);
+                        }
                     return back();
                 } else {
                         foreach ($request->checkapprove as $key => $chk) {
                             SalePlan::where('id', $chk)->update([
                                 'sale_plans_status' => 3,
+                                'updated_by' => Auth::user()->id,
+                            ]);
+                        }
+
+                        $month_id = SalePlan::where('id', $chk)->select('monthly_plan_id')->first();
+                        $chkSaleplan = SalePlan::where('monthly_plan_id', $month_id->monthly_plan_id)
+                        ->where('sale_plans_status', 1)->count();
+
+                        if ($chkSaleplan == 0) {
+                            MonthlyPlan::where('id', $month_id->monthly_plan_id)->update([
+                                'status_approve' => 2,
                                 'updated_by' => Auth::user()->id,
                             ]);
                         }

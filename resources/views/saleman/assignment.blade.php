@@ -42,61 +42,63 @@
                                         </div>
                                         <div class="col-sm-12 col-md-9">
                                             <!-- ------ -->
-                                            <span class="form-inline pull-right pull-sm-center">
-                                                <div class="box_search d-flex">
-                                                    <span class="txt_search">Search:</span>
-                                                        <input type="text" name="" id="" class="form-control form-control-sm" placeholder="ค้นหา">
-                                                    </div>
 
-                                                <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกวันที่</button>
+                                            <span class="form-inline pull-right pull-sm-center">
+                                                <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</button>
+                                                <form action="{{ url('search_month_assignment') }}" method="post" enctype="multipart/form-data">
+                                                    @csrf
                                                 <span id="selectdate" style="display:none;">
 
-                                                Date : <input type="month" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateFrom" value="<?= date('Y-m-d'); ?>" />
+                                                    เดือน : <input type="month" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateFrom" name="fromMonth"/>
 
-                                                    to <input type="month" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" value="<?= date('Y-m-d'); ?>" />
+                                                    ถึงเดือน : <input type="month" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name="toMonth"/>
 
-                                                    <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button>
+                                                <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm">ค้นหา</button>
+
+                                                {{-- <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button> --}}
                                                 </span>
-
+                                            </form>
                                             </span>
                                             <!-- ------ -->
                                         </div>
                                         </div>
                                     </div>
-                                <div class="table-responsive">
-                                    <table class="table table-hover mb-0">
-                                        <thead>
+                                    <div class="table-responsive col-md-12">
+                                        <table id="datable_1" class="table table-hover">
+                                        <thead align="center">
                                             <tr>
                                                 <th>#</th>
                                                 <th>เรื่อง</th>
                                                 <th>วันที่</th>
-                                                <th>ลูกค้า</th>
+                                                {{-- <th>ลูกค้า</th> --}}
                                                 <th>สถานะ</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody align="center">
                                             @foreach ($assignments as $key => $value)
                                         <tr>
                                             <td>{{$key + 1}}</td>
                                             <td>{{$value->assign_title}}</td>
                                             <td>{{$value->assign_work_date}}</td>
-                                            <td>{{$value->assign_emp_id}}</td>
+                                            {{-- <td>{{$value->name}}</td> --}}
                                             <td>
                                                 @if ($value->assign_result_status == 0)
-                                                    <span class="badge badge-soft-danger" style="font-size: 12px;">ยังไม่เสร็จ</span>
+                                                    <span class="badge badge-soft-secondary" style="font-size: 12px;">รอดำเนินการ</span>
                                                     @elseif ($value->assign_result_status == 1)
-                                                    <span class="badge badge-soft-info" style="font-size: 12px;">สำเร็จ</span>
+                                                    <span class="badge badge-soft-success" style="font-size: 12px;">สำเร็จ</span>
                                                     @elseif ($value->assign_result_status == 2)
                                                     <span class="badge badge-soft-danger" style="font-size: 12px;">ไม่สำเร็จ</span>
                                                     @elseif ($value->assign_result_status == 3)
-                                                    <span class="badge badge-soft-danger" style="font-size: 12px;">รอตัดสินใจ</span>
+                                                    <span class="badge badge-soft-warning" style="font-size: 12px;">รอตัดสินใจ</span>
                                                 @endif
                                             </td>
                                             <td>
                                                 <div class="button-list">
-                                                <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalResult" onclick="assignment_result({{$value->id}})">
-                                                <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
+                                                    <button class="btn btn-icon btn-teal mr-10" data-toggle="modal" data-target="#ModalResult" onclick="assignment_result({{$value->id}})">
+                                                        <h4 class="btn-icon-wrap" style="color: white;"><i
+                                                                class="ion ion-md-book"></i></h4>
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -136,9 +138,9 @@
                                 <label for="username">สรุปผลลัพธ์</label>
                                 <select class="form-control custom-select" id="get_result" name="assign_result">
                                     <option selected>-- กรุณาเลือก --</option>
-                                    <option value="1">ไม่สนใจ</option>
-                                    <option value="2">รอตัดสินใจ</option>
-                                    <option value="3">สนใจ/ตกลง</option>
+                                    <option value="1">สนใจ/ตกลง</option>
+                                    <option value="2">ไม่สนใจ</option>
+                                    <option value="3">รอตัดสินใจ</option>
                                 </select>
                             </div>
                         </div>

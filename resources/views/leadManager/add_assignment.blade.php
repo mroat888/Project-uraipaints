@@ -62,7 +62,7 @@
                         <div class="col-sm">
                             <div class="table-responsive-sm">
                                 <table class="table table-sm table-hover">
-                                    <thead>
+                                    <thead align="center">
                                         <tr>
                                             <th>#</th>
                                             <th>เรื่อง</th>
@@ -72,34 +72,40 @@
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody align="center">
                                         @foreach ($assignments as $key => $value)
                                         <tr>
                                             <td>{{$key + 1}}</td>
                                             <td>{{$value->assign_title}}</td>
                                             <td>{{$value->assign_work_date}}</td>
-                                            <td>{{$value->assign_emp_id}}</td>
+                                            <td>{{$value->name}}</td>
                                             <td>
                                                 @if ($value->assign_result_status == 0)
-                                                    <span class="badge badge-soft-danger" style="font-size: 12px;">ยังไม่เสร็จ</span>
+                                                    <span class="badge badge-soft-secondary" style="font-size: 12px;">รอดำเนินการ</span>
                                                     @elseif ($value->assign_result_status == 1)
-                                                    <span class="badge badge-soft-info" style="font-size: 12px;">สำเร็จ</span>
+                                                    <span class="badge badge-soft-success" style="font-size: 12px;">สำเร็จ</span>
                                                     @elseif ($value->assign_result_status == 2)
                                                     <span class="badge badge-soft-danger" style="font-size: 12px;">ไม่สำเร็จ</span>
                                                     @elseif ($value->assign_result_status == 3)
-                                                    <span class="badge badge-soft-danger" style="font-size: 12px;">รอตัดสินใจ</span>
+                                                    <span class="badge badge-soft-warning" style="font-size: 12px;">รอตัดสินใจ</span>
                                                 @endif
                                             </td>
                                             <td>
-                                                    <button onclick="edit_modal({{ $value->id }})"
-                                                        class="btn btn-icon btn-warning mr-10" data-toggle="modal"
-                                                        data-target="#modalEdit">
-                                                        <span class="btn-icon-wrap"><i
-                                                                data-feather="edit"></i></span></button>
-                                                    <a href="{{url('lead/delete_assignment', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
-                                                        <span class="btn-icon-wrap"><i data-feather="trash-2"></i></span></a>
-                                                </div>
+                                                @if ($value->assign_result_status == 0)
+                                                <button onclick="edit_modal({{ $value->id }})"
+                                                    class="btn btn-icon btn-warning mr-10" data-toggle="modal"
+                                                    data-target="#modalEdit">
+                                                    <span class="btn-icon-wrap"><i
+                                                            data-feather="edit"></i></span></button>
+                                                <a href="{{url('lead/delete_assignment', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
+                                                    <span class="btn-icon-wrap"><i data-feather="trash-2"></i></span></a>
 
+                                                    @else
+                                                    <div class="button-list">
+                                                        <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalResult" onclick="assignment_result({{$value->id}})">
+                                                        <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
+                                                        </div>
+                                                @endif
                                             </td>
                                         </tr>
                                         @endforeach

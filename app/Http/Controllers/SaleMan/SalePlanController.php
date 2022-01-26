@@ -178,37 +178,37 @@ class SalePlanController extends Controller
 
         $chk_status = SalePlan::where('id', $request->id)->first();
 
-        if ($chk_status->status_result == 0) {
-            SalePlan::find($request->id)->update([
-                'status_result' => 1,
-            ]);
+            if ($chk_status->status_result == 0) {
+                SalePlan::find($request->id)->update([
+                    'status_result' => 1,
+                ]);
 
-            $data2 = new SalePlanResult;
-            $data2->sale_plan_id = $request->id;
-            $data2->sale_plan_checkin_date   = Carbon::now();
-            $data2->sale_plan_checkin_latitude   = $request->lat;
-            $data2->sale_plan_checkin_longitude   = $request->lon;
-            $data2->created_by   = Auth::user()->id;
-            $data2->created_at   = Carbon::now();
-            $data2->save();
-            return back();
-        }
-        elseif ($chk_status->status_result == 1) {
+                $data2 = new SalePlanResult;
+                $data2->sale_plan_id = $request->id;
+                $data2->sale_plan_checkin_date   = Carbon::now();
+                $data2->sale_plan_checkin_latitude   = $request->lat;
+                $data2->sale_plan_checkin_longitude   = $request->lon;
+                $data2->created_by   = Auth::user()->id;
+                $data2->created_at   = Carbon::now();
+                $data2->save();
+                return back();
+            }
+            elseif ($chk_status->status_result == 1) {
 
-            SalePlan::find($request->id)->update([
-                'status_result' => 2,
-            ]);
+                SalePlan::find($request->id)->update([
+                    'status_result' => 2,
+                ]);
 
-            $data2 = SalePlanResult::where('sale_plan_id', $request->id)->first();
-            $data2->sale_plan_checkout_date   = Carbon::now();
-            $data2->sale_plan_checkout_latitude   = $request->lat;
-            $data2->sale_plan_checkout_longitude   = $request->lon;
-            $data2->updated_by   = Auth::user()->id;
-            $data2->updated_at   = Carbon::now();
-            $data2->update();
+                $data2 = SalePlanResult::where('sale_plan_id', $request->id)->first();
+                $data2->sale_plan_checkout_date   = Carbon::now();
+                $data2->sale_plan_checkout_latitude   = $request->lat;
+                $data2->sale_plan_checkout_longitude   = $request->lon;
+                $data2->updated_by   = Auth::user()->id;
+                $data2->updated_at   = Carbon::now();
+                $data2->update();
 
-            return back();
-        }
+                return back();
+            }
 
     }
 

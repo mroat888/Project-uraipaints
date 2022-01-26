@@ -346,12 +346,14 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($list_saleplan as $key => $value)
-                                                <?php $date = Carbon\Carbon::parse($value->sale_plans_date)->format('Y-m');
-                                                      $dateNow = Carbon\Carbon::today()->format('Y-m');
-                                                      if ($date == $dateNow && $value->sale_plans_status == 2) {
+                                                <?php
+                                                //  $date = Carbon\Carbon::parse($value->sale_plans_date)->format('Y-m');
+                                                //       $dateNow = Carbon\Carbon::today()->format('Y-m');
+                                                //       if ($date == $dateNow && $value->sale_plans_status == 2) {
                                                 ?>
                                                     <tr>
-                                                        <td>{{ $key + 1 }}</td>
+                                                        <td>{{ $key + 1}}</td>
+                                                        <td>{{$value->id}}</td>
                                                         <td><span class="topic_purple">{{ $value->sale_plans_title }}</span></td>
                                                         <td>{{ $value->shop_name }}</td>
                                                         <td><span class="badge badge-soft-indigo" style="font-size: 12px;">Comment</span></td>
@@ -401,7 +403,9 @@
                                                             </div>
                                                         </td>
                                                     </tr>
-                                                    <?php } ?>
+                                                    <?php
+                                                //  }
+                                                 ?>
                                                 @endforeach
                                             </tbody>
                                         </table>
@@ -526,6 +530,7 @@
                                                 ?>
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
+
                                                         <td>{{ $value->shop_name }}</td>
                                                         <td>{{ $value->PROVINCE_NAME }}</td>
                                                         <td>{{ $value->customer_contact_name }}</td>
@@ -533,7 +538,7 @@
                                                         <td>
                                                             @if ($value->cust_visit_status == 0)
                                                                 <span class="badge badge-soft-secondary mt-15 mr-10"
-                                                                    style="font-weight: bold; font-size: 12px;">ยังไม่เสร็จ</span>
+                                                                    style="font-weight: bold; font-size: 12px;">รอดำเนินการ</span>
                                                             @elseif ($value->cust_visit_status == 1)
                                                                 <span class="badge badge-soft-success mt-15 mr-10"
                                                                     style="font-weight: bold; font-size: 12px;">สำเร็จ</span>
@@ -783,7 +788,7 @@
                 <div class="modal-body">
                     <form action="{{ url('customer_visit_Result') }}" method="post" enctype="multipart/form-data">
                         @csrf
-                        <input type="text" name="visit_id" id="get_visit_id">
+                        <input type="hidden" name="visit_id" id="get_visit_id">
                         <div class="form-group">
                             <label for="username">รายละเอียด</label>
                             <textarea class="form-control" id="get_visit_detail" cols="30" rows="5" placeholder="" name="visit_result_detail"
@@ -811,20 +816,33 @@
 
     <script>
         var x = document.getElementById("demo");
+        var v = document.getElementById("visit_demo");
+        var cust = document.getElementById("cust_demo");
 
         function getLocation(id) {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition, showError);
             } else {
                 x.innerHTML = "Geolocation is not supported by this browser.";
+                v.innerHTML = "Geolocation is not supported by this browser.";
+                cust.innerHTML = "Geolocation is not supported by this browser.";
             }
             $("#id").val(id);
+            $("#visit_id").val(id);
+            $("#cust_id").val(cust_id);
         }
 
         function showPosition(position) {
             x.innerHTML = "Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;
+            v.innerHTML = "Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;
+            cust.innerHTML = "Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;
+
             $("#lat").val(position.coords.latitude);
             $("#lon").val(position.coords.longitude);
+            $("#visit_lat").val(position.coords.latitude);
+            $("#visit_lon").val(position.coords.longitude);
+            $("#cust_lat").val(position.coords.latitude);
+            $("#cust_lon").val(position.coords.longitude);
         }
 
         function showError(error) {
@@ -845,37 +863,37 @@
         }
     </script>
 
-<script>
-    var x = document.getElementById("cust_demo");
+{{-- <script>
+    var cust = document.getElementById("cust_demo");
 
-    function getLocation(id) {
+    function getLocation_cust(cust_id) {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition, showError);
+            navigator.geolocation.getCurrentPosition(cust_showPosition, cust_showError);
         } else {
-            x.innerHTML = "Geolocation is not supported by this browser.";
+            cust.innerHTML = "Geolocation is not supported by this browser.";
         }
-        $("#cust_id").val(id);
+        $("#cust_id").val(cust_id);
     }
 
-    function showPosition(position) {
-        x.innerHTML = "Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;
+    function cust_showPosition(position) {
+        cust.innerHTML = "Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;
         $("#cust_lat").val(position.coords.latitude);
         $("#cust_lon").val(position.coords.longitude);
     }
 
-    function showError(error) {
+    function cust_showError(error) {
         switch (error.code) {
             case error.PERMISSION_DENIED:
-                x.innerHTML = "User denied the request for Geolocation."
+            cust.innerHTML = "User denied the request for Geolocation."
                 reak;
             case error.POSITION_UNAVAILABLE:
-                x.innerHTML = "Location information is unavailable."
+            cust.innerHTML = "Location information is unavailable."
                 break;
             case error.TIMEOUT:
-                x.innerHTML = "The request to get user location timed out."
+            cust.innerHTML = "The request to get user location timed out."
                 break;
             case error.UNKNOWN_ERROR:
-                x.innerHTML = "An unknown error occurred."
+            cust.innerHTML = "An unknown error occurred."
                 break;
         }
     }
@@ -916,7 +934,9 @@
                 break;
         }
     }
-</script>
+</script> --}}
+
+
     {{-- <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
     <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 <script>

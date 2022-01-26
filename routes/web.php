@@ -28,9 +28,13 @@ Route::get('approve_monthly_plan/{id}', 'PlanMonthController@approve');
 Route::get('dailyWork', 'SaleMan\DailyWorkController@index');
 Route::get('/palncalendar', function () { return view('saleplan.salePalnCalendar'); });
 Route::get('/planDetail', function () { return view('saleplan.saleplanDetail'); });
+
+// Assignments
 Route::get('assignment', 'SaleMan\AssignmentController@index');
 Route::get('assignment_result_get/{id}', 'SaleMan\AssignmentController@assignment_result_get');
 Route::post('assignment_Result', 'SaleMan\AssignmentController@saleplan_result');
+Route::post('search_month_assignment', 'SaleMan\AssignmentController@search_month_assignment');
+
 
 
 // Visit Customer
@@ -85,6 +89,7 @@ Route::post('create_approval', 'SaleMan\RequestApprovalController@store');
 Route::get('edit_approval/{id}', 'SaleMan\RequestApprovalController@edit');
 Route::post('update_approval', 'SaleMan\RequestApprovalController@update');
 Route::get('delete_approval/{id}', 'SaleMan\RequestApprovalController@destroy');
+Route::get('view_comment/{id}', 'SaleMan\RequestApprovalController@view_comment');
 
 // NOTE
 Route::get('note', 'NoteController@note_sale');

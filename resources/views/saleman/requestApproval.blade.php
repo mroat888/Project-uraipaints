@@ -72,10 +72,15 @@
                                                     @if ($value->assign_is_hot == 1)
                                                     <span class="badge badge-soft-danger" style="font-size: 12px;">HOT</span>
                                                     @endif
+
+                                                    @if ($value->assign_id)
+                                                            <span class="badge badge-soft-indigo" style="font-size: 12px;">Comment</span>
+                                                    @endif
                                                 </td>
                                                     <td>
-                                                        @if ($value->assign_status == 0)
                                                         <div class="button-list">
+                                                        @if ($value->assign_status == 0)
+
                                                             <button onclick="edit_modal({{ $value->id }})"
                                                                 class="btn btn-icon btn-warning mr-10" data-toggle="modal"
                                                                 data-target="#editApproval">
@@ -83,11 +88,26 @@
                                                                         data-feather="edit"></i></span></button>
                                                             <a href="{{url('delete_approval', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
                                                                 <span class="btn-icon-wrap"><i data-feather="trash-2"></i></span></a>
-                                                        </div>
+
                                                         @elseif ($value->assign_status == 1)
+                                                            @if ($value->assign_id)
+                                                            <button onclick="approval_comment({{ $value->id }})"
+                                                                class="btn btn-icon btn-violet mr-10" data-toggle="modal"
+                                                                data-target="#ApprovalComment">
+                                                                <span class="btn-icon-wrap"><i
+                                                                        data-feather="message-square"></i></span></button>
+                                                            @endif
 
+                                                        @elseif ($value->assign_status == 2)
+                                                            @if ($value->assign_id)
+                                                            <button onclick="approval_comment({{ $value->id }})"
+                                                                class="btn btn-icon btn-violet mr-10" data-toggle="modal"
+                                                                data-target="#ApprovalComment">
+                                                                <span class="btn-icon-wrap"><i
+                                                                        data-feather="message-square"></i></span></button>
+                                                            @endif
                                                         @endif
-
+                                                    </div>
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -107,11 +127,6 @@
         <!-- /Row -->
     </div>
     <!-- /Container -->
-
-    <!-- Modal -->
-    {{-- <div class="modal fade" id="Modalsaleplan" tabindex="-1" role="dialog" >
-        @include('leadManager.general_history_display')
-    </div> --}}
 
     <!-- Modal -->
     <div class="modal fade" id="exampleModalLarge01" tabindex="-1" role="dialog" aria-labelledby="exampleModalLarge01" aria-hidden="true">
@@ -233,6 +248,31 @@
         </div>
     </div>
 
+    <!-- Modal Comment -->
+    <div class="modal fade" id="ApprovalComment" tabindex="-1" role="dialog" aria-labelledby="ApprovalComment" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">ความคิดเห็น</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="username">รายละเอียดความคิดเห็น</label>
+                            <textarea class="form-control" cols="30" rows="5" id="get_comment" name="assign_comment"
+                                type="text" readonly></textarea>
+                        </div>
+                        {{-- <input type="hidden" name="id" id="get_id"> --}}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+
     {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script> --}}
     <script>
         $("#form_insert_request_approval").on("submit", function (e) {
@@ -267,7 +307,6 @@
     </script>
 
     <script>
-
         //Edit
         function edit_modal(id) {
             $.ajax({
@@ -291,6 +330,24 @@
             });
         }
     </script>
+
+<script>
+    //Edit
+    function approval_comment(id) {
+        $.ajax({
+            type: "GET",
+            url: "{!! url('view_comment/"+id+"') !!}",
+            dataType: "JSON",
+            async: false,
+            success: function(data) {
+                $('#get_comment_id').val(data.comment.id);
+                $('#get_comment').val(data.comment.assign_comment_detail);
+
+                $('#ApprovalComment').modal('toggle');
+            }
+        });
+    }
+</script>
 
     <script>
     $(document).on('click', '.btn_showplan', function(){

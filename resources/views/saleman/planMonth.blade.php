@@ -229,11 +229,10 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($list_saleplan as $key => $value)
-<<<<<<< HEAD
-                                                    
+
                                                     <?php
-                                                        if ($monthly_plan_id == $value->monthly_plan_id) {   
-=======
+                                                        // if ($monthly_plan_id == $value->monthly_plan_id) {
+                                                            ?>
                                                     <tr>
                                                         <td>{{$key + 1}}</td>
                                                         <td>{{ $value->sale_plans_title }}</td>
@@ -260,7 +259,6 @@
                                                 {{-- @foreach ($list_saleplan as $key => $value)
                                                     <?php
                                                         // if ($monthly_plan_id == $value->monthly_plan_id) {
->>>>>>> ece35323f514f0326c3a32280c0c4c9e91dce31b
                                                     ?>
 
                                                     <tr>
@@ -268,26 +266,23 @@
                                                         <td><span
                                                                 class="topic_purple">{{ $value->sale_plans_title }}</span>
                                                         </td>
-<<<<<<< HEAD
                                                         {{-- <td>11/10/2021</td> --}}
                                                         <td>
-       
-                                                        <?php                                             
-                                                            $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/customers/'.$value->customer_shop_id);
-                                                            $res_api = $response->json();
-                                                            $res_api = $res_api['data'][0];
+
+                                                        <?php
+                                                            // $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/customers/'.$value->customer_shop_id);
+                                                            // $res_api = $response->json();
+                                                            // $res_api = $res_api['data'][0];
                                                         ?>
-                                                            {{ $res_api['title']." ".$res_api['name'] }}
+                                                            {{-- {{ $res_api['title']." ".$res_api['name'] }}
                                                         </td>
                                                         <td>
                                                             <span class="badge badge-soft-indigo mt-15 mr-10"style="font-size: 12px;">Comment</span>
                                                         </td>
-=======
                                                         <td>11/10/2021</td>
                                                         <td>{{ $value->shop_name }}</td>
                                                         <td><span class="badge badge-soft-indigo mt-15 mr-10"
                                                                 style="font-size: 12px;">Comment</span></td>
->>>>>>> ece35323f514f0326c3a32280c0c4c9e91dce31b
                                                         <td style="text-align:center">
                                                             <div class="button-list">
                                                                 <button class="btn btn-icon btn-warning mr-10 btn_editshop"
