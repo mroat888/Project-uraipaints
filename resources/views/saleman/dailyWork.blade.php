@@ -319,7 +319,7 @@
                     </section>
                 </div>
 
-                <div class="col-md-12">
+                <div class="col-md-8">
                     <section class="hk-sec-wrapper">
                         <div class="hk-pg-header mb-10">
                             <div>
