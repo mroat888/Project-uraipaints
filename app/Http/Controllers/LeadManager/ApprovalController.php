@@ -5,6 +5,7 @@ namespace App\Http\Controllers\LeadManager;
 use App\Assignment;
 use App\AssignmentComment;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -14,13 +15,6 @@ class ApprovalController extends Controller
 
     public function index()
     {
-        // $data['request_approval'] = Assignment::join('users', 'assignments.created_by', '=', 'users.id')
-        // ->where('assignments.assign_status', 0)
-        // ->select(
-        //     'users.name' ,
-        //     'assignments.*')->get();
-
-
         $data['request_approval'] = DB::table('assignments')
         ->join('users', 'assignments.created_by', '=', 'users.id')
         ->where('assignments.assign_status', 0)
@@ -133,6 +127,7 @@ class ApprovalController extends Controller
                         foreach ($request->checkapprove as $key => $chk) {
                             Assignment::where('created_by', $chk)->where('assign_status', 0)->update([
                                 'assign_status' => 1,
+                                'assign_approve_date' => Carbon::now(),
                                 'assign_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
                             ]);
@@ -144,6 +139,7 @@ class ApprovalController extends Controller
                         foreach ($request->checkapprove as $key => $chk) {
                             Assignment::where('created_by', $chk)->where('assign_status', 0)->update([
                                 'assign_status' => 1,
+                                'assign_approve_date' => Carbon::now(),
                                 'assign_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
                             ]);
@@ -159,6 +155,7 @@ class ApprovalController extends Controller
                         foreach ($request->checkapprove as $key => $chk) {
                             Assignment::where('created_by', $chk)->where('assign_status', 0)->update([
                                 'assign_status' => 2,
+                                'assign_approve_date' => Carbon::now(),
                                 'assign_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
                             ]);
@@ -170,6 +167,7 @@ class ApprovalController extends Controller
                         foreach ($request->checkapprove as $key => $chk) {
                             Assignment::where('created_by', $chk)->where('assign_status', 0)->update([
                                 'assign_status' => 2,
+                                'assign_approve_date' => Carbon::now(),
                                 'assign_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
                             ]);
@@ -196,6 +194,7 @@ class ApprovalController extends Controller
                     foreach ($request->checkapprove as $key => $chk) {
                         Assignment::where('id', $chk)->update([
                             'assign_status' => 1,
+                            'assign_approve_date' => Carbon::now(),
                             'assign_approve_id' => Auth::user()->id,
                             'updated_by' => Auth::user()->id,
                         ]);
@@ -206,6 +205,7 @@ class ApprovalController extends Controller
                     foreach ($request->checkapprove as $key => $chk) {
                         Assignment::where('id', $chk)->update([
                             'assign_status' => 1,
+                            'assign_approve_date' => Carbon::now(),
                             'assign_approve_id' => Auth::user()->id,
                             'updated_by' => Auth::user()->id,
                         ]);
@@ -220,6 +220,7 @@ class ApprovalController extends Controller
                         foreach ($request->checkapprove as $key => $chk) {
                             Assignment::where('id', $chk)->update([
                                 'assign_status' => 2,
+                                'assign_approve_date' => Carbon::now(),
                                 'assign_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
                             ]);
@@ -231,6 +232,7 @@ class ApprovalController extends Controller
                         foreach ($request->checkapprove as $key => $chk) {
                             Assignment::where('id', $chk)->update([
                                 'assign_status' => 2,
+                                'assign_approve_date' => Carbon::now(),
                                 'assign_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
                             ]);

@@ -85,6 +85,7 @@ Route::post('create_approval', 'SaleMan\RequestApprovalController@store');
 Route::get('edit_approval/{id}', 'SaleMan\RequestApprovalController@edit');
 Route::post('update_approval', 'SaleMan\RequestApprovalController@update');
 Route::get('delete_approval/{id}', 'SaleMan\RequestApprovalController@destroy');
+Route::get('view_comment/{id}', 'SaleMan\RequestApprovalController@view_comment');
 
 // NOTE
 Route::get('note', 'NoteController@note_sale');
