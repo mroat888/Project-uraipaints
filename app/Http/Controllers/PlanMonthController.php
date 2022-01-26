@@ -78,19 +78,34 @@ class PlanMonthController extends Controller
         $data['customer_visit_api'] = array();
         foreach($customer_visits as $key => $cus_visit){
 
-            $response_visit = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/customers/'.$cus_visit->customer_shop_id);
-            $res_visit_api = $response_visit->json();
+            foreach ($res_api['data'] as $key_api => $value_api) {
+                $res_visit_api = $res_api['data'][$key_api];
+                if($cus_visit->customer_shop_id == $res_visit_api['identify']){ 
+                    $data['customer_visit_api'][$key_api] =
+                    [
+                        'id' => $cus_visit->id,
+                        'identify' => $res_visit_api['identify'],
+                        'shop_name' => $res_visit_api['title']." ".$res_visit_api['name'],
+                        'shop_address' => $res_visit_api['address1']." ".$res_visit_api['adrress2'],
+                        'shop_phone' => $res_visit_api['telephone'],
+                        'shop_mobile' => $res_visit_api['mobile'],
+                    ];
+                }
+            }
 
-            $res_visit_api = $res_visit_api['data'][0];
-            $data['customer_visit_api'][$key] =
-            [
-                'id' => $cus_visit->id,
-                'identify' => $res_visit_api['identify'],
-                'shop_name' => $res_visit_api['title']." ".$res_visit_api['name'],
-                'shop_address' => $res_visit_api['address1']." ".$res_visit_api['adrress2'],
-                'shop_phone' => $res_visit_api['telephone'],
-                'shop_mobile' => $res_visit_api['mobile'],
-            ];
+            // $response_visit = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/customers/'.$cus_visit->customer_shop_id);
+            // $res_visit_api = $response_visit->json();
+
+            // $res_visit_api = $res_visit_api['data'][0];
+            // $data['customer_visit_api'][$key] =
+            // [
+            //     'id' => $cus_visit->id,
+            //     'identify' => $res_visit_api['identify'],
+            //     'shop_name' => $res_visit_api['title']." ".$res_visit_api['name'],
+            //     'shop_address' => $res_visit_api['address1']." ".$res_visit_api['adrress2'],
+            //     'shop_phone' => $res_visit_api['telephone'],
+            //     'shop_mobile' => $res_visit_api['mobile'],
+            // ];
         }
         // -----  END API
 
