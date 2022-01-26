@@ -7,6 +7,7 @@ use App\Assignment;
 use App\Customer;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AssignmentController extends Controller
 {
@@ -14,7 +15,9 @@ class AssignmentController extends Controller
     public function index()
     {
         $assignments = Assignment::where('created_by', Auth::user()->id)->where('assign_status', 3)->orderBy('id', 'desc')->get();
-        return view('leadManager.add_assignment', compact('assignments'));
+        $users = DB::table('users')->get();
+        
+        return view('leadManager.add_assignment', compact('assignments', 'users'));
     }
 
     public function store(Request $request)

@@ -198,11 +198,11 @@
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="firstName">สั่งงานให้</label>
-                                <select class="form-control custom-select" name="assign_emp_id" required>
-                                    <option selected>กรุณาเลือก</option>
-                                    <option value="1">ศิริลักษณ์</option>
-                                    <option value="2">อิศรา</option>
-                                    <option value="3">ดวงดาว</option>
+                                <select class="form-control custom-select select2" name="assign_emp_id" required>
+                                    <option value="" selected disabled>กรุณาเลือก</option>
+                                    @foreach($users as $value)
+                                        <option value="{{ $value->id }}">{{ $value->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
