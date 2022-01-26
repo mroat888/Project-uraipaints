@@ -16,7 +16,8 @@ class NoteController extends Controller
         $data = DB::table('notes')
         ->where('employee_id', Auth::user()->id)
         // ->where('status_pin', 1)
-        ->orderBy('id', 'desc')->get();
+        ->orderBy('status_pin', 'desc')
+        ->orderBy('note_date', 'asc')->get();
         return view('saleman.note', compact('data'));
     }
 
@@ -25,7 +26,8 @@ class NoteController extends Controller
         $data = DB::table('notes')
         ->where('employee_id', Auth::user()->id)
         // ->where('status_pin', 1)
-        ->orderBy('id', 'desc')->get();
+        ->orderBy('status_pin', 'desc')
+        ->orderBy('note_date', 'asc')->get();
         return view('leadManager.note', compact('data'));
     }
 
@@ -34,7 +36,8 @@ class NoteController extends Controller
         $data = DB::table('notes')
         ->where('employee_id', Auth::user()->id)
         // ->where('status_pin', 1)
-        ->orderBy('id', 'desc')->get();
+        ->orderBy('status_pin', 'desc')
+        ->orderBy('note_date', 'asc')->get();
         return view('headManager.note', compact('data'));
     }
 
@@ -43,7 +46,8 @@ class NoteController extends Controller
         $data = DB::table('notes')
         ->where('employee_id', Auth::user()->id)
         // ->where('status_pin', 1)
-        ->orderBy('id', 'desc')->get();
+        ->orderBy('status_pin', 'desc')
+        ->orderBy('note_date', 'asc')->get();
         return view('admin.note', compact('data'));
     }
 
@@ -93,7 +97,8 @@ class NoteController extends Controller
 
     public function status_pin_update($id)
     {
-        $data = Note::where('status_pin', 1)->first();
+        // dd($id);
+        $data = Note::where('id', $id)->where('status_pin', 1)->first();
         if ($data) {
             Note::find($id)->update([
                 'status_pin' => 0,
