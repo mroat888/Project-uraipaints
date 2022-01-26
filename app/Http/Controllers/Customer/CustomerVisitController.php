@@ -303,7 +303,7 @@ class CustomerVisitController extends Controller
 
     public function customer_visit_result_get($id)
     {
-        $dataResult = CustomerVisitResult::find($id);
+        $dataResult = CustomerVisitResult::where('customer_visit_id', $id)->first();
 
 
         $data = array(

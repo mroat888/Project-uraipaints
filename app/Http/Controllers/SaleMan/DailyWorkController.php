@@ -39,12 +39,13 @@ class DailyWorkController extends Controller
 
         // dd($monthly_plan->id, $data['customer_shop']);
 
-        $data['list_saleplan'] = SalePlan::join('customer_shops', 'sale_plans.customer_shop_id', '=', 'customer_shops.id')
+        $data['list_saleplan'] = SalePlan::leftjoin('customer_shops', 'sale_plans.customer_shop_id', '=', 'customer_shops.id')
         ->select(
             'customer_shops.shop_name' ,
             'sale_plans.*')
+            ->where('sale_plans.monthly_plan_id', $monthly_plan->id)
         ->where('sale_plans.created_by', Auth::user()->id)
-        ->orderBy('id', 'desc')->get();
+        ->orderBy('sale_plans.id', 'desc')->get();
 
         $data['customer_new'] = DB::table('customer_shops')
             ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
