@@ -62,12 +62,12 @@ class PlanMonthController extends Controller
         ]);
         $res = $response->json();
         $api_token = $res['data'][0]['access_token'];
+        $data['api_token'] = $res['data'][0]['access_token'];
 
         $response = Http::withToken($api_token)
                         ->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers');
 
         $res_api = $response->json();
-        // $res_api = $res['data'];
 
         $data['customer_api'] = array();
         foreach ($res_api['data'] as $key => $value) {
@@ -77,7 +77,7 @@ class PlanMonthController extends Controller
                 'shop_name' => $value['title']." ".$value['name'],
             ];
         }
-
+        
         // ---- สร้างข้อมูล เยี่ยมลูกค้า โดย link กับ api
         $customer_visits = CustomerVisit::where('customer_visits.created_by', Auth::user()->id)
             ->where('customer_visits.monthly_plan_id', $data['monthly_plan_next']->id)

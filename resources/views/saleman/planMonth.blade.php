@@ -135,14 +135,7 @@
                                             </div>
                                             <div class="mb-10">
                                                 <span style="font-weight: bold; font-size: 18px;">
-                                                    <?php
-                                                    // $sum_saleplan = 0;
-                                                    // foreach ($list_saleplan as $key => $value) {
-                                                    // if ($monthly_plan_id == $value->monthly_plan_id) {
-                                                    //     $sum_saleplan++
-                                                    ?>
-                                                    <?php // } } ?>
-                                                    {{-- $sum_saleplan --}}
+                                                    {{ $monthly_plan_next->sale_plan_amount }}
                                                 </span>
                                             </div>
                                         </div>
@@ -167,19 +160,9 @@
                                                 <span style="font-weight: bold; font-size: 18px;">พบลูกค้าใหม่</span>
                                             </div>
                                             <div class="mb-10">
-                                                <span
-                                                    style="font-weight: bold; font-size: 18px;">
-                                                    <?php
-                                                    $sum_cust = 0;
-                                                    foreach ($customer_new as $key => $value) {
-                                                        $date = Carbon\Carbon::parse($value->shop_saleplan_date)->format('Y-m');
-                                                        $dateNow = Carbon\Carbon::today()->addMonth(1)->format('Y-m');
-                                                    if ($dateNow == $date) {
-                                                        $sum_cust++;
-                                                    } }
-
-                                                ?>
-                                                    {{ $sum_cust}}</span>
+                                                <span style="font-weight: bold; font-size: 18px;">
+                                                    {{ $monthly_plan_next->cust_new_amount }}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -204,14 +187,7 @@
                                             </div>
                                             <div class="mb-10">
                                                 <span style="font-weight: bold; font-size: 18px;">
-                                                    <?php
-                                                    $sum_visit = 0;
-                                                    foreach ($list_visit as $key => $value) {
-                                                    if ($monthly_plan_id == $value->monthly_plan_id) {
-                                                        $sum_visit++
-                                                    ?>
-                                                    <?php } } ?>
-                                                    {{ $sum_visit }}
+                                                    {{ $monthly_plan_next->cust_visits_amount }}
                                                 </span>
                                             </div>
                                         </div>
@@ -253,18 +229,29 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($list_saleplan as $key => $value)
+                                                    
                                                     <?php
-                                                        if ($monthly_plan_id == $value->monthly_plan_id) {
+                                                        if ($monthly_plan_id == $value->monthly_plan_id) {   
                                                     ?>
+
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
                                                         <td><span
                                                                 class="topic_purple">{{ $value->sale_plans_title }}</span>
                                                         </td>
                                                         {{-- <td>11/10/2021</td> --}}
-                                                        {{-- <td>{{ $value->shop_name }}</td> --}}
-                                                        <td><span class="badge badge-soft-indigo mt-15 mr-10"
-                                                                style="font-size: 12px;">Comment</span></td>
+                                                        <td>
+       
+                                                        <?php                                             
+                                                            $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/customers/'.$value->customer_shop_id);
+                                                            $res_api = $response->json();
+                                                            $res_api = $res_api['data'][0];
+                                                        ?>
+                                                            {{ $res_api['title']." ".$res_api['name'] }}
+                                                        </td>
+                                                        <td>
+                                                            <span class="badge badge-soft-indigo mt-15 mr-10"style="font-size: 12px;">Comment</span>
+                                                        </td>
                                                         <td style="text-align:center">
                                                             <div class="button-list">
                                                                 <button class="btn btn-icon btn-warning mr-10 btn_editshop"
