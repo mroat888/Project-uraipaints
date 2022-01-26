@@ -14,7 +14,7 @@ class AssignmentController extends Controller
 
     public function index()
     {
-        $assignments = Assignment::where('assign_emp_id', Auth::user()->id)->where('assign_status', "NULL")->orderBy('id', 'desc')->get();
+        $assignments = Assignment::where('assign_emp_id', Auth::user()->id)->where('assign_status', 3)->orderBy('id', 'desc')->get();
         return view('saleman.assignment', compact('assignments'));
     }
 
@@ -40,5 +40,19 @@ class AssignmentController extends Controller
         ]);
 
         return back();
+    }
+
+    public function search_month_assignment(Request $request)
+    {
+        // dd($request);
+        $from = Carbon::parse($request->fromMonth)->format('m');
+        $to = Carbon::parse($request->toMonth)->format('m');
+        $assignments = Assignment::where('assign_emp_id', Auth::user()->id)
+        ->where('assign_status', 3)
+        ->whereMonth('assign_work_date', $from)
+        ->orderBy('id', 'desc')->get();
+
+        // return $assignments;
+        return view('saleman.assignment', compact('assignments'));
     }
 }

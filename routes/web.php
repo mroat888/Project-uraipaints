@@ -28,9 +28,13 @@ Route::get('approve_monthly_plan/{id}', 'PlanMonthController@approve');
 Route::get('dailyWork', 'SaleMan\DailyWorkController@index');
 Route::get('/palncalendar', function () { return view('saleplan.salePalnCalendar'); });
 Route::get('/planDetail', function () { return view('saleplan.saleplanDetail'); });
+
+// Assignments
 Route::get('assignment', 'SaleMan\AssignmentController@index');
 Route::get('assignment_result_get/{id}', 'SaleMan\AssignmentController@assignment_result_get');
 Route::post('assignment_Result', 'SaleMan\AssignmentController@saleplan_result');
+Route::post('search_month_assignment', 'SaleMan\AssignmentController@search_month_assignment');
+
 
 
 // Visit Customer
