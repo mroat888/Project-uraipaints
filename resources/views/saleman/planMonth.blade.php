@@ -245,6 +245,18 @@
                                                         <td>{{ $key + 1 }}</td>
                                                         <td>{{ $value->sale_plans_title }}</td>
                                                         <td>
+                                                            {{--
+                                                            @php
+                                                                $response_saleplan = Http::withToken($api_token)
+                                                                                        ->get('http://49.0.64.92:8020/api/v1/customers/'.$value->customer_shop_id);
+                                                                $res_saleplan_api = $response_saleplan->json();
+                                                                $res_saleplan_api = $res_saleplan_api['data'][0];
+                                                            @endphp
+                                                            @if(isset($res_saleplan_api))
+                                                                {{ $res_saleplan_api['title'] }} {{ $res_saleplan_api['name'] }}
+                                                            @endif
+                                                            --}}
+
                                                             @foreach($customer_api as $key_api => $value_api)
                                                                 @if($customer_api[$key_api]['id'] == $value->customer_shop_id)
                                                                     {{ $customer_api[$key_api]['shop_name'] }}
@@ -256,7 +268,7 @@
                                                         </td>
                                                         <td style="text-align:center">
                                                             <div class="button-list">
-                                                                <button class="btn btn-icon btn-warning mr-10 btn_editsalepaln" 
+                                                                <button class="btn btn-icon btn-warning mr-10 btn_editsalepaln"
                                                                     value="{{ $value->id }}">
                                                                     <h4 class="btn-icon-wrap" style="color: white;"><i
                                                                             class="ion ion-md-create"></i></h4>
@@ -563,19 +575,19 @@
                         $('#saleplan_phone_edit').val(response.shop_phone);
                         $('#saleplan_address_edit').val(response.shop_address);
 
-                        $.each(response.customer_api, function(key, value){                        
+                        $.each(response.customer_api, function(key, value){
                             if(response.customer_api[key]['id'] == response.salepaln.customer_shop_id){
                                 $('#sel_searchShopEdit').append('<option value='+response.customer_api[key]['id']+' selected>'+response.customer_api[key]['shop_name']+'</option>');
                             }else{
                                 $('#sel_searchShopEdit').append('<option value='+response.customer_api[key]['id']+'>'+response.customer_api[key]['shop_name']+'</option>');
-                            }   
+                            }
                         });
 
                     }
                 }
             });
         });
-            
+
 
 
         $(document).on('click', '#btn_update', function() {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\LeadManager;
 
 use App\Assignment;
 use App\AssignmentComment;
+use App\CustomerShopComment;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -112,6 +113,8 @@ class ApprovalController extends Controller
             return redirect(url('lead/approval_general_detail', $request->createID));
 
     }
+
+
 
     public function approval_confirm_all(Request $request)
     {

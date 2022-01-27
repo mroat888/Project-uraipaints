@@ -143,13 +143,17 @@ Route::post('lead/create_comment_request_approval', 'LeadManager\ApprovalControl
 Route::get('/approvalgeneral/history', 'LeadManager\ApprovalController@approval_history');
 Route::get('lead/approval_general_history_detail/{id}', 'LeadManager\ApprovalController@approval_general_history_detail');
 
+Route::get('comment_customer_new/{id}/{createID}', 'LeadManager\ApprovalSalePlanController@comment_customer_new');
+Route::post('lead/create_comment_customer_new', 'LeadManager\ApprovalSalePlanController@create_comment_customer_new');
+
 // Assignment
 Route::get('add_assignment', 'AssignmentController@index');
-Route::get('lead/searchShop', 'SaleMan\SalePlanController@searchShop');
+// Route::get('lead/searchShop', 'SaleMan\SalePlanController@searchShop');
 Route::post('lead/create_assignment', 'AssignmentController@store');
 Route::get('lead/edit_assignment/{id}', 'AssignmentController@edit');
 Route::post('lead/update_assignment', 'AssignmentController@update');
 Route::get('lead/delete_assignment/{id}', 'AssignmentController@destroy');
+Route::get('lead/assignment_result_get/{id}', 'AssignmentController@assignment_result_get');
 
 // NOTE Lead Manage
 Route::get('/leadManage/note', 'NoteController@note_lead');

@@ -100,11 +100,6 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($monthly_plan as $key => $value)
-                                            <?php
-                                            $date = Carbon\Carbon::parse($value->month_date)->format('Y-m');
-                                            $dateNow = Carbon\Carbon::today()->addMonth(1)->format('Y-m');
-                                            // if ($date == $dateNow) {
-                                      ?>
                                                     <tr>
                                                         <td>
                                                             <div class="custom-control custom-checkbox checkbox-info">
@@ -123,9 +118,6 @@
                                                             </a>
                                                         </td>
                                                     </tr>
-                                                    <?php
-                                                // }
-                                                ?>
                                                 @endforeach
                                         </tbody>
                                     </table>

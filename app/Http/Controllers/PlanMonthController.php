@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\SalePlan;
@@ -32,7 +33,7 @@ class PlanMonthController extends Controller
         ->orderBy('id', 'desc')->get();
 
 
-        // -- ข้อมูลลูกค้าใหม่ 
+        // -- ข้อมูลลูกค้าใหม่
         $data['customer_new'] = DB::table('customer_shops')
         ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
         ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
@@ -69,7 +70,7 @@ class PlanMonthController extends Controller
                 'shop_name' => $value['title']." ".$value['name'],
             ];
         }
-        
+
         // ---- สร้างข้อมูล เยี่ยมลูกค้า โดย link กับ api ------- //
         $customer_visits = CustomerVisit::where('customer_visits.created_by', Auth::user()->id)
             ->where('customer_visits.monthly_plan_id', $data['monthly_plan_next']->id)
@@ -81,7 +82,7 @@ class PlanMonthController extends Controller
 
             foreach ($res_api['data'] as $key_api => $value_api) {
                 $res_visit_api = $res_api['data'][$key_api];
-                if($cus_visit->customer_shop_id == $res_visit_api['identify']){ 
+                if($cus_visit->customer_shop_id == $res_visit_api['identify']){
                     $data['customer_visit_api'][$key_api] =
                     [
                         'id' => $cus_visit->id,
@@ -110,7 +111,7 @@ class PlanMonthController extends Controller
         }
         // -----  END API
 
-        
+
         // dd($data);
         return view('saleman.planMonth', $data);
     }
@@ -119,11 +120,22 @@ class PlanMonthController extends Controller
     { // ส่งอนุมัติให้ผู้จัดการเขต
         // dd($id);
 
-            $request_approval = SalePlan::where('monthly_plan_id', $id)->first();
-            $request_approval->sale_plans_status   = 1;
-            $request_approval->updated_by   = Auth::user()->id;
-            $request_approval->updated_at   = Carbon::now();
-            $request_approval->update();
+            $request_approval = SalePlan::where('monthly_plan_id', $id)->get();
+            foreach ($request_approval as $key => $value) {
+                $value->sale_plans_status   = 1;
+                $value->updated_by   = Auth::user()->id;
+                $value->updated_at   = Carbon::now();
+                $value->update();
+            }
+
+            $request_approval_customer = Customer::where('monthly_plan_id', $id)->get();
+            foreach ($request_approval_customer as $key => $value) {
+                $value->shop_aprove_status   = 1;
+                $value->updated_by   = Auth::user()->id;
+                $value->updated_at   = Carbon::now();
+                $value->update();
+            }
+
 
             $request_approval_month = MonthlyPlan::find($id);
             $request_approval_month->status_approve   = 1;

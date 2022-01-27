@@ -324,6 +324,65 @@
         </div>
     </div>
 
+     <!-- Modal Result -->
+<div class="modal fade" id="ModalResult" tabindex="-1" role="dialog" aria-labelledby="ModalResult" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">สรุปผลงานที่ได้รับมอบหมาย</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                        <input type="hidden" name="assign_id" id="get_assign_id">
+                        <div class="form-group">
+                            <label for="username">รายละเอียด</label>
+                            <textarea class="form-control" id="get_result_detail" cols="30" rows="5" placeholder="" name="assign_detail"
+                                type="text" readonly> </textarea>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="username">สรุปผลลัพธ์</label>
+                                <input type="text" class="form-control" name="" id="get_result" readonly>
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        //Edit
+        function assignment_result(id) {
+            // $("#get_assign_id").val(id);
+            $.ajax({
+                type: "GET",
+                url: "{!! url('lead/assignment_result_get/"+id+"') !!}",
+                dataType: "JSON",
+                async: false,
+                success: function(data) {
+                    $('#get_assign_id').val(data.dataResult.id);
+                    $('#get_result_detail').val(data.dataResult.assign_result_detail);
+                    if (data.dataResult.assign_result_status != 0) {
+                        if (data.dataResult.assign_result_status == 1) {
+                            $('#get_result').val("สนใจ/ตกลง");
+                        } if (data.dataResult.assign_result_status == 2) {
+                            $('#get_result').val("ไม่สนใจ");
+                         } if (data.dataResult.assign_result_status == 3) {
+                            $('#get_result').val("รอตัดสินใจ");
+                        }
+                    }
+
+                    $('#ModalResult').modal('toggle');
+                }
+            });
+        }
+    </script>
+
     <script>
         //Edit
         function edit_modal(id) {

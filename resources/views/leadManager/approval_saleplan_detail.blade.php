@@ -49,7 +49,7 @@
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
                         <div class="col-sm-12 col-md-3">
-                            <h5 class="hk-sec-title">ตารางรายละเอียด Sale Plan</h5>
+                            <h5 class="hk-sec-title mb-10">ตาราง Sale Plan</h5>
                         </div>
                     </div>
 
@@ -69,10 +69,10 @@
                                                 </div>
                                             </th>
                                             <th>#</th>
-                                            <th>วันที่</th>
-                                            <th>ชื่อพนักงาน</th>
-                                            <th>การอนุมัติ</th>
-                                            {{-- <th>Action</th> --}}
+                                            <th>เรื่อง</th>
+                                            <th>ลูกค้า</th>
+                                            {{-- <th>การอนุมัติ</th> --}}
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -91,13 +91,19 @@
                                                         <label class="custom-control-label" for="customCheck{{$key + 1}}"></label>
                                                     </div>
                                                 </td>
-
-
                                                 <td>{{ $key + 1 }}</td>
-                                                <td>{{ $value->sale_plans_date }}</td>
-                                                <td>{{ $value->name }}</td>
-                                                <td><span class="badge badge-soft-warning"
-                                                        style="font-size: 12px;">Pending</span></td>
+                                                <td>{{ $value->sale_plans_title }}</td>
+                                                {{-- <td>{{$value->customer_shop_id}}</td> --}}
+                                                <td>
+                                                    @foreach($customer_api as $key_api => $value_api)
+                                                                @if($customer_api[$key_api]['id'] == $value->customer_shop_id)
+                                                                    {{ $customer_api[$key_api]['shop_name'] }}
+                                                                @endif
+                                                            @endforeach
+                                                </td>
+                                                {{-- <td>{{ $value->name }}</td> --}}
+                                                {{-- <td><span class="badge badge-soft-warning"
+                                                        style="font-size: 12px;">Pending</span></td> --}}
                                                 <td>
                                                     <a href="{{ url('comment_saleplan', [$value->id, $value->created_by]) }}" class="btn btn-icon btn-info mr-10">
                                                         <h4 class="btn-icon-wrap" style="color: white;">
@@ -112,22 +118,142 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                            </form>
+                            {{-- </form> --}}
                             </div>
                         </div>
                     </div>
                 </section>
             </div>
-        </div>
 
+            <div class="col-md-12">
+                <section class="hk-sec-wrapper">
+                    <div class="hk-pg-header mb-10">
+                        <div>
+                            <h5 class="hk-sec-title">ตารางพบลูกค้าใหม่</h5>
+                            {{-- <h6 class="hk-sec-title mb-10" style="font-weight: bold;">ตารางพบลูกค้าใหม่</h6> --}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="table-wrap">
+                                <div class="hk-pg-header mb-10 mt-10">
+                                    <div>
+                                    </div>
+                                </div>
+                                <div class="table-responsive col-md-12">
+                                    <table id="datable_1_2" class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    <div class="custom-control custom-checkbox checkbox-info">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="customCheck5" onclick="chkAll_customer(this);" name="CheckAll_cust" value="Y">
+                                                        <label class="custom-control-label" for="customCheck5">ทั้งหมด</label>
+                                                    </div>
+                                                </th>
+                                                <th>#</th>
+                                                <th>ชื่อร้าน</th>
+                                                <th>อำเภอ,จังหวัด</th>
+                                                <th>สถานะ</th>
+                                                <th class="text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($customer_new as $key => $value)
+                                            <?php
+                                                // $date = Carbon\Carbon::parse($value->shop_saleplan_date)->format('Y-m');
+                                                // $dateNow = Carbon\Carbon::today()->addMonth(1)->format('Y-m');
+                                                // if ($dateNow == $date) {
+                                            ?>
+                                                <tr>
+                                                    <td>
+                                                        <div class="custom-control custom-checkbox checkbox-info">
+                                                            <input type="checkbox" class="custom-control-input checkapprove_cust"
+                                                                name="checkapprove_cust[]" id="customNewCheck{{$key + 1}}" value="{{$value->id}}">
+                                                            <label class="custom-control-label" for="customNewCheck{{$key + 1}}"></label>
+                                                        </div>
+                                                    </td>
+                                                    <td>{{ $key + 1 }}</td>
+                                                    <td>{{ $value->shop_name }}</td>
+                                                    <td>{{ $value->PROVINCE_NAME }}</td>
+                                                    <td>
+                                                        <span class="badge badge-soft-indigo mt-15 mr-10"
+                                                            style="font-size: 12px;">ลูกค้าใหม่</span>
+                                                    </td>
+                                                    <td align="center">
+                                                        <a href="{{ url('comment_customer_new', [$value->id, $value->created_by]) }}" class="btn btn-icon btn-info mr-10">
+                                                            <h4 class="btn-icon-wrap" style="color: white;">
+                                                                <i data-feather="message-square"></i>
+                                                            </h4>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <?php
+                                                    //  }
+                                                ?>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </form>
+                                </div>
+                            </div>
+                        </div>
+                </section>
+            </div>
+
+            <div class="col-md-12">
+                <section class="hk-sec-wrapper">
+                    <div class="hk-pg-header mb-10">
+                        <div>
+                            <h5 class="hk-sec-title mb-10">เยี่ยมลูกค้า</h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="table-wrap">
+                                <div class="hk-pg-header mb-10 mt-10">
+                                    <div>
+                                    </div>
+                                </div>
+                                <div class="table-responsive col-md-12">
+                                    <table id="datable_1_3" class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>ชื่อร้าน</th>
+                                                <th>ที่อยู่</th>
+                                                <th>วันสำคัญ</th>
+                                                {{-- <th class="text-center">Action</th> --}}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($customer_visit_api as $key => $value)
+
+                                            <tr>
+                                                <td>{{$key + 1}}</td>
+                                                <td>{{$customer_visit_api[$key]['shop_name']}}</td>
+                                                <td>{{$customer_visit_api[$key]['shop_address']}}</td>
+                                                <td>-</td>
+                                                {{-- <td>
+                                                    <div class="button-list">
+                                                        <a href="{{url('delete_visit')}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
+                                                            <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-trash"></i></h4></a>
+                                                    </div>
+                                                </td> --}}
+                                            </tr>
+
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                </section>
+            </div>
+
+        </div>
         <!-- /Row -->
     </div>
-
-
-    <!-- Modal -->
-    {{-- <div class="modal fade" id="exampleModalLarge02" tabindex="-1" role="dialog">
-        @include('leadManager.comment_saleplan')
-    </div> --}}
 
        <script type="text/javascript">
         function chkAll(checkbox) {
@@ -146,6 +272,24 @@
             }
         }
     </script>
+
+<script type="text/javascript">
+    function chkAll_customer(checkbox) {
+
+        var cboxes = document.getElementsByName('checkapprove_cust[]');
+        var len = cboxes.length;
+
+        if (checkbox.checked == true) {
+            for (var i = 0; i < len; i++) {
+                cboxes[i].checked = true;
+            }
+        } else {
+            for (var i = 0; i < len; i++) {
+                cboxes[i].checked = false;
+            }
+        }
+    }
+</script>
 
     <script>
         $("#form_approval_saleplan").on("submit", function(e) {
