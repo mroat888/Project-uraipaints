@@ -26,7 +26,7 @@ class DashboardController extends Controller
 
         $data['customer_shop'] = Customer::where('created_by', Auth::user()->id)->where('shop_status', 0)->whereMonth('created_at', Carbon::now()->format('m'))->get();
 
-        $data['monthly_plan'] = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('id', 'desc')->first();
+        $data['monthly_plan'] = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->first();
 
         if ($data['monthly_plan']) {
             $date = Carbon::parse($data['monthly_plan']->month_date)->format('Y-m');

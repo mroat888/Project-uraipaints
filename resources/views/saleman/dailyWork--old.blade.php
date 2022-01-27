@@ -323,7 +323,7 @@
                     </section>
                 </div>
 
-                <div class="col-md-12">
+                <div class="col-md-8">
                     <section class="hk-sec-wrapper">
                         <div class="hk-pg-header mb-10">
                             <div>
@@ -350,19 +350,18 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($list_saleplan as $key => $value)
+                                                <?php
+                                                //  $date = Carbon\Carbon::parse($value->sale_plans_date)->format('Y-m');
+                                                //       $dateNow = Carbon\Carbon::today()->format('Y-m');
+                                                //       if ($date == $dateNow && $value->sale_plans_status == 2) {
+                                                ?>
                                                     <tr>
                                                         <td>{{ $key + 1}}</td>
-                                                        <!-- <td>{{$value->id}}</td> -->
+                                                        <td>{{$value->id}}</td>
                                                         <td><span class="topic_purple">{{ $value->sale_plans_title }}</span></td>
-                                                        <td>
-                                                            @foreach($customer_api as $key_api => $value_api)
-                                                                @if($customer_api[$key_api]['id'] == $value->customer_shop_id)
-                                                                    {{ $customer_api[$key_api]['shop_name'] }}
-                                                                @endif
-                                                            @endforeach       
-                                                        </td>
+                                                        <td>{{ $value->shop_name }}</td>
                                                         <td><span class="badge badge-soft-indigo" style="font-size: 12px;">Comment</span></td>
-                                                        <td style="text-align:center">
+                                                        <td align="center">
                                                             <div class="button-list">
                                                                 @if ($value->status_result == 1)
                                                                     <button class="btn btn-icon btn-primary"
@@ -520,22 +519,28 @@
                                                 <tr>
                                                     <th>#</th>
                                                     <th>ชื่อร้าน</th>
-                                                    <th>ที่อยู่</th>
+                                                    <th>อำเภอ,จังหวัด</th>
+                                                    <th>ผู้ติดต่อ</th>
                                                     <th>วันสำคัญ</th>
                                                     <th>สถานะ</th>
                                                     <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php $no = 1; ?>
-                                                @foreach ($customer_visit_api as $key => $value)
+                                                @foreach ($list_visit as $key => $value)
+                                                <?php $date = Carbon\Carbon::parse($value->customer_visit_date)->format('Y-m');
+                                                      $dateNow = Carbon\Carbon::today()->format('Y-m');
+                                                    //   if ($date == $dateNow && $value->sale_plans_status == 2) {
+                                                ?>
                                                     <tr>
-                                                        <td>{{ $no++ }}</td>
-                                                        <td>{{ $customer_visit_api[$key]['shop_name'] }}</td>
-                                                        <td>{{ $customer_visit_api[$key]['shop_address'] }}</td>
+                                                        <td>{{ $key + 1 }}</td>
+
+                                                        <td>{{ $value->shop_name }}</td>
+                                                        <td>{{ $value->PROVINCE_NAME }}</td>
+                                                        <td>{{ $value->customer_contact_name }}</td>
                                                         <td>-</td>
                                                         <td>
-                                                            @if ($customer_visit_api[$key]['visit_status'] == 0)
+                                                            @if ($value->cust_visit_status == 0)
                                                                 <span class="badge badge-soft-secondary mt-15 mr-10"
                                                                     style="font-weight: bold; font-size: 12px;">รอดำเนินการ</span>
                                                             @elseif ($value->cust_visit_status == 1)
@@ -548,43 +553,44 @@
                                                         </td>
                                                         <td style="text-align:center;">
                                                             <div class="button-list">
-                                                            @if ($customer_visit_api[$key]['visit_checkin_date'] != "" && $customer_visit_api[$key]['visit_checkout_date'] == "")
+                                                            @if ($value->cust_visit_checkin_date != "" && $value->cust_visit_checkout_date == "")
 
                                                                 <button class="btn btn-icon btn-primary"
-                                                            data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $customer_visit_api[$key]['id'] }})" disabled>
+                                                            data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $value->id }})" disabled>
                                                             <span class="btn-icon-wrap"><i data-feather="log-in"></i></span></button>
                                                             <button class="btn btn-icon btn-pumpkin"
-                                                            data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $customer_visit_api[$key]['id'] }})">
+                                                            data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $value->id }})">
                                                             <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
-                                                            <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalVisitResult" onclick="customer_visit_result({{ $customer_visit_api[$key]['id'] }})" disabled>
+                                                            <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalVisitResult" onclick="customer_visit_result({{ $value->id }})" disabled>
                                                             <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
 
-                                                            @elseif ($customer_visit_api[$key]['visit_checkin_date'] != "" && $customer_visit_api[$key]['visit_checkout_date'] != "")
+                                                            @elseif ($value->cust_visit_checkin_date != "" && $value->cust_visit_checkout_date != "")
                                                                 <button class="btn btn-icon btn-primary"
-                                                                data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $customer_visit_api[$key]['id'] }})" disabled>
+                                                                data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $value->id }})" disabled>
                                                                 <span class="btn-icon-wrap"><i data-feather="log-in"></i></span></button>
                                                                 <button class="btn btn-icon btn-pumpkin"
-                                                                data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $customer_visit_api[$key]['id'] }})" disabled>
+                                                                data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $value->id }})" disabled>
                                                                 <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
-                                                                <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalVisitResult" onclick="customer_visit_result({{ $customer_visit_api[$key]['id'] }})">
+                                                                <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalVisitResult" onclick="customer_visit_result({{ $value->id }})">
                                                                 <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
 
                                                                 @else
                                                                     <button class="btn btn-icon btn-primary"
-                                                                    data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $customer_visit_api[$key]['id'] }})">
+                                                                    data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $value->id }})">
                                                                     <span class="btn-icon-wrap"><i data-feather="log-in"></i></span></button>
                                                                     <button class="btn btn-icon btn-pumpkin"
-                                                                    data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $customer_visit_api[$key]['id'] }})" disabled>
+                                                                    data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $value->id }})" disabled>
                                                                     <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
-                                                                    <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalVisitResult" onclick="customer_visit_result({{ $customer_visit_api[$key]['id'] }})" disabled>
+                                                                    <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalVisitResult" onclick="customer_visit_result({{ $value->id }})" disabled>
                                                                     <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
                                                             @endif
 
                                                         </td>
                                                     </tr>
-
+                                                    <?php
+                                                    //  }
+                                                    ?>
                                                 @endforeach
-
                                             </tbody>
                                         </table>
                                     </div>

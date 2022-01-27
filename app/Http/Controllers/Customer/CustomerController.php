@@ -79,7 +79,7 @@ class CustomerController extends Controller
                 $uploadfile = $file_name;
             }
 
-            $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('id', 'desc')->first();
+            $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->first();
             
             DB::table('customer_shops')
             ->insert([

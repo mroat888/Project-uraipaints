@@ -65,7 +65,7 @@ class CustomerVisitController extends Controller
         $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)
         ->whereYear('month_date', '=', $year)
         ->whereMonth('month_date', '=', $month)
-        ->orderBy('id', 'desc')
+        ->orderBy('month_date', 'desc')
         ->first();
 
         DB::beginTransaction();
