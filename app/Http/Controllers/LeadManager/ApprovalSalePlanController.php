@@ -44,14 +44,13 @@ class ApprovalSalePlanController extends Controller
         $data['api_token'] = $res['data'][0]['access_token'];
         //--- End Api Login ------------ //
 
-        // $data['monthly_plan_next'] = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('id', 'desc')->first();
-
         // ข้อมูล Sale plan
         $data['list_saleplan'] = DB::table('sale_plans')
-        ->where('sale_plans.monthly_plan_id', $id)
+        ->where('monthly_plan_id', $id)
         // ->where('sale_plans.created_by', Auth::user()->id)
-        ->where('sale_plans.sale_plans_status', 1)
+        ->where('sale_plans_status', 1)
         ->orderBy('id', 'desc')->get();
+
         // $data['list_saleplan'] = DB::table('sale_plans')
         //     ->leftjoin('customer_shops', 'sale_plans.customer_shop_id', '=', 'customer_shops.id')
         //     ->leftjoin('users', 'sale_plans.created_by', '=', 'users.id')

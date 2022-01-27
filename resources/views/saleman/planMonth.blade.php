@@ -233,7 +233,6 @@
                                                         <td>{{ $key + 1 }}</td>
                                                         <td>{{ $value->sale_plans_title }}</td>
                                                         <td>
-<<<<<<< HEAD
                                                             {{--
                                                             @php
                                                                 $response_saleplan = Http::withToken($api_token)
@@ -245,8 +244,7 @@
                                                                 {{ $res_saleplan_api['title'] }} {{ $res_saleplan_api['name'] }}
                                                             @endif
                                                             --}}
-=======
->>>>>>> b06bc8da94ea4cc5be6402f18f7b9a8272524702
+
                                                             @foreach($customer_api as $key_api => $value_api)
                                                                 @if($customer_api[$key_api]['id'] == $value->customer_shop_id)
                                                                     {{ $customer_api[$key_api]['shop_name'] }}

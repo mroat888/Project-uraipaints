@@ -93,6 +93,7 @@
                                                 </td>
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $value->sale_plans_title }}</td>
+                                                {{-- <td>{{$value->customer_shop_id}}</td> --}}
                                                 <td>
                                                     @foreach($customer_api as $key_api => $value_api)
                                                                 @if($customer_api[$key_api]['id'] == $value->customer_shop_id)
