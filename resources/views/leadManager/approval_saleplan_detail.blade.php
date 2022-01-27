@@ -160,11 +160,6 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($customer_new as $key => $value)
-                                            <?php
-                                                // $date = Carbon\Carbon::parse($value->shop_saleplan_date)->format('Y-m');
-                                                // $dateNow = Carbon\Carbon::today()->addMonth(1)->format('Y-m');
-                                                // if ($dateNow == $date) {
-                                            ?>
                                                 <tr>
                                                     <td>
                                                         <div class="custom-control custom-checkbox checkbox-info">
@@ -180,7 +175,7 @@
                                                         <span class="badge badge-soft-indigo mt-15 mr-10"
                                                             style="font-size: 12px;">ลูกค้าใหม่</span>
                                                     </td>
-                                                    <td align="center">
+                                                    <td style="text-align:center">
                                                         <a href="{{ url('comment_customer_new', [$value->id, $value->created_by]) }}" class="btn btn-icon btn-info mr-10">
                                                             <h4 class="btn-icon-wrap" style="color: white;">
                                                                 <i data-feather="message-square"></i>
@@ -227,10 +222,11 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             @foreach ($customer_visit_api as $key => $value)
 
                                             <tr>
-                                                <td>{{$key + 1}}</td>
+                                                <td>{{ $no++ }}</td>
                                                 <td>{{$customer_visit_api[$key]['shop_name']}}</td>
                                                 <td>{{$customer_visit_api[$key]['shop_address']}}</td>
                                                 <td>-</td>
