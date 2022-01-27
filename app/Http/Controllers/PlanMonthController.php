@@ -18,20 +18,12 @@ class PlanMonthController extends Controller
     public function index()
     {
 
-        $data['monthly_plan'] = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('id', 'desc')->get();
-        $data['monthly_plan_next'] = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('id', 'desc')->first();
+        $data['monthly_plan'] = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->get();
+        $data['monthly_plan_next'] = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->first();
+
+        // dd($data);
 
         $data['objective'] = ObjectiveSaleplan::all();
-
-        // -----  API Login ----------- //
-        $response = Http::post('http://49.0.64.92:8020/api/auth/login', [
-            'username' => 'apiuser',
-            'password' => 'testapi',
-        ]);
-        $res = $response->json();
-        $api_token = $res['data'][0]['access_token'];
-        $data['api_token'] = $res['data'][0]['access_token'];
-        //--- End Api Login ------------ //
 
         // -- ข้อมูล แผนงานงาน Saleplan
         $data['list_saleplan'] = DB::table('sale_plans')
@@ -42,17 +34,27 @@ class PlanMonthController extends Controller
 
         // -- ข้อมูลลูกค้าใหม่ 
         $data['customer_new'] = DB::table('customer_shops')
-            ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
-            ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
-            ->where('customer_shops.created_by', Auth::user()->id)
-            ->where('customer_shops.monthly_plan_id', $data['monthly_plan_next']->id)
-            ->select(
-                'province.PROVINCE_NAME',
-                'customer_shops.*'
-            )
-            ->orderBy('customer_shops.id', 'desc')
-            ->get();
+        ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
+        ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
+        ->where('customer_shops.created_by', Auth::user()->id)
+        ->where('customer_shops.monthly_plan_id', $data['monthly_plan_next']->id)
+        ->select(
+            'province.PROVINCE_NAME',
+            'customer_shops.*'
+        )
+        ->orderBy('customer_shops.id', 'desc')
+        ->get();
 
+
+        // -----  API Login ----------- //
+        $response = Http::post('http://49.0.64.92:8020/api/auth/login', [
+            'username' => 'apiuser',
+            'password' => 'testapi',
+        ]);
+        $res = $response->json();
+        $api_token = $res['data'][0]['access_token'];
+        $data['api_token'] = $res['data'][0]['access_token'];
+        //--- End Api Login ------------ //
 
         // -----  API ลูกค้าที่ sale ดูแล ----------- //
 
@@ -69,7 +71,6 @@ class PlanMonthController extends Controller
         }
         
         // ---- สร้างข้อมูล เยี่ยมลูกค้า โดย link กับ api ------- //
-
         $customer_visits = CustomerVisit::where('customer_visits.created_by', Auth::user()->id)
             ->where('customer_visits.monthly_plan_id', $data['monthly_plan_next']->id)
             ->select('customer_visits.*')

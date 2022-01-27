@@ -41,7 +41,7 @@ class SalePlanController extends Controller
             //     'created_by' => Auth::user()->id,
             // ]);
 
-            $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('id', 'desc')->first();
+            $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->first();
 
             DB::table('sale_plans')
             ->insert([

@@ -116,7 +116,7 @@
 
                 <div class="col-md-12">
                     <section class="hk-sec-wrapper">
-                        <h5 class="hk-sec-title">แผนงานประจำเดือน <?php // echo thaidate('F Y', $monthly_plan_next->month_date); ?></h5>
+                        <h5 class="hk-sec-title">แผนงานประจำเดือน <?php echo thaidate('F Y', $monthly_plan_next->month_date); ?></h5>
                         <div class="row mt-30">
                             <div class="col-md-4">
                                 <div class="card card-sm text-white bg-violet">
@@ -202,7 +202,7 @@
                     <section class="hk-sec-wrapper">
                         <div class="hk-pg-header mb-10">
                             <div>
-                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">แผนงานประจำเดือน <?php // echo thaidate('F Y', $monthly_plan_next->month_date); ?></h6>
+                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">แผนงานประจำเดือน <?php echo thaidate('F Y', $monthly_plan_next->month_date); ?></h6>
                             </div>
                             <div class="d-flex">
                                 <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10"
@@ -233,17 +233,6 @@
                                                         <td>{{ $key + 1 }}</td>
                                                         <td>{{ $value->sale_plans_title }}</td>
                                                         <td>
-                                                            {{--
-                                                            @php 
-                                                                $response_saleplan = Http::withToken($api_token)
-                                                                                        ->get('http://49.0.64.92:8020/api/v1/customers/'.$value->customer_shop_id);
-                                                                $res_saleplan_api = $response_saleplan->json();
-                                                                $res_saleplan_api = $res_saleplan_api['data'][0];
-                                                            @endphp
-                                                            @if(isset($res_saleplan_api))
-                                                                {{ $res_saleplan_api['title'] }} {{ $res_saleplan_api['name'] }}
-                                                            @endif
-                                                            --}}
                                                             @foreach($customer_api as $key_api => $value_api)
                                                                 @if($customer_api[$key_api]['id'] == $value->customer_shop_id)
                                                                     {{ $customer_api[$key_api]['shop_name'] }}
@@ -382,12 +371,13 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                <?php $no = 1; ?>
                                                 @foreach ($customer_visit_api as $key => $value)
 
                                                 <tr>
-                                                    <td>{{$key + 1}}</td>
-                                                    <td>{{$customer_visit_api[$key]['shop_name']}}</td>
-                                                    <td>{{$customer_visit_api[$key]['shop_address']}}</td>
+                                                    <td>{{ $no++ }}</td>
+                                                    <td>{{ $customer_visit_api[$key]['shop_name'] }}</td>
+                                                    <td>{{ $customer_visit_api[$key]['shop_address'] }}</td>
                                                     <td>-</td>
                                                     <td>
                                                         <div class="button-list">
@@ -396,7 +386,6 @@
                                                         </div>
                                                     </td>
                                                 </tr>
-
                                                 @endforeach
                                             </tbody>
                                         </table>
