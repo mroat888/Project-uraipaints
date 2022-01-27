@@ -7,7 +7,8 @@
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <form action="{{ url('update_saleplan') }}" method="post" enctype="multipart/form-data">
+        <form id="form_update_saleplan" enctype="multipart/form-data">
+        {{-- <form action="{{ url('update_saleplan') }}" method="post" enctype="multipart/form-data"> --}}
             @csrf
         <div class="modal-body">
                 
@@ -20,9 +21,6 @@
                         <label for="firstName">ค้นหาชื่อร้าน</label>
                         <select name="sel_searchShopEdit" id="sel_searchShopEdit" class="form-control custom-select select2">
                             <option value="" selected disabled>เลือกข้อมูล</option>
-                            <!-- @foreach ($customer_api as $key => $value)
-                                <option value="{{$customer_api[$key]['id']}}">{{$customer_api[$key]['shop_name']}}</option>
-                            @endforeach -->
                         </select>
                     </div>
                 </div>
@@ -78,32 +76,74 @@
     </div>
 </div>
 
-        <script>
-            //Edit
-            function edit_modal(id) {
-                $.ajax({
-                    type: "GET",
-                    url: "{!! url('edit_saleplan/"+id+"') !!}",
-                    dataType: "JSON",
-                    async: false,
-                    success: function(data) {
-                        $('#get_id2').val(data.dataEdit.id);
-                        $('#get_date').val(data.dataEdit.sale_plans_date);
-                        $('#get_title').val(data.dataEdit.sale_plans_title);
-                        $('#get_objective').val(data.dataEdit.sale_plans_objective);
-                        $('#get_tag').val(data.dataEdit.sale_plans_tags);
-                        $('#saleplan_id_edit').val(data.dataEdit.shop_id);
-                        $('#saleplan_contact_name_edit').val(data.dataEdit.customer_contact_name);
-                        $('#saleplan_phone_edit').val(data.dataEdit.customer_contact_phone);
-                        $('#saleplan_address_edit').val(data.dataEdit.shop_address);
+<script>
+    //Edit
+    function edit_modal(id) {
+        $.ajax({
+            type: "GET",
+            url: "{!! url('edit_saleplan/"+id+"') !!}",
+            dataType: "JSON",
+            async: false,
+            success: function(data) {
+                $('#get_id2').val(data.dataEdit.id);
+                $('#get_date').val(data.dataEdit.sale_plans_date);
+                $('#get_title').val(data.dataEdit.sale_plans_title);
+                $('#get_objective').val(data.dataEdit.sale_plans_objective);
+                $('#get_tag').val(data.dataEdit.sale_plans_tags);
+                $('#saleplan_id_edit').val(data.dataEdit.shop_id);
+                $('#saleplan_contact_name_edit').val(data.dataEdit.customer_contact_name);
+                $('#saleplan_phone_edit').val(data.dataEdit.customer_contact_phone);
+                $('#saleplan_address_edit').val(data.dataEdit.shop_address);
 
-                        $('#saleplanEdit').modal('toggle');
-                    }
-                });
+                $('#saleplanEdit').modal('toggle');
             }
-        </script>
+        });
+    }
+
+</script>
 
 <script>
+
+    $("#form_update_saleplan").on("submit", function (e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        $.ajax({
+            type:'POST',
+            url: '{{ url("update_saleplan") }}',
+            data:formData,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(response){
+                console.log(response);
+                if(response.status == 200){
+                    $("#saleplanEdit").modal('hide');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });                          
+                    location.reload();
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Your work has been saved',
+                        text: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+                
+            },
+            error: function(response){
+                console.log("error");
+                console.log(response);
+            }
+        });
+    });
+
+
     $(document).ready(function() {
         $("#sel_searchShopEdit").on("change", function (e) {
             //alert('ssdsd');

@@ -141,18 +141,37 @@ class SalePlanController extends Controller
 
     public function update(Request $request)
     {
-        // dd($request);
-        SalePlan::find($request->id)->update([
-            'customer_shop_id' => $request->shop_id,
-            'sale_plans_title' => $request->sale_plans_title,
-            'sale_plans_date' => $request->sale_plans_date,
-            'sale_plans_tags' => $request->sale_plans_tags,
-            'sale_plans_objective' => $request->sale_plans_objective,
-            'sale_plans_status' => 1,
-            'updated_by' => Auth::user()->id,
-        ]);
+        DB::beginTransaction();
+        try {
 
-        return back();
+            SalePlan::find($request->id)->update([
+                'customer_shop_id' => $request->shop_id,
+                'sale_plans_title' => $request->sale_plans_title,
+                'sale_plans_date' => $request->sale_plans_date,
+                'sale_plans_tags' => $request->sale_plans_tags,
+                'sale_plans_objective' => $request->sale_plans_objective,
+                'sale_plans_status' => 1,
+                'updated_by' => Auth::user()->id,
+            ]);
+
+            DB::commit();
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'บันทึกข้อมูลสำเร็จ',
+            ]);
+        
+        } catch (\Exception $e) {
+
+            DB::rollback();
+
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกข้อมูลได้',
+            ]);
+
+        }
+        
     }
 
     public function destroy($id)

@@ -111,7 +111,7 @@ $customer_shops = DB::table('customer_shops')
             success:function(response){
                 console.log(response);
                 if(response.status == 200){
-                    $("#addCustomer").modal('hide');
+                    $("#addCustomerVisit").modal('hide');
                     Swal.fire({
                         icon: 'success',
                         title: 'Your work has been saved',

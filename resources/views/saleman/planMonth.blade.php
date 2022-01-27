@@ -206,7 +206,7 @@
                             </div>
                             <div class="d-flex">
                                 <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10"
-                                    data-toggle="modal" data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button>
+                                    data-toggle="modal" data-target="#saleplanAdd"> + เพิ่มใหม่ </button>
                             </div>
                         </div>
                         <div class="row">
@@ -413,7 +413,7 @@
     <!-- /Container -->
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModalLarge01" tabindex="-1" role="dialog" aria-labelledby="exampleModalLarge01"
+    <div class="modal fade" id="saleplanAdd" tabindex="-1" role="dialog" aria-labelledby="saleplanAdd"
         aria-hidden="true">
         @include('saleplan.salePlanForm')
     </div>
