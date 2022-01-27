@@ -116,7 +116,7 @@
 
                 <div class="col-md-12">
                     <section class="hk-sec-wrapper">
-                        <h5 class="hk-sec-title">แผนงานประจำเดือน <?php echo thaidate('F Y', $monthly_plan_next->month_date); ?></h5>
+                        <h5 class="hk-sec-title">แผนงานประจำเดือน <?php // echo thaidate('F Y', $monthly_plan_next->month_date); ?></h5>
                         <div class="row mt-30">
                             <div class="col-md-4">
                                 <div class="card card-sm text-white bg-violet">
@@ -202,7 +202,7 @@
                     <section class="hk-sec-wrapper">
                         <div class="hk-pg-header mb-10">
                             <div>
-                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">แผนงานประจำเดือน <?php echo thaidate('F Y', $monthly_plan_next->month_date); ?></h6>
+                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">แผนงานประจำเดือน <?php // echo thaidate('F Y', $monthly_plan_next->month_date); ?></h6>
                             </div>
                             <div class="d-flex">
                                 <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10"
