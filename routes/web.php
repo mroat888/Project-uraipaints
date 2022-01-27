@@ -143,6 +143,9 @@ Route::post('lead/create_comment_request_approval', 'LeadManager\ApprovalControl
 Route::get('/approvalgeneral/history', 'LeadManager\ApprovalController@approval_history');
 Route::get('lead/approval_general_history_detail/{id}', 'LeadManager\ApprovalController@approval_general_history_detail');
 
+Route::get('comment_customer_new/{id}/{createID}', 'LeadManager\ApprovalSalePlanController@comment_customer_new');
+Route::post('lead/create_comment_customer_new', 'LeadManager\ApprovalSalePlanController@create_comment_customer_new');
+
 // Assignment
 Route::get('add_assignment', 'AssignmentController@index');
 Route::get('lead/searchShop', 'SaleMan\SalePlanController@searchShop');

@@ -40,7 +40,7 @@ class PlanMonthController extends Controller
         ->orderBy('id', 'desc')->get();
 
 
-        // -- ข้อมูลลูกค้าใหม่ 
+        // -- ข้อมูลลูกค้าใหม่
         $data['customer_new'] = DB::table('customer_shops')
             ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
             ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
@@ -67,7 +67,7 @@ class PlanMonthController extends Controller
                 'shop_name' => $value['title']." ".$value['name'],
             ];
         }
-        
+
         // ---- สร้างข้อมูล เยี่ยมลูกค้า โดย link กับ api ------- //
 
         $customer_visits = CustomerVisit::where('customer_visits.created_by', Auth::user()->id)
@@ -80,7 +80,7 @@ class PlanMonthController extends Controller
 
             foreach ($res_api['data'] as $key_api => $value_api) {
                 $res_visit_api = $res_api['data'][$key_api];
-                if($cus_visit->customer_shop_id == $res_visit_api['identify']){ 
+                if($cus_visit->customer_shop_id == $res_visit_api['identify']){
                     $data['customer_visit_api'][$key_api] =
                     [
                         'id' => $cus_visit->id,
@@ -109,7 +109,7 @@ class PlanMonthController extends Controller
         }
         // -----  END API
 
-        
+
         // dd($data);
         return view('saleman.planMonth', $data);
     }
