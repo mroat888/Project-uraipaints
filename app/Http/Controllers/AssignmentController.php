@@ -75,14 +75,26 @@ class AssignmentController extends Controller
         return back();
     }
 
-    public function searchShop(Request $request)
+    public function assignment_result_get($id)
     {
-        if ($request->ajax()) {
+        $dataResult = Assignment::where('id', $id)->first();
 
-            $data = Customer::where('shop_name', $request->search)->first();
-        }
-            return $data;
 
+    $data = array(
+        'dataResult'     => $dataResult,
+    );
+    echo json_encode($data);
 
     }
+
+    // public function searchShop(Request $request)
+    // {
+    //     if ($request->ajax()) {
+
+    //         $data = Customer::where('shop_name', $request->search)->first();
+    //     }
+    //         return $data;
+
+
+    // }
 }

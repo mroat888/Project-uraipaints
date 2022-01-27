@@ -148,11 +148,12 @@ Route::post('lead/create_comment_customer_new', 'LeadManager\ApprovalSalePlanCon
 
 // Assignment
 Route::get('add_assignment', 'AssignmentController@index');
-Route::get('lead/searchShop', 'SaleMan\SalePlanController@searchShop');
+// Route::get('lead/searchShop', 'SaleMan\SalePlanController@searchShop');
 Route::post('lead/create_assignment', 'AssignmentController@store');
 Route::get('lead/edit_assignment/{id}', 'AssignmentController@edit');
 Route::post('lead/update_assignment', 'AssignmentController@update');
 Route::get('lead/delete_assignment/{id}', 'AssignmentController@destroy');
+Route::get('lead/assignment_result_get/{id}', 'AssignmentController@assignment_result_get');
 
 // NOTE Lead Manage
 Route::get('/leadManage/note', 'NoteController@note_lead');

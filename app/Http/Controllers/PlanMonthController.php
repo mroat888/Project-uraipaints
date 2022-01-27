@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\SalePlan;
@@ -118,11 +119,22 @@ class PlanMonthController extends Controller
     { // ส่งอนุมัติให้ผู้จัดการเขต
         // dd($id);
 
-            $request_approval = SalePlan::where('monthly_plan_id', $id)->first();
-            $request_approval->sale_plans_status   = 1;
-            $request_approval->updated_by   = Auth::user()->id;
-            $request_approval->updated_at   = Carbon::now();
-            $request_approval->update();
+            $request_approval = SalePlan::where('monthly_plan_id', $id)->get();
+            foreach ($request_approval as $key => $value) {
+                $value->sale_plans_status   = 1;
+                $value->updated_by   = Auth::user()->id;
+                $value->updated_at   = Carbon::now();
+                $value->update();
+            }
+
+            $request_approval_customer = Customer::where('monthly_plan_id', $id)->get();
+            foreach ($request_approval_customer as $key => $value) {
+                $value->shop_aprove_status   = 1;
+                $value->updated_by   = Auth::user()->id;
+                $value->updated_at   = Carbon::now();
+                $value->update();
+            }
+
 
             $request_approval_month = MonthlyPlan::find($id);
             $request_approval_month->status_approve   = 1;
