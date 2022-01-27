@@ -75,6 +75,7 @@ class DailyWorkController extends Controller
         $data['list_saleplan'] = DB::table('sale_plans')
         ->where('sale_plans.monthly_plan_id', $data['monthly_plan']->id)
         ->where('sale_plans.created_by', Auth::user()->id)
+        ->where('sale_plans_status', 2)
         ->orderBy('id', 'desc')->get();
 
         
@@ -83,7 +84,8 @@ class DailyWorkController extends Controller
         ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
         ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
         ->where('customer_shops.created_by', Auth::user()->id)
-        ->where('monthly_plan_id', $data['monthly_plan']->id)
+        ->where('customer_shops.monthly_plan_id', $data['monthly_plan']->id)
+        ->where('customer_shops.shop_aprove_status', 2)
         ->select(
             'province.PROVINCE_NAME',
             'customer_shops.*'

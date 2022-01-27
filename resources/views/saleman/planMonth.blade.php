@@ -54,7 +54,7 @@
                                                 @foreach ($monthly_plan as $key => $value)
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
-                                                        <td>{{ $value->month_date }}</td>
+                                                        <td>{{ thaidate('F Y', $value->month_date) }}</td>
                                                         <td>{{ $value->sale_plan_amount }}</td>
                                                         <td>{{ $value->cust_new_amount }}</td>
                                                         <td>{{ $value->total_plan }}</td>
@@ -92,8 +92,15 @@
                                                                     <button type="button" class="btn btn-icon btn-secondary requestApproval" disabled>
                                                                         <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
                                                                         @else
-                                                                        <button type="button" class="btn btn-icon btn-teal requestApproval">
-                                                                            <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
+
+                                                                        @if($value->id != $monthly_plan_next->id)
+                                                                            <button type="button" class="btn btn-icon btn-teal requestApproval" disabled>
+                                                                                <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
+                                                                        @else
+                                                                            <button type="button" class="btn btn-icon btn-teal requestApproval">
+                                                                                <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
+                                                                        @endif
+
                                                                     @endif
 
 
@@ -205,8 +212,13 @@
                                 <h6 class="hk-sec-title mb-10" style="font-weight: bold;">แผนงานประจำเดือน <?php echo thaidate('F Y', $monthly_plan_next->month_date); ?></h6>
                             </div>
                             <div class="d-flex">
-                                <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10"
-                                    data-toggle="modal" data-target="#saleplanAdd"> + เพิ่มใหม่ </button>
+                                @if($monthly_plan_next->status_approve == 1 || $monthly_plan_next->status_approve == 2)
+                                    <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10"
+                                        data-toggle="modal" data-target="#saleplanAdd" disabled> + เพิ่มใหม่ </button>
+                                @else
+                                    <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10"
+                                        data-toggle="modal" data-target="#saleplanAdd"> + เพิ่มใหม่ </button>
+                                @endif
                             </div>
                         </div>
                         <div class="row">
@@ -272,8 +284,13 @@
                                 <h6 class="hk-sec-title mb-10" style="font-weight: bold;">พบลูกค้าใหม่</h6>
                             </div>
                             <div class="d-flex">
-                                <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10"
+                                @if($monthly_plan_next->status_approve == 1 || $monthly_plan_next->status_approve == 2)
+                                    <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10"
+                                    data-toggle="modal" data-target="#addCustomer" disabled> + เพิ่มใหม่ </button>
+                                @else
+                                    <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10"
                                     data-toggle="modal" data-target="#addCustomer"> + เพิ่มใหม่ </button>
+                                @endif
                             </div>
                         </div>
                         <div class="row">
