@@ -26,15 +26,18 @@
             </div>
         @endif
 
+        <form action="{{ url('lead/approval_saleplan_confirm') }}" method="POST"
+                enctype="multipart/form-data">
+                @csrf
         <!-- Title -->
         <div class="hk-pg-header mb-10">
             <div>
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><i
                             class="ion ion-md-analytics"></i></span>รายละเอียด Sale Plan</h4>
             </div>
-            <form action="{{ url('lead/approval_saleplan_confirm') }}" method="POST"
+            {{-- <form action="{{ url('lead/approval_saleplan_confirm') }}" method="POST"
                 enctype="multipart/form-data">
-                @csrf
+                @csrf --}}
                 <div class="d-flex">
                     <button type="submit" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" name="approve" value="approve">อนุมัติ</button>
 

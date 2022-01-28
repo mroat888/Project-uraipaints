@@ -111,11 +111,30 @@
                                                         <td>{{$key + 1}}</td>
                                                         <td>{{$value->month_date}}</td>
                                                         <td>{{$value->name}}</td>
+                                                        {{-- <td>{{$value->id}}</td> --}}
                                                         <td><span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span></td>
                                                         <td>
                                                             <a href="{{ url('/approvalsaleplan_detail', $value->id) }}" type="button" class="btn btn-icon btn-primary pt-5">
                                                                 <i data-feather="file-text"></i>
                                                             </a>
+                                                            <?php
+                                                            $status_saleplan = App\SalePlan::where('monthly_plan_id', $value->id)
+                                                            ->whereIn('sale_plans_status', [2,3])->count();
+
+                                                            $status_customer = App\Customer::where('monthly_plan_id', $value->id)
+                                                            ->whereIn('shop_aprove_status', [2,3])->count();
+
+                                                            ?>
+                                                            {{-- {{$status_customer}}
+                                                            {{$status_saleplan}} --}}
+
+                                                            @if ($status_customer == 0 && $status_saleplan == 0)
+
+                                                            <a href="{{ url('lead/retrospective', $value->id) }}" type="button" class="btn btn-icon btn-warning pt-5">
+                                                                <i data-feather="refresh-ccw"></i>
+                                                            </a>
+
+                                                          @endif
                                                         </td>
                                                     </tr>
                                                 @endforeach

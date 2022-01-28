@@ -56,7 +56,6 @@ class AssignmentController extends Controller
     {
         Assignment::find($request->id)->update([
             'assign_work_date' => $request->date,
-            // 'assign_approve_date' => Carbon::now(), // วันที่อนุมัติ
             'assign_title' => $request->assign_title,
             'assign_detail' => $request->assign_detail,
             'assign_emp_id' => $request->assign_emp_id,
@@ -75,26 +74,16 @@ class AssignmentController extends Controller
         return back();
     }
 
-    public function assignment_result_get($id)
-    {
-        $dataResult = Assignment::where('id', $id)->first();
-
-
-    $data = array(
-        'dataResult'     => $dataResult,
-    );
-    echo json_encode($data);
-
-    }
-
-    // public function searchShop(Request $request)
+    // public function assignment_result_get($id)
     // {
-    //     if ($request->ajax()) {
+    //     $dataResult = Assignment::where('id', $id)->first();
 
-    //         $data = Customer::where('shop_name', $request->search)->first();
-    //     }
-    //         return $data;
 
+    // $data = array(
+    //     'dataResult'     => $dataResult,
+    // );
+    // echo json_encode($data);
 
     // }
+
 }

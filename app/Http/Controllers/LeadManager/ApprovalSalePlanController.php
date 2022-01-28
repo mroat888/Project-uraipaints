@@ -33,6 +33,7 @@ class ApprovalSalePlanController extends Controller
     public function approvalsaleplan_detail($id)
     {
         // $id คือรหัสของ monthly_plan
+        // return $id;
 
         // -----  API Login ----------- //
         $response = Http::post('http://49.0.64.92:8020/api/auth/login', [
@@ -83,7 +84,7 @@ class ApprovalSalePlanController extends Controller
         $data['customer_new'] = DB::table('customer_shops')
         ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
         ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
-        ->where('customer_shops.shop_aprove_status', 0)
+        ->where('customer_shops.shop_aprove_status', 1)
         // ->where('customer_shops.created_by', Auth::user()->id)
         ->where('customer_shops.monthly_plan_id', $id)
         ->select(
@@ -128,6 +129,9 @@ class ApprovalSalePlanController extends Controller
             $data['data'] = SaleplanComment::where('saleplan_id', $id)->first();
             $data['saleplanID'] = $id;
             $data['createID'] = $createID;
+
+            $data['title'] = SalePlan::where('id', $id)->first();
+
             // return $data;
             if ($data) {
                 return view('leadManager.create_comment_saleplan', $data);
@@ -143,6 +147,8 @@ class ApprovalSalePlanController extends Controller
             $data['data'] = CustomerShopComment::where('customer_id', $id)->first();
             $data['customerID'] = $id;
             $data['createID'] = $createID;
+
+            $data['customer'] = Customer::where('id', $id)->first();
             // return $data;
             if ($data) {
                 return view('leadManager.create_comment_customer_new', $data);
@@ -155,7 +161,6 @@ class ApprovalSalePlanController extends Controller
     {
         // dd($request);
             $data = SaleplanComment::where('saleplan_id', $request->id)->first();
-            // return $request->id;
             if ($data) {
                $dataEdit = SaleplanComment::where('saleplan_id', $request->id)->update([
                     'saleplan_comment_detail' => $request->comment,
@@ -485,5 +490,14 @@ class ApprovalSalePlanController extends Controller
             return back()->with('error', "กรุณาเลือกรายการอนุมัติ");
         }
         return back();
+    }
+
+    public function retrospective($id)
+    {
+       $data = MonthlyPlan::find($id);
+       $data->status_approve    = 0;
+       $data->update();
+
+       return back();
     }
 }
