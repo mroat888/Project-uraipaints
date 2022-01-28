@@ -53,7 +53,9 @@
             </div>
         </div>
 
-        <div class="row">
+        @include('news_main')
+
+        <!-- <div class="row">
             <div class="col-md-12">
                 <section class="hk-sec-wrapper">
                     <h5 class="hk-sec-title">ข้อมูลข่าวสาร</h5>
@@ -78,7 +80,7 @@
                     </div>
                 </section>
             </div>
-        </div>
+        </div> -->
         <!-- /Row -->
     </div>
     <!-- /Container -->

@@ -235,6 +235,7 @@
                                                     <th>เรื่อง</th>
                                                     <th>ลูกค้า</th>
                                                     <th>ความคิดเห็น</th>
+                                                    <th>อนุมัติ</th>
                                                     <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
@@ -244,18 +245,6 @@
                                                         <td>{{ $key + 1 }}</td>
                                                         <td>{{ $value->sale_plans_title }}</td>
                                                         <td>
-                                                            {{--
-                                                            @php
-                                                                $response_saleplan = Http::withToken($api_token)
-                                                                                        ->get('http://49.0.64.92:8020/api/v1/customers/'.$value->customer_shop_id);
-                                                                $res_saleplan_api = $response_saleplan->json();
-                                                                $res_saleplan_api = $res_saleplan_api['data'][0];
-                                                            @endphp
-                                                            @if(isset($res_saleplan_api))
-                                                                {{ $res_saleplan_api['title'] }} {{ $res_saleplan_api['name'] }}
-                                                            @endif
-                                                            --}}
-
                                                             @foreach($customer_api as $key_api => $value_api)
                                                                 @if($customer_api[$key_api]['id'] == $value->customer_shop_id)
                                                                     {{ $customer_api[$key_api]['shop_name'] }}
@@ -265,17 +254,44 @@
                                                         <td><span class="badge badge-soft-indigo mt-15 mr-10"
                                                             style="font-size: 12px;">Comment</span>
                                                         </td>
+                                                        <td>
+                                                            @php
+                                                                switch($value->sale_plans_status){
+                                                                    case 0 :    $text_status = "Draf";
+                                                                                $badge_color = "badge-soft-secondary";
+                                                                                $btn_disabled = "";
+                                                                        break;
+                                                                    case 1 :    $text_status = "Pending";
+                                                                                $badge_color = "badge-soft-warning";
+                                                                                $btn_disabled = "";
+                                                                        break;
+                                                                    case 2 :    $text_status = "Approve";
+                                                                                $badge_color = "badge-soft-success";
+                                                                                $btn_disabled = "disabled";
+                                                                        break;
+                                                                    default :   $text_status = "-";
+                                                                                $badge_color = "";
+                                                                                $btn_disabled = "disabled";
+                                                                        break;
+                                                                }
+                                                            @endphp
+                                                            <span class="badge {{ $badge_color }} mt-15 mr-10"style="font-size: 12px;">
+                                                                {{ $text_status }}
+                                                            </span>
+                                                        </td>
                                                         <td style="text-align:center">
                                                             <div class="button-list">
                                                                 <button class="btn btn-icon btn-warning mr-10 btn_editsalepaln"
-                                                                    value="{{ $value->id }}">
+                                                                    value="{{ $value->id }}" {{ $btn_disabled }}>
                                                                     <h4 class="btn-icon-wrap" style="color: white;"><i
                                                                             class="ion ion-md-create"></i></h4>
                                                                 </button>
-                                                                <button class="btn btn-icon btn-danger mr-10">
+                                                                <button class="btn btn-icon btn-danger mr-10" {{ $btn_disabled }}>
                                                                     <h4 class="btn-icon-wrap" style="color: white;"><i
                                                                             class="ion ion-md-trash"></i></h4>
                                                                 </button>
+                                                                
+                                                                
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -319,6 +335,7 @@
                                                     <th>ชื่อร้าน</th>
                                                     <th>อำเภอ,จังหวัด</th>
                                                     <th>สถานะ</th>
+                                                    <th>อนุมัติ</th>
                                                     <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
@@ -337,20 +354,41 @@
                                                             <span class="badge badge-soft-indigo mt-15 mr-10"
                                                                 style="font-size: 12px;">ลูกค้าใหม่</span>
                                                         </td>
+                                                        <td>
+                                                            @php
+                                                                switch($value->shop_aprove_status){
+                                                                    case 0 :    $text_status = "Draf";
+                                                                                $badge_color = "badge-soft-secondary";
+                                                                                $btn_disabled = "";
+                                                                        break;
+                                                                    case 1 :    $text_status = "Pending";
+                                                                                $badge_color = "badge-soft-warning";
+                                                                                $btn_disabled = "";
+                                                                        break;
+                                                                    case 2 :    $text_status = "Approve";
+                                                                                $badge_color = "badge-soft-success";
+                                                                                $btn_disabled = "disabled";
+                                                                        break;
+                                                                    default :   $text_status = "-";
+                                                                                $badge_color = "";
+                                                                                $btn_disabled = "disabled";
+                                                                        break;
+                                                                }
+                                                            @endphp
+                                                            <span class="badge {{ $badge_color }} mt-15 mr-10"style="font-size: 12px;">
+                                                                {{ $text_status }}
+                                                            </span>
+                                                        </td>
                                                         <td style="text-align:center">
                                                             <div class="button-list">
-                                                                {{-- <button class="btn btn-icon btn-warning mr-10"
-                                                                data-toggle="modal" data-target="#addCustomer">
-                                                                <span class="btn-icon-wrap"><i
-                                                                        data-feather="edit"></i></span></button> --}}
                                                                 <button class="btn btn-icon btn-warning mr-10 btn_editshop"
-                                                                    value="{{ $value->id }}">
+                                                                    value="{{ $value->id }}" {{ $btn_disabled }}>
                                                                     <h4 class="btn-icon-wrap" style="color: white;"><i
                                                                             class="ion ion-md-create"></i></h4>
                                                                 </button>
                                                                 <button id="btn_delete"
                                                                     class="btn btn-icon btn-danger mr-10"
-                                                                    value="{{ $value->id }}">
+                                                                    value="{{ $value->id }}" {{ $btn_disabled }}>
                                                                     <h4 class="btn-icon-wrap" style="color: white;"><i
                                                                             class="ion ion-md-trash"></i></h4>
                                                                 </button>

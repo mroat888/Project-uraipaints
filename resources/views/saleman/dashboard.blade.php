@@ -65,7 +65,7 @@
                 </section>
             </div>
 
-            <div class="col-md-8">
+            <div class="col-sm-12 col-md-8">
                 <section class="hk-sec-wrapper">
                     {{-- <h6 class="hk-sec-title mb-10" style="font-weight: bold;">สรุปยอดขาย</h6> --}}
                     <div class="row mt-30">
@@ -281,7 +281,7 @@
                 </section>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-sm-12 col-md-4">
                 <section class="hk-sec-wrapper">
                     <div class="row mt-30">
                         <div class="col-md-12">
