@@ -34,7 +34,7 @@ class AssignmentController extends Controller
     { // สรุปผลลัพธ์
         // dd($request);
         Assignment::find($request->assign_id)->update([
-            'assign_result_detail' => $request->assign_detail,
+            // 'assign_result_detail' => $request->assign_detail,
             'assign_result_status' => $request->assign_result,
             'updated_by' => Auth::user()->id,
         ]);

@@ -86,8 +86,6 @@
                                                     <span class="badge badge-soft-success" style="font-size: 12px;">สำเร็จ</span>
                                                     @elseif ($value->assign_result_status == 2)
                                                     <span class="badge badge-soft-danger" style="font-size: 12px;">ไม่สำเร็จ</span>
-                                                    @elseif ($value->assign_result_status == 3)
-                                                    <span class="badge badge-soft-warning" style="font-size: 12px;">รอตัดสินใจ</span>
                                                 @endif
                                             </td>
                                             <td>
@@ -100,11 +98,11 @@
                                                 <a href="{{url('lead/delete_assignment', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
                                                     <span class="btn-icon-wrap"><i data-feather="trash-2"></i></span></a>
 
-                                                    @else
+                                                    {{-- @else
                                                     <div class="button-list">
                                                         <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalResult" onclick="assignment_result({{$value->id}})">
                                                         <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
-                                                        </div>
+                                                        </div> --}}
                                                 @endif
                                             </td>
                                         </tr>
@@ -325,7 +323,7 @@
     </div>
 
      <!-- Modal Result -->
-<div class="modal fade" id="ModalResult" tabindex="-1" role="dialog" aria-labelledby="ModalResult" aria-hidden="true">
+{{-- <div class="modal fade" id="ModalResult" tabindex="-1" role="dialog" aria-labelledby="ModalResult" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -353,9 +351,9 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
-    <script>
+    {{-- <script>
         //Edit
         function assignment_result(id) {
             // $("#get_assign_id").val(id);
@@ -381,7 +379,7 @@
                 }
             });
         }
-    </script>
+    </script> --}}
 
     <script>
         //Edit

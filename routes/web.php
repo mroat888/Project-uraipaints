@@ -132,6 +132,7 @@ Route::get('comment_saleplan/{id}/{createID}', 'LeadManager\ApprovalSalePlanCont
 Route::post('lead/create_comment_saleplan', 'LeadManager\ApprovalSalePlanController@create_comment_saleplan');
 Route::post('lead/approval_saleplan_confirm', 'LeadManager\ApprovalSalePlanController@approval_saleplan_confirm');
 Route::post('lead/approval_saleplan_confirm_all', 'LeadManager\ApprovalSalePlanController@approval_saleplan_confirm_all');
+Route::get('lead/retrospective/{id}', 'LeadManager\ApprovalSalePlanController@retrospective');
 
 Route::get('/approvalgeneral', 'LeadManager\ApprovalController@index');
 Route::post('lead/approval_confirm_all', 'LeadManager\ApprovalController@approval_confirm_all');

@@ -12,6 +12,27 @@ $(document).ready(function() {
 
 		}
 	});
+
+    $('#datable_1_2').DataTable({
+		// responsive: true,
+		autoWidth: false,
+		language: { search: "",
+		searchPlaceholder: "ค้นหา",
+		sLengthMenu: "_MENU_items"
+
+		}
+	});
+
+    $('#datable_1_3').DataTable({
+		// responsive: true,
+		autoWidth: false,
+		language: { search: "",
+		searchPlaceholder: "ค้นหา",
+		sLengthMenu: "_MENU_items"
+
+		}
+	});
+
     $('#datable_2').DataTable({
 		autoWidth: false,
 		lengthChange: true,

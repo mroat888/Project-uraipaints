@@ -89,8 +89,6 @@
                                                     <span class="badge badge-soft-success" style="font-size: 12px;">สำเร็จ</span>
                                                     @elseif ($value->assign_result_status == 2)
                                                     <span class="badge badge-soft-danger" style="font-size: 12px;">ไม่สำเร็จ</span>
-                                                    @elseif ($value->assign_result_status == 3)
-                                                    <span class="badge badge-soft-warning" style="font-size: 12px;">รอตัดสินใจ</span>
                                                 @endif
                                             </td>
                                             <td>
@@ -128,19 +126,18 @@
                     <form action="{{ url('assignment_Result') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="assign_id" id="get_assign_id">
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="username">รายละเอียด</label>
                             <textarea class="form-control" id="get_detail" cols="30" rows="5" placeholder="" name="assign_detail"
                                 type="text"> </textarea>
-                        </div>
+                        </div> --}}
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="username">สรุปผลลัพธ์</label>
                                 <select class="form-control custom-select" id="get_result" name="assign_result">
                                     <option selected>-- กรุณาเลือก --</option>
-                                    <option value="1">สนใจ/ตกลง</option>
-                                    <option value="2">ไม่สนใจ</option>
-                                    <option value="3">รอตัดสินใจ</option>
+                                    <option value="1">สำเร็จ</option>
+                                    <option value="2">ไม่สำเร็จ</option>
                                 </select>
                             </div>
                         </div>
