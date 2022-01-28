@@ -103,8 +103,7 @@
 
                                                                     @endif
 
-
-                                                                    <button class="btn btn-icon btn-danger ml-2">
+                                                                    <button type="button" class="btn btn-icon btn-danger ml-2" disabled>
                                                                         <span class="btn-icon-wrap"><i data-feather="pie-chart"></i></span></button>
                                                                 </form>
 

@@ -11,7 +11,7 @@
         {{-- <form action="{{ url('update_saleplan') }}" method="post" enctype="multipart/form-data"> --}}
             @csrf
         <div class="modal-body">
-                
+
                 <div class="form-group">
                     <label for="firstName">เรื่อง</label>
                     <input class="form-control" id="get_title" type="text" name="sale_plans_title">
@@ -59,6 +59,7 @@
                     <div class="col-md-12 form-group">
                         <label for="firstName">รายการนำเสนอ</label>
                         <select class="select2 select2-multiple form-control" multiple="multiple" data-placeholder="Choose" name="sale_plans_tags" id="get_tag">
+                            {{-- <option selected disabled>กรุณาเลือก</option> --}}
                             <optgroup label="เลือกข้อมูล">
                                 <option value="1">สีรองพื้นปูนกันชื้น</option>
                                 <option value="2">4 in 1</option>
@@ -123,7 +124,7 @@
                         title: 'Your work has been saved',
                         showConfirmButton: false,
                         timer: 1500
-                    });                          
+                    });
                     location.reload();
                 }else{
                     Swal.fire({
@@ -134,7 +135,7 @@
                         timer: 1500
                     })
                 }
-                
+
             },
             error: function(response){
                 console.log("error");
