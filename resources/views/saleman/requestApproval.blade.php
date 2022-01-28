@@ -226,9 +226,11 @@
                             <div class="row">
                                 <div class="col-md-6 form-group">
                                     <label for="firstName">เรื่องด่วน</label>
+                                    {{-- <input type="text" name="" id="get_xx"> --}}
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck6" name="assign_is_hot" value="1">
-                                        <label class="custom-control-label" for="customCheck6">ขออนุมัติด่วน</label>
+                                        <div id="customCheck6"></div>
+                                        {{-- <input type="checkbox" class="custom-control-input" id="customCheck6" name="assign_is_hot" value="1">
+                                        <label class="custom-control-label" for="customCheck6">ขออนุมัติด่วน</label> --}}
                                     </div>
                                 </div>
                         </div>
@@ -320,8 +322,11 @@
                     $('#get_title').val(data.dataEdit.assign_title);
                     $('#get_detail').val(data.dataEdit.assign_detail);
                     $('#get_for').val(data.dataEdit.approved_for);
+                    $('#get_xx').val(data.dataEdit.assign_is_hot);
                     if (data.dataEdit.assign_is_hot == 1) {
-                        $('#customCheck6').val(data.dataEdit.assign_is_hot);
+                        $('#customCheck6').append("<input type='checkbox' class='custom-control-input' id='customCheck7' name='assign_is_hot' value='1' checked><label class='custom-control-label' for='customCheck7'>ขออนุมัติด่วน</label>");
+                    }else{
+                        $('#customCheck6').append("<input type='checkbox' class='custom-control-input' id='customCheck8' name='assign_is_hot' value='1'><label class='custom-control-label' for='customCheck8'>ขออนุมัติด่วน</label>");
                     }
                     // $('#customCheck2').val(data.dataEdit.assign_is_hot);
 
