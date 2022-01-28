@@ -15,7 +15,7 @@ class NewsController extends Controller
     public function frontend_news()
     {
         $list_news_a = NewsBanner::orderBy('id', 'desc')->first();
-        $list_news = News::where('status', "N")->orderBy('id', 'desc')->get();
+        $list_news = News::where('status', "N")->orderBy('id', 'desc')->paginate(10);
         $list_banner = NewsBanner::orderBy('id', 'desc')->get();
         return view('saleman.news', compact('list_news', 'list_banner', 'list_news_a'));
     }
@@ -23,7 +23,7 @@ class NewsController extends Controller
     public function lead_frontend_news()
     {
         $list_news_a = NewsBanner::orderBy('id', 'desc')->first();
-        $list_news = News::where('status', "N")->orderBy('id', 'desc')->get();
+        $list_news = News::where('status', "N")->orderBy('id', 'desc')->paginate(10);
         $list_banner = NewsBanner::orderBy('id', 'desc')->get();
         return view('leadManager.news', compact('list_news', 'list_banner', 'list_news_a'));
     }
@@ -31,7 +31,7 @@ class NewsController extends Controller
     public function head_frontend_news()
     {
         $list_news_a = NewsBanner::orderBy('id', 'desc')->first();
-        $list_news = News::where('status', "N")->orderBy('id', 'desc')->get();
+        $list_news = News::where('status', "N")->orderBy('id', 'desc')->paginate(10);
         $list_banner = NewsBanner::orderBy('id', 'desc')->get();
         return view('headManager.news', compact('list_news', 'list_banner', 'list_news_a'));
     }
@@ -39,7 +39,7 @@ class NewsController extends Controller
     public function admin_frontend_news()
     {
         $list_news_a = NewsBanner::orderBy('id', 'desc')->first();
-        $list_news = News::where('status', "N")->orderBy('id', 'desc')->get();
+        $list_news = News::where('status', "N")->orderBy('id', 'desc')->paginate(10);
         $list_banner = NewsBanner::orderBy('id', 'desc')->get();
         return view('admin.fontendNews', compact('list_news', 'list_banner', 'list_news_a'));
     }
@@ -93,30 +93,30 @@ class NewsController extends Controller
 
     public function update(Request $request)
     {
-        if ($request->news_image != '') {
+        if ($request->news_image_edit != '') {
             $path = 'upload/NewsImage';
             $image = '';
             $data = News::find($request->id);
 
-            if (!empty($request->file('news_image'))) {
+            if (!empty($request->file('news_image_edit'))) {
                 //ลบรูปเก่าเพื่ออัพโหลดรูปใหม่แทน
                 if (!empty($data->news_image)) {
-                    $path2 = 'public/upload/NewsImage/';
-                    unlink($path2 . $data->news_image);
+                    $path2 = 'upload/NewsImage/';
+                    unlink(public_path($path2) . $data->news_image);
                 }
 
-                $img = $request->file('news_image');
+                $img = $request->file('news_image_edit');
                 $img_name = 'news-' . time() . '.' . $img->getClientOriginalExtension();
                 $save_path = $img->move(public_path($path), $img_name);
                 $image = $img_name;
 
 
                 $data2 = News::find($request->id);
-                $data2->news_date         = $request->news_date;
-                $data2->news_title        = $request->news_title;
-                $data2->news_detail       = $request->news_detail;
+                $data2->news_date         = $request->news_date_edit;
+                $data2->news_title        = $request->news_title_edit;
+                $data2->news_detail       = $request->news_detail_edit;
                 $data2->news_image        = $image;
-                $data2->url               = $request->url;
+                $data2->url               = $request->url_edit;
                 $data2->updated_by        = Auth::user()->id;
                 $data2->updated_at        = Carbon::now();
                 $data2->update();
@@ -125,10 +125,10 @@ class NewsController extends Controller
         } else {
 
             $data2 = News::find($request->id);
-            $data2->news_date         = $request->news_date;
-            $data2->news_title        = $request->news_title;
-            $data2->news_detail       = $request->news_detail;
-            $data2->url               = $request->url;
+            $data2->news_date         = $request->news_date_edit;
+            $data2->news_title        = $request->news_title_edit;
+            $data2->news_detail       = $request->news_detail_edit;
+            $data2->url               = $request->url_edit;
             $data2->updated_by        = Auth::user()->id;
             $data2->updated_at        = Carbon::now();
             $data2->update();

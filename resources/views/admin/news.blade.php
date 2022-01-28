@@ -138,25 +138,25 @@
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">เรื่อง</label>
-                                <input class="form-control" id="get_title" type="text" name="news_title" required>
+                                <input class="form-control" id="get_title" type="text" name="news_title_edit" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="username">รายละเอียด</label>
-                            <textarea class="form-control" cols="30" rows="5" id="get_detail" type="text" name="news_detail" required></textarea>
+                            <textarea class="form-control" cols="30" rows="5" id="get_detail" type="text" name="news_detail_edit" required></textarea>
                         </div>
                         <div class="form-group">
                             <label for="username">Link URL</label>
-                            <input class="form-control" id="get_url" name="url" type="text">
+                            <input class="form-control" id="get_url" name="url_edit" type="text">
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">รูปภาพ</label>
-                                <input type="file" name="news_image" id="get_image" class="form-control" required>
+                                <input type="file" name="news_image_edit" id="get_image" class="form-control">
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="firstName">วันที่แจ้งเตือน</label>
-                                <input class="form-control" name="news_date" id="get_date" type="date" required>
+                                <input class="form-control" name="news_date_edit" id="get_date" type="date" required>
                             </div>
                         </div>
                         <input type="hidden" name="id" id="get_id">
