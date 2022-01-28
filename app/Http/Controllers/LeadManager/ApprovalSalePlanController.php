@@ -126,7 +126,7 @@ class ApprovalSalePlanController extends Controller
     {
         // return $id;
 
-            $data['data'] = SaleplanComment::where('saleplan_id', $id)->first();
+            $data['data'] = SaleplanComment::where('saleplan_id', $id)->where('created_by', Auth::user()->id)->first();
             $data['saleplanID'] = $id;
             $data['createID'] = $createID;
 
@@ -144,7 +144,7 @@ class ApprovalSalePlanController extends Controller
     {
         // return $id;
 
-            $data['data'] = CustomerShopComment::where('customer_id', $id)->first();
+            $data['data'] = CustomerShopComment::where('customer_id', $id)->where('created_by', Auth::user()->id)->first();
             $data['customerID'] = $id;
             $data['createID'] = $createID;
 
@@ -160,7 +160,7 @@ class ApprovalSalePlanController extends Controller
     public function create_comment_saleplan(Request $request)
     {
         // dd($request);
-            $data = SaleplanComment::where('saleplan_id', $request->id)->first();
+            $data = SaleplanComment::where('saleplan_id', $request->id)->where('created_by', Auth::user()->id)->first();
             if ($data) {
                $dataEdit = SaleplanComment::where('saleplan_id', $request->id)->update([
                     'saleplan_comment_detail' => $request->comment,
@@ -183,7 +183,7 @@ class ApprovalSalePlanController extends Controller
     {
         // dd($request);
 
-            $data = CustomerShopComment::where('customer_id', $request->id)->first();
+            $data = CustomerShopComment::where('customer_id', $request->id)->where('created_by', Auth::user()->id)->first();
             // return $request->id;
             if ($data) {
                $dataEdit = CustomerShopComment::where('customer_id', $request->id)->update([

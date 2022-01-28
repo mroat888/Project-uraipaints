@@ -26,6 +26,7 @@ Route::get('dashboard',  'SaleMan\DashboardController@index');
 Route::get('/planMonth', 'PlanMonthController@index');
 Route::get('approve_monthly_plan/{id}', 'PlanMonthController@approve');
 Route::get('dailyWork', 'SaleMan\DailyWorkController@index');
+Route::get('saleplan_view_comment/{id}', 'PlanMonthController@saleplan_view_comment');
 Route::get('/palncalendar', function () { return view('saleplan.salePalnCalendar'); });
 Route::get('/planDetail', function () { return view('saleplan.saleplanDetail'); });
 
@@ -128,7 +129,6 @@ Route::get('lead/viewAssignmentDetail', function () { return view('leadManager.v
 Route::get('/approvalsaleplan', 'LeadManager\ApprovalSalePlanController@index');
 Route::get('/approvalsaleplan_detail/{id}', 'LeadManager\ApprovalSalePlanController@approvalsaleplan_detail');
 Route::get('comment_saleplan/{id}/{createID}', 'LeadManager\ApprovalSalePlanController@comment_saleplan');
-// Route::post('lead/create_comment_saleplan', 'LeadManager\ApprovalSalePlanController@create_comment_saleplan');
 Route::post('lead/create_comment_saleplan', 'LeadManager\ApprovalSalePlanController@create_comment_saleplan');
 Route::post('lead/approval_saleplan_confirm', 'LeadManager\ApprovalSalePlanController@approval_saleplan_confirm');
 Route::post('lead/approval_saleplan_confirm_all', 'LeadManager\ApprovalSalePlanController@approval_saleplan_confirm_all');
@@ -169,21 +169,29 @@ Route::get('lead/promotions', 'PromotionController@lead_frontend_promotion');
 // });
 
 
+// ==================================================================== Head ====================================================================//
+
 // Route::middleware(['auth', 'head'])->group(function () {
 // head
 Route::get('headManage', function () { return view('headManager.dashboard'); });
-Route::get('head/planMonth', function () { return view('headManager.planMonth'); });
-Route::get('head/dailyWork', function () { return view('headManager.dailyWork'); });
+// Route::get('head/planMonth', function () { return view('headManager.planMonth'); });
+// Route::get('head/dailyWork', function () { return view('headManager.dailyWork'); });
 Route::get('head/palncalendar', function () { return view('headManager.salePalnCalendar'); });
 Route::get('head/saleWork', function () { return view('headManager.sale_work'); });
 Route::get('head/viewSaleDetail', function () { return view('headManager.view_saleplan'); });
 Route::get('head/viewVisitDetail', function () { return view('headManager.view_vist_customer'); });
 Route::get('head/viewAssignmentDetail', function () { return view('headManager.view_assignment'); });
 
-Route::get('head/approvalsaleplan', function () { return view('headManager.approval_saleplan'); });
+Route::get('head/approvalsaleplan', 'HeadManager\ApprovalSalePlanController@index');
+Route::get('head/approvalsaleplan_detail/{id}', 'HeadManager\ApprovalSalePlanController@approvalsaleplan_detail');
+Route::get('head/comment_saleplan/{id}/{createID}', 'HeadManager\ApprovalSalePlanController@comment_saleplan');
+Route::post('head/create_comment_saleplan', 'HeadManager\ApprovalSalePlanController@create_comment_saleplan');
+Route::get('head/comment_customer_new/{id}/{createID}', 'HeadManager\ApprovalSalePlanController@comment_customer_new');
+Route::post('head/create_comment_customer_new', 'HeadManager\ApprovalSalePlanController@create_comment_customer_new');
+
 Route::get('head/approvalgeneral', function () { return view('headManager.approval_general'); });
 Route::get('head/approvalgeneral/history', function () { return view('headManager.approval_general_history'); });
-Route::get('head/approvalsaleplan/detail', function () { return view('headManager.approval_saleplan_detail'); });
+// Route::get('head/approvalsaleplan/detail', function () { return view('headManager.approval_saleplan_detail'); });
 Route::get('head/assignment/add', function () { return view('headManager.add_assignment'); });
 
 // Note Head Manage

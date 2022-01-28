@@ -234,8 +234,8 @@
                                                     <th>#</th>
                                                     <th>เรื่อง</th>
                                                     <th>ลูกค้า</th>
-                                                    <th>ความคิดเห็น</th>
-                                                    <th>อนุมัติ</th>
+                                                    {{-- <th>ความคิดเห็น</th> --}}
+                                                    <th>การอนุมัติ</th>
                                                     <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
@@ -251,10 +251,10 @@
                                                                 @endif
                                                             @endforeach
                                                         </td>
-                                                        <td><span class="badge badge-soft-indigo mt-15 mr-10"
-                                                            style="font-size: 12px;">Comment</span>
-                                                        </td>
                                                         <td>
+                                                            @if ($value->saleplan_id)
+                                                            <span class="badge badge-soft-indigo mt-15 mr-10" style="font-size: 12px;">Comment</span>
+                                                            @endif
                                                             @php
                                                                 switch($value->sale_plans_status){
                                                                     case 0 :    $text_status = "Draf";
@@ -281,17 +281,23 @@
                                                         </td>
                                                         <td style="text-align:center">
                                                             <div class="button-list">
-                                                                <button class="btn btn-icon btn-warning mr-10 btn_editsalepaln"
+                                                                @if ($value->saleplan_id)
+                                                                <button onclick="approval_comment({{ $value->id }})"
+                                                                    class="btn btn-icon btn-violet" data-toggle="modal"
+                                                                    data-target="#ApprovalComment">
+                                                                    <span class="btn-icon-wrap"><i data-feather="message-square"></i></span></button>
+                                                                @endif
+                                                                <button class="btn btn-icon btn-warning btn_editsalepaln"
                                                                     value="{{ $value->id }}" {{ $btn_disabled }}>
                                                                     <h4 class="btn-icon-wrap" style="color: white;"><i
                                                                             class="ion ion-md-create"></i></h4>
                                                                 </button>
-                                                                <button class="btn btn-icon btn-danger mr-10" {{ $btn_disabled }}>
+                                                                <button class="btn btn-icon btn-danger" {{ $btn_disabled }}>
                                                                     <h4 class="btn-icon-wrap" style="color: white;"><i
                                                                             class="ion ion-md-trash"></i></h4>
                                                                 </button>
-                                                                
-                                                                
+
+
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -522,6 +528,50 @@
             </form>
         </div>
     </div>
+
+     <!-- Modal Comment -->
+     <div class="modal fade" id="ApprovalComment" tabindex="-1" role="dialog" aria-labelledby="ApprovalComment" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">ความคิดเห็น</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="username">รายละเอียดความคิดเห็น</label>
+                            <textarea class="form-control" cols="30" rows="5" id="get_comment" name="assign_comment"
+                                type="text" readonly></textarea>
+                        </div>
+                        {{-- <input type="text" name="id" id="get_comment_id"> --}}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        //Edit
+        function approval_comment(id) {
+            $.ajax({
+                type: "GET",
+                url: "{!! url('saleplan_view_comment/"+id+"') !!}",
+                dataType: "JSON",
+                async: false,
+                success: function(data) {
+                    $('#get_comment_id').val(data.comment.id);
+                    $('#get_comment').val(data.comment.saleplan_comment_detail);
+
+                    $('#ApprovalComment').modal('toggle');
+                }
+            });
+        }
+    </script>
+
 
     <script>
         var x = document.getElementById("demo");
