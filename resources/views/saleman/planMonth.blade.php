@@ -104,8 +104,8 @@
                                                                     @endif
 
 
-                                                                    <button class="btn btn-icon btn-danger ml-2">
-                                                                        <span class="btn-icon-wrap"><i data-feather="pie-chart"></i></span></button>
+                                                                    <!-- <button class="btn btn-icon btn-danger ml-2">
+                                                                        <span class="btn-icon-wrap"><i data-feather="pie-chart"></i></span></button> -->
                                                                 </form>
 
                                                             </div>
@@ -252,8 +252,19 @@
                                                                 @endif
                                                             @endforeach
                                                         </td>
-                                                        <td><span class="badge badge-soft-indigo mt-15 mr-10"
-                                                            style="font-size: 12px;">Comment</span>
+                                                        <td style="text-align:center;">
+                                                            @php
+                                                                $sale_plan_comments = DB::table('sale_plan_comments')
+                                                                                        ->where('saleplan_id', $value->id)
+                                                                                        ->count();
+                                                            @endphp
+                                                            @if($sale_plan_comments > 0)
+                                                                <span class="badge badge-soft-indigo mt-15 mr-10"
+                                                                style="font-size: 12px;">Comment</span>
+                                                            @else
+                                                                -
+                                                            @endif
+
                                                         </td>
                                                         <td>
                                                             @php
@@ -350,7 +361,7 @@
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
                                                         <td>{{ $value->shop_name }}</td>
-                                                        <td>{{ $value->PROVINCE_NAME }}</td>
+                                                        <td>{{ $value->AMPHUR_NAME }}, {{ $value->PROVINCE_NAME }}</td>
                                                         <td>
                                                             <span class="badge badge-soft-indigo mt-15 mr-10"
                                                                 style="font-size: 12px;">ลูกค้าใหม่</span>

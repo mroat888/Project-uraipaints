@@ -35,12 +35,14 @@ class PlanMonthController extends Controller
 
         // -- ข้อมูลลูกค้าใหม่
         $data['customer_new'] = DB::table('customer_shops')
+        ->join('amphur', 'amphur.AMPHUR_ID', 'customer_shops.shop_amphur_id')
         ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
         ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
         ->where('customer_shops.created_by', Auth::user()->id)
         ->where('customer_shops.monthly_plan_id', $data['monthly_plan_next']->id)
         ->select(
             'province.PROVINCE_NAME',
+            'amphur.AMPHUR_NAME',
             'customer_shops.*'
         )
         ->orderBy('customer_shops.id', 'desc')

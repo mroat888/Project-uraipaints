@@ -10,6 +10,7 @@ use App\CustomerVisit;
 use App\Http\Controllers\Controller;
 use App\MonthlyPlan;
 use App\SalePlan;
+use Carbon\Carbon;
 use App\SaleplanComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -159,23 +160,32 @@ class ApprovalSalePlanController extends Controller
 
     public function create_comment_saleplan(Request $request)
     {
-        // dd($request);
-            $data = SaleplanComment::where('saleplan_id', $request->id)->first();
-            if ($data) {
-               $dataEdit = SaleplanComment::where('saleplan_id', $request->id)->update([
-                    'saleplan_comment_detail' => $request->comment,
-                    'updated_by' => Auth::user()->id,
-                ]);
-                return redirect(url('approvalsaleplan_detail', $request->createID));
+        
+        $data = SaleplanComment::where('saleplan_id', $request->id)->first();
+        // dd($request,$request->createID, $data);
+        if ($data) {
+            
+            DB::table('sale_plan_comments')->where('id', $data->id)
+            ->update([
+                'saleplan_comment_detail' => $request->comment,
+                'updated_by' => Auth::user()->id,
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
 
-            } else {
-                SaleplanComment::create([
-                    'saleplan_id' => $request->id,
-                    'saleplan_comment_detail' => $request->comment,
-                    'created_by' => Auth::user()->id,
-                ]);
-                return redirect(url('approvalsaleplan_detail', $request->createID));
-            }
+            return redirect(url('approvalsaleplan_detail', $request->createID));
+
+        } else {
+
+            DB::table('sale_plan_comments')
+            ->insert([
+                'saleplan_id' => $request->id,
+                'saleplan_comment_detail' => $request->comment,
+                'created_by' => Auth::user()->id,
+                'created_at' => date('Y-m-d H:i:s')
+            ]);
+
+            return redirect(url('approvalsaleplan_detail', $request->createID));
+        }
 
     }
 
