@@ -11,6 +11,7 @@ use App\MonthlyPlan;
 use App\Note;
 use App\RequestApproval;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
 
 
 class DashboardController extends Controller
@@ -45,6 +46,26 @@ class DashboardController extends Controller
             $plans->created_at      = Carbon::now();
             $plans->save();
         }
+
+        // -----  API Login ----------- //
+        $response = Http::post('http://49.0.64.92:8020/api/auth/login', [
+            'username' => 'apiuser',
+            'password' => 'testapi',
+        ]);
+
+        $res = $response->json();
+        $api_token = $res['data'][0]['access_token'];
+        $data['api_token'] = $res['data'][0]['access_token'];
+        //--- End Api Login ------------ //
+
+        $response = Http::withToken($api_token)
+        ->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/dashboards', [
+            'year' => '2021',
+            'month' => '12'
+        ]);
+        $res_api = $response->json();
+
+        // dd($res_api);
 
         return view('saleman.dashboard', $data);
     }

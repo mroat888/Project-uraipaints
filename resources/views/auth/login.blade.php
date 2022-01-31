@@ -13,13 +13,13 @@
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 
     <!-- Toggles CSS -->
-    <link href="{{ asset('/template/vendors/jquery-toggles/css/toggles.css') }}" rel="stylesheet"
+    <link href="{{ asset('public/template/vendors/jquery-toggles/css/toggles.css') }}" rel="stylesheet"
         type="text/css">
-    <link href="{{ asset('/template/vendors/jquery-toggles/css/themes/toggles-light.css') }}" rel="stylesheet"
+    <link href="{{ asset('public/template/vendors/jquery-toggles/css/themes/toggles-light.css') }}" rel="stylesheet"
         type="text/css">
 
     <!-- Custom CSS -->
-    <link href="{{ asset('/template/dist/css/style.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('public/template/dist/css/style.css') }}" rel="stylesheet" type="text/css">
 
 </head>
 
@@ -36,7 +36,7 @@
                         <div class="auth-form-wrap pt-xl-0 pt-70">
                             <div class="auth-form w-xl-35 w-lg-65 w-sm-85 w-100 card pa-25 shadow-lg">
                                 <a class="auth-brand text-center d-block mb-20" href="#">
-                                    <img class="brand-img" src="{{ asset('/images/logo.png') }}"
+                                    <img class="brand-img" src="{{ asset('public/images/logo.png') }}"
                                         alt="brand" />
                                 </a>
                                 <form method="POST" action="{{ route('login') }}">
@@ -101,23 +101,23 @@
     <!-- JavaScript -->
 
     <!-- jQuery -->
-    <script src="{{ asset('/template/vendors/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('public/template/vendors/jquery/dist/jquery.min.js') }}"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="{{ asset('/template/vendors/popper.js/dist/umd/popper.min.js') }}"></script>
-    <script src="{{ asset('/template/vendors/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('public/template/vendors/popper.js/dist/umd/popper.min.js') }}"></script>
+    <script src="{{ asset('public/template/vendors/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 
     <!-- Slimscroll JavaScript -->
-    <script src="{{ asset('/template/dist/js/jquery.slimscroll.js') }}"></script>
+    <script src="{{ asset('public/template/dist/js/jquery.slimscroll.js') }}"></script>
 
     <!-- Fancy Dropdown JS -->
-    <script src="{{ asset('/template/dist/js/dropdown-bootstrap-extended.js') }}"></script>
+    <script src="{{ asset('public/template/dist/js/dropdown-bootstrap-extended.js') }}"></script>
 
     <!-- FeatherIcons JavaScript -->
-    <script src="{{ asset('/template/dist/js/feather.min.js') }}"></script>
+    <script src="{{ asset('public/template/dist/js/feather.min.js') }}"></script>
 
     <!-- Init JavaScript -->
-    <script src="{{ asset('/template/dist/js/init.js') }}"></script>
+    <script src="{{ asset('public/template/dist/js/init.js') }}"></script>
 
     <style>
         .btn-success{
