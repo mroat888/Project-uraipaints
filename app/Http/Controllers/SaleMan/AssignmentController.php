@@ -14,19 +14,21 @@ class AssignmentController extends Controller
 
     public function index()
     {
-        $assignments = Assignment::where('assign_emp_id', Auth::user()->id)->where('assign_status', 3)->orderBy('id', 'desc')->get();
+        $assignments = Assignment::where('assign_emp_id', Auth::user()->id)
+        ->where('assign_status', 1)
+        ->orderBy('id', 'desc')
+        ->get();
+
         return view('saleman.assignment', compact('assignments'));
     }
 
     public function assignment_result_get($id)
     {
         $dataResult = Assignment::where('id', $id)->first();
-
-
-    $data = array(
-        'dataResult'     => $dataResult,
-    );
-    echo json_encode($data);
+        $data = array(
+            'dataResult'     => $dataResult,
+        );
+        echo json_encode($data);
 
     }
 

@@ -16,7 +16,7 @@ class AssignmentController extends Controller
     {
         $assignments = Assignment::join('users', 'assignments.assign_emp_id', 'users.id')
         ->where('assignments.created_by', Auth::user()->id)
-        ->where('assignments.assign_status', 3)
+        ->where('assignments.assign_status', 1)
         ->select('assignments.*', 'users.name')
         ->orderBy('assignments.id', 'desc')->get();
 
@@ -27,45 +27,97 @@ class AssignmentController extends Controller
 
     public function store(Request $request)
     {
-        Assignment::create([
-            'assign_work_date' => $request->date,
-            'assign_approve_date' => Carbon::now(), // วันที่อนุมัติ
-            'assign_title' => $request->assign_title,
-            'assign_detail' => $request->assign_detail,
-            'assign_emp_id' => $request->assign_emp_id,
-            'assign_status' => 3,
-            'assign_approve_id' => Auth::user()->id,
-            'assign_result_status' => 0,
-            'created_by' => Auth::user()->id,
-        ]);
+        DB::beginTransaction();
+        try {
 
-        // echo ("<script>alert('บันทึกข้อมูลสำเร็จ'); location.href='assignment'; </script>");
-        return back();
+            $pathFle = 'upload/AssignmentFile';
+            $uploadfile = '';
+            if (!empty($request->file('assignment_fileupload'))) {
+                $uploadF = $request->file('assignment_fileupload');
+                $file_name = 'file-' . time() . '.' . $uploadF->getClientOriginalExtension();
+                $uploadF->move(public_path($pathFle), $file_name);
+                $uploadfile = $file_name;
+            }
+
+            DB::table('assignments')
+            ->insert([
+                'assign_work_date' => $request->date,
+                'assign_request_date' => Carbon::now(), // วันขอนุมัติ
+                'assign_approve_date' => Carbon::now(), // วันที่อนุมัติ
+                'assign_title' => $request->assign_title,
+                'assign_detail' => $request->assign_detail,
+                'assign_fileupload' => $uploadfile,
+                'assign_emp_id' => $request->assign_emp_id,
+                'assign_status' => 1,
+                'assign_approve_id' => Auth::user()->id,
+                'assign_result_status' => 0,
+                'created_by' => Auth::user()->id,
+                'created_at' => Carbon::now(),
+            ]);
+
+            DB::commit();
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'บันทึกข้อมูลสำเร็จ',
+                'data' => $uploadfile,
+            ]);
+
+        } catch (\Exception $e) {
+
+            DB::rollback();
+
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกข้อมูลได้',
+                'data' => $request,
+            ]);
+        }
     }
 
     public function edit($id)
     {
         $dataEdit = Assignment::find($id);
+        $dataUser = DB::table('users')->get();
         $data = array(
-            'dataEdit'     => $dataEdit,
+            'dataEdit'  => $dataEdit,
+            'dataUser'  => $dataUser,
         );
         echo json_encode($data);
     }
 
     public function update(Request $request)
     {
-        Assignment::find($request->id)->update([
-            'assign_work_date' => $request->date,
-            'assign_title' => $request->assign_title,
-            'assign_detail' => $request->assign_detail,
-            'assign_emp_id' => $request->assign_emp_id,
-            'assign_status' => 1,
-            'assign_approve_id' => Auth::user()->id,
-            'assign_result_status' => 0,
-            'updated_by' => Auth::user()->id,
-        ]);
+        DB::beginTransaction();
+        try {
+            DB::table('assignments')->where('id',$request->id)
+            ->update([
+                'assign_work_date' => $request->date,
+                'assign_title' => $request->assign_title,
+                'assign_detail' => $request->assign_detail,
+                'assign_emp_id' => $request->assign_emp_id_edit,
+                'assign_status' => 1,
+                'assign_approve_id' => Auth::user()->id,
+                'updated_by' => Auth::user()->id,
+            ]);
 
-        return back();
+            DB::commit();
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'บันทึกข้อมูลสำเร็จ',
+            ]);
+
+        } catch (\Exception $e) {
+
+            DB::rollback();
+
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกข้อมูลได้',
+            ]);
+        }
+
     }
 
     public function destroy($id)

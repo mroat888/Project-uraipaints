@@ -29,7 +29,8 @@ class PlanMonthController extends Controller
         $data['objective'] = ObjectiveSaleplan::all();
 
         // -- ข้อมูล แผนงานงาน Saleplan
-        $data['list_saleplan'] = DB::table('sale_plans')->leftjoin('sale_plan_comments', 'sale_plans.id', 'sale_plan_comments.saleplan_id')
+        $data['list_saleplan'] = DB::table('sale_plans')
+        ->leftjoin('sale_plan_comments', 'sale_plans.id', 'sale_plan_comments.saleplan_id')
         ->where('sale_plans.monthly_plan_id', $data['monthly_plan_next']->id)
         ->where('sale_plans.created_by', Auth::user()->id)
         ->select('sale_plans.*', 'sale_plan_comments.saleplan_id')->distinct()
@@ -153,10 +154,25 @@ class PlanMonthController extends Controller
 
     public function saleplan_view_comment($id)
     {
-        $comment = SaleplanComment::where('saleplan_id', $id)->first();
-        $data = array(
-            'comment'     => $comment,
-        );
-        echo json_encode($data);
+        $sale_comments = SaleplanComment::where('saleplan_id', $id)->get();
+        // $data = array(
+        //     'comment' => $comment,
+        // );
+        // echo json_encode($data);
+
+        $comment = array();
+        foreach ($sale_comments as $key => $value) {
+            $users = DB::table('users')->where('id', $value['created_by'])->first();
+            $date_comment = substr($value->created_at,0,10);
+            $comment[$key] =
+            [
+                'saleplan_comment_detail' => $value->saleplan_comment_detail,
+                'user_comment' => $users->name,
+                'created_at' => $date_comment,
+            ];
+        }
+
+
+        return response()->json($comment);
     }
 }

@@ -36,6 +36,7 @@ class ApprovalSalePlanController extends Controller
         // $id คือรหัสของ monthly_plan
         // return $id;
 
+
         // -----  API Login ----------- //
         $response = Http::post('http://49.0.64.92:8020/api/auth/login', [
             'username' => 'apiuser',
@@ -172,7 +173,8 @@ class ApprovalSalePlanController extends Controller
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
 
-            return redirect(url('approvalsaleplan_detail', $request->createID));
+            $sale_plans = DB::table('sale_plans')->where('id', $request->id)->first();
+            return redirect(url('approvalsaleplan_detail', $sale_plans->monthly_plan_id));
 
         } else {
 
@@ -184,7 +186,8 @@ class ApprovalSalePlanController extends Controller
                 'created_at' => date('Y-m-d H:i:s')
             ]);
 
-            return redirect(url('approvalsaleplan_detail', $request->createID));
+            $sale_plans = DB::table('sale_plans')->where('id', $request->id)->first();
+            return redirect(url('approvalsaleplan_detail', $sale_plans->monthly_plan_id));
         }
 
     }

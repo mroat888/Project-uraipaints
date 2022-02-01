@@ -165,6 +165,8 @@
             success: function(response){
                 console.log(response);
                 if(response.status == 200){
+                    $('#edit_sel_status').children().remove().end();
+                    $('#edit_sel_api_identify').children().remove().end();
                     $("#modaledit").modal('show');
                     $('#edit_tuser_id').val(user_id);
                     $('#edit_tname').val(response.dataUser.name);

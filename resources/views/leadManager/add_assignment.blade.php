@@ -130,35 +130,13 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ url('lead/create_assignment') }}" method="post" enctype="multipart/form-data">
+            <form id="from_createassign" enctype="multipart/form-data">
                     @csrf
                 <div class="modal-body">
                         <div class="form-group">
                             <label for="firstName">เรื่อง</label>
                             <input class="form-control" name="assign_title" placeholder="กรุณาใส่ชื่อเรื่อง" type="text">
                         </div>
-                        {{-- <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label for="firstName">ค้นหาชื่อร้าน</label>
-                                <input class="form-control" id="searchShop" type="text">
-                            </div>
-                        </div>
-                        <input type="hidden" name="shop_id" id="get_id">
-                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label for="firstName">ผู้ติดต่อ</label>
-                                <input class="form-control" id="get_contact_name" type="text" readonly>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label for="firstName">เบอร์โทรศัพท์</label>
-                                <input class="form-control" id="get_phone" type="text" readonly>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="username">ที่อยู่ร้าน</label>
-                            <textarea class="form-control" id="get_address" cols="30" rows="5" placeholder="" value=""
-                                type="text" readonly> </textarea>
-                        </div> --}}
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label for="username">รายละเอียด</label>
@@ -171,34 +149,12 @@
                                 <label for="firstName">วันที่</label>
                                 <input class="form-control" type="date" name="date" />
                             </div>
-                            {{-- <div class="form-group col-md-6">
-                                <label for="username">วัตถุประสงค์</label>
-                                <select class="form-control custom-select" name="objective">
-                                    <option selected>Select</option>
-                                    <option value="1">นำเสนอสินค้าใหม่</option>
-                                    <option value="2">เพิ่มผลิตภัณฑ์ให้ร้านค้า</option>
-                                    <option value="3">เปิดลูกค้าใหม่</option>
-                                    <option value="3">พรีเซ้นต์คุณสมบัติเทียบกับแบรนด์อื่น</option>
-                                    <option value="3">แนะนำวิธีการใช้งาน-การเก็บรักษา</option>
-                                </select>
-                            </div> --}}
+
                         </div>
-                        {{-- <div class="row">
-                            <div class="col-md-12 form-group">
-                                <label for="firstName">รายการนำเสนอ</label>
-                                <select class="select2 select2-multiple form-control" multiple="multiple"
-                                    data-placeholder="Choose" name="product">
-                                    <optgroup label="เลือกข้อมูล">
-                                        <option value="1">สีรองพื้นปูนกันชื้น</option>
-                                        <option value="2">4 in 1</option>
-                                    </optgroup>
-                                </select>
-                            </div>
-                        </div> --}}
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ไฟล์เอกสาร</label>
-                                <input type="file" name="image" id="" class="form-control">
+                                <input type="file" name="assignment_fileupload" id="assignment_fileupload" class="form-control">
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="firstName">สั่งงานให้</label>
@@ -231,36 +187,15 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ url('lead/update_assignment') }}" method="post" enctype="multipart/form-data">
-                    @csrf
+                <!-- <form action="{{ url('lead/update_assignment') }}" method="post" enctype="multipart/form-data"> -->
+                <form id="from_updateassign" enctype="multipart/form-data">
+                @csrf
                 <div class="modal-body">
                     <input type="hidden" name="id" id="get_id">
                         <div class="form-group">
                             <label for="firstName">เรื่อง</label>
                             <input class="form-control" name="assign_title" id="get_title" type="text">
                         </div>
-                        {{-- <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label for="firstName">ค้นหาชื่อร้าน</label>
-                                <input class="form-control" id="searchShop" type="text">
-                            </div>
-                        </div>
-                        <input type="hidden" name="shop_id" id="get_id">
-                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label for="firstName">ผู้ติดต่อ</label>
-                                <input class="form-control" id="get_contact_name" type="text" readonly>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label for="firstName">เบอร์โทรศัพท์</label>
-                                <input class="form-control" id="get_phone" type="text" readonly>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="username">ที่อยู่ร้าน</label>
-                            <textarea class="form-control" id="get_address" cols="30" rows="5" placeholder="" value=""
-                                type="text" readonly> </textarea>
-                        </div> --}}
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label for="username">รายละเอียด</label>
@@ -273,42 +208,17 @@
                                 <label for="firstName">วันที่</label>
                                 <input class="form-control" type="date" name="date" id="get_date"/>
                             </div>
-                            {{-- <div class="form-group col-md-6">
-                                <label for="username">วัตถุประสงค์</label>
-                                <select class="form-control custom-select" name="objective">
-                                    <option selected>Select</option>
-                                    <option value="1">นำเสนอสินค้าใหม่</option>
-                                    <option value="2">เพิ่มผลิตภัณฑ์ให้ร้านค้า</option>
-                                    <option value="3">เปิดลูกค้าใหม่</option>
-                                    <option value="3">พรีเซ้นต์คุณสมบัติเทียบกับแบรนด์อื่น</option>
-                                    <option value="3">แนะนำวิธีการใช้งาน-การเก็บรักษา</option>
-                                </select>
-                            </div> --}}
                         </div>
-                        {{-- <div class="row">
-                            <div class="col-md-12 form-group">
-                                <label for="firstName">รายการนำเสนอ</label>
-                                <select class="select2 select2-multiple form-control" multiple="multiple"
-                                    data-placeholder="Choose" name="product">
-                                    <optgroup label="เลือกข้อมูล">
-                                        <option value="1">สีรองพื้นปูนกันชื้น</option>
-                                        <option value="2">4 in 1</option>
-                                    </optgroup>
-                                </select>
-                            </div>
-                        </div> --}}
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ไฟล์เอกสาร</label>
-                                <input type="file" name="image" id="" class="form-control">
+                                <input type="file" name="assignment_fileupload_update" id="assignment_fileupload_update" class="form-control">
+                                <div id="img_show" class="mt-5"></div>
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="firstName">สั่งงานให้</label>
-                                <select class="form-control custom-select" name="assign_emp_id" id="get_emp" required>
-                                    <option selected>กรุณาเลือก</option>
-                                    <option value="1">ศิริลักษณ์</option>
-                                    <option value="2">อิศรา</option>
-                                    <option value="3">ดวงดาว</option>
+                                <select class="form-control custom-select select2" name="assign_emp_id_edit" id="get_emp" required>
+                                    <option value="" disabled>กรุณาเลือก</option>
                                 </select>
                             </div>
                         </div>
@@ -386,16 +296,38 @@
         function edit_modal(id) {
             $.ajax({
                 type: "GET",
-                url: "{!! url('lead/edit_assignment/"+id+"') !!}",
+                url: '{{ url("lead/edit_assignment/") }}/'+id,
                 dataType: "JSON",
                 async: false,
                 success: function(data) {
+                    $('#get_emp').children().remove().end();
+                    $('#img_show').children().remove().end();
+
                     $('#get_id').val(data.dataEdit.id);
                     $('#get_date').val(data.dataEdit.assign_work_date);
                     $('#get_title').val(data.dataEdit.assign_title);
                     $('#get_detail').val(data.dataEdit.assign_detail);
-                    $('#get_emp').val(data.dataEdit.assign_emp_id);
+                    // $('#get_emp').val(data.dataEdit.assign_emp_id);
 
+                    let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataEdit.assign_fileupload;
+                    if(data.dataEdit.assign_fileupload != ""){
+                        ext = data.dataEdit.assign_fileupload.split('.').pop().toLowerCase();
+                        console.log(img_name);
+                        if(ext == "pdf"){
+                            $('#img_show').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');
+                        }else{
+                            $('#img_show').append('<img src = "'+img_name+'" style="max-width:100%;">');
+                        }  
+                    }
+
+                    $.each(data.dataUser, function(key, value){
+                        if(value.id == data.dataEdit.assign_emp_id){
+                            $('#get_emp').append('<option value='+value.id+' selected>'+value.name+'</option>');
+                        }else{
+                            $('#get_emp').append('<option value='+value.id+'>'+value.name+'</option>');
+                        }   
+                    });
+                    
                     $('#modalEdit').modal('toggle');
                 }
             });
@@ -445,9 +377,91 @@
     }
 </script>
 
+<script>
+    $("#from_createassign").on("submit", function (e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        console.log(formData);
+        $.ajax({
+            type:'POST',
+            url: '{{ url("/lead/create_assignment") }}',
+            data:formData,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(response){
+                console.log(response);
+                if(response.status == 200){
+                    $("#exampleModalLarge01").modal('hide');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    location.reload();
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Your work has been saved',
+                        text: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+            },
+            error: function(response){
+                console.log("error");
+                console.log(response);
+            }
+        });
+    });
 
+    $("#from_updateassign").on("submit", function (e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        console.log(formData);
+        $.ajax({
+            type:'POST',
+            url: '{{ url("/lead/update_assignment") }}',
+            data:formData,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(response){
+                console.log(response);
+                if(response.status == 200){
+                    $("#modalEdit").modal('hide');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    location.reload();
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Your work has been saved',
+                        text: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+            },
+            error: function(response){
+                console.log("error");
+                console.log(response);
+            }
+        });
+    });
+
+</script>
+
+
+@endsection
 
 @section('footer')
     @include('layouts.footer')
-@endsection
-@endsection
+@endsection('footer')
+

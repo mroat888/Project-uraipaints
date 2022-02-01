@@ -48,6 +48,10 @@ License: You must have a valid license purchased only from themeforest to legall
     <link href="{{ asset('public/template/dist/css/style.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('public/template/dist/css/layout.css') }}" rel="stylesheet" type="text/css">
 
+    <!-- OAT -->
+    <!-- sweetalert2 -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body>

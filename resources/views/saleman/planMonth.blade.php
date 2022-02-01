@@ -252,23 +252,6 @@
                                                                 @endif
                                                             @endforeach
                                                         </td>
-<<<<<<< HEAD
-=======
-                                                        <td style="text-align:center;">
-                                                            @php
-                                                                $sale_plan_comments = DB::table('sale_plan_comments')
-                                                                                        ->where('saleplan_id', $value->id)
-                                                                                        ->count();
-                                                            @endphp
-                                                            @if($sale_plan_comments > 0)
-                                                                <span class="badge badge-soft-indigo mt-15 mr-10"
-                                                                style="font-size: 12px;">Comment</span>
-                                                            @else
-                                                                -
-                                                            @endif
-
-                                                        </td>
->>>>>>> aee85e5fe5873a91700b53ce45110cd5cc9976f9
                                                         <td>
                                                             @if ($value->saleplan_id)
                                                             <span class="badge badge-soft-indigo mt-15 mr-10" style="font-size: 12px;">Comment</span>
@@ -303,7 +286,8 @@
                                                                 <button onclick="approval_comment({{ $value->id }})"
                                                                     class="btn btn-icon btn-violet" data-toggle="modal"
                                                                     data-target="#ApprovalComment">
-                                                                    <span class="btn-icon-wrap"><i data-feather="message-square"></i></span></button>
+                                                                    <span class="btn-icon-wrap"><i data-feather="message-square"></i></span>
+                                                                </button>
                                                                 @endif
                                                                 <button class="btn btn-icon btn-warning btn_editsalepaln"
                                                                     value="{{ $value->id }}" {{ $btn_disabled }}>
@@ -559,11 +543,13 @@
                 </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="username">รายละเอียดความคิดเห็น</label>
-                            <textarea class="form-control" cols="30" rows="5" id="get_comment" name="assign_comment"
-                                type="text" readonly></textarea>
+                            <!-- <label for="username">รายละเอียดความคิดเห็น</label> -->
+                            <!-- <textarea class="form-control" cols="30" rows="5" id="get_comment" name="assign_comment"
+                                type="text" readonly></textarea> -->
+                            <div id="div_comment">
+                                
+                            </div>
                         </div>
-                        {{-- <input type="text" name="id" id="get_comment_id"> --}}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
@@ -581,8 +567,18 @@
                 dataType: "JSON",
                 async: false,
                 success: function(data) {
-                    $('#get_comment_id').val(data.comment.id);
-                    $('#get_comment').val(data.comment.saleplan_comment_detail);
+                    $('#div_comment').children().remove().end();
+                    console.log(data);
+                    // $('#get_comment_id').val(data.comment.id);
+                    // $('#get_comment').val(data.comment.saleplan_comment_detail);
+
+                    // $.each(data.comment, function(key, value){
+                    //     $('#div_comment').append('<div class="alert alert-primary py-20" role="alert">'+value.saleplan_comment_detail+'</div>');
+                    // });
+                    $.each(data, function(key, value){
+                        $('#div_comment').append('<div>Comment by: '+data[key].user_comment+' Date: '+data[key].created_at+'</div>');
+                        $('#div_comment').append('<div class="alert alert-primary py-20" role="alert">'+data[key].saleplan_comment_detail+'</div>');
+                    });
 
                     $('#ApprovalComment').modal('toggle');
                 }
