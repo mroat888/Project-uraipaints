@@ -54,7 +54,7 @@ License: You must have a valid license purchased only from themeforest to legall
             <a id="navbar_toggle_btn" class="navbar-toggle-btn nav-link-hover" href="javascript:void(0);"><span
                     class="feather-icon"><i data-feather="menu"></i></span></a>
             <a class="navbar-brand" href="index.html">
-                <img class="brand-img d-inline-block" src="{{ asset('//images/logo.png') }}" alt="Uraipaint" style="max-height:30px;"/>
+                <img class="brand-img d-inline-block" src="{{ asset('public/images/logo.png') }}" alt="Uraipaint" style="max-height:30px;"/>
                 {{-- URAI PAINTS --}}
             </a>
             <ul class="navbar-nav hk-navbar-content order-xl-2">
@@ -313,7 +313,11 @@ License: You must have a valid license purchased only from themeforest to legall
                             <a class="nav-link link-with-badge" href="{{ url('head/note') }}">
                                 <i class="ion ion-md-document" style="color: #044067;"></i>
                                 <span class="nav-link-text">บันทึกโน้ต</span>
-                                <span class="badge badge-danger badge-pill">2</span>
+                                <?php
+                                $count_note = App\Note::where('note_date', Carbon\Carbon::now()->format('Y-m-d'))
+                                ->where('status_pin', 1)->where('employee_id', Auth::user()->id)->count();
+                                 ?>
+                                <span class="badge badge-danger badge-pill">{{$count_note}}</span>
                             </a>
                         </li>
                         <li class="nav-item">

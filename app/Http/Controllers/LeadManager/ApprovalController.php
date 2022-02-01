@@ -78,7 +78,7 @@ class ApprovalController extends Controller
     {
         // return $createID;
 
-            $data['comment'] = AssignmentComment::where('assign_id', $id)->first();
+            $data['comment'] = AssignmentComment::where('assign_id', $id)->where('created_by', Auth::user()->id)->first();
             $data['assignID'] = $id;
             $data['createID'] = $createID;
 
@@ -94,7 +94,7 @@ class ApprovalController extends Controller
     {
         // dd($request);
 
-            $data = AssignmentComment::where('assign_id', $request->id)->first();
+            $data = AssignmentComment::where('assign_id', $request->id)->where('created_by', Auth::user()->id)->first();
             // return $request->id;
             if ($data) {
                $dataEdit = AssignmentComment::where('assign_id', $request->id)->update([

@@ -189,10 +189,12 @@ Route::post('head/create_comment_saleplan', 'HeadManager\ApprovalSalePlanControl
 Route::get('head/comment_customer_new/{id}/{createID}', 'HeadManager\ApprovalSalePlanController@comment_customer_new');
 Route::post('head/create_comment_customer_new', 'HeadManager\ApprovalSalePlanController@create_comment_customer_new');
 
-Route::get('head/approvalgeneral', function () { return view('headManager.approval_general'); });
+Route::get('head/approvalgeneral', 'HeadManager\ApprovalController@index');
 Route::get('head/approvalgeneral/history', function () { return view('headManager.approval_general_history'); });
-// Route::get('head/approvalsaleplan/detail', function () { return view('headManager.approval_saleplan_detail'); });
-Route::get('head/assignment/add', function () { return view('headManager.add_assignment'); });
+Route::get('head/approval_general_detail/{id}', 'HeadManager\ApprovalController@approval_general_detail');
+Route::get('head/comment_approval/{id}/{createID}', 'HeadManager\ApprovalController@comment_approval');
+Route::post('head/create_comment_request_approval', 'HeadManager\ApprovalController@create_comment_request_approval');
+Route::get('head/assignment/add', 'AssignmentController@assignIndex');
 
 // Note Head Manage
 Route::get('head/note', 'NoteController@note_head');

@@ -5,7 +5,8 @@
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
             <li class="breadcrumb-item"><a href="#">Page</a></li>
-            <li class="breadcrumb-item active" aria-current="page">การขออนุมัติ</li>
+            <li class="breadcrumb-item active">การขออนุมัติ</li>
+            <li class="breadcrumb-item active" aria-current="page">รายการข้อมูลการขออนุมัติ</li>
         </ol>
     </nav>
     <!-- /Breadcrumb -->
@@ -17,7 +18,7 @@
         <div class="hk-pg-header mb-10">
             <div>
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                    data-feather="file-text"></i></span></span>บันทึกข้อมูลการขออนุมัติ</h4>
+                    data-feather="file-text"></i></span></span>รายการข้อมูลการขออนุมัติ</h4>
             </div>
         </div>
         <!-- /Title -->
@@ -28,14 +29,14 @@
                 <section class="hk-sec-wrapper">
                     <div class="row">
                         <div class="col-sm">
-                            <a href="{{ url('head/approvalgeneral') }}" type="button" class="btn btn-violet btn-wth-icon icon-wthot-bg btn-sm text-white">
+                            <a href="{{ url('/approvalgeneral') }}" type="button" class="btn btn-violet btn-wth-icon icon-wthot-bg btn-sm text-white">
                                 <span class="icon-label">
                                     <i class="fa fa-file"></i>
                                 </span>
                                 <span class="btn-text">รออนุมัติ</span>
                             </a>
 
-                            <a href="{{ url('head/approvalgeneral/history') }}" type="button" class="btn btn-secondary btn-wth-icon icon-wthot-bg btn-sm text-white">
+                            <a href="{{ url('approvalgeneral/history') }}" type="button" class="btn btn-secondary btn-wth-icon icon-wthot-bg btn-sm text-white">
                                 <span class="icon-label">
                                     <i class="fa fa-list"></i>
                                 </span>
@@ -46,8 +47,8 @@
                         </div>
                     </div>
                     <div class="row mb-2">
-                            <div class="col-md-3">
-                                <h5 class="hk-sec-title">ตารางข้อมูลการขออนุมัติ</h5>
+                            <div class="col-md-12">
+                                <h5 class="hk-sec-title">ตารางรายการข้อมูลการขออนุมัติ</h5>
                             </div>
                             <div class="col-md-9">
 
@@ -61,7 +62,7 @@
                                         <tr>
                                             <th>#</th>
                                             <th>วันที่</th>
-                                            {{-- <th>เรื่อง</th> --}}
+                                            <th>เรื่อง</th>
                                             <th>พนักงาน</th>
                                             <th>การอนุมัติ</th>
                                             <th>Action</th>
@@ -69,18 +70,26 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($request_approval as $key => $value)
-                                        <?php $chk =  App\Assignment::join('users', 'assignments.created_by', '=', 'users.id')
-                                        ->where('assignments.created_by', $value->created_by)->select('users.name', 'assignments.*')->first() ?>
                                         <tr>
                                             <td>{{$key + 1}}</td>
-                                            <td>{{$chk->assign_request_date}}</td>
-                                            <td>{{$chk->name}}</td>
+                                            <td>{{$value->assign_request_date}}</td>
+                                            <td>
+
+                                                @if ($value->assign_is_hot == 1)
+                                                <span class="badge badge-soft-danger" style="font-size: 12px;">HOT</span>
+                                                @endif
+
+                                                {{$value->assign_title}}
+                                            </td>
+                                            <td>{{$value->name}}</td>
                                             <td>
                                                 <span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>
                                             </td>
                                             <td>
-                                                <a href="{{url('head/approval_general_detail', $chk->created_by)}}" class="btn btn-icon btn-primary pt-5" value="3">
-                                                    <i data-feather="file-text"></i>
+                                                <a href="{{ url('head/comment_approval', [$value->id, $value->created_by]) }}" class="btn btn-icon btn-info mr-10">
+                                                    <h4 class="btn-icon-wrap" style="color: white;">
+                                                        <i data-feather="message-square"></i>
+                                                    </h4>
                                                 </a>
                                             </td>
                                         </tr>
@@ -122,7 +131,8 @@
     }
 </script>
 
-@endsection
+@endsection('content')
+
 @section('scripts')
 
 <script>
@@ -143,7 +153,7 @@
 </script>
 
 
-{{-- <script type="text/javascript">
+<script type="text/javascript">
     function chkAll(checkbox) {
 
         var cboxes = document.getElementsByName('checkapprove');
@@ -159,7 +169,7 @@
             }
         }
     }
-</script> --}}
+</script>
 
 <script>
     document.getElementById('btn_approve').onclick = function() {
