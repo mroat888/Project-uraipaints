@@ -350,6 +350,9 @@ License: You must have a valid license purchased only from themeforest to legall
                             <a class="nav-link link-with-badge" href="{{ url('note') }}">
                                 <i class="ion ion-md-document" style="color: #044067;"></i>
                                 <span class="nav-link-text">บันทึกโน้ต</span>
+                                <?php
+                                // $count_note = App\Note::where('')->count();
+                                 ?>
                                 <span class="badge badge-danger badge-pill">2</span>
                             </a>
                         </li>

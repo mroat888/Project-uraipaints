@@ -72,7 +72,7 @@
                                                 @endif
 
                                             <td>
-                                                <a href="{{ url('head/comment_saleplan', [$value->id, $value->created_by]) }}" class="btn btn-icon btn-info mr-10">
+                                                <a href="{{ url('head/comment_saleplan', [$value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
                                                     <h4 class="btn-icon-wrap" style="color: white;">
                                                         <i data-feather="message-square"></i>
                                                     </h4>
@@ -96,7 +96,7 @@
                                             <td><span class="badge badge-soft-warning"
                                                     style="font-size: 12px;">Pending</span></td>
                                             <td>
-                                                <a href="{{ url('head/comment_saleplan', [$value->id, $value->created_by]) }}" class="btn btn-icon btn-info mr-10">
+                                                <a href="{{ url('head/comment_saleplan', [$value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
                                                     <h4 class="btn-icon-wrap" style="color: white;">
                                                         <i data-feather="message-square"></i>
                                                     </h4>
@@ -155,7 +155,7 @@
                                                     @endif
                                                 </td>
                                                 <td style="text-align:center">
-                                                    <a href="{{ url('head/comment_customer_new', [$value->id, $value->created_by]) }}" class="btn btn-icon btn-info mr-10">
+                                                    <a href="{{ url('head/comment_customer_new', [$value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
                                                         <h4 class="btn-icon-wrap" style="color: white;">
                                                             <i data-feather="message-square"></i>
                                                         </h4>
@@ -172,7 +172,7 @@
                                                             style="font-size: 12px;">Pending</span>
                                                     </td>
                                                     <td style="text-align:center">
-                                                        <a href="{{ url('head/comment_customer_new', [$value->id, $value->created_by]) }}" class="btn btn-icon btn-info mr-10">
+                                                        <a href="{{ url('head/comment_customer_new', [$value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
                                                             <h4 class="btn-icon-wrap" style="color: white;">
                                                                 <i data-feather="message-square"></i>
                                                             </h4>
@@ -224,12 +224,6 @@
                                                 <td>{{$customer_visit_api[$key]['shop_name']}}</td>
                                                 <td>{{$customer_visit_api[$key]['shop_address']}}</td>
                                                 <td>-</td>
-                                                {{-- <td>
-                                                    <div class="button-list">
-                                                        <a href="{{url('delete_visit')}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
-                                                            <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-trash"></i></h4></a>
-                                                    </div>
-                                                </td> --}}
                                             </tr>
 
                                             @endforeach

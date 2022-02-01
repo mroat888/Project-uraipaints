@@ -38,7 +38,7 @@
                                 @csrf
                             <div class="modal-body">
                                 <div>
-                                    <h5>แสดงความคิดเห็นร้าน : {{$title->sale_plans_title}}</h5>
+                                    <h5>แสดงความคิดเห็นร้าน : {{$customer->shop_name}}</h5>
                                 </div>
                                 <input type="hidden" name="id" value="{{$data->customer_id}}">
                                 <input type="hidden" name="createID" value="{{$createID}}">

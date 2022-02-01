@@ -252,23 +252,6 @@
                                                                 @endif
                                                             @endforeach
                                                         </td>
-<<<<<<< HEAD
-=======
-                                                        <td style="text-align:center;">
-                                                            @php
-                                                                $sale_plan_comments = DB::table('sale_plan_comments')
-                                                                                        ->where('saleplan_id', $value->id)
-                                                                                        ->count();
-                                                            @endphp
-                                                            @if($sale_plan_comments > 0)
-                                                                <span class="badge badge-soft-indigo mt-15 mr-10"
-                                                                style="font-size: 12px;">Comment</span>
-                                                            @else
-                                                                -
-                                                            @endif
-
-                                                        </td>
->>>>>>> aee85e5fe5873a91700b53ce45110cd5cc9976f9
                                                         <td>
                                                             @if ($value->saleplan_id)
                                                             <span class="badge badge-soft-indigo mt-15 mr-10" style="font-size: 12px;">Comment</span>

@@ -160,11 +160,11 @@ class ApprovalSalePlanController extends Controller
 
     public function create_comment_saleplan(Request $request)
     {
-       
+
         $data = SaleplanComment::where('saleplan_id', $request->id)->first();
         // dd($request,$request->createID, $data);
         if ($data) {
-            
+
             DB::table('sale_plan_comments')->where('id', $data->id)
             ->update([
                 'saleplan_comment_detail' => $request->comment,
