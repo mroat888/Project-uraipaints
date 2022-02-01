@@ -417,32 +417,6 @@ class CustomerController extends Controller
         echo ("<script>alert('ลบข้อมูลสำเร็จ'); location.href='planMonth'; </script>");
     }
 
-
-
-    public function fetch_customer_shops()
-    {
-        // $data['customer_shops'] = DB::table('customer_shops')->get();
-
-        // return Datatables::of($data)
-        //     ->addIndexColumn()
-        //     ->addColumn('created_at', function ($row) {
-        //         $row = date('Y-m-d', strtotime($row->created_at));
-        //         return $row;
-        //     })
-        //     ->addColumn('shop_profile_image', function ($row) {
-        //         $row = '<img src=" {{ asset("/template/dist/img/avatar1.jpg") }} " alt="user" class="avatar-img rounded-circle">';
-        //         return $row;
-        //     })
-        //     ->addColumn('action', function ($row) {
-        //         $row = '<button class="btn btn-icon btn-warning mr-10" data-toggle="modal" data-target="#exampleModalLarge01">
-        //     <span class="btn-icon-wrap"><i class="metismenu-icon pe-7s-note2"></i></span></button>';
-        //         return $row;
-        //     })
-        //     ->rawColumns(['shop_profile_image' => 'shop_profile_image'])
-        //     ->rawColumns(['action' => 'action'])
-        //     ->make(true);
-    }
-
     public function fetch_autocomplete()
     {
         $term = Input::get('term');
@@ -451,45 +425,63 @@ class CustomerController extends Controller
         $query = DB::table('customer_shops')
             ->where('shop_name', 'LIKE', '%' . $term . '%')
             ->get();
-
-        // if ($query) {
-        //     foreach ($query as $rs) {
-        //         $results[] = [
-        //             'id' => $rs->id,
-        //             'value' => $rs->shop_name,
-        //             'label' => $rs->shop_name,
-        //             'attrs' => $rs->shop_name,
-        //         ];
-        //     }
-        // }
         return Response::json($results);
     }
 
     public function customer_new_checkin(Request $request)
     { // เช็คอิน-เช็คเอ้าท์
         // dd($request);
+        DB::beginTransaction();
+        try {
 
-        $chk_status = Customer::where('id', $request->id)->first();
-        if ($chk_status->shop_checkin_date) {
+            if($request->lat != "" && $request->lon != ""){
 
-            $data2 = Customer::where('id', $request->id)->first();
-            $data2->shop_checkout_date   = Carbon::now();
-            $data2->checkout_latitude   = $request->lat;
-            $data2->checkout_longitude   = $request->lon;
-            $data2->updated_by   = Auth::user()->id;
-            $data2->updated_at   = Carbon::now();
-            $data2->update();
-            return back();
-        } else {
-            $data2 = Customer::where('id', $request->id)->first();
-            $data2->shop_checkin_date   = Carbon::now();
-            $data2->checkin_latitude   = $request->lat;
-            $data2->checkin_longitude   = $request->lon;
-            $data2->updated_by   = Auth::user()->id;
-            $data2->updated_at   = Carbon::now();
-            $data2->update();
+                $chk_status = Customer::where('id', $request->id)->first();
+                if ($chk_status->shop_checkin_date) {
 
-            return back();
+                    $data2 = Customer::where('id', $request->id)->first();
+                    $data2->shop_checkout_date   = Carbon::now();
+                    $data2->checkout_latitude   = $request->lat;
+                    $data2->checkout_longitude   = $request->lon;
+                    $data2->updated_by   = Auth::user()->id;
+                    $data2->updated_at   = Carbon::now();
+                    $data2->update();
+                    //return back();
+                    DB::commit();
+                    return response()->json([
+                        'status' => 200,
+                        'message' => 'บันทึกข้อมูลสำเร็จ',
+                    ]);
+                } else {
+                    $data2 = Customer::where('id', $request->id)->first();
+                    $data2->shop_checkin_date   = Carbon::now();
+                    $data2->checkin_latitude   = $request->lat;
+                    $data2->checkin_longitude   = $request->lon;
+                    $data2->updated_by   = Auth::user()->id;
+                    $data2->updated_at   = Carbon::now();
+                    $data2->update();
+                    // return back();
+                    DB::commit();
+                    return response()->json([
+                        'status' => 200,
+                        'message' => 'บันทึกข้อมูลสำเร็จ',
+                    ]);
+                }
+            }else{
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'กรุณาเปิดหรือรอ location ก่อนค่ะ',
+                ]); 
+            }            
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            // return back();
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกได้',
+                'data' => $request->id,
+            ]);
         }
     }
 
@@ -507,14 +499,39 @@ class CustomerController extends Controller
     public function customer_new_Result(Request $request)
     { // สรุปผลลัพธ์
         // dd($request);
+        DB::beginTransaction();
+        try {
+            if($request->cust_id !="" && $request->shop_result_status != ""){
 
-        $data2 = Customer::where('id', $request->cust_id)->first();
-        $data2->shop_result_detail   = $request->shop_result_detail;
-        $data2->shop_result_status   = $request->shop_result_status;
-        $data2->updated_by   = Auth::user()->id;
-        $data2->updated_at   = Carbon::now();
-        $data2->update();
+                $data2 = Customer::where('id', $request->cust_id)->first();
+                $data2->shop_result_detail   = $request->shop_result_detail;
+                $data2->shop_result_status   = $request->shop_result_status;
+                $data2->updated_by   = Auth::user()->id;
+                $data2->updated_at   = Carbon::now();
+                $data2->update();
+                //return back();
+                DB::commit();
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'บันทึกข้อมูลสำเร็จ',
+                ]);
 
-        return back();
+            }else{
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'กรุณาเลือกสรุปผลลัพธ์ด้วยค่ะ',
+                ]);
+            }
+
+        } catch (\Exception $e) {
+
+            DB::rollback();
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกได้',
+            ]);
+
+        }
+
     }
 }

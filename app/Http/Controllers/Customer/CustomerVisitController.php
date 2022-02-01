@@ -241,63 +241,59 @@ class CustomerVisitController extends Controller
         return response()->json($customer_api);
     }
 
-    // public function customer_visit_checkin(Request $request)
-    // { // เช็คอิน-เช็คเอ้าท์
-    //     // dd($request);
-
-    //     $chk_status = CustomerVisitResult::where('id', $request->id)->first();
-    //     if ($chk_status->shop_checkin_date) {
-
-    //         $data2 = CustomerVisitResult::where('id', $request->id)->first();
-    //         $data2->shop_checkout_date   = Carbon::now();
-    //         $data2->checkout_latitude   = $request->lat;
-    //         $data2->checkout_longitude   = $request->lon;
-    //         $data2->updated_by   = Auth::user()->id;
-    //         $data2->updated_at   = Carbon::now();
-    //         $data2->update();
-    //         return back();
-    //     } else {
-    //         $data2 = CustomerVisitResult::where('id', $request->id)->first();
-    //         $data2->shop_checkin_date   = Carbon::now();
-    //         $data2->checkin_latitude   = $request->lat;
-    //         $data2->checkin_longitude   = $request->lon;
-    //         $data2->updated_by   = Auth::user()->id;
-    //         $data2->updated_at   = Carbon::now();
-    //         $data2->update();
-
-    //         return back();
-    //     }
-    // }
-
     public function customer_visit_checkin(Request $request)
     { // เช็คอิน-เช็คเอ้าท์
         // dd($request);
 
-        $chk_status = CustomerVisitResult::where('customer_visit_id', $request->id)->first();
+        DB::beginTransaction();
+        try {
 
-        if ($chk_status) {
-
-            $data2 = CustomerVisitResult::where('customer_visit_id', $request->id)->first();
-            $data2->cust_visit_checkout_date   = Carbon::now();
-            $data2->cust_visit_checkout_latitude   = $request->lat;
-            $data2->cust_visit_checkout_longitude   = $request->lon;
-            $data2->updated_by   = Auth::user()->id;
-            $data2->updated_at   = Carbon::now();
-            $data2->update();
-            return back();
-
-        }
-        else{
-
-            $data2 = new CustomerVisitResult;
-            $data2->customer_visit_id = $request->id;
-            $data2->cust_visit_checkin_date   = Carbon::now();
-            $data2->cust_visit_checkin_latitude   = $request->lat;
-            $data2->cust_visit_checkin_longitude   = $request->lon;
-            $data2->created_by   = Auth::user()->id;
-            $data2->created_at   = Carbon::now();
-            $data2->save();
-            return back();
+            if($request->lat != "" && $request->lon != ""){
+                
+                $chk_status = CustomerVisitResult::where('customer_visit_id', $request->id)->first();
+                if ($chk_status) {
+                    $data2 = CustomerVisitResult::where('customer_visit_id', $request->id)->first();
+                    $data2->cust_visit_checkout_date   = Carbon::now();
+                    $data2->cust_visit_checkout_latitude   = $request->lat;
+                    $data2->cust_visit_checkout_longitude   = $request->lon;
+                    $data2->updated_by   = Auth::user()->id;
+                    $data2->updated_at   = Carbon::now();
+                    $data2->update();
+                    //return back();
+                    DB::commit();
+                    return response()->json([
+                        'status' => 200,
+                        'message' => 'บันทึกข้อมูลสำเร็จ',
+                    ]);     
+                }else{
+                    $data2 = new CustomerVisitResult;
+                    $data2->customer_visit_id = $request->id;
+                    $data2->cust_visit_checkin_date   = Carbon::now();
+                    $data2->cust_visit_checkin_latitude   = $request->lat;
+                    $data2->cust_visit_checkin_longitude   = $request->lon;
+                    $data2->created_by   = Auth::user()->id;
+                    $data2->created_at   = Carbon::now();
+                    $data2->save();
+                    // return back();
+                    DB::commit();
+                    return response()->json([
+                        'status' => 200,
+                        'message' => 'บันทึกข้อมูลสำเร็จ',
+                    ]);
+                }
+            }else{
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'กรุณาเปิดหรือรอ location ก่อนค่ะ',
+                ]); 
+            }  
+            
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกได้',
+            ]);
         }
     }
 
@@ -316,13 +312,38 @@ class CustomerVisitController extends Controller
     { // สรุปผลลัพธ์
         // dd($request);
 
-        $data2 = CustomerVisitResult::where('customer_visit_id', $request->visit_id)->first();
-        $data2->cust_visit_detail   = $request->visit_result_detail;
-        $data2->cust_visit_status   = $request->visit_result_status;
-        $data2->updated_by   = Auth::user()->id;
-        $data2->updated_at   = Carbon::now();
-        $data2->update();
+        DB::beginTransaction();
+        try {
+            if($request->visit_id !="" && $request->visit_result_status != ""){
 
-        return back();
+                $data2 = CustomerVisitResult::where('customer_visit_id', $request->visit_id)->first();
+                $data2->cust_visit_detail   = $request->visit_result_detail;
+                $data2->cust_visit_status   = $request->visit_result_status;
+                $data2->updated_by   = Auth::user()->id;
+                $data2->updated_at   = Carbon::now();
+                $data2->update();
+                //return back();
+                DB::commit();
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'บันทึกข้อมูลสำเร็จ',
+                ]);
+
+            }else{
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'กรุณาเลือกสรุปผลลัพธ์ด้วยค่ะ',
+                ]);
+            }
+
+        } catch (\Exception $e) {
+
+            DB::rollback();
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกได้',
+            ]);
+
+        }
     }
 }

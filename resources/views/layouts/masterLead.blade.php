@@ -63,7 +63,7 @@ License: You must have a valid license purchased only from themeforest to legall
             <a id="navbar_toggle_btn" class="navbar-toggle-btn nav-link-hover" href="javascript:void(0);"><span
                     class="feather-icon"><i data-feather="menu"></i></span></a>
             <a class="navbar-brand" href="index.html">
-                <img class="brand-img d-inline-block" src="{{ asset('/images/logo.png') }}" alt="Uraipaint"
+                <img class="brand-img d-inline-block" src="{{ asset('public/images/logo.png') }}" alt="Uraipaint"
                     style="max-height:30px;" />
                 {{-- URAI PAINTS --}}
             </a>

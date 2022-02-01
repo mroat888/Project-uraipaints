@@ -160,17 +160,7 @@ class ApprovalSalePlanController extends Controller
 
     public function create_comment_saleplan(Request $request)
     {
-<<<<<<< HEAD
-        // dd($request);
-            $data = SaleplanComment::where('saleplan_id', $request->id)->where('created_by', Auth::user()->id)->first();
-            if ($data) {
-               $dataEdit = SaleplanComment::where('saleplan_id', $request->id)->update([
-                    'saleplan_comment_detail' => $request->comment,
-                    'updated_by' => Auth::user()->id,
-                ]);
-                return redirect(url('approvalsaleplan_detail', $request->createID));
-=======
-        
+       
         $data = SaleplanComment::where('saleplan_id', $request->id)->first();
         // dd($request,$request->createID, $data);
         if ($data) {
@@ -181,7 +171,6 @@ class ApprovalSalePlanController extends Controller
                 'updated_by' => Auth::user()->id,
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
->>>>>>> aee85e5fe5873a91700b53ce45110cd5cc9976f9
 
             return redirect(url('approvalsaleplan_detail', $request->createID));
 

@@ -597,53 +597,37 @@
                                                         <td><span class="badge badge-soft-indigo" style="font-size: 12px;">Comment</span></td>
                                                         <td style="text-align:center">
                                                             <div class="button-list">
-                                                                @if ($value->status_result == 1)
-                                                                    <button class="btn btn-icon btn-primary"
-                                                                        data-toggle="modal" data-target="#Modalcheckin" onclick="getLocation({{ $value->id }})" disabled>
-                                                                        <span class="btn-icon-wrap"><i data-feather="log-in"></i></span></button>
-                                                                    <button class="btn btn-icon btn-pumpkin"
-                                                                    data-toggle="modal" data-target="#Modalcheckin" onclick="getLocation({{ $value->id }})">
-                                                                    <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
-                                                                    <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalResult" onclick="saleplan_result({{ $value->id }})" disabled>
-                                                                    <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
-
-                                                                @elseif ($value->status_result == 2)
-                                                                    <button class="btn btn-icon btn-primary"
-                                                                    data-toggle="modal" data-target="#Modalcheckin" onclick="getLocation({{ $value->id }})" disabled>
+                                                                @php
+                                                                if ($value->status_result == 1){
+                                                                    $btn_primary_disabled = "disabled";
+                                                                    $btn_pumpkin_disabled = "";
+                                                                    $btn_neon_disabled = "disabled";
+                                                                }elseif ($value->status_result == 2){
+                                                                    $btn_primary_disabled = "disabled";
+                                                                    $btn_pumpkin_disabled = "disabled";
+                                                                    $btn_neon_disabled = "";
+                                                                }elseif ($value->status_result == 3){
+                                                                    $btn_primary_disabled = "disabled";
+                                                                    $btn_pumpkin_disabled = "disabled";
+                                                                    $btn_neon_disabled = "";
+                                                                }else{
+                                                                    $btn_primary_disabled = "";
+                                                                    $btn_pumpkin_disabled = "disabled";
+                                                                    $btn_neon_disabled = "disabled";
+                                                                }
+                                                                @endphp
+                                                                <button class="btn btn-icon btn-primary"
+                                                                    data-toggle="modal" data-target="#Modalcheckin" onclick="getLocation({{ $value->id }})" {{ $btn_primary_disabled }}>
                                                                     <span class="btn-icon-wrap"><i data-feather="log-in"></i></span></button>
-                                                                    <button class="btn btn-icon btn-pumpkin"
-                                                                    data-toggle="modal" data-target="#Modalcheckin" onclick="getLocation({{ $value->id }})" disabled>
-                                                                    <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
-                                                                    <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalResult" onclick="saleplan_result({{ $value->id }})">
-                                                                    <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
-
-                                                                @elseif ($value->status_result == 3)
-                                                                    <button class="btn btn-icon btn-primary"
-                                                                    data-toggle="modal" data-target="#Modalcheckin" onclick="getLocation({{ $value->id }})" disabled>
-                                                                    <span class="btn-icon-wrap"><i data-feather="log-in"></i></span></button>
-                                                                    <button class="btn btn-icon btn-pumpkin"
-                                                                    data-toggle="modal" data-target="#Modalcheckin" onclick="getLocation({{ $value->id }})" disabled>
-                                                                    <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
-                                                                    <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalResult" onclick="saleplan_result({{ $value->id }})">
-                                                                    <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
-
-                                                                    @else
-                                                                        <button class="btn btn-icon btn-primary"
-                                                                        data-toggle="modal" data-target="#Modalcheckin" onclick="getLocation({{ $value->id }})">
-                                                                        <span class="btn-icon-wrap"><i data-feather="log-in"></i></span></button>
-                                                                        <button class="btn btn-icon btn-pumpkin"
-                                                                        data-toggle="modal" data-target="#Modalcheckin" onclick="getLocation({{ $value->id }})" disabled>
-                                                                        <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
-                                                                        <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalResult" onclick="saleplan_result({{ $value->id }})" disabled>
-                                                                        <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
-                                                                @endif
+                                                                <button class="btn btn-icon btn-pumpkin"
+                                                                data-toggle="modal" data-target="#Modalcheckin" onclick="getLocation({{ $value->id }})" {{ $btn_pumpkin_disabled }}>
+                                                                <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
+                                                                <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalResult" onclick="saleplan_result({{ $value->id }})" {{ $btn_neon_disabled }}>
+                                                                <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
 
                                                             </div>
                                                         </td>
-                                                    </tr>
-                                                    <?php
-                                                //  }
-                                                 ?>
+                                                    </tr>   
                                                 @endforeach
                                             </tbody>
                                         </table>
@@ -689,37 +673,29 @@
                                                         style="font-size: 12px;">ลูกค้าใหม่</span></td>
                                                     <td style="text-align:center;">
                                                         <div class="button-list">
-                                                            @if ($value->shop_checkin_date != "" && $value->shop_checkout_date == "")
-                                                                <button class="btn btn-icon btn-primary"
-                                                                    data-toggle="modal" data-target="#ModalcheckinCust" onclick="getLocation({{ $value->id }})" disabled>
-                                                                    <span class="btn-icon-wrap"><i data-feather="log-in"></i></span></button>
-                                                                <button class="btn btn-icon btn-pumpkin"
-                                                                data-toggle="modal" data-target="#ModalcheckinCust" onclick="getLocation({{ $value->id }})">
-                                                                <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
-                                                                <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalCustResult" onclick="customer_new_result({{ $value->id }})" disabled>
-                                                                <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
-
-                                                            @elseif ($value->shop_checkin_date != "" && $value->shop_checkout_date != "")
-                                                                <button class="btn btn-icon btn-primary"
-                                                                data-toggle="modal" data-target="#ModalcheckinCust" onclick="getLocation({{ $value->id }})" disabled>
+                                                            @php
+                                                                if ($value->shop_checkin_date != "" && $value->shop_checkout_date == ""){
+                                                                    $btn_primary_cusnew = "disabled";
+                                                                    $btn_pumpkin_cusnew = "";
+                                                                    $btn_neon_cusnew = "disabled";
+                                                                }elseif($value->shop_checkin_date != "" && $value->shop_checkout_date != ""){
+                                                                    $btn_primary_cusnew = "disabled";
+                                                                    $btn_pumpkin_cusnew = "disabled";
+                                                                    $btn_neon_cusnew = "";
+                                                                }else{
+                                                                    $btn_primary_cusnew = "";
+                                                                    $btn_pumpkin_cusnew = "disabled";
+                                                                    $btn_neon_cusnew = "disabled";
+                                                                }
+                                                            @endphp
+                                                            <button class="btn btn-icon btn-primary"
+                                                                data-toggle="modal" data-target="#ModalcheckinCust" onclick="getLocation({{ $value->id }})" {{ $btn_primary_cusnew }}>
                                                                 <span class="btn-icon-wrap"><i data-feather="log-in"></i></span></button>
-                                                                <button class="btn btn-icon btn-pumpkin"
-                                                                data-toggle="modal" data-target="#ModalcheckinCust" onclick="getLocation({{ $value->id }})" disabled>
-                                                                <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
-                                                                <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalCustResult" onclick="customer_new_result({{ $value->id }})">
-                                                                <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
-
-                                                                @else
-                                                                    <button class="btn btn-icon btn-primary"
-                                                                    data-toggle="modal" data-target="#ModalcheckinCust" onclick="getLocation({{ $value->id }})">
-                                                                    <span class="btn-icon-wrap"><i data-feather="log-in"></i></span></button>
-                                                                    <button class="btn btn-icon btn-pumpkin"
-                                                                    data-toggle="modal" data-target="#ModalcheckinCust" onclick="getLocation({{ $value->id }})" disabled>
-                                                                    <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
-                                                                    <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalCustResult" onclick="customer_new_result({{ $value->id }})" disabled>
-                                                                    <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
-                                                            @endif
-
+                                                            <button class="btn btn-icon btn-pumpkin"
+                                                            data-toggle="modal" data-target="#ModalcheckinCust" onclick="getLocation({{ $value->id }})" {{ $btn_pumpkin_cusnew }}>
+                                                            <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
+                                                            <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalCustResult" onclick="customer_new_result({{ $value->id }})" {{ $btn_neon_cusnew }}>
+                                                            <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -762,6 +738,7 @@
                                             <tbody>
                                                 <?php $no = 1; ?>
                                                 @foreach ($customer_visit_api as $key => $value)
+
                                                     <tr>
                                                         <td>{{ $no++ }}</td>
                                                         <td>{{ $customer_visit_api[$key]['shop_name'] }}</td>
@@ -771,53 +748,46 @@
                                                             @if ($customer_visit_api[$key]['visit_status'] == 0)
                                                                 <span class="badge badge-soft-secondary mt-15 mr-10"
                                                                     style="font-weight: bold; font-size: 12px;">รอดำเนินการ</span>
-                                                            @elseif ($value->cust_visit_status == 1)
+                                                            @elseif ($customer_visit_api[$key]['visit_status'] == 1)
                                                                 <span class="badge badge-soft-success mt-15 mr-10"
                                                                     style="font-weight: bold; font-size: 12px;">สำเร็จ</span>
-                                                            @elseif ($value->cust_visit_status == 2)
+                                                            @elseif ($customer_visit_api[$key]['visit_status'] == 2)
                                                                 <span class="badge badge-soft-danger mt-15 mr-10"
                                                                     style="font-weight: bold; font-size: 12px;">ไม่สำเร็จ</span>
                                                             @endif
                                                         </td>
                                                         <td style="text-align:center;">
                                                             <div class="button-list">
-                                                            @if ($customer_visit_api[$key]['visit_checkin_date'] != "" && $customer_visit_api[$key]['visit_checkout_date'] == "")
+                                                                
+                                                            @php
+                                                                if($customer_visit_api[$key]['visit_checkin_date'] != "" && $customer_visit_api[$key]['visit_checkout_date'] == ""){
+                                                                    $btn_primary_cusvisit_disabled = "disabled";
+                                                                    $btn_pumpkin_cusvisit_disabled = "";
+                                                                    $btn_neon_cusvisit_disabled = "disabled";
+                                                                }elseif($customer_visit_api[$key]['visit_checkin_date'] != "" && $customer_visit_api[$key]['visit_checkout_date'] != ""){
+                                                                    $btn_primary_cusvisit_disabled = "disabled";
+                                                                    $btn_pumpkin_cusvisit_disabled = "disabled";
+                                                                    $btn_neon_cusvisit_disabled = "";
+                                                                }else{
+                                                                    $btn_primary_cusvisit_disabled = "";
+                                                                    $btn_pumpkin_cusvisit_disabled = "disabled";
+                                                                    $btn_neon_cusvisit_disabled = "disabled";
+                                                                }
+                                                            @endphp
 
-                                                                <button class="btn btn-icon btn-primary"
-                                                            data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $customer_visit_api[$key]['id'] }})" disabled>
+                                                            <button class="btn btn-icon btn-primary"
+                                                            data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $customer_visit_api[$key]['id'] }})" {{ $btn_primary_cusvisit_disabled }}>
                                                             <span class="btn-icon-wrap"><i data-feather="log-in"></i></span></button>
                                                             <button class="btn btn-icon btn-pumpkin"
-                                                            data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $customer_visit_api[$key]['id'] }})">
+                                                            data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $customer_visit_api[$key]['id'] }})" {{ $btn_pumpkin_cusvisit_disabled }}>
                                                             <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
-                                                            <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalVisitResult" onclick="customer_visit_result({{ $customer_visit_api[$key]['id'] }})" disabled>
+                                                            <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalVisitResult" onclick="customer_visit_result({{ $customer_visit_api[$key]['id'] }})" {{ $btn_neon_cusvisit_disabled }}>
                                                             <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
-
-                                                            @elseif ($customer_visit_api[$key]['visit_checkin_date'] != "" && $customer_visit_api[$key]['visit_checkout_date'] != "")
-                                                                <button class="btn btn-icon btn-primary"
-                                                                data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $customer_visit_api[$key]['id'] }})" disabled>
-                                                                <span class="btn-icon-wrap"><i data-feather="log-in"></i></span></button>
-                                                                <button class="btn btn-icon btn-pumpkin"
-                                                                data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $customer_visit_api[$key]['id'] }})" disabled>
-                                                                <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
-                                                                <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalVisitResult" onclick="customer_visit_result({{ $customer_visit_api[$key]['id'] }})">
-                                                                <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
-
-                                                                @else
-                                                                    <button class="btn btn-icon btn-primary"
-                                                                    data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $customer_visit_api[$key]['id'] }})">
-                                                                    <span class="btn-icon-wrap"><i data-feather="log-in"></i></span></button>
-                                                                    <button class="btn btn-icon btn-pumpkin"
-                                                                    data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $customer_visit_api[$key]['id'] }})" disabled>
-                                                                    <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
-                                                                    <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalVisitResult" onclick="customer_visit_result({{ $customer_visit_api[$key]['id'] }})" disabled>
-                                                                    <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
-                                                            @endif
 
                                                         </td>
                                                     </tr>
 
                                                 @endforeach
-
                                             </tbody>
                                         </table>
                                     </div>
@@ -837,11 +807,11 @@
     <div class="modal fade" id="Modalcheckin" tabindex="-1" role="dialog" aria-labelledby="Modalcheckin"
         aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
-            <form action="{{ url('saleplan_checkin') }}" method="post" enctype="multipart/form-data">
+            <form id="from_saleplan">
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Check-in 2 Check-out</h5>
+                        <h5 class="modal-title">SalePlan Check-in 2 Check-out</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -868,7 +838,7 @@
     <div class="modal fade" id="ModalcheckinCust" tabindex="-1" role="dialog" aria-labelledby="ModalcheckinCust"
         aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
-            <form action="{{ url('customer_new_checkin') }}" method="post" enctype="multipart/form-data">
+            <form id="from_customer_new">
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
@@ -879,7 +849,6 @@
                     </div>
                     <div class="modal-body">
                         <div class="mt-20 text-center">
-                            {{-- <button type="button" class="btn btn-primary" onclick="getLocation()">GetLocation</button> --}}
                             <input type="hidden" id="cust_lat" name="lat">
                             <input type="hidden" id="cust_lon" name="lon">
                             <p id="cust_demo"></p>
@@ -899,7 +868,7 @@
     <div class="modal fade" id="ModalcheckinVisit" tabindex="-1" role="dialog" aria-labelledby="ModalcheckinVisit"
         aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
-            <form action="{{ url('customer_visit_checkin') }}" method="post" enctype="multipart/form-data">
+            <form id="from_customer_visit">
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
@@ -910,7 +879,6 @@
                     </div>
                     <div class="modal-body">
                         <div class="mt-20 text-center">
-                            {{-- <button type="button" class="btn btn-primary" onclick="getLocation()">GetLocation</button> --}}
                             <input type="hidden" id="visit_lat" name="lat">
                             <input type="hidden" id="visit_lon" name="lon">
                             <p id="visit_demo"></p>
@@ -937,7 +905,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ url('saleplan_Result') }}" method="post" enctype="multipart/form-data">
+                    <form id="from_saleplan_result">
                         @csrf
                         <input type="hidden" name="saleplan_id" id="get_saleplan_id">
                         <div class="form-group">
@@ -977,7 +945,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ url('customer_new_Result') }}" method="post" enctype="multipart/form-data">
+                    <form id="from_customer_new_result">
                         @csrf
                         <input type="hidden" name="cust_id" id="get_cust_new_id">
                         <div class="form-group">
@@ -1017,7 +985,8 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ url('customer_visit_Result') }}" method="post" enctype="multipart/form-data">
+                    <!-- <form action="{{ url('customer_visit_Result') }}" method="post" enctype="multipart/form-data"> -->
+                    <form id="from_customer_visit_result">
                         @csrf
                         <input type="hidden" name="visit_id" id="get_visit_id">
                         <div class="form-group">
@@ -1060,7 +1029,7 @@
             }
             $("#id").val(id);
             $("#visit_id").val(id);
-            $("#cust_id").val(cust_id);
+            $("#cust_id").val(id);
         }
 
         function showPosition(position) {
@@ -1261,8 +1230,251 @@
     }
 </script>
 
-@section('footer')
-    @include('layouts.footer')
-@endsection
+<script>
+    $("#from_saleplan").on("submit", function (e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        var formData = new FormData(this);
+        // console.log(formData);
+        $.ajax({
+            type:'POST',
+            url: '{{ url("/saleplan_checkin") }}',
+            data:formData,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(response){
+                console.log(response);
+                if(response.status == 200){
+                    $("#Modalcheckin").modal('hide');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    location.reload();
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Your work has been saved',
+                        text: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+            },
+            error: function(response){
+                console.log("error");
+                console.log(response);
+            }
+        });
+    });
+
+    $("#from_customer_new").on("submit", function (e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        var formData = new FormData(this);
+        // console.log(formData);
+        $.ajax({
+            type:'POST',
+            url: '{{ url("/customer_new_checkin") }}',
+            data:formData,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(response){
+                console.log(response);
+                if(response.status == 200){
+                    $("#ModalcheckinCust").modal('hide');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    location.reload();
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Your work has been saved',
+                        text: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+            },
+            error: function(response){
+                console.log("error");
+                console.log(response);
+            }
+        });
+    });
+
+    $("#from_customer_visit").on("submit", function (e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        var formData = new FormData(this);
+        // console.log(formData);
+        $.ajax({
+            type:'POST',
+            url: '{{ url("/customer_visit_checkin") }}',
+            data:formData,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(response){
+                console.log(response);
+                if(response.status == 200){
+                    $("#ModalcheckinVisit").modal('hide');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    location.reload();
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Your work has been saved',
+                        text: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+            },
+            error: function(response){
+                console.log("error");
+                console.log(response);
+            }
+        });
+    });
+
+    $("#from_saleplan_result").on("submit", function (e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        var formData = new FormData(this);
+        // console.log(formData);
+        $.ajax({
+            type:'POST',
+            url: '{{ url("/saleplan_Result") }}',
+            data:formData,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(response){
+                console.log(response);
+                if(response.status == 200){
+                    $("#ModalResult").modal('hide');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    location.reload();
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Your work has been saved',
+                        text: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+            },
+            error: function(response){
+                console.log("error");
+                console.log(response);
+            }
+        });
+    });
+
+    $("#from_customer_new_result").on("submit", function (e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        var formData = new FormData(this);
+        // console.log(formData);
+        $.ajax({
+            type:'POST',
+            url: '{{ url("/customer_new_Result") }}',
+            data:formData,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(response){
+                console.log(response);
+                if(response.status == 200){
+                    $("#ModalCustResult").modal('hide');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    location.reload();
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Your work has been saved',
+                        text: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+            },
+            error: function(response){
+                console.log("error");
+                console.log(response);
+            }
+        });
+    });
+
+    $("#from_customer_visit_result").on("submit", function (e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        var formData = new FormData(this);
+        // console.log(formData);
+        $.ajax({
+            type:'POST',
+            url: '{{ url("/customer_visit_Result") }}',
+            data:formData,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(response){
+                console.log(response);
+                if(response.status == 200){
+                    $("#ModalVisitResult").modal('hide');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    location.reload();
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Your work has been saved',
+                        text: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+            },
+            error: function(response){
+                console.log("error");
+                console.log(response);
+            }
+        });
+    }); 
+
+</script>
 
 @endsection
+
+@section('footer')
+    @include('layouts.footer')
+@endsection('footer')

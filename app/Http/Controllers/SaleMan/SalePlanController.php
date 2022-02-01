@@ -233,35 +233,88 @@ class SalePlanController extends Controller
         $chk_status = SalePlan::where('id', $request->id)->first();
 
             if ($chk_status->status_result == 0) {
-                SalePlan::find($request->id)->update([
-                    'status_result' => 1,
-                ]);
 
-                $data2 = new SalePlanResult;
-                $data2->sale_plan_id = $request->id;
-                $data2->sale_plan_checkin_date   = Carbon::now();
-                $data2->sale_plan_checkin_latitude   = $request->lat;
-                $data2->sale_plan_checkin_longitude   = $request->lon;
-                $data2->created_by   = Auth::user()->id;
-                $data2->created_at   = Carbon::now();
-                $data2->save();
-                return back();
+                DB::beginTransaction();
+                try {
+
+                    if($request->lat != "" && $request->lon != ""){
+
+                        SalePlan::find($request->id)->update([
+                            'status_result' => 1,
+                        ]);
+
+                        $data2 = new SalePlanResult;
+                        $data2->sale_plan_id = $request->id;
+                        $data2->sale_plan_checkin_date   = Carbon::now();
+                        $data2->sale_plan_checkin_latitude   = $request->lat;
+                        $data2->sale_plan_checkin_longitude   = $request->lon;
+                        $data2->created_by   = Auth::user()->id;
+                        $data2->created_at   = Carbon::now();
+                        $data2->save();
+
+                        DB::commit();
+                        //return back();
+                        return response()->json([
+                            'status' => 200,
+                            'message' => 'บันทึกข้อมูลสำเร็จ',
+                        ]);
+                    }else{
+                        return response()->json([
+                            'status' => 404,
+                            'message' => 'กรุณาเปิดหรือรอ location ก่อนค่ะ',
+                        ]);
+                    }
+        
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    // return back();
+                    return response()->json([
+                        'status' => 404,
+                        'message' => 'ไม่สามารถบันทึกได้',
+                    ]);
+                }
             }
             elseif ($chk_status->status_result == 1) {
 
-                SalePlan::find($request->id)->update([
-                    'status_result' => 2,
-                ]);
+                DB::beginTransaction();
+                try {   
 
-                $data2 = SalePlanResult::where('sale_plan_id', $request->id)->first();
-                $data2->sale_plan_checkout_date   = Carbon::now();
-                $data2->sale_plan_checkout_latitude   = $request->lat;
-                $data2->sale_plan_checkout_longitude   = $request->lon;
-                $data2->updated_by   = Auth::user()->id;
-                $data2->updated_at   = Carbon::now();
-                $data2->update();
+                    if($request->lat != "" && $request->lon != ""){
 
-                return back();
+                        SalePlan::find($request->id)->update([
+                            'status_result' => 2,
+                        ]);
+
+                        $data2 = SalePlanResult::where('sale_plan_id', $request->id)->first();
+                        $data2->sale_plan_checkout_date   = Carbon::now();
+                        $data2->sale_plan_checkout_latitude   = $request->lat;
+                        $data2->sale_plan_checkout_longitude   = $request->lon;
+                        $data2->updated_by   = Auth::user()->id;
+                        $data2->updated_at   = Carbon::now();
+                        $data2->update();
+
+                        DB::commit();
+                        // return back();
+                        return response()->json([
+                            'status' => 200,
+                            'message' => 'บันทึกข้อมูลสำเร็จ',
+                        ]);
+                        
+                    }else{
+                        return response()->json([
+                            'status' => 404,
+                            'message' => 'กรุณาเปิดหรือรอ location ก่อนค่ะ',
+                        ]);
+                    }
+
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    // return back();
+                    return response()->json([
+                        'status' => 404,
+                        'message' => 'ไม่สามารถบันทึกได้',
+                    ]);
+                }
             }
 
     }
@@ -282,17 +335,41 @@ class SalePlanController extends Controller
     { // สรุปผลลัพธ์
         // dd($request);
 
-        SalePlan::find($request->saleplan_id)->update([
-            'status_result' => 3,
-        ]);
+        DB::beginTransaction();
+        try {
 
-        $data2 = SalePlanResult::where('sale_plan_id', $request->saleplan_id)->first();
-        $data2->sale_plan_detail   = $request->saleplan_detail;
-        $data2->sale_plan_status   = $request->saleplan_result;
-        $data2->updated_by   = Auth::user()->id;
-        $data2->updated_at   = Carbon::now();
-        $data2->update();
+            if($request->saleplan_id !="" && $request->saleplan_result != ""){
 
-        return back();
+                SalePlan::find($request->saleplan_id)->update([
+                    'status_result' => 3,
+                ]);
+                $data2 = SalePlanResult::where('sale_plan_id', $request->saleplan_id)->first();
+                $data2->sale_plan_detail   = $request->saleplan_detail;
+                $data2->sale_plan_status   = $request->saleplan_result;
+                $data2->updated_by   = Auth::user()->id;
+                $data2->updated_at   = Carbon::now();
+                $data2->update();
+                // return back();
+                DB::commit();
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'บันทึกข้อมูลสำเร็จ',
+                ]);
+
+            }else{
+                
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'กรุณาเลือกสรุปผลลัพธ์ด้วยค่ะ',
+                ]); 
+            }
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกได้',
+            ]);
+        }
     }
 }
