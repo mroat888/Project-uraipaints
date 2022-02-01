@@ -25,6 +25,19 @@ class AssignmentController extends Controller
         return view('leadManager.add_assignment', compact('assignments', 'users'));
     }
 
+    public function assignIndex()
+    {
+        $assignments = Assignment::join('users', 'assignments.assign_emp_id', 'users.id')
+        ->where('assignments.created_by', Auth::user()->id)
+        ->where('assignments.assign_status', 3)
+        ->select('assignments.*', 'users.name')
+        ->orderBy('assignments.id', 'desc')->get();
+
+        $users = DB::table('users')->get();
+
+        return view('headManager.add_assignment', compact('assignments', 'users'));
+    }
+
     public function store(Request $request)
     {
         Assignment::create([
