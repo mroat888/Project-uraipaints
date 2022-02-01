@@ -327,57 +327,92 @@ class ApprovalSalePlanController extends Controller
 
         if ($request->checkapprove) {
             if ($request->approve) {
-            if ($request->CheckAll == "Y") {
-                // return "yy";
-                    foreach ($request->checkapprove as $key => $chk) {
-                        SalePlan::where('id', $chk)->update([
-                            'sale_plans_status' => 2,
-                            'updated_by' => Auth::user()->id,
-                        ]);
-                    }
-
-                $month_id = SalePlan::where('id', $chk)->first();
-                $chkSaleplan = SalePlan::where('monthly_plan_id', $month_id->monthly_plan_id)
-                    ->where('sale_plans_status', 1)->count();
-
-                $chkCustomer = Customer::where('monthly_plan_id', $month_id->monthly_plan_id)
-                    ->where('shop_aprove_status', 1)->count();
-
-                if ($chkSaleplan == 0 && $chkCustomer == 0) {
-                    MonthlyPlan::where('id', $chk)->update([
-                        'status_approve' => 2,
-                        'updated_by' => Auth::user()->id,
-                    ]);
-                }
-
-            } else {
-                    foreach ($request->checkapprove as $key => $chk) {
-                        SalePlan::where('id', $chk)->update([
-                            'sale_plans_status' => 2,
-                            'updated_by' => Auth::user()->id,
-                        ]);
-                    }
-
-                $month_id = SalePlan::where('id', $chk)->first();
-                $chkSaleplan = SalePlan::where('monthly_plan_id', $month_id->monthly_plan_id)
-                    ->where('sale_plans_status', 1)->count();
-
-                $chkCustomer = Customer::where('monthly_plan_id', $month_id->monthly_plan_id)
-                    ->where('shop_aprove_status', 1)->count();
-
-                if ($chkSaleplan == 0 && $chkCustomer == 0) {
-                    MonthlyPlan::where('id', $chk)->update([
-                        'status_approve' => 2,
-                        'updated_by' => Auth::user()->id,
-                    ]);
-                }
-            }
-        }else {
                 if ($request->CheckAll == "Y") {
                     // return "yy";
                         foreach ($request->checkapprove as $key => $chk) {
                             SalePlan::where('id', $chk)->update([
-                                'sale_plans_status' => 3,
+                                'sale_plans_status' => 2,
+                                'updated_by' => Auth::user()->id,
+                            ]);
+                        }
+
+                    $month_id = SalePlan::where('id', $chk)->first();
+                    $chkSaleplan = SalePlan::where('monthly_plan_id', $month_id->monthly_plan_id)
+                        ->where('sale_plans_status', 1)->count();
+
+                    $chkCustomer = Customer::where('monthly_plan_id', $month_id->monthly_plan_id)
+                        ->where('shop_aprove_status', 1)->count();
+
+                    if ($chkSaleplan == 0 && $chkCustomer == 0) {
+                        MonthlyPlan::where('id', $chk)->update([
+                            'status_approve' => 2,
+                            'updated_by' => Auth::user()->id,
+                        ]);
+                    }
+
+                } else {
+                        foreach ($request->checkapprove as $key => $chk) {
+                            SalePlan::where('id', $chk)->update([
+                                'sale_plans_status' => 2,
+                                'updated_by' => Auth::user()->id,
+                            ]);
+                        }
+
+                    $month_id = SalePlan::where('id', $chk)->first();
+                    $chkSaleplan = SalePlan::where('monthly_plan_id', $month_id->monthly_plan_id)
+                        ->where('sale_plans_status', 1)->count();
+
+                    $chkCustomer = Customer::where('monthly_plan_id', $month_id->monthly_plan_id)
+                        ->where('shop_aprove_status', 1)->count();
+
+                    if ($chkSaleplan == 0 && $chkCustomer == 0) {
+                        MonthlyPlan::where('id', $chk)->update([
+                            'status_approve' => 2,
+                            'updated_by' => Auth::user()->id,
+                        ]);
+                    }
+                }
+            }else {
+                if ($request->CheckAll == "Y") {
+                    // return "yy";
+                    foreach ($request->checkapprove as $key => $chk) {
+                        SalePlan::where('id', $chk)->update([
+                            'sale_plans_status' => 3,
+                            'updated_by' => Auth::user()->id,
+                        ]);
+                    }
+
+                    $month_id = SalePlan::where('id', $chk)->first();
+                    $chkSaleplan = SalePlan::where('monthly_plan_id', $month_id->monthly_plan_id)
+                        ->where('sale_plans_status', 1)->count();
+
+                    $chkCustomer = Customer::where('monthly_plan_id', $month_id->monthly_plan_id)
+                        ->where('shop_aprove_status', 1)->count();
+
+                    if ($chkSaleplan == 0 && $chkCustomer == 0) {
+                        MonthlyPlan::where('id', $chk)->update([
+                            'status_approve' => 2,
+                            'updated_by' => Auth::user()->id,
+                        ]);
+                    }
+                } else {
+                    foreach ($request->checkapprove as $key => $chk) {
+                        SalePlan::where('id', $chk)->update([
+                            'sale_plans_status' => 3,
+                            'updated_by' => Auth::user()->id,
+                        ]);
+                    }
+                }
+            }
+        }
+        if ($request->checkapprove_cust) {
+            // return $request->checkapprove_cust;
+            if ($request->approve) {
+                if ($request->CheckAll_cust == "Y") {
+
+                        foreach ($request->checkapprove_cust as $key => $chk) {
+                            Customer::where('id', $chk)->update([
+                                'shop_aprove_status' => 2,
                                 'updated_by' => Auth::user()->id,
                             ]);
                         }
@@ -395,21 +430,8 @@ class ApprovalSalePlanController extends Controller
                                 'updated_by' => Auth::user()->id,
                             ]);
                         }
-                } else {
-                        foreach ($request->checkapprove as $key => $chk) {
-                            SalePlan::where('id', $chk)->update([
-                                'sale_plans_status' => 3,
-                                'updated_by' => Auth::user()->id,
-                            ]);
-                        }
-                }
-        }
-        }
-        if ($request->checkapprove_cust) {
-            // return $request->checkapprove_cust;
-            if ($request->approve) {
-            if ($request->CheckAll_cust == "Y") {
 
+                } else {
                     foreach ($request->checkapprove_cust as $key => $chk) {
                         Customer::where('id', $chk)->update([
                             'shop_aprove_status' => 2,
@@ -430,74 +452,52 @@ class ApprovalSalePlanController extends Controller
                             'updated_by' => Auth::user()->id,
                         ]);
                     }
-
-            } else {
-                foreach ($request->checkapprove_cust as $key => $chk) {
-                    Customer::where('id', $chk)->update([
-                        'shop_aprove_status' => 2,
-                        'updated_by' => Auth::user()->id,
-                    ]);
                 }
-
-                $month_id = SalePlan::where('id', $chk)->first();
-                $chkSaleplan = SalePlan::where('monthly_plan_id', $month_id->monthly_plan_id)
-                    ->where('sale_plans_status', 1)->count();
-
-                $chkCustomer = Customer::where('monthly_plan_id', $month_id->monthly_plan_id)
-                    ->where('shop_aprove_status', 1)->count();
-
-                if ($chkSaleplan == 0 && $chkCustomer == 0) {
-                    MonthlyPlan::where('id', $chk)->update([
-                        'status_approve' => 2,
-                        'updated_by' => Auth::user()->id,
-                    ]);
-                }
-            }
-        }else { // ไม่อนุมัติลูกค้าใหม่
+            }else { // ไม่อนุมัติลูกค้าใหม่
                 if ($request->CheckAll_cust == "Y") {
                     // return "yy";
-                        foreach ($request->checkapprove_cust as $key => $chk) {
-                            Customer::where('id', $chk)->update([
-                                'shop_aprove_status' => 3,
-                                'updated_by' => Auth::user()->id,
-                            ]);
-                        }
+                    foreach ($request->checkapprove_cust as $key => $chk) {
+                        Customer::where('id', $chk)->update([
+                            'shop_aprove_status' => 3,
+                            'updated_by' => Auth::user()->id,
+                        ]);
+                    }
 
-                        $month_id = SalePlan::where('id', $chk)->first();
-                        $chkSaleplan = SalePlan::where('monthly_plan_id', $month_id->monthly_plan_id)
-                            ->where('sale_plans_status', 1)->count();
+                    $month_id = SalePlan::where('id', $chk)->first();
+                    $chkSaleplan = SalePlan::where('monthly_plan_id', $month_id->monthly_plan_id)
+                        ->where('sale_plans_status', 1)->count();
 
-                        $chkCustomer = Customer::where('monthly_plan_id', $month_id->monthly_plan_id)
-                            ->where('shop_aprove_status', 1)->count();
+                    $chkCustomer = Customer::where('monthly_plan_id', $month_id->monthly_plan_id)
+                        ->where('shop_aprove_status', 1)->count();
 
-                        if ($chkSaleplan == 0 && $chkCustomer == 0) {
-                            MonthlyPlan::where('id', $chk)->update([
-                                'status_approve' => 2,
-                                'updated_by' => Auth::user()->id,
-                            ]);
-                        }
+                    if ($chkSaleplan == 0 && $chkCustomer == 0) {
+                        MonthlyPlan::where('id', $chk)->update([
+                            'status_approve' => 2,
+                            'updated_by' => Auth::user()->id,
+                        ]);
+                    }
                 } else {
-                        foreach ($request->checkapprove_cust as $key => $chk) {
-                            Customer::where('id', $chk)->update([
-                                'shop_aprove_status' => 3,
-                                'updated_by' => Auth::user()->id,
-                            ]);
-                        }
-                        $month_id = SalePlan::where('id', $chk)->first();
-                        $chkSaleplan = SalePlan::where('monthly_plan_id', $month_id->monthly_plan_id)
-                            ->where('sale_plans_status', 1)->count();
+                    foreach ($request->checkapprove_cust as $key => $chk) {
+                        Customer::where('id', $chk)->update([
+                            'shop_aprove_status' => 3,
+                            'updated_by' => Auth::user()->id,
+                        ]);
+                    }
+                    $month_id = SalePlan::where('id', $chk)->first();
+                    $chkSaleplan = SalePlan::where('monthly_plan_id', $month_id->monthly_plan_id)
+                        ->where('sale_plans_status', 1)->count();
 
-                        $chkCustomer = Customer::where('monthly_plan_id', $month_id->monthly_plan_id)
-                            ->where('shop_aprove_status', 1)->count();
+                    $chkCustomer = Customer::where('monthly_plan_id', $month_id->monthly_plan_id)
+                        ->where('shop_aprove_status', 1)->count();
 
-                        if ($chkSaleplan == 0 && $chkCustomer == 0) {
-                            MonthlyPlan::where('id', $chk)->update([
-                                'status_approve' => 2,
-                                'updated_by' => Auth::user()->id,
-                            ]);
-                        }
+                    if ($chkSaleplan == 0 && $chkCustomer == 0) {
+                        MonthlyPlan::where('id', $chk)->update([
+                            'status_approve' => 2,
+                            'updated_by' => Auth::user()->id,
+                        ]);
+                    }
                 }
-        }
+            }
         }
         if ($request->checkapprove == '' && $request->checkapprove_cust == '') {
             return back()->with('error', "กรุณาเลือกรายการอนุมัติ");
