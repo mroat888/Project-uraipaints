@@ -80,7 +80,16 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <span style="font-size: 18px; color:#6b73bd;">ผู้รับผิดชอบ</span>
-                                    <p class="detail_listcus mt-10" style="font-size: 16px;"><span>ชื่อพนักงาน</span> : เดชพงษ์</p>
+                                    <p class="detail_listcus mt-10" style="font-size: 16px;">
+                                        <span>ชื่อพนักงาน</span> : 
+                                        @php
+                                            $user = DB::table('users')
+                                                ->where('id', $customer_shops->created_by)
+                                                ->orderBy('id', 'desc')
+                                                ->first();
+                                        @endphp
+                                            {{ $user->name }}
+                                    </p>
                                     <hr>
 
                                     <span style="font-size: 18px; color:#6b73bd;">สถานะลูกค้า <span style="font-size: 14px; color:black;"> เปลี่ยนสถานะลูกค้าเป็นลูกค้าใหม่ หรือลบออก</span></span>
@@ -105,7 +114,6 @@
             </div>
         </div>
 
-
         <div class="row">
             <div class="col-xl-12">
                 <div class="row mt-2">
@@ -113,60 +121,52 @@
                         <h5>ประวัติการติดต่อ</h5>
                     </div>
                 </div>
-                <section class="hk-sec-wrapper">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="row">
-                                <div class="col-md-6 col-lg-3">
-                                    <p class="detail_listcus"><i class="ion ion-md-calendar"></i><span> วันที่</span> : 2021-11-05</p>
-                                </div>
-                                <div class="col-md-6 col-lg-9">
-                                    <p class="detail_listcus"><i class="ion ion-md-person"></i><span> พนักงาน</span> : เดชพงศ์</p>
-                                </div>
-                                <div class="col-md-12">
-                                    <hr>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="desc_cusnote">
-                                        Lorem ipsum dolor sit libero dignissimos aliquid non corrupti adipisci qui quis, expedita deserunt vero neque alias accusamus tempore dolorem iure molestias voluptatum cumque quibusdam. Deserunt labore repellat molestias tempore doloribus exercitationem aperiam quaerat, explicabo rem rerum provident delectus optio voluptate excepturi cumque commodi qui asperiores eligendi suscipit cum aliquid? Magnam, provident maiores alias quasi vero dolorem rerum quo unde dignissimos doloremque labore adipisci consectetur incidunt mollitia voluptatum aut laborum quaerat itaque porro? Illo, tempore. Beatae fuga cumque laboriosam maiores voluptatum corrupti, repellendus repudiandae ipsum assumenda nisi. Iusto, distinctio officia autem blanditiis laudantium odit natus similique saepe voluptas, sequi facere aut recusandae repellendus doloremque temporibus aperiam eveniet obcaecati debitis fuga hic cupiditate, provident quidem? Iure voluptatem repudiandae saepe id perspiciatis animi reprehenderit, libero error.
+            </div>
+        </div>
+        
+            @foreach($customer_history_contacts as $cust_his)
+            <div class="row">
+                <div class="col-xl-12">
+                    
+                    <section class="hk-sec-wrapper">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-3">
+                                        <p class="detail_listcus"><i class="ion ion-md-calendar"></i><span> วันที่</span> : {{ $cust_his->cust_history_saleplan_date }}</p>
+                                    </div>
+                                    <div class="col-md-6 col-lg-9">
+                                        <p class="detail_listcus"><i class="ion ion-md-person"></i>
+                                            <span> พนักงาน</span> : 
+                                            @php
+                                                $user = DB::table('users')
+                                                    ->where('id', $cust_his->employee_id)
+                                                    ->orderBy('id', 'desc')
+                                                    ->first();
+                                            @endphp
+                                                {{ $user->name }}
+                                        </p>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <hr>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="desc_cusnote">
+                                            {{ $cust_his->cust_history_detail}}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <hr>
                         </div>
-                        <hr>
-                    </div>
-                </section>
+                    </section>
+                </div>
             </div>
-        </div>
+            @endforeach
 
-        <div class="row">
-            <div class="col-xl-12">
-                <section class="hk-sec-wrapper">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="row">
-                                <div class="col-md-6 col-lg-3">
-                                    <p class="detail_listcus"><i class="ion ion-md-calendar"></i> <span> วันที่</span> : 2021-11-05</p>
-                                </div>
-                                <div class="col-md-6 col-lg-9">
-                                    <p class="detail_listcus"><i class="ion ion-md-person"></i> <span> พนักงาน</span> : เดชพงศ์</p>
-                                </div>
-                                <div class="col-md-12">
-                                    <hr>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="desc_cusnote">
-                                        Lorem ipsum dolor sit libero dignissimos aliquid non corrupti adipisci qui quis, expedita deserunt vero neque alias accusamus tempore dolorem iure molestias voluptatum cumque quibusdam. Deserunt labore repellat molestias tempore doloribus exercitationem aperiam quaerat, explicabo rem rerum provident delectus optio voluptate excepturi cumque commodi qui asperiores eligendi suscipit cum aliquid? Magnam, provident maiores alias quasi vero dolorem rerum quo unde dignissimos doloremque labore adipisci consectetur incidunt mollitia voluptatum aut laborum quaerat itaque porro? Illo, tempore. Beatae fuga cumque laboriosam maiores voluptatum corrupti, repellendus repudiandae ipsum assumenda nisi. Iusto, distinctio officia autem blanditiis laudantium odit natus similique saepe voluptas, sequi facere aut recusandae repellendus doloremque temporibus aperiam eveniet obcaecati debitis fuga hic cupiditate, provident quidem? Iure voluptatem repudiandae saepe id perspiciatis animi reprehenderit, libero error.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                    </div>
-                </section>
-            </div>
-        </div>
+
     </div>
+
     <!-- /Container -->
     </div>
 

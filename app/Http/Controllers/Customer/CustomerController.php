@@ -22,7 +22,8 @@ class CustomerController extends Controller
     {
         $data['customer_shop'] = DB::table('customer_shops')
             ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
-            ->where('customer_shops.shop_status', 2) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
+            ->where('customer_shops.shop_status', 1) // 0 = ลูกค้าใหม่ , 1 = ทะเบียนลูกค้า , 2 = ลบ 
+            ->where('customer_shops.created_by', Auth::user()->id)
             ->select(
                 'province.PROVINCE_NAME',
                 'customer_shops.*'
@@ -38,12 +39,8 @@ class CustomerController extends Controller
     {
         $data['customer_shop'] = DB::table('customer_shops')
             ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
-            //->join('customer_contacts', 'customer_contacts.customer_shop_id','customer_shops.id')
-            // ->join('customer_contacts', function ($join) {
-            //     $join->on('customer_shops.id', '=', 'customer_contacts.customer_shop_id')
-            //     ->orderBy('customer_contacts.id', 'desc');
-            // })
-            ->where('customer_shops.shop_status', 1) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
+            ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ทะเบียนลูกค้า , 2 = ลบ
+            ->where('customer_shops.created_by', Auth::user()->id)
             ->select(
                 'province.PROVINCE_NAME',
                 'customer_shops.*'
@@ -351,6 +348,11 @@ class CustomerController extends Controller
             ->where('customer_shop_id', $data['customer_shops']->id)
             ->orderBy('id', 'desc')
             ->first();
+        
+        $data['customer_history_contacts'] = DB::table('customer_history_contacts')
+            ->where('customer_shop_id', $data['customer_shops']->id)
+            ->orderBy('id', 'desc')
+            ->get();
 
         return view('customer.customer_detail', $data);
     }
@@ -489,13 +491,26 @@ class CustomerController extends Controller
 
     public function customer_new_result_get($id)
     {
-        $dataResult = Customer::find($id);
+        // $dataResult = Customer::find($id);
+        // $data = array(
+        //     'dataResult'     => $dataResult,
+        // );
+        // echo json_encode($data);
 
+        $cus_shops = DB::table('customer_shops')->where('id', $id)->first();
+        $cus_his = DB::table('customer_history_contacts')
+        ->where('customer_shop_id', $cus_shops->id)
+        ->whereDate('cust_history_saleplan_date', $cus_shops->shop_saleplan_date)
+        ->orderby('id', 'desc')
+        ->first();
 
-        $data = array(
-            'dataResult'     => $dataResult,
-        );
-        echo json_encode($data);
+        if(!is_null($cus_his)){
+            return response()->json([
+                'status' => 200,
+                'dataResult' => $cus_his,
+            ]);
+        }
+
     }
 
     public function customer_new_Result(Request $request)
@@ -511,6 +526,7 @@ class CustomerController extends Controller
                 $data2->updated_by   = Auth::user()->id;
                 $data2->updated_at   = Carbon::now();
                 $data2->update();
+<<<<<<< HEAD
                 //return back();
 
                 $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->where('id', $data2->monthly_plan_id)->first();
@@ -528,12 +544,56 @@ class CustomerController extends Controller
                     'status' => 200,
                     'message' => 'บันทึกข้อมูลสำเร็จ',
                 ]);
+=======
+                // return back();
+
+                if($request->cust_history_id != "" ){ // update
+
+                    DB::table('customer_history_contacts')
+                    ->where('id', $request->cust_history_id)
+                    ->update([
+                        'employee_id' => Auth::user()->id,
+                        'cust_history_detail' => $request->shop_result_detail,
+                        'cust_history_result_status' => $request->shop_result_status,
+                        'updated_by' => Auth::user()->id,
+                        'updated_at' => Carbon::now(),
+                    ]);
+                    DB::commit();
+                    return response()->json([
+                        'status' => 200,
+                        'message' => 'บันทึกข้อมูลสำเร็จ',
+                    ]);
+
+                }else{
+
+                    $cus_shops = DB::table('customer_shops')->where('id', $request->cust_id)->first();
+
+                    DB::table('customer_history_contacts')
+                        ->insert([
+                            'customer_shop_id' => $request->cust_id,
+                            'cust_history_saleplan_date' => $cus_shops->shop_saleplan_date,
+                            'employee_id' => Auth::user()->id,
+                            'cust_history_detail' => $request->shop_result_detail,
+                            'cust_history_result_status' => $request->shop_result_status,
+                            'created_by' => Auth::user()->id,
+                            'created_at' => Carbon::now(),
+                        ]);
+
+                    DB::commit();
+                    return response()->json([
+                        'status' => 200,
+                        'message' => 'บันทึกข้อมูลสำเร็จ',
+                    ]);
+                }
+>>>>>>> f87575ee5fdfe9fb47b3f42a3bdc92e3e024d1d3
 
             }else{
+
                 return response()->json([
                     'status' => 404,
                     'message' => 'กรุณาเลือกสรุปผลลัพธ์ด้วยค่ะ',
                 ]);
+                
             }
 
         } catch (\Exception $e) {

@@ -102,12 +102,10 @@
                                             <td>{{ $customer_contact_phone }}</td>
                                             <td>
                                                 <div class="button-list">
-                                                    <!-- <button class="btn btn-icon btn-warning mr-10" onclick="edit_modal({{ $shop->id }})" data-toggle="modal" data-target="#editCustomer">
-                                                        <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-create"></i></h4></button> -->
                                                     <button class="btn btn-icon btn-warning mr-10 btn_editshop" value="{{ $shop->id }}">
                                                         <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-create"></i></h4></button>
-                                                    <button class="btn btn-icon btn-info mr-10">
-                                                        <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-calendar"></i></h4></button>
+                                                    <!-- <button class="btn btn-icon btn-info mr-10">
+                                                        <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-calendar"></i></h4></button> -->
                                                     <a href="{{ url('/customer/detail', $shop->id) }}" class="btn btn-icon btn-success mr-10">
                                                         <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></a>
                                                 </div>

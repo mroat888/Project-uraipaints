@@ -948,6 +948,7 @@
                     <form id="from_customer_new_result">
                         @csrf
                         <input type="hidden" name="cust_id" id="get_cust_new_id">
+                        <input type="hidden" name="cust_history_id" id="get_cust_his_id">
                         <div class="form-group">
                             <label for="username">รายละเอียด</label>
                             <textarea class="form-control" id="get_cust_detail" cols="30" rows="5" placeholder="" name="shop_result_detail"
@@ -1193,16 +1194,22 @@
 <script>
     //Edit
     function customer_new_result(id) {
-        // $("#get_cust_new_id").val(id);
+        $('#get_cust_new_id').val(id);
+        $('#get_cust_his_id').val('');
+        $('#get_cust_detail').val('');
+        $('#get_cust_result').val('');
         $.ajax({
             type: "GET",
             url: "{!! url('customer_new_result_get/"+id+"') !!}",
             dataType: "JSON",
             async: false,
             success: function(data) {
-                $('#get_cust_new_id').val(data.dataResult.id);
-                $('#get_cust_detail').val(data.dataResult.shop_result_detail);
-                $('#get_cust_result').val(data.dataResult.shop_result_status);
+                console.log(data.dataResult);
+
+                $('#get_cust_new_id').val(id);
+                $('#get_cust_his_id').val(data.dataResult.id);
+                $('#get_cust_detail').val(data.dataResult.cust_history_detail);
+                $('#get_cust_result').val(data.dataResult.cust_history_result_status);
 
                 $('#ModalCustResult').modal('toggle');
             }
