@@ -104,7 +104,7 @@ Route::get('delete_note/{id}', 'NoteController@destroy');
 Route::get('news', 'NewsController@frontend_news');
 Route::get('promotions', 'PromotionController@frontend_promotion');
 
-Route::get('/reportSale/reportSaleplan', function () { return view('reports.report_saleplan'); });
+Route::get('/reportSale/reportSaleplan', 'ReportController@reportSaleplan');
 Route::get('/reportSale/reportVisitCustomerGoal', function () { return view('reports.report_visitcustomer_goal'); });
 Route::get('/reportSale/reportVisitCustomer', function () { return view('reports.report_visitcustomer'); });
 

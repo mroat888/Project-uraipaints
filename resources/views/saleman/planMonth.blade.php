@@ -58,7 +58,13 @@
                                                         <td>{{ $value->sale_plan_amount }}</td>
                                                         <td>{{ $value->cust_new_amount }}</td>
                                                         <td>{{ $value->total_plan }}</td>
-                                                        <td>{{ $value->outstanding_plan }}</td>
+                                                        <td>
+                                                            @if ($value->outstanding_plan == 0)
+                                                                0
+                                                            @else
+                                                                {{ $value->outstanding_plan }}
+                                                            @endif
+                                                        </td>
                                                         <td>{{ $value->success_plan }}</td>
                                                         <td>{{ $value->cust_visits_amount }}</td>
                                                         <td>
@@ -547,7 +553,7 @@
                             <!-- <textarea class="form-control" cols="30" rows="5" id="get_comment" name="assign_comment"
                                 type="text" readonly></textarea> -->
                             <div id="div_comment">
-                                
+
                             </div>
                         </div>
                     </div>

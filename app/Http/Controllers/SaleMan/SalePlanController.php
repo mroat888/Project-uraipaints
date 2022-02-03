@@ -59,6 +59,8 @@ class SalePlanController extends Controller
             DB::table('monthly_plans')->where('id', $monthly_plan->id)
             ->update([
                 'sale_plan_amount' => $monthly_plan->sale_plan_amount+1,
+                'total_plan' => $monthly_plan->total_plan+1,
+                'outstanding_plan' => ($monthly_plan->total_plan + 1) - $monthly_plan->success_plan,
             ]);
 
             DB::commit();
@@ -81,7 +83,7 @@ class SalePlanController extends Controller
 
 
     public function edit($id)
-    { 
+    {
         $dataEdit = SalePlan::find($id);
         $dataEdit = SalePlan::join('customer_shops', 'sale_plans.customer_shop_id', '=', 'customer_shops.id')
             ->join('customer_contacts', 'customer_shops.id', '=', 'customer_contacts.customer_shop_id')
@@ -103,14 +105,14 @@ class SalePlanController extends Controller
             'dataEdit'     => $dataEdit,
         );
 
-        echo json_encode($data); 
+        echo json_encode($data);
     }
 
     public function edit_fetch(Request $request)
     {
         $saleplan = DB::table('sale_plans')->where('id', $request->id)->first();
 
-        // ------ API 
+        // ------ API
         $response = Http::withToken($request->api_token)->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers');
         $res_api = $response->json();
 
@@ -121,13 +123,13 @@ class SalePlanController extends Controller
                 $shop_phone     = $value['telephone'];
                 $shop_mobile    = $value['mobile'];
             }
-            $customer_api[$key] = 
+            $customer_api[$key] =
             [
                 'id' => $value['identify'],
-                'shop_name' => $value['title']." ".$value['name'],        
+                'shop_name' => $value['title']." ".$value['name'],
             ];
-        }       
-        // -----  END API 
+        }
+        // -----  END API
 
         return response()->json([
             'status' => 200,
@@ -160,7 +162,7 @@ class SalePlanController extends Controller
                 'status' => 200,
                 'message' => 'บันทึกข้อมูลสำเร็จ',
             ]);
-        
+
         } catch (\Exception $e) {
 
             DB::rollback();
@@ -171,7 +173,7 @@ class SalePlanController extends Controller
             ]);
 
         }
-        
+
     }
 
     public function destroy($id)
@@ -264,7 +266,7 @@ class SalePlanController extends Controller
                             'message' => 'กรุณาเปิดหรือรอ location ก่อนค่ะ',
                         ]);
                     }
-        
+
                 } catch (\Exception $e) {
                     DB::rollback();
                     // return back();
@@ -277,7 +279,7 @@ class SalePlanController extends Controller
             elseif ($chk_status->status_result == 1) {
 
                 DB::beginTransaction();
-                try {   
+                try {
 
                     if($request->lat != "" && $request->lon != ""){
 
@@ -299,7 +301,7 @@ class SalePlanController extends Controller
                             'status' => 200,
                             'message' => 'บันทึกข้อมูลสำเร็จ',
                         ]);
-                        
+
                     }else{
                         return response()->json([
                             'status' => 404,
@@ -350,18 +352,29 @@ class SalePlanController extends Controller
                 $data2->updated_at   = Carbon::now();
                 $data2->update();
                 // return back();
-                DB::commit();
+
+                $saleplan_month = SalePlan::find($request->saleplan_id);
+                $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->where('id', $saleplan_month->monthly_plan_id)->first();
+
+                DB::table('monthly_plans')->where('id', $monthly_plan->id)
+            ->update([
+                'success_plan' => $monthly_plan->success_plan + 1,
+                'outstanding_plan' => $monthly_plan->outstanding_plan-1,
+            ]);
+
+            DB::commit();
+
                 return response()->json([
                     'status' => 200,
                     'message' => 'บันทึกข้อมูลสำเร็จ',
                 ]);
 
             }else{
-                
+
                 return response()->json([
                     'status' => 404,
                     'message' => 'กรุณาเลือกสรุปผลลัพธ์ด้วยค่ะ',
-                ]); 
+                ]);
             }
 
         } catch (\Exception $e) {

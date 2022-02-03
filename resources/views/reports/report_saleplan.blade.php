@@ -49,7 +49,6 @@
                                             <th colspan="4" style="text-align:center;">Sale plan</th>
                                             <th colspan="2" style="text-align:center;">คิดเป็นเปอร์เซ็น (%)</th>
                                         </tr>
-
                                         <tr>
                                             <th>งาน</th>
                                             <th>สำเร็จ</th>
@@ -60,126 +59,22 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>มกราคม</td>
-                                            <td><span class="text-success">3</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-danger">2</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-success">80%</span> </td>
-                                            <td><span class="text-danger">20%</span> </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>กุมภาพันธ์</td>
-                                            <td><span class="text-success">3</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-danger">2</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-success">80%</span> </td>
-                                            <td><span class="text-danger">20%</span> </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td>มีนาคม</td>
-                                            <td><span class="text-success">3</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-danger">2</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-success">80%</span> </td>
-                                            <td><span class="text-danger">20%</span> </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">4</th>
-                                            <td>เมษายน</td>
-                                            <td><span class="text-success">3</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-danger">2</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-success">80%</span> </td>
-                                            <td><span class="text-danger">20%</span> </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">5</th>
-                                            <td>พฤษภาคม</td>
-                                            <td><span class="text-success">3</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-danger">2</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-success">80%</span> </td>
-                                            <td><span class="text-danger">20%</span> </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">6</th>
-                                            <td>มิถุนายน</td>
-                                            <td><span class="text-success">3</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-danger">2</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-success">80%</span> </td>
-                                            <td><span class="text-danger">20%</span> </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">7</th>
-                                            <td>กรกฎาคม</td>
-                                            <td><span class="text-success">3</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-danger">2</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-success">80%</span> </td>
-                                            <td><span class="text-danger">20%</span> </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">8</th>
-                                            <td>สิงหาคม</td>
-                                            <td><span class="text-success">3</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-danger">2</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-success">80%</span> </td>
-                                            <td><span class="text-danger">20%</span> </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">9</th>
-                                            <td>กันยายน</td>
-                                            <td><span class="text-success">3</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-danger">2</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-success">80%</span> </td>
-                                            <td><span class="text-danger">20%</span> </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">10</th>
-                                            <td>ตุลาคม</td>
-                                            <td><span class="text-success">3</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-danger">2</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-success">80%</span> </td>
-                                            <td><span class="text-danger">20%</span> </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">11</th>
-                                            <td>พฤศจิกายน</td>
-                                            <td><span class="text-success">3</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-danger">2</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-success">80%</span> </td>
-                                            <td><span class="text-danger">20%</span> </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">12</th>
-                                            <td>ธันวาคม</td>
-                                            <td><span class="text-success">3</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-danger">2</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-success">80%</span> </td>
-                                            <td><span class="text-danger">20%</span> </td>
-                                        </tr>
+                                        @foreach ($monthly_plan as $key => $month)
+                                            <?php $success = App\SalePlan::join('sale_plan_results', 'sale_plans.id', 'sale_plan_results.sale_plan_id')
+                                            ->where('sale_plans.monthly_plan_id', $month->id)->where('sale_plan_status', 2)->count();
+
+                                            ?>
+                                            <tr>
+                                                <th scope="row">{{ $key + 1 }}</th>
+                                                <td><?php echo thaidate('F', $month->month_date); ?></td>
+                                                <td><span class="text-success">3</span> </td>
+                                                <td><span class="text-success">1</span> </td>
+                                                <td><span class="text-danger">2</span> </td>
+                                                <td><span class="text-success">1</span> </td>
+                                                <td><span class="text-success">80%</span> </td>
+                                                <td><span class="text-danger">20%</span> </td>
+                                            </tr>
+                                        @endforeach
 
                                     </tbody>
                                     <tfoot style="font-weight: bold;">
