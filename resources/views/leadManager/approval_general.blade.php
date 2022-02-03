@@ -94,6 +94,7 @@
                                     <tbody>
                                         @foreach ($request_approval as $key => $value)
                                         <?php $chk =  App\Assignment::join('users', 'assignments.created_by', '=', 'users.id')
+                                        ->whereNotNull('assignments.assign_request_date')
                                         ->where('assignments.created_by', $value->created_by)->select('users.name', 'assignments.*')->first() ?>
                                         <tr>
                                             <td>

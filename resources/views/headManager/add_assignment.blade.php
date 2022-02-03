@@ -116,28 +116,6 @@
                             <label for="firstName">เรื่อง</label>
                             <input class="form-control" name="assign_title" placeholder="กรุณาใส่ชื่อเรื่อง" type="text">
                         </div>
-                        {{-- <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label for="firstName">ค้นหาชื่อร้าน</label>
-                                <input class="form-control" id="searchShop" type="text">
-                            </div>
-                        </div>
-                        <input type="hidden" name="shop_id" id="get_id">
-                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label for="firstName">ผู้ติดต่อ</label>
-                                <input class="form-control" id="get_contact_name" type="text" readonly>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label for="firstName">เบอร์โทรศัพท์</label>
-                                <input class="form-control" id="get_phone" type="text" readonly>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="username">ที่อยู่ร้าน</label>
-                            <textarea class="form-control" id="get_address" cols="30" rows="5" placeholder="" value=""
-                                type="text" readonly> </textarea>
-                        </div> --}}
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label for="username">รายละเอียด</label>
@@ -150,30 +128,7 @@
                                 <label for="firstName">วันที่</label>
                                 <input class="form-control" type="date" name="date" />
                             </div>
-                            {{-- <div class="form-group col-md-6">
-                                <label for="username">วัตถุประสงค์</label>
-                                <select class="form-control custom-select" name="objective">
-                                    <option selected>Select</option>
-                                    <option value="1">นำเสนอสินค้าใหม่</option>
-                                    <option value="2">เพิ่มผลิตภัณฑ์ให้ร้านค้า</option>
-                                    <option value="3">เปิดลูกค้าใหม่</option>
-                                    <option value="3">พรีเซ้นต์คุณสมบัติเทียบกับแบรนด์อื่น</option>
-                                    <option value="3">แนะนำวิธีการใช้งาน-การเก็บรักษา</option>
-                                </select>
-                            </div> --}}
                         </div>
-                        {{-- <div class="row">
-                            <div class="col-md-12 form-group">
-                                <label for="firstName">รายการนำเสนอ</label>
-                                <select class="select2 select2-multiple form-control" multiple="multiple"
-                                    data-placeholder="Choose" name="product">
-                                    <optgroup label="เลือกข้อมูล">
-                                        <option value="1">สีรองพื้นปูนกันชื้น</option>
-                                        <option value="2">4 in 1</option>
-                                    </optgroup>
-                                </select>
-                            </div>
-                        </div> --}}
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ไฟล์เอกสาร</label>
@@ -218,28 +173,6 @@
                             <label for="firstName">เรื่อง</label>
                             <input class="form-control" name="assign_title" id="get_title" type="text">
                         </div>
-                        {{-- <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label for="firstName">ค้นหาชื่อร้าน</label>
-                                <input class="form-control" id="searchShop" type="text">
-                            </div>
-                        </div>
-                        <input type="hidden" name="shop_id" id="get_id">
-                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label for="firstName">ผู้ติดต่อ</label>
-                                <input class="form-control" id="get_contact_name" type="text" readonly>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label for="firstName">เบอร์โทรศัพท์</label>
-                                <input class="form-control" id="get_phone" type="text" readonly>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="username">ที่อยู่ร้าน</label>
-                            <textarea class="form-control" id="get_address" cols="30" rows="5" placeholder="" value=""
-                                type="text" readonly> </textarea>
-                        </div> --}}
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label for="username">รายละเอียด</label>
@@ -252,30 +185,7 @@
                                 <label for="firstName">วันที่</label>
                                 <input class="form-control" type="date" name="date" id="get_date"/>
                             </div>
-                            {{-- <div class="form-group col-md-6">
-                                <label for="username">วัตถุประสงค์</label>
-                                <select class="form-control custom-select" name="objective">
-                                    <option selected>Select</option>
-                                    <option value="1">นำเสนอสินค้าใหม่</option>
-                                    <option value="2">เพิ่มผลิตภัณฑ์ให้ร้านค้า</option>
-                                    <option value="3">เปิดลูกค้าใหม่</option>
-                                    <option value="3">พรีเซ้นต์คุณสมบัติเทียบกับแบรนด์อื่น</option>
-                                    <option value="3">แนะนำวิธีการใช้งาน-การเก็บรักษา</option>
-                                </select>
-                            </div> --}}
                         </div>
-                        {{-- <div class="row">
-                            <div class="col-md-12 form-group">
-                                <label for="firstName">รายการนำเสนอ</label>
-                                <select class="select2 select2-multiple form-control" multiple="multiple"
-                                    data-placeholder="Choose" name="product">
-                                    <optgroup label="เลือกข้อมูล">
-                                        <option value="1">สีรองพื้นปูนกันชื้น</option>
-                                        <option value="2">4 in 1</option>
-                                    </optgroup>
-                                </select>
-                            </div>
-                        </div> --}}
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ไฟล์เอกสาร</label>
@@ -300,37 +210,6 @@
             </div>
         </div>
     </div>
-
-     <!-- Modal Result -->
-{{-- <div class="modal fade" id="ModalResult" tabindex="-1" role="dialog" aria-labelledby="ModalResult" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">สรุปผลงานที่ได้รับมอบหมาย</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                        <input type="hidden" name="assign_id" id="get_assign_id">
-                        <div class="form-group">
-                            <label for="username">รายละเอียด</label>
-                            <textarea class="form-control" id="get_result_detail" cols="30" rows="5" placeholder="" name="assign_detail"
-                                type="text" readonly> </textarea>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-6">
-                                <label for="username">สรุปผลลัพธ์</label>
-                                <input type="text" class="form-control" name="" id="get_result" readonly>
-                            </div>
-                        </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
-                </div>
-            </div>
-        </div>
-    </div> --}}
 
     {{-- <script>
         //Edit
