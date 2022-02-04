@@ -22,7 +22,7 @@ class CustomerController extends Controller
     {
         $data['customer_shop'] = DB::table('customer_shops')
             ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
-            ->where('customer_shops.shop_status', 1) // 0 = ลูกค้าใหม่ , 1 = ทะเบียนลูกค้า , 2 = ลบ 
+            ->where('customer_shops.shop_status', 1) // 0 = ลูกค้าใหม่ , 1 = ทะเบียนลูกค้า , 2 = ลบ
             ->where('customer_shops.created_by', Auth::user()->id)
             ->select(
                 'province.PROVINCE_NAME',
@@ -348,7 +348,7 @@ class CustomerController extends Controller
             ->where('customer_shop_id', $data['customer_shops']->id)
             ->orderBy('id', 'desc')
             ->first();
-        
+
         $data['customer_history_contacts'] = DB::table('customer_history_contacts')
             ->where('customer_shop_id', $data['customer_shops']->id)
             ->orderBy('id', 'desc')
@@ -526,26 +526,6 @@ class CustomerController extends Controller
                 $data2->updated_by   = Auth::user()->id;
                 $data2->updated_at   = Carbon::now();
                 $data2->update();
-<<<<<<< HEAD
-                //return back();
-
-                $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->where('id', $data2->monthly_plan_id)->first();
-
-
-                DB::table('monthly_plans')->where('id', $monthly_plan->id)
-            ->update([
-                'success_plan' => $monthly_plan->success_plan + 1,
-                'outstanding_plan' => $monthly_plan->outstanding_plan-1,
-            ]);
-
-                DB::commit();
-
-                return response()->json([
-                    'status' => 200,
-                    'message' => 'บันทึกข้อมูลสำเร็จ',
-                ]);
-=======
-                // return back();
 
                 if($request->cust_history_id != "" ){ // update
 
@@ -585,7 +565,6 @@ class CustomerController extends Controller
                         'message' => 'บันทึกข้อมูลสำเร็จ',
                     ]);
                 }
->>>>>>> f87575ee5fdfe9fb47b3f42a3bdc92e3e024d1d3
 
             }else{
 
@@ -593,7 +572,7 @@ class CustomerController extends Controller
                     'status' => 404,
                     'message' => 'กรุณาเลือกสรุปผลลัพธ์ด้วยค่ะ',
                 ]);
-                
+
             }
 
         } catch (\Exception $e) {
