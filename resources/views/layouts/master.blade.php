@@ -313,6 +313,12 @@ License: You must have a valid license purchased only from themeforest to legall
                                 <li class="nav-item">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
+                                            <a class="nav-link" href="{{ url('customer-api') }}">
+                                                <i class="ion ion-md-people" style="color: #044067;"></i>
+                                                <span class="nav-link-text">ทะเบียนลูกค้า API</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
                                             <a class="nav-link" href="{{ url('customer') }}">
                                                 <i class="ion ion-md-people" style="color: #044067;"></i>
                                                 <span class="nav-link-text">ทะเบียนลูกค้า</span>
@@ -397,7 +403,7 @@ License: You must have a valid license purchased only from themeforest to legall
                                             <a class="nav-link"
                                                 href="{{ url('/reportSale/reportVisitCustomerGoal') }}">
                                                 <i class="ion ion-md-stats"
-                                                    style="color: #044067;"></i>รายงานเข้าพบลูกค้าเป้าหมาย</a>
+                                                    style="color: #044067;"></i>รายงานเข้าพบลูกค้าใหม่</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link"
