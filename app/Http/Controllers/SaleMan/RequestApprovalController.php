@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\SaleMan;
 
+use App\Assignment;
 use App\AssignmentComment;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -27,7 +28,7 @@ class RequestApprovalController extends Controller
         // ->select('assignments.*', 'assignments_comments.assign_id')
         // ->orderBy('assignments.assign_request_date', 'asc')->get();
         // return view('saleman.requestApproval', compact('list_approval'));
-        
+
     }
 
     public function store(Request $request)
@@ -95,9 +96,11 @@ class RequestApprovalController extends Controller
         return back();
     }
 
+
     public function view_comment($id)
     {
         $request_comment = AssignmentComment::where('assign_id', $id)->get();
+        $dataResult = Assignment::where('id', $id)->first();
 
         $comment = array();
         foreach ($request_comment as $key => $value) {
@@ -108,8 +111,21 @@ class RequestApprovalController extends Controller
                 'assign_comment_detail' => $value->assign_comment_detail,
                 'user_comment' => $users->name,
                 'created_at' => $date_comment,
+                'assign_detail' => $dataResult->assign_detail,
+                'assign_title' => $dataResult->assign_title,
+                'assign_work_date' => $dataResult->assign_work_date,
             ];
         }
+
+        // $dataResult = Assignment::where('id', $id)->first();
+        // $emp_approve = DB::table('users')
+        // ->where('id', $dataResult->assign_approve_id)
+        // ->first();
+        // $data = array(
+        //     'dataResult'     => $dataResult,
+        //     'emp_approve'    => $emp_approve,
+        //     'comment'        => $comment,
+        // );
 
         echo json_encode($comment);
     }

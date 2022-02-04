@@ -250,30 +250,6 @@
         </div>
     </div>
 
-    <!-- Modal Comment -->
-    {{-- <div class="modal fade" id="ApprovalComment" tabindex="-1" role="dialog" aria-labelledby="ApprovalComment" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">ความคิดเห็น</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="username">รายละเอียดความคิดเห็น</label>
-                            <textarea class="form-control" cols="30" rows="5" id="get_comment" name="assign_comment"
-                                type="text" readonly></textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
-                    </div>
-            </div>
-        </div>
-    </div> --}}
-
     <div class="modal fade" id="ApprovalComment" tabindex="-1" role="dialog" aria-labelledby="ApprovalComment" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -284,10 +260,23 @@
                     </button>
                 </div>
                     <div class="modal-body">
+
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 id="header_title" class="card-title"></h5>
+                                {{-- <div class="my-3"><span>ผู้คอมเม้นท์ : </span><span id="get_assign_approve_id"></span></div> --}}
+                                <div class="my-3"><span>วันที่ปฎิบัติ : </span><span id="get_assign_work_date"></span></div>
+
+                                <div class="my-3">
+                                    <p>รายละเอียด : </p>
+                                    <p  id="assign_detail" class="card-text"></p>
+                                </div>
+                                {{-- <div class="my-3" id="img_show"></div> --}}
+                            </div>
+                        </div>
+
                         <div class="form-group">
-                            <!-- <label for="username">รายละเอียดความคิดเห็น</label> -->
-                            <!-- <textarea class="form-control" cols="30" rows="5" id="get_comment" name="assign_comment"
-                                type="text" readonly></textarea> -->
+
                             <div id="div_comment">
 
                             </div>
@@ -361,23 +350,6 @@
         }
     </script>
 
-{{-- <script>
-    //Edit
-    function approval_comment(id) {
-        $.ajax({
-            type: "GET",
-            url: "{!! url('view_comment/"+id+"') !!}",
-            dataType: "JSON",
-            async: false,
-            success: function(data) {
-                $('#get_comment_id').val(data.comment.id);
-                $('#get_comment').val(data.comment.assign_comment_detail);
-
-                $('#ApprovalComment').modal('toggle');
-            }
-        });
-    }
-</script> --}}
 
 <script>
     //Edit
@@ -390,13 +362,12 @@
             success: function(data) {
                 $('#div_comment').children().remove().end();
                 console.log(data);
-                // $('#get_comment_id').val(data.comment.id);
-                // $('#get_comment').val(data.comment.saleplan_comment_detail);
 
-                // $.each(data.comment, function(key, value){
-                //     $('#div_comment').append('<div class="alert alert-primary py-20" role="alert">'+value.saleplan_comment_detail+'</div>');
-                // });
                 $.each(data, function(key, value){
+                    $('#assign_detail').text(data[key].assign_detail);
+                    $('#header_title').text(data[key].assign_title);
+                    $('#get_assign_work_date').text(data[key].assign_work_date);
+                    $('#get_assign_approve_id').text(data[key].user_comment);
                     $('#div_comment').append('<div>Comment by: '+data[key].user_comment+' Date: '+data[key].created_at+'</div>');
                     $('#div_comment').append('<div class="alert alert-primary py-20" role="alert">'+data[key].assign_comment_detail+'</div>');
                 });
