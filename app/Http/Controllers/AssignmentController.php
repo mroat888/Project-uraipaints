@@ -40,6 +40,7 @@ class AssignmentController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request);
         DB::beginTransaction();
         try {
 
@@ -55,7 +56,7 @@ class AssignmentController extends Controller
             DB::table('assignments')
             ->insert([
                 'assign_work_date' => $request->date,
-                'assign_request_date' => Carbon::now(), // วันขอนุมัติ
+                // 'assign_request_date' => Carbon::now(), // วันขอนุมัติ
                 'assign_approve_date' => Carbon::now(), // วันที่อนุมัติ
                 'assign_title' => $request->assign_title,
                 'assign_detail' => $request->assign_detail,
