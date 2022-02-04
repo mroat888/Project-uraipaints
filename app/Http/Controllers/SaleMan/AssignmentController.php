@@ -8,6 +8,7 @@ use App\Assignment;
 use App\Customer;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AssignmentController extends Controller
 {
@@ -25,8 +26,12 @@ class AssignmentController extends Controller
     public function assignment_result_get($id)
     {
         $dataResult = Assignment::where('id', $id)->first();
+        $emp_approve = DB::table('users')
+        ->where('id', $dataResult->assign_approve_id)
+        ->first();
         $data = array(
             'dataResult'     => $dataResult,
+            'emp_approve'    => $emp_approve,
         );
         echo json_encode($data);
 

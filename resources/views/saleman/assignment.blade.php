@@ -65,7 +65,7 @@
                                     </div>
                                     <div class="table-responsive col-md-12">
                                         <table id="datable_1" class="table table-hover">
-                                        <thead align="center">
+                                        <thead style="text-align:center;">
                                             <tr>
                                                 <th>#</th>
                                                 <th>เรื่อง</th>
@@ -75,7 +75,7 @@
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
-                                        <tbody align="center">
+                                        <tbody style="text-align:center;">
                                             @foreach ($assignments as $key => $value)
                                         <tr>
                                             <td>{{$key + 1}}</td>
@@ -123,14 +123,24 @@
                     </button>
                 </div>
                 <div class="modal-body">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 id="header_title" class="card-title"></h5>
+                            <div class="my-3"><span>ผู้สั่งงาน : </span><span id="get_assign_approve_id"></span></div>
+                            <div class="my-3"><span>วันที่ปฎิบัติ : </span><span id="get_assign_work_date"></span></div>
+                            
+                            <div class="my-3">
+                                <p>รายละเอียด : </p>
+                                <p  id="get_detail" class="card-text"></p>
+                            </div>
+                            <div class="my-3" id="img_show"></div>
+                        </div>
+                    </div>
+    
                     <form action="{{ url('assignment_Result') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="assign_id" id="get_assign_id">
-                        {{-- <div class="form-group">
-                            <label for="username">รายละเอียด</label>
-                            <textarea class="form-control" id="get_detail" cols="30" rows="5" placeholder="" name="assign_detail"
-                                type="text"> </textarea>
-                        </div> --}}
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="username">สรุปผลลัพธ์</label>
@@ -161,11 +171,28 @@
                 dataType: "JSON",
                 async: false,
                 success: function(data) {
+                    console.log(data);
+                    $('#img_show').children().remove().end();
+                    
                     $('#get_assign_id').val(data.dataResult.id);
-                    $('#get_detail').val(data.dataResult.assign_result_detail);
+                    $('#get_detail').text(data.dataResult.assign_detail);
+                    $('#header_title').text(data.dataResult.assign_title);
+                    $('#get_assign_work_date').text(data.dataResult.assign_work_date);
+                    $('#get_assign_approve_id').text(data.emp_approve.name);
+
+                    let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataResult.assign_fileupload;
+                    if(data.dataResult.assign_fileupload != ""){
+                        ext = data.dataResult.assign_fileupload.split('.').pop().toLowerCase();
+                        console.log(img_name);
+                        if(ext == "pdf"){
+                            $('#img_show').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');
+                        }else{
+                            $('#img_show').append('<img src = "'+img_name+'" style="max-width:100%;">');
+                        }  
+                    }
+
                     if (data.dataResult.assign_result_status != 0) {
                         $('#get_result').val(data.dataResult.assign_result_status);
-
                     }
 
                     $('#ModalResult').modal('toggle');

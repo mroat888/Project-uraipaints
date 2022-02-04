@@ -133,7 +133,7 @@
                             <div class="col-md-12">
                                 <div class="row">
                                     <div class="col-md-6 col-lg-3">
-                                        <p class="detail_listcus"><i class="ion ion-md-calendar"></i><span> วันที่</span> : {{ $cust_his->cust_history_saleplan_date }}</p>
+                                        <p class="detail_listcus"><i class="ion ion-md-calendar"></i><span> เดือน</span> : {{ thaidate('F Y', $cust_his->cust_history_saleplan_date) }}</p>
                                     </div>
                                     <div class="col-md-6 col-lg-9">
                                         <p class="detail_listcus"><i class="ion ion-md-person"></i>
@@ -152,7 +152,7 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="desc_cusnote">
-                                            {{ $cust_his->cust_history_detail}}
+                                            {{ $cust_his->cust_history_detail }}
                                         </div>
                                     </div>
                                 </div>
