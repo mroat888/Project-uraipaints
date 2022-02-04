@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\RequestApproval;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class RequestApprovalController extends Controller
 {
@@ -96,10 +97,20 @@ class RequestApprovalController extends Controller
 
     public function view_comment($id)
     {
-        $comment = AssignmentComment::where('assign_id', $id)->first();
-        $data = array(
-            'comment'     => $comment,
-        );
-        echo json_encode($data);
+        $request_comment = AssignmentComment::where('assign_id', $id)->get();
+
+        $comment = array();
+        foreach ($request_comment as $key => $value) {
+            $users = DB::table('users')->where('id', $value['created_by'])->first();
+            $date_comment = substr($value->created_at,0,10);
+            $comment[$key] =
+            [
+                'assign_comment_detail' => $value->assign_comment_detail,
+                'user_comment' => $users->name,
+                'created_at' => $date_comment,
+            ];
+        }
+
+        echo json_encode($comment);
     }
 }

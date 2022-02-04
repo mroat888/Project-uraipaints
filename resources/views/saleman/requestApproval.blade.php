@@ -251,7 +251,7 @@
     </div>
 
     <!-- Modal Comment -->
-    <div class="modal fade" id="ApprovalComment" tabindex="-1" role="dialog" aria-labelledby="ApprovalComment" aria-hidden="true">
+    {{-- <div class="modal fade" id="ApprovalComment" tabindex="-1" role="dialog" aria-labelledby="ApprovalComment" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -266,7 +266,32 @@
                             <textarea class="form-control" cols="30" rows="5" id="get_comment" name="assign_comment"
                                 type="text" readonly></textarea>
                         </div>
-                        {{-- <input type="hidden" name="id" id="get_id"> --}}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                    </div>
+            </div>
+        </div>
+    </div> --}}
+
+    <div class="modal fade" id="ApprovalComment" tabindex="-1" role="dialog" aria-labelledby="ApprovalComment" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">ความคิดเห็น</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <!-- <label for="username">รายละเอียดความคิดเห็น</label> -->
+                            <!-- <textarea class="form-control" cols="30" rows="5" id="get_comment" name="assign_comment"
+                                type="text" readonly></textarea> -->
+                            <div id="div_comment">
+
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
@@ -336,7 +361,7 @@
         }
     </script>
 
-<script>
+{{-- <script>
     //Edit
     function approval_comment(id) {
         $.ajax({
@@ -347,6 +372,34 @@
             success: function(data) {
                 $('#get_comment_id').val(data.comment.id);
                 $('#get_comment').val(data.comment.assign_comment_detail);
+
+                $('#ApprovalComment').modal('toggle');
+            }
+        });
+    }
+</script> --}}
+
+<script>
+    //Edit
+    function approval_comment(id) {
+        $.ajax({
+            type: "GET",
+            url: "{!! url('view_comment/"+id+"') !!}",
+            dataType: "JSON",
+            async: false,
+            success: function(data) {
+                $('#div_comment').children().remove().end();
+                console.log(data);
+                // $('#get_comment_id').val(data.comment.id);
+                // $('#get_comment').val(data.comment.saleplan_comment_detail);
+
+                // $.each(data.comment, function(key, value){
+                //     $('#div_comment').append('<div class="alert alert-primary py-20" role="alert">'+value.saleplan_comment_detail+'</div>');
+                // });
+                $.each(data, function(key, value){
+                    $('#div_comment').append('<div>Comment by: '+data[key].user_comment+' Date: '+data[key].created_at+'</div>');
+                    $('#div_comment').append('<div class="alert alert-primary py-20" role="alert">'+data[key].assign_comment_detail+'</div>');
+                });
 
                 $('#ApprovalComment').modal('toggle');
             }
