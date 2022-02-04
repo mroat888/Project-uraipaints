@@ -329,8 +329,8 @@ License: You must have a valid license purchased only from themeforest to legall
                                 <i class="ion ion-md-document"></i>
                                 <span class="nav-link-text">บันทึกโน้ต</span>
                                 <?php
-                                $count_note = App\Note::where('note_date', Carbon\Carbon::now()->format('Y-m-d'))
-                                ->where('status_pin', 1)->where('employee_id', Auth::user()->id)->count();
+                                $count_note = App\Note::where('note_date','>=', Carbon\Carbon::now()->format('Y-m-d'))
+                                ->where('employee_id', Auth::user()->id)->count();
                                  ?>
                                 <span class="badge badge-danger badge-pill">{{$count_note}}</span>
                             </a>

@@ -77,7 +77,7 @@ class CustomerController extends Controller
             }
 
             $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->first();
-            
+
             DB::table('customer_shops')
             ->insert([
                 'monthly_plan_id'     => $monthly_plan->id,
@@ -98,6 +98,8 @@ class CustomerController extends Controller
             DB::table('monthly_plans')->where('id', $monthly_plan->id)
             ->update([
                 'cust_new_amount' => $monthly_plan->cust_new_amount+1,
+                'total_plan' => $monthly_plan->total_plan+1,
+                'outstanding_plan' => ($monthly_plan->total_plan + 1) - $monthly_plan->success_plan,
             ]);
 
             $sql_shops = DB::table('customer_shops')->orderBy('customer_shops.id', 'desc')->first();
@@ -130,7 +132,7 @@ class CustomerController extends Controller
             ]);
         }
 
-        
+
     }
 
     public function edit($id)
@@ -473,8 +475,8 @@ class CustomerController extends Controller
                 return response()->json([
                     'status' => 404,
                     'message' => 'กรุณาเปิดหรือรอ location ก่อนค่ะ',
-                ]); 
-            }            
+                ]);
+            }
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -524,6 +526,25 @@ class CustomerController extends Controller
                 $data2->updated_by   = Auth::user()->id;
                 $data2->updated_at   = Carbon::now();
                 $data2->update();
+<<<<<<< HEAD
+                //return back();
+
+                $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->where('id', $data2->monthly_plan_id)->first();
+
+
+                DB::table('monthly_plans')->where('id', $monthly_plan->id)
+            ->update([
+                'success_plan' => $monthly_plan->success_plan + 1,
+                'outstanding_plan' => $monthly_plan->outstanding_plan-1,
+            ]);
+
+                DB::commit();
+
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'บันทึกข้อมูลสำเร็จ',
+                ]);
+=======
                 // return back();
 
                 if($request->cust_history_id != "" ){ // update
@@ -564,6 +585,7 @@ class CustomerController extends Controller
                         'message' => 'บันทึกข้อมูลสำเร็จ',
                     ]);
                 }
+>>>>>>> f87575ee5fdfe9fb47b3f42a3bdc92e3e024d1d3
 
             }else{
 
