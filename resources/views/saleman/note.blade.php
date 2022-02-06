@@ -77,7 +77,12 @@
                                             @foreach ($data as $key => $value)
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
-                                                    <td>{{ $value->note_title }}</td>
+                                                    <td>{{ $value->note_title }}
+                                                        @if ($value->status_pin == 1)
+                                                        {{-- <span class="badge badge-danger badge-indicator" style="width: 10px; height: 10px;"></span> --}}
+                                                        <i data-feather="feather" style="color: tomato;"></i>
+                                                        @endif
+                                                    </td>
                                                     <td>{{ $value->note_tags }}</td>
                                                     <?php $date = new Carbon\Carbon($value->note_date); ?>
                                                     <td>{{ $date->format('d/m/Y') }}</td>

@@ -22,7 +22,7 @@ class CustomerController extends Controller
     {
         $data['customer_shop'] = DB::table('customer_shops')
             ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
-            ->where('customer_shops.shop_status', 1) // 0 = ลูกค้าใหม่ , 1 = ทะเบียนลูกค้า , 2 = ลบ 
+            ->where('customer_shops.shop_status', 1) // 0 = ลูกค้าใหม่ , 1 = ทะเบียนลูกค้า , 2 = ลบ
             ->where('customer_shops.created_by', Auth::user()->id)
             ->select(
                 'province.PROVINCE_NAME',
@@ -348,7 +348,7 @@ class CustomerController extends Controller
             ->where('customer_shop_id', $data['customer_shops']->id)
             ->orderBy('id', 'desc')
             ->first();
-        
+
         $data['customer_history_contacts'] = DB::table('customer_history_contacts')
             ->where('customer_shop_id', $data['customer_shops']->id)
             ->orderBy('id', 'desc')
@@ -572,7 +572,7 @@ class CustomerController extends Controller
                     'status' => 404,
                     'message' => 'กรุณาเลือกสรุปผลลัพธ์ด้วยค่ะ',
                 ]);
-                
+
             }
 
         } catch (\Exception $e) {
