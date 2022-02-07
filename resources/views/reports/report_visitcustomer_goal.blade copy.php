@@ -6,7 +6,7 @@
 <nav class="hk-breadcrumb" aria-label="breadcrumb">
     <ol class="breadcrumb breadcrumb-light bg-transparent">
         <li class="breadcrumb-item"><a href="#">Page</a></li>
-        <li class="breadcrumb-item active" aria-current="page">รายงานเข้าพบลูกค้า</li>
+        <li class="breadcrumb-item active" aria-current="page">รายงานเข้าพบลูกค้าเป้าหมาย</li>
     </ol>
 </nav>
 <!-- /Breadcrumb -->
@@ -16,7 +16,7 @@
         <!-- Title -->
         <div class="hk-pg-header mb-10">
             <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-document"></i></span>รายงานเข้าพบลูกค้า</h4>
+                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-document"></i></span>รายงานเข้าพบลูกค้าเป้าหมาย</h4>
             </div>
             <div class="d-flex">
                 <button class="btn btn-primary btn-sm"><i data-feather="printer"></i> พิมพ์</button>
@@ -30,7 +30,7 @@
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
                         <div class="col-sm-12 col-md-6">
-                            <h5 class="hk-sec-title">ตารางรายงานเข้าพบลูกค้า<span style="color: rgb(128, 19, 0);">(ประจำปี 2564)</span></h5>
+                            <h5 class="hk-sec-title">ตารางรายงานเข้าพบลูกค้าเป้าหมาย<span style="color: rgb(128, 19, 0);">(ประจำปี 2564)</span></h5>
                         </div>
                         <div class="col-sm-12 col-md-6">
                         </div>
@@ -44,12 +44,12 @@
                                         <tr>
                                             <th rowspan="2">#</th>
                                             <th rowspan="2">เดือน</th>
-                                            <th colspan="4" style="text-align:center;">เข้าพบลูกค้า</th>
+                                            <th colspan="4" style="text-align:center;">เข้าพบลูกค้าเป้าหมาย</th>
                                             <th colspan="2" style="text-align:center;">คิดเป็นเปอร์เซ็น (%)</th>
                                         </tr>
 
                                         <tr>
-                                            <th>ลูกค้าตามแผน</th>
+                                            <th>ลูกค้าเป้าหมายตามแผน</th>
                                             <th>สำเร็จ</th>
                                             <th>ไม่สำเร็จ</th>
                                             <th>ลูกค้าใหม่</th>

@@ -88,17 +88,17 @@
                                                 $total_cus_visit_failed =  $total_cus_visit_failed + $report[$i]['cus_visit_failed'];
                                             } 
                                     ?>
-                                            <tr>
-                                                <th scope="row"><?php echo $i; ?></th>
-                                                <td><?php echo $month_array[$i-1]; ?></td>
-                                                <td><span class="text-success"><?php echo $report[$i]['cus_is_plan']; ?></span> </td>
-                                                <td><span class="text-success"><?php echo $report[$i]['cus_isnot_plan']; ?></span> </td>
-                                                <td><span class="text-danger"><?php echo $report[$i]['cus_visit_in_process']; ?></span> </td>
-                                                <td><span class="text-success"><?php echo $report[$i]['cus_visit_success']; ?></span> </td>
-                                                <td><span class="text-danger"><?php echo $report[$i]['cus_visit_failed']; ?></span> </td>
-                                                <td><span class="text-success"><?php echo $report[$i]['percent_success']; ?>%</span> </td>
-                                                <td><span class="text-danger"><?php echo $report[$i]['percent_failed']; ?>%</span> </td>
-                                            </tr>
+                                        <tr>
+                                            <td scope="row"><?php echo $i; ?></td>
+                                            <td><?php echo $month_array[$i-1]; ?></td>
+                                            <td><span class="text-success"><?php echo $report[$i]['cus_is_plan']; ?></span> </td>
+                                            <td><span class="text-success"><?php echo $report[$i]['cus_isnot_plan']; ?></span> </td>
+                                            <td><span class="text-danger"><?php echo $report[$i]['cus_visit_in_process']; ?></span> </td>
+                                            <td><span class="text-success"><?php echo $report[$i]['cus_visit_success']; ?></span> </td>
+                                            <td><span class="text-danger"><?php echo $report[$i]['cus_visit_failed']; ?></span> </td>
+                                            <td><span class="text-success"><?php echo $report[$i]['percent_success']; ?>%</span> </td>
+                                            <td><span class="text-danger"><?php echo $report[$i]['percent_failed']; ?>%</span> </td>
+                                        </tr>
                                     <?php
                                         }
 
