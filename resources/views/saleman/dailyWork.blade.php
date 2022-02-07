@@ -51,8 +51,8 @@
         </div>
 
 
-        <div class="container-fluid px-xxl-65 px-xl-20">
-            <div class="mt-30 mb-30">
+        {{-- <div class="container-fluid px-xxl-65 px-xl-20">
+            <div class="mt-30 mb-30"> --}}
             <div class="row">
                 <div class="col-md-8">
                     <section class="hk-sec-wrapper">
@@ -329,8 +329,8 @@
                         </div>
                     </section>
                     </div>
-            </div>
-            </div>
+            {{-- </div>
+            </div> --}}
 
 
         <div class="mt-30 mb-30">
@@ -627,13 +627,14 @@
 
                                                             </div>
                                                         </td>
-                                                    </tr>   
+                                                    </tr>
                                                 @endforeach
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
+                        </div>
                     </section>
                 </div>
 
@@ -705,6 +706,7 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
                     </section>
                 </div>
 
@@ -758,7 +760,7 @@
                                                         </td>
                                                         <td style="text-align:center;">
                                                             <div class="button-list">
-                                                                
+
                                                             @php
                                                                 if($customer_visit_api[$key]['visit_checkin_date'] != "" && $customer_visit_api[$key]['visit_checkout_date'] == ""){
                                                                     $btn_primary_cusvisit_disabled = "disabled";
@@ -793,6 +795,7 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
                     </section>
                 </div>
 
@@ -1476,7 +1479,7 @@
                 console.log(response);
             }
         });
-    }); 
+    });
 
 </script>
 
