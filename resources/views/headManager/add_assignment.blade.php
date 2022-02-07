@@ -18,6 +18,10 @@
                 <h4 class="hk-pg-title mt-40"><span class="pg-title-icon"><i
                             class="ion ion-md-document"></i></span>ตารางบันทึกการสั่งงาน</h4>
             </div>
+            <div class="d-flex">
+                <button type="button" class="btn btn-teal btn-sm btn-rounded px-3" data-toggle="modal"
+                    data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button>
+            </div>
         </div>
         <!-- /Title -->
 
@@ -65,7 +69,7 @@
                                             <th>วันที่</th>
                                             <th>พนักงาน</th>
                                             <th>สถานะ</th>
-
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody align="center">
@@ -82,6 +86,23 @@
                                                     <span class="badge badge-soft-success" style="font-size: 12px;">สำเร็จ</span>
                                                     @elseif ($value->assign_result_status == 2)
                                                     <span class="badge badge-soft-danger" style="font-size: 12px;">ไม่สำเร็จ</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($value->assign_result_status == 0)
+                                                <button onclick="edit_modal({{ $value->id }})"
+                                                    class="btn btn-icon btn-warning mr-10" data-toggle="modal"
+                                                    data-target="#modalEdit">
+                                                    <span class="btn-icon-wrap"><i
+                                                            data-feather="edit"></i></span></button>
+                                                <a href="{{url('lead/delete_assignment', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
+                                                    <span class="btn-icon-wrap"><i data-feather="trash-2"></i></span></a>
+
+                                                    {{-- @else
+                                                    <div class="button-list">
+                                                        <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalResult" onclick="assignment_result({{$value->id}})">
+                                                        <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
+                                                        </div> --}}
                                                 @endif
                                             </td>
                                         </tr>
@@ -109,7 +130,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ url('lead/create_assignment') }}" method="post" enctype="multipart/form-data">
+            <form id="from_createassign" enctype="multipart/form-data">
+                {{-- <form action="{{url('/lead/create_assignment')}}" method="POST" enctype="multipart/form-data"> --}}
                     @csrf
                 <div class="modal-body">
                         <div class="form-group">
@@ -128,19 +150,21 @@
                                 <label for="firstName">วันที่</label>
                                 <input class="form-control" type="date" name="date" />
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ไฟล์เอกสาร</label>
-                                <input type="file" name="image" id="" class="form-control">
+                                <input type="file" name="assignment_fileupload" id="assignment_fileupload" class="form-control">
                             </div>
-                            <div class="col-md-6 form-group">
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-12 form-group">
                                 <label for="firstName">สั่งงานให้</label>
-                                <select class="form-control custom-select select2" name="assign_emp_id" required>
-                                    <option value="" selected disabled>กรุณาเลือก</option>
-                                    @foreach($users as $value)
+                                <select class="select2 select2-multiple form-control" multiple="multiple" data-placeholder="Choose" name="assign_emp_id[]" required>
+                                    <optgroup label="เลือกข้อมูล">
+                                        @foreach($users as $value)
                                         <option value="{{ $value->id }}">{{ $value->name }}</option>
                                     @endforeach
+                                    </optgroup>
                                 </select>
                             </div>
                         </div>
@@ -165,8 +189,9 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ url('lead/update_assignment') }}" method="post" enctype="multipart/form-data">
-                    @csrf
+                <!-- <form action="{{ url('lead/update_assignment') }}" method="post" enctype="multipart/form-data"> -->
+                <form id="from_updateassign" enctype="multipart/form-data">
+                @csrf
                 <div class="modal-body">
                     <input type="hidden" name="id" id="get_id">
                         <div class="form-group">
@@ -189,15 +214,13 @@
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ไฟล์เอกสาร</label>
-                                <input type="file" name="image" id="" class="form-control">
+                                <input type="file" name="assignment_fileupload_update" id="assignment_fileupload_update" class="form-control">
+                                <div id="img_show" class="mt-5"></div>
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="firstName">สั่งงานให้</label>
-                                <select class="form-control custom-select" name="assign_emp_id" id="get_emp" required>
-                                    <option selected>กรุณาเลือก</option>
-                                    <option value="1">ศิริลักษณ์</option>
-                                    <option value="2">อิศรา</option>
-                                    <option value="3">ดวงดาว</option>
+                                <select class="form-control custom-select select2" name="assign_emp_id_edit" id="get_emp" required>
+                                    <option value="" disabled>กรุณาเลือก</option>
                                 </select>
                             </div>
                         </div>
@@ -211,48 +234,42 @@
         </div>
     </div>
 
-    {{-- <script>
-        //Edit
-        function assignment_result(id) {
-            // $("#get_assign_id").val(id);
-            $.ajax({
-                type: "GET",
-                url: "{!! url('lead/assignment_result_get/"+id+"') !!}",
-                dataType: "JSON",
-                async: false,
-                success: function(data) {
-                    $('#get_assign_id').val(data.dataResult.id);
-                    $('#get_result_detail').val(data.dataResult.assign_result_detail);
-                    if (data.dataResult.assign_result_status != 0) {
-                        if (data.dataResult.assign_result_status == 1) {
-                            $('#get_result').val("สนใจ/ตกลง");
-                        } if (data.dataResult.assign_result_status == 2) {
-                            $('#get_result').val("ไม่สนใจ");
-                         } if (data.dataResult.assign_result_status == 3) {
-                            $('#get_result').val("รอตัดสินใจ");
-                        }
-                    }
-
-                    $('#ModalResult').modal('toggle');
-                }
-            });
-        }
-    </script> --}}
-
     <script>
         //Edit
         function edit_modal(id) {
             $.ajax({
                 type: "GET",
-                url: "{!! url('lead/edit_assignment/"+id+"') !!}",
+                url: '{{ url("lead/edit_assignment/") }}/'+id,
                 dataType: "JSON",
                 async: false,
                 success: function(data) {
+                    $('#get_emp').children().remove().end();
+                    $('#img_show').children().remove().end();
+
                     $('#get_id').val(data.dataEdit.id);
                     $('#get_date').val(data.dataEdit.assign_work_date);
                     $('#get_title').val(data.dataEdit.assign_title);
                     $('#get_detail').val(data.dataEdit.assign_detail);
-                    $('#get_emp').val(data.dataEdit.assign_emp_id);
+                    // $('#get_emp').val(data.dataEdit.assign_emp_id);
+
+                    let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataEdit.assign_fileupload;
+                    if(data.dataEdit.assign_fileupload != ""){
+                        ext = data.dataEdit.assign_fileupload.split('.').pop().toLowerCase();
+                        console.log(img_name);
+                        if(ext == "pdf"){
+                            $('#img_show').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');
+                        }else{
+                            $('#img_show').append('<img src = "'+img_name+'" style="max-width:100%;">');
+                        }
+                    }
+
+                    $.each(data.dataUser, function(key, value){
+                        if(value.id == data.dataEdit.assign_emp_id){
+                            $('#get_emp').append('<option value='+value.id+' selected>'+value.name+'</option>');
+                        }else{
+                            $('#get_emp').append('<option value='+value.id+'>'+value.name+'</option>');
+                        }
+                    });
 
                     $('#modalEdit').modal('toggle');
                 }
@@ -303,9 +320,91 @@
     }
 </script>
 
+<script>
+    $("#from_createassign").on("submit", function (e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        console.log(formData);
+        $.ajax({
+            type:'POST',
+            url: '{{ url("/head/create_assignment") }}',
+            data:formData,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(response){
+                console.log(response);
+                if(response.status == 200){
+                    $("#exampleModalLarge01").modal('hide');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    location.reload();
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Your work has been saved',
+                        text: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+            },
+            error: function(response){
+                console.log("error");
+                console.log(response);
+            }
+        });
+    });
 
+    $("#from_updateassign").on("submit", function (e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        console.log(formData);
+        $.ajax({
+            type:'POST',
+            url: '{{ url("/lead/update_assignment") }}',
+            data:formData,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(response){
+                console.log(response);
+                if(response.status == 200){
+                    $("#modalEdit").modal('hide');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    location.reload();
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Your work has been saved',
+                        text: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+            },
+            error: function(response){
+                console.log("error");
+                console.log(response);
+            }
+        });
+    });
+
+</script>
+
+
+@endsection
 
 @section('footer')
     @include('layouts.footer')
-@endsection
-@endsection
+@endsection('footer')
+

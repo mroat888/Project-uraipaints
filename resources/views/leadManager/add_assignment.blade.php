@@ -150,20 +150,21 @@
                                 <label for="firstName">วันที่</label>
                                 <input class="form-control" type="date" name="date" />
                             </div>
-
-                        </div>
-                        <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ไฟล์เอกสาร</label>
                                 <input type="file" name="assignment_fileupload" id="assignment_fileupload" class="form-control">
                             </div>
-                            <div class="col-md-6 form-group">
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-12 form-group">
                                 <label for="firstName">สั่งงานให้</label>
-                                <select class="form-control custom-select select2" name="assign_emp_id" required>
-                                    <option value="" selected disabled>กรุณาเลือก</option>
-                                    @foreach($users as $value)
+                                <select class="select2 select2-multiple form-control" multiple="multiple" data-placeholder="Choose" name="assign_emp_id[]" required>
+                                    <optgroup label="เลือกข้อมูล">
+                                        @foreach($users as $value)
                                         <option value="{{ $value->id }}">{{ $value->name }}</option>
                                     @endforeach
+                                    </optgroup>
                                 </select>
                             </div>
                         </div>
