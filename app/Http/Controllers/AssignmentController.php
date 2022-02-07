@@ -189,6 +189,12 @@ class AssignmentController extends Controller
 
     public function destroy($id)
     {
+        $data = Assignment::where('id', $id)->first();
+            if (!empty($data->assign_fileupload)) {
+                $path2 = 'public/upload/AssignmentFile/';
+                unlink($path2 . $data->assign_fileupload);
+            }
+
         Assignment::where('id', $id)->delete();
         return back();
     }
