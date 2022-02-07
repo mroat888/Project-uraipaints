@@ -681,6 +681,13 @@
                         $('#get_tag').val(response.salepaln.sale_plans_tags)
                         $('#saleplan_phone_edit').val(response.shop_phone);
                         $('#saleplan_address_edit').val(response.shop_address);
+                        $('#get_tags').html(
+                                    "<optgroup label='กรุณาเลือก'>"+
+                                        "<option value='AK' selected>"+ response.salepaln.sale_plans_tags +"</option>"+
+                                        "<option value='AK'>เพิ่มเติม</option>"+
+                                        "<option value='HI'>เข้าพบลูกค้า</option>"+
+                                        "<option value='HB'>งานใหม่</option>"+
+                                    "</optgroup>");
 
                         $.each(response.customer_api, function(key, value){
                             if(response.customer_api[key]['id'] == response.salepaln.customer_shop_id){

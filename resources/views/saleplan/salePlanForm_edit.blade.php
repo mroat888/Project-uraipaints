@@ -58,12 +58,14 @@
                 <div class="row">
                     <div class="col-md-12 form-group">
                         <label for="firstName">รายการนำเสนอ</label>
-                        <select class="select2 select2-multiple form-control" name="sale_plans_tags" id="get_tag" multiple="multiple">
-                            <optgroup label="เลือกข้อมูล" >
-                                <option value="1">สีรองพื้นปูนกันชื้น</option>
-                                <option value="2">4 in 1</option>
-                            </optgroup>
+                        <select class="select2 select2-multiple form-control" multiple="multiple" name="note_tags"  id="get_tags">
+                            {{-- <optgroup id="get_tags">
+                                <option value="1">เพิ่มเติม</option>
+                                <option value="2">เข้าพบลูกค้า</option>
+                                <option value="3">งานใหม่</option>
+                            </optgroup> --}}
                         </select>
+                        {{-- <input type="text" name="" id="get_tag"> --}}
                     </div>
                 </div>
                 <input type="hidden" name="id" id="get_id2">
@@ -76,7 +78,7 @@
     </div>
 </div>
 
-<script>
+{{-- <script>
     //Edit
     function edit_modal(id) {
         $.ajax({
@@ -100,7 +102,7 @@
         });
     }
 
-</script>
+</script> --}}
 
 <script>
 

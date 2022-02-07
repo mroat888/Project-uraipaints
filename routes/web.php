@@ -197,6 +197,7 @@ Route::get('head/approval_general_detail/{id}', 'HeadManager\ApprovalController@
 Route::get('head/comment_approval/{id}/{createID}', 'HeadManager\ApprovalController@comment_approval');
 Route::post('head/create_comment_request_approval', 'HeadManager\ApprovalController@create_comment_request_approval');
 Route::get('head/assignment/add', 'AssignmentController@assignIndex');
+Route::post('head/create_assignment', 'AssignmentController@store_head');
 
 // Note Head Manage
 Route::get('head/note', 'NoteController@note_head');

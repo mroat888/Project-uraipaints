@@ -30,17 +30,6 @@ class SalePlanController extends Controller
         DB::beginTransaction();
         try {
 
-            // SalePlan::create([
-            //     'monthly_plan_id' => $monthly_plan->id,
-            //     'customer_shop_id' => $request->shop_id,
-            //     'sale_plans_title' => $request->sale_plans_title,
-            //     'sale_plans_date' => Carbon::now()->addMonth(1),
-            //     'sale_plans_tags' => $request->sale_plans_tags,
-            //     'sale_plans_objective' => $request->sale_plans_objective,
-            //     'sale_plans_status' => 1,
-            //     'created_by' => Auth::user()->id,
-            // ]);
-
             $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->first();
 
             DB::table('sale_plans')
@@ -49,9 +38,9 @@ class SalePlanController extends Controller
                 'customer_shop_id' => $request->shop_id,
                 'sale_plans_title' => $request->sale_plans_title,
                 'sale_plans_date' => Carbon::now()->addMonth(1),
-                'sale_plans_tags' => $request->sale_plans_tags,
+                'sale_plans_tags' => implode( ',', $request->sale_plans_tags),
                 'sale_plans_objective' => $request->sale_plans_objective,
-                'sale_plans_status' => 1,
+                'sale_plans_status' => 0,
                 'created_by' => Auth::user()->id,
                 'created_at' => date('Y-m-d H:i:s'),
             ]);
