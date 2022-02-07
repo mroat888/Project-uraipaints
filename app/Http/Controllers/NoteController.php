@@ -17,7 +17,7 @@ class NoteController extends Controller
         ->where('employee_id', Auth::user()->id)
         // ->where('status_pin', 1)
         ->orderBy('status_pin', 'desc')
-        ->orderBy('note_date', 'desc')->get();
+        ->orderBy('note_date', 'asc')->get();
         return view('saleman.note', compact('data'));
     }
 
@@ -27,7 +27,7 @@ class NoteController extends Controller
         ->where('employee_id', Auth::user()->id)
         // ->where('status_pin', 1)
         ->orderBy('status_pin', 'desc')
-        ->orderBy('note_date', 'desc')->get();
+        ->orderBy('note_date', 'asc')->get();
         return view('leadManager.note', compact('data'));
     }
 
@@ -37,7 +37,7 @@ class NoteController extends Controller
         ->where('employee_id', Auth::user()->id)
         // ->where('status_pin', 1)
         ->orderBy('status_pin', 'desc')
-        ->orderBy('note_date', 'desc')->get();
+        ->orderBy('note_date', 'asc')->get();
         return view('headManager.note', compact('data'));
     }
 
@@ -47,7 +47,7 @@ class NoteController extends Controller
         ->where('employee_id', Auth::user()->id)
         // ->where('status_pin', 1)
         ->orderBy('status_pin', 'desc')
-        ->orderBy('note_date', 'desc')->get();
+        ->orderBy('note_date', 'asc')->get();
         return view('admin.note', compact('data'));
     }
 
