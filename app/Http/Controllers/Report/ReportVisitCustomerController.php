@@ -58,8 +58,13 @@ class ReportVisitCustomerController extends Controller
                 $cus_visit_in_process = ($cus_is_plan + $cus_isnot_plan) - ($cus_visit_success + $cus_visit_failed);
 
                 $sum_visit = $cus_is_plan + $cus_isnot_plan; // จำนวนการเข้าพบทั้งหมด
-                $percent_success = round(($cus_visit_success*100)/$sum_visit);
-                $percent_failed = round(($cus_visit_failed*100)/$sum_visit);
+                if($sum_visit > 0 ){
+                    $percent_success = @round(($cus_visit_success*100)/$sum_visit);
+                    $percent_failed = @round(($cus_visit_failed*100)/$sum_visit);
+                }else{
+                    $percent_success = 0;
+                    $percent_failed = 0;
+                }
 
             }else{
                 $cus_is_plan = "-";

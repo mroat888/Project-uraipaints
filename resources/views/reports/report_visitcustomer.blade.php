@@ -114,8 +114,8 @@
                                         <td class="text-danger"><?php echo $total_cus_visit_in_process; ?></td>
                                         <td class="text-success"><?php echo $total_cus_visit_success; ?></td>
                                         <td class="text-danger"><?php echo $total_cus_visit_failed; ?></td>
-                                        <td class="text-success"><?php echo round($percent_success); ?>%</td>
-                                        <td class="text-danger"><?php echo round($percent_failed); ?>%</td>
+                                        <td class="text-success"><?php echo @round($percent_success); ?>%</td>
+                                        <td class="text-danger"><?php echo @round($percent_failed); ?>%</td>
                                     </tfoot>
                                 </table>
                             </div>
