@@ -58,15 +58,13 @@
                 <div class="row">
                     <div class="col-md-12 form-group">
                         <label for="firstName">รายการนำเสนอ</label>
-                        <select class="select2 select2-multiple form-control" multiple="multiple" name="sale_plans_tags" id="get_tagxx">
-
-                        </select>
-                        {{-- <select class="select2 select2-multiple form-control" name="sale_plans_tags" id="get_tag" multiple="multiple"> --}}
-                            {{-- <optgroup label="เลือกข้อมูล" >
-                                <option value="1">สีรองพื้นปูนกันชื้น</option>
-                                <option value="2">4 in 1</option>
+                        <select class="select2 select2-multiple form-control" multiple="multiple" name="note_tags"  id="get_tags">
+                            {{-- <optgroup id="get_tags">
+                                <option value="1">เพิ่มเติม</option>
+                                <option value="2">เข้าพบลูกค้า</option>
+                                <option value="3">งานใหม่</option>
                             </optgroup> --}}
-                        {{-- </select> --}}
+                        </select>
                         {{-- <input type="text" name="" id="get_tag"> --}}
                     </div>
                 </div>
@@ -80,7 +78,7 @@
     </div>
 </div>
 
-<script>
+{{-- <script>
     //Edit
     function edit_modal(id) {
         $.ajax({
@@ -93,25 +91,18 @@
                 $('#get_date').val(data.dataEdit.sale_plans_date);
                 $('#get_title').val(data.dataEdit.sale_plans_title);
                 $('#get_objective').val(data.dataEdit.sale_plans_objective);
-                // $('#get_tag').val(data.dataEdit.sale_plans_tags);
+                $('#get_tag').val(data.dataEdit.sale_plans_tags);
                 $('#saleplan_id_edit').val(data.dataEdit.shop_id);
                 $('#saleplan_contact_name_edit').val(data.dataEdit.customer_contact_name);
                 $('#saleplan_phone_edit').val(data.dataEdit.customer_contact_phone);
                 $('#saleplan_address_edit').val(data.dataEdit.shop_address);
-                $('#get_tagxx').html(
-                                    "<optgroup label='กรุณาเลือก'>"+
-                                        "<option value='AK' selected>"+ data.dataEdit.sale_plans_tags +"</option>"+
-                                        "<option value='AK'>เพิ่มเติม</option>"+
-                                        "<option value='HI'>เข้าพบลูกค้า</option>"+
-                                        "<option value='HB'>งานใหม่</option>"+
-                                    "</optgroup>");
 
                 $('#saleplanEdit').modal('toggle');
             }
         });
     }
 
-</script>
+</script> --}}
 
 <script>
 

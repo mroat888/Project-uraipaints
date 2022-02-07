@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 // $objective = App\ObjectiveSaleplan::all();
 
@@ -77,7 +77,7 @@
                 <div class="row">
                     <div class="col-md-12 form-group">
                         <label for="firstName">รายการนำเสนอ</label>
-                        <select class="select2 select2-multiple form-control" multiple="multiple" data-placeholder="Choose" name="sale_plans_tags">
+                        <select class="select2 select2-multiple form-control" multiple="multiple" data-placeholder="Choose" name="sale_plans_tags[]">
                             <optgroup label="เลือกข้อมูล">
                                 <option value="1">สีรองพื้นปูนกันชื้น</option>
                                 <option value="2">4 in 1</option>
@@ -117,7 +117,7 @@
                                 title: 'Your work has been saved',
                                 showConfirmButton: false,
                                 timer: 1500
-                            });                          
+                            });
                             location.reload();
                         }else{
                             Swal.fire({
@@ -128,7 +128,7 @@
                                 timer: 1500
                             })
                         }
-                        
+
                     },
                     error: function(response){
                         console.log("error");

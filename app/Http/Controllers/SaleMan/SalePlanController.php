@@ -38,9 +38,9 @@ class SalePlanController extends Controller
                 'customer_shop_id' => $request->shop_id,
                 'sale_plans_title' => $request->sale_plans_title,
                 'sale_plans_date' => Carbon::now()->addMonth(1),
-                'sale_plans_tags' => $request->sale_plans_tags,
+                'sale_plans_tags' => implode( ',', $request->sale_plans_tags),
                 'sale_plans_objective' => $request->sale_plans_objective,
-                'sale_plans_status' => 1,
+                'sale_plans_status' => 0,
                 'created_by' => Auth::user()->id,
                 'created_at' => date('Y-m-d H:i:s'),
             ]);
