@@ -107,7 +107,7 @@ Route::get('promotions', 'PromotionController@frontend_promotion');
 
 
 Route::get('/reportSale/reportSaleplan', function () { return view('reports.report_saleplan'); });
-Route::get('/reportSale/reportVisitCustomerGoal', function () { return view('reports.report_visitcustomer_goal'); });
+Route::get('/reportSale/reportVisitCustomerGoal', 'Report\ReportVisitCustomerGoalController@index');
 Route::get('/reportSale/reportVisitCustomer', 'Report\ReportVisitCustomerController@index');
 
 // });

@@ -368,6 +368,7 @@ class CustomerController extends Controller
                 ->update([
                     'shop_status' => '1',
                     'updated_by' => Auth::user()->id,
+                    'shop_status_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s'),
                 ]);
 
@@ -551,6 +552,7 @@ class CustomerController extends Controller
                     DB::table('customer_history_contacts')
                         ->insert([
                             'customer_shop_id' => $request->cust_id,
+                            'monthly_plan_id' => $cus_shops->monthly_plan_id,
                             'cust_history_saleplan_date' => $cus_shops->shop_saleplan_date,
                             'employee_id' => Auth::user()->id,
                             'cust_history_detail' => $request->shop_result_detail,
