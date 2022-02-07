@@ -75,16 +75,16 @@
                             <input class="form-control postcode" id="postcode" placeholder="" name="shop_zipcode" type="text">
                         </div>
                     </div>
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-md-6 form-group">
                             <label for="firstName">รูปภาพ</label>
                             <input class="form-control" name="image" type="file">
                         </div>
                         <div class="col-md-6 form-group">
                         <label for="firstName">เอกสารแนบ</label>
-                        <input class="form-control" name="shop_fileupload" type="file">
-                    </div>
-                    </div>
+                            <input class="form-control" name="shop_fileupload" type="file">
+                        </div>
+                    </div> -->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\SaleMan;
 use App\Assignment;
 use App\Customer;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\ApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\SalePlan;
@@ -18,6 +19,11 @@ use Illuminate\Support\Facades\Http;
 
 class DailyWorkController extends Controller
 {
+    public function __construct()
+    {
+        $this->api_token = new ApiController();
+    }
+
     public function index()
     {
         // หาเดือนปัจจุบัน
@@ -47,30 +53,6 @@ class DailyWorkController extends Controller
         // -- จบ ถ้า monthly_plan ไม่มีเดือนปัจจุบัน ให้สร้างขึ้นมาใหม่ -----------
 
 
-        // -----  API Login ----------- //
-        $response = Http::post('http://49.0.64.92:8020/api/auth/login', [
-            'username' => 'apiuser',
-            'password' => 'testapi',
-        ]);
-
-        $res = $response->json();
-        $api_token = $res['data'][0]['access_token'];
-        $data['api_token'] = $res['data'][0]['access_token'];
-        //--- End Api Login ------------ //
-
-        // $data['list_saleplan'] = SalePlan::leftjoin('customer_shops', 'sale_plans.customer_shop_id', '=', 'customer_shops.id')
-        // ->select(
-        //     'customer_shops.shop_name' ,
-        //     'sale_plans.*')
-        //     ->where('sale_plans.monthly_plan_id', $monthly_plan->id)
-        // ->where('sale_plans.created_by', Auth::user()->id)
-        // ->orderBy('sale_plans.id', 'desc')->get();
-
-        // $data['customer_shop'] = Customer::where('monthly_plan_id', $monthly_plan->id)
-        // ->where('shop_status', 0)
-        // ->get();
-
-
         // -- ข้อมูล แผนงานงาน Saleplan
         $data['list_saleplan'] = DB::table('sale_plans')
         ->where('sale_plans.monthly_plan_id', $data['monthly_plan']->id)
@@ -93,7 +75,7 @@ class DailyWorkController extends Controller
         ->orderBy('customer_shops.id', 'desc')
         ->get();
 
-
+        $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers');
         $res_api = $response->json();
 

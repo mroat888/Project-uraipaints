@@ -6,27 +6,22 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\Http\Controllers\Api\ApiController;
 
 class UserPermissionController extends Controller
 {
+    public function __construct()
+    {
+        $this->apicontroller = new ApiController();
+    }
+
     public function index(){
         $users = DB::table('users')->get();
         $master_permission = DB::table('master_permission')->get();
 
-        // -----  API 
-        $response = Http::post('http://49.0.64.92:8020/api/auth/login', [
-            'username' => 'apiuser',
-            'password' => 'testapi',
-        ]);
-        $res = $response->json();
-        $api_token = $res['data'][0]['access_token'];
-
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/sellers');                   
-        $res_api = $response->json();
-
+        $res_api = $this->apicontroller->getAllSellers();
         $sellers_api = array();
         foreach ($res_api['data'] as $key => $value) {
             $sellers_api[$key] = 
@@ -89,15 +84,7 @@ class UserPermissionController extends Controller
         $master_permission = DB::table('master_permission')->get();
 
         // -----  API 
-        $response = Http::post('http://49.0.64.92:8020/api/auth/login', [
-            'username' => 'apiuser',
-            'password' => 'testapi',
-        ]);
-        $res = $response->json();
-        $api_token = $res['data'][0]['access_token'];
-
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/sellers');
-        $res_api = $response->json();
+        $res_api = $this->apicontroller->getAllSellers();
 
         $sellers_api = array();
         foreach ($res_api['data'] as $key => $value) {

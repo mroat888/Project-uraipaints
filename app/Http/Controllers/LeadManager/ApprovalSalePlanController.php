@@ -507,10 +507,23 @@ class ApprovalSalePlanController extends Controller
 
     public function retrospective($id)
     {
-       $data = MonthlyPlan::find($id);
-       $data->status_approve    = 0;
-       $data->update();
 
-       return back();
+        $request_approval_month = MonthlyPlan::find($id);
+        $request_approval_month->status_approve   = 0; // ย้อนกับเป็นแบบร่าง
+        $request_approval_month->update();
+
+        $request_approval = SalePlan::where('monthly_plan_id', $id)->get();
+        foreach ($request_approval as $key => $value) {
+            $value->sale_plans_status   = 0; // ย้อนกับเป็นแบบร่าง
+            $value->update();
+        }
+
+        $request_approval_customer = Customer::where('monthly_plan_id', $id)->get();
+        foreach ($request_approval_customer as $key => $value) {
+            $value->shop_aprove_status   = 0; // ย้อนกับเป็นแบบร่าง
+            $value->update();
+        }
+
+        return back();
     }
 }

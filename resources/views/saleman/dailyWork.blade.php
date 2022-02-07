@@ -715,6 +715,10 @@
                             <div>
                                 <h6 class="hk-sec-title mb-10" style="font-weight: bold;">เยี่ยมลูกค้า</h6>
                             </div>
+                            <div class="d-flex">
+                                <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10"
+                                    data-toggle="modal" data-target="#addCustomerVisit"> + เพิ่มใหม่ </button>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-sm">
@@ -802,6 +806,12 @@
         <!-- /Row -->
     </div>
     <!-- /Container -->
+
+    <!-- Modal VisitCustomer -->
+    <div class="modal fade" id="addCustomerVisit" tabindex="-1" role="dialog" aria-labelledby="addCustomerVisit"
+        aria-hidden="true">
+        @include('saleman.visitCustomers_add')
+    </div>
 
     <!-- Modal Check-in/Out Saleplan -->
     <div class="modal fade" id="Modalcheckin" tabindex="-1" role="dialog" aria-labelledby="Modalcheckin"
