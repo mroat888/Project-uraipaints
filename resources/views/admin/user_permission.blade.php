@@ -45,23 +45,33 @@
                                     <th>ชื่อ-นามสกุล</th>
                                     <th>อีเมล์</th>
                                     <th>สิทธิ์การใช้งาน</th>
+                                    <th>ทีม</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($users as $value)
+                                @foreach($users as $key => $value)
                                 <tr>
-                                    <td>1</td>
+                                    <td>{{ $key+1 }}</td>
                                     <td>{{ $value->name }}</td>
                                     <td>{{ $value->email }}</td>
                                     <td>
-                                        @php
+                                    @php
                                         foreach($master_permission as $value_permiss){
                                             if($value->status ==  $value_permiss->id){
                                                 echo "<span class='badge badge-soft-violet' style='font-size: 14px;'>$value_permiss->permission_name</span>";
                                             }
                                         }
-                                        @endphp
+                                    @endphp
+                                    </td>
+                                    <td>
+                                    @php
+                                        foreach($master_team as $value_team){
+                                            if($value->team_id ==  $value_team->id){
+                                                echo "<span class='badge badge-soft-success' style='font-size: 14px;'>$value_team->team_name</span>";
+                                            }
+                                        }
+                                    @endphp
                                     </td>
                                     <td>
                                         <div class="button-list">
@@ -134,6 +144,17 @@
                                 </select>
                             </div>
                         </div> 
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="username">ทีม</label>
+                                <select id="sel_team" name="sel_team" class="form-control custom-select">
+                                    <option selected disabled>เลือกข้อมูล</option>
+                                    @foreach($master_team as $key => $value)
+                                        <option value="{{ $value->id }}">{{ $value->team_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -167,6 +188,7 @@
                 if(response.status == 200){
                     $('#edit_sel_status').children().remove().end();
                     $('#edit_sel_api_identify').children().remove().end();
+                    $('#edit_sel_team').children().remove().end();
                     $("#modaledit").modal('show');
                     $('#edit_tuser_id').val(user_id);
                     $('#edit_tname').val(response.dataUser.name);
@@ -180,12 +202,19 @@
                         }   
                     });
                     
-                    
                     $.each(response.sellers_api, function(key, value){
                         if(response.sellers_api[key]['id'] == response.dataUser.api_identify){
                             $('#edit_sel_api_identify').append('<option value='+response.sellers_api[key]['id']+' selected>'+response.sellers_api[key]['name']+'</option>');
                         }else{
                             $('#edit_sel_api_identify').append('<option value='+response.sellers_api[key]['id']+'>'+response.sellers_api[key]['name']+'</option>');
+                        }   
+                    });
+
+                    $.each(response.master_teamsale, function(key, value){
+                        if(value.id == response.dataUser.team_id){
+                            $('#edit_sel_team').append('<option value='+value.id+' selected>'+value.team_name+'</option>');
+                        }else{
+                            $('#edit_sel_team').append('<option value='+value.id+'>'+value.team_name+'</option>');
                         }   
                     });
 

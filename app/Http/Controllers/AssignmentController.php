@@ -20,7 +20,10 @@ class AssignmentController extends Controller
         ->select('assignments.*', 'users.name')
         ->orderBy('assignments.id', 'desc')->get();
 
-        $users = DB::table('users')->get();
+        $users = DB::table('users')
+            ->where('team_id', Auth::user()->team_id)
+            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+            ->get();
 
         return view('leadManager.add_assignment', compact('assignments', 'users'));
     }
@@ -145,7 +148,12 @@ class AssignmentController extends Controller
     public function edit($id)
     {
         $dataEdit = Assignment::find($id);
-        $dataUser = DB::table('users')->get();
+        // $dataUser = DB::table('users')->get();
+        $dataUser = DB::table('users')
+            ->where('team_id', Auth::user()->team_id)
+            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+            ->get();
+
         $data = array(
             'dataEdit'  => $dataEdit,
             'dataUser'  => $dataUser,

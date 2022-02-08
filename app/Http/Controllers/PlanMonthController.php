@@ -14,9 +14,13 @@ use App\SaleplanComment;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use App\Http\Controllers\Api\ApiController;
 
 class PlanMonthController extends Controller
 {
+    public function __construct(){
+        $this->apicontroller = new ApiController();
+    }
 
     public function index()
     {
@@ -36,7 +40,6 @@ class PlanMonthController extends Controller
         ->select('sale_plans.*', 'sale_plan_comments.saleplan_id')->distinct()
         ->orderBy('sale_plans.id', 'desc')->get();
 
-
         // -- ข้อมูลลูกค้าใหม่
         $data['customer_new'] = DB::table('customer_shops')
         ->join('amphur', 'amphur.AMPHUR_ID', 'customer_shops.shop_amphur_id')
@@ -52,19 +55,11 @@ class PlanMonthController extends Controller
         ->orderBy('customer_shops.id', 'desc')
         ->get();
 
-
-        // -----  API Login ----------- //
-        $response = Http::post('http://49.0.64.92:8020/api/auth/login', [
-            'username' => 'apiuser',
-            'password' => 'testapi',
-        ]);
-        $res = $response->json();
-        $api_token = $res['data'][0]['access_token'];
-        $data['api_token'] = $res['data'][0]['access_token'];
-        //--- End Api Login ------------ //
+        // -----  API  //
+        $api_token = $this->apicontroller->apiToken(); // API Login 
+        $data['api_token'] = $api_token;
 
         // -----  API ลูกค้าที่ sale ดูแล ----------- //
-
         $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers');
         $res_api = $response->json();
 
@@ -94,29 +89,15 @@ class PlanMonthController extends Controller
                         'id' => $cus_visit->id,
                         'identify' => $res_visit_api['identify'],
                         'shop_name' => $res_visit_api['title']." ".$res_visit_api['name'],
-                        'shop_address' => $res_visit_api['address1']." ".$res_visit_api['adrress2'],
+                        'shop_address' => $res_visit_api['amphoe_name']." , ".$res_visit_api['province_name'],
                         'shop_phone' => $res_visit_api['telephone'],
                         'shop_mobile' => $res_visit_api['mobile'],
                     ];
                 }
             }
-
-            // $response_visit = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/customers/'.$cus_visit->customer_shop_id);
-            // $res_visit_api = $response_visit->json();
-
-            // $res_visit_api = $res_visit_api['data'][0];
-            // $data['customer_visit_api'][$key] =
-            // [
-            //     'id' => $cus_visit->id,
-            //     'identify' => $res_visit_api['identify'],
-            //     'shop_name' => $res_visit_api['title']." ".$res_visit_api['name'],
-            //     'shop_address' => $res_visit_api['address1']." ".$res_visit_api['adrress2'],
-            //     'shop_phone' => $res_visit_api['telephone'],
-            //     'shop_mobile' => $res_visit_api['mobile'],
-            // ];
+            
         }
         // -----  END API
-
 
         // dd($data);
         return view('saleman.planMonth', $data);
@@ -126,28 +107,27 @@ class PlanMonthController extends Controller
     { // ส่งอนุมัติให้ผู้จัดการเขต
         // dd($id);
 
-            $request_approval = SalePlan::where('monthly_plan_id', $id)->get();
-            foreach ($request_approval as $key => $value) {
-                $value->sale_plans_status   = 1;
-                $value->updated_by   = Auth::user()->id;
-                $value->updated_at   = Carbon::now();
-                $value->update();
-            }
+        $request_approval = SalePlan::where('monthly_plan_id', $id)->get();
+        foreach ($request_approval as $key => $value) {
+            $value->sale_plans_status   = 1;
+            $value->updated_by   = Auth::user()->id;
+            $value->updated_at   = Carbon::now();
+            $value->update();
+        }
 
-            $request_approval_customer = Customer::where('monthly_plan_id', $id)->get();
-            foreach ($request_approval_customer as $key => $value) {
-                $value->shop_aprove_status   = 1;
-                $value->updated_by   = Auth::user()->id;
-                $value->updated_at   = Carbon::now();
-                $value->update();
-            }
+        $request_approval_customer = Customer::where('monthly_plan_id', $id)->get();
+        foreach ($request_approval_customer as $key => $value) {
+            $value->shop_aprove_status   = 1;
+            $value->updated_by   = Auth::user()->id;
+            $value->updated_at   = Carbon::now();
+            $value->update();
+        }
 
-
-            $request_approval_month = MonthlyPlan::find($id);
-            $request_approval_month->status_approve   = 1;
-            $request_approval_month->updated_by   = Auth::user()->id;
-            $request_approval_month->updated_at   = Carbon::now();
-            $request_approval_month->update();
+        $request_approval_month = MonthlyPlan::find($id);
+        $request_approval_month->status_approve   = 1;
+        $request_approval_month->updated_by   = Auth::user()->id;
+        $request_approval_month->updated_at   = Carbon::now();
+        $request_approval_month->update();
 
         return back();
     }
@@ -155,10 +135,6 @@ class PlanMonthController extends Controller
     public function saleplan_view_comment($id)
     {
         $sale_comments = SaleplanComment::where('saleplan_id', $id)->get();
-        // $data = array(
-        //     'comment' => $comment,
-        // );
-        // echo json_encode($data);
 
         $comment = array();
         foreach ($sale_comments as $key => $value) {
@@ -171,7 +147,6 @@ class PlanMonthController extends Controller
                 'created_at' => $date_comment,
             ];
         }
-
 
         return response()->json($comment);
     }

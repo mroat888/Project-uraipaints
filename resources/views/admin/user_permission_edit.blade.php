@@ -42,6 +42,14 @@
                         </select>
                     </div>
                 </div> 
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="username">ทีม</label>
+                        <select id="edit_sel_team" name="edit_sel_team" class="form-control custom-select">
+                            <option selected disabled>เลือกข้อมูล</option>
+                        </select>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

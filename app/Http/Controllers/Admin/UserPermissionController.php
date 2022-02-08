@@ -20,6 +20,7 @@ class UserPermissionController extends Controller
     public function index(){
         $users = DB::table('users')->get();
         $master_permission = DB::table('master_permission')->get();
+        $master_team = DB::table('master_team_sales')->get();
 
         $res_api = $this->apicontroller->getAllSellers();
         $sellers_api = array();
@@ -32,7 +33,7 @@ class UserPermissionController extends Controller
         }
         // -----  END API 
 
-        return view('admin.user_permission', compact('users', 'master_permission', 'sellers_api'));
+        return view('admin.user_permission', compact('users', 'master_permission', 'sellers_api', 'master_team'));
     }
 
     public function store(Request $request){
@@ -62,6 +63,7 @@ class UserPermissionController extends Controller
                     'password' => $password_staff,
                     'api_identify' => $request->sel_api_identify,
                     'status' => $request->sel_status,
+                    'team_id' => $request->sel_team,
                     'created_at' => date('Y-m-d H:i:s'),
                     'created_by' => Auth::user()->id,                   
                 ]);
@@ -82,6 +84,7 @@ class UserPermissionController extends Controller
     public function edit($id){
         $users = DB::table('users')->where('id', $id)->first();
         $master_permission = DB::table('master_permission')->get();
+        $master_teamsale = DB::table('master_team_sales')->get();
 
         // -----  API 
         $res_api = $this->apicontroller->getAllSellers();
@@ -101,6 +104,7 @@ class UserPermissionController extends Controller
             'dataUser' => $users,
             'master_permission' => $master_permission, 
             'sellers_api' => $sellers_api,
+            'master_teamsale' => $master_teamsale,
         ]);
     }
 
@@ -116,6 +120,7 @@ class UserPermissionController extends Controller
             ->update([
                 'name' => $request->edit_tname,
                 'status' => $request->edit_sel_status,
+                'team_id' => $request->edit_sel_team,
                 'updated_at' => date('Y-m-d H:i:s'),
                 'updated_by' =>  Auth::user()->id, 
             ]);
@@ -143,6 +148,7 @@ class UserPermissionController extends Controller
                                 'name' => $request->edit_tname,
                                 'email' => $request->edit_temail,
                                 'status' => $request->edit_sel_status,
+                                'team_id' => $request->edit_sel_team,
                                 'api_identify' => $request->edit_sel_api_identify,
                                 'updated_at' => date('Y-m-d H:i:s'),
                                 'updated_by' =>  Auth::user()->id, 
@@ -166,6 +172,7 @@ class UserPermissionController extends Controller
                             'name' => $request->edit_tname,
                             'email' => $request->edit_temail,
                             'status' => $request->edit_sel_status,
+                            'team_id' => $request->edit_sel_team,
                             'api_identify' => $request->edit_sel_api_identify,
                             'updated_at' => date('Y-m-d H:i:s'),
                             'updated_by' =>  Auth::user()->id, 
@@ -191,6 +198,7 @@ class UserPermissionController extends Controller
                     'name' => $request->edit_tname,
                     'email' => $request->edit_temail,
                     'status' => $request->edit_sel_status,
+                    'team_id' => $request->edit_sel_team,
                     'api_identify' => $request->edit_sel_api_identify,
                     'updated_at' => date('Y-m-d H:i:s'),
                     'updated_by' =>  Auth::user()->id, 

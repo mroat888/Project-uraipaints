@@ -274,7 +274,6 @@ Route::post('/admin/userPermissionCreate', 'Admin\UserPermissionController@store
 Route::get('/admin/userPermissionEdit/{id}', 'Admin\UserPermissionController@edit');
 Route::post('/admin/userPermissionUpdate', 'Admin\UserPermissionController@update');
 
-
 Route::get('admin/checkHistory', function () { return view('admin.check_history'); });
 
 Route::get('/admin/reportcustomer', function () { return view('reports.report_customer_admin'); });
@@ -285,12 +284,20 @@ Route::get('/admin/report_visitcustomer_goal', function () { return view('report
 Route::get('/admin/visitCustomer', function () { return view('reports.report_visitcustomer_admin'); });
 Route::get('/admin/reportYear', function () { return view('reports.report_year_admin'); });
 
+
+Route::get('admin/teamSales', 'Admin\TeamSaleController@index');
+Route::post('admin/teamsalesCreate', 'Admin\TeamSaleController@store');
+Route::get('admin/teamsalesEdit/{id}', 'Admin\TeamSaleController@edit');
+Route::post('admin/teamsalesUpdate', 'Admin\TeamSaleController@update');
+
+
+
 // });
 
 //report
 Route::get('/leadManage/reportcustomer', function () { return view('reports.report_customer'); });
 Route::get('/leadManage/reportStore', function () { return view('reports.report_store'); });
-Route::get('/leadManage/reportTeam', function () { return view('reports.report_team'); });
+Route::get('/leadManage/reportTeam', 'LeadManager\ReportTeamController@index');
 Route::get('/leadManage/reportSaleplan', function () { return view('reports.report_saleplan_lead'); });
 Route::get('/leadManage/reportYear', function () { return view('reports.report_year'); });
 
