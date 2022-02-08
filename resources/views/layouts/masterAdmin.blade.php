@@ -454,7 +454,7 @@
                                             <li class="nav-item">
                                                 <a class="nav-link" href="{{ url('admin/teamSales') }}">
                                                     <i class="ion ion-md-pie" style="color: #044067;"></i>
-                                                    <span class="nav-link-text">กำหนดกลุ่มและทีม</span>
+                                                    <span class="nav-link-text">กลุ่มและทีม</span>
                                                 </a>
                                             </li>
                                             <li class="nav-item">
