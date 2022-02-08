@@ -439,28 +439,64 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#use">
-                                        <i class="ion ion-md-options" style="color: #044067;"></i>
-                                        <span class="nav-link-text">การใช้งาน</span>
-                                    </a>
-                                    <ul id="use" class="nav flex-column collapse collapse-level-1">
-                                        <li class="nav-item">
-                                            <ul class="nav flex-column">
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="{{ url('admin/userPermission') }}">
-                                                        <i class="ion ion-md-person" style="color: #044067;"></i>
-                                                        <span class="nav-link-text">ผู้ใช้งานและสิทธิ์</span>
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="{{ url('admin/checkHistory') }}">
-                                                        <i class="ion ion-md-pie" style="color: #044067;"></i>
-                                                        <span class="nav-link-text">ประวัติการใช้งาน</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
+                                    <i class="ion ion-md-options" style="color: #044067;"></i>
+                                    <span class="nav-link-text">การใช้งาน</span>
+                                </a>
+                                <ul id="use" class="nav flex-column collapse collapse-level-1">
+                                    <li class="nav-item">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ url('admin/userPermission') }}">
+                                                    <i class="ion ion-md-person" style="color: #044067;"></i>
+                                                    <span class="nav-link-text">ผู้ใช้งานและสิทธิ์</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ url('admin/checkHistory') }}">
+                                                    <i class="ion ion-md-pie" style="color: #044067;"></i>
+                                                    <span class="nav-link-text">ประวัติการใช้งาน</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#master">
+                                    <i class="ion ion-md-options" style="color: #044067;"></i>
+                                    <span class="nav-link-text">มาสเตอร์</span>
+                                </a>
+                                <ul id="master" class="nav flex-column collapse collapse-level-1">
+                                    <li class="nav-item">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ url('admin/userPermission') }}">
+                                                    <i class="ion ion-md-person" style="color: #044067;"></i>
+                                                    <span class="nav-link-text">จุดประสงค์ ขอนุมัติ</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ url('admin/checkHistory') }}">
+                                                    <i class="ion ion-md-pie" style="color: #044067;"></i>
+                                                    <span class="nav-link-text">จุดประสงค์ แผนงาน</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ url('admin/checkHistory') }}">
+                                                    <i class="ion ion-md-pie" style="color: #044067;"></i>
+                                                    <span class="nav-link-text">รายการนำเสนอ แผนงาน</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ url('admin/checkHistory') }}">
+                                                    <i class="ion ion-md-pie" style="color: #044067;"></i>
+                                                    <span class="nav-link-text">กำหนดทีม</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
                     </ul>
                     {{-- <hr class="nav-separator">
                     <div class="nav-header">
