@@ -452,6 +452,12 @@
                                                 </a>
                                             </li>
                                             <li class="nav-item">
+                                                <a class="nav-link" href="{{ url('admin/teamSales') }}">
+                                                    <i class="ion ion-md-pie" style="color: #044067;"></i>
+                                                    <span class="nav-link-text">กำหนดกลุ่มและทีม</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
                                                 <a class="nav-link" href="{{ url('admin/checkHistory') }}">
                                                     <i class="ion ion-md-pie" style="color: #044067;"></i>
                                                     <span class="nav-link-text">ประวัติการใช้งาน</span>
@@ -485,12 +491,6 @@
                                                 <a class="nav-link" href="{{ url('admin/checkHistory') }}">
                                                     <i class="ion ion-md-pie" style="color: #044067;"></i>
                                                     <span class="nav-link-text">รายการนำเสนอ แผนงาน</span>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="{{ url('admin/teamSales') }}">
-                                                    <i class="ion ion-md-pie" style="color: #044067;"></i>
-                                                    <span class="nav-link-text">กำหนดทีม</span>
                                                 </a>
                                             </li>
                                         </ul>
