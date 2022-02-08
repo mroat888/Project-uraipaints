@@ -416,15 +416,15 @@
                                     <li class="nav-item">
                                         <ul class="nav flex-column">
                                             <li class="nav-item">
-                                                <a class="nav-link" href="{{ url('#') }}">
+                                                <a class="nav-link" href="{{ url('admin/product_new') }}">
                                                     <i class="ion ion-md-star" style="color: #044067;"></i>
                                                     <span class="nav-link-text">สินค้าใหม่</span>
                                                 </a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link" href="{{ url('#') }}">
+                                                <a class="nav-link" href="{{ url('admin/product_property') }}">
                                                     <i class="ion ion-md-wallet" style="color: #044067;"></i>
-                                                    <span class="nav-link-text">บันทึกคุณสมบัติสินค้า</span>
+                                                    <span class="nav-link-text">คุณสมบัติสินค้า</span>
                                                 </a>
                                             </li>
                                             <li class="nav-item">
@@ -620,6 +620,8 @@
     <!-- Init JavaScript -->
     <script src="{{ asset('public/template/dist/js/init.js') }}"></script>
     <script src="{{ asset('public/template/dist/js/gmap-data.js') }}"></script>
+
+    <script src="{{ asset('https://unpkg.com/sweetalert/dist/sweetalert.min.js')}}"></script>
 
     @yield('scripts')
 

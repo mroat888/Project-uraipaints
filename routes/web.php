@@ -106,7 +106,7 @@ Route::get('promotions', 'PromotionController@frontend_promotion');
 
 
 
-Route::get('/reportSale/reportSaleplan', function () { return view('reports.report_saleplan'); });
+Route::get('/reportSale/reportSaleplan', 'Report\ReportSalePlanController@index');
 Route::get('/reportSale/reportVisitCustomerGoal', 'Report\ReportVisitCustomerGoalController@index');
 Route::get('/reportSale/reportVisitCustomer', 'Report\ReportVisitCustomerController@index');
 
@@ -212,6 +212,8 @@ Route::get('head/promotions', 'PromotionController@head_frontend_promotion');
 // });
 
 
+// ------------------------------------------------------------ ADMIN --------------------------------------------------------------------- //
+
 // Route::middleware(['auth', 'admin'])->group(function () {
 // admin
 Route::get('admin', function () { return view('admin.dashboard'); });
@@ -251,6 +253,20 @@ Route::post('admin/create_promotion', 'PromotionController@store');
 Route::get('admin/edit_promotion/{id}', 'PromotionController@edit');
 Route::post('admin/update_promotion', 'PromotionController@update');
 Route::get('admin/delete_promotion/{id}', 'PromotionController@destroy');
+
+// Product New
+Route::get('admin/product_new', 'Admin\ProductNewController@index');
+Route::post('admin/create_product_new', 'Admin\ProductNewController@store');
+Route::get('admin/edit_product_new/{id}', 'Admin\ProductNewController@edit');
+Route::post('admin/update_product_new', 'Admin\ProductNewController@update');
+Route::get('admin/delete_product_new/{id}', 'Admin\ProductNewController@destroy');
+
+// Product New
+Route::get('admin/product_property', 'Admin\ProductPropertyController@index');
+Route::post('admin/create_product_property', 'Admin\ProductPropertyController@store');
+Route::get('admin/edit_product_property/{id}', 'Admin\ProductPropertyController@edit');
+Route::post('admin/update_product_property', 'Admin\ProductPropertyController@update');
+Route::get('admin/delete_product_property/{id}', 'Admin\ProductPropertyController@destroy');
 
 
 Route::get('/admin/userPermission', 'Admin\UserPermissionController@index');
