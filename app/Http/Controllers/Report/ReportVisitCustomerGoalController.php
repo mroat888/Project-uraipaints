@@ -41,17 +41,17 @@ class ReportVisitCustomerGoalController extends Controller
 
                 $cus_result_failed = DB::table('customer_history_contacts')
                     ->where('monthly_plan_id', $monthly_plans->id)
-                    ->where('cust_history_result_status' , 0) // 0 = ไม่สนใจ | 1 = รอตัดสินใจ | 2 = สนใจ	
+                    ->where('cust_history_result_status' , 0) // 0 = ไม่สนใจ | 1 = รอตัดสินใจ | 2 = สนใจ
                     ->count();
-                
+
                 $cus_result_in_process = DB::table('customer_history_contacts')
                     ->where('monthly_plan_id', $monthly_plans->id)
-                    ->where('cust_history_result_status' , 1) // 0 = ไม่สนใจ | 1 = รอตัดสินใจ | 2 = สนใจ	
+                    ->where('cust_history_result_status' , 1) // 0 = ไม่สนใจ | 1 = รอตัดสินใจ | 2 = สนใจ
                     ->count();
 
                 $cus_result_success = DB::table('customer_history_contacts')
                     ->where('monthly_plan_id', $monthly_plans->id)
-                    ->where('cust_history_result_status' , 2) // 0 = ไม่สนใจ | 1 = รอตัดสินใจ | 2 = สนใจ	
+                    ->where('cust_history_result_status' , 2) // 0 = ไม่สนใจ | 1 = รอตัดสินใจ | 2 = สนใจ
                     ->count();
 
 
@@ -63,7 +63,7 @@ class ReportVisitCustomerGoalController extends Controller
                     $percent_failed = 0;
                 }
 
-                
+
                 //--- ผลรวม
                 $sum_count_shop = $sum_count_shop + $count_shop;
                 $sum_result_failed = $sum_result_failed + $cus_result_failed;
@@ -82,7 +82,7 @@ class ReportVisitCustomerGoalController extends Controller
             }
 
             $report[$i] = [
-                'month' => $i, 
+                'month' => $i,
                 'count_shop' => $count_shop,
                 'cus_result_failed' => $cus_result_failed,
                 'cus_result_in_process' => $cus_result_in_process,
@@ -104,7 +104,7 @@ class ReportVisitCustomerGoalController extends Controller
 
         $summary_report = [
             'sum_count_shop' => $sum_count_shop,
-            'sum_result_failed' => $sum_result_failed, 
+            'sum_result_failed' => $sum_result_failed,
             'sum_result_in_process' => $sum_result_in_process,
             'sum_result_success' => $sum_result_success,
             'sum_shop_updatestatus' => $sum_shop_updatestatus,

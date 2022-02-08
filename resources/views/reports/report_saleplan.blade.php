@@ -51,40 +51,70 @@
                                         </tr>
                                         <tr>
                                             <th>งาน</th>
+                                            <th>รอดำเนินการ</th>
                                             <th>สำเร็จ</th>
                                             <th>ไม่สำเร็จ</th>
-                                            <th>ลูกค้าใหม่</th>
                                             <th>สำเร็จ</th>
                                             <th>ไม่สำเร็จ</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($monthly_plan as $key => $month)
-                                            <?php $success = App\SalePlan::join('sale_plan_results', 'sale_plans.id', 'sale_plan_results.sale_plan_id')
-                                            ->where('sale_plans.monthly_plan_id', $month->id)->where('sale_plan_status', 2)->count();
+                                        <?php
+                                            $month_array = [
+                                            'มกราคม', 'กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน',
+                                            'กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'
+                                        ];
 
-                                            ?>
+                                        $total_saleplan = 0;
+                                        $total_saleplan_in_process = 0;
+                                        $total_saleplan_success = 0;
+                                        $total_saleplan_failed = 0;
+
+                                        for($i = 1; $i <= 12; $i++ ){
+
+                                            if($report[$i]['count_saleplan'] != "-"){
+                                                $total_saleplan =  $total_saleplan + $report[$i]['count_saleplan'];
+                                            }
+                                            if($report[$i]['saleplan_result_in_process'] != "-"){
+                                                $total_saleplan_in_process =  $total_saleplan_in_process + $report[$i]['saleplan_result_in_process'];
+                                            }
+                                            if($report[$i]['saleplan_result_success'] != "-"){
+                                                $total_saleplan_success =  $total_saleplan_success + $report[$i]['saleplan_result_success'];
+                                            }
+                                            if($report[$i]['saleplan_result_failed'] != "-"){
+                                                $total_saleplan_failed =  $total_saleplan_failed + $report[$i]['saleplan_result_failed'];
+                                            }
+
+                                        ?>
                                             <tr>
-                                                <th scope="row">{{ $key + 1 }}</th>
-                                                <td><?php echo thaidate('F', $month->month_date); ?></td>
-                                                <td><span class="text-success">3</span> </td>
-                                                <td><span class="text-success">1</span> </td>
-                                                <td><span class="text-danger">2</span> </td>
-                                                <td><span class="text-success">1</span> </td>
-                                                <td><span class="text-success">80%</span> </td>
-                                                <td><span class="text-danger">20%</span> </td>
+                                                <th scope="row"><?php echo $i; ?></th>
+                                                <td><?php echo $month_array[$i-1]; ?></td>
+                                                <td><span class="text-success"><?php echo $report[$i]['count_saleplan']; ?></span> </td>
+                                                <td><span class="text-secondary"><?php echo $report[$i]['saleplan_result_in_process']; ?></span> </td>
+                                                <td><span class="text-success"><?php echo $report[$i]['saleplan_result_success']; ?></span> </td>
+                                                <td><span class="text-danger"><?php echo $report[$i]['saleplan_result_failed']; ?></span> </td>
+                                                <td><span class="text-success"><?php echo $report[$i]['percent_success']; ?>%</span> </td>
+                                                <td><span class="text-danger"><?php echo $report[$i]['percent_failed']; ?>%</span> </td>
                                             </tr>
-                                        @endforeach
+                                            <?php
+                                                }
 
+                                                $sum_saleplan = 0;
+
+                                                $sum_saleplan = $sum_saleplan + $total_saleplan; // จำนวน saleplan ทั้งหมด
+                                                $percent_success = ($total_saleplan_success*100)/$sum_saleplan;
+                                                $percent_failed = ($total_saleplan_failed*100)/$sum_saleplan;
+                                            ?>
                                     </tbody>
                                     <tfoot style="font-weight: bold;">
                                         <td colspan="2" align="center">ทั้งหมด</td>
-                                        <td class="text-success">36</td>
-                                        <td class="text-success">12</td>
-                                        <td class="text-danger">24</td>
-                                        <td class="text-success">12</td>
-                                        <td class="text-success">60%</td>
-                                        <td class="text-danger">48%</td>
+                                        <td class="text-success"><?php echo $total_saleplan; ?></td>
+                                        <td class="text-secondary"><?php echo $total_saleplan_in_process; ?></td>
+                                        <td class="text-success"><?php echo $total_saleplan_success; ?></td>
+                                        <td class="text-danger"><?php echo $total_saleplan_failed; ?></td>
+                                        {{-- <td class="text-success">12</td> --}}
+                                        <td class="text-success"><?php echo @round($percent_success); ?>%</td>
+                                        <td class="text-danger"><?php echo @round($percent_failed); ?>%</td>
                                         {{-- <td class="text-success"></td> --}}
                                     </tfoot>
                                 </table>

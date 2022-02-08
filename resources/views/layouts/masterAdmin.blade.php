@@ -416,15 +416,15 @@
                                     <li class="nav-item">
                                         <ul class="nav flex-column">
                                             <li class="nav-item">
-                                                <a class="nav-link" href="{{ url('#') }}">
+                                                <a class="nav-link" href="{{ url('admin/product_new') }}">
                                                     <i class="ion ion-md-star" style="color: #044067;"></i>
                                                     <span class="nav-link-text">สินค้าใหม่</span>
                                                 </a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link" href="{{ url('#') }}">
+                                                <a class="nav-link" href="{{ url('admin/product_property') }}">
                                                     <i class="ion ion-md-wallet" style="color: #044067;"></i>
-                                                    <span class="nav-link-text">บันทึกคุณสมบัติสินค้า</span>
+                                                    <span class="nav-link-text">คุณสมบัติสินค้า</span>
                                                 </a>
                                             </li>
                                             <li class="nav-item">
@@ -453,7 +453,7 @@
                                             </li>
                                             <li class="nav-item">
                                                 <a class="nav-link" href="{{ url('admin/teamSales') }}">
-                                                    <i class="ion ion-md-pie" style="color: #044067;"></i>
+                                                    <i class="ion ion-md-people" style="color: #044067;"></i>
                                                     <span class="nav-link-text">กลุ่มและทีม</span>
                                                 </a>
                                             </li>
@@ -469,7 +469,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#master">
-                                    <i class="ion ion-md-options" style="color: #044067;"></i>
+                                    <i class="ion ion-md-folder-open" style="color: #044067;"></i>
                                     <span class="nav-link-text">มาสเตอร์</span>
                                 </a>
                                 <ul id="master" class="nav flex-column collapse collapse-level-1">
@@ -477,19 +477,19 @@
                                         <ul class="nav flex-column">
                                             <li class="nav-item">
                                                 <a class="nav-link" href="{{ url('admin/userPermission') }}">
-                                                    <i class="ion ion-md-person" style="color: #044067;"></i>
+                                                    <i class="ion ion-md-create" style="color: #044067;"></i>
                                                     <span class="nav-link-text">จุดประสงค์ ขอนุมัติ</span>
                                                 </a>
                                             </li>
                                             <li class="nav-item">
                                                 <a class="nav-link" href="{{ url('admin/checkHistory') }}">
-                                                    <i class="ion ion-md-pie" style="color: #044067;"></i>
+                                                    <i class="ion ion-md-book" style="color: #044067;"></i>
                                                     <span class="nav-link-text">จุดประสงค์ แผนงาน</span>
                                                 </a>
                                             </li>
                                             <li class="nav-item">
                                                 <a class="nav-link" href="{{ url('admin/checkHistory') }}">
-                                                    <i class="ion ion-md-pie" style="color: #044067;"></i>
+                                                    <i class="ion ion-md-list" style="color: #044067;"></i>
                                                     <span class="nav-link-text">รายการนำเสนอ แผนงาน</span>
                                                 </a>
                                             </li>
@@ -656,6 +656,8 @@
     <!-- Init JavaScript -->
     <script src="{{ asset('public/template/dist/js/init.js') }}"></script>
     <script src="{{ asset('public/template/dist/js/gmap-data.js') }}"></script>
+
+    <script src="{{ asset('https://unpkg.com/sweetalert/dist/sweetalert.min.js')}}"></script>
 
     @yield('scripts')
 
