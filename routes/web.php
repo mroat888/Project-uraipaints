@@ -258,7 +258,6 @@ Route::post('/admin/userPermissionCreate', 'Admin\UserPermissionController@store
 Route::get('/admin/userPermissionEdit/{id}', 'Admin\UserPermissionController@edit');
 Route::post('/admin/userPermissionUpdate', 'Admin\UserPermissionController@update');
 
-
 Route::get('admin/checkHistory', function () { return view('admin.check_history'); });
 
 Route::get('/admin/reportcustomer', function () { return view('reports.report_customer_admin'); });
@@ -268,6 +267,14 @@ Route::get('/admin/reportSaleplan', function () { return view('reports.report_sa
 Route::get('/admin/report_visitcustomer_goal', function () { return view('reports.report_visitcustomer_goal_admin'); });
 Route::get('/admin/visitCustomer', function () { return view('reports.report_visitcustomer_admin'); });
 Route::get('/admin/reportYear', function () { return view('reports.report_year_admin'); });
+
+
+Route::get('admin/teamSales', 'Admin\TeamSaleController@index');
+Route::post('admin/teamsalesCreate', 'Admin\TeamSaleController@store');
+Route::get('admin/teamsalesEdit/{id}', 'Admin\TeamSaleController@edit');
+Route::post('admin/teamsalesUpdate', 'Admin\TeamSaleController@update');
+
+
 
 // });
 
