@@ -16,36 +16,36 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use App\Http\Controllers\Api\ApiController;
 
 class ApprovalSalePlanController extends Controller
 {
 
+    public function __construct(){
+        $this->apicontroller = new ApiController();
+    }
+
     public function index()
     {
 
-        $data['monthly_plan'] = MonthlyPlan::join('users', 'monthly_plans.created_by', '=', 'users.id')
-            ->where('monthly_plans.status_approve', 1)->select('users.name', 'monthly_plans.*')->get();
+        $users = DB::table('users')->where('id', Auth::user()->id)->first();
 
+        $data['monthly_plan'] = DB::table('monthly_plans')
+        ->join('users', 'users.id', 'monthly_plans.created_by')
+        ->where('monthly_plans.status_approve', 1)
+        ->where('users.team_id', $users->team_id)
+        ->select(
+            'users.*', 
+            'monthly_plans.*'
+        )
+        ->get();
 
         return view('leadManager.approval_saleplan', $data);
-        // return $data['monthly_plan'];
+
     }
 
     public function approvalsaleplan_detail($id)
     {
-        // $id คือรหัสของ monthly_plan
-        // return $id;
-
-
-        // -----  API Login ----------- //
-        $response = Http::post('http://49.0.64.92:8020/api/auth/login', [
-            'username' => 'apiuser',
-            'password' => 'testapi',
-        ]);
-        $res = $response->json();
-        $api_token = $res['data'][0]['access_token'];
-        $data['api_token'] = $res['data'][0]['access_token'];
-        //--- End Api Login ------------ //
 
         // ข้อมูล Sale plan
         $data['list_saleplan'] = DB::table('sale_plans')
@@ -54,23 +54,12 @@ class ApprovalSalePlanController extends Controller
         ->whereIn('sale_plans_status', [1, 2, 3])
         ->orderBy('id', 'desc')->get();
 
-        // $data['list_saleplan'] = DB::table('sale_plans')
-        //     ->leftjoin('customer_shops', 'sale_plans.customer_shop_id', '=', 'customer_shops.id')
-        //     ->leftjoin('users', 'sale_plans.created_by', '=', 'users.id')
-        //     ->leftjoin('sale_plan_results', 'sale_plans.id', '=', 'sale_plan_results.sale_plan_id')
-        //     ->where('sale_plans.sale_plans_status', 1)
-        //     ->where('sale_plans.monthly_plan_id', $id)
-        //     ->select(
-        //         'users.name',
-        //         'sale_plan_results.sale_plan_status',
-        //         'customer_shops.shop_name',
-        //         'customer_shops.shop_saleplan_date',
-        //         'sale_plans.*'
-        //     )
-        //     ->orderBy('id', 'desc')->get();
-
+        // -----  API  //
+        $api_token = $this->apicontroller->apiToken(); // API Login 
         // -----  API ลูกค้าที่ sale ดูแล ----------- //
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers');
+        $mon_plan = DB::table('monthly_plans')->where('id', $id)->first(); // ค้นหา id ผู้ขออนุมัติ
+        $user_api = DB::table('users')->where('id',$mon_plan->created_by)->first(); // ค้นหา user api เพื่อใช้ดึง api
+        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/sellers/'.$user_api->api_identify.'/customers');
         $res_api = $response->json();
 
         $data['customer_api'] = array();
@@ -97,12 +86,13 @@ class ApprovalSalePlanController extends Controller
         ->get();
 
         // เยี่ยมลูกค้า
-        $customer_visits = CustomerVisit::where('customer_visits.created_by', Auth::user()->id)
-            ->where('customer_visits.monthly_plan_id', $id)
+        $customer_visits = DB::table('customer_visits')
+            ->where('monthly_plan_id', $id)
             ->select('customer_visits.*')
             ->orderBy('id', 'desc')->get();
-
+        
         $data['customer_visit_api'] = array();
+
         foreach($customer_visits as $key => $cus_visit){
 
             foreach ($res_api['data'] as $key_api => $value_api) {
@@ -113,13 +103,15 @@ class ApprovalSalePlanController extends Controller
                         'id' => $cus_visit->id,
                         'identify' => $res_visit_api['identify'],
                         'shop_name' => $res_visit_api['title']." ".$res_visit_api['name'],
-                        'shop_address' => $res_visit_api['address1']." ".$res_visit_api['adrress2'],
+                        'shop_address' => $res_visit_api['amphoe_name']." ".$res_visit_api['province_name'],
                         'shop_phone' => $res_visit_api['telephone'],
                         'shop_mobile' => $res_visit_api['mobile'],
                     ];
                 }
             }
         }
+
+        
 
         return view('leadManager.approval_saleplan_detail', $data);
     }
