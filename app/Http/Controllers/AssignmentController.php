@@ -20,9 +20,8 @@ class AssignmentController extends Controller
         ->select('assignments.*', 'users.name')
         ->orderBy('assignments.id', 'desc')->get();
 
-        $user_team = DB::table('users')->where('id',Auth::user()->id)->first(); // ค้นหาทีม user 
         $users = DB::table('users')
-            ->where('team_id', $user_team->team_id)
+            ->where('team_id', Auth::user()->team_id)
             ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
             ->get();
 
@@ -150,9 +149,8 @@ class AssignmentController extends Controller
     {
         $dataEdit = Assignment::find($id);
         // $dataUser = DB::table('users')->get();
-        $user_team = DB::table('users')->where('id',Auth::user()->id)->first(); // ค้นหาทีม user 
         $dataUser = DB::table('users')
-            ->where('team_id', $user_team->team_id)
+            ->where('team_id', Auth::user()->team_id)
             ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
             ->get();
 

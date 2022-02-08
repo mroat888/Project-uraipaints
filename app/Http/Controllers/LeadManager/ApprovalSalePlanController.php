@@ -27,13 +27,10 @@ class ApprovalSalePlanController extends Controller
 
     public function index()
     {
-
-        $users = DB::table('users')->where('id', Auth::user()->id)->first();
-
         $data['monthly_plan'] = DB::table('monthly_plans')
         ->join('users', 'users.id', 'monthly_plans.created_by')
         ->where('monthly_plans.status_approve', 1)
-        ->where('users.team_id', $users->team_id)
+        ->where('users.team_id', Auth::user()->team_id)
         ->select(
             'users.*', 
             'monthly_plans.*'

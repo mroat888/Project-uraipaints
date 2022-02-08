@@ -281,7 +281,7 @@ Route::post('admin/teamsalesUpdate', 'Admin\TeamSaleController@update');
 //report
 Route::get('/leadManage/reportcustomer', function () { return view('reports.report_customer'); });
 Route::get('/leadManage/reportStore', function () { return view('reports.report_store'); });
-Route::get('/leadManage/reportTeam', function () { return view('reports.report_team'); });
+Route::get('/leadManage/reportTeam', 'LeadManager\ReportTeamController@index');
 Route::get('/leadManage/reportSaleplan', function () { return view('reports.report_saleplan_lead'); });
 Route::get('/leadManage/reportYear', function () { return view('reports.report_year'); });
 

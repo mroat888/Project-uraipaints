@@ -16,12 +16,10 @@ class ApprovalController extends Controller
 
     public function index()
     {
-        $user_team = DB::table('users')->where('id',Auth::user()->id)->first(); // ค้นหา user api เพื่อใช้ดึง api
-
         $data['request_approval'] = DB::table('assignments')
         ->join('users', 'assignments.created_by', '=', 'users.id')
         ->where('assignments.assign_status', 0)
-        ->where('users.team_id', $user_team->team_id)
+        ->where('users.team_id', Auth::user()->team_id)
         ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
         ->select('assignments.created_by')
         ->distinct()->get();
@@ -30,13 +28,11 @@ class ApprovalController extends Controller
     }
 
     public function approval_history()
-    {
-        $user_team = DB::table('users')->where('id',Auth::user()->id)->first(); // ค้นหา user api เพื่อใช้ดึง api
-        
+    {  
         $data['approval_history'] = DB::table('assignments')
         ->join('users', 'assignments.created_by', '=', 'users.id')
         ->whereNotIn('assignments.assign_status', [0, 3])
-        ->where('users.team_id', $user_team->team_id)
+        ->where('users.team_id', Auth::user()->team_id)
         ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
         ->select(
             'users.name',
