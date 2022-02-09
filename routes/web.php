@@ -290,6 +290,24 @@ Route::post('admin/teamsalesCreate', 'Admin\TeamSaleController@store');
 Route::get('admin/teamsalesEdit/{id}', 'Admin\TeamSaleController@edit');
 Route::post('admin/teamsalesUpdate', 'Admin\TeamSaleController@update');
 
+// Master
+Route::get('admin/master_present_saleplan', 'Admin\MasterPresentSaleplanController@index');
+Route::post('admin/create_master_present_saleplan', 'Admin\MasterPresentSaleplanController@store');
+Route::get('/admin/edit_master_present_saleplan/{id}', 'Admin\MasterPresentSaleplanController@edit');
+Route::post('/admin/update_master_present_saleplan', 'Admin\MasterPresentSaleplanController@update');
+Route::get('admin/delete_master_present_saleplan/{id}', 'Admin\MasterPresentSaleplanController@destroy');
+
+Route::get('admin/master_assignment', 'Admin\MasterAssignmentController@index');
+Route::post('admin/create_master_assignment', 'Admin\MasterAssignmentController@store');
+Route::get('/admin/edit_master_assignment/{id}', 'Admin\MasterAssignmentController@edit');
+Route::post('/admin/update_master_assignment', 'Admin\MasterAssignmentController@update');
+Route::get('admin/delete_master_assignment/{id}', 'Admin\MasterAssignmentController@destroy');
+
+Route::get('admin/master_objective_saleplan', 'Admin\MasterObjectiveSaleplanController@index');
+Route::post('admin/create_master_objective_saleplan', 'Admin\MasterObjectiveSaleplanController@store');
+Route::get('/admin/edit_master_objective_saleplan/{id}', 'Admin\MasterObjectiveSaleplanController@edit');
+Route::post('/admin/update_master_objective_saleplan', 'Admin\MasterObjectiveSaleplanController@update');
+Route::get('admin/delete_master_objective_saleplan/{id}', 'Admin\MasterObjectiveSaleplanController@destroy');
 
 
 // });

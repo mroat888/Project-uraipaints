@@ -476,19 +476,19 @@
                                     <li class="nav-item">
                                         <ul class="nav flex-column">
                                             <li class="nav-item">
-                                                <a class="nav-link" href="{{ url('admin/userPermission') }}">
+                                                <a class="nav-link" href="{{ url('admin/master_assignment') }}">
                                                     <i class="ion ion-md-create" style="color: #044067;"></i>
                                                     <span class="nav-link-text">จุดประสงค์ ขอนุมัติ</span>
                                                 </a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link" href="{{ url('admin/checkHistory') }}">
+                                                <a class="nav-link" href="{{ url('admin/master_objective_saleplan') }}">
                                                     <i class="ion ion-md-book" style="color: #044067;"></i>
                                                     <span class="nav-link-text">จุดประสงค์ แผนงาน</span>
                                                 </a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link" href="{{ url('admin/checkHistory') }}">
+                                                <a class="nav-link" href="{{ url('admin/master_present_saleplan') }}">
                                                     <i class="ion ion-md-list" style="color: #044067;"></i>
                                                     <span class="nav-link-text">รายการนำเสนอ แผนงาน</span>
                                                 </a>
