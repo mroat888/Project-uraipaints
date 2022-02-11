@@ -22,13 +22,6 @@ class RequestApprovalController extends Controller
         ->select('assignments.*', 'assignments_comments.assign_id')
         ->orderBy('assignments.assign_request_date', 'asc')->distinct()->get();
         return view('saleman.requestApproval', compact('list_approval'));
-
-        // $list_approval = RequestApproval::leftjoin('assignments_comments', 'assignments.id', 'assignments_comments.assign_id')
-        // ->where('assignments.approved_for', Auth::user()->id)->whereNotIn('assignments.assign_status', [3])
-        // ->select('assignments.*', 'assignments_comments.assign_id')
-        // ->orderBy('assignments.assign_request_date', 'asc')->get();
-        // return view('saleman.requestApproval', compact('list_approval'));
-
     }
 
     public function store(Request $request)

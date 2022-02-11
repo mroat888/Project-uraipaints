@@ -88,10 +88,6 @@
                                                                 <span class="btn-icon-wrap"><i
                                                                         data-feather="feather"></i></span></a>
                                                             @endif
-
-                                                            <button class="btn btn-icon btn-primary mr-10">
-                                                                <span class="btn-icon-wrap"><i
-                                                                        data-feather="feather"></i></span></button>
                                                             <button onclick="edit_modal({{ $value->id }})"
                                                                 class="btn btn-icon btn-warning mr-10" data-toggle="modal"
                                                                 data-target="#editNote">
@@ -135,6 +131,11 @@
                                     required>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="username">รายละเอียด</label>
+                            <textarea class="form-control" id="address" cols="30" rows="5" placeholder=""
+                                name="note_detail" type="text"> </textarea>
+                        </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ป้ายกำกับ</label>
@@ -147,14 +148,7 @@
                                     </optgroup>
                                 </select>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="username">รายละเอียด</label>
-                            <textarea class="form-control" id="address" cols="30" rows="5" placeholder=""
-                                name="note_detail" type="text"> </textarea>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4 form-group">
+                            <div class="col-md-6 form-group">
                                 <label for="firstName">วันที่แจ้งเตือน</label>
                                 <input type="date" class="form-control" placeholder="" name="note_date" min="<?= date('Y-m-d') ?>">
                             </div>
@@ -188,25 +182,23 @@
                                 <input class="form-control" name="note_title" id="get_title" type="text" required>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label for="firstName">ป้ายกำกับ</label>
-                                <select class="select2 select2-multiple form-control" multiple="multiple" name="note_tags"  id="get_tags">
-                                    <optgroup id="get_tags">
-                                        <option value="AK">เพิ่มเติม</option>
-                                        <option value="HI">เข้าพบลูกค้า</option>
-                                        <option value="HB">งานใหม่</option>
-                                    </optgroup>
-                                </select>
-                            </div>
-                        </div>
                         <div class="form-group">
                             <label for="username">รายละเอียด</label>
                             <textarea class="form-control" id="get_detail" cols="30" rows="5" name="note_detail"
                                 type="text"></textarea>
                         </div>
                         <div class="row">
-                            <div class="col-md-4 form-group">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">ป้ายกำกับ</label>
+                                <select class="select2 select2-multiple form-control" multiple="multiple" name="note_tags"  id="get_tags">
+                                    {{-- <optgroup id="get_tags">
+                                        <option value="1">เพิ่มเติม</option>
+                                        <option value="2">เข้าพบลูกค้า</option>
+                                        <option value="3">งานใหม่</option>
+                                    </optgroup> --}}
+                                </select>
+                            </div>
+                            <div class="col-md-6 form-group">
                                 <label for="firstName">วันที่แจ้งเตือน</label>
                                 <input type="date" class="form-control" id="get_date" name="note_date" min="<?= date('Y-m-d') ?>">
                             </div>
@@ -236,7 +228,14 @@
                     $('#get_date').val(data.dataEdit.note_date);
                     $('#get_title').val(data.dataEdit.note_title);
                     $('#get_detail').val(data.dataEdit.note_detail);
-                    $('#get_tags').val(data.dataEdit.note_tags);
+                    // $('#get_tags').val(data.dataEdit.note_tags);
+                    $('#get_tags').html(
+                                    "<optgroup label='กรุณาเลือก'>"+
+                                        "<option value='AK' selected>"+ data.dataEdit.note_tags +"</option>"+
+                                        "<option value='AK'>เพิ่มเติม</option>"+
+                                        "<option value='HI'>เข้าพบลูกค้า</option>"+
+                                        "<option value='HB'>งานใหม่</option>"+
+                                    "</optgroup>");
 
                     $('#editNote').modal('toggle');
                 }

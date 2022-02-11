@@ -51,8 +51,8 @@
         </div>
 
 
-        {{-- <div class="container-fluid px-xxl-65 px-xl-20">
-            <div class="mt-30 mb-30"> --}}
+        <div class="container-fluid px-xxl-65 px-xl-20">
+            {{-- <div class="mt-30 mb-30"> --}}
             <div class="row">
                 <div class="col-md-8">
                     <section class="hk-sec-wrapper">
@@ -329,8 +329,8 @@
                         </div>
                     </section>
                     </div>
-            {{-- </div>
-            </div> --}}
+            {{-- </div> --}}
+            </div>
 
 
         <div class="mt-30 mb-30">
@@ -577,7 +577,8 @@
                                                     <th>#</th>
                                                     <th>เรื่อง</th>
                                                     <th>ลูกค้า</th>
-                                                    <th>สถานะ</th>
+                                                    <th>อำเภอ,จังหวัด</th>
+                                                    <th>ความเห็น ผจก.</th>
                                                     <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
@@ -586,14 +587,16 @@
                                                     <tr>
                                                         <td>{{ $key + 1}}</td>
                                                         <!-- <td>{{$value->id}}</td> -->
-                                                        <td><span class="topic_purple">{{ $value->sale_plans_title }}</span></td>
+                                                        <td><span class="topic_purple">{!! Str::limit($value->sale_plans_title, 20) !!}</span></td>
                                                         <td>
                                                             @foreach($customer_api as $key_api => $value_api)
                                                                 @if($customer_api[$key_api]['id'] == $value->customer_shop_id)
-                                                                    {{ $customer_api[$key_api]['shop_name'] }}
+                                                                {!! Str::limit($customer_api[$key_api]['shop_name'], 25) !!}
+                                                                    {{-- {{ $customer_api[$key_api]['shop_name'] }} --}}
                                                                 @endif
                                                             @endforeach
                                                         </td>
+                                                        <td></td>
                                                         <td><span class="badge badge-soft-indigo" style="font-size: 12px;">Comment</span></td>
                                                         <td style="text-align:center">
                                                             <div class="button-list">
@@ -660,7 +663,8 @@
                                                     <th>#</th>
                                                     <th>ชื่อร้าน</th>
                                                     <th>อำเภอ,จังหวัด</th>
-                                                    <th>สถานะ</th>
+                                                    <th>วัตถุประสงค์</th>
+                                                    {{-- <th>สถานะ</th> --}}
                                                     <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
@@ -670,8 +674,7 @@
                                                     <td>{{$key + 1}}</td>
                                                     <td>{{$value->shop_name}}</td>
                                                     <td>{{$value->PROVINCE_NAME}}</td>
-                                                    <td><span class="badge badge-soft-indigo mt-15 mr-10"
-                                                        style="font-size: 12px;">ลูกค้าใหม่</span></td>
+                                                    <td></td>
                                                     <td style="text-align:center;">
                                                         <div class="button-list">
                                                             @php
@@ -735,7 +738,7 @@
                                                 <tr>
                                                     <th>#</th>
                                                     <th>ชื่อร้าน</th>
-                                                    <th>ที่อยู่</th>
+                                                    <th>อำเภอ,จังหวัด</th>
                                                     <th>วันสำคัญ</th>
                                                     <th>สถานะ</th>
                                                     <th class="text-center">Action</th>
@@ -747,8 +750,8 @@
 
                                                     <tr>
                                                         <td>{{ $no++ }}</td>
-                                                        <td>{{ $customer_visit_api[$key]['shop_name'] }}</td>
-                                                        <td>{{ $customer_visit_api[$key]['shop_address'] }}</td>
+                                                        <td>{!! Str::limit($customer_visit_api[$key]['shop_name'], 20) !!}</td>
+                                                        <td></td>
                                                         <td>-</td>
                                                         <td>
                                                             @if ($customer_visit_api[$key]['visit_status'] == 0)

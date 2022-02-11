@@ -241,8 +241,7 @@
                                                     <th>#</th>
                                                     <th>เรื่อง</th>
                                                     <th>ลูกค้า</th>
-                                                    {{-- <th>ความคิดเห็น</th> --}}
-                                                    <th>การอนุมัติ</th>
+                                                    <th>อำเภอ,จังหวัด</th>
                                                     <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
@@ -250,18 +249,22 @@
                                                 @foreach ($list_saleplan as $key => $value)
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
-                                                        <td>{{ $value->sale_plans_title }}</td>
+                                                        <td>{!! Str::limit($value->sale_plans_title, 20) !!}</td>
                                                         <td>
                                                             @foreach($customer_api as $key_api => $value_api)
                                                                 @if($customer_api[$key_api]['id'] == $value->customer_shop_id)
-                                                                    {{ $customer_api[$key_api]['shop_name'] }}
+                                                                    {!! Str::limit($customer_api[$key_api]['shop_name'], 25) !!}
+                                                                    {{-- {{ $customer_api[$key_api]['shop_name'] }} --}}
                                                                 @endif
                                                             @endforeach
                                                         </td>
                                                         <td>
+
+                                                        </td>
+                                                        {{-- <td>
                                                             @if ($value->saleplan_id)
                                                             <span class="badge badge-soft-indigo mt-15 mr-10" style="font-size: 12px;">Comment</span>
-                                                            @endif
+                                                            @endif --}}
                                                             @php
                                                                 switch($value->sale_plans_status){
                                                                     case 0 :    $text_status = "Draf";
@@ -282,10 +285,10 @@
                                                                         break;
                                                                 }
                                                             @endphp
-                                                            <span class="badge {{ $badge_color }} mt-15 mr-10"style="font-size: 12px;">
+                                                            {{-- <span class="badge {{ $badge_color }} mt-15 mr-10"style="font-size: 12px;">
                                                                 {{ $text_status }}
                                                             </span>
-                                                        </td>
+                                                        </td> --}}
                                                         <td style="text-align:center">
                                                             <div class="button-list">
                                                                 @if ($value->saleplan_id)
@@ -349,7 +352,7 @@
                                                     <th>ชื่อร้าน</th>
                                                     <th>อำเภอ,จังหวัด</th>
                                                     <th>สถานะ</th>
-                                                    <th>อนุมัติ</th>
+                                                    {{-- <th>อนุมัติ</th> --}}
                                                     <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
@@ -368,7 +371,7 @@
                                                             <span class="badge badge-soft-indigo mt-15 mr-10"
                                                                 style="font-size: 12px;">ลูกค้าใหม่</span>
                                                         </td>
-                                                        <td>
+                                                        {{-- <td> --}}
                                                             @php
                                                                 switch($value->shop_aprove_status){
                                                                     case 0 :    $text_status = "Draf";
@@ -389,10 +392,10 @@
                                                                         break;
                                                                 }
                                                             @endphp
-                                                            <span class="badge {{ $badge_color }} mt-15 mr-10"style="font-size: 12px;">
+                                                            {{-- <span class="badge {{ $badge_color }} mt-15 mr-10"style="font-size: 12px;">
                                                                 {{ $text_status }}
                                                             </span>
-                                                        </td>
+                                                        </td> --}}
                                                         <td style="text-align:center">
                                                             <div class="button-list">
                                                                 <button class="btn btn-icon btn-warning mr-10 btn_editshop"
@@ -445,7 +448,7 @@
                                                 <tr>
                                                     <th>#</th>
                                                     <th>ชื่อร้าน</th>
-                                                    <th>ที่อยู่</th>
+                                                    <th>อำเภอ,จังหวัด</th>
                                                     <th>วันสำคัญ</th>
                                                     <th class="text-center">Action</th>
                                                 </tr>

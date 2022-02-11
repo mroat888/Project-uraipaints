@@ -142,26 +142,32 @@
                     <form id="form_insert_request_approval" enctype="multipart/form-data">
                     @csrf
                 <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="firstName">ขออนุมัติสำหรับ</label>
+                                <select class="form-control custom-select" name="approved_for" required>
+                                    <option selected disabled>กรุณาเลือก</option>
+                                    <option value="1">เพื่อทราบ/For your informatiion</option>
+                                    <option value="2">ความคิดเห็นของท่าน/For your informatiion</option>
+                                    <option value="3">เพื่อการอนุมัติของท่าน/For your approval </option>
+                                </select>
+                        </div>
+                    </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">หัวข้อ / เรื่อง</label>
                                 <input class="form-control" placeholder="กรุณาใส่หัวข้อ / เรื่อง" name="assign_title" type="text" required>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">วันที่ / Date</label>
                                 <input class="form-control" type="date" name="assign_work_date" min="<?= date('Y-m-d') ?>" required>
                             </div>
-
-                            <div class="col-md-6 form-group">
-                                <label for="firstName">ขออนุมัติสำหรับ</label>
-                                    <select class="form-control custom-select" name="approved_for" required>
-                                        <option selected disabled>กรุณาเลือก</option>
-                                        <option value="1">เพื่อทราบ/For your informatiion</option>
-                                        <option value="2">ความคิดเห็นของท่าน/For your informatiion</option>
-                                        <option value="3">เพื่อการอนุมัติของท่าน/For your approval </option>
-                                    </select>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label for="username">รายละเอียด</label>
+                                <textarea class="form-control" cols="30" rows="5" placeholder="กรุณาใส่รายละเอียด" name="assign_detail"
+                                    type="text" required></textarea>
                             </div>
                         </div>
                             <div class="row">
@@ -172,11 +178,6 @@
                                         <label class="custom-control-label" for="customCheck1">ขออนุมัติด่วน</label>
                                     </div>
                                 </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="username">รายละเอียด</label>
-                            <textarea class="form-control" cols="30" rows="5" placeholder="กรุณาใส่รายละเอียด" name="assign_detail"
-                                type="text" required></textarea>
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -203,17 +204,6 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-6 form-group">
-                                <label for="firstName">หัวข้อ / เรื่อง</label>
-                                <input class="form-control" placeholder="กรุณาใส่หัวข้อ / เรื่อง" name="assign_title" id="get_title" type="text" required>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label for="firstName">วันที่ / Date</label>
-                                <input class="form-control" type="date" name="assign_work_date" id="get_work_date" min="<?= date('Y-m-d') ?>" required>
-                            </div>
-
-                            <div class="col-md-6 form-group">
                                 <label for="firstName">ขออนุมัติสำหรับ</label>
                                     <select class="form-control custom-select" name="approved_for" id="get_for" required>
                                         <option selected disabled>เลือก</option>
@@ -221,6 +211,23 @@
                                         <option value="2">ความคิดเห็นของท่าน/For your informatiion</option>
                                         <option value="3">เพื่อการอนุมัติของท่าน/For your approval </option>
                                     </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">หัวข้อ / เรื่อง</label>
+                                <input class="form-control" placeholder="กรุณาใส่หัวข้อ / เรื่อง" name="assign_title" id="get_title" type="text" required>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">วันที่ / Date</label>
+                                <input class="form-control" type="date" name="assign_work_date" id="get_work_date" min="<?= date('Y-m-d') ?>" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label for="username">รายละเอียด</label>
+                                <textarea class="form-control" cols="30" rows="5" id="get_detail" name="assign_detail"
+                                    type="text" required></textarea>
                             </div>
                         </div>
                             <div class="row">
@@ -234,11 +241,7 @@
                                     </div>
                                 </div>
                         </div>
-                        <div class="form-group">
-                            <label for="username">รายละเอียด</label>
-                            <textarea class="form-control" cols="30" rows="5" id="get_detail" name="assign_detail"
-                                type="text" required></textarea>
-                        </div>
+
                         <input type="hidden" name="id" id="get_id">
                     </div>
                     <div class="modal-footer">

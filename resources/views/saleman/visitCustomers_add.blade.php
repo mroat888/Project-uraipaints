@@ -26,6 +26,24 @@ $customer_shops = DB::table('customer_shops')
         <form id="form_insert_visit" enctype="multipart/form-data">
             @csrf
         <div class="modal-body">
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label for="firstName">วันที่</label>
+                    <?php
+                        $nextmonth =date('Y-m-t', strtotime("+1 month")); //+ วันสุดท้ายเดือนหน้า
+                    ?>
+                    <input class="form-control" type="date" name="date" min="<?= date('Y-m-d') ?>" max="<?=$nextmonth?>"required/>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="objective">วัตถุประสงค์</label>
+                    <select class="form-control custom-select" name="visit_objective" required>
+                        <option selected>กรุณาเลือก</option>
+                        @foreach ($objective as $value)
+                        <option value="{{$value->id}}">{{$value->masobj_title}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
                 <div class="row">
                     <div class="col-md-6 form-group">
                         <label for="firstName">ค้นหาชื่อร้าน</label>
@@ -56,16 +74,8 @@ $customer_shops = DB::table('customer_shops')
                     <textarea class="form-control" id="visit_address" cols="30" rows="5" placeholder="" value=""
                         type="text" readonly> </textarea>
                 </div>
-                <div class="row">
-                <div class="col-md-6 form-group">
-                    <label for="firstName">วันที่</label>
-                    <?php
-                        $nextmonth =date('Y-m-t', strtotime("+1 month")); //+ วันสุดท้ายเดือนหน้า
-                    ?>
-                    <input class="form-control" type="date" name="date" min="<?= date('Y-m-d') ?>" max="<?=$nextmonth?>"required/>
-                </div>
-                </div>
-                <div class="row">
+
+                {{-- <div class="row">
                     <div class="form-group col-md-6">
                         <label for="username">รายการนำเสนอ</label>
                         <select class="form-control custom-select" name="product" required>
@@ -75,16 +85,8 @@ $customer_shops = DB::table('customer_shops')
                             <option value="3">Three</option>
                         </select>
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="objective">วัตถุประสงค์</label>
-                        <select class="form-control custom-select" name="visit_objective" required>
-                            <option selected>กรุณาเลือก</option>
-                            @foreach ($objective as $value)
-                            <option value="{{$value->id}}">{{$value->masobj_title}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
+
+                </div> --}}
                 <input type="hidden" name="id" value="{{-- $monthly_plan_id --}}">
         </div>
         <div class="modal-footer">
@@ -127,7 +129,7 @@ $customer_shops = DB::table('customer_shops')
                         showConfirmButton: false,
                         timer: 1500
                     })
-                }                
+                }
             },
             error: function(response){
                 console.log("error");

@@ -28,10 +28,21 @@
         {{-- <form action="{{ url('create_saleplan') }}" method="post" enctype="multipart/form-data"> --}}
             @csrf
         <div class="modal-body">
-                <div class="form-group">
+            <div class="row">
+                <div class="form-group col-md-6">
                     <label for="firstName">เรื่อง</label>
                     <input class="form-control" placeholder="กรุณาใส่ชื่อเรื่อง" type="text" name="sale_plans_title">
                 </div>
+                <div class="form-group col-md-6">
+                    <label for="username">วัตถุประสงค์</label>
+                    <select class="form-control custom-select" name="sale_plans_objective">
+                        <option selected>กรุณาเลือก</option>
+                        @foreach ($objective as $value)
+                        <option value="{{$value->id}}">{{$value->masobj_title}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
                 <div class="row">
                     <div class="col-md-6 form-group">
                         <label for="firstName">ค้นหาชื่อร้าน</label>
@@ -64,15 +75,7 @@
                     {{-- <label for="firstName">วันที่</label> --}}
                     <input class="form-control" type="hidden" name="sale_plans_date" min="<?= date('Y-m-d') ?>" value="<?= date('Y-m-d') ?>"/>
                 {{-- </div> --}}
-                <div class="form-group col-md-6">
-                    <label for="username">วัตถุประสงค์</label>
-                    <select class="form-control custom-select" name="sale_plans_objective">
-                        <option selected>กรุณาเลือก</option>
-                        @foreach ($objective as $value)
-                        <option value="{{$value->id}}">{{$value->masobj_title}}</option>
-                        @endforeach
-                    </select>
-                </div>
+
                 </div>
                 <div class="row">
                     <div class="col-md-12 form-group">
