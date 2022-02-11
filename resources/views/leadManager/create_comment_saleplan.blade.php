@@ -48,6 +48,7 @@
                                     </div>
                             </div>
                             <div class="modal-footer">
+                                <a href="{{ url('approvalsaleplan_detail', $createID) }}" type="button" class="btn btn-secondary">ย้อนกลับ</a>
                                 <button type="submit" class="btn btn-primary">บันทึก</button>
                             </div>
                             </form>
@@ -80,6 +81,7 @@
                                     </div>
                             </div>
                             <div class="modal-footer">
+                                <a href="{{ url('approvalsaleplan_detail', $createID) }}" type="button" class="btn btn-secondary">ย้อนกลับ</a>
                                 <button type="submit" class="btn btn-primary">บันทึก</button>
                             </div>
                             </form>
