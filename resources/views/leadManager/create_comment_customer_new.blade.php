@@ -47,9 +47,10 @@
                                         type="text">{{$data->customer_comment_detail}}</textarea>
                                     </div>
                             </div>
-                            {{-- <div class="modal-footer"> --}}
+                            <div class="modal-footer">
+                                <a href="{{ url('approvalsaleplan_detail', $createID) }}" type="button" class="btn btn-secondary">ย้อนกลับ</a>
                                 <button type="submit" class="btn btn-primary float-right">บันทึก</button>
-                            {{-- </div> --}}
+                            </div>
                             </form>
                         </div>
                     </div>
@@ -79,9 +80,10 @@
                                         type="text"></textarea>
                                     </div>
                             </div>
-                            {{-- <div class="modal-footer"> --}}
+                            <div class="modal-footer">
+                                <a href="{{ url('approvalsaleplan_detail', $createID) }}" type="button" class="btn btn-secondary">ย้อนกลับ</a>
                                 <button type="submit" class="btn btn-primary float-right">บันทึก</button>
-                            {{-- </div> --}}
+                            </div>
                             </form>
                         </div>
                     </div>

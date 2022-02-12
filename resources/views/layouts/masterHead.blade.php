@@ -342,6 +342,10 @@ License: You must have a valid license purchased only from themeforest to legall
                                                 href="{{ url('head/promotions') }}">
                                                 <i class="ion ion-md-gift" style="color: #044067;"></i>โปรโมชั่น</a>
                                         </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ url('#') }}">
+                                                <i class="ion ion-md-cube" style="color: #044067;"></i>สินค้าใหม่</a>
+                                        </li>
                                     </ul>
                                 </li>
                             </ul>

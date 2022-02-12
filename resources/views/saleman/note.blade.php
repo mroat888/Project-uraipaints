@@ -146,6 +146,11 @@
                                     required>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="username">รายละเอียด</label>
+                            <textarea class="form-control" id="address" cols="30" rows="5" placeholder=""
+                                name="note_detail" type="text"> </textarea>
+                        </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ป้ายกำกับ</label>
@@ -158,14 +163,7 @@
                                     </optgroup>
                                 </select>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="username">รายละเอียด</label>
-                            <textarea class="form-control" id="address" cols="30" rows="5" placeholder=""
-                                name="note_detail" type="text"> </textarea>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4 form-group">
+                            <div class="col-md-6 form-group">
                                 <label for="firstName">วันที่แจ้งเตือน</label>
                                 <input type="date" class="form-control" placeholder="" name="note_date" min="<?= date('Y-m-d') ?>">
                             </div>
@@ -199,6 +197,11 @@
                                 <input class="form-control" name="note_title" id="get_title" type="text" required>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="username">รายละเอียด</label>
+                            <textarea class="form-control" id="get_detail" cols="30" rows="5" name="note_detail"
+                                type="text"></textarea>
+                        </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ป้ายกำกับ</label>
@@ -210,13 +213,6 @@
                                     </optgroup> --}}
                                 </select>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="username">รายละเอียด</label>
-                            <textarea class="form-control" id="get_detail" cols="30" rows="5" name="note_detail"
-                                type="text"></textarea>
-                        </div>
-                        <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">วันที่แจ้งเตือน</label>
                                 <input type="date" class="form-control" id="get_date" name="note_date" min="<?= date('Y-m-d') ?>">
