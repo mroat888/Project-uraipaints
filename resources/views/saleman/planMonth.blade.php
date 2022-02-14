@@ -786,6 +786,41 @@
                 }
             });
         });
+
+        $("#from_saleplan_delete").on("submit", function(e) {
+            e.preventDefault();
+            //var formData = $(this).serialize();
+            var formData = new FormData(this);
+            console.log(formData);
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('delete_saleplan') }}',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    console.log(response);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Deleted!',
+                        text: "ลบข้อมูลลูกค้าเรียบร้อยแล้วค่ะ",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    $('#ModalapproveDelete').modal('hide');
+                    $('#shop_status_name_lead').text('ลบข้อมูลลูกค้าเรียบร้อย')
+                    $('#btn_update').prop('disabled', true);
+                    $('#btn_delete').prop('disabled', true);
+
+                    //location.reload();
+                },
+                error: function(response) {
+                    console.log("error");
+                    console.log(response);
+                }
+            });
+        });
     </script>
 
     <script>
@@ -814,6 +849,7 @@
 
         });
     </script>
+
 
 
 

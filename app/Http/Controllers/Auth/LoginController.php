@@ -48,7 +48,7 @@ class LoginController extends Controller
             'password' =>'required'
         ]);
 
- 
+
         if (auth()->attempt((array('email' => $input['email'], 'password' => $input['password'])))) {
             // DB::beginTransaction();
             // try {
@@ -64,17 +64,17 @@ class LoginController extends Controller
             //     DB::rollback();
             // }
 
-        //     if (auth()->user()->status == 0) {
+            if (auth()->user()->status == 1) {
                 return redirect('dashboard');
-        //     }elseif (auth()->user()->status == 1) {
-        //         return redirect('leadManager');
-        //     }elseif (auth()->user()->status == 2) {
-        //         return redirect('headManage');
-        //     }elseif (auth()->user()->status == 3){
-        //         return redirect('admin');
-        //     }else{
-        //         return back()->with('error', 'ไม่มีอีเมล์นี้อยู่ในระบบ!');
-        //     }
+            }elseif (auth()->user()->status == 2) {
+                return redirect('leadManager');
+            }elseif (auth()->user()->status == 3) {
+                return redirect('headManage');
+            }elseif (auth()->user()->status == 4){
+                return redirect('admin');
+            }else{
+                return back()->with('error', 'ไม่มีอีเมล์นี้อยู่ในระบบ!');
+            }
         }else{
              return back()->with('error', 'อีเมล์หรือรหัสผ่านไม่ถูกต้อง!');
         }

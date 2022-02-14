@@ -16,13 +16,11 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-// Route::middleware(['auth', 'saleman'])->group(function () {
+Route::middleware(['auth', 'saleman'])->group(function () {
 Route::get('/index.html', 'Saleman\DashboardController@index');
 
 // Sale
 Route::get('dashboard',  'SaleMan\DashboardController@index');
-
-// Route::get('/planMonth', function () { return view('saleman.planMonth'); });
 Route::get('/planMonth', 'PlanMonthController@index');
 Route::get('approve_monthly_plan/{id}', 'PlanMonthController@approve');
 Route::get('dailyWork', 'SaleMan\DailyWorkController@index');
@@ -36,8 +34,6 @@ Route::get('assignment_result_get/{id}', 'SaleMan\AssignmentController@assignmen
 Route::post('assignment_Result', 'SaleMan\AssignmentController@saleplan_result');
 Route::post('search_month_assignment', 'SaleMan\AssignmentController@search_month_assignment');
 
-
-
 // Visit Customer
 Route::get('visit', 'Customer\CustomerVisitController@visit');
 Route::get('searchShop', 'Customer\CustomerVisitController@searchShop');
@@ -50,7 +46,6 @@ Route::get('/fetch_customer_shops_visit/{id}','Customer\CustomerVisitController@
 Route::post('customer_visit_checkin', 'Customer\CustomerVisitController@customer_visit_checkin');
 Route::get('customer_visit_result_get/{id}', 'Customer\CustomerVisitController@customer_visit_result_get');
 Route::post('customer_visit_Result', 'Customer\CustomerVisitController@customer_visit_Result');
-
 
 
 // Customer
@@ -104,21 +99,20 @@ Route::get('delete_note/{id}', 'NoteController@destroy');
 Route::get('news', 'NewsController@frontend_news');
 Route::get('promotions', 'PromotionController@frontend_promotion');
 
-
-
+// Report
 Route::get('/reportSale/reportSaleplan', 'Report\ReportSalePlanController@index');
 Route::get('/reportSale/reportVisitCustomerGoal', 'Report\ReportVisitCustomerGoalController@index');
 Route::get('/reportSale/reportVisitCustomer', 'Report\ReportVisitCustomerController@index');
 
-// });
+});
 
 
 // ------------------------------------------------------------------Manager-----------------------------------------------------------------------------//
 
 
-// Route::middleware(['auth', 'lead'])->group(function () {
+Route::middleware(['auth', 'lead'])->group(function () {
 // lead
-Route::get('leadManage', function () { return view('leadManager.dashboard'); });
+Route::get('leadManager', function () { return view('leadManager.dashboard'); });
 Route::get('lead/planMonth', function () { return view('leadManager.planMonth'); });
 Route::get('lead/dailyWork', function () { return view('leadManager.dailyWork'); });
 Route::get('lead/dashboard', function () { return view('leadManager.dashboard'); });
@@ -151,7 +145,6 @@ Route::post('lead/create_comment_customer_new', 'LeadManager\ApprovalSalePlanCon
 
 // Assignment
 Route::get('add_assignment', 'AssignmentController@index');
-// Route::get('lead/searchShop', 'SaleMan\SalePlanController@searchShop');
 Route::post('lead/create_assignment', 'AssignmentController@store');
 Route::get('lead/edit_assignment/{id}', 'AssignmentController@edit');
 Route::post('lead/update_assignment', 'AssignmentController@update');
@@ -168,12 +161,20 @@ Route::get('lead/delete_note/{id}', 'NoteController@destroy');
 
 Route::get('lead/news', 'NewsController@lead_frontend_news');
 Route::get('lead/promotions', 'PromotionController@lead_frontend_promotion');
-// });
+
+//report
+Route::get('/leadManage/reportcustomer', function () { return view('reports.report_customer'); });
+Route::get('/leadManage/reportStore', function () { return view('reports.report_store'); });
+Route::get('/leadManage/reportTeam', 'LeadManager\ReportTeamController@index');
+Route::get('/leadManage/reportSaleplan', function () { return view('reports.report_saleplan_lead'); });
+Route::get('/leadManage/reportYear', function () { return view('reports.report_year'); });
+
+});
 
 
 // ==================================================================== Head ====================================================================//
 
-// Route::middleware(['auth', 'head'])->group(function () {
+Route::middleware(['auth', 'head'])->group(function () {
 // head
 Route::get('headManage', function () { return view('headManager.dashboard'); });
 // Route::get('head/planMonth', function () { return view('headManager.planMonth'); });
@@ -209,12 +210,21 @@ Route::get('head/delete_note/{id}', 'NoteController@destroy');
 Route::get('head/news', 'NewsController@head_frontend_news');
 Route::get('head/promotions', 'PromotionController@head_frontend_promotion');
 
-// });
+//report
+Route::get('/headManage/reportcustomer', function () { return view('reports.report_customer'); });
+Route::get('/headManage/reportStore', function () { return view('reports.report_store_head'); });
+Route::get('/headManage/reportTeam', function () { return view('reports.report_team_head'); });
+Route::get('/headManage/reportSaleplan', function () { return view('reports.report_saleplan_head'); });
+Route::get('/headManage/report_visitcustomer_goal_head', function () { return view('reports.report_visitcustomer_goal_head'); });
+Route::get('/headManage/visitCustomer', function () { return view('reports.report_visitcustomer_head'); });
+Route::get('/headManage/reportYear', function () { return view('reports.report_year_head'); });
+
+});
 
 
 // ------------------------------------------------------------ ADMIN --------------------------------------------------------------------- //
 
-// Route::middleware(['auth', 'admin'])->group(function () {
+Route::middleware(['auth', 'admin'])->group(function () {
 // admin
 Route::get('admin', function () { return view('admin.dashboard'); });
 Route::get('admin/palncalendar', function () { return view('admin.salePalnCalendar'); });
@@ -310,22 +320,7 @@ Route::post('/admin/update_master_objective_saleplan', 'Admin\MasterObjectiveSal
 Route::get('admin/delete_master_objective_saleplan/{id}', 'Admin\MasterObjectiveSaleplanController@destroy');
 
 
-// });
-
-//report
-Route::get('/leadManage/reportcustomer', function () { return view('reports.report_customer'); });
-Route::get('/leadManage/reportStore', function () { return view('reports.report_store'); });
-Route::get('/leadManage/reportTeam', 'LeadManager\ReportTeamController@index');
-Route::get('/leadManage/reportSaleplan', function () { return view('reports.report_saleplan_lead'); });
-Route::get('/leadManage/reportYear', function () { return view('reports.report_year'); });
-
-Route::get('/headManage/reportcustomer', function () { return view('reports.report_customer'); });
-Route::get('/headManage/reportStore', function () { return view('reports.report_store_head'); });
-Route::get('/headManage/reportTeam', function () { return view('reports.report_team_head'); });
-Route::get('/headManage/reportSaleplan', function () { return view('reports.report_saleplan_head'); });
-Route::get('/headManage/report_visitcustomer_goal_head', function () { return view('reports.report_visitcustomer_goal_head'); });
-Route::get('/headManage/visitCustomer', function () { return view('reports.report_visitcustomer_head'); });
-Route::get('/headManage/reportYear', function () { return view('reports.report_year_head'); });
+});
 
 
 //fullcalender
