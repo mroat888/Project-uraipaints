@@ -554,10 +554,6 @@
         </div>
     </div>
 
-<<<<<<< HEAD
-    <!-- Modal Comment -->
-    <div class="modal fade" id="ApprovalComment" tabindex="-1" role="dialog" aria-labelledby="ApprovalComment" aria-hidden="true">
-=======
     <!-- Modal Delete Saleplan -->
     <div class="modal fade" id="ModalSaleplanDelete" tabindex="-1" role="dialog" aria-labelledby="ModalSaleplanDelete"
         aria-hidden="true">
@@ -586,7 +582,6 @@
 
      <!-- Modal Comment -->
      <div class="modal fade" id="ApprovalComment" tabindex="-1" role="dialog" aria-labelledby="ApprovalComment" aria-hidden="true">
->>>>>>> 8eaf19442210ac78eba6fda8093d832518142e6c
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -873,7 +868,7 @@
                     $('#btn_update').prop('disabled', true);
                     $('#btn_delete').prop('disabled', true);
 
-                    //location.reload();
+                    location.reload();
                 },
                 error: function(response) {
                     console.log("error");
@@ -906,8 +901,7 @@
                     $('#ModalSaleplanDelete').modal('hide');
                     $('#shop_status_name_lead').text('ลบข้อมูล Sale Plan เรียบร้อย')
                     $('#btn_saleplan_delete').prop('disabled', true);
-
-                    //location.reload();
+                    location.reload();
                 },
                 error: function(response) {
                     console.log("error");
