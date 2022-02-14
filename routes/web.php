@@ -76,7 +76,8 @@ Route::post('create_saleplan', 'SaleMan\SalePlanController@store');
 Route::get('edit_saleplan/{id}', 'SaleMan\SalePlanController@edit');
 Route::post('/saleplanEdit_fetch', 'SaleMan\SalePlanController@edit_fetch'); // OAT ใช้ในหน้า planMonth เป็น Modal
 Route::post('update_saleplan', 'SaleMan\SalePlanController@update');
-Route::get('delete_saleplan/{id}', 'SaleMan\SalePlanController@destroy');
+// Route::get('delete_saleplan/{id}', 'SaleMan\SalePlanController@destroy');
+Route::post('delete_saleplan','SaleMan\SalePlanController@destroy');
 Route::post('saleplan_checkin', 'SaleMan\SalePlanController@saleplan_checkin');
 Route::get('saleplan_result_get/{id}', 'SaleMan\SalePlanController@saleplan_result_get');
 Route::post('saleplan_Result', 'SaleMan\SalePlanController@saleplan_Result');

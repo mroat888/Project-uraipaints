@@ -407,6 +407,15 @@ class CustomerController extends Controller
                     'deleted_at' => date('Y-m-d H:i:s'),
                 ]);
 
+            $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->first();
+
+            DB::table('monthly_plans')->where('id', $monthly_plan->id)
+            ->update([
+                'cust_new_amount' => $monthly_plan->cust_new_amount-1,
+                'total_plan' => $monthly_plan->total_plan-1,
+                'outstanding_plan' => $monthly_plan->total_plan-1,
+            ]);
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
@@ -420,16 +429,25 @@ class CustomerController extends Controller
 
     public function destroy(Request $request)
     {
-        DB::table('customer_shops')
-            ->where('id', $request->id)
-            ->update([
-                'shop_status' => '3',
-                'deleted_by' => Auth::user()->id,
-                'deleted_at' => date('Y-m-d H:i:s'),
-            ]);
-        DB::commit();
-        // return back();
-        echo ("<script>alert('ลบข้อมูลสำเร็จ'); location.href='planMonth'; </script>");
+        // DB::table('customer_shops')
+        //     ->where('id', $request->id)
+        //     ->update([
+        //         'shop_status' => '3',
+        //         'deleted_by' => Auth::user()->id,
+        //         'deleted_at' => date('Y-m-d H:i:s'),
+        //     ]);
+
+        //     $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->first();
+
+        //     DB::table('monthly_plans')->where('id', $monthly_plan->id)
+        //     ->update([
+        //         'cust_new_amount' => $monthly_plan->cust_new_amount-1,
+        //         'total_plan' => $monthly_plan->total_plan-1,
+        //         'outstanding_plan' => $monthly_plan->total_plan-1,
+        //     ]);
+        // DB::commit();
+        // // return back();
+        // echo ("<script>alert('ลบข้อมูลสำเร็จ'); location.href='planMonth'; </script>");
     }
 
     public function fetch_autocomplete()

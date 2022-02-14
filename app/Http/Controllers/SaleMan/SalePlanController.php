@@ -165,10 +165,32 @@ class SalePlanController extends Controller
 
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        SalePlan::where('id', $id)->delete();
-        return back();
+        DB::beginTransaction();
+        try {
+
+            DB::table('sale_plans')
+                ->where('id', $request->saleplan_id_delete)->delete();
+
+                $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->first();
+
+                DB::table('monthly_plans')->where('id', $monthly_plan->id)
+                ->update([
+                    'sale_plan_amount' => $monthly_plan->sale_plan_amount-1,
+                    'total_plan' => $monthly_plan->total_plan-1,
+                    'outstanding_plan' => $monthly_plan->total_plan-1,
+                ]);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+        }
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'ลบข้อมูลลูกค้าเรียบร้อยแล้ว',
+        ]);
     }
 
     public function searchShop(Request $request)

@@ -26,23 +26,12 @@
             </div>
         @endif
 
-        <form action="{{ url('lead/approval_saleplan_confirm') }}" method="POST"
-                enctype="multipart/form-data">
-                @csrf
         <!-- Title -->
         <div class="hk-pg-header mb-10">
             <div>
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><i
                             class="ion ion-md-analytics"></i></span>รายละเอียด Sale Plan</h4>
             </div>
-            {{-- <form action="{{ url('lead/approval_saleplan_confirm') }}" method="POST"
-                enctype="multipart/form-data">
-                @csrf --}}
-                <div class="d-flex">
-                    <button type="submit" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" name="approve" value="approve">อนุมัติ</button>
-
-                    <button type="submit" class="btn btn_purple btn-danger btn-sm btn-rounded px-3 ml-5" name="failed" value="failed">ไม่อนุมัติ</button>
-                </div>
         </div>
         <!-- /Title -->
 
@@ -63,14 +52,6 @@
                                 <table class="table table-sm table-hover">
                                     <thead>
                                         <tr>
-                                            <th>
-                                                <div class="custom-control custom-checkbox checkbox-info">
-                                                    <input type="checkbox" class="custom-control-input"
-                                                        id="customCheck4" onclick="chkAll(this);" name="CheckAll" value="Y">
-                                                    <label class="custom-control-label"
-                                                        for="customCheck4">ทั้งหมด</label>
-                                                </div>
-                                            </th>
                                             <th>#</th>
                                             <th>เรื่อง</th>
                                             <th>ลูกค้า</th>
@@ -82,13 +63,6 @@
                                         @foreach ($list_saleplan as $key => $value)
                                         @if ($value->sale_plans_status != 1)
                                         <tr style="background-color: rgb(219, 219, 219);">
-                                            <td>
-                                                <div class="custom-control custom-checkbox checkbox-info">
-                                                    <input type="checkbox" class="custom-control-input checkapprove"
-                                                        name="" id="customCheck{{$key + 1}}" value="{{$value->id}}" disabled>
-                                                    <label class="custom-control-label" for="customCheck{{$key + 1}}"></label>
-                                                </div>
-                                            </td>
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ $value->sale_plans_title }}</td>
                                             {{-- <td>{{$value->customer_shop_id}}</td> --}}
@@ -118,13 +92,6 @@
 
                                         @else
                                         <tr>
-                                            <td>
-                                                <div class="custom-control custom-checkbox checkbox-info">
-                                                    <input type="checkbox" class="custom-control-input checkapprove"
-                                                        name="checkapprove[]" id="customCheck{{$key + 1}}" value="{{$value->id}}">
-                                                    <label class="custom-control-label" for="customCheck{{$key + 1}}"></label>
-                                                </div>
-                                            </td>
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ $value->sale_plans_title }}</td>
                                             {{-- <td>{{$value->customer_shop_id}}</td> --}}
@@ -175,13 +142,6 @@
                                     <table id="datable_1_2" class="table table-hover">
                                         <thead>
                                             <tr>
-                                                <th>
-                                                    <div class="custom-control custom-checkbox checkbox-info">
-                                                        <input type="checkbox" class="custom-control-input"
-                                                            id="customCheck5" onclick="chkAll_customer(this);" name="CheckAll_cust" value="Y">
-                                                        <label class="custom-control-label" for="customCheck5">ทั้งหมด</label>
-                                                    </div>
-                                                </th>
                                                 <th>#</th>
                                                 <th>ชื่อร้าน</th>
                                                 <th>อำเภอ,จังหวัด</th>
@@ -193,13 +153,6 @@
                                             @foreach ($customer_new as $key => $value)
                                             @if ($value->shop_aprove_status != 1)
                                             <tr style="background-color: rgb(219, 219, 219);">
-                                                <td>
-                                                    <div class="custom-control custom-checkbox checkbox-info">
-                                                        <input type="checkbox" class="custom-control-input checkapprove_cust"
-                                                            name="checkapprove_cust[]" id="customNewCheck{{$key + 1}}" value="{{$value->id}}">
-                                                        <label class="custom-control-label" for="customNewCheck{{$key + 1}}"></label>
-                                                    </div>
-                                                </td>
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $value->shop_name }}</td>
                                                 <td>{{ $value->PROVINCE_NAME }}</td>
@@ -221,13 +174,6 @@
                                             </tr>
                                             @else
                                                 <tr>
-                                                    <td>
-                                                        <div class="custom-control custom-checkbox checkbox-info">
-                                                            <input type="checkbox" class="custom-control-input checkapprove_cust"
-                                                                name="checkapprove_cust[]" id="customNewCheck{{$key + 1}}" value="{{$value->id}}">
-                                                            <label class="custom-control-label" for="customNewCheck{{$key + 1}}"></label>
-                                                        </div>
-                                                    </td>
                                                     <td>{{ $key + 1 }}</td>
                                                     <td>{{ $value->shop_name }}</td>
                                                     <td>{{ $value->PROVINCE_NAME }}</td>
@@ -247,7 +193,6 @@
                                             @endforeach
                                         </tbody>
                                     </table>
-                                </form>
                                 </div>
                             </div>
                         </div>
@@ -344,38 +289,6 @@
         }
     }
 </script>
-
-    <script>
-        $("#form_approval_saleplan").on("submit", function(e) {
-            e.preventDefault();
-            // var formData = $(this).serialize();
-            var formData = new FormData(this);
-            //console.log(formData);
-            $.ajax({
-                type: 'POST',
-                url: '{{ url('lead/approval_saleplan_confirm') }}',
-                data: formData,
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function(response) {
-                    console.log(response);
-                    // Swal.fire({
-                    //     icon: 'success',
-                    //     title: 'Your work has been saved',
-                    //     showConfirmButton: false,
-                    //     timer: 1500
-                    // })
-                    $("#exampleModalLarge02").modal('hide');
-                    location.reload();
-                },
-                error: function(response) {
-                    console.log("error");
-                    console.log(response);
-                }
-            });
-        });
-    </script>
 
 @section('scripts')
 

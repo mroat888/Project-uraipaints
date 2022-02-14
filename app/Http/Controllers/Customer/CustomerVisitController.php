@@ -198,6 +198,25 @@ class CustomerVisitController extends Controller
     public function destroy($id)
     {
         CustomerVisit::where('id', $id)->delete();
+
+
+
+        $monthly_plan = MonthlyPlan::where('id', $monthly_plan_id)
+
+        $date = Carbon::parse($monthly_plan->month_date)->format('Y-m');
+        $datenext = Carbon::today()->addMonth(1)->format('Y-m');
+        if ($date == $datenext) { // ถ้า MonthlyPlan ตรงกับเดือนหน้า ให้ลบ จำนวนเยี่ยมลูกค้าใน MonthlyPlan
+
+            $visits_amount = $monthly_plan->cust_visits_amount-1;
+            DB::table('monthly_plans')
+            ->where('id',$monthly_plan->id)
+            ->update([
+                'cust_visits_amount' => $visits_amount,
+                'updated_by' => Auth::user()->id,
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+        }
+
         return back();
         // echo ("<script>alert('ลบข้อมูลสำเร็จ'); location.href='note'; </script>");
     }
@@ -249,7 +268,7 @@ class CustomerVisitController extends Controller
         try {
 
             if($request->lat != "" && $request->lon != ""){
-                
+
                 $chk_status = CustomerVisitResult::where('customer_visit_id', $request->id)->first();
                 if ($chk_status) {
                     $data2 = CustomerVisitResult::where('customer_visit_id', $request->id)->first();
@@ -264,7 +283,7 @@ class CustomerVisitController extends Controller
                     return response()->json([
                         'status' => 200,
                         'message' => 'บันทึกข้อมูลสำเร็จ',
-                    ]);     
+                    ]);
                 }else{
                     $data2 = new CustomerVisitResult;
                     $data2->customer_visit_id = $request->id;
@@ -285,9 +304,9 @@ class CustomerVisitController extends Controller
                 return response()->json([
                     'status' => 404,
                     'message' => 'กรุณาเปิดหรือรอ location ก่อนค่ะ',
-                ]); 
-            }  
-            
+                ]);
+            }
+
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json([

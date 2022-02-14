@@ -303,7 +303,9 @@
                                                                     <h4 class="btn-icon-wrap" style="color: white;"><i
                                                                             class="ion ion-md-create"></i></h4>
                                                                 </button>
-                                                                <button class="btn btn-icon btn-danger" {{ $btn_disabled }}>
+                                                                <button id="btn_saleplan_delete"
+                                                                    class="btn btn-icon btn-danger mr-10"
+                                                                    value="{{ $value->id }}" {{ $btn_disabled }}>
                                                                     <h4 class="btn-icon-wrap" style="color: white;"><i
                                                                             class="ion ion-md-trash"></i></h4>
                                                                 </button>
@@ -476,7 +478,7 @@
                                                     <td>-</td>
                                                     <td>
                                                         <div class="button-list">
-                                                            <a href="{{url('delete_visit')}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
+                                                            <a href="{{url('delete_visit', $customer_visit_api[$key]['id'])}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
                                                                 <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-trash"></i></h4></a>
                                                         </div>
                                                     </td>
@@ -552,8 +554,39 @@
         </div>
     </div>
 
+<<<<<<< HEAD
     <!-- Modal Comment -->
     <div class="modal fade" id="ApprovalComment" tabindex="-1" role="dialog" aria-labelledby="ApprovalComment" aria-hidden="true">
+=======
+    <!-- Modal Delete Saleplan -->
+    <div class="modal fade" id="ModalSaleplanDelete" tabindex="-1" role="dialog" aria-labelledby="ModalSaleplanDelete"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form id="from_saleplan_delete" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">คุณต้องการลบข้อมูล Sale Plan ใช่หรือไม่</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="text-align:center;">
+                        <h3>คุณต้องการลบข้อมูล Sale Plan ใช่หรือไม่ ?</h3>
+                        <input class="form-control" id="saleplan_id_delete" name="saleplan_id_delete" type="hidden" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                        <button type="submit" class="btn btn-primary" id="btn_save_edit">ยืนยัน</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+     <!-- Modal Comment -->
+     <div class="modal fade" id="ApprovalComment" tabindex="-1" role="dialog" aria-labelledby="ApprovalComment" aria-hidden="true">
+>>>>>>> 8eaf19442210ac78eba6fda8093d832518142e6c
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -742,7 +775,7 @@
                         $('#saleplan_address_edit').val(response.shop_address);
                         $('#get_tags').html(
                                     "<optgroup label='กรุณาเลือก'>"+
-                                        "<option value='AK' selected>"+ response.salepaln.sale_plans_tags +"</option>"+
+                                        "<option value='"+response.salepaln.sale_plans_tags+"' selected>"+ response.salepaln.sale_plans_tags +"</option>"+
                                         "<option value='AK'>เพิ่มเติม</option>"+
                                         "<option value='HI'>เข้าพบลูกค้า</option>"+
                                         "<option value='HB'>งานใหม่</option>"+
@@ -773,6 +806,12 @@
             let shop_id_delete = $(this).val();
             $('#shop_id_delete').val(shop_id_delete);
             $('#ModalapproveDelete').modal('show');
+        });
+
+        $(document).on('click', '#btn_saleplan_delete', function() {
+            let saleplan_id_delete = $(this).val();
+            $('#saleplan_id_delete').val(saleplan_id_delete);
+            $('#ModalSaleplanDelete').modal('show');
         });
 
         $("#from_cus_update").on("submit", function(e) {
@@ -864,10 +903,9 @@
                         showConfirmButton: false,
                         timer: 1500,
                     });
-                    $('#ModalapproveDelete').modal('hide');
-                    $('#shop_status_name_lead').text('ลบข้อมูลลูกค้าเรียบร้อย')
-                    $('#btn_update').prop('disabled', true);
-                    $('#btn_delete').prop('disabled', true);
+                    $('#ModalSaleplanDelete').modal('hide');
+                    $('#shop_status_name_lead').text('ลบข้อมูล Sale Plan เรียบร้อย')
+                    $('#btn_saleplan_delete').prop('disabled', true);
 
                     //location.reload();
                 },
