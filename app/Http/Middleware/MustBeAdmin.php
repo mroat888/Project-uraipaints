@@ -16,7 +16,7 @@ class MustBeAdmin
     public function handle($request, Closure $next)
     {
         $user = $request->user();
-        if($user && $user->status == '3') {
+        if($user && $user->status == '4') {
             return $next($request);
             // return view('saleman.dashboard');
         }

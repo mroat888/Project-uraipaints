@@ -16,7 +16,7 @@ class MustBeSaleman
     public function handle($request, Closure $next)
     {
         $user = $request->user();
-        if($user && $user->status == '0') {
+        if($user && $user->status == '1') {
             return $next($request);
             // return view('saleman.dashboard');
         }

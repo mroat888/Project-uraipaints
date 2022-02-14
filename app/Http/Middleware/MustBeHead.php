@@ -16,7 +16,7 @@ class MustBeHead
     public function handle($request, Closure $next)
     {
         $user = $request->user();
-        if($user && $user->status == '2') {
+        if($user && $user->status == '3') {
             return $next($request);
             // return redirect('/approvalsaleplan');
         }
