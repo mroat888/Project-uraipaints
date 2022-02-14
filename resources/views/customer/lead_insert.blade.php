@@ -33,19 +33,6 @@
                             <label for="firstName">ที่อยู่</label>
                             <textarea class="form-control" placeholder="" id="shop_address" name="shop_address" rows="3"></textarea>
                         </div>
-
-                        <!-- <div class="col-md-2 form-group">
-                            <label for="firstName">เลขที่</label>
-                            <input class="form-control" placeholder="" name="shop_address" type="text">
-                        </div>
-                        <div class="col-md-5 form-group">
-                            <label for="firstName">ซอย</label>
-                            <input class="form-control" placeholder="" name="shop_address" type="text">
-                        </div>
-                        <div class="col-md-5 form-group">
-                            <label for="firstName">ถนน</label>
-                            <input class="form-control" placeholder="" name="shop_address" type="text">
-                        </div> -->
                     </div>
                     <div class="row">
                         <div class="col-md-6 form-group">

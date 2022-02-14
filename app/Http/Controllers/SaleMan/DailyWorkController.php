@@ -61,19 +61,38 @@ class DailyWorkController extends Controller
         ->orderBy('id', 'desc')->get();
 
         
-        // -- ข้อมูลลูกค้าใหม่ 
-        $data['customer_new'] = DB::table('customer_shops')
+        // -- ข้อมูลลูกค้าใหม่ // ลูกค้าใหม่เปลี่ยนมาใช้อันนี้
+        $data['customer_new'] = DB::table('customer_shops_saleplan')
+        ->leftJoin('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
+        ->leftjoin('customer_shops_saleplan_result', 'customer_shops_saleplan_result.customer_shops_saleplan_id', 'customer_shops_saleplan.id')
+        ->join('amphur', 'amphur.AMPHUR_ID', 'customer_shops.shop_amphur_id')
         ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
         ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
-        ->where('customer_shops.created_by', Auth::user()->id)
-        ->where('customer_shops.monthly_plan_id', $data['monthly_plan']->id)
-        ->where('customer_shops.shop_aprove_status', 2)
+        ->where('customer_shops_saleplan.created_by', Auth::user()->id)
+        ->where('customer_shops_saleplan.monthly_plan_id', $data['monthly_plan']->id)
+        ->where('customer_shops_saleplan.shop_aprove_status', 2)
         ->select(
             'province.PROVINCE_NAME',
-            'customer_shops.*'
+            'amphur.AMPHUR_NAME',
+            'customer_shops.*',
+            'customer_shops.id as cust_shop_id',
+            'customer_shops_saleplan_result.*',
+            'customer_shops_saleplan.*',
         )
         ->orderBy('customer_shops.id', 'desc')
         ->get();
+        // $data['customer_new'] = DB::table('customer_shops')
+        // ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
+        // ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
+        // ->where('customer_shops.created_by', Auth::user()->id)
+        // ->where('customer_shops.monthly_plan_id', $data['monthly_plan']->id)
+        // ->where('customer_shops.shop_aprove_status', 2)
+        // ->select(
+        //     'province.PROVINCE_NAME',
+        //     'customer_shops.*'
+        // )
+        // ->orderBy('customer_shops.id', 'desc')
+        // ->get();
 
         $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers');

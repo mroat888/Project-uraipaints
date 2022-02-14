@@ -17,7 +17,7 @@
         <div class="row">
             <div class="col-md-12">
                 <section class="hk-sec-wrapper">
-                    <h6 class="hk-sec-title mb-30" style="font-weight: bold;">แผนทำงานประจำเดือน มกราคม/2565</h6>
+                    <h6 class="hk-sec-title mb-30" style="font-weight: bold;">แผนทำงานประจำเดือน <?php echo thaidate('F Y', date("Y-m-d")); ?></h6>
                     <div class="row">
                         <div class="col-md-4">
                             <section class="hk-sec-wrapper bg-light">
@@ -26,9 +26,9 @@
                                         <div id="e_chart_1" style="height:140px;"></div>
                                     </div>
                                     <div class="col-sm mt-30" style="color: black;">
-                                            <p class="mb-10">แผนทำงาน 15</p>
-                                            <p class="mb-10">ทำแล้ว 10</p>
-                                            <p class="mb-10">รอดำเนินการ 5</p>
+                                            <p class="mb-10">แผนทำงาน {{ $monthly_plan->sale_plan_amount }}</p>
+                                            <p class="mb-10">ทำแล้ว {{ $monthly_plan->success_plan }}</p>
+                                            <p class="mb-10">รอดำเนินการ {{ $monthly_plan->outstanding_plan }}</p>
                                     </div>
                                 </div>
                             </section>
@@ -40,9 +40,9 @@
                                         <div id="e_chart_5" style="height:140px;"></div>
                                     </div>
                                     <div class="col-sm mt-30" style="color: black;">
-                                            <p class="mb-10">ลูกค้าใหม่ 15</p>
-                                            <p class="mb-10">ผ่านแล้ว 10</p>
-                                            <p class="mb-10">ไม่ผ่าน 5</p>
+                                            <p class="mb-10">ลูกค้าใหม่ {{ $monthly_plan->cust_new_amount }}</p>
+                                            <p class="mb-10">ทำแล้ว </p>
+                                            <p class="mb-10">รอดำเนินการ </p>
                                     </div>
                                 </div>
                             </section>
@@ -54,9 +54,9 @@
                                         <div id="e_chart_3" style="height:140px;"></div>
                                     </div>
                                     <div class="col-sm mt-30" style="color: black;">
-                                            <p class="mb-10">เยี่ยมลูกค้า 15</p>
-                                            <p class="mb-10">ทำแล้ว 10</p>
-                                            <p class="mb-10">รอดำเนินการ 5</p>
+                                            <p class="mb-10">เยี่ยมลูกค้า {{ $monthly_plan->cust_visits_amount }}</p>
+                                            <p class="mb-10">ทำแล้ว </p>
+                                            <p class="mb-10">รอดำเนินการ </p>
                                     </div>
                                 </div>
                             </section>
