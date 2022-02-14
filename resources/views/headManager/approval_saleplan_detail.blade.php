@@ -212,7 +212,6 @@
                                                 <th>ชื่อร้าน</th>
                                                 <th>ที่อยู่</th>
                                                 <th>วันสำคัญ</th>
-                                                {{-- <th class="text-center">Action</th> --}}
                                             </tr>
                                         </thead>
                                         <tbody>

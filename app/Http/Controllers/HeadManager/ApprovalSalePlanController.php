@@ -49,7 +49,9 @@ class ApprovalSalePlanController extends Controller
         $api_token = $this->apicontroller->apiToken(); // API Login 
         //--- End Api Login ------------ //
         // -----  API ลูกค้าที่ sale ดูแล ----------- //
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers');
+        $mon_plan = DB::table('monthly_plans')->where('id', $id)->first(); // ค้นหา id ผู้ขออนุมัติ
+        $user_api = DB::table('users')->where('id',$mon_plan->created_by)->first(); // ค้นหา user api เพื่อใช้ดึง api
+        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/sellers/'.$user_api->api_identify.'/customers');
         $res_api = $response->json();
 
         $data['customer_api'] = array();
@@ -93,12 +95,14 @@ class ApprovalSalePlanController extends Controller
         ->get();
 
         // เยี่ยมลูกค้า
-        $customer_visits = CustomerVisit::where('customer_visits.created_by', Auth::user()->id)
-            ->where('customer_visits.monthly_plan_id', $id)
+
+        $customer_visits = DB::table('customer_visits')
+            ->where('monthly_plan_id', $id)
             ->select('customer_visits.*')
             ->orderBy('id', 'desc')->get();
-
+        
         $data['customer_visit_api'] = array();
+
         foreach($customer_visits as $key => $cus_visit){
 
             foreach ($res_api['data'] as $key_api => $value_api) {
@@ -109,7 +113,7 @@ class ApprovalSalePlanController extends Controller
                         'id' => $cus_visit->id,
                         'identify' => $res_visit_api['identify'],
                         'shop_name' => $res_visit_api['title']." ".$res_visit_api['name'],
-                        'shop_address' => $res_visit_api['address1']." ".$res_visit_api['adrress2'],
+                        'shop_address' => $res_visit_api['amphoe_name']." ".$res_visit_api['province_name'],
                         'shop_phone' => $res_visit_api['telephone'],
                         'shop_mobile' => $res_visit_api['mobile'],
                     ];
@@ -129,6 +133,13 @@ class ApprovalSalePlanController extends Controller
             $data['createID'] = $createID;
 
             $data['title'] = SalePlan::where('id', $id)->first();
+
+            $data['sale_plan_comments'] = DB::table('sale_plan_comments')
+            ->where('saleplan_id', $id)
+            ->whereNotIn('created_by', [Auth::user()->id])
+            ->orderby('created_at', 'desc')
+            ->get();
+            // dd($data['sale_plan_comments']);
 
             // return $data;
             if ($data) {
@@ -150,6 +161,12 @@ class ApprovalSalePlanController extends Controller
             $data['customerID'] = $id;
             $data['customersaleplanID'] = $custsaleplanID;
             $data['createID'] = $createID;
+
+            $data['customer_shop_comments'] = DB::table('customer_shop_comments')
+            ->where('customer_shops_saleplan_id', $custsaleplanID)
+            ->whereNotIn('created_by', [Auth::user()->id])
+            ->orderby('created_at', 'desc')
+            ->get();
 
             $data['customer'] = Customer::where('id', $id)->first();
             // return $data;
@@ -201,23 +218,31 @@ class ApprovalSalePlanController extends Controller
     {
         // dd($request);
 
-            $data = CustomerShopComment::where('customer_id', $request->id)->where('created_by', Auth::user()->id)->first();
-            // return $request->id;
-            if ($data) {
-               $dataEdit = CustomerShopComment::where('customer_id', $request->id)->update([
-                    'customer_comment_detail' => $request->comment,
-                    'updated_by' => Auth::user()->id,
-                ]);
+        $data = DB::table('customer_shop_comments')
+        ->where('customer_shops_saleplan_id', $request->cust_shops_saleplan_id)
+        ->where('created_by', Auth::user()->id)
+        ->first();
 
-            } else {
-                CustomerShopComment::create([
-                    'customer_id' => $request->id,
-                    'customer_comment_detail' => $request->comment,
-                    'created_by' => Auth::user()->id,
-                ]);
-            }
+        if ($data) {
+            DB::table('customer_shop_comments')
+            ->where('customer_shops_saleplan_id', $request->cust_shops_saleplan_id)
+            ->update([
+                'customer_comment_detail' => $request->comment,
+                'updated_by' => Auth::user()->id,
+                'updated_at'=> date('Y-m-d H:i:s')
+            ]);
+        } else {
+            DB::table('customer_shop_comments')
+            ->insert([
+                'customer_shops_saleplan_id' => $request->cust_shops_saleplan_id,
+                'customer_id' => $request->customer_shops_id,
+                'customer_comment_detail' => $request->comment,
+                'created_by' => Auth::user()->id,
+                'created_at'=> date('Y-m-d H:i:s')
+            ]);
+        }
 
-            return redirect(url('head/approvalsaleplan_detail', $request->createID));
+        return redirect(url('head/approvalsaleplan_detail', $request->monthly_plans_id));
 
     }
 }

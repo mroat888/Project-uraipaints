@@ -51,7 +51,9 @@ class PlanMonthController extends Controller
         ->select(
             'province.PROVINCE_NAME',
             'amphur.AMPHUR_NAME',
-            'customer_shops.*'
+            'customer_shops.*',
+            'customer_shops.id as cust_id',
+            'customer_shops_saleplan.*'
         )
         ->orderBy('customer_shops.id', 'desc')
         ->get();
@@ -168,10 +170,44 @@ class PlanMonthController extends Controller
         $comment = array();
         foreach ($sale_comments as $key => $value) {
             $users = DB::table('users')->where('id', $value['created_by'])->first();
-            $date_comment = substr($value->created_at,0,10);
+
+            if(!is_null($value->updated_at)){
+                $date_comment = substr($value->updated_at,0,10);
+            }else{
+                $date_comment = substr($value->created_at,0,10);
+            }
+            
             $comment[$key] =
             [
                 'saleplan_comment_detail' => $value->saleplan_comment_detail,
+                'user_comment' => $users->name,
+                'created_at' => $date_comment,
+            ];
+        }
+
+        return response()->json($comment);
+    }
+
+    public function customernew_view_comment($id)
+    {
+        
+        $customer_shop_comments = DB::table('customer_shop_comments')
+        ->where('customer_shops_saleplan_id', $id)
+        ->get();
+
+        $comment = array();
+        foreach ($customer_shop_comments as $key => $value) {
+            $users = DB::table('users')->where('id', $value->created_by)->first();
+            
+            if(!is_null($value->updated_at)){
+                $date_comment = substr($value->updated_at,0,10);
+            }else{
+                $date_comment = substr($value->created_at,0,10);
+            }
+            
+            $comment[$key] =
+            [
+                'customer_comment_detail' => $value->customer_comment_detail,
                 'user_comment' => $users->name,
                 'created_at' => $date_comment,
             ];

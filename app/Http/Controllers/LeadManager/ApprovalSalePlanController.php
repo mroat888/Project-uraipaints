@@ -140,6 +140,12 @@ class ApprovalSalePlanController extends Controller
 
             $data['title'] = SalePlan::where('id', $id)->first();
 
+            $data['sale_plan_comments'] = DB::table('sale_plan_comments')
+            ->where('saleplan_id', $id)
+            ->whereNotIn('created_by', [Auth::user()->id])
+            ->orderby('created_at', 'desc')
+            ->get();
+            // dd($data['sale_plan_comments']);
             // return $data;
             if ($data) {
                 return view('leadManager.create_comment_saleplan', $data);
@@ -157,6 +163,11 @@ class ApprovalSalePlanController extends Controller
             $data['customersaleplanID'] = $custsaleplanID;
             $data['createID'] = $createID;
             
+            $data['customer_shop_comments'] = DB::table('customer_shop_comments')
+            ->where('customer_shops_saleplan_id', $custsaleplanID)
+            ->whereNotIn('created_by', [Auth::user()->id])
+            ->orderby('created_at', 'desc')
+            ->get();
 
             $data['customer'] = Customer::where('id', $id)->first();
             // return $data;
@@ -216,6 +227,7 @@ class ApprovalSalePlanController extends Controller
             ->update([
                 'customer_comment_detail' => $request->comment,
                 'updated_by' => Auth::user()->id,
+                'updated_at'=> date('Y-m-d H:i:s')
             ]);
         } else {
             DB::table('customer_shop_comments')
@@ -224,6 +236,7 @@ class ApprovalSalePlanController extends Controller
                 'customer_id' => $request->customer_shops_id,
                 'customer_comment_detail' => $request->comment,
                 'created_by' => Auth::user()->id,
+                'created_at'=> date('Y-m-d H:i:s')
             ]);
         }
         

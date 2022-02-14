@@ -71,8 +71,9 @@
                                 <div>
                                     <h5>แสดงความคิดเห็นร้าน : {{$customer->shop_name}}</h5>
                                 </div>
-                                <input type="hidden" name="id" value="{{$customerID}}">
-                                <input type="hidden" name="createID" value="{{$createID}}">
+                                <input type="hidden" name="cust_shops_saleplan_id" value="{{$customersaleplanID}}">
+                                <input type="hidden" name="customer_shops_id" value="{{$customerID}}">
+                                <input type="hidden" name="monthly_plans_id" value="{{$createID}}">
                                     <div class="card-body">
                                         <textarea class="form-control" name="comment" cols="30" rows="5" placeholder="เพิ่มความคิดเห็น" value=""
                                         type="text"></textarea>
@@ -91,6 +92,28 @@
         <!-- /Row -->
         @endif
 
+        @foreach($customer_shop_comments as $value)
+
+            <div class="card">
+                <div class="card-header">
+                    Comment
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                    <p>{{ $value->customer_comment_detail }}</p>
+                    <footer class="blockquote-footer">
+                        @php
+                            $users_comment = DB::table('users')->where('id', $value->created_by)->first();
+                        @endphp
+                        {{ $users_comment->name }}
+                        <cite title="Source Title">{{ $value->created_at }}</cite>
+                    </footer>
+                    </blockquote>
+                </div>
+            </div>
+
+        @endforeach
+        
     </div>
 
 @endsection

@@ -289,7 +289,7 @@
                                                                 {{ $text_status }}
                                                             </span>
                                                         </td> --}}
-                                                        <td style="text-align:center">
+                                                        <td style="text-align:right">
                                                             <div class="button-list">
                                                                 @if ($value->saleplan_id)
                                                                 <button onclick="approval_comment({{ $value->id }})"
@@ -396,16 +396,28 @@
                                                                 {{ $text_status }}
                                                             </span>
                                                         </td> --}}
-                                                        <td style="text-align:center">
+                                                        <td style="text-align:right;">
                                                             <div class="button-list">
+                                                                @php
+                                                                    $count_new = DB::table('customer_shop_comments')
+                                                                    ->where('customer_shops_saleplan_id', $value->id)
+                                                                    ->count();
+                                                                @endphp
+                                                                @if ($count_new > 0)
+                                                                <button onclick="custnew_comment({{ $value->id }})"
+                                                                    class="btn btn-icon btn-violet" data-toggle="modal"
+                                                                    data-target="#CustNewComment">
+                                                                    <span class="btn-icon-wrap"><i data-feather="message-square"></i></span>
+                                                                </button>
+                                                                @endif
                                                                 <button class="btn btn-icon btn-warning mr-10 btn_editshop"
-                                                                    value="{{ $value->id }}" {{ $btn_disabled }}>
+                                                                    value="{{ $value->cust_id }}" {{ $btn_disabled }}>
                                                                     <h4 class="btn-icon-wrap" style="color: white;"><i
                                                                             class="ion ion-md-create"></i></h4>
                                                                 </button>
                                                                 <button id="btn_delete"
                                                                     class="btn btn-icon btn-danger mr-10"
-                                                                    value="{{ $value->id }}" {{ $btn_disabled }}>
+                                                                    value="{{ $value->cust_id }}" {{ $btn_disabled }}>
                                                                     <h4 class="btn-icon-wrap" style="color: white;"><i
                                                                             class="ion ion-md-trash"></i></h4>
                                                                 </button>
@@ -540,8 +552,8 @@
         </div>
     </div>
 
-     <!-- Modal Comment -->
-     <div class="modal fade" id="ApprovalComment" tabindex="-1" role="dialog" aria-labelledby="ApprovalComment" aria-hidden="true">
+    <!-- Modal Comment -->
+    <div class="modal fade" id="ApprovalComment" tabindex="-1" role="dialog" aria-labelledby="ApprovalComment" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -556,6 +568,30 @@
                             <!-- <textarea class="form-control" cols="30" rows="5" id="get_comment" name="assign_comment"
                                 type="text" readonly></textarea> -->
                             <div id="div_comment">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Comment -->
+    <div class="modal fade" id="CustNewComment" tabindex="-1" role="dialog" aria-labelledby="CustNewComment" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">ความคิดเห็น</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div id="div_cust_new_comment">
 
                             </div>
                         </div>
@@ -593,6 +629,26 @@
                 }
             });
         }
+
+        function custnew_comment(id) {
+            $.ajax({
+                type: "GET",
+                url: "{!! url('customernew_view_comment/"+id+"') !!}",
+                dataType: "JSON",
+                async: false,
+                success: function(data) {
+                    $('#div_cust_new_comment').children().remove().end();
+                    console.log(data);
+                    $.each(data, function(key, value){
+                        $('#div_cust_new_comment').append('<div>Comment by: '+data[key].user_comment+' Date: '+data[key].created_at+'</div>');
+                        $('#div_cust_new_comment').append('<div class="alert alert-primary py-20" role="alert">'+data[key].customer_comment_detail+'</div>');
+                    });
+
+                    $('#CustNewComment').modal('toggle');
+                }
+            });
+        }
+
     </script>
 
 

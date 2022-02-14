@@ -90,6 +90,29 @@
         <!-- /Row -->
         @endif
 
+
+        @foreach($sale_plan_comments as $value)
+
+            <div class="card">
+                <div class="card-header">
+                    Comment
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                    <p>{{ $value->saleplan_comment_detail }}</p>
+                    <footer class="blockquote-footer">
+                        @php
+                            $users_comment = DB::table('users')->where('id', $value->created_by)->first();
+                        @endphp
+                        {{ $users_comment->name }}
+                        <cite title="Source Title">{{ $value->created_at }}</cite>
+                    </footer>
+                    </blockquote>
+                </div>
+            </div>
+
+        @endforeach
+
     </div>
 
 @endsection

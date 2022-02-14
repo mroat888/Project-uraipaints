@@ -25,6 +25,7 @@ Route::get('/planMonth', 'PlanMonthController@index');
 Route::get('approve_monthly_plan/{id}', 'PlanMonthController@approve');
 Route::get('dailyWork', 'SaleMan\DailyWorkController@index');
 Route::get('saleplan_view_comment/{id}', 'PlanMonthController@saleplan_view_comment');
+Route::get('customernew_view_comment/{id}', 'PlanMonthController@customernew_view_comment');
 Route::get('/palncalendar', function () { return view('saleplan.salePalnCalendar'); });
 Route::get('/planDetail', function () { return view('saleplan.saleplanDetail'); });
 

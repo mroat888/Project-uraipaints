@@ -334,12 +334,14 @@
                 dataType: "JSON",
                 async: false,
                 success: function(data) {
+                    $('#customCheck6').children().remove().end();
                     $('#get_id').val(data.dataEdit.id);
                     $('#get_work_date').val(data.dataEdit.assign_work_date);
                     $('#get_title').val(data.dataEdit.assign_title);
                     $('#get_detail').val(data.dataEdit.assign_detail);
                     $('#get_for').val(data.dataEdit.approved_for);
                     $('#get_xx').val(data.dataEdit.assign_is_hot);
+
                     if (data.dataEdit.assign_is_hot == 1) {
                         $('#customCheck6').append("<input type='checkbox' class='custom-control-input' id='customCheck7' name='assign_is_hot' value='1' checked><label class='custom-control-label' for='customCheck7'>ขออนุมัติด่วน</label>");
                     }else{
