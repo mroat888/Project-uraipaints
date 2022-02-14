@@ -40,13 +40,14 @@ class PlanMonthController extends Controller
         ->select('sale_plans.*', 'sale_plan_comments.saleplan_id')->distinct()
         ->orderBy('sale_plans.id', 'desc')->get();
 
-        // -- ข้อมูลลูกค้าใหม่
-        $data['customer_new'] = DB::table('customer_shops')
+        // -- ข้อมูลลูกค้าใหม่ // ลูกค้าใหม่เปลี่ยนมาใช้อันนี้
+        $data['customer_new'] = DB::table('customer_shops_saleplan')
+        ->leftJoin('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
         ->join('amphur', 'amphur.AMPHUR_ID', 'customer_shops.shop_amphur_id')
         ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
         ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
         ->where('customer_shops.created_by', Auth::user()->id)
-        ->where('customer_shops.monthly_plan_id', $data['monthly_plan_next']->id)
+        ->where('customer_shops_saleplan.monthly_plan_id', $data['monthly_plan_next']->id)
         ->select(
             'province.PROVINCE_NAME',
             'amphur.AMPHUR_NAME',
@@ -54,6 +55,20 @@ class PlanMonthController extends Controller
         )
         ->orderBy('customer_shops.id', 'desc')
         ->get();
+
+        // $data['customer_new'] = DB::table('customer_shops')
+        // ->join('amphur', 'amphur.AMPHUR_ID', 'customer_shops.shop_amphur_id')
+        // ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
+        // ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
+        // ->where('customer_shops.created_by', Auth::user()->id)
+        // ->where('customer_shops.monthly_plan_id', $data['monthly_plan_next']->id)
+        // ->select(
+        //     'province.PROVINCE_NAME',
+        //     'amphur.AMPHUR_NAME',
+        //     'customer_shops.*'
+        // )
+        // ->orderBy('customer_shops.id', 'desc')
+        // ->get();
 
         // -----  API  //
         $api_token = $this->apicontroller->apiToken(); // API Login 
@@ -107,21 +122,35 @@ class PlanMonthController extends Controller
     { // ส่งอนุมัติให้ผู้จัดการเขต
         // dd($id);
 
-        $request_approval = SalePlan::where('monthly_plan_id', $id)->get();
-        foreach ($request_approval as $key => $value) {
-            $value->sale_plans_status   = 1;
-            $value->updated_by   = Auth::user()->id;
-            $value->updated_at   = Carbon::now();
-            $value->update();
-        }
+        //-*-  OAT คอมเม้นต์ จะเปลี่ยนไปใช้ตัวล่าง อัพเดท code เพื่อตัดการ วนลูป **-/
+        // $request_approval = SalePlan::where('monthly_plan_id', $id)->get();
+        // foreach ($request_approval as $key => $value) {
+        //     $value->sale_plans_status   = 1;
+        //     $value->updated_by   = Auth::user()->id;
+        //     $value->updated_at   = Carbon::now();
+        //     $value->update();
+        // }
+        DB::table('sale_plans')->where('monthly_plan_id', $id)
+        ->update([
+            'sale_plans_status' => 1,
+            'updated_by' => Auth::user()->id,
+            'updated_at' => Carbon::now()
+        ]);
 
-        $request_approval_customer = Customer::where('monthly_plan_id', $id)->get();
-        foreach ($request_approval_customer as $key => $value) {
-            $value->shop_aprove_status   = 1;
-            $value->updated_by   = Auth::user()->id;
-            $value->updated_at   = Carbon::now();
-            $value->update();
-        }
+        //-*-  OAT คอมเม้นต์ จะเปลี่ยนไปใช้ตัวล่าง เพิ่มตารางสำหรับ แผนเข้าพบลูกค้าใหม่โดยเฉพาะ **-/
+        // $request_approval_customer = Customer::where('monthly_plan_id', $id)->get();
+        // foreach ($request_approval_customer as $key => $value) {
+        //     $value->shop_aprove_status   = 1;
+        //     $value->updated_by   = Auth::user()->id;
+        //     $value->updated_at   = Carbon::now();
+        //     $value->update();
+        // }
+        DB::table('customer_shops_saleplan')->where('monthly_plan_id', $id)
+        ->update([
+            'shop_aprove_status' => 1,
+            'updated_by' => Auth::user()->id,
+            'updated_at' => Carbon::now()
+        ]);
 
         $request_approval_month = MonthlyPlan::find($id);
         $request_approval_month->status_approve   = 1;

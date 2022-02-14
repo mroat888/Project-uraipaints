@@ -415,7 +415,6 @@
                                                     @foreach ($assignments as $value)
                                                         @if ($value->assign_result_status == 0)
                                                             <?php $unfinished += 1 ?>
-
                                                         @endif
                                                     @endforeach
                                                     {{$unfinished}} </span>
@@ -678,11 +677,11 @@
                                                     <td style="text-align:center;">
                                                         <div class="button-list">
                                                             @php
-                                                                if ($value->shop_checkin_date != "" && $value->shop_checkout_date == ""){
+                                                                if ($value->cust_result_checkin_date != "" && $value->cust_result_checkout_date == ""){
                                                                     $btn_primary_cusnew = "disabled";
                                                                     $btn_pumpkin_cusnew = "";
                                                                     $btn_neon_cusnew = "disabled";
-                                                                }elseif($value->shop_checkin_date != "" && $value->shop_checkout_date != ""){
+                                                                }elseif($value->cust_result_checkin_date != "" && $value->cust_result_checkout_date != ""){
                                                                     $btn_primary_cusnew = "disabled";
                                                                     $btn_pumpkin_cusnew = "disabled";
                                                                     $btn_neon_cusnew = "";
@@ -963,8 +962,7 @@
                 <div class="modal-body">
                     <form id="from_customer_new_result">
                         @csrf
-                        <input type="hidden" name="cust_id" id="get_cust_new_id">
-                        <input type="hidden" name="cust_history_id" id="get_cust_his_id">
+                        <input type="text" name="cust_id" id="get_cust_new_id">
                         <div class="form-group">
                             <label for="username">รายละเอียด</label>
                             <textarea class="form-control" id="get_cust_detail" cols="30" rows="5" placeholder="" name="shop_result_detail"
@@ -1211,7 +1209,6 @@
     //Edit
     function customer_new_result(id) {
         $('#get_cust_new_id').val(id);
-        $('#get_cust_his_id').val('');
         $('#get_cust_detail').val('');
         $('#get_cust_result').val('');
         $.ajax({
@@ -1222,10 +1219,9 @@
             success: function(data) {
                 console.log(data.dataResult);
 
-                $('#get_cust_new_id').val(id);
-                $('#get_cust_his_id').val(data.dataResult.id);
-                $('#get_cust_detail').val(data.dataResult.cust_history_detail);
-                $('#get_cust_result').val(data.dataResult.cust_history_result_status);
+                $('#get_cust_new_id').val(data.dataResult.id);
+                $('#get_cust_detail').val(data.dataResult.cust_result_detail);
+                $('#get_cust_result').val(data.dataResult.cust_result_status);
 
                 $('#ModalCustResult').modal('toggle');
             }

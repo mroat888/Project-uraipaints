@@ -146,7 +146,7 @@ Route::post('lead/create_comment_request_approval', 'LeadManager\ApprovalControl
 Route::get('/approvalgeneral/history', 'LeadManager\ApprovalController@approval_history');
 Route::get('lead/approval_general_history_detail/{id}', 'LeadManager\ApprovalController@approval_general_history_detail');
 
-Route::get('comment_customer_new/{id}/{createID}', 'LeadManager\ApprovalSalePlanController@comment_customer_new');
+Route::get('comment_customer_new/{id}/{custsaleplanID}/{createID}', 'LeadManager\ApprovalSalePlanController@comment_customer_new');
 Route::post('lead/create_comment_customer_new', 'LeadManager\ApprovalSalePlanController@create_comment_customer_new');
 
 // Assignment
@@ -188,7 +188,7 @@ Route::get('head/approvalsaleplan', 'HeadManager\ApprovalSalePlanController@inde
 Route::get('head/approvalsaleplan_detail/{id}', 'HeadManager\ApprovalSalePlanController@approvalsaleplan_detail');
 Route::get('head/comment_saleplan/{id}/{createID}', 'HeadManager\ApprovalSalePlanController@comment_saleplan');
 Route::post('head/create_comment_saleplan', 'HeadManager\ApprovalSalePlanController@create_comment_saleplan');
-Route::get('head/comment_customer_new/{id}/{createID}', 'HeadManager\ApprovalSalePlanController@comment_customer_new');
+Route::get('head/comment_customer_new/{id}/{custsaleplanID}/{createID}', 'HeadManager\ApprovalSalePlanController@comment_customer_new');
 Route::post('head/create_comment_customer_new', 'HeadManager\ApprovalSalePlanController@create_comment_customer_new');
 
 Route::get('head/approvalgeneral', 'HeadManager\ApprovalController@index');

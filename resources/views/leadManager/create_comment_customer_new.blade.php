@@ -40,8 +40,9 @@
                                 <div>
                                     <h5>แสดงความคิดเห็นร้าน : {{$customer->shop_name}}</h5>
                                 </div>
-                                <input type="hidden" name="id" value="{{$data->customer_id}}">
-                                <input type="hidden" name="createID" value="{{$createID}}">
+                                <input type="hidden" name="cust_shops_saleplan_id" value="{{$data->customer_shops_saleplan_id}}">
+                                <input type="hidden" name="customer_shops_id" value="{{$data->customer_id}}">
+                                <input type="hidden" name="monthly_plans_id" value="{{$createID}}">
                                     <div class="card-body">
                                         <textarea class="form-control" name="comment" cols="30" rows="5" placeholder="เพิ่มความคิดเห็น" value=""
                                         type="text">{{$data->customer_comment_detail}}</textarea>
@@ -73,8 +74,9 @@
                                 <div>
                                     <h5>แสดงความคิดเห็นร้าน : {{$customer->shop_name}}</h5>
                                 </div>
-                                <input type="hidden" name="id" value="{{$customerID}}">
-                                <input type="hidden" name="createID" value="{{$createID}}">
+                                <input type="hidden" name="cust_shops_saleplan_id" value="{{$customersaleplanID}}">
+                                <input type="hidden" name="customer_shops_id" value="{{$customerID}}">
+                                <input type="hidden" name="monthly_plans_id" value="{{$createID}}">
                                     <div class="card-body">
                                         <textarea class="form-control" name="comment" cols="30" rows="5" placeholder="เพิ่มความคิดเห็น" value=""
                                         type="text"></textarea>

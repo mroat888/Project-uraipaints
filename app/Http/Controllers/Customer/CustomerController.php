@@ -60,21 +60,21 @@ class CustomerController extends Controller
         try {
             $path = 'upload/CustomerImage';
             $image = '';
-            if (!empty($request->file('image'))) {
-                $img = $request->file('image');
-                $img_name = 'img-' . time() . '.' . $img->getClientOriginalExtension();
-                $save_path = $img->move(public_path($path), $img_name);
-                $image = $img_name;
-            }
+            // if (!empty($request->file('image'))) {
+            //     $img = $request->file('image');
+            //     $img_name = 'img-' . time() . '.' . $img->getClientOriginalExtension();
+            //     $save_path = $img->move(public_path($path), $img_name);
+            //     $image = $img_name;
+            // }
 
             $pathFle = 'upload/CustomerFile';
             $uploadfile = '';
-            if (!empty($request->file('shop_fileupload'))) {
-                $uploadF = $request->file('shop_fileupload');
-                $file_name = 'file-' . time() . '.' . $uploadF->getClientOriginalExtension();
-                $save_path2 = $uploadF->move(public_path($pathFle), $file_name);
-                $uploadfile = $file_name;
-            }
+            // if (!empty($request->file('shop_fileupload'))) {
+            //     $uploadF = $request->file('shop_fileupload');
+            //     $file_name = 'file-' . time() . '.' . $uploadF->getClientOriginalExtension();
+            //     $save_path2 = $uploadF->move(public_path($pathFle), $file_name);
+            //     $uploadfile = $file_name;
+            // }
 
             $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->first();
 
@@ -95,13 +95,6 @@ class CustomerController extends Controller
                 'created_at'          => Carbon::now(),
             ]);
 
-            DB::table('monthly_plans')->where('id', $monthly_plan->id)
-            ->update([
-                'cust_new_amount' => $monthly_plan->cust_new_amount+1,
-                'total_plan' => $monthly_plan->total_plan+1,
-                'outstanding_plan' => ($monthly_plan->total_plan + 1) - $monthly_plan->success_plan,
-            ]);
-
             $sql_shops = DB::table('customer_shops')->orderBy('customer_shops.id', 'desc')->first();
 
             DB::table('customer_contacts')
@@ -112,6 +105,23 @@ class CustomerController extends Controller
                     'created_by' => Auth::user()->id,
                     'created_at' => Carbon::now(),
                 ]);
+
+            //-- เพิ่ม monthly_plans
+            DB::table('monthly_plans')->where('id', $monthly_plan->id)
+                ->update([
+                    'cust_new_amount' => $monthly_plan->cust_new_amount+1,
+                    'total_plan' => $monthly_plan->total_plan+1,
+                    'outstanding_plan' => ($monthly_plan->total_plan + 1) - $monthly_plan->success_plan,
+                ]);
+
+            // //-- เพิ่ม customer_shops_saleplan
+            DB::table('customer_shops_saleplan')
+                ->insert([
+                    'customer_shop_id' => $sql_shops->id,
+                    'monthly_plan_id' => $monthly_plan->id,
+                    'created_by' => Auth::user()->id,
+                    'created_at' => Carbon::now(),
+                ]);            
 
             DB::commit();
 
@@ -435,41 +445,42 @@ class CustomerController extends Controller
 
     public function customer_new_checkin(Request $request)
     { // เช็คอิน-เช็คเอ้าท์
-        // dd($request);
+       // dd($request);
         DB::beginTransaction();
         try {
 
             if($request->lat != "" && $request->lon != ""){
 
-                $chk_status = Customer::where('id', $request->id)->first();
-                if ($chk_status->shop_checkin_date) {
-
-                    $data2 = Customer::where('id', $request->id)->first();
-                    $data2->shop_checkout_date   = Carbon::now();
-                    $data2->checkout_latitude   = $request->lat;
-                    $data2->checkout_longitude   = $request->lon;
-                    $data2->updated_by   = Auth::user()->id;
-                    $data2->updated_at   = Carbon::now();
-                    $data2->update();
-                    //return back();
+                $chk_status = DB::table('customer_shops_saleplan_result')->where('customer_shops_saleplan_id', $request->id)->first();
+                // dd($request->id, $chk_status);
+                if ($chk_status) {
+                    DB::table('customer_shops_saleplan_result')->where('customer_shops_saleplan_id', $request->id)
+                    ->update([
+                        'cust_result_checkout_date' => Carbon::now(),
+                        'cust_result_checkout_latitude' => $request->lat,
+                        'cust_result_checkout_longitude' => $request->lon,
+                        'updated_by' => Auth::user()->id,
+                        'updated_at' => Carbon::now(),
+                    ]);  
                     DB::commit();
                     return response()->json([
                         'status' => 200,
-                        'message' => 'บันทึกข้อมูลสำเร็จ',
+                        'message' => 'เช็คเอาท์สำเร็จ',
                     ]);
-                } else {
-                    $data2 = Customer::where('id', $request->id)->first();
-                    $data2->shop_checkin_date   = Carbon::now();
-                    $data2->checkin_latitude   = $request->lat;
-                    $data2->checkin_longitude   = $request->lon;
-                    $data2->updated_by   = Auth::user()->id;
-                    $data2->updated_at   = Carbon::now();
-                    $data2->update();
-                    // return back();
+                }else{
+                    DB::table('customer_shops_saleplan_result')
+                        ->insert([
+                            'customer_shops_saleplan_id' => $request->id, 
+                            'cust_result_checkin_date' => Carbon::now(),
+                            'cust_result_checkin_latitude' => $request->lat,
+                            'cust_result_checkin_longitude' => $request->lon,
+                            'created_by' => Auth::user()->id,
+                            'created_at' => Carbon::now(),
+                        ]);
                     DB::commit();
                     return response()->json([
                         'status' => 200,
-                        'message' => 'บันทึกข้อมูลสำเร็จ',
+                        'message' => 'เช็คอินสำเร็จ',
                     ]);
                 }
             }else{
@@ -492,23 +503,25 @@ class CustomerController extends Controller
 
     public function customer_new_result_get($id)
     {
-        // $dataResult = Customer::find($id);
-        // $data = array(
-        //     'dataResult'     => $dataResult,
-        // );
-        // echo json_encode($data);
 
-        $cus_shops = DB::table('customer_shops')->where('id', $id)->first();
-        $cus_his = DB::table('customer_history_contacts')
-        ->where('customer_shop_id', $cus_shops->id)
-        ->whereDate('cust_history_saleplan_date', $cus_shops->shop_saleplan_date)
-        ->orderby('id', 'desc')
-        ->first();
 
-        if(!is_null($cus_his)){
+        //$cus_shops = DB::table('customer_shops_saleplan')->where('id', $id)->first();
+
+        //dd($cus_shops);
+        // $cus_his = DB::table('customer_history_contacts')
+        // ->where('customer_shop_id', $cus_shops->customer_shop_id)
+        // ->whereDate('cust_history_saleplan_date', $cus_shops->shop_saleplan_date)
+        // ->orderby('id', 'desc')
+        // ->first();
+
+        $cus_result = DB::table('customer_shops_saleplan_result')
+            ->where('customer_shops_saleplan_id', $id)
+            ->first();
+
+        if(!is_null($cus_result)){
             return response()->json([
                 'status' => 200,
-                'dataResult' => $cus_his,
+                'dataResult' => $cus_result,
             ]);
         }
 
@@ -521,52 +534,18 @@ class CustomerController extends Controller
         try {
             if($request->cust_id !="" && $request->shop_result_status != ""){
 
-                $data2 = Customer::where('id', $request->cust_id)->first();
-                $data2->shop_result_detail   = $request->shop_result_detail;
-                $data2->shop_result_status   = $request->shop_result_status;
-                $data2->updated_by   = Auth::user()->id;
-                $data2->updated_at   = Carbon::now();
-                $data2->update();
-
-                if($request->cust_history_id != "" ){ // update
-
-                    DB::table('customer_history_contacts')
-                    ->where('id', $request->cust_history_id)
-                    ->update([
-                        'employee_id' => Auth::user()->id,
-                        'cust_history_detail' => $request->shop_result_detail,
-                        'cust_history_result_status' => $request->shop_result_status,
-                        'updated_by' => Auth::user()->id,
-                        'updated_at' => Carbon::now(),
-                    ]);
-                    DB::commit();
-                    return response()->json([
-                        'status' => 200,
-                        'message' => 'บันทึกข้อมูลสำเร็จ',
-                    ]);
-
-                }else{
-
-                    $cus_shops = DB::table('customer_shops')->where('id', $request->cust_id)->first();
-
-                    DB::table('customer_history_contacts')
-                        ->insert([
-                            'customer_shop_id' => $request->cust_id,
-                            'monthly_plan_id' => $cus_shops->monthly_plan_id,
-                            'cust_history_saleplan_date' => $cus_shops->shop_saleplan_date,
-                            'employee_id' => Auth::user()->id,
-                            'cust_history_detail' => $request->shop_result_detail,
-                            'cust_history_result_status' => $request->shop_result_status,
-                            'created_by' => Auth::user()->id,
-                            'created_at' => Carbon::now(),
-                        ]);
-
-                    DB::commit();
-                    return response()->json([
-                        'status' => 200,
-                        'message' => 'บันทึกข้อมูลสำเร็จ',
-                    ]);
-                }
+                DB::table('customer_shops_saleplan_result')->where('id', $request->cust_id)
+                ->update([
+                    'cust_result_detail' => $request->shop_result_detail,
+                    'cust_result_status' => $request->shop_result_status,
+                    'updated_by' => Auth::user()->id,
+                    'updated_at' => Carbon::now()
+                ]);
+                DB::commit();
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'บันทึกข้อมูลสำเร็จ',
+                ]);
 
             }else{
 

@@ -15,9 +15,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use App\Http\Controllers\Api\ApiController;
 
 class ApprovalSalePlanController extends Controller
 {
+    public function __construct(){
+        $this->apicontroller = new ApiController();
+    }
 
     public function index()
     {
@@ -35,38 +39,15 @@ class ApprovalSalePlanController extends Controller
         // $id คือรหัสของ monthly_plan
         // return $id;
 
-        // -----  API Login ----------- //
-        $response = Http::post('http://49.0.64.92:8020/api/auth/login', [
-            'username' => 'apiuser',
-            'password' => 'testapi',
-        ]);
-        $res = $response->json();
-        $api_token = $res['data'][0]['access_token'];
-        $data['api_token'] = $res['data'][0]['access_token'];
-        //--- End Api Login ------------ //
-
         // ข้อมูล Sale plan
         $data['list_saleplan'] = DB::table('sale_plans')
         ->where('monthly_plan_id', $id)
-        // ->where('sale_plans.created_by', Auth::user()->id)
         ->whereIn('sale_plans_status', [1, 2, 3])
         ->orderBy('id', 'desc')->get();
 
-        // $data['list_saleplan'] = DB::table('sale_plans')
-        //     ->leftjoin('customer_shops', 'sale_plans.customer_shop_id', '=', 'customer_shops.id')
-        //     ->leftjoin('users', 'sale_plans.created_by', '=', 'users.id')
-        //     ->leftjoin('sale_plan_results', 'sale_plans.id', '=', 'sale_plan_results.sale_plan_id')
-        //     ->where('sale_plans.sale_plans_status', 1)
-        //     ->where('sale_plans.monthly_plan_id', $id)
-        //     ->select(
-        //         'users.name',
-        //         'sale_plan_results.sale_plan_status',
-        //         'customer_shops.shop_name',
-        //         'customer_shops.shop_saleplan_date',
-        //         'sale_plans.*'
-        //     )
-        //     ->orderBy('id', 'desc')->get();
-
+        // -----  API Login ----------- //
+        $api_token = $this->apicontroller->apiToken(); // API Login 
+        //--- End Api Login ------------ //
         // -----  API ลูกค้าที่ sale ดูแล ----------- //
         $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers');
         $res_api = $response->json();
@@ -81,15 +62,32 @@ class ApprovalSalePlanController extends Controller
         }
 
         // -- ข้อมูลลูกค้าใหม่
-        $data['customer_new'] = DB::table('customer_shops')
+        // $data['customer_new'] = DB::table('customer_shops')
+        // ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
+        // ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
+        // ->whereIn('customer_shops.shop_aprove_status', [1, 2, 3])
+        // // ->where('customer_shops.created_by', Auth::user()->id)
+        // ->where('customer_shops.monthly_plan_id', $id)
+        // ->select(
+        //     'province.PROVINCE_NAME',
+        //     'customer_shops.*'
+        // )
+        // ->orderBy('customer_shops.id', 'desc')
+        // ->get();
+
+        // ลูกค้าใหม่เปลี่ยนมาใช้อันนี้
+        $data['customer_new'] = DB::table('customer_shops_saleplan')
+        ->join('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
         ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
         ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
-        ->whereIn('customer_shops.shop_aprove_status', [1, 2, 3])
+        ->whereIn('customer_shops_saleplan.shop_aprove_status', [1, 2, 3])
         // ->where('customer_shops.created_by', Auth::user()->id)
-        ->where('customer_shops.monthly_plan_id', $id)
+        ->where('customer_shops_saleplan.monthly_plan_id', $id)
         ->select(
             'province.PROVINCE_NAME',
-            'customer_shops.*'
+            'customer_shops.*',
+            'customer_shops.id as custid',
+            'customer_shops_saleplan.*'
         )
         ->orderBy('customer_shops.id', 'desc')
         ->get();
@@ -140,12 +138,17 @@ class ApprovalSalePlanController extends Controller
             }
     }
 
-    public function comment_customer_new($id, $createID)
+    public function comment_customer_new($id, $custsaleplanID, $createID)
     {
         // return $id;
 
-            $data['data'] = CustomerShopComment::where('customer_id', $id)->where('created_by', Auth::user()->id)->first();
+            // $data['data'] = CustomerShopComment::where('customer_id', $id)->where('created_by', Auth::user()->id)->first();
+            // $data['customerID'] = $id;
+            // $data['createID'] = $createID;
+
+            $data['data'] = CustomerShopComment::where('customer_shops_saleplan_id', $custsaleplanID)->where('created_by', Auth::user()->id)->first();
             $data['customerID'] = $id;
+            $data['customersaleplanID'] = $custsaleplanID;
             $data['createID'] = $createID;
 
             $data['customer'] = Customer::where('id', $id)->first();
@@ -162,18 +165,33 @@ class ApprovalSalePlanController extends Controller
         // dd($request);
             $data = SaleplanComment::where('saleplan_id', $request->id)->where('created_by', Auth::user()->id)->first();
             if ($data) {
-               $dataEdit = SaleplanComment::where('saleplan_id', $request->id)->update([
+                // $dataEdit = SaleplanComment::where('saleplan_id', $request->id)->update([
+                //     'saleplan_comment_detail' => $request->comment,
+                //     'updated_by' => Auth::user()->id,
+                // ]);
+                DB::table('sale_plan_comments')->where('id', $data->id)
+                ->update([
                     'saleplan_comment_detail' => $request->comment,
                     'updated_by' => Auth::user()->id,
+                    'updated_at' => date('Y-m-d H:i:s')
                 ]);
+
                 return redirect(url('head/approvalsaleplan_detail', $request->createID));
 
             } else {
-                SaleplanComment::create([
+                // SaleplanComment::create([
+                //     'saleplan_id' => $request->id,
+                //     'saleplan_comment_detail' => $request->comment,
+                //     'created_by' => Auth::user()->id,
+                // ]);
+                DB::table('sale_plan_comments')
+                ->insert([
                     'saleplan_id' => $request->id,
                     'saleplan_comment_detail' => $request->comment,
                     'created_by' => Auth::user()->id,
+                    'created_at' => date('Y-m-d H:i:s')
                 ]);
+
                 return redirect(url('head/approvalsaleplan_detail', $request->createID));
             }
 
