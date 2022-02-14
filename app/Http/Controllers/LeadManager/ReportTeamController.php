@@ -17,7 +17,10 @@ class ReportTeamController extends Controller
 
     public function index(){
         // $data['users'] = DB::table('users')->where('team_id',Auth::user()->team_id)->get();
-        $users = DB::table('users')->where('team_id',Auth::user()->team_id)->get();
+        $users = DB::table('users')
+        ->where('team_id',Auth::user()->team_id)
+        ->where('status', 1)
+        ->get();
 
         $api_token = $this->apicontroller->apiToken(); 
         $data['users_api'] = array();

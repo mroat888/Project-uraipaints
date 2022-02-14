@@ -64,6 +64,7 @@ class LoginController extends Controller
             //     DB::rollback();
             // }
 
+<<<<<<< HEAD
             if (auth()->user()->status == 1) {
                 return redirect('dashboard');
             }elseif (auth()->user()->status == 2) {
@@ -75,6 +76,19 @@ class LoginController extends Controller
             }else{
                 return back()->with('error', 'ไม่มีอีเมล์นี้อยู่ในระบบ!');
             }
+=======
+        //     if (auth()->user()->status == 1) {
+                return redirect('dashboard');
+        //     }elseif (auth()->user()->status == 2) {
+        //         return redirect('leadManager');
+        //     }elseif (auth()->user()->status == 3) {
+        //         return redirect('headManage');
+        //     }elseif (auth()->user()->status == 4){
+        //         return redirect('admin');
+        //     }else{
+        //         return back()->with('error', 'ไม่มีอีเมล์นี้อยู่ในระบบ!');
+        //     }
+>>>>>>> 3720cce8258574dde32ccebef0a53b501c19a4e4
         }else{
              return back()->with('error', 'อีเมล์หรือรหัสผ่านไม่ถูกต้อง!');
         }
