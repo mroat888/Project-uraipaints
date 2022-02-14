@@ -330,28 +330,16 @@ License: You must have a valid license purchased only from themeforest to legall
                                                 <span class="nav-link-text">ลูกค้าเป้าหมาย</span>
                                             </a>
                                         </li>
-                                        <li class="nav-item">
+                                        {{-- <li class="nav-item">
                                             <a class="nav-link" href="{{ url('visit') }}">
                                                 <i class="ion ion-md-swap" style="color: #044067;"></i>
                                                 <span class="nav-link-text">เข้าเยี่ยมลูกค้า</span>
                                             </a>
-                                        </li>
+                                        </li> --}}
                                     </ul>
                                 </li>
                             </ul>
                         </li>
-                        {{-- <li class="nav-item">
-                            <a class="nav-link" href="{{ url('visit') }}">
-                                <i class="ion ion-md-appstore" style="color: #044067;"></i>
-                                <span class="nav-link-text">การเข้าเยี่ยมลูกค้า</span>
-                            </a>
-                        </li> --}}
-                        {{-- <li class="nav-item">
-                            <a class="nav-link" href="{{ url('approval') }}">
-                                <i class="ion ion-md-paper"></i>
-                                <span class="nav-link-text">การขออนุมัติ</span>
-                            </a>
-                        </li> --}}
                         <li class="nav-item">
                             <a class="nav-link link-with-badge" href="{{ url('note') }}">
                                 <i class="ion ion-md-document" style="color: #044067;"></i>

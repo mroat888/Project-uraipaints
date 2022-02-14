@@ -95,7 +95,7 @@
                                                     data-target="#modalEdit">
                                                     <span class="btn-icon-wrap"><i
                                                             data-feather="edit"></i></span></button>
-                                                <a href="{{url('lead/delete_assignment', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
+                                                <a href="{{url('head/delete_assignment', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
                                                     <span class="btn-icon-wrap"><i data-feather="trash-2"></i></span></a>
 
                                                     {{-- @else

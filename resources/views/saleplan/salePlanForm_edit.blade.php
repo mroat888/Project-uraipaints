@@ -56,7 +56,7 @@
                 <div class="row">
                     <div class="col-md-12 form-group">
                         <label for="firstName">รายการนำเสนอ</label>
-                        <select class="select2 select2-multiple form-control" multiple="multiple" name="note_tags"  id="get_tags">
+                        <select class="select2 select2-multiple form-control" multiple="multiple" name="sale_plans_tags"  id="get_tags">
                             {{-- <optgroup id="get_tags">
                                 <option value="1">เพิ่มเติม</option>
                                 <option value="2">เข้าพบลูกค้า</option>
@@ -144,32 +144,32 @@
     });
 
 
-    $(document).ready(function() {
-        $("#sel_searchShopEdit").on("change", function (e) {
-            //alert('ssdsd');
-            e.preventDefault();
-            let shop_id = $(this).val();
-            console.log(shop_id);
-            $('#saleplan_contact_name_edit').val();
-            $('#saleplan_phone_edit').val();
-            $('#saleplan_address_edit').val();
-            $.ajax({
-                method: 'GET',
-                url: '{{ url("searchShop_saleplan") }}/'+shop_id,
-                datatype: 'json',
-                success: function(response){
-                    console.log(response[0])
-                    $('#saleplan_id_edit').val(response[0].id);
-                    $('#saleplan_contact_name_edit').val(response[0].contact_name);
-                    $('#saleplan_phone_edit').val(response[0].shop_phone);
-                    $('#saleplan_address_edit').val(response[0].shop_address);
-                },
-                error: function(response){
-                    console.log("error");
-                    console.log(response);
-                }
-            });
-        });
-    });
+    // $(document).ready(function() {
+    //     $("#sel_searchShopEdit").on("change", function (e) {
+    //         //alert('ssdsd');
+    //         e.preventDefault();
+    //         let shop_id = $(this).val();
+    //         console.log(shop_id);
+    //         $('#saleplan_contact_name_edit').val();
+    //         $('#saleplan_phone_edit').val();
+    //         $('#saleplan_address_edit').val();
+    //         $.ajax({
+    //             method: 'GET',
+    //             url: '{{ url("searchShop_saleplan") }}/'+shop_id,
+    //             datatype: 'json',
+    //             success: function(response){
+    //                 console.log(response[0])
+    //                 $('#saleplan_id_edit').val(response[0].id);
+    //                 $('#saleplan_contact_name_edit').val(response[0].contact_name);
+    //                 $('#saleplan_phone_edit').val(response[0].shop_phone);
+    //                 $('#saleplan_address_edit').val(response[0].shop_address);
+    //             },
+    //             error: function(response){
+    //                 console.log("error");
+    //                 console.log(response);
+    //             }
+    //         });
+    //     });
+    // });
 
 </script>
