@@ -332,6 +332,12 @@ Route::get('/admin/edit_master_objective_saleplan/{id}', 'Admin\MasterObjectiveS
 Route::post('/admin/update_master_objective_saleplan', 'Admin\MasterObjectiveSaleplanController@update');
 Route::get('admin/delete_master_objective_saleplan/{id}', 'Admin\MasterObjectiveSaleplanController@destroy');
 
+Route::get('admin/master_tag', 'Admin\MasterNoteTagController@index');
+Route::post('admin/create_master_tag', 'Admin\MasterNoteTagController@store');
+Route::get('/admin/edit_master_tag/{id}', 'Admin\MasterNoteTagController@edit');
+Route::post('/admin/update_master_tag', 'Admin\MasterNoteTagController@update');
+Route::get('admin/delete_master_tag/{id}', 'Admin\MasterNoteTagController@destroy');
+
 
 });
 

@@ -497,6 +497,12 @@
                                                     <span class="nav-link-text">รายการนำเสนอ แผนงาน</span>
                                                 </a>
                                             </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ url('admin/master_tag') }}">
+                                                    <i class="ion ion-md-bookmark" style="color: #044067;"></i>
+                                                    <span class="nav-link-text">ป้ายกำกับ (บันทึกโน๊ต)</span>
+                                                </a>
+                                            </li>
                                         </ul>
                                     </li>
                                 </ul>

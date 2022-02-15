@@ -78,7 +78,7 @@
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
                                                     <td>{{ $value->note_title }}</td>
-                                                    <td>{{ $value->note_tags }}</td>
+                                                    <td>{{ $value->name_tag }}</td>
                                                     <?php $date = new Carbon\Carbon($value->note_date); ?>
                                                     <td>{{ $date->format('d/m/Y') }}</td>
                                                     <td>
@@ -146,9 +146,11 @@
                                 <select class="select2 select2-multiple form-control" multiple="multiple"
                                     data-placeholder="Choose" name="note_tags">
                                     <optgroup label="เลือกข้อมูล">
-                                        <option value="AK">เพิ่มเติม</option>
-                                        <option value="HI">เข้าพบลูกค้า</option>
-                                        <option value="HI">งานใหม่</option>
+                                        <?php $master = App\NoteTag::orderBy('id', 'desc')->get(); ?>
+
+                                        @foreach ($master as $value)
+                                        <option value="{{$value->id}}">{{$value->name_tag}}</option>
+                                        @endforeach
                                     </optgroup>
                                 </select>
                             </div>
@@ -232,13 +234,12 @@
                     $('#get_date').val(data.dataEdit.note_date);
                     $('#get_title').val(data.dataEdit.note_title);
                     $('#get_detail').val(data.dataEdit.note_detail);
-                    // $('#get_tags').val(data.dataEdit.note_tags);
                     $('#get_tags').html(
                                     "<optgroup label='กรุณาเลือก'>"+
-                                        "<option value='AK' selected>"+ data.dataEdit.note_tags +"</option>"+
-                                        "<option value='AK'>เพิ่มเติม</option>"+
-                                        "<option value='HI'>เข้าพบลูกค้า</option>"+
-                                        "<option value='HB'>งานใหม่</option>"+
+                                        "<option value='"+data.dataEdit.note_tags+"' selected>"+ data.dataEdit.name_tag +"</option>"+
+                                        "@foreach ($master as $value)"+
+                                        "<option value='"+{{$value->id}}+"'>{{$value->name_tag}}</option>"+
+                                        "@endforeach"+
                                     "</optgroup>");
 
                     $('#editNote').modal('toggle');
