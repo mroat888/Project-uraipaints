@@ -180,27 +180,7 @@ class CustomerController extends Controller
                     'message' => 'บันทึกข้อมูลสำเร็จ',
                     'data' => $request,
                 ]);
-<<<<<<< HEAD
-
-            // //-- เพิ่ม customer_shops_saleplan
-            DB::table('customer_shops_saleplan')
-                ->insert([
-                    'customer_shop_id' => $sql_shops->id,
-                    'monthly_plan_id' => $monthly_plan->id,
-                    'created_by' => Auth::user()->id,
-                    'created_at' => Carbon::now(),
-                ]);
-
-            DB::commit();
-
-            return response()->json([
-                'status' => 200,
-                'message' => 'บันทึกข้อมูลสำเร็จ',
-                'data' => $request,
-            ]);
-=======
             }
->>>>>>> ec078aed79907941bdc69ad9d29f2f488b7739b0
 
         } catch (\Exception $e) {
 
