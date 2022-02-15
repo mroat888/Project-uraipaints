@@ -278,11 +278,12 @@ Route::post('admin/update_promotion', 'PromotionController@update');
 Route::get('admin/delete_promotion/{id}', 'PromotionController@destroy');
 
 // Product New
-Route::get('admin/product_new', 'Admin\ProductNewController@index');
-Route::post('admin/create_product_new', 'Admin\ProductNewController@store');
-Route::get('admin/edit_product_new/{id}', 'Admin\ProductNewController@edit');
-Route::post('admin/update_product_new', 'Admin\ProductNewController@update');
-Route::get('admin/delete_product_new/{id}', 'Admin\ProductNewController@destroy');
+Route::get('admin/fontendProductNew', 'ProductNewController@admin_frontend_product_new');
+Route::get('admin/product_new', 'ProductNewController@index');
+Route::post('admin/create_product_new', 'ProductNewController@store');
+Route::get('admin/edit_product_new/{id}', 'ProductNewController@edit');
+Route::post('admin/update_product_new', 'ProductNewController@update');
+Route::get('admin/delete_product_new/{id}', 'ProductNewController@destroy');
 
 // Product New
 Route::get('admin/product_property', 'Admin\ProductPropertyController@index');
