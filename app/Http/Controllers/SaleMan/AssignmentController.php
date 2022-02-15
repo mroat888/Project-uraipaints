@@ -52,14 +52,18 @@ class AssignmentController extends Controller
     public function search_month_assignment(Request $request)
     {
         // dd($request);
-        $from = Carbon::parse($request->fromMonth)->format('m');
-        $to = Carbon::parse($request->toMonth)->format('m');
+        // $from = Carbon::parse($request->fromMonth)->format('m');
+        // $to = Carbon::parse($request->toMonth)->format('m');
+        $from = $request->fromMonth."-01";
+        $to = $request->toMonth."-31";
         $assignments = Assignment::where('assign_emp_id', Auth::user()->id)
         ->where('assign_status', 3)
-        ->whereMonth('assign_work_date', $from)
+        ->whereDate('assign_work_date', '>=', $from)
+        ->whereDate('assign_work_date', '<=', $to)
         ->orderBy('id', 'desc')->get();
 
         // return $assignments;
+        // dd($request, $assignments); 
         return view('saleman.assignment', compact('assignments'));
     }
 }
