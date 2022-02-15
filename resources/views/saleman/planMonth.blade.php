@@ -21,7 +21,7 @@
                     <section class="hk-sec-wrapper">
                         <div class="hk-pg-header mb-10">
                             <div>
-                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">แผนสรุปรายเดือน ปี 2565</h6>
+                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">แผนสรุปรายเดือน ปี <?php echo thaidate('Y', date('Y')); ?></h6>
                             </div>
                             <div class="d-flex">
                                 <input type="month" class="form-control" name="" id="">
@@ -68,6 +68,7 @@
                                                         <td>{{ $value->success_plan }}</td>
                                                         <td>{{ $value->cust_visits_amount }}</td>
                                                         <td>
+
                                                             @if ($value->status_approve == 0)
                                                                 <span class="badge badge-soft-secondary"
                                                                     style="font-size: 12px;">
@@ -85,7 +86,7 @@
                                                                     Approve
                                                                 </span>
                                                             @endif
-                                                            </span>
+                                
 
                                                         </td>
                                                         <td style="text-align:center">
@@ -247,19 +248,22 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($list_saleplan as $key => $value)
+                                                    @php
+                                                        foreach($customer_api as $key_api => $value_api){
+                                                            if($customer_api[$key_api]['id'] == $value->customer_shop_id){
+                                                                $shop_name = $customer_api[$key_api]['shop_name'];
+                                                                $shop_address = $customer_api[$key_api]['shop_address'];
+                                                            }
+                                                        }
+                                                    @endphp
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
                                                         <td>{!! Str::limit($value->sale_plans_title, 20) !!}</td>
                                                         <td>
-                                                            @foreach($customer_api as $key_api => $value_api)
-                                                                @if($customer_api[$key_api]['id'] == $value->customer_shop_id)
-                                                                    {!! Str::limit($customer_api[$key_api]['shop_name'], 25) !!}
-                                                                    {{-- {{ $customer_api[$key_api]['shop_name'] }} --}}
-                                                                @endif
-                                                            @endforeach
+                                                            {!! Str::limit($shop_name,20) !!}
                                                         </td>
                                                         <td>
-
+                                                            {{ $shop_address }}
                                                         </td>
                                                         {{-- <td>
                                                             @if ($value->saleplan_id)
@@ -353,8 +357,7 @@
                                                     <th>#</th>
                                                     <th>ชื่อร้าน</th>
                                                     <th>อำเภอ,จังหวัด</th>
-                                                    <th>สถานะ</th>
-                                                    {{-- <th>อนุมัติ</th> --}}
+                                                    <th>วัตถุประสงค์</th>
                                                     <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
@@ -370,34 +373,9 @@
                                                         <td>{{ $value->shop_name }}</td>
                                                         <td>{{ $value->AMPHUR_NAME }}, {{ $value->PROVINCE_NAME }}</td>
                                                         <td>
-                                                            <span class="badge badge-soft-indigo mt-15 mr-10"
-                                                                style="font-size: 12px;">ลูกค้าใหม่</span>
+                                                            <!-- <span class="badge badge-soft-indigo mt-15 mr-10"
+                                                                style="font-size: 12px;">ลูกค้าใหม่</span> -->
                                                         </td>
-                                                        {{-- <td> --}}
-                                                            @php
-                                                                switch($value->shop_aprove_status){
-                                                                    case 0 :    $text_status = "Draf";
-                                                                                $badge_color = "badge-soft-secondary";
-                                                                                $btn_disabled = "";
-                                                                        break;
-                                                                    case 1 :    $text_status = "Pending";
-                                                                                $badge_color = "badge-soft-warning";
-                                                                                $btn_disabled = "";
-                                                                        break;
-                                                                    case 2 :    $text_status = "Approve";
-                                                                                $badge_color = "badge-soft-success";
-                                                                                $btn_disabled = "disabled";
-                                                                        break;
-                                                                    default :   $text_status = "-";
-                                                                                $badge_color = "";
-                                                                                $btn_disabled = "disabled";
-                                                                        break;
-                                                                }
-                                                            @endphp
-                                                            {{-- <span class="badge {{ $badge_color }} mt-15 mr-10"style="font-size: 12px;">
-                                                                {{ $text_status }}
-                                                            </span>
-                                                        </td> --}}
                                                         <td style="text-align:right;">
                                                             <div class="button-list">
                                                                 @php
@@ -475,8 +453,8 @@
                                                     <td>{{ $no++ }}</td>
                                                     <td>{{ $customer_visit_api[$key]['shop_name'] }}</td>
                                                     <td>{{ $customer_visit_api[$key]['shop_address'] }}</td>
-                                                    <td>-</td>
-                                                    <td>
+                                                    <td>{{ $customer_visit_api[$key]['focusdate'] }}</td>
+                                                    <td style="text-align:right;">
                                                         <div class="button-list">
                                                             <a href="{{url('delete_visit', $customer_visit_api[$key]['id'])}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
                                                                 <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-trash"></i></h4></a>
@@ -580,8 +558,8 @@
         </div>
     </div>
 
-     <!-- Modal Comment -->
-     <div class="modal fade" id="ApprovalComment" tabindex="-1" role="dialog" aria-labelledby="ApprovalComment" aria-hidden="true">
+    <!-- Modal Comment -->
+    <div class="modal fade" id="ApprovalComment" tabindex="-1" role="dialog" aria-labelledby="ApprovalComment" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">

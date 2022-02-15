@@ -583,20 +583,34 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($list_saleplan as $key => $value)
+                                                    @php
+                                                        foreach($customer_api as $key_api => $value_api){
+                                                            if($customer_api[$key_api]['id'] == $value->customer_shop_id){
+                                                                $shop_name = $customer_api[$key_api]['shop_name'];
+                                                                $shop_address = $customer_api[$key_api]['shop_address'];
+                                                            }
+                                                        }
+                                                    @endphp
                                                     <tr>
                                                         <td>{{ $key + 1}}</td>
                                                         <!-- <td>{{$value->id}}</td> -->
                                                         <td><span class="topic_purple">{!! Str::limit($value->sale_plans_title, 20) !!}</span></td>
                                                         <td>
-                                                            @foreach($customer_api as $key_api => $value_api)
-                                                                @if($customer_api[$key_api]['id'] == $value->customer_shop_id)
-                                                                {!! Str::limit($customer_api[$key_api]['shop_name'], 25) !!}
-                                                                    {{-- {{ $customer_api[$key_api]['shop_name'] }} --}}
-                                                                @endif
-                                                            @endforeach
+                                                            {!! Str::limit($shop_name,20) !!}
                                                         </td>
-                                                        <td></td>
-                                                        <td><span class="badge badge-soft-indigo" style="font-size: 12px;">Comment</span></td>
+                                                        <td>
+                                                            {{ $shop_address }}
+                                                        </td>
+                                                        <td style="text-align:center;">
+                                                            <!-- <span class="badge badge-soft-indigo" style="font-size: 12px;">Comment</span> -->
+                                                            @if ($value->saleplan_id)
+                                                            <button onclick="approval_comment({{ $value->id }})"
+                                                                class="btn btn-icon btn-violet" data-toggle="modal"
+                                                                data-target="#ApprovalComment">
+                                                                <span class="btn-icon-wrap"><i data-feather="message-square"></i></span>
+                                                            </button>
+                                                            @endif
+                                                        </td>
                                                         <td style="text-align:center">
                                                             <div class="button-list">
                                                                 @php
@@ -663,18 +677,32 @@
                                                     <th>ชื่อร้าน</th>
                                                     <th>อำเภอ,จังหวัด</th>
                                                     <th>วัตถุประสงค์</th>
-                                                    {{-- <th>สถานะ</th> --}}
-                                                    <th class="text-center">Action</th>
+                                                    <th style="text-align:center;">ความเห็น ผจก.</th>
+                                                    <th style="text-align:center;">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach ($customer_new as $key => $value)
                                                 <tr>
-                                                    <td>{{$key + 1}}</td>
-                                                    <td>{{$value->shop_name}}</td>
-                                                    <td>{{$value->PROVINCE_NAME}}</td>
+                                                    <td>{{ $key + 1 }}</td>
+                                                    <td>{{ $value->shop_name }}</td>
+                                                    <td>{{ $value->AMPHUR_NAME }}, {{ $value->PROVINCE_NAME }}</td>
                                                     <td></td>
                                                     <td style="text-align:center;">
+                                                        @php
+                                                            $count_new = DB::table('customer_shop_comments')
+                                                            ->where('customer_shops_saleplan_id', $value->id)
+                                                            ->count();
+                                                        @endphp
+                                                        @if ($count_new > 0)
+                                                        <button onclick="custnew_comment({{ $value->id }})"
+                                                            class="btn btn-icon btn-violet" data-toggle="modal"
+                                                            data-target="#CustNewComment">
+                                                            <span class="btn-icon-wrap"><i data-feather="message-square"></i></span>
+                                                        </button>
+                                                        @endif
+                                                    </td>
+                                                    <td style="text-align:right;">
                                                         <div class="button-list">
                                                             @php
                                                                 if ($value->cust_result_checkin_date != "" && $value->cust_result_checkout_date == ""){
@@ -751,7 +779,7 @@
                                                         <td>{{ $no++ }}</td>
                                                         <td>{!! Str::limit($customer_visit_api[$key]['shop_name'], 20) !!}</td>
                                                         <td>{{ $customer_visit_api[$key]['shop_address'] }}</td>
-                                                        <td>-</td>
+                                                        <td>{{ $customer_visit_api[$key]['focusdate'] }}</td>
                                                         <td>
                                                             @if ($customer_visit_api[$key]['visit_status'] == 0)
                                                                 <span class="badge badge-soft-secondary mt-15 mr-10"
@@ -989,9 +1017,9 @@
         </div>
     </div>
 
-      <!-- Modal Customer Vist Result -->
-<div class="modal fade" id="ModalVisitResult" tabindex="-1" role="dialog" aria-labelledby="ModalVisitResult" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <!-- Modal Customer Vist Result -->
+    <div class="modal fade" id="ModalVisitResult" tabindex="-1" role="dialog" aria-labelledby="ModalVisitResult" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">สรุปผลเยี่ยมลูกค้า</h5>
@@ -1029,7 +1057,100 @@
         </div>
     </div>
 
+    <!-- Modal Comment -->
+    <div class="modal fade" id="ApprovalComment" tabindex="-1" role="dialog" aria-labelledby="ApprovalComment" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">ความคิดเห็น</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <!-- <label for="username">รายละเอียดความคิดเห็น</label> -->
+                            <!-- <textarea class="form-control" cols="30" rows="5" id="get_comment" name="assign_comment"
+                                type="text" readonly></textarea> -->
+                            <div id="div_comment">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Comment -->
+    <div class="modal fade" id="CustNewComment" tabindex="-1" role="dialog" aria-labelledby="CustNewComment" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">ความคิดเห็น</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div id="div_cust_new_comment">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+
+        function approval_comment(id) {
+            $.ajax({
+                type: "GET",
+                url: "{!! url('saleplan_view_comment/"+id+"') !!}",
+                dataType: "JSON",
+                async: false,
+                success: function(data) {
+                    $('#div_comment').children().remove().end();
+                    console.log(data);
+
+                    $.each(data, function(key, value){
+                        $('#div_comment').append('<div>Comment by: '+data[key].user_comment+' Date: '+data[key].created_at+'</div>');
+                        $('#div_comment').append('<div class="alert alert-primary py-20" role="alert">'+data[key].saleplan_comment_detail+'</div>');
+                    });
+
+                    $('#ApprovalComment').modal('toggle');
+                }
+            });
+        }
+
+        function custnew_comment(id) {
+            $.ajax({
+                type: "GET",
+                url: "{!! url('customernew_view_comment/"+id+"') !!}",
+                dataType: "JSON",
+                async: false,
+                success: function(data) {
+                    $('#div_cust_new_comment').children().remove().end();
+                    console.log(data);
+                    $.each(data, function(key, value){
+                        $('#div_cust_new_comment').append('<div>Comment by: '+data[key].user_comment+' Date: '+data[key].created_at+'</div>');
+                        $('#div_cust_new_comment').append('<div class="alert alert-primary py-20" role="alert">'+data[key].customer_comment_detail+'</div>');
+                    });
+
+                    $('#CustNewComment').modal('toggle');
+                }
+            });
+        }
+
+
+
         var x = document.getElementById("demo");
         var v = document.getElementById("visit_demo");
         var cust = document.getElementById("cust_demo");

@@ -88,6 +88,7 @@ class PlanMonthController extends Controller
             [
                 'id' => $value['identify'],
                 'shop_name' => $value['title']." ".$value['name'],
+                'shop_address' => $value['amphoe_name']." , ".$value['province_name'],
             ];
         }
 
@@ -111,6 +112,7 @@ class PlanMonthController extends Controller
                         'shop_address' => $res_visit_api['amphoe_name']." , ".$res_visit_api['province_name'],
                         'shop_phone' => $res_visit_api['telephone'],
                         'shop_mobile' => $res_visit_api['mobile'],
+                        'focusdate' => $res_visit_api['focusdate'], 
                     ];
                 }
             }

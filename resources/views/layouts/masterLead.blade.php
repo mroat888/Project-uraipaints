@@ -298,6 +298,12 @@ License: You must have a valid license purchased only from themeforest to legall
                                             </a>
                                         </li>
                                         <li class="nav-item">
+                                            <a class="nav-link" href="{{ url('/approvalgeneral') }}">
+                                                <i class="ion ion-md-checkbox"></i>
+                                                <span class="nav-link-text">ลูกค้าใหม่ นอกแผน</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
                                             <a class="nav-link" href="{{ url('add_assignment') }}">
                                                 <i class="ion ion-md-folder-open" style="color: #044067;"></i>
                                                 บันทึกสั่งงาน</a>

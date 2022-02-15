@@ -52,13 +52,14 @@ class DailyWorkController extends Controller
         }
         // -- จบ ถ้า monthly_plan ไม่มีเดือนปัจจุบัน ให้สร้างขึ้นมาใหม่ -----------
 
-
         // -- ข้อมูล แผนงานงาน Saleplan
         $data['list_saleplan'] = DB::table('sale_plans')
+        ->leftjoin('sale_plan_comments', 'sale_plans.id', 'sale_plan_comments.saleplan_id')
         ->where('sale_plans.monthly_plan_id', $data['monthly_plan']->id)
         ->where('sale_plans.created_by', Auth::user()->id)
         ->where('sale_plans_status', 2)
-        ->orderBy('id', 'desc')->get();
+        ->select('sale_plans.*', 'sale_plan_comments.saleplan_id')->distinct()
+        ->orderBy('sale_plans.id', 'desc')->get();
 
         
         // -- ข้อมูลลูกค้าใหม่ // ลูกค้าใหม่เปลี่ยนมาใช้อันนี้
@@ -105,6 +106,7 @@ class DailyWorkController extends Controller
             [
                 'id' => $value['identify'],
                 'shop_name' => $value['title']." ".$value['name'],
+                'shop_address' => $value['amphoe_name']." , ".$value['province_name'],
             ];
         }
 
@@ -137,6 +139,7 @@ class DailyWorkController extends Controller
                         'shop_address' => $res_visit_api['amphoe_name']." , ".$res_visit_api['province_name'],
                         'shop_phone' => $res_visit_api['telephone'],
                         'shop_mobile' => $res_visit_api['mobile'],
+                        'focusdate' => $res_visit_api['focusdate'], 
                         'visit_status' => $cus_visit->cust_visit_status,
                         'visit_checkin_date' => $cus_visit->cust_visit_checkin_date,
                         'visit_checkout_date' => $cus_visit->cust_visit_checkout_date,
