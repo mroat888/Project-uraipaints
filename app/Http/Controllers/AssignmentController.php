@@ -36,7 +36,10 @@ class AssignmentController extends Controller
         ->select('assignments.*', 'users.name')
         ->orderBy('assignments.id', 'desc')->get();
 
-        $users = DB::table('users')->get();
+        $users = DB::table('users')
+            ->where('team_id', Auth::user()->team_id)
+            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+            ->get();
 
         return view('headManager.add_assignment', compact('assignments', 'users'));
     }
@@ -66,7 +69,7 @@ class AssignmentController extends Controller
                     'assign_detail' => $request->assign_detail,
                     'assign_fileupload' => $uploadfile,
                     'assign_emp_id' => $emp_id,
-                    'assign_status' => 1,
+                    'assign_status' => 3,
                     'assign_approve_id' => Auth::user()->id,
                     'assign_result_status' => 0,
                     'created_by' => Auth::user()->id,
@@ -118,7 +121,7 @@ class AssignmentController extends Controller
                     'assign_detail' => $request->assign_detail,
                     'assign_fileupload' => $uploadfile,
                     'assign_emp_id' => $emp_id,
-                    'assign_status' => 1,
+                    'assign_status' => 3,
                     'assign_approve_id' => Auth::user()->id,
                     'assign_result_status' => 0,
                     'created_by' => Auth::user()->id,

@@ -112,4 +112,84 @@ class NoteController extends Controller
 
         return back();
     }
+
+    public function search_month_note(Request $request)
+    {
+        // dd($request);
+        // $from = Carbon::parse($request->fromMonth)->format('m');
+        // $to = Carbon::parse($request->toMonth)->format('m');
+        $from = $request->fromMonth."-01";
+        $to = $request->toMonth."-31";
+        $data =  DB::table('notes')
+        ->where('employee_id', Auth::user()->id)
+        ->whereDate('note_date', '>=', $from)
+        ->whereDate('note_date', '<=', $to)
+        ->orderBy('status_pin', 'desc')
+        ->orderBy('note_date', 'asc')->get();
+
+
+        // return $list_approval;
+
+        return view('saleman.note', compact('data'));
+    }
+
+    public function lead_search_month_note(Request $request)
+    {
+        // dd($request);
+        // $from = Carbon::parse($request->fromMonth)->format('m');
+        // $to = Carbon::parse($request->toMonth)->format('m');
+        $from = $request->fromMonth."-01";
+        $to = $request->toMonth."-31";
+        $data =  DB::table('notes')
+        ->where('employee_id', Auth::user()->id)
+        ->whereDate('note_date', '>=', $from)
+        ->whereDate('note_date', '<=', $to)
+        ->orderBy('status_pin', 'desc')
+        ->orderBy('note_date', 'asc')->get();
+
+
+        // return $list_approval;
+
+        return view('leadManager.note', compact('data'));
+    }
+
+    public function head_search_month_note(Request $request)
+    {
+        // dd($request);
+        // $from = Carbon::parse($request->fromMonth)->format('m');
+        // $to = Carbon::parse($request->toMonth)->format('m');
+        $from = $request->fromMonth."-01";
+        $to = $request->toMonth."-31";
+        $data =  DB::table('notes')
+        ->where('employee_id', Auth::user()->id)
+        ->whereDate('note_date', '>=', $from)
+        ->whereDate('note_date', '<=', $to)
+        ->orderBy('status_pin', 'desc')
+        ->orderBy('note_date', 'asc')->get();
+
+
+        // return $list_approval;
+
+        return view('headManager.note', compact('data'));
+    }
+
+    public function admin_search_month_note(Request $request)
+    {
+        // dd($request);
+        // $from = Carbon::parse($request->fromMonth)->format('m');
+        // $to = Carbon::parse($request->toMonth)->format('m');
+        $from = $request->fromMonth."-01";
+        $to = $request->toMonth."-31";
+        $data =  DB::table('notes')
+        ->where('employee_id', Auth::user()->id)
+        ->whereDate('note_date', '>=', $from)
+        ->whereDate('note_date', '<=', $to)
+        ->orderBy('status_pin', 'desc')
+        ->orderBy('note_date', 'asc')->get();
+
+
+        // return $list_approval;
+
+        return view('admin.note', compact('data'));
+    }
 }

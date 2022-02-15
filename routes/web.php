@@ -22,6 +22,7 @@ Route::get('/index.html', 'Saleman\DashboardController@index');
 // Sale
 Route::get('dashboard',  'SaleMan\DashboardController@index');
 Route::get('/planMonth', 'PlanMonthController@index');
+Route::post('search_month_planMonth', 'PlanMonthController@search_month_planMonth');
 Route::get('approve_monthly_plan/{id}', 'PlanMonthController@approve');
 Route::get('dailyWork', 'SaleMan\DailyWorkController@index');
 Route::get('saleplan_view_comment/{id}', 'PlanMonthController@saleplan_view_comment');
@@ -89,6 +90,7 @@ Route::get('edit_approval/{id}', 'SaleMan\RequestApprovalController@edit');
 Route::post('update_approval', 'SaleMan\RequestApprovalController@update');
 Route::get('delete_approval/{id}', 'SaleMan\RequestApprovalController@destroy');
 Route::get('view_comment/{id}', 'SaleMan\RequestApprovalController@view_comment');
+Route::post('search_month_requestApprove', 'SaleMan\RequestApprovalController@search_month_requestApprove');
 
 // NOTE
 Route::get('note', 'NoteController@note_sale');
@@ -97,6 +99,8 @@ Route::post('create_note', 'NoteController@store');
 Route::get('edit_note/{id}', 'NoteController@edit');
 Route::post('update_note', 'NoteController@update');
 Route::get('delete_note/{id}', 'NoteController@destroy');
+Route::post('search_month_note', 'NoteController@search_month_note');
+
 
 Route::get('news', 'NewsController@frontend_news');
 Route::get('promotions', 'PromotionController@frontend_promotion');
@@ -160,6 +164,7 @@ Route::post('lead/create_note', 'NoteController@store');
 Route::get('lead/edit_note/{id}', 'NoteController@edit');
 Route::post('lead/update_note', 'NoteController@update');
 Route::get('lead/delete_note/{id}', 'NoteController@destroy');
+Route::post('lead/search_month_note', 'NoteController@lead_search_month_note');
 
 Route::get('lead/news', 'NewsController@lead_frontend_news');
 Route::get('lead/promotions', 'PromotionController@lead_frontend_promotion');
@@ -201,6 +206,9 @@ Route::get('head/comment_approval/{id}/{createID}', 'HeadManager\ApprovalControl
 Route::post('head/create_comment_request_approval', 'HeadManager\ApprovalController@create_comment_request_approval');
 Route::get('head/assignment/add', 'AssignmentController@assignIndex');
 Route::post('head/create_assignment', 'AssignmentController@store_head');
+Route::get('head/edit_assignment/{id}', 'AssignmentController@edit');
+Route::post('head/update_assignment', 'AssignmentController@update');
+Route::get('head/delete_assignment/{id}', 'AssignmentController@destroy');
 
 // Note Head Manage
 Route::get('head/note', 'NoteController@note_head');
@@ -208,6 +216,7 @@ Route::post('head/create_note', 'NoteController@store');
 Route::get('head/edit_note/{id}', 'NoteController@edit');
 Route::post('head/update_note', 'NoteController@update');
 Route::get('head/delete_note/{id}', 'NoteController@destroy');
+Route::post('head/search_month_note', 'NoteController@head_search_month_note');
 
 Route::get('head/news', 'NewsController@head_frontend_news');
 Route::get('head/promotions', 'PromotionController@head_frontend_promotion');
@@ -245,6 +254,8 @@ Route::post('admin/create_note', 'NoteController@store');
 Route::get('admin/edit_note/{id}', 'NoteController@edit');
 Route::post('admin/update_note', 'NoteController@update');
 Route::get('admin/delete_note/{id}', 'NoteController@destroy');
+Route::post('admin/search_month_note', 'NoteController@admin_search_month_note');
+
 // News
 Route::get('admin/fontendNews', 'NewsController@admin_frontend_news');
 Route::get('admin/news', 'NewsController@index');

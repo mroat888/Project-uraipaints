@@ -63,7 +63,7 @@ class AssignmentController extends Controller
         ->orderBy('id', 'desc')->get();
 
         // return $assignments;
-        // dd($request, $assignments); 
+        // dd($request, $assignments);
         return view('saleman.assignment', compact('assignments'));
     }
 }
