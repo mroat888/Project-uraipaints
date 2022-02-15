@@ -297,7 +297,7 @@ Route::post('/admin/userPermissionCreate', 'Admin\UserPermissionController@store
 Route::get('/admin/userPermissionEdit/{id}', 'Admin\UserPermissionController@edit');
 Route::post('/admin/userPermissionUpdate', 'Admin\UserPermissionController@update');
 
-Route::get('admin/checkHistory', function () { return view('admin.check_history'); });
+Route::get('admin/checkHistory', 'Admin\UsageHistoryController@index');
 
 Route::get('/admin/reportcustomer', function () { return view('reports.report_customer_admin'); });
 Route::get('/admin/reportStore', function () { return view('reports.report_store_admin'); });

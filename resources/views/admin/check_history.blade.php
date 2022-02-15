@@ -42,20 +42,15 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach ($history as $key => $value)
                                 <tr>
-                                    <td>1</td>
-                                    <td>ศิริลักษณ์</td>
-                                    <td>siriluk</td>
-                                    <td><span class="badge badge-soft-info" style="font-size: 14px;">ผู้แทนขาย</span></td>
-                                    <td>11/10/2564</td>
+                                    <td>{{ $key + 1}}</td>
+                                    <td>{{ $value->name }}</td>
+                                    <td>{{ $value->email }}</td>
+                                    <td><span class="badge badge-soft-violet" style="font-size: 14px;">{{ $value->permission_name }}</span></td>
+                                    <td>{{ $value->date}}</td>
                                 </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>อิศรา</td>
-                                    <td>itsara</td>
-                                    <td><span class="badge badge-soft-indigo" style="font-size: 14px;">ผู้จัดการเขต</span></td>
-                                    <td>11/10/2564</td>
-                                </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
