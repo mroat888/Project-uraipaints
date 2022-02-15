@@ -12,26 +12,42 @@
             <form id="form_insert" enctype="multipart/form-data">
                 @csrf
             <div class="modal-body">
+                    @if(isset($customer_shops ))
+                        <div class="row"> 
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">ค้นหาชื่อร้าน</label>
+                                <select name="customer_shops" id="customer_shops" class="form-control custom-select select2">
+                                    <option value="">--โปรดเลือก--</option>
+                                        @foreach($customer_shops as $value)
+                                            <option value="{{ $value->id }}">{{ $value->shop_name }}</option>
+                                        @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <input class="form-control" id="customer_shops_id" name="customer_shops_id" type="hidden">
+                            </div>
+                        </div>
+                    @endif
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label for="firstName">ชื่อร้าน</label>
-                            <input class="form-control" name="shop_name" type="text">
+                            <input class="form-control" id="shop_name" name="shop_name" type="text">
                         </div>
                         <div class="col-md-6 form-group">
                             <label for="firstName">ชื่อผู้ติดต่อ</label>
-                            <input class="form-control" placeholder="" name="contact_name" type="text">
+                            <input class="form-control" id="contact_name" name="contact_name"  type="text">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label for="firstName">เบอร์โทรศัพท์</label>
-                            <input class="form-control" placeholder="" name="shop_phone" type="text">
+                            <input class="form-control" id="shop_phone" name="shop_phone" type="text">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12 form-group">
                             <label for="firstName">ที่อยู่</label>
-                            <textarea class="form-control" placeholder="" id="shop_address" name="shop_address" rows="3"></textarea>
+                            <textarea class="form-control" id="shop_address" name="shop_address" rows="3"></textarea>
                         </div>
                     </div>
                     <div class="row">
@@ -59,7 +75,7 @@
 
                         <div class="col-md-6 form-group">
                             <label for="username">รหัสไปรษณีย์</label>
-                            <input class="form-control postcode" id="postcode" placeholder="" name="shop_zipcode" type="text">
+                            <input class="form-control postcode" id="postcode" name="shop_zipcode" type="text">
                         </div>
                     </div>
                     <!-- <div class="row">
@@ -210,6 +226,32 @@ $(document).on('click','.btn_editshop', function(e){
     });
 
 })
+
+
+
+$(document).on('change','.customer_shops_sel', function(e){
+    e.preventDefault();
+    let pvid = $(this).val();
+    $.ajax({
+        method: 'GET',
+        url: '{{ url("/fetch_amphur") }}/'+pvid,
+        datatype: 'json',
+        success: function(response){
+            //alert(response.AMPHUR_NAME);
+            if(response.status == 200){
+                //console.log(response)
+                $('.amphur').children().remove().end();
+                $('.district').children().remove().end();
+                $('.amphur').append('<option selected value="0">--โปรดเลือก--</option>');
+                $('.district').append('<option selected value="0">--โปรดเลือก--</option>');
+                $('.postcode').val('');
+                $.each(response.amphurs, function(key, value){
+                    $('.amphur').append('<option value='+value.AMPHUR_ID+'>'+value.AMPHUR_NAME+'</option>')	;
+                });
+            }
+        }
+    });
+});
 
 $(document).on('change','.province', function(e){
     e.preventDefault();

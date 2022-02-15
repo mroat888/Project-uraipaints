@@ -935,7 +935,80 @@
 
             });
 
+
+            $("#customer_shops").on("change", function (e) {
+                e.preventDefault();
+                let shop_id = $(this).val();
+                if(shop_id != ""){
+                    $('#customer_shops_id').val(shop_id);
+                    $('#shop_name').attr('readonly', true);
+                    $('#contact_name').attr('readonly', true);
+                    $('#shop_phone').attr('readonly', true);
+                    $('#shop_address').attr('readonly', true);
+                    $('#province').attr('disabled', 'disabled');
+                    $('#amphur').attr('disabled', 'disabled');
+                    $('#district').attr('disabled', 'disabled');
+                    $('#postcode').attr('readonly', true);
+                }else{
+                    $('#customer_shops_id').val('');
+                    $('#shop_name').attr('readonly', false);
+                    $('#contact_name').attr('readonly', false);
+                    $('#shop_phone').attr('readonly', false);
+                    $('#shop_address').attr('readonly', false);
+                    $('#province').removeAttr("disabled");
+                    $('#amphur').removeAttr("disabled");
+                    $('#district').removeAttr("disabled");
+                    $('#postcode').attr('readonly', false);
+                }
+
+                $.ajax({
+                    method: 'GET',
+                    url: '{{ url("/edit_customerLead") }}/'+shop_id,
+                    datatype: 'json',
+                    success: function(response){
+                        console.log(response);
+                        if(response.status == 200){
+                            $("#customer_shops_id").val(shop_id);
+                            $("#shop_name").val(response.dataEdit.shop_name);
+                            if(response.customer_contacts != null){
+                                $("#contact_name").val(response.customer_contacts.customer_contact_name);
+                                $("#shop_phone").val(response.customer_contacts.customer_contact_phone);
+                            }
+                            $("#shop_address").val(response.dataEdit.shop_address);
+
+                            $.each(response.shop_province, function(key, value){
+                                if(value.PROVINCE_ID == response.dataEdit.shop_province_id){
+                                    $('#province').append('<option value='+value.PROVINCE_ID+' selected>'+value.PROVINCE_NAME+'</option>')	;
+                                }else{
+                                    $('#province').append('<option value='+value.PROVINCE_ID+'>'+value.PROVINCE_NAME+'</option>')	;
+                                }
+                            });
+
+                            $.each(response.shop_amphur, function(key, value){
+                                if(value.AMPHUR_ID == response.dataEdit.shop_amphur_id){
+                                    $('#amphur').append('<option value='+value.AMPHUR_ID+' selected>'+value.AMPHUR_NAME+'</option>')	;
+                                }else{
+                                    $('#amphur').append('<option value='+value.AMPHUR_ID+'>'+value.AMPHUR_NAME+'</option>')	;
+                                }
+                            });
+
+                            $.each(response.shop_district, function(key, value){
+                                if(value.DISTRICT_ID == response.dataEdit.shop_district_id){
+                                    $('#district').append('<option value='+value.DISTRICT_ID+' selected>'+value.DISTRICT_NAME+'</option>')	;
+                                }else{
+                                    $('#district').append('<option value='+value.DISTRICT_ID+'>'+value.DISTRICT_NAME+'</option>')	;
+                                }
+                            });
+
+                            $("#postcode").val(response.dataEdit.shop_zipcode);
+                        }
+                    }
+                });
+
+
+            });
         });
+
     </script>
 
 

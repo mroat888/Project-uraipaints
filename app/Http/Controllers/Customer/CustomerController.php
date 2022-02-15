@@ -58,78 +58,109 @@ class CustomerController extends Controller
     {
         DB::beginTransaction();
         try {
-            $path = 'upload/CustomerImage';
-            $image = '';
-            // if (!empty($request->file('image'))) {
-            //     $img = $request->file('image');
-            //     $img_name = 'img-' . time() . '.' . $img->getClientOriginalExtension();
-            //     $save_path = $img->move(public_path($path), $img_name);
-            //     $image = $img_name;
-            // }
+            if($request->customer_shops_id != ""){ // ถ้ามีการค้นหาร้านค้าที่มีในระบบ
+                
+                $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->first();
+                //-- เพิ่ม monthly_plans
+                DB::table('monthly_plans')->where('id', $monthly_plan->id)
+                    ->update([
+                        'cust_new_amount' => $monthly_plan->cust_new_amount+1,
+                        'total_plan' => $monthly_plan->total_plan+1,
+                        'outstanding_plan' => ($monthly_plan->total_plan + 1) - $monthly_plan->success_plan,
+                    ]);
 
-            $pathFle = 'upload/CustomerFile';
-            $uploadfile = '';
-            // if (!empty($request->file('shop_fileupload'))) {
-            //     $uploadF = $request->file('shop_fileupload');
-            //     $file_name = 'file-' . time() . '.' . $uploadF->getClientOriginalExtension();
-            //     $save_path2 = $uploadF->move(public_path($pathFle), $file_name);
-            //     $uploadfile = $file_name;
-            // }
+                // //-- เพิ่ม customer_shops_saleplan
+                DB::table('customer_shops_saleplan')
+                    ->insert([
+                        'customer_shop_id' => $request->customer_shops_id,
+                        'monthly_plan_id' => $monthly_plan->id,
+                        'created_by' => Auth::user()->id,
+                        'created_at' => Carbon::now(),
+                    ]);            
 
-            $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->first();
+                DB::commit();
 
-            DB::table('customer_shops')
-            ->insert([
-                'monthly_plan_id'     => $monthly_plan->id,
-                'shop_name'           => $request->shop_name,
-                'shop_address'        => $request->shop_address,
-                'shop_province_id'    => $request->province,
-                'shop_amphur_id'      => $request->amphur,
-                'shop_district_id'    => $request->district,
-                'shop_zipcode'        => $request->shop_zipcode,
-                'shop_profile_image'  => $image,
-                'shop_fileupload'     => $uploadfile,
-                'shop_status'         => 0,
-                'shop_saleplan_date'  => Carbon::now()->addMonth(1),
-                'created_by'          => Auth::user()->id,
-                'created_at'          => Carbon::now(),
-            ]);
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'บันทึกข้อมูลสำเร็จ',
+                    'data' => $request,
+                ]);
+                
+            }else{ // ถ้าไม่มีให้เพิ่มร้านค้าเข้าไปใหม่
 
-            $sql_shops = DB::table('customer_shops')->orderBy('customer_shops.id', 'desc')->first();
+                $path = 'upload/CustomerImage';
+                $image = '';
+                // if (!empty($request->file('image'))) {
+                //     $img = $request->file('image');
+                //     $img_name = 'img-' . time() . '.' . $img->getClientOriginalExtension();
+                //     $save_path = $img->move(public_path($path), $img_name);
+                //     $image = $img_name;
+                // }
 
-            DB::table('customer_contacts')
+                $pathFle = 'upload/CustomerFile';
+                $uploadfile = '';
+                // if (!empty($request->file('shop_fileupload'))) {
+                //     $uploadF = $request->file('shop_fileupload');
+                //     $file_name = 'file-' . time() . '.' . $uploadF->getClientOriginalExtension();
+                //     $save_path2 = $uploadF->move(public_path($pathFle), $file_name);
+                //     $uploadfile = $file_name;
+                // }
+
+                $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->first();
+
+                DB::table('customer_shops')
                 ->insert([
-                    'customer_shop_id' => $sql_shops->id,
-                    'customer_contact_name' => $request->contact_name,
-                    'customer_contact_phone' => $request->shop_phone,
-                    'created_by' => Auth::user()->id,
-                    'created_at' => Carbon::now(),
+                    'monthly_plan_id'     => $monthly_plan->id,
+                    'shop_name'           => $request->shop_name,
+                    'shop_address'        => $request->shop_address,
+                    'shop_province_id'    => $request->province,
+                    'shop_amphur_id'      => $request->amphur,
+                    'shop_district_id'    => $request->district,
+                    'shop_zipcode'        => $request->shop_zipcode,
+                    'shop_profile_image'  => $image,
+                    'shop_fileupload'     => $uploadfile,
+                    'shop_status'         => 0,
+                    'shop_saleplan_date'  => Carbon::now()->addMonth(1),
+                    'created_by'          => Auth::user()->id,
+                    'created_at'          => Carbon::now(),
                 ]);
 
-            //-- เพิ่ม monthly_plans
-            DB::table('monthly_plans')->where('id', $monthly_plan->id)
-                ->update([
-                    'cust_new_amount' => $monthly_plan->cust_new_amount+1,
-                    'total_plan' => $monthly_plan->total_plan+1,
-                    'outstanding_plan' => ($monthly_plan->total_plan + 1) - $monthly_plan->success_plan,
+                $sql_shops = DB::table('customer_shops')->orderBy('customer_shops.id', 'desc')->first();
+
+                DB::table('customer_contacts')
+                    ->insert([
+                        'customer_shop_id' => $sql_shops->id,
+                        'customer_contact_name' => $request->contact_name,
+                        'customer_contact_phone' => $request->shop_phone,
+                        'created_by' => Auth::user()->id,
+                        'created_at' => Carbon::now(),
+                    ]);
+
+                //-- เพิ่ม monthly_plans
+                DB::table('monthly_plans')->where('id', $monthly_plan->id)
+                    ->update([
+                        'cust_new_amount' => $monthly_plan->cust_new_amount+1,
+                        'total_plan' => $monthly_plan->total_plan+1,
+                        'outstanding_plan' => ($monthly_plan->total_plan + 1) - $monthly_plan->success_plan,
+                    ]);
+
+                // //-- เพิ่ม customer_shops_saleplan
+                DB::table('customer_shops_saleplan')
+                    ->insert([
+                        'customer_shop_id' => $sql_shops->id,
+                        'monthly_plan_id' => $monthly_plan->id,
+                        'created_by' => Auth::user()->id,
+                        'created_at' => Carbon::now(),
+                    ]);            
+
+                DB::commit();
+
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'บันทึกข้อมูลสำเร็จ',
+                    'data' => $request,
                 ]);
-
-            // //-- เพิ่ม customer_shops_saleplan
-            DB::table('customer_shops_saleplan')
-                ->insert([
-                    'customer_shop_id' => $sql_shops->id,
-                    'monthly_plan_id' => $monthly_plan->id,
-                    'created_by' => Auth::user()->id,
-                    'created_at' => Carbon::now(),
-                ]);            
-
-            DB::commit();
-
-            return response()->json([
-                'status' => 200,
-                'message' => 'บันทึกข้อมูลสำเร็จ',
-                'data' => $request,
-            ]);
+            }
 
         } catch (\Exception $e) {
 
@@ -585,4 +616,6 @@ class CustomerController extends Controller
         }
 
     }
+
+    
 }
