@@ -36,7 +36,10 @@ class AssignmentController extends Controller
         ->select('assignments.*', 'users.name')
         ->orderBy('assignments.id', 'desc')->get();
 
-        $users = DB::table('users')->get();
+        $users = DB::table('users')
+            ->where('team_id', Auth::user()->team_id)
+            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+            ->get();
 
         return view('headManager.add_assignment', compact('assignments', 'users'));
     }

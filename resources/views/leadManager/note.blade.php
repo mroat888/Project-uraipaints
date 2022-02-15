@@ -42,18 +42,22 @@
                                     </div>
                                     <div class="col-sm-12 col-md-9">
                                         <!-- ------ -->
-                                        <span class="form-inline pull-right pull-sm-center">
 
-                                            <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกวันที่</button>
+                                        <span class="form-inline pull-right pull-sm-center">
+                                            <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</button>
+                                            <form action="{{ url('lead/search_month_note') }}" method="post" enctype="multipart/form-data">
+                                                @csrf
                                             <span id="selectdate" style="display:none;">
 
-                                            Date : <input type="month" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateFrom" value="<?= date('Y-m-d'); ?>" />
+                                                เดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateFrom" name="fromMonth"/>
 
-                                                to <input type="month" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" value="<?= date('Y-m-d'); ?>" />
+                                                ถึงเดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name="toMonth"/>
 
-                                                <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button>
+                                            <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm">ค้นหา</button>
+
+                                            {{-- <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button> --}}
                                             </span>
-
+                                        </form>
                                         </span>
                                         <!-- ------ -->
                                     </div>
@@ -142,9 +146,11 @@
                                 <select class="select2 select2-multiple form-control" multiple="multiple"
                                     data-placeholder="Choose" name="note_tags">
                                     <optgroup label="เลือกข้อมูล">
-                                        <option value="AK">เพิ่มเติม</option>
-                                        <option value="HI">เข้าพบลูกค้า</option>
-                                        <option value="HI">งานใหม่</option>
+                                        <?php $master = App\NoteTag::orderBy('id', 'desc')->get(); ?>
+
+                                        @foreach ($master as $value)
+                                        <option value="{{$value->id}}">{{$value->name_tag}}</option>
+                                        @endforeach
                                     </optgroup>
                                 </select>
                             </div>
@@ -232,10 +238,10 @@
                     // $('#get_tags').val(data.dataEdit.note_tags);
                     $('#get_tags').html(
                                     "<optgroup label='กรุณาเลือก'>"+
-                                        "<option value='AK' selected>"+ data.dataEdit.note_tags +"</option>"+
-                                        "<option value='AK'>เพิ่มเติม</option>"+
-                                        "<option value='HI'>เข้าพบลูกค้า</option>"+
-                                        "<option value='HB'>งานใหม่</option>"+
+                                        "<option value='"+data.dataEdit.note_tags+"' selected>"+ data.dataEdit.name_tag +"</option>"+
+                                        "@foreach ($master as $value)"+
+                                        "<option value='"+{{$value->id}}+"'>{{$value->name_tag}}</option>"+
+                                        "@endforeach"+
                                     "</optgroup>");
 
                     $('#editNote').modal('toggle');

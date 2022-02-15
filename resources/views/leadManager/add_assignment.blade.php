@@ -156,7 +156,6 @@
                             </div>
                         </div>
                         <div class="row">
-
                             <div class="col-md-12 form-group">
                                 <label for="firstName">สั่งงานให้</label>
                                 <select class="select2 select2-multiple form-control" multiple="multiple" data-placeholder="Choose" name="assign_emp_id[]" required>

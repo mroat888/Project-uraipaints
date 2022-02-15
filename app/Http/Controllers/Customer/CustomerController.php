@@ -180,7 +180,27 @@ class CustomerController extends Controller
                     'message' => 'บันทึกข้อมูลสำเร็จ',
                     'data' => $request,
                 ]);
+<<<<<<< HEAD
+
+            // //-- เพิ่ม customer_shops_saleplan
+            DB::table('customer_shops_saleplan')
+                ->insert([
+                    'customer_shop_id' => $sql_shops->id,
+                    'monthly_plan_id' => $monthly_plan->id,
+                    'created_by' => Auth::user()->id,
+                    'created_at' => Carbon::now(),
+                ]);
+
+            DB::commit();
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'บันทึกข้อมูลสำเร็จ',
+                'data' => $request,
+            ]);
+=======
             }
+>>>>>>> ec078aed79907941bdc69ad9d29f2f488b7739b0
 
         } catch (\Exception $e) {
 
@@ -535,7 +555,7 @@ class CustomerController extends Controller
                         'cust_result_checkout_longitude' => $request->lon,
                         'updated_by' => Auth::user()->id,
                         'updated_at' => Carbon::now(),
-                    ]);  
+                    ]);
                     DB::commit();
                     return response()->json([
                         'status' => 200,
@@ -544,7 +564,7 @@ class CustomerController extends Controller
                 }else{
                     DB::table('customer_shops_saleplan_result')
                         ->insert([
-                            'customer_shops_saleplan_id' => $request->id, 
+                            'customer_shops_saleplan_id' => $request->id,
                             'cust_result_checkin_date' => Carbon::now(),
                             'cust_result_checkin_latitude' => $request->lat,
                             'cust_result_checkin_longitude' => $request->lon,

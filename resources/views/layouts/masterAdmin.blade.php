@@ -349,7 +349,7 @@
                                                 <i class="ion ion-md-gift" style="color: #044067;"></i>โปรโมชั่น</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{ url('#') }}">
+                                            <a class="nav-link" href="{{ url('admin/fontendProductNew') }}">
                                                 <i class="ion ion-md-cube" style="color: #044067;"></i>สินค้าใหม่</a>
                                         </li>
                                     </ul>
@@ -495,6 +495,12 @@
                                                 <a class="nav-link" href="{{ url('admin/master_present_saleplan') }}">
                                                     <i class="ion ion-md-list" style="color: #044067;"></i>
                                                     <span class="nav-link-text">รายการนำเสนอ แผนงาน</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ url('admin/master_tag') }}">
+                                                    <i class="ion ion-md-bookmark" style="color: #044067;"></i>
+                                                    <span class="nav-link-text">ป้ายกำกับ (บันทึกโน๊ต)</span>
                                                 </a>
                                             </li>
                                         </ul>

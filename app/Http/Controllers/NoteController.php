@@ -13,41 +13,41 @@ class NoteController extends Controller
 
     public function note_sale()
     {
-        $data = DB::table('notes')
-        ->where('employee_id', Auth::user()->id)
-        // ->where('status_pin', 1)
-        ->orderBy('status_pin', 'desc')
-        ->orderBy('note_date', 'asc')->get();
+        $data = DB::table('notes')->join('master_note', 'notes.note_tags', 'master_note.id')
+        ->where('notes.employee_id', Auth::user()->id)
+        ->select('notes.*', 'master_note.name_tag')
+        ->orderBy('notes.status_pin', 'desc')
+        ->orderBy('notes.note_date', 'asc')->get();
         return view('saleman.note', compact('data'));
     }
 
     public function note_lead()
     {
-        $data = DB::table('notes')
-        ->where('employee_id', Auth::user()->id)
-        // ->where('status_pin', 1)
-        ->orderBy('status_pin', 'desc')
-        ->orderBy('note_date', 'asc')->get();
+        $data = DB::table('notes')->join('master_note', 'notes.note_tags', 'master_note.id')
+        ->where('notes.employee_id', Auth::user()->id)
+        ->select('notes.*', 'master_note.name_tag')
+        ->orderBy('notes.status_pin', 'desc')
+        ->orderBy('notes.note_date', 'asc')->get();
         return view('leadManager.note', compact('data'));
     }
 
     public function note_head()
     {
-        $data = DB::table('notes')
-        ->where('employee_id', Auth::user()->id)
-        // ->where('status_pin', 1)
-        ->orderBy('status_pin', 'desc')
-        ->orderBy('note_date', 'asc')->get();
+        $data = DB::table('notes')->join('master_note', 'notes.note_tags', 'master_note.id')
+        ->where('notes.employee_id', Auth::user()->id)
+        ->select('notes.*', 'master_note.name_tag')
+        ->orderBy('notes.status_pin', 'desc')
+        ->orderBy('notes.note_date', 'asc')->get();
         return view('headManager.note', compact('data'));
     }
 
     public function note_admin()
     {
-        $data = DB::table('notes')
-        ->where('employee_id', Auth::user()->id)
-        // ->where('status_pin', 1)
-        ->orderBy('status_pin', 'desc')
-        ->orderBy('note_date', 'asc')->get();
+        $data = DB::table('notes')->join('master_note', 'notes.note_tags', 'master_note.id')
+        ->where('notes.employee_id', Auth::user()->id)
+        ->select('notes.*', 'master_note.name_tag')
+        ->orderBy('notes.status_pin', 'desc')
+        ->orderBy('notes.note_date', 'asc')->get();
         return view('admin.note', compact('data'));
     }
 
@@ -67,7 +67,8 @@ class NoteController extends Controller
 
     public function edit($id)
     {
-        $dataEdit = Note::find($id);
+        $dataEdit = Note::join('master_note', 'notes.note_tags', 'master_note.id')
+        ->where('notes.id', $id)->select('notes.*', 'master_note.name_tag')->first();
         $data = array(
             'dataEdit'     => $dataEdit,
         );
@@ -111,5 +112,85 @@ class NoteController extends Controller
 
 
         return back();
+    }
+
+    public function search_month_note(Request $request)
+    {
+        // dd($request);
+        // $from = Carbon::parse($request->fromMonth)->format('m');
+        // $to = Carbon::parse($request->toMonth)->format('m');
+        $from = $request->fromMonth."-01";
+        $to = $request->toMonth."-31";
+        $data =  DB::table('notes')
+        ->where('employee_id', Auth::user()->id)
+        ->whereDate('note_date', '>=', $from)
+        ->whereDate('note_date', '<=', $to)
+        ->orderBy('status_pin', 'desc')
+        ->orderBy('note_date', 'asc')->get();
+
+
+        // return $list_approval;
+
+        return view('saleman.note', compact('data'));
+    }
+
+    public function lead_search_month_note(Request $request)
+    {
+        // dd($request);
+        // $from = Carbon::parse($request->fromMonth)->format('m');
+        // $to = Carbon::parse($request->toMonth)->format('m');
+        $from = $request->fromMonth."-01";
+        $to = $request->toMonth."-31";
+        $data =  DB::table('notes')
+        ->where('employee_id', Auth::user()->id)
+        ->whereDate('note_date', '>=', $from)
+        ->whereDate('note_date', '<=', $to)
+        ->orderBy('status_pin', 'desc')
+        ->orderBy('note_date', 'asc')->get();
+
+
+        // return $list_approval;
+
+        return view('leadManager.note', compact('data'));
+    }
+
+    public function head_search_month_note(Request $request)
+    {
+        // dd($request);
+        // $from = Carbon::parse($request->fromMonth)->format('m');
+        // $to = Carbon::parse($request->toMonth)->format('m');
+        $from = $request->fromMonth."-01";
+        $to = $request->toMonth."-31";
+        $data =  DB::table('notes')
+        ->where('employee_id', Auth::user()->id)
+        ->whereDate('note_date', '>=', $from)
+        ->whereDate('note_date', '<=', $to)
+        ->orderBy('status_pin', 'desc')
+        ->orderBy('note_date', 'asc')->get();
+
+
+        // return $list_approval;
+
+        return view('headManager.note', compact('data'));
+    }
+
+    public function admin_search_month_note(Request $request)
+    {
+        // dd($request);
+        // $from = Carbon::parse($request->fromMonth)->format('m');
+        // $to = Carbon::parse($request->toMonth)->format('m');
+        $from = $request->fromMonth."-01";
+        $to = $request->toMonth."-31";
+        $data =  DB::table('notes')
+        ->where('employee_id', Auth::user()->id)
+        ->whereDate('note_date', '>=', $from)
+        ->whereDate('note_date', '<=', $to)
+        ->orderBy('status_pin', 'desc')
+        ->orderBy('note_date', 'asc')->get();
+
+
+        // return $list_approval;
+
+        return view('admin.note', compact('data'));
     }
 }

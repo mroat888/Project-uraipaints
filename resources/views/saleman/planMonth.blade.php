@@ -23,10 +23,26 @@
                             <div>
                                 <h6 class="hk-sec-title mb-10" style="font-weight: bold;">แผนสรุปรายเดือน ปี <?php echo thaidate('Y', date('Y')); ?></h6>
                             </div>
-                            <div class="d-flex">
-                                <input type="month" class="form-control" name="" id="">
-                                <input type="month" class="form-control ml-5" name="" id="">
-                                <button type="button" class="btn btn_purple btn-violet btn-sm ml-5">ค้นหา</button>
+                            <div class="col-sm-12 col-md-9">
+                                <!-- ------ -->
+
+                                <span class="form-inline pull-right pull-sm-center">
+                                    <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</button>
+                                    <form action="{{ url('search_month_planMonth') }}" method="post" enctype="multipart/form-data">
+                                        @csrf
+                                    <span id="selectdate" style="display:none;">
+
+                                        เดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateFrom" name="fromMonth"/>
+
+                                        ถึงเดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name="toMonth"/>
+
+                                    <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm">ค้นหา</button>
+
+                                    {{-- <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button> --}}
+                                    </span>
+                                </form>
+                                </span>
+                                <!-- ------ -->
                             </div>
                         </div>
                         {{-- <h5 class="hk-sec-title">แผนสรุปรายเดือน ปี 2565</h5> --}}

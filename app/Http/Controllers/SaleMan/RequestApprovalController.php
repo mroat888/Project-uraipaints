@@ -110,16 +110,25 @@ class RequestApprovalController extends Controller
             ];
         }
 
-        // $dataResult = Assignment::where('id', $id)->first();
-        // $emp_approve = DB::table('users')
-        // ->where('id', $dataResult->assign_approve_id)
-        // ->first();
-        // $data = array(
-        //     'dataResult'     => $dataResult,
-        //     'emp_approve'    => $emp_approve,
-        //     'comment'        => $comment,
-        // );
-
         echo json_encode($comment);
+    }
+
+    public function search_month_requestApprove(Request $request)
+    {
+        // dd($request);
+        // $from = Carbon::parse($request->fromMonth)->format('m');
+        // $to = Carbon::parse($request->toMonth)->format('m');
+        $from = $request->fromMonth."-01";
+        $to = $request->toMonth."-31";
+        $list_approval = RequestApproval::leftjoin('assignments_comments', 'assignments.id', 'assignments_comments.assign_id')
+        ->where('assignments.created_by', Auth::user()->id)->whereNotIn('assignments.assign_status', [3])
+        ->whereDate('assignments.assign_work_date', '>=', $from)
+        ->whereDate('assignments.assign_work_date', '<=', $to)
+        ->select('assignments.*', 'assignments_comments.assign_id')
+        ->orderBy('assignments.assign_request_date', 'asc')->distinct()->get();
+
+        // return $list_approval;
+
+        return view('saleman.requestApproval', compact('list_approval'));
     }
 }

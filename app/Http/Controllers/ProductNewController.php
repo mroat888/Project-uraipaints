@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\ProductNew;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -16,6 +15,12 @@ class ProductNewController extends Controller
     {
         $product_new = ProductNew::orderBy('id', 'desc')->get();
         return view('admin.product_new', compact('product_new'));
+    }
+
+    public function admin_frontend_product_new()
+    {
+        $productNew = ProductNew::orderBy('id', 'desc')->get();
+        return view('admin.fontendProductNew', compact('productNew'));
     }
 
     public function store(Request $request)

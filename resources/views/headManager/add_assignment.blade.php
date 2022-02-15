@@ -189,7 +189,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <!-- <form action="{{ url('lead/update_assignment') }}" method="post" enctype="multipart/form-data"> -->
+                <!-- <form action="{{ url('head/update_assignment') }}" method="post" enctype="multipart/form-data"> -->
                 <form id="from_updateassign" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
@@ -239,7 +239,7 @@
         function edit_modal(id) {
             $.ajax({
                 type: "GET",
-                url: '{{ url("lead/edit_assignment/") }}/'+id,
+                url: '{{ url("head/edit_assignment/") }}/'+id,
                 dataType: "JSON",
                 async: false,
                 success: function(data) {
@@ -366,7 +366,7 @@
         console.log(formData);
         $.ajax({
             type:'POST',
-            url: '{{ url("/lead/update_assignment") }}',
+            url: '{{ url("/head/update_assignment") }}',
             data:formData,
             cache:false,
             contentType: false,
