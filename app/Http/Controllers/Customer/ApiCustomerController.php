@@ -33,9 +33,11 @@ class ApiCustomerController extends Controller
             $customer_api[$key] = 
             [
                 'id' => $value['identify'],
-                'image' => '',
                 'title' => $value['title']." ".$value['name'],
-                'address' => $value['address1']." ".$value['adrress2'],
+                'address' => $value['amphoe_name']." , ".$value['province_name'],
+                'InMonthDays' => $value['InMonthDays'],
+                'TotalDays' => $value['TotalDays'],
+                'TotalCampaign' => $value['TotalCampaign'],
             ];
         }
         return view('customer.customer-api', compact('customer_api'));

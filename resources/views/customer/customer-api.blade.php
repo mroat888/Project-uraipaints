@@ -66,11 +66,11 @@
                                         <thead>
                                             <tr>
                                                 <th style="font-weight: bold;">#</th>
-                                                <th style="font-weight: bold;">รูปภาพ</th>
                                                 <th style="font-weight: bold;">ชื่อร้าน</th>
                                                 <th style="font-weight: bold;">ที่อยู่</th>
-                                                <!-- <th style="font-weight: bold;">ชื่อผู้ติดต่อ</th>
-                                                <th style="font-weight: bold;">เบอร์โทรศัพท์</th> -->
+                                                <th style="font-weight: bold;">จำนวนวันสำคัญในเดือน (วัน)</th>
+                                                <th style="font-weight: bold;">จำนวนวันสำคัญรวม (วัน)</th>
+                                                <th style="font-weight: bold;">จำนวนเป้าที่ซื้อในปี</th>
                                             </tr>
                                         </thead>
                                         <tbody id="table_body">
