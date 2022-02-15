@@ -394,7 +394,12 @@ class CustomerController extends Controller
             ->where('customer_shop_id', $data['customer_shops']->id)
             ->orderBy('id', 'desc')
             ->get();
-
+        
+        $data['customer_shops_saleplan'] = DB::table('customer_shops_saleplan')
+            ->where('customer_shop_id', $data['customer_shops']->id)
+            ->orderBy('id', 'desc')
+            ->get();
+        
         return view('customer.customer_detail', $data);
     }
 
