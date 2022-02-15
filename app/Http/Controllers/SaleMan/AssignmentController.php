@@ -16,7 +16,7 @@ class AssignmentController extends Controller
     public function index()
     {
         $assignments = Assignment::where('assign_emp_id', Auth::user()->id)
-        ->where('assign_status', 1)
+        ->where('assign_status', 3)
         ->orderBy('id', 'desc')
         ->get();
 

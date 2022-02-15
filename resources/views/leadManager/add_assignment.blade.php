@@ -148,7 +148,7 @@
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">วันที่</label>
-                                <input class="form-control" type="date" name="date" />
+                                <input class="form-control" type="date" name="date" min="{{date('Y-m-d')}}" />
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ไฟล์เอกสาร</label>
@@ -208,7 +208,7 @@
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">วันที่</label>
-                                <input class="form-control" type="date" name="date" id="get_date"/>
+                                <input class="form-control" type="date" name="date" id="get_date" min="{{date('Y-m-d')}}"/>
                             </div>
                         </div>
                         <div class="row">
