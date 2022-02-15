@@ -37,7 +37,7 @@ class CustomerController extends Controller
 
     public function customerLead()
     {
-        $data['customer_shop'] = DB::table('customer_shops')
+        $data['customer_shops'] = DB::table('customer_shops')
             ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
             ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ทะเบียนลูกค้า , 2 = ลบ
             ->where('customer_shops.created_by', Auth::user()->id)
@@ -56,11 +56,27 @@ class CustomerController extends Controller
 
     public function store(Request $request)
     {
+        // -- หา ID ของ MonthlyPlan
+        if($request->is_monthly_plan == 'N'){ // นอกแผนงาน ทำในระบบ ลูกค้าใหม่ตรงๆ
+            list($year,$month,$day) = explode('-',date('Y-m-d'));
+            $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)
+            ->whereYear('month_date', '=', $year)
+            ->whereMonth('month_date', '=', $month)
+            ->orderBy('month_date', 'desc')
+            ->first();
+            $shop_aprove_status = "1";
+        }else{ // ในแผนงาน ทำในระบบ แผนงานประจำเดือน
+            $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->first();
+            $shop_aprove_status = "0";
+        }
+
+        // dd($monthly_plan);
+
         DB::beginTransaction();
         try {
             if($request->customer_shops_id != ""){ // ถ้ามีการค้นหาร้านค้าที่มีในระบบ
                 
-                $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->first();
+                // $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->first();
                 //-- เพิ่ม monthly_plans
                 DB::table('monthly_plans')->where('id', $monthly_plan->id)
                     ->update([
@@ -73,6 +89,8 @@ class CustomerController extends Controller
                 DB::table('customer_shops_saleplan')
                     ->insert([
                         'customer_shop_id' => $request->customer_shops_id,
+                        'shop_aprove_status' => $shop_aprove_status, 
+                        'is_monthly_plan' => $request->is_monthly_plan, 
                         'monthly_plan_id' => $monthly_plan->id,
                         'created_by' => Auth::user()->id,
                         'created_at' => Carbon::now(),
@@ -106,7 +124,7 @@ class CustomerController extends Controller
                 //     $uploadfile = $file_name;
                 // }
 
-                $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->first();
+                // $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->first();
 
                 DB::table('customer_shops')
                 ->insert([
@@ -148,6 +166,8 @@ class CustomerController extends Controller
                 DB::table('customer_shops_saleplan')
                     ->insert([
                         'customer_shop_id' => $sql_shops->id,
+                        'shop_aprove_status' => $shop_aprove_status, 
+                        'is_monthly_plan' => $request->is_monthly_plan, 
                         'monthly_plan_id' => $monthly_plan->id,
                         'created_by' => Auth::user()->id,
                         'created_at' => Carbon::now(),

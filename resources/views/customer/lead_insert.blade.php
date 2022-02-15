@@ -25,6 +25,7 @@
                             </div>
                             <div class="col-md-6 form-group">
                                 <input class="form-control" id="customer_shops_id" name="customer_shops_id" type="hidden">
+                                <input class="form-control" id="is_monthly_plan" name="is_monthly_plan" type="hidden">
                             </div>
                         </div>
                     @endif
@@ -226,7 +227,6 @@ $(document).on('click','.btn_editshop', function(e){
     });
 
 })
-
 
 
 $(document).on('change','.customer_shops_sel', function(e){

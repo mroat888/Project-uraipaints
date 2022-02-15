@@ -103,6 +103,7 @@ Route::get('promotions', 'PromotionController@frontend_promotion');
 
 // Report
 Route::get('/reportSale/reportSaleplan', 'Report\ReportSalePlanController@index');
+
 Route::get('/reportSale/reportVisitCustomerGoal', 'Report\ReportVisitCustomerGoalController@index');
 Route::get('/reportSale/reportVisitCustomer', 'Report\ReportVisitCustomerController@index');
 
