@@ -174,7 +174,7 @@ class AssignmentController extends Controller
                 'assign_title' => $request->assign_title,
                 'assign_detail' => $request->assign_detail,
                 'assign_emp_id' => $request->assign_emp_id_edit,
-                'assign_status' => 1,
+                'assign_status' => 3,
                 'assign_approve_id' => Auth::user()->id,
                 'updated_by' => Auth::user()->id,
             ]);

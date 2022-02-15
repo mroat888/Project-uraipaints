@@ -124,7 +124,7 @@
             </div>
         </div>
         
-            @foreach($customer_history_contacts as $cust_his)
+            @foreach($customer_shops_saleplan as $cust_shops_saleplan)
             <div class="row">
                 <div class="col-xl-12">
                     
@@ -133,14 +133,23 @@
                             <div class="col-md-12">
                                 <div class="row">
                                     <div class="col-md-6 col-lg-3">
-                                        <p class="detail_listcus"><i class="ion ion-md-calendar"></i><span> เดือน</span> : {{ thaidate('F Y', $cust_his->cust_history_saleplan_date) }}</p>
+                                        <p class="detail_listcus">
+                                            <i class="ion ion-md-calendar"></i>
+                                            <span> เดือน</span> : 
+                                            @php
+                                                $monthly_plans = DB::table('monthly_plans')
+                                                ->where('id', $cust_shops_saleplan->monthly_plan_id)
+                                                ->first();
+                                            @endphp
+                                            {{ thaidate('F Y', $monthly_plans->month_date) }}
+                                        </p>
                                     </div>
                                     <div class="col-md-6 col-lg-9">
                                         <p class="detail_listcus"><i class="ion ion-md-person"></i>
                                             <span> พนักงาน</span> : 
                                             @php
                                                 $user = DB::table('users')
-                                                    ->where('id', $cust_his->employee_id)
+                                                    ->where('id', $cust_shops_saleplan->created_by)
                                                     ->orderBy('id', 'desc')
                                                     ->first();
                                             @endphp
@@ -152,7 +161,17 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="desc_cusnote">
-                                            {{ $cust_his->cust_history_detail }}
+                                            @php
+                                                $cust_result = DB::table('customer_shops_saleplan_result')
+                                                ->where('customer_shops_saleplan_id', $cust_shops_saleplan->id)
+                                                ->first();
+                                            @endphp
+            
+                                            @if($cust_result != "")
+                                                <blockquote class="blockquote mb-0">
+                                                    <p>{{ $cust_result->cust_result_detail }}</p>
+                                                </blockquote>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

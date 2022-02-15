@@ -71,18 +71,19 @@ class CustomerVisitController extends Controller
         DB::beginTransaction();
         try {
 
+            // ให้บวก จำนวนเยี่ยมลูกค้าใน MonthlyPlan ในเดือนนั้น
+            $visits_amount = $monthly_plan->cust_visits_amount+1;
+            DB::table('monthly_plans')
+            ->where('id',$monthly_plan->id)
+            ->update([
+                'cust_visits_amount' => $visits_amount,
+                'updated_by' => Auth::user()->id,
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+
             $date = Carbon::parse($monthly_plan->month_date)->format('Y-m');
             $datenext = Carbon::today()->addMonth(1)->format('Y-m');
-            if ($date == $datenext) { // ถ้า MonthlyPlan ตรงกับเดือนหน้า ให้บวก จำนวนเยี่ยมลูกค้าใน MonthlyPlan
-
-                $visits_amount = $monthly_plan->cust_visits_amount+1;
-                DB::table('monthly_plans')
-                ->where('id',$monthly_plan->id)
-                ->update([
-                    'cust_visits_amount' => $visits_amount,
-                    'updated_by' => Auth::user()->id,
-                    'updated_at' => date('Y-m-d H:i:s'),
-                ]);
+            if ($date == $datenext) { 
 
                 DB::table('customer_visits')
                 ->insert([
@@ -96,6 +97,7 @@ class CustomerVisitController extends Controller
                     'created_at' => date('Y-m-d H:i:s'),
                 ]);
             }else{
+
                 DB::table('customer_visits')
                 ->insert([
                     'monthly_plan_id' => $monthly_plan->id, // ID ของ MonthlyPlan
@@ -199,9 +201,7 @@ class CustomerVisitController extends Controller
     {
         CustomerVisit::where('id', $id)->delete();
 
-
-
-        $monthly_plan = MonthlyPlan::where('id', $monthly_plan_id)
+        $monthly_plan = MonthlyPlan::where('id', $monthly_plan_id);
 
         $date = Carbon::parse($monthly_plan->month_date)->format('Y-m');
         $datenext = Carbon::today()->addMonth(1)->format('Y-m');

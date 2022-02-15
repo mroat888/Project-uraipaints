@@ -58,6 +58,8 @@ class PlanMonthController extends Controller
         ->orderBy('customer_shops.id', 'desc')
         ->get();
 
+        $data['customer_shops'] = DB::table('customer_shops')->where('created_by', Auth::user()->id)->get();
+
         // $data['customer_new'] = DB::table('customer_shops')
         // ->join('amphur', 'amphur.AMPHUR_ID', 'customer_shops.shop_amphur_id')
         // ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')

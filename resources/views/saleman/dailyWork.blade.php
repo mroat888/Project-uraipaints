@@ -750,7 +750,7 @@
                                                     <tr>
                                                         <td>{{ $no++ }}</td>
                                                         <td>{!! Str::limit($customer_visit_api[$key]['shop_name'], 20) !!}</td>
-                                                        <td></td>
+                                                        <td>{{ $customer_visit_api[$key]['shop_address'] }}</td>
                                                         <td>-</td>
                                                         <td>
                                                             @if ($customer_visit_api[$key]['visit_status'] == 0)
