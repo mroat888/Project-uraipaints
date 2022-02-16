@@ -68,9 +68,10 @@
                                                 <th style="font-weight: bold;">#</th>
                                                 <th style="font-weight: bold;">ชื่อร้าน</th>
                                                 <th style="font-weight: bold;">ที่อยู่</th>
-                                                <th style="font-weight: bold;">จำนวนวันสำคัญในเดือน (วัน)</th>
-                                                <th style="font-weight: bold;">จำนวนวันสำคัญรวม (วัน)</th>
+                                                <th style="font-weight: bold;">จำนวนวันสำคัญ<br />ในเดือน (วัน)</th>
+                                                <th style="font-weight: bold;">จำนวนวันสำคัญ<br />รวม (วัน)</th>
                                                 <th style="font-weight: bold;">จำนวนเป้าที่ซื้อในปี</th>
+                                                <th style="font-weight: bold;">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody id="table_body">
@@ -78,13 +79,21 @@
                                                 @$row = count($customer_api)
                                             @endphp
 
-                                            @for($i = 0; $i< $row; $i++)
+                                            @foreach ($customer_api as $key => $value)
                                                 <tr>
-                                                @foreach ($customer_api[$i] as $value)
-                                                    <td>{{ $value }}</td>
-                                                @endforeach
+                                                    <td>{{ $customer_api[$key]['identify'] }}</td>
+                                                    <td>{{ $customer_api[$key]['shopname'] }}</td>
+                                                    <td>{{ $customer_api[$key]['address'] }}</td>
+                                                    <td>{{ $customer_api[$key]['InMonthDays'] }}</td>
+                                                    <td>{{ $customer_api[$key]['TotalDays'] }}</td>
+                                                    <td>{{ $customer_api[$key]['TotalCampaign'] }}</td>
+                                                    <td>
+                                                        <a href="javascript:void(0)" class="btn btn-icon btn-success mr-10">
+                                                        <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></a>
+                                                    </td>
+                                                
                                                 </tr>
-                                            @endfor
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>

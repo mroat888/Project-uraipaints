@@ -32,8 +32,8 @@ class ApiCustomerController extends Controller
         foreach ($res_api['data'] as $key => $value) {
             $customer_api[$key] = 
             [
-                'id' => $value['identify'],
-                'title' => $value['title']." ".$value['name'],
+                'identify' => $value['identify'],
+                'shopname' => $value['title']." ".$value['name'],
                 'address' => $value['amphoe_name']." , ".$value['province_name'],
                 'InMonthDays' => $value['InMonthDays'],
                 'TotalDays' => $value['TotalDays'],
