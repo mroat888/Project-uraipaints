@@ -60,7 +60,8 @@ Route::post('delete_customer', 'Customer\CustomerController@destroy');
 Route::get('/customer/detail/{id}', 'Customer\CustomerController@show');
 Route::get('/customer','Customer\CustomerController@index');
 Route::get('/fetch_customer_shops','Customer\CustomerController@fetch_customer_shops');
-Route::get('/customer-api','Customer\ApiCustomerController@index'); // OAT ทดสอบดึง Api
+Route::get('/customer-api','Customer\ApiCustomerController@index');
+Route::get('/customer-api/detail/{id}','Customer\ApiCustomerController@show');
 
 Route::post('/leadtocustomer','Customer\CustomerController@lead_to_customer');
 Route::post('/customerdelete','Customer\CustomerController@customer_delete');

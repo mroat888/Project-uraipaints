@@ -6,27 +6,19 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Api\ApiController;
 
 class ApiCustomerController extends Controller
 {
+    public function __construct(){
+        $this->api_token = new ApiController();
+    }
+
     public function index(){
-        // return view('customer.customer-api');
-
-        $response = Http::post('http://49.0.64.92:8020/api/auth/login', [
-            'username' => 'apiuser',
-            'password' => 'testapi',
-        ]);
-        $res = $response->json();
-        // dd($res);
-        $api_token = $res['data'][0]['access_token'];
-        // dd($res['data'][0]['access_token']);
-
         
-        $response = Http::get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers', [
-            'token' => $api_token,
-        ]);
+        $api_token = $this->api_token->apiToken();
+        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers');
         $res_api = $response->json();
-        // $res_api = $res['data'];
 
         $customer_api = array();
         foreach ($res_api['data'] as $key => $value) {
@@ -43,7 +35,7 @@ class ApiCustomerController extends Controller
         return view('customer.customer-api', compact('customer_api'));
     }
 
-    public function api_fetch_customer_all($api_token, $sale_id){
-
+    public function show($id){
+        return view('customer.customer-api_detail');
     }
 }
