@@ -28,7 +28,7 @@ class ApprovalController extends Controller
     }
 
     public function approval_history()
-    {  
+    {
         $data['approval_history'] = DB::table('assignments')
         ->join('users', 'assignments.created_by', '=', 'users.id')
         ->whereNotIn('assignments.assign_status', [0, 3])

@@ -148,6 +148,13 @@ Route::post('lead/create_comment_request_approval', 'LeadManager\ApprovalControl
 Route::get('/approvalgeneral/history', 'LeadManager\ApprovalController@approval_history');
 Route::get('lead/approval_general_history_detail/{id}', 'LeadManager\ApprovalController@approval_general_history_detail');
 
+// อนุมัติลูกค้าใหม่นอกแผน
+Route::get('approval-customer-except', 'LeadManager\ApprovalCustomerExceptController@index');
+Route::post('lead/approval_customer_confirm_all', 'LeadManager\ApprovalCustomerExceptController@approval_customer_confirm_all');
+Route::get('lead/approval_customer_except_detail/{id}', 'LeadManager\ApprovalCustomerExceptController@approval_customer_except_detail');
+Route::get('lead/comment_customer_except/{id}/{custsaleplanID}/{createID}', 'LeadManager\ApprovalCustomerExceptController@comment_customer_except');
+Route::post('lead/create_comment_customer_except', 'LeadManager\ApprovalCustomerExceptController@create_comment_customer_except');
+
 Route::get('comment_customer_new/{id}/{custsaleplanID}/{createID}', 'LeadManager\ApprovalSalePlanController@comment_customer_new');
 Route::post('lead/create_comment_customer_new', 'LeadManager\ApprovalSalePlanController@create_comment_customer_new');
 

@@ -32,7 +32,7 @@ class ApprovalSalePlanController extends Controller
         ->where('monthly_plans.status_approve', 1)
         ->where('users.team_id', Auth::user()->team_id)
         ->select(
-            'users.*', 
+            'users.*',
             'monthly_plans.*'
         )
         ->get();
@@ -52,7 +52,7 @@ class ApprovalSalePlanController extends Controller
         ->orderBy('id', 'desc')->get();
 
         // -----  API  //
-        $api_token = $this->apicontroller->apiToken(); // API Login 
+        $api_token = $this->apicontroller->apiToken(); // API Login
         // -----  API ลูกค้าที่ sale ดูแล ----------- //
         $mon_plan = DB::table('monthly_plans')->where('id', $id)->first(); // ค้นหา id ผู้ขออนุมัติ
         $user_api = DB::table('users')->where('id',$mon_plan->created_by)->first(); // ค้นหา user api เพื่อใช้ดึง api
@@ -81,7 +81,7 @@ class ApprovalSalePlanController extends Controller
         // )
         // ->orderBy('customer_shops.id', 'desc')
         // ->get();
-        
+
         // ลูกค้าใหม่เปลี่ยนมาใช้อันนี้
         $data['customer_new'] = DB::table('customer_shops_saleplan')
         ->join('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
@@ -104,7 +104,7 @@ class ApprovalSalePlanController extends Controller
             ->where('monthly_plan_id', $id)
             ->select('customer_visits.*')
             ->orderBy('id', 'desc')->get();
-        
+
         $data['customer_visit_api'] = array();
 
         foreach($customer_visits as $key => $cus_visit){
@@ -125,7 +125,7 @@ class ApprovalSalePlanController extends Controller
             }
         }
 
-        // dd($data['customer_new']); 
+        // dd($data['customer_new']);
 
         return view('leadManager.approval_saleplan_detail', $data);
     }
@@ -162,7 +162,7 @@ class ApprovalSalePlanController extends Controller
             $data['customerID'] = $id;
             $data['customersaleplanID'] = $custsaleplanID;
             $data['createID'] = $createID;
-            
+
             $data['customer_shop_comments'] = DB::table('customer_shop_comments')
             ->where('customer_shops_saleplan_id', $custsaleplanID)
             ->whereNotIn('created_by', [Auth::user()->id])
@@ -239,7 +239,7 @@ class ApprovalSalePlanController extends Controller
                 'created_at'=> date('Y-m-d H:i:s')
             ]);
         }
-        
+
         return redirect(url('approvalsaleplan_detail', $request->monthly_plans_id));
 
     }
@@ -314,7 +314,7 @@ class ApprovalSalePlanController extends Controller
                             ]);
                         }
                     }
-                    
+
                 }else { // ไม่อนุมัติ
                     if ($request->CheckAll == "Y") {
                         // return "yy";
@@ -415,7 +415,7 @@ class ApprovalSalePlanController extends Controller
 
                     $chkCustomer = DB::table('customer_shops_saleplan')
                     ->where('monthly_plan_id', $month_id->monthly_plan_id)
-                    ->where('shop_aprove_status', 1)->count();      
+                    ->where('shop_aprove_status', 1)->count();
                     // $chkCustomer = Customer::where('monthly_plan_id', $month_id->monthly_plan_id)
                     //     ->where('shop_aprove_status', 1)->count();
 
@@ -470,7 +470,7 @@ class ApprovalSalePlanController extends Controller
 
                     $chkCustomer = DB::table('customer_shops_saleplan')
                         ->where('monthly_plan_id', $month_id->monthly_plan_id)
-                        ->where('shop_aprove_status', 1)->count(); 
+                        ->where('shop_aprove_status', 1)->count();
                     // $chkCustomer = Customer::where('monthly_plan_id', $month_id->monthly_plan_id)
                     //     ->where('shop_aprove_status', 1)->count();
 
@@ -515,7 +515,7 @@ class ApprovalSalePlanController extends Controller
 
                     $chkCustomer = DB::table('customer_shops_saleplan')
                         ->where('monthly_plan_id', $month_id->monthly_plan_id)
-                        ->where('shop_aprove_status', 1)->count(); 
+                        ->where('shop_aprove_status', 1)->count();
                     // $chkCustomer = Customer::where('monthly_plan_id', $month_id->monthly_plan_id)
                     //     ->where('shop_aprove_status', 1)->count();
 
@@ -547,7 +547,7 @@ class ApprovalSalePlanController extends Controller
 
                     $chkCustomer = DB::table('customer_shops_saleplan')
                         ->where('monthly_plan_id', $month_id->monthly_plan_id)
-                        ->where('shop_aprove_status', 1)->count(); 
+                        ->where('shop_aprove_status', 1)->count();
                     // $chkCustomer = Customer::where('monthly_plan_id', $month_id->monthly_plan_id)
                     //     ->where('shop_aprove_status', 1)->count();
 
@@ -581,7 +581,7 @@ class ApprovalSalePlanController extends Controller
 
                     $chkCustomer = DB::table('customer_shops_saleplan')
                         ->where('monthly_plan_id', $month_id->monthly_plan_id)
-                        ->where('shop_aprove_status', 1)->count(); 
+                        ->where('shop_aprove_status', 1)->count();
                     // $chkCustomer = Customer::where('monthly_plan_id', $month_id->monthly_plan_id)
                     //     ->where('shop_aprove_status', 1)->count();
 
@@ -611,7 +611,7 @@ class ApprovalSalePlanController extends Controller
 
                     $chkCustomer = DB::table('customer_shops_saleplan')
                         ->where('monthly_plan_id', $month_id->monthly_plan_id)
-                        ->where('shop_aprove_status', 1)->count(); 
+                        ->where('shop_aprove_status', 1)->count();
                     // $chkCustomer = Customer::where('monthly_plan_id', $month_id->monthly_plan_id)
                     //     ->where('shop_aprove_status', 1)->count();
 
