@@ -88,7 +88,14 @@
                                                     <td>{{ $customer_api[$key]['TotalDays'] }}</td>
                                                     <td>{{ $customer_api[$key]['TotalCampaign'] }}</td>
                                                     <td>
-                                                        <a href="javascript:void(0)" class="btn btn-icon btn-success mr-10">
+                                                        @php
+                                                            if($customer_api[$key]['TotalCampaign'] != 0){
+                                                                $pathurl = url('/customer-api/detail').'/'.$customer_api[$key]['identify'];
+                                                            }else{
+                                                                $pathurl = "javascript:void(0)";
+                                                            }
+                                                        @endphp
+                                                        <a href="{{ $pathurl }}" class="btn btn-icon btn-success mr-10">
                                                         <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></a>
                                                     </td>
                                                 
@@ -110,69 +117,5 @@
 
 @section('footer')
     @include('layouts.footer')
-
-    <script>
-        $( document ).ready(function() {
-            // api_fetch_customer_all();
-        });
-
-        function api_login(){
-            let username = "apiuser";
-            let password = "testapi";
-            return Promise.resolve($.ajax({
-                method: 'POST',
-                url: 'http://49.0.64.92:8020/api/auth/login',
-                data:{ username:username, password:password},
-                datatype: 'json',
-            }));
-        };  
-
-        async function api_fetch_customer_all(){
-            
-            let data_login = await api_login();
-            let api_token = data_login.data[0].access_token
-            // console.log(api_token);
-            $('#table_body').children().remove().end();
-            $.ajax({
-                method: 'GET',
-                // url: 'http://49.0.64.92:8020/api/v1/customers/00006/?token='+api_token,
-                url: 'http://49.0.64.92:8020/api/v1/customers/00006',
-                data:{ token:api_token },
-                datatype: 'json',
-                success: function(response){
-                    if(response.code == 200){
-                        console.log(response.data);
-                        let content = `
-                            <table id="datable_1" class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th style="font-weight: bold;">#</th>
-                                        <th style="font-weight: bold;">รูปภาพ</th>
-                                        <th style="font-weight: bold;">ชื่อร้าน</th>
-                                        <th style="font-weight: bold;">ที่อยู่</th>
-                                        <!-- <th style="font-weight: bold;">ชื่อผู้ติดต่อ</th>
-                                        <th style="font-weight: bold;">เบอร์โทรศัพท์</th> -->
-                                    </tr>
-                                </thead>
-                                <tbody id="table_body">`;
-                                    $.each(response.data, function(key, value){
-                                        content +=  `
-                                            <tr>
-                                                <td>${value.identify}</td>
-                                                <td></td>
-                                                <td>${value.title} ${value.name}</td>
-                                                <td>${value.address1} ${value.adrress2}</td>
-                                            </tr>`;
-                                    });
-                        content += `</tbody>
-                            </table>`;
-                        $('#table_list').append(content);
-                    }
-                }
-            });
-        }
-
-    </script>
-
-@endsection
+@endsection('footer')
 
