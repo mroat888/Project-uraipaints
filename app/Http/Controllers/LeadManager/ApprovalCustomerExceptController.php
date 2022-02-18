@@ -16,16 +16,30 @@ class ApprovalCustomerExceptController extends Controller
 
     public function index()
     {
-        $month = MonthlyPlan::whereMonth('month_date', Carbon::now()->format('m'))->first();
-        $data['customers'] = DB::table('customer_shops')
-        ->join('users', 'customer_shops.created_by', '=', 'users.id')
+        // $month = MonthlyPlan::whereMonth('month_date', Carbon::now()->format('m'))->first();
+        // $data['customers'] = DB::table('customer_shops')
+        // ->join('users', 'customer_shops.created_by', '=', 'users.id')
+        // ->where('customer_shops.shop_status', 0)
+        // ->where('customer_shops.shop_aprove_status', 0)
+        // ->where('users.team_id', Auth::user()->team_id)
+        // ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+        // ->where('customer_shops.monthly_plan_id', $month->id)
+        // ->select('customer_shops.created_by as shop_created_by')
+        // ->distinct()->get();
+
+        $data['customers'] = DB::table('customer_shops_saleplan')
+        ->join('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
+        ->join('users', 'customer_shops_saleplan.created_by', '=', 'users.id')
         ->where('customer_shops.shop_status', 0)
-        ->where('customer_shops.shop_aprove_status', 0)
+        ->where('customer_shops_saleplan.shop_aprove_status', 1) // ส่งขออนุมัติ
         ->where('users.team_id', Auth::user()->team_id)
         ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
-        ->where('customer_shops.monthly_plan_id', $month->id)
-        ->select('customer_shops.created_by as shop_created_by')
+        ->where('customer_shops_saleplan.is_monthly_plan', 'N')
+        ->select('customer_shops_saleplan.created_by as shop_created_by')
         ->distinct()->get();
+
+        // dd($data['customers']);
+
         return view('leadManager.approval_customer_except', $data);
     }
 
