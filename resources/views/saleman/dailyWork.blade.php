@@ -895,7 +895,7 @@
                             <input type="hidden" id="cust_lon" name="lon">
                             <p id="cust_demo"></p>
                         </div>
-                        <input type="text" name="id" id="cust_id">
+                        <input type="hidden" name="id" id="cust_id">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
@@ -1030,7 +1030,7 @@
                     <!-- <form action="{{ url('customer_visit_Result') }}" method="post" enctype="multipart/form-data"> -->
                     <form id="from_customer_visit_result">
                         @csrf
-                        <input type="text" name="visit_id" id="get_visit_id">
+                        <input type="hidden" name="visit_id" id="get_visit_id">
                         <div class="form-group">
                             <label for="username">รายละเอียด</label>
                             <textarea class="form-control" id="get_visit_detail" cols="30" rows="5" placeholder="" name="visit_result_detail"
