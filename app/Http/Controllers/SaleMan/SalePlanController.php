@@ -12,9 +12,14 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use App\Http\Controllers\Api\ApiController;
 
 class SalePlanController extends Controller
 {
+    public function __construct()
+    {
+        $this->api_token = new ApiController();
+    }
 
     public function index()
     {
@@ -204,23 +209,8 @@ class SalePlanController extends Controller
 
     public function fetch_customer_shops_saleplan($id)
     {
-        // $result = DB::table('customer_shops')
-        //     ->join('customer_contacts', 'customer_contacts.customer_shop_id', 'customer_shops.id')
-        //     ->where('customer_shops.id', $id)
-        //     ->select([
-        //         'customer_contacts.*',
-        //         'customer_shops.*'
-        //     ])
-        //     ->first();
-
         // -----  API
-        $response = Http::post('http://49.0.64.92:8020/api/auth/login', [
-            'username' => 'apiuser',
-            'password' => 'testapi',
-        ]);
-        $res = $response->json();
-        $api_token = $res['data'][0]['access_token'];
-
+        $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/customers/'.$id);
         $res_api = $response->json();
 
@@ -368,12 +358,24 @@ class SalePlanController extends Controller
                 $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->where('id', $saleplan_month->monthly_plan_id)->first();
 
                 DB::table('monthly_plans')->where('id', $monthly_plan->id)
-            ->update([
-                'success_plan' => $monthly_plan->success_plan + 1,
-                'outstanding_plan' => $monthly_plan->outstanding_plan-1,
-            ]);
+                ->update([
+                    'success_plan' => $monthly_plan->success_plan + 1,
+                    'outstanding_plan' => $monthly_plan->outstanding_plan-1,
+                ]);
 
-            DB::commit();
+                $events = DB::table('events')->where('sale_plans_id', $request->saleplan_id)->first();
+                if(is_null($events)){
+                    DB::table('events')
+                    ->insert([
+                        'title' => $saleplan_month->sale_plans_title,
+                        'start' => Carbon::now(),
+                        'end' => Carbon::now(),
+                        'sale_plans_id' => $request->saleplan_id,
+                        'created_by' => Auth::user()->id
+                    ]);
+                }
+
+                DB::commit();
 
                 return response()->json([
                     'status' => 200,

@@ -578,16 +578,6 @@ class CustomerController extends Controller
     public function customer_new_result_get($id)
     {
 
-
-        //$cus_shops = DB::table('customer_shops_saleplan')->where('id', $id)->first();
-
-        //dd($cus_shops);
-        // $cus_his = DB::table('customer_history_contacts')
-        // ->where('customer_shop_id', $cus_shops->customer_shop_id)
-        // ->whereDate('cust_history_saleplan_date', $cus_shops->shop_saleplan_date)
-        // ->orderby('id', 'desc')
-        // ->first();
-
         $cus_result = DB::table('customer_shops_saleplan_result')
             ->where('customer_shops_saleplan_id', $id)
             ->first();
@@ -615,7 +605,28 @@ class CustomerController extends Controller
                     'updated_by' => Auth::user()->id,
                     'updated_at' => Carbon::now()
                 ]);
+
+                $cust_shops_saleplan_result = DB::table('customer_shops_saleplan_result')->where('id', $request->cust_id)->first();
+                $cust_shops_saleplan = DB::table('customer_shops_saleplan')->where('id', $cust_shops_saleplan_result->customer_shops_saleplan_id)->first();
+                $customer_name = DB::table('customer_shops')->where('id', $cust_shops_saleplan->customer_shop_id)->first();
+
+                $events = DB::table('events')->where('customer_shops_saleplan_id', $cust_shops_saleplan->id)->first();
+
+                // dd($customer_name->shop_name);
+
+                if(is_null($events)){
+                    DB::table('events')
+                    ->insert([
+                        'title' => $customer_name->shop_name,
+                        'start' => Carbon::now(),
+                        'end' => Carbon::now(),
+                        'customer_shops_saleplan_id' => $cust_shops_saleplan->id,
+                        'created_by' => Auth::user()->id
+                    ]);
+                }
+
                 DB::commit();
+
                 return response()->json([
                     'status' => 200,
                     'message' => 'บันทึกข้อมูลสำเร็จ',

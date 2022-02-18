@@ -5,7 +5,6 @@ namespace App\Http\Controllers\SaleMan;
 use App\Assignment;
 use App\Customer;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Api\ApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\SalePlan;
@@ -16,6 +15,7 @@ use App\MonthlyPlan;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use App\Http\Controllers\Api\ApiController;
 
 class DailyWorkController extends Controller
 {
@@ -60,7 +60,6 @@ class DailyWorkController extends Controller
         ->where('sale_plans_status', 2)
         ->select('sale_plans.*', 'sale_plan_comments.saleplan_id')->distinct()
         ->orderBy('sale_plans.id', 'desc')->get();
-
         
         // -- ข้อมูลลูกค้าใหม่ // ลูกค้าใหม่เปลี่ยนมาใช้อันนี้
         $data['customer_new'] = DB::table('customer_shops_saleplan')
@@ -82,19 +81,6 @@ class DailyWorkController extends Controller
         )
         ->orderBy('customer_shops_saleplan.id', 'desc')
         ->get();
-        // dd($data['customer_new']);
-        // $data['customer_new'] = DB::table('customer_shops')
-        // ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
-        // ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
-        // ->where('customer_shops.created_by', Auth::user()->id)
-        // ->where('customer_shops.monthly_plan_id', $data['monthly_plan']->id)
-        // ->where('customer_shops.shop_aprove_status', 2)
-        // ->select(
-        //     'province.PROVINCE_NAME',
-        //     'customer_shops.*'
-        // )
-        // ->orderBy('customer_shops.id', 'desc')
-        // ->get();
 
         $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers');
@@ -149,33 +135,12 @@ class DailyWorkController extends Controller
 
         }
 
-        // $data['list_visit'] = CustomerVisit::leftjoin('customer_shops', 'customer_visits.customer_shop_id', '=', 'customer_shops.id')
-        // ->leftjoin('customer_contacts', 'customer_shops.id', '=', 'customer_contacts.customer_shop_id')
-        // ->leftjoin('province', 'customer_shops.shop_province_id', '=', 'province.PROVINCE_CODE')
-        // ->leftjoin('customer_visit_results', 'customer_visits.id', '=', 'customer_visit_results.customer_visit_id')
-        // ->select(
-        //     'province.PROVINCE_NAME',
-        //     'customer_contacts.customer_contact_name',
-        //     'customer_visit_results.cust_visit_status',
-        //     'customer_visit_results.cust_visit_checkin_date',
-        //     'customer_visit_results.cust_visit_checkout_date',
-        //     'customer_visit_results.customer_visit_id',
-        //     'customer_shops.shop_name',
-        //     'customer_visits.*'
-        // )
-        // ->where('customer_visits.created_by', Auth::user()->id)
-        // ->where('customer_visits.monthly_plan_id', $monthly_plan->id)
-        // ->orderBy('customer_visits.id', 'desc')->get();
-
-        
+   
         $data['list_approval'] = RequestApproval::where('created_by', Auth::user()->id)->whereMonth('assign_request_date', Carbon::now()->format('m'))->get();
 
         $data['assignments'] = Assignment::where('assign_emp_id', Auth::user()->id)->whereMonth('assign_work_date', Carbon::now()->format('m'))->get();
 
-        $data['notes'] = Note::where('employee_id', Auth::user()->id)->whereMonth('note_date', Carbon::now()->format('m'))->get();
-
-        
-
+        $data['notes'] = Note::where('employee_id', Auth::user()->id)->whereMonth('note_date', Carbon::now()->format('m'))->get();  
 
         return view('saleman.dailyWork', $data);
     }

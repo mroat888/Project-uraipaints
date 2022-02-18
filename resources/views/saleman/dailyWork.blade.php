@@ -810,7 +810,6 @@
                                                                     $btn_neon_cusvisit_disabled = "disabled";
                                                                 }
                                                             @endphp
-
                                                             <button class="btn btn-icon btn-primary"
                                                             data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $customer_visit_api[$key]['id'] }})" {{ $btn_primary_cusvisit_disabled }}>
                                                             <span class="btn-icon-wrap"><i data-feather="log-in"></i></span></button>
@@ -896,7 +895,7 @@
                             <input type="hidden" id="cust_lon" name="lon">
                             <p id="cust_demo"></p>
                         </div>
-                        <input type="hidden" name="id" id="cust_id">
+                        <input type="text" name="id" id="cust_id">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
@@ -926,7 +925,7 @@
                             <input type="hidden" id="visit_lon" name="lon">
                             <p id="visit_demo"></p>
                         </div>
-                        <input type="hidden" name="id" id="visit_id">
+                        <input type="hidden" name="id" id="custvisit_id">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
@@ -990,16 +989,16 @@
                 <div class="modal-body">
                     <form id="from_customer_new_result">
                         @csrf
-                        <input type="text" name="cust_id" id="get_cust_new_id">
+                        <input type="hidden" name="cust_id" id="get_cust_new_id">
                         <div class="form-group">
                             <label for="username">รายละเอียด</label>
                             <textarea class="form-control" id="get_cust_detail" cols="30" rows="5" placeholder="" name="shop_result_detail"
-                                type="text"> </textarea>
+                                type="text" require> </textarea>
                         </div>
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="username">สรุปผลลัพธ์</label>
-                                <select class="form-control custom-select" id="get_cust_result" name="shop_result_status">
+                                <select class="form-control custom-select" id="get_cust_result" name="shop_result_status" require>
                                     <option selected>-- กรุณาเลือก --</option>
                                     <option value="0">ไม่สนใจ</option>
                                     <option value="1">รอตัดสินใจ</option>
@@ -1031,7 +1030,7 @@
                     <!-- <form action="{{ url('customer_visit_Result') }}" method="post" enctype="multipart/form-data"> -->
                     <form id="from_customer_visit_result">
                         @csrf
-                        <input type="hidden" name="visit_id" id="get_visit_id">
+                        <input type="text" name="visit_id" id="get_visit_id">
                         <div class="form-group">
                             <label for="username">รายละเอียด</label>
                             <textarea class="form-control" id="get_visit_detail" cols="30" rows="5" placeholder="" name="visit_result_detail"
@@ -1164,8 +1163,10 @@
                 cust.innerHTML = "Geolocation is not supported by this browser.";
             }
             $("#id").val(id);
-            $("#visit_id").val(id);
+            
             $("#cust_id").val(id);
+            $("#custvisit_id").val(id);
+            console.log(id);
         }
 
         function showPosition(position) {
@@ -1198,104 +1199,6 @@
             }
         }
     </script>
-
-{{-- <script>
-    var cust = document.getElementById("cust_demo");
-
-    function getLocation_cust(cust_id) {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(cust_showPosition, cust_showError);
-        } else {
-            cust.innerHTML = "Geolocation is not supported by this browser.";
-        }
-        $("#cust_id").val(cust_id);
-    }
-
-    function cust_showPosition(position) {
-        cust.innerHTML = "Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;
-        $("#cust_lat").val(position.coords.latitude);
-        $("#cust_lon").val(position.coords.longitude);
-    }
-
-    function cust_showError(error) {
-        switch (error.code) {
-            case error.PERMISSION_DENIED:
-            cust.innerHTML = "User denied the request for Geolocation."
-                reak;
-            case error.POSITION_UNAVAILABLE:
-            cust.innerHTML = "Location information is unavailable."
-                break;
-            case error.TIMEOUT:
-            cust.innerHTML = "The request to get user location timed out."
-                break;
-            case error.UNKNOWN_ERROR:
-            cust.innerHTML = "An unknown error occurred."
-                break;
-        }
-    }
-</script>
-
-
-<script>
-    var x = document.getElementById("visit_demo");
-
-    function getLocation(id) {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition, showError);
-        } else {
-            x.innerHTML = "Geolocation is not supported by this browser.";
-        }
-        $("#visit_id").val(id);
-    }
-
-    function showPosition(position) {
-        x.innerHTML = "Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;
-        $("#visit_lat").val(position.coords.latitude);
-        $("#visit_lon").val(position.coords.longitude);
-    }
-
-    function showError(error) {
-        switch (error.code) {
-            case error.PERMISSION_DENIED:
-                x.innerHTML = "User denied the request for Geolocation."
-                reak;
-            case error.POSITION_UNAVAILABLE:
-                x.innerHTML = "Location information is unavailable."
-                break;
-            case error.TIMEOUT:
-                x.innerHTML = "The request to get user location timed out."
-                break;
-            case error.UNKNOWN_ERROR:
-                x.innerHTML = "An unknown error occurred."
-                break;
-        }
-    }
-</script> --}}
-
-
-    {{-- <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
-    <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-<script>
-    var x = document.getElementById("demo");
-
-    function getLocation(id) {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
-        } else {
-            x.innerHTML = "Geolocation is not supported by this browser.";
-        }
-        // var saleplan_id = id;
-        $("#id").val(id);
-    }
-
-    function showPosition(position) {
-        x.innerHTML = "Latitude: " + position.coords.latitude +
-        "<br>Longitude: " + position.coords.longitude;
-        $("#lat").val(position.coords.latitude);
-        $("#lon").val(position.coords.longitude);
-    }
-    </script> --}}
-
 
     <script>
         function displayMessage(message) {

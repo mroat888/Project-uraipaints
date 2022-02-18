@@ -342,7 +342,26 @@ class CustomerVisitController extends Controller
                 $data2->updated_at   = Carbon::now();
                 $data2->update();
                 //return back();
+
+                $cust_visit = DB::table('customer_visits')->where('id', $request->visit_id)->first();
+
+                $events = DB::table('events')->where('customer_visits_id', $request->visit_id)->first();
+
+                // dd($events);
+
+                if(is_null($events)){
+                    DB::table('events')
+                    ->insert([
+                        'title' => "เยี่ยมลูกค้า : ".$cust_visit->customer_shop_id,
+                        'start' => Carbon::now(),
+                        'end' => Carbon::now(),
+                        'customer_visits_id' => $cust_visit->id,
+                        'created_by' => Auth::user()->id
+                    ]);
+                }
+
                 DB::commit();
+
                 return response()->json([
                     'status' => 200,
                     'message' => 'บันทึกข้อมูลสำเร็จ',
