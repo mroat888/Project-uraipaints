@@ -44,13 +44,14 @@
                                         <tr>
                                             <th rowspan="2">#</th>
                                             <th rowspan="2">เดือน</th>
-                                            <th rowspan="2" style="text-align:center;">ลูกค้าใหม่ตามแผน</th>
+                                            <th colspan="2" style="text-align:center;">ลูกค้าใหม่</th>
                                             <th colspan="4" style="text-align:center;">ผลดำเนินการ</th>
                                             <th colspan="2" style="text-align:center;">คิดเป็นเปอร์เซ็น (%)</th>
                                         </tr>
 
                                         <tr>
-
+                                            <th>ตามแผน</th>
+                                            <th>นอกแผน</th>
                                             <th>รอตัดสินใจ</th>
                                             <th>ไม่สำเร็จ</th>
                                             <th>สำเร็จ</th>
@@ -73,6 +74,7 @@
                                             <td scope="row"><?php echo $i; ?></td>
                                             <td><?php echo $month_array[$i-1]; ?></td>
                                             <td><span class="text-success"><?php echo $report[$i]['count_shop']; ?></span> </td>
+                                            <td><span class="text-success"><?php echo $report[$i]['count_shop_noplan']; ?></span> </td>
                                             <td><span class="text-danger"><?php echo $report[$i]['cus_result_in_process']; ?></span> </td>
                                             <td><span class="text-danger"><?php echo $report[$i]['cus_result_failed']; ?></span> </td>
                                             <td><span class="text-success"><?php echo $report[$i]['cus_result_success']; ?></span> </td>
@@ -87,6 +89,7 @@
                                     <tfoot style="font-weight: bold;">
                                         <td colspan="2" style="text-align:center;">ทั้งหมด</td>
                                         <td class="text-success"><?php echo $summary_report['sum_count_shop']; ?></td>
+                                        <td class="text-success"><?php echo $summary_report['sum_count_shop_noplan']; ?></td>
                                         <td class="text-danger"><?php echo $summary_report['sum_result_in_process']; ?></td>
                                         <td class="text-success"><?php echo $summary_report['sum_result_failed']; ?></td>
                                         <td class="text-danger"><?php echo $summary_report['sum_result_success']; ?></td>
