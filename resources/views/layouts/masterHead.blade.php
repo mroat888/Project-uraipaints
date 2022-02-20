@@ -259,12 +259,12 @@ License: You must have a valid license purchased only from themeforest to legall
                                 <span class="nav-link-text">งานประจำวัน</span>
                             </a>
                         </li> --}}
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link" href="{{ url('head/palncalendar') }}">
                                 <i class="ion ion-md-calendar" style="color: #044067;"></i>
                                 <span class="nav-link-text">ปฎิทินกิจกรรม</span>
                             </a>
-                        </li>
+                        </li> -->
                         {{-- <li class="nav-item">
                             <a class="nav-link" href="{{ url('head/saleWork') }}">
                                 <i class="ion ion-md-grid" style="color: #044067;"></i>
@@ -289,6 +289,12 @@ License: You must have a valid license purchased only from themeforest to legall
                                             <a class="nav-link" href="{{ url('head/approvalgeneral') }}">
                                                 <i class="ion ion-md-checkbox"></i>
                                                 <span class="nav-link-text">อนุมัติคำขออนุมัติ</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ url('approval-customer-except') }}">
+                                                <i class="ion ion-md-checkbox"></i>
+                                                <span class="nav-link-text">ลูกค้าใหม่ นอกแผน</span>
                                             </a>
                                         </li>
                                         <li class="nav-item">

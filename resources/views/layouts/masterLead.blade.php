@@ -271,12 +271,12 @@ License: You must have a valid license purchased only from themeforest to legall
                                 <span class="nav-link-text">งานประจำวัน</span>
                             </a>
                         </li> --}}
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link" href="{{ url('lead/palncalendar') }}">
                                 <i class="ion ion-md-calendar"></i>
                                 <span class="nav-link-text">ปฎิทินกิจกรรม</span>
                             </a>
-                        </li>
+                        </li> -->
                         <li class="nav-item">
                             <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
                                 data-target="#charts_drp2">

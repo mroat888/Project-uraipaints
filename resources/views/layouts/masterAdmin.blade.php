@@ -242,12 +242,12 @@
                                 <span class="nav-link-text">หน้าแรก</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link" href="{{ url('admin/palncalendar') }}">
                                 <i class="ion ion-md-calendar" style="color: #044067;"></i>
                                 <span class="nav-link-text">ปฎิทินกิจกรรม</span>
                             </a>
-                        </li>
+                        </li> -->
                         <li class="nav-item">
                             <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
                                 data-target="#charts_drp2">
