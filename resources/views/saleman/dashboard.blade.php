@@ -331,21 +331,21 @@
                         <div class="col-md-4">
                             <div class="card card-sm">
                                 <div class="card-body" style="color: black;">
-                                    @php
-                                        $mount_now = date("m");    
-                                        $mount_now = $mount_now-1;         
-                                        $DaysSalesPrevious = $res_api["data"][5]["DaysSalesPrevious"];
+                                    @php     
+                                        $SalesPrevious = $res_api_previous["data"][3]["SalesPrevious"];
+                                        $totalAmtSale_th_Previous = $SalesPrevious[0]["totalAmtSale_th"]; // เป้ายอดขายปีที่แล้ว
+                                        $totalAmtSale_Previous = $SalesPrevious[0]["totalAmtSale"]; // เป้ายอดขายปีที่แล้ว
 
-                                        $totalAmtSale_th = $DaysSalesPrevious[$mount_now]["totalAmtSale_th"]; // เป้ายอดขาย
-                                        $netAmount_th = $DaysSalesPrevious[$mount_now]["netAmount_th"]; // ยอดที่ทำได้
-                                        $percentAmtCrn = $DaysSalesPrevious[$mount_now]["percentAmtCrn"];
-                                        $flip_percentAmtCrn = 100 - $DaysSalesPrevious[$mount_now]["percentAmtCrn"];
+                                        $SalesCurrent = $res_api["data"][2]["SalesCurrent"];
+                                        $totalAmtSale_th = $SalesCurrent[0]["totalAmtSale_th"]; // ยอดที่ทำได้ปีนี้
+                                        $totalAmtSale = $SalesCurrent[0]["totalAmtSale"]; // ยอดที่ทำได้ปีนี้
 
+                                        $percentAmtCrn = (($totalAmtSale_Previous-$totalAmtSale)*100)/$totalAmtSale_Previous;
                                     @endphp
                                     <span class="d-block font-11 font-weight-500 text-dark text-uppercase mb-10"></span>
                                             <span class="d-block text-center">
-                                                <span id="pie_chart_2" class="easy-pie-chart" data-percent="{{ $flip_percentAmtCrn }}">
-                                                    <span class="percent head-font mt-25">{{ $flip_percentAmtCrn }}</span>
+                                                <span id="pie_chart_2" class="easy-pie-chart" data-percent="{{ $percentAmtCrn }}">
+                                                    <span class="percent head-font mt-25">{{ $percentAmtCrn }}</span>
                                             </span>
                                             </span>
                                     <div class="d-flex align-items-end justify-content-between mt-10">
@@ -361,11 +361,11 @@
                                     <div class="d-flex align-items-end justify-content-between">
                                         <div>
                                             <span class="d-block">
-                                                <span style="color: red;">{{ $totalAmtSale_th }}</span>
+                                                <span style="color: red;">{{ $totalAmtSale_th_Previous }}</span>
                                             </span>
                                         </div>
                                         <div>
-                                            <span style="color: rgb(4, 18, 58);">{{ $netAmount_th }}</span>
+                                            <span style="color: rgb(4, 18, 58);">{{ $totalAmtSale_th }}</span>
                                         </div>
                                     </div>
 

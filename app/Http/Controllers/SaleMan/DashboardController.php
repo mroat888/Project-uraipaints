@@ -94,10 +94,17 @@ class DashboardController extends Controller
         $data['api_token'] = $api_token;
         $response = Http::withToken($api_token)
         ->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/dashboards', [
-            'year' => '2022',
-            'month' => '12'
+            'year' => $year,
+            'month' => $month
         ]);
         $data['res_api'] = $response->json();
+
+        $response = Http::withToken($api_token)
+        ->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/dashboards', [
+            'year' => $year-1,
+            'month' => $month
+        ]);
+        $data['res_api_previous'] = $response->json();
 
         // -- นับจำนวน slaeplans
         $data['count_sale_plans_result'] = 0;
