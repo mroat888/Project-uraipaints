@@ -305,11 +305,17 @@
                                     <div class="d-flex align-items-end justify-content-between">
                                         <div>
                                             <span class="d-block">
-                                                <span>300</span>
+                                                <span>{{ $res_api["data"][0]["Customers"][0]["ActiveTotal"] }}</span>
                                             </span>
                                         </div>
-                                        <div>
-                                            <span>4 ร้าน <span class="ml-40">4 วัน</span></span>
+                                        <div>                                      
+                                            @php
+                                                $FocusDates_count = count($res_api["data"][1]["FocusDates"]);
+                                            @endphp
+                                            @if($FocusDates_count > 0)
+                                                <span>{{ $res_api["data"][1]["FocusDates"][0]["TotalCustomers"] }} ร้าน </span>
+                                                <span class="ml-40">{{ $res_api["data"][1]["FocusDates"][0]["TotalDays"] }} วัน</span>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
