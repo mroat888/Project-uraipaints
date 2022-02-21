@@ -108,7 +108,7 @@ class DashboardController extends Controller
 
         // -- นับจำนวน slaeplans
         $data['count_sale_plans_result'] = 0;
-        $sale_plans = DB::table('sale_plans')->where('monthly_plan_id', $data['monthly_plan']->id)->get();
+        $sale_plans = DB::table('sale_plans')->where('monthly_plan_id', $data['monthly_plan']->id)->where('sale_plans_status', 2)->get();
 
         foreach($sale_plans as $sp_value){
             $check_result = DB::table('sale_plan_results')->where('sale_plan_id', $sp_value->id)->first();

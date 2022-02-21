@@ -124,7 +124,7 @@ Route::middleware(['auth', 'lead'])->group(function () {
 Route::get('leadManager', function () { return view('leadManager.dashboard'); });
 Route::get('lead/planMonth', function () { return view('leadManager.planMonth'); });
 Route::get('lead/dailyWork', function () { return view('leadManager.dailyWork'); });
-Route::get('lead/dashboard', function () { return view('leadManager.dashboard'); });
+Route::get('lead/dashboard', 'LeadManager\DashboardController@index');
 Route::get('lead/palncalendar', function () { return view('leadManager.salePalnCalendar'); });
 Route::get('lead/saleWork', function () { return view('leadManager.sale_work'); });
 Route::get('lead/viewSaleDetail', function () { return view('leadManager.view_saleplan'); });
