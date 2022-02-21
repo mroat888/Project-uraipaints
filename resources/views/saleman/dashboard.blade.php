@@ -26,9 +26,9 @@
                                         <div id="e_chart_1" style="height:140px;"></div>
                                     </div>
                                     <div class="col-sm mt-30" style="color: black;">
-                                            <p class="mb-10">แผนทำงาน {{ $monthly_plan->sale_plan_amount }}</p>
-                                            <p class="mb-10">ทำแล้ว {{ $monthly_plan->success_plan }}</p>
-                                            <p class="mb-10">รอดำเนินการ {{ $monthly_plan->outstanding_plan }}</p>
+                                        <p class="mb-10">แผนทำงาน {{ $monthly_plan->sale_plan_amount }}</p>
+                                        <p class="mb-10">ทำแล้ว {{ $count_sale_plans_result }}</p>
+                                        <p class="mb-10">รอดำเนินการ {{ $monthly_plan->sale_plan_amount - $count_sale_plans_result }}</p>
                                     </div>
                                 </div>
                             </section>
@@ -41,8 +41,8 @@
                                     </div>
                                     <div class="col-sm mt-30" style="color: black;">
                                             <p class="mb-10">ลูกค้าใหม่ {{ $monthly_plan->cust_new_amount }}</p>
-                                            <p class="mb-10">ทำแล้ว </p>
-                                            <p class="mb-10">รอดำเนินการ </p>
+                                            <p class="mb-10">ทำแล้ว {{ $count_shops_saleplan_result }}</p>
+                                            <p class="mb-10">รอดำเนินการ {{ $monthly_plan->cust_new_amount - $count_shops_saleplan_result }}</p>
                                     </div>
                                 </div>
                             </section>
@@ -55,8 +55,8 @@
                                     </div>
                                     <div class="col-sm mt-30" style="color: black;">
                                             <p class="mb-10">เยี่ยมลูกค้า {{ $monthly_plan->cust_visits_amount }}</p>
-                                            <p class="mb-10">ทำแล้ว </p>
-                                            <p class="mb-10">รอดำเนินการ </p>
+                                            <p class="mb-10">ทำแล้ว {{ $count_isit_results_result }}</p>
+                                            <p class="mb-10">รอดำเนินการ {{ $monthly_plan->cust_visits_amount - $count_isit_results_result }}</p>
                                     </div>
                                 </div>
                             </section>
@@ -77,13 +77,6 @@
                                             data-feather="edit-2"></i></span></button>
                                         <span class="float-right">ขออนุมัติ {{$list_approval->count()}}</span>
                                     </span>
-                                    {{-- <div class="d-flex align-items-end justify-content-between">
-                                        <div>
-                                            <span class="d-block">
-                                                <span>คำขออนุมัติ 5</span>
-                                            </span>
-                                        </div>
-                                    </div> --}}
                                     <div class="d-flex align-items-end justify-content-between mt-10 font-16">
                                         <div>
                                             <span class="d-block">
@@ -105,11 +98,21 @@
 
                                                         @endif
                                                     @endforeach
-                                                    {{$approve}} </span>
+                                                    {{$approve}} 
+                                                </span>
                                             </span>
                                         </div>
                                         <div>
-                                            <span>2</span>
+                                            <?php $assign_is_hot = 0; ?>
+                                            <span>
+                                                @foreach ($list_approval as $value)
+                                                    @if ($value->assign_status == 1 && $value->assign_is_hot == 1)
+                                                        <?php $assign_is_hot += 1 ?>
+
+                                                    @endif
+                                                @endforeach
+                                                {{$assign_is_hot}} 
+                                            </span>
                                         </div>
                                     </div>
 
@@ -124,13 +127,6 @@
                                                 data-feather="clipboard"></i></span></button>
                                         <span class="float-right">คำสั่งงาน {{ $assignments->count() }}</span>
                                     </span>
-                                    {{-- <div class="d-flex align-items-end justify-content-between">
-                                        <div>
-                                            <span class="d-block">
-                                                <span>คำสั่งงาน 8</span>
-                                            </span>
-                                        </div>
-                                    </div> --}}
                                     <div class="d-flex align-items-end justify-content-between mt-10 font-16">
                                         <div>
                                             <span class="d-block">
@@ -149,7 +145,6 @@
                                                     @foreach ($assignments as $value)
                                                         @if ($value->assign_result_status != 0)
                                                             <?php $success += 1 ?>
-
                                                         @endif
                                                     @endforeach
                                                     {{$success}} </span>
@@ -177,16 +172,10 @@
                                         <button class="btn btn-icon btn-icon-circle btn-light btn-lg mr-25"><span class="btn-icon-wrap"><i
                                             data-feather="file"></i></span></button>
                                         <span class="float-right">บันทึกโน๊ต {{ $notes->count() }}</span></span>
-                                        {{-- <div>
-                                            <span class="d-block">
-                                                <span>บันทึกโน๊ต 3</span>
-                                            </span>
-                                        </div>
-                                    </div> --}}
                                     <div class="d-flex align-items-end justify-content-between mt-10">
                                         <div>
                                             <span class="d-block">
-                                                <span>เลิกใช้</span>
+                                                <span>ไม่ปัก</span>
                                             </span>
                                         </div>
                                         <div>
@@ -231,21 +220,14 @@
                                         <button class="btn btn-icon btn-icon-circle btn-light btn-lg mr-25"><span class="btn-icon-wrap"><i
                                             data-feather="users"></i></span></button>
                                         <span class="float-right">ลูกค้าใหม่ {{ $customer_shop->count() }}</span></span>
-                                    {{-- <div class="d-flex align-items-end justify-content-between">
-                                        <div>
-                                            <span class="d-block">
-                                                <span>ลูกค้าใหม่ 6</span>
-                                            </span>
-                                        </div>
-                                    </div> --}}
                                     <div class="d-flex align-items-end justify-content-between mt-10">
                                         <div>
                                             <span class="d-block">
-                                                <span>ไม่ผ่าน</span>
+                                                <span>ระหว่างดำเนินการ</span>
                                             </span>
                                         </div>
                                         <div>
-                                            <span>ตัดสินใจ</span>
+                                            <span>เปลี่ยนเป็นลูกค้า</span>
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-end justify-content-between font-16">
@@ -349,10 +331,21 @@
                         <div class="col-md-4">
                             <div class="card card-sm">
                                 <div class="card-body" style="color: black;">
+                                    @php
+                                        $mount_now = date("m");    
+                                        $mount_now = $mount_now-1;         
+                                        $DaysSalesPrevious = $res_api["data"][5]["DaysSalesPrevious"];
+
+                                        $totalAmtSale_th = $DaysSalesPrevious[$mount_now]["totalAmtSale_th"]; // เป้ายอดขาย
+                                        $netAmount_th = $DaysSalesPrevious[$mount_now]["netAmount_th"]; // ยอดที่ทำได้
+                                        $percentAmtCrn = $DaysSalesPrevious[$mount_now]["percentAmtCrn"];
+                                        $flip_percentAmtCrn = 100 - $DaysSalesPrevious[$mount_now]["percentAmtCrn"];
+
+                                    @endphp
                                     <span class="d-block font-11 font-weight-500 text-dark text-uppercase mb-10"></span>
                                             <span class="d-block text-center">
-                                                <span id="pie_chart_2" class="easy-pie-chart" data-percent="86">
-                                                    <span class="percent head-font mt-25">86</span>
+                                                <span id="pie_chart_2" class="easy-pie-chart" data-percent="{{ $flip_percentAmtCrn }}">
+                                                    <span class="percent head-font mt-25">{{ $flip_percentAmtCrn }}</span>
                                             </span>
                                             </span>
                                     <div class="d-flex align-items-end justify-content-between mt-10">
@@ -362,17 +355,17 @@
                                             </span>
                                         </div>
                                         <div>
-                                            <span>เดือนนี้</span>
+                                            <span>ยอดที่ทำได้</span>
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-end justify-content-between">
                                         <div>
                                             <span class="d-block">
-                                                <span style="color: red;">99,999,999</span>
+                                                <span style="color: red;">{{ $totalAmtSale_th }}</span>
                                             </span>
                                         </div>
                                         <div>
-                                            <span style="color: rgb(4, 18, 58);">99,999,999</span>
+                                            <span style="color: rgb(4, 18, 58);">{{ $netAmount_th }}</span>
                                         </div>
                                     </div>
 
@@ -381,21 +374,50 @@
                             <div class="card card-sm">
                                 <div class="card-body" style="color: black;">
                                     <span class="d-block font-11 font-weight-500 text-dark text-uppercase"></span>
-                                    <div class="d-flex align-items-end justify-content-between">
-                                        <div>
-                                            <span class="d-block">
-                                                <button class="btn btn-icon btn-info">
-                                                    <span class="btn-icon-wrap"><i data-feather="home"></i>
-                                                    </span>
-                                                </button>
-                                                {{-- <span><i data-feather="home" style="width:50px;"></i></span> --}}
-                                            </span>
-                                        </div>
-                                        <div class="mb-5">
-                                            <span style="font-weight: bold; font-size: 18px;">ร้านค้า</span>
-                                        </div>
-                                        <div class="mb-5">
-                                            <span style="font-weight: bold; font-size: 18px;">3,000</span>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <span class="d-block">
+                                                    <button class="btn btn-icon btn-info">
+                                                        <span class="btn-icon-wrap"><i data-feather="home"></i>
+                                                        </span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <div class="row">
+                                                    <div class="col-md-8">
+                                                        <span style="font-weight: bold; font-size: 14px;">ร้านค้า (Total)</span>
+                                                    </div>
+                                                    <div class="col-md-4;" style="text-align:right;">
+                                                        <span style="font-weight: bold; font-size: 14px;">
+                                                            {{ $res_api["data"][0]["Customers"][0]["CustTotal"]}}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-8">
+                                                        <span style="font-weight: bold; font-size: 14px;">ร้านค้า (Active)</span>
+                                                    </div>
+                                                    <div class="col-md-4;" style="text-align:right;">
+                                                        <span style="font-weight: bold; font-size: 14px;">
+                                                            {{ $res_api["data"][0]["Customers"][0]["ActiveTotal"]}}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-8">
+                                                        <span style="font-weight: bold; font-size: 14px;">ร้านค้า (Inactive)</span>
+                                                    </div>
+                                                    <div class="col-md-4;" style="text-align:right;">
+                                                        <span style="font-weight: bold; font-size: 14px;">
+                                                            {{ $res_api["data"][0]["Customers"][0]["InactiveTotal"]}}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            
                                         </div>
                                     </div>
                                 </div>

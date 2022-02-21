@@ -83,7 +83,7 @@
                                                         <i data-feather="feather" style="color: tomato;"></i>
                                                         @endif
                                                     </td>
-                                                    <td>{{ $value->note_tags }}</td>
+                                                    <td>{{ $value->name_tag }}</td>
                                                     <?php $date = new Carbon\Carbon($value->note_date); ?>
                                                     <td>{{ $date->format('d/m/Y') }}</td>
                                                     <td>
