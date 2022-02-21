@@ -1,11 +1,11 @@
-@extends('layouts.masterHead')
+@extends('layouts.masterAdmin')
 
 @section('content')
 
     <!-- Breadcrumb -->
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
-            <li class="breadcrumb-item active">โปรโมชั่น</li>
+            <li class="breadcrumb-item active">สินค้าใหม่</li>
         </ol>
     </nav>
     <!-- /Breadcrumb -->
@@ -57,7 +57,7 @@
             </div>
         </div> --}}
 
-        @include('promotion_main')
+        @include('product_new_main')
 
     </div>
     <!-- /Container -->

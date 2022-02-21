@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\News;
+use App\NewsBanner;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -13,34 +14,26 @@ class PromotionController extends Controller
 
     public function frontend_promotion()
     {
-        $list_promotion_a = News::where('status', "P")->orderBy('id', 'desc')->first();
-        $list_promotion = News::where('status', "P")->orderBy('id', 'desc')->get();
-        $p_hot = News::where('status_promotion', "hot")->orderBy('id', 'desc')->get();
-        return view('saleman.promotions', compact('list_promotion', 'p_hot', 'list_promotion_a'));
+        $list_promotion = News::where('status', "P")->orderBy('id', 'desc')->paginate(10);
+        return view('saleman.promotions', compact('list_promotion'));
     }
 
     public function lead_frontend_promotion()
     {
-        $list_promotion_a = News::where('status', "P")->orderBy('id', 'desc')->first();
-        $list_promotion = News::where('status', "P")->orderBy('id', 'desc')->get();
-        $p_hot = News::where('status_promotion', "hot")->orderBy('id', 'desc')->get();
-        return view('leadManager.promotions', compact('list_promotion', 'p_hot', 'list_promotion_a'));
+        $list_promotion = News::where('status', "P")->orderBy('id', 'desc')->paginate(10);
+        return view('leadManager.promotions', compact('list_promotion'));
     }
 
     public function head_frontend_promotion()
     {
-        $list_promotion_a = News::where('status', "P")->orderBy('id', 'desc')->first();
-        $list_promotion = News::where('status', "P")->orderBy('id', 'desc')->get();
-        $p_hot = News::where('status_promotion', "hot")->orderBy('id', 'desc')->get();
-        return view('headManager.promotions', compact('list_promotion', 'p_hot', 'list_promotion_a'));
+        $list_promotion = News::where('status', "P")->orderBy('id', 'desc')->paginate(10);
+        return view('headManager.promotions', compact('list_promotion'));
     }
 
     public function admin_frontend_promotion()
     {
-        $list_promotion_a = News::where('status', "P")->orderBy('id', 'desc')->first();
-        $list_promotion = News::where('status', "P")->orderBy('id', 'desc')->get();
-        $p_hot = News::where('status_promotion', "hot")->orderBy('id', 'desc')->get();
-        return view('admin.fontendPromotions', compact('list_promotion', 'p_hot', 'list_promotion_a'));
+        $list_promotion = News::where('status', "P")->orderBy('id', 'desc')->paginate(10);
+        return view('admin.fontendPromotions', compact('list_promotion'));
     }
 
     public function index()

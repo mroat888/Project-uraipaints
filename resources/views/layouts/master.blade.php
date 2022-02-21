@@ -203,7 +203,7 @@ License: You must have a valid license purchased only from themeforest to legall
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" data-dropdown-in="flipInX"
                         data-dropdown-out="flipOutX">
-                        <a class="dropdown-item" href="profile.html"><i
+                        <a class="dropdown-item" href="{{url('test2')}}"><i
                                 class="dropdown-icon zmdi zmdi-account"></i><span>Profile</span></a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
@@ -369,7 +369,7 @@ License: You must have a valid license purchased only from themeforest to legall
                                                 <i class="ion ion-md-gift" style="color: #044067;"></i>โปรโมชั่น</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{ url('#') }}">
+                                            <a class="nav-link" href="{{ url('product_new') }}">
                                                 <i class="ion ion-md-cube" style="color: #044067;"></i>สินค้าใหม่</a>
                                         </li>
                                     </ul>

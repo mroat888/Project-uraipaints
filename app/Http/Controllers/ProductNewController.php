@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\News;
+use App\NewsBanner;
 use App\ProductNew;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -11,16 +13,28 @@ use Illuminate\Support\Facades\DB;
 class ProductNewController extends Controller
 {
 
-    public function index()
+    public function frontend_product_new()
     {
-        $product_new = ProductNew::orderBy('id', 'desc')->get();
-        return view('admin.product_new', compact('product_new'));
+        $list_product_new = ProductNew::orderBy('id', 'desc')->paginate(10);
+        return view('saleman.product_new', compact('list_product_new'));
+    }
+
+    public function lead_frontend_product_new()
+    {
+        $list_product_new = ProductNew::orderBy('id', 'desc')->paginate(10);
+        return view('LeadManager.product_new', compact('list_product_new'));
+    }
+
+    public function head_frontend_product_new()
+    {
+        $list_product_new = ProductNew::orderBy('id', 'desc')->paginate(10);
+        return view('HeadManager.product_new', compact('list_product_new'));
     }
 
     public function admin_frontend_product_new()
     {
-        $productNew = ProductNew::orderBy('id', 'desc')->get();
-        return view('admin.fontendProductNew', compact('productNew'));
+        $list_product_new = ProductNew::orderBy('id', 'desc')->paginate(10);
+        return view('admin.fontendProductNew', compact('list_product_new'));
     }
 
     public function store(Request $request)

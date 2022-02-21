@@ -2,13 +2,17 @@
 
 @section('content')
 
-    <!-- Row -->
-
-    <!-- /Row -->
+    <!-- Breadcrumb -->
+    <nav class="hk-breadcrumb" aria-label="breadcrumb">
+        <ol class="breadcrumb breadcrumb-light bg-transparent">
+            <li class="breadcrumb-item active">สินค้าใหม่</li>
+        </ol>
+    </nav>
+    <!-- /Breadcrumb -->
 
     <!-- Container -->
     <div class="container-fluid px-xxl-65 px-xl-20">
-        <div class="mt-30 mb-30">
+        {{-- <div class="mt-30 mb-30">
             <div class="row">
                 <div class="col-xl-12">
                     <div class="row">
@@ -21,14 +25,14 @@
                                     <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
                                 </ol>
                                 <div class="carousel-inner">
-                                    {{-- @if ($productNew)
+                                    @if ($list_news_a)
                                     <div class="carousel-item active">
-                                        <img class="d-block w-100" src="{{ isset($productNew->banner) ? asset('public/upload/NewsBanner/' . $productNew->banner) : '' }}">
+                                        <img class="d-block w-100" src="{{ isset($list_news_a->banner) ? asset('public/upload/NewsBanner/' . $list_news_a->banner) : '' }}">
                                     </div>
-                                    @endif --}}
+                                    @endif
 
                                     @foreach ($list_banner as $value)
-                                    @if ($value->banner != $productNew->news_image)
+                                    @if ($value->banner != $list_news_a->news_image)
                                     <div class="carousel-item">
                                         <img class="d-block w-100" src="{{ isset($value->banner) ? asset('public/upload/NewsBanner/' . $value->banner) : '' }}">
                                     </div>
@@ -51,36 +55,9 @@
 
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         @include('product_new_main')
-
-        <!-- <div class="row">
-            <div class="col-md-12">
-                <section class="hk-sec-wrapper">
-                    <h5 class="hk-sec-title">ข้อมูลข่าวสาร</h5>
-                    <p class="mb-40">ข้อมูลข่าวสารประจำวัน</p>
-                    <div class="row">
-                        <div class="col-sm">
-                            <div id="owl_demo_4" class="owl-carousel owl-theme">
-                                @foreach ($productNew as $value)
-                                <div class="item">
-                                    <div class="card">
-                                        <img class="card-img-top" src="{{ isset($value->product_image) ? asset('public/upload/NewsImage/' . $value->product_image) : '' }}" alt="Card image cap">
-                                        <div class="card-body">
-                                            <h6>{{$value->product_title}}</h6>
-                                            <span>วันที่ : {{$value->product_date}}</span>
-                                            <p class="card-text">{{$value->product_detail}}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </div> -->
 
     </div>
     <!-- /Container -->

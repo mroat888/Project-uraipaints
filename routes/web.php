@@ -105,6 +105,7 @@ Route::post('search_month_note', 'NoteController@search_month_note');
 
 Route::get('news', 'NewsController@frontend_news');
 Route::get('promotions', 'PromotionController@frontend_promotion');
+Route::get('product_new', 'ProductNewController@frontend_product_new');
 
 // Report
 Route::get('/reportSale/reportSaleplan', 'Report\ReportSalePlanController@index');
@@ -177,6 +178,7 @@ Route::post('lead/search_month_note', 'NoteController@lead_search_month_note');
 
 Route::get('lead/news', 'NewsController@lead_frontend_news');
 Route::get('lead/promotions', 'PromotionController@lead_frontend_promotion');
+Route::get('lead/product_new', 'ProductNewController@lead_frontend_product_new');
 
 //report
 Route::get('/leadManage/reportcustomer', function () { return view('reports.report_customer'); });
@@ -229,6 +231,7 @@ Route::post('head/search_month_note', 'NoteController@head_search_month_note');
 
 Route::get('head/news', 'NewsController@head_frontend_news');
 Route::get('head/promotions', 'PromotionController@head_frontend_promotion');
+Route::get('head/product_new', 'ProductNewController@head_frontend_product_new');
 
 //report
 Route::get('/headManage/reportcustomer', function () { return view('reports.report_customer'); });
@@ -349,6 +352,10 @@ Route::post('/admin/update_master_tag', 'Admin\MasterNoteTagController@update');
 Route::get('admin/delete_master_tag/{id}', 'Admin\MasterNoteTagController@destroy');
 
 
+});
+
+Route::middleware(['auth', 'report'])->group(function () {
+    Route::get('test2', function () { return "Report"; });
 });
 
 
