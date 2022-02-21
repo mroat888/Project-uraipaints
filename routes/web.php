@@ -121,10 +121,10 @@ Route::get('/reportSale/reportVisitCustomer', 'Report\ReportVisitCustomerControl
 
 Route::middleware(['auth', 'lead'])->group(function () {
 // lead
-Route::get('leadManager', function () { return view('leadManager.dashboard'); });
+Route::get('leadManager', 'LeadManager\DashboardController@index');
+Route::get('lead/dashboard', 'LeadManager\DashboardController@index');
 Route::get('lead/planMonth', function () { return view('leadManager.planMonth'); });
 Route::get('lead/dailyWork', function () { return view('leadManager.dailyWork'); });
-Route::get('lead/dashboard', 'LeadManager\DashboardController@index');
 Route::get('lead/palncalendar', function () { return view('leadManager.salePalnCalendar'); });
 Route::get('lead/saleWork', function () { return view('leadManager.sale_work'); });
 Route::get('lead/viewSaleDetail', function () { return view('leadManager.view_saleplan'); });
@@ -194,7 +194,7 @@ Route::get('/leadManage/reportYear', function () { return view('reports.report_y
 
 Route::middleware(['auth', 'head'])->group(function () {
 // head
-Route::get('headManage', function () { return view('headManager.dashboard'); });
+Route::get('headManage', 'HeadManager\DashboardController@index');
 // Route::get('head/planMonth', function () { return view('headManager.planMonth'); });
 // Route::get('head/dailyWork', function () { return view('headManager.dailyWork'); });
 Route::get('head/palncalendar', function () { return view('headManager.salePalnCalendar'); });
@@ -249,7 +249,8 @@ Route::get('/headManage/reportYear', function () { return view('reports.report_y
 
 Route::middleware(['auth', 'admin'])->group(function () {
 // admin
-Route::get('admin', function () { return view('admin.dashboard'); });
+
+Route::get('admin', 'Admin\DashboardController@index');
 Route::get('admin/palncalendar', function () { return view('admin.salePalnCalendar'); });
 Route::get('admin/saleWork', function () { return view('admin.sale_work'); });
 Route::get('admin/viewSaleDetail', function () { return view('admin.view_saleplan'); });

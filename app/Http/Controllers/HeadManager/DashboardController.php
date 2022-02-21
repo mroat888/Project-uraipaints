@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\LeadManager;
+namespace App\Http\Controllers\HeadManager;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -152,8 +152,7 @@ class DashboardController extends Controller
             }
 
         }
-   
-        return view('leadManager.dashboard', $data);
-
+        
+        return view('headManager.dashboard', $data);
     }
 }

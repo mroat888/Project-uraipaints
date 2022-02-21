@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\LeadManager;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -22,27 +22,22 @@ class DashboardController extends Controller
     }
 
     public function index(){
-        
+
         list($year,$month,$day) = explode("-",date("Y-m-d"));
         $monthly_plans = DB::table('monthly_plans')
         ->join('users', 'users.id', 'monthly_plans.created_by')
         ->where('monthly_plans.status_approve', 2)
         ->where('users.team_id', Auth::user()->team_id)
-        ->whereYear('month_date', $year)
-        ->whereMonth('month_date', $month)
         ->select(
             'monthly_plans.*'
         )
         ->get();
 
         $data['count_monthly_plans'] = 0;
-        $data['count_cust_new_amount'] = 0;
-        $data['count_cust_visits_amount'] = 0;
-        
         // -- นับจำนวน slaeplans
         $data['count_sale_plans_result'] = 0;
-        $data['count_shops_saleplan_result'] = 0;
-        $data['count_visit_results_result'] = 0;
+        $data['count_cust_new_amount'] = 0;
+        $data['count_cust_visits_amount'] = 0;
         foreach($monthly_plans as $monthly_plan){
             $data['count_monthly_plans'] = $data['count_monthly_plans'] + $monthly_plan->sale_plan_amount ; // 	จำนวนแผนงาน
             $data['count_cust_new_amount'] = $data['count_cust_new_amount'] + $monthly_plan->cust_new_amount ; // จำนวนลูกค้าใหม่
@@ -53,11 +48,12 @@ class DashboardController extends Controller
             foreach($sale_plans as $sp_value){
                 $check_result = DB::table('sale_plan_results')->where('sale_plan_id', $sp_value->id)->first();
                 if(!is_null($check_result)){
-                    $data['count_sale_plans_result'] = $data['count_sale_plans_result'] +1 ;
+                    $data['count_sale_plans_result'] = $data['count_sale_plans_result'] + 1;
                 }
             }
-            
+
             // -- นับจำนวน ลูกค้าใหม่
+            $data['count_shops_saleplan_result'] = 0;
             $customer_shops_saleplan = DB::table('customer_shops_saleplan')->where('monthly_plan_id', $monthly_plan->id)->get();
             foreach($customer_shops_saleplan as $sp_value){
                 $check_result = DB::table('customer_shops_saleplan_result')->where('customer_shops_saleplan_id', $sp_value->id)->first();
@@ -65,18 +61,28 @@ class DashboardController extends Controller
                     $data['count_shops_saleplan_result'] = $data['count_shops_saleplan_result'] + 1;
                 }
             }
-            
+
             // -- นับจำนวน ลูกค้าเยี่ยม
+            $data['count_isit_results_result'] = 0;
             $customer_visits = DB::table('customer_visits')->where('monthly_plan_id', $monthly_plan->id)->get();
             foreach($customer_visits as $sp_value){
                 $check_result = DB::table('customer_visit_results')->where('customer_visit_id', $sp_value->id)->first();
                 if(!is_null($check_result)){
-                    $data['count_visit_results_result'] = $data['count_visit_results_result'] + 1;
+                    $data['count_isit_results_result'] = $data['count_isit_results_result'] + 1;
                 }
             }
-            
+
         }
-    
+
+        $monthly_plans = DB::table('monthly_plans')
+        ->join('users', 'users.id', 'monthly_plans.created_by')
+        ->where('monthly_plans.status_approve', 2)
+        ->where('users.team_id', Auth::user()->team_id)
+        ->select(
+            'monthly_plans.*'
+        )
+        ->get();
+
         $data['list_approval'] = DB::table('assignments')
             ->join('users', 'assignments.created_by', '=', 'users.id')
             ->where('users.team_id', Auth::user()->team_id)
@@ -111,6 +117,7 @@ class DashboardController extends Controller
         $data['sum_totalAmtSale'] = 0; // เป้ายอดขายปีปัจจุบัน
 
         foreach($user_teams as $team){
+            
             $response = Http::withToken($api_token)
             ->get('http://49.0.64.92:8020/api/v1/sellers/'.$team->api_identify.'/dashboards', [
                 'year' => $year,
@@ -152,8 +159,9 @@ class DashboardController extends Controller
             }
 
         }
-   
-        return view('leadManager.dashboard', $data);
+        
+        return view('admin.dashboard');
 
     }
+
 }

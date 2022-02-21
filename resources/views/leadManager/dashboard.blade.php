@@ -6,7 +6,6 @@
  <nav class="hk-breadcrumb" aria-label="breadcrumb">
     <ol class="breadcrumb breadcrumb-light bg-transparent">
         <li class="breadcrumb-item active">หน้าแรก</li>
-        {{-- <li class="breadcrumb-item active" aria-current="page">ปฎิทินกิจกรรม</li> --}}
     </ol>
 </nav>
 <!-- /Breadcrumb -->
@@ -26,9 +25,9 @@
                                         <div id="e_chart_1" style="height:140px;"></div>
                                     </div>
                                     <div class="col-sm mt-30" style="color: black;">
-                                            <p class="mb-10">แผนทำงาน {{ $count_monthly_plans }}</p>
-                                            <p class="mb-10">ทำแล้ว {{ $count_sale_plans_result }}</p>
-                                            <p class="mb-10">รอดำเนินการ {{ $count_monthly_plans - $count_sale_plans_result}}</p>
+                                        <p class="mb-10">แผนทำงาน {{ $count_monthly_plans }}</p>
+                                        <p class="mb-10">ทำแล้ว {{ $count_sale_plans_result }}</p>
+                                        <p class="mb-10">รอดำเนินการ {{ $count_monthly_plans - $count_sale_plans_result}}</p>
                                     </div>
                                 </div>
                             </section>
@@ -55,8 +54,8 @@
                                     </div>
                                     <div class="col-sm mt-30" style="color: black;">
                                         <p class="mb-10">เยี่ยมลูกค้า {{ $count_cust_visits_amount }}</p>
-                                        <p class="mb-10">ทำแล้ว {{ $count_isit_results_result }}</p>
-                                        <p class="mb-10">รอดำเนินการ {{ $count_cust_visits_amount - $count_isit_results_result }}</p>
+                                        <p class="mb-10">ทำแล้ว {{ $count_visit_results_result }}</p>
+                                        <p class="mb-10">รอดำเนินการ {{ $count_cust_visits_amount - $count_visit_results_result }}</p>
                                     </div>
                                 </div>
                             </section>

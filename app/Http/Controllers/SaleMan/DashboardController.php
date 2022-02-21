@@ -87,6 +87,7 @@ class DashboardController extends Controller
         $data['monthly_plan'] = MonthlyPlan::where('created_by', Auth::user()->id)
         ->whereYear('month_date', $year)
         ->whereMonth('month_date', $month)
+        ->where('monthly_plans.status_approve', 2)
         ->orderBy('month_date', 'desc')
         ->first();
 
