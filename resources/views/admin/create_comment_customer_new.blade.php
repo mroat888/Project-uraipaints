@@ -1,4 +1,4 @@
-@extends('layouts.masterHead')
+@extends('layouts.masterAdmin')
 
 @section('content')
 
@@ -32,7 +32,7 @@
                 <section class="hk-sec-wrapper">
                     <div class="row">
                         <div class="col-sm">
-                            <form action="{{ url('head/create_comment_customer_new') }}" method="post" enctype="multipart/form-data">
+                            <form action="{{ url('admin/create_comment_customer_new') }}" method="post" enctype="multipart/form-data">
                                 @csrf
                             <div class="modal-body">
                                 <div>
@@ -47,7 +47,7 @@
                                     </div>
                             </div>
                             <div class="modal-footer">
-                                <a href="{{ url('head/approvalsaleplan_detail', $createID) }}" type="button" class="btn btn-secondary">ย้อนกลับ</a>
+                                <a href="{{ url('admin/approvalsaleplan_detail', $createID) }}" type="button" class="btn btn-secondary">ย้อนกลับ</a>
                                 <button type="submit" class="btn btn-primary float-right">บันทึก</button>
                             </div>
                             </form>
@@ -66,7 +66,7 @@
                 <section class="hk-sec-wrapper">
                     <div class="row">
                         <div class="col-sm">
-                            <form action="{{ url('head/create_comment_customer_new') }}" method="post" enctype="multipart/form-data">
+                            <form action="{{ url('admin/create_comment_customer_new') }}" method="post" enctype="multipart/form-data">
                                 @csrf
                             <div class="modal-body">
                                 <div>
@@ -81,7 +81,7 @@
                                     </div>
                             </div>
                             <div class="modal-footer">
-                                <a href="{{ url('head/approvalsaleplan_detail', $createID) }}" type="button" class="btn btn-secondary">ย้อนกลับ</a>
+                                <a href="{{ url('admin/approvalsaleplan_detail', $createID) }}" type="button" class="btn btn-secondary">ย้อนกลับ</a>
                                 <button type="submit" class="btn btn-primary float-right">บันทึก</button>
                             </div>
                             </form>

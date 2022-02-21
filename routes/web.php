@@ -255,10 +255,24 @@ Route::get('admin/saleWork', function () { return view('admin.sale_work'); });
 Route::get('admin/viewSaleDetail', function () { return view('admin.view_saleplan'); });
 Route::get('admin/viewVisitDetail', function () { return view('admin.view_vist_customer'); });
 Route::get('admin/viewAssignmentDetail', function () { return view('admin.view_assignment'); });
-Route::get('admin/approvalsaleplan', function () { return view('admin.approval_saleplan'); });
-Route::get('admin/approvalgeneral', function () { return view('admin.approval_general'); });
+
+Route::get('admin/approvalsaleplan', 'Admin\ApprovalSalePlanController@index');
+Route::get('admin/approvalsaleplan_detail/{id}', 'Admin\ApprovalSalePlanController@approvalsaleplan_detail');
+Route::get('admin/comment_saleplan/{id}/{createID}', 'Admin\ApprovalSalePlanController@comment_saleplan');
+Route::post('admin/create_comment_saleplan', 'Admin\ApprovalSalePlanController@create_comment_saleplan');
+Route::get('admin/comment_customer_new/{id}/{custsaleplanID}/{createID}', 'Admin\ApprovalSalePlanController@comment_customer_new');
+Route::post('admin/create_comment_customer_new', 'Admin\ApprovalSalePlanController@create_comment_customer_new');
+Route::get('admin/retrospective/{id}', 'Admin\ApprovalSalePlanController@retrospective');
+
+Route::get('admin/approvalgeneral', 'Admin\ApprovalController@index');
+Route::get('admin/approval_general_detail/{id}', 'Admin\ApprovalController@approval_general_detail');
+Route::get('admin/comment_approval/{id}/{createID}', 'Admin\ApprovalController@comment_approval');
+Route::post('admin/create_comment_request_approval', 'Admin\ApprovalController@create_comment_request_approval');
 Route::get('admin/approvalgeneral/history', function () { return view('admin.approval_general_history'); });
-Route::get('admin/approvalsaleplan/detail', function () { return view('admin.approval_saleplan_detail'); });
+
+Route::get('admin/assignment-add', 'Admin\AssignmentController@index');
+Route::get('admin/searchselect', 'Admin\AssignmentController@searchselect');
+
 
 // Note
 Route::get('admin/note', 'NoteController@note_admin');
@@ -354,6 +368,8 @@ Route::get('admin/delete_master_tag/{id}', 'Admin\MasterNoteTagController@destro
 
 });
 
+
+// MustBeReport
 Route::middleware(['auth', 'report'])->group(function () {
     Route::get('test2', function () { return "Report"; });
 });

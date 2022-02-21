@@ -251,7 +251,7 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{ url('head/assignment/add') }}">
+                                            <a class="nav-link" href="{{ url('admin/assignment-add') }}">
                                                 <i class="ion ion-md-folder-open" style="color: #044067;"></i>
                                                 บันทึกสั่งงาน</a>
                                         </li>

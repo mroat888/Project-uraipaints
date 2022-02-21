@@ -1,4 +1,4 @@
-@extends('layouts.masterHead')
+@extends('layouts.masterAdmin')
 
 @section('content')
 
@@ -32,23 +32,22 @@
                 <section class="hk-sec-wrapper">
                     <div class="row">
                         <div class="col-sm">
-                            <form action="{{ url('head/create_comment_customer_new') }}" method="post" enctype="multipart/form-data">
+                            <form action="{{ url('admin/create_comment_saleplan') }}" method="post" enctype="multipart/form-data">
                                 @csrf
                             <div class="modal-body">
                                 <div>
-                                    <h5>แสดงความคิดเห็นร้าน : {{$customer->shop_name}}</h5>
+                                    <h5>แสดงความคิดเห็นเรื่อง : {{$title->sale_plans_title}}</h5>
                                 </div>
-                                <input type="hidden" name="cust_shops_saleplan_id" value="{{$data->customer_shops_saleplan_id}}">
-                                <input type="hidden" name="customer_shops_id" value="{{$data->customer_id}}">
-                                <input type="hidden" name="monthly_plans_id" value="{{$createID}}">
+                                <input type="hidden" name="id" value="{{$data->saleplan_id}}">
+                                <input type="hidden" name="createID" value="{{$createID}}">
                                     <div class="card-body">
                                         <textarea class="form-control" name="comment" cols="30" rows="5" placeholder="เพิ่มความคิดเห็น" value=""
-                                        type="text">{{$data->customer_comment_detail}}</textarea>
+                                        type="text">{{$data->saleplan_comment_detail}}</textarea>
                                     </div>
                             </div>
                             <div class="modal-footer">
-                                <a href="{{ url('head/approvalsaleplan_detail', $createID) }}" type="button" class="btn btn-secondary">ย้อนกลับ</a>
-                                <button type="submit" class="btn btn-primary float-right">บันทึก</button>
+                                <a href="{{ url('admin/approvalsaleplan_detail', $createID) }}" type="button" class="btn btn-secondary">ย้อนกลับ</a>
+                                <button type="submit" class="btn btn-primary">บันทึก</button>
                             </div>
                             </form>
                         </div>
@@ -66,23 +65,22 @@
                 <section class="hk-sec-wrapper">
                     <div class="row">
                         <div class="col-sm">
-                            <form action="{{ url('head/create_comment_customer_new') }}" method="post" enctype="multipart/form-data">
+                            <form action="{{ url('admin/create_comment_saleplan') }}" method="post" enctype="multipart/form-data">
                                 @csrf
                             <div class="modal-body">
                                 <div>
-                                    <h5>แสดงความคิดเห็นร้าน : {{$customer->shop_name}}</h5>
+                                    <h5>แสดงความคิดเห็นเรื่อง : {{$title->sale_plans_title}}</h5>
                                 </div>
-                                <input type="hidden" name="cust_shops_saleplan_id" value="{{$customersaleplanID}}">
-                                <input type="hidden" name="customer_shops_id" value="{{$customerID}}">
-                                <input type="hidden" name="monthly_plans_id" value="{{$createID}}">
+                                <input type="hidden" name="id" value="{{$saleplanID}}">
+                                <input type="hidden" name="createID" value="{{$createID}}">
                                     <div class="card-body">
                                         <textarea class="form-control" name="comment" cols="30" rows="5" placeholder="เพิ่มความคิดเห็น" value=""
                                         type="text"></textarea>
                                     </div>
                             </div>
                             <div class="modal-footer">
-                                <a href="{{ url('head/approvalsaleplan_detail', $createID) }}" type="button" class="btn btn-secondary">ย้อนกลับ</a>
-                                <button type="submit" class="btn btn-primary float-right">บันทึก</button>
+                                <a href="{{ url('admin/approvalsaleplan_detail', $createID) }}" type="button" class="btn btn-secondary">ย้อนกลับ</a>
+                                <button type="submit" class="btn btn-primary">บันทึก</button>
                             </div>
                             </form>
                         </div>
@@ -94,7 +92,8 @@
         <!-- /Row -->
         @endif
 
-        @foreach($customer_shop_comments as $value)
+
+        @foreach($sale_plan_comments as $value)
 
             <div class="card">
                 <div class="card-header">
@@ -102,7 +101,7 @@
                 </div>
                 <div class="card-body">
                     <blockquote class="blockquote mb-0">
-                    <p>{{ $value->customer_comment_detail }}</p>
+                    <p>{{ $value->saleplan_comment_detail }}</p>
                     <footer class="blockquote-footer">
                         @php
                             $users_comment = DB::table('users')->where('id', $value->created_by)->first();

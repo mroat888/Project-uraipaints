@@ -28,13 +28,11 @@
 
      <!-- Container -->
     <div class="container-fluid px-xxl-65 px-xl-20">
+
          <!-- Title -->
         <div class="hk-pg-header mb-10">
             <div>
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-analytics"></i></span>อนุมัติ Sale Plan</h4>
-            </div>
-            <div class="d-flex">
-                <button type="button" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" id="btn_approve">อนุมัติ</button>
             </div>
         </div>
         <!-- /Title -->
@@ -69,14 +67,6 @@
                                     <table class="table table-sm table-hover">
                                         <thead>
                                             <tr>
-                                                <th>
-                                                    <div class="custom-control custom-checkbox checkbox-info">
-                                                        <input type="checkbox" class="custom-control-input"
-                                                            id="customCheck4" onclick="chkAll(this);">
-                                                        <label class="custom-control-label"
-                                                            for="customCheck4">ทั้งหมด</label>
-                                                    </div>
-                                                </th>
                                                 <th>#</th>
                                                 <th>วันที่</th>
                                                 <th>พนักงานขาย</th>
@@ -85,98 +75,45 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox checkbox-info">
-                                                        <input type="checkbox" class="custom-control-input checkapprove"
-                                                            name="checkapprove" id="customCheck41" value="1">
-                                                        <label class="custom-control-label" for="customCheck41"></label>
-                                                    </div>
-                                                </td>
-                                                <td>1</td>
-                                                <td>11/10/2021</td>
-                                                <td>เกรียงไกร</td>
-                                                <td><span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span></td>
-                                                <td>
-                                                    <a href="{{ url('admin/approvalsaleplan/detail') }}" type="button" class="btn btn-icon btn-primary pt-5">
-                                                        <i data-feather="file-text"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox checkbox-info">
-                                                        <input type="checkbox" class="custom-control-input checkapprove"
-                                                            name="checkapprove" id="customCheck41" value="1">
-                                                        <label class="custom-control-label" for="customCheck41"></label>
-                                                    </div>
-                                                </td>
-                                                <td>2</td>
-                                                <td>12/10/2021</td>
-                                                <td>ชัยวุฒิ</td>
-                                                <td><span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span></td>
-                                                <td>
-                                                    <a href="{{ url('admin/approvalsaleplan/detail') }}" type="button" class="btn btn-icon btn-primary pt-5">
-                                                        <i data-feather="file-text"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox checkbox-info">
-                                                        <input type="checkbox" class="custom-control-input checkapprove"
-                                                            name="checkapprove" id="customCheck41" value="1">
-                                                        <label class="custom-control-label" for="customCheck41"></label>
-                                                    </div>
-                                                </td>
-                                                <td>3</td>
-                                                <td>14/10/2021</td>
-                                                <td>จารุวรรณ</td>
-                                                <td><span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span></td>
-                                                <td>
-                                                    <a href="{{ url('admin/approvalsaleplan/detail') }}" type="button" class="btn btn-icon btn-primary pt-5">
-                                                        <i data-feather="file-text"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox checkbox-info">
-                                                        <input type="checkbox" class="custom-control-input checkapprove"
-                                                            name="checkapprove" id="customCheck41" value="1">
-                                                        <label class="custom-control-label" for="customCheck41"></label>
-                                                    </div>
-                                                </td>
-                                                <td>4</td>
-                                                <td>14/10/2021</td>
-                                                <td>อมรชัย</td>
-                                                <td><span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span></td>
-                                                <td>
-                                                    <a href="{{ url('admin/approvalsaleplan/detail') }}" type="button" class="btn btn-icon btn-primary pt-5">
-                                                        <i data-feather="file-text"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox checkbox-info">
-                                                        <input type="checkbox" class="custom-control-input checkapprove"
-                                                            name="checkapprove" id="customCheck41" value="1">
-                                                        <label class="custom-control-label" for="customCheck41"></label>
-                                                    </div>
-                                                </td>
-                                                <td>5</td>
-                                                <td>14/10/2021</td>
-                                                <td>ทิพวรรณ</td>
-                                                <td><span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span></td>
-                                                <td>
-                                                    <a href="{{ url('admin/approvalsaleplan/detail') }}" type="button" class="btn btn-icon btn-primary pt-5">
-                                                        <i data-feather="file-text"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
+                                            @foreach ($monthly_plan as $key => $value)
+                                                    <tr>
+                                                        <td>{{$key + 1}}</td>
+                                                        <td>{{$value->month_date}}</td>
+                                                        <td>{{$value->name}}</td>
+                                                        {{-- <td>{{$value->id}}</td> --}}
+                                                        <td>
+                                                            @if ($value->status_approve == 0)
+                                                                <span class="badge badge-soft-secondary"
+                                                                    style="font-size: 12px;">
+                                                                    Draf
+                                                                </span>
+
+                                                            @elseif ($value->status_approve == 1)
+                                                                <span class="badge badge-soft-warning"
+                                                                    style="font-size: 12px;">
+                                                                    Pending
+                                                                </span>
+                                                            @else
+                                                                <span class="badge badge-soft-success"
+                                                                    style="font-size: 12px;">
+                                                                    Approve
+                                                                </span>
+                                                            @endif
+                                                            {{-- <span class="badge badge-soft-warning" style="font-size: 12px;">{{$value->status_approve}}</span> --}}
+                                                        </td>
+                                                        <td>
+                                                            <a href="{{ url('admin/approvalsaleplan_detail', $value->id) }}" type="button" class="btn btn-icon btn-primary pt-5">
+                                                                <i data-feather="file-text"></i>
+                                                            </a>
+                                                            <a href="{{ url('admin/retrospective', $value->id) }}" type="button" class="btn btn-icon btn-warning pt-5 ml-2">
+                                                                <i data-feather="refresh-ccw"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
                                         </tbody>
                                     </table>
+                                </form>
                                 </div>
                             </div>
                         </div>
@@ -187,9 +124,29 @@
             <!-- /Row -->
     </div>
 
-@endsection('content')
+    <script type="text/javascript">
+        function chkAll(checkbox) {
+
+            var cboxes = document.getElementsByName('checkapprove[]');
+            var len = cboxes.length;
+
+            if (checkbox.checked == true) {
+                for (var i = 0; i < len; i++) {
+                    cboxes[i].checked = true;
+                }
+            } else {
+                for (var i = 0; i < len; i++) {
+                    cboxes[i].checked = false;
+                }
+            }
+        }
+    </script>
+
+@endsection
 
 @section('scripts')
+
+
 <script>
     function showselectdate(){
         $("#selectdate").css("display", "block");
@@ -211,45 +168,7 @@
     }
 </script>
 
-
-<script type="text/javascript">
-    function chkAll(checkbox) {
-
-        var cboxes = document.getElementsByName('checkapprove');
-        var len = cboxes.length;
-
-        if (checkbox.checked == true) {
-            for (var i = 0; i < len; i++) {
-                cboxes[i].checked = true;
-            }
-        } else {
-            for (var i = 0; i < len; i++) {
-                cboxes[i].checked = false;
-            }
-        }
-    }
-</script>
-
 <script>
-    document.getElementById('btn_approve').onclick = function() {
-        var markedCheckbox = document.getElementsByName('checkapprove');
-        var saleplan_id_p = "";
-
-        for (var checkbox of markedCheckbox) {
-            if (checkbox.checked) {
-                if (checkbox.value != "") {
-                    saleplan_id_p += checkbox.value + ' ,';
-                }
-            }
-        }
-        if (saleplan_id_p != "") {
-            $('#Modalapprove').modal('show');
-            $('#saleplan_id').val(saleplan_id_p);
-        } else {
-            alert('กรุณาเลือกรายการด้วยค่ะ');
-        }
-    }
-
     function showselectdate() {
         $("#selectdate").css("display", "block");
         $("#bt_showdate").hide();
@@ -260,6 +179,5 @@
         $("#bt_showdate").show();
     }
 </script>
-
 
 @endsection('scripts')
