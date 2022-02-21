@@ -132,7 +132,7 @@ class DashboardController extends Controller
             }
             
             $response = Http::withToken($api_token) // ดึงข้อมูลปีที่แล้ว
-            ->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/dashboards', [
+            ->get('http://49.0.64.92:8020/api/v1/sellers/'.$team->api_identify.'/dashboards', [
                 'year' => $year-1,
                 'month' => $month
             ]);
