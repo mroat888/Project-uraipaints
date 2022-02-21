@@ -2,9 +2,13 @@
 
 @section('content')
 
-    <!-- Row -->
-
-    <!-- /Row -->
+    <!-- Breadcrumb -->
+   <nav class="hk-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light bg-transparent">
+        <li class="breadcrumb-item active">ข่าวสาร</li>
+    </ol>
+</nav>
+<!-- /Breadcrumb -->
 
     <!-- Container -->
     <div class="container-fluid px-xxl-65 px-xl-20">
