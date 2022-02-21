@@ -376,18 +376,6 @@ License: You must have a valid license purchased only from themeforest to legall
                                             <a class="nav-link" href="{{ url('/headManage/reportYear') }}">
                                                 <i class="ion ion-md-stats" style="color: #044067;"></i>รายงานสรุปข้อมูลประจำปี</a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{ url('/headManage/report_visitcustomer_goal_head') }}">
-                                                <i class="ion ion-md-stats" style="color: #044067;"></i>รายงานเข้าพบลูกค้าเป้าหมาย</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{ url('/headManage/visitCustomer') }}">
-                                                <i class="ion ion-md-stats" style="color: #044067;"></i>รายงานเข้าพบลูกค้า</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{ url('/headManage/reportYear') }}">
-                                                <i class="ion ion-md-stats" style="color: #044067;"></i>รายงานสรุปข้อมูลประจำปี</a>
-                                        </li>
                                     </ul>
                                 </li>
                             </ul>

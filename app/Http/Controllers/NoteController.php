@@ -18,6 +18,7 @@ class NoteController extends Controller
         ->select('notes.*', 'master_note.name_tag')
         ->orderBy('notes.status_pin', 'desc')
         ->orderBy('notes.note_date', 'asc')->get();
+        // dd($data);
         return view('saleman.note', compact('data'));
     }
 
