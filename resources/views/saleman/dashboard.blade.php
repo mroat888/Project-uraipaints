@@ -315,6 +315,9 @@
                                             @if($FocusDates_count > 0)
                                                 <span>{{ $res_api["data"][1]["FocusDates"][0]["TotalCustomers"] }} ร้าน </span>
                                                 <span class="ml-40">{{ $res_api["data"][1]["FocusDates"][0]["TotalDays"] }} วัน</span>
+                                            @else
+                                                <span>- ร้าน </span>
+                                                <span class="ml-40">- วัน</span>
                                             @endif
                                         </div>
                                     </div>
