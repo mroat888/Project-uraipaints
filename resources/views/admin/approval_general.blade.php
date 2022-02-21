@@ -5,7 +5,7 @@
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
             <li class="breadcrumb-item"><a href="#">Page</a></li>
-            <li class="breadcrumb-item active" aria-current="page">อนุมัติคำขออนุมัติ</li>
+            <li class="breadcrumb-item active" aria-current="page">การขออนุมัติ</li>
         </ol>
     </nav>
     <!-- /Breadcrumb -->
@@ -17,10 +17,7 @@
         <div class="hk-pg-header mb-10">
             <div>
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                    data-feather="file-text"></i></span></span>ข้อมูลอนุมัติคำขออนุมัติ</h4>
-            </div>
-            <div class="d-flex">
-                <button type="button" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" id="btn_approve">อนุมัติ</button>
+                    data-feather="file-text"></i></span></span>บันทึกข้อมูลการขออนุมัติ</h4>
             </div>
         </div>
         <!-- /Title -->
@@ -50,7 +47,7 @@
                     </div>
                     <div class="row mb-2">
                             <div class="col-md-3">
-                                <h5 class="hk-sec-title">ตารางข้อมูลอนุมัติคำขออนุมัติ</h5>
+                                <h5 class="hk-sec-title">ตารางข้อมูลการขออนุมัติ</h5>
                             </div>
                             <div class="col-md-9">
 
@@ -62,89 +59,45 @@
                                 <table class="table table-sm table-hover">
                                     <thead>
                                         <tr>
-                                            <th>
-                                                <div class="custom-control custom-checkbox checkbox-info">
-                                                    <input type="checkbox" class="custom-control-input"
-                                                        id="customCheck4" onclick="chkAll(this);">
-                                                    <label class="custom-control-label"
-                                                        for="customCheck4">ทั้งหมด</label>
-                                                </div>
-                                            </th>
                                             <th>#</th>
                                             <th>วันที่</th>
-                                            <th>เรื่อง</th>
+                                            {{-- <th>เรื่อง</th> --}}
                                             <th>พนักงาน</th>
                                             <th>การอนุมัติ</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <?php $count = 1; ?>
+                                        @foreach ($request_approval as $key => $value)
+                                        <?php $chk =  App\Assignment::join('users', 'assignments.created_by', '=', 'users.id')
+                                        ->whereNotNull('assignments.assign_request_date')
+                                        ->where('assignments.created_by', $value->created_by)->select('users.name', 'assignments.*')->first() ?>
+                                        @if ($chk)
                                         <tr>
+                                            <td>{{$count++}}</td>
+                                            <td>{{$chk->assign_request_date}}</td>
+                                            <td>{{$chk->name}}</td>
                                             <td>
-                                                <div class="custom-control custom-checkbox checkbox-info">
-                                                    <input type="checkbox" class="custom-control-input checkapprove"
-                                                        name="checkapprove" id="customCheck41" value="1">
-                                                    <label class="custom-control-label" for="customCheck41"></label>
-                                                </div>
-                                            </td>
-                                            <td>1</td>
-                                            <td>10/10/2021</td>
+                                                @if ($chk->assign_status == 0)
+                                                <span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span></td>
+
+                                                @elseif ($chk->assign_status == 1)
+                                                <span class="badge badge-soft-success" style="font-size: 12px;">Approve</span></td>
+
+                                                @elseif ($chk->assign_status == 2)
+                                                <span class="badge badge-soft-danger" style="font-size: 12px;">Reject</span></td>
+                                                @endif
+                                                </td>
                                             <td>
-                                                <span class="badge badge-soft-danger" style="font-size: 12px;">HOT</span>
-                                                System Architect
-                                            </td>
-                                            <td>สมรักษ์</td>
-                                            <td>
-                                                <span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-icon btn-primary btn-link btn_showplan" value="3">
+                                                <a href="{{url('admin/approval_general_detail', $chk->created_by)}}" class="btn btn-icon btn-primary pt-5" value="3">
                                                     <i data-feather="file-text"></i>
-                                                </button>
+                                                </a>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="custom-control custom-checkbox checkbox-info">
-                                                    <input type="checkbox" class="custom-control-input checkapprove"
-                                                        name="checkapprove" id="customCheck41" value="1">
-                                                    <label class="custom-control-label" for="customCheck41"></label>
-                                                </div>
-                                            </td>
-                                            <td>2</td>
-                                            <td>05/10/2021</td>
-                                            <td>Senior Javascript Developer</td>
-                                            <td>หทัยรัตน์</td>
-                                            <td>
-                                                <span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-icon btn-primary btn-link btn_showplan" value="3">
-                                                    <i data-feather="file-text"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="custom-control custom-checkbox checkbox-info">
-                                                    <input type="checkbox" class="custom-control-input checkapprove"
-                                                        name="checkapprove" id="customCheck41" value="1">
-                                                    <label class="custom-control-label" for="customCheck41"></label>
-                                                </div>
-                                            </td>
-                                            <td>3</td>
-                                            <td>01/10/2021</td>
-                                            <td>Senior Javascript Developer</td>
-                                            <td>เกรียงศักดิ์</td>
-                                            <td>
-                                                <span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-icon btn-primary btn-link btn_showplan" value="3">
-                                                    <i data-feather="file-text"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
+                                        @endif
+
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -153,6 +106,7 @@
                 </section>
             </div>
         </div>
+    </form>
         <!-- /Row -->
     </div>
     <!-- /Container -->
@@ -160,12 +114,28 @@
 
 <!-- Modal -->
 <div class="modal fade" id="Modalsaleplan" tabindex="-1" role="dialog" >
-    @include('admin.saleplan_display')
+    @include('leadManager.saleplan_display')
 </div>
 
+<script type="text/javascript">
+    function chkAll(checkbox) {
 
-@endsection('content')
+        var cboxes = document.getElementsByName('checkapprove[]');
+        var len = cboxes.length;
 
+        if (checkbox.checked == true) {
+            for (var i = 0; i < len; i++) {
+                cboxes[i].checked = true;
+            }
+        } else {
+            for (var i = 0; i < len; i++) {
+                cboxes[i].checked = false;
+            }
+        }
+    }
+</script>
+
+@endsection
 @section('scripts')
 
 <script>
@@ -186,7 +156,7 @@
 </script>
 
 
-<script type="text/javascript">
+{{-- <script type="text/javascript">
     function chkAll(checkbox) {
 
         var cboxes = document.getElementsByName('checkapprove');
@@ -202,7 +172,7 @@
             }
         }
     }
-</script>
+</script> --}}
 
 <script>
     document.getElementById('btn_approve').onclick = function() {

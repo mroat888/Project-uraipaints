@@ -68,16 +68,26 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <?php $count = 1; ?>
                                         @foreach ($request_approval as $key => $value)
                                         <?php $chk =  App\Assignment::join('users', 'assignments.created_by', '=', 'users.id')
                                         ->whereNotNull('assignments.assign_request_date')
                                         ->where('assignments.created_by', $value->created_by)->select('users.name', 'assignments.*')->first() ?>
+                                        @if ($chk)
                                         <tr>
-                                            <td>{{$key + 1}}</td>
+                                            <td>{{$count++}}</td>
                                             <td>{{$chk->assign_request_date}}</td>
                                             <td>{{$chk->name}}</td>
                                             <td>
-                                                <span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>
+                                                @if ($chk->assign_status == 0)
+                                                <span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span></td>
+
+                                                @elseif ($chk->assign_status == 1)
+                                                <span class="badge badge-soft-success" style="font-size: 12px;">Approve</span></td>
+
+                                                @elseif ($chk->assign_status == 2)
+                                                <span class="badge badge-soft-danger" style="font-size: 12px;">Reject</span></td>
+                                                @endif
                                             </td>
                                             <td>
                                                 <a href="{{url('head/approval_general_detail', $chk->created_by)}}" class="btn btn-icon btn-primary pt-5" value="3">

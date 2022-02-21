@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\HeadManager;
+namespace App\Http\Controllers\Admin;
 
 use App\Assignment;
 use App\AssignmentComment;
@@ -22,7 +22,7 @@ class ApprovalController extends Controller
             ->select('assignments.created_by')
             ->distinct()->get();
 
-        return view('headManager.approval_general', $data);
+        return view('admin.approval_general', $data);
     }
 
     public function approval_history()
@@ -40,7 +40,7 @@ class ApprovalController extends Controller
         ->get();
 
 
-        return view('headManager.approval_general_history', $data);
+        return view('admin.approval_general_history', $data);
     }
 
     public function approval_general_history_detail($id)
@@ -56,7 +56,7 @@ class ApprovalController extends Controller
         ->where('assignments.assign_request_date', '!=', "NULL")
         ->orderBy('id', 'desc')->get();
 
-        return view('headManager.approval_general_history_detail', $data);
+        return view('admin.approval_general_history_detail', $data);
     }
 
 
@@ -71,7 +71,7 @@ class ApprovalController extends Controller
         ->where('assignments.assign_request_date', '!=', "NULL")
         ->orderBy('id', 'desc')->get();
 
-        return view('headManager.approval_general_detail', $data);
+        return view('admin.approval_general_detail', $data);
     }
 
     public function comment_approval($id, $createID)
@@ -84,9 +84,9 @@ class ApprovalController extends Controller
 
             // return $data;
             if ( $data['comment']) {
-                return view('HeadManager.create_comment_request_approval', $data);
+                return view('admin.create_comment_request_approval', $data);
             }else {
-                return view('HeadManager.create_comment_request_approval', $data);
+                return view('admin.create_comment_request_approval', $data);
             }
     }
 
@@ -110,7 +110,7 @@ class ApprovalController extends Controller
                 ]);
             }
 
-            return redirect(url('head/approval_general_detail', $request->createID));
+            return redirect(url('admin/approval_general_detail', $request->createID));
 
     }
 
