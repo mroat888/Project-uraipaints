@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
         'lead' => \App\Http\Middleware\MustBeLead::class,
         'head' => \App\Http\Middleware\MustBeHead::class,
         'saleman' => \App\Http\Middleware\MustBeSaleman::class,
+        'report' => \App\Http\Middleware\MustBeReport::class,
     ];
 }

@@ -354,6 +354,10 @@ Route::get('admin/delete_master_tag/{id}', 'Admin\MasterNoteTagController@destro
 
 });
 
+Route::middleware(['auth', 'report'])->group(function () {
+    Route::get('test2', function () { return "Report"; });
+});
+
 
 //fullcalender
 
