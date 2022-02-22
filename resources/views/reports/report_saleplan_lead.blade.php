@@ -102,8 +102,16 @@
                                                 $sum_saleplan = 0;
 
                                                 $sum_saleplan = $sum_saleplan + $total_saleplan; // จำนวน saleplan ทั้งหมด
-                                                $percent_success = ($total_saleplan_success*100)/$sum_saleplan;
-                                                $percent_failed = ($total_saleplan_failed*100)/$sum_saleplan;
+                                                if($total_saleplan_success != 0){
+                                                    $percent_success = ($total_saleplan_success*100)/$sum_saleplan;
+                                                }else{
+                                                    $percent_success = 0;
+                                                }
+                                                if($total_saleplan_failed != 0){
+                                                    $percent_failed = ($total_saleplan_failed*100)/$sum_saleplan;
+                                                }else{
+                                                    $percent_failed = 0;
+                                                }
                                             ?>
                                     </tbody>
                                     <tfoot style="font-weight: bold;">
