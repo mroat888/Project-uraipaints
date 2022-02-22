@@ -102,7 +102,7 @@
                                                                     Approve
                                                                 </span>
                                                             @endif
-                                
+
 
                                                         </td>
                                                         <td style="text-align:center">
@@ -405,6 +405,7 @@
                                                                     ->where('customer_shops_saleplan_id', $value->id)
                                                                     ->count();
                                                                 @endphp
+
                                                                 @if ($count_new > 0)
                                                                 <button onclick="custnew_comment({{ $value->id }})"
                                                                     class="btn btn-icon btn-violet" data-toggle="modal"
@@ -940,7 +941,7 @@
             $("#customer_shops").on("change", function (e) {
                 e.preventDefault();
                 let shop_id = $(this).val();
-                
+
                 if(shop_id != ""){
                     $('#customer_shops_id').val(shop_id);
                     $('#shop_name').attr('readonly', true);
