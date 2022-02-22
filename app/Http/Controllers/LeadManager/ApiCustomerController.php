@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Customer;
+namespace App\Http\Controllers\LeadManager;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Api\ApiController;
 
 class ApiCustomerController extends Controller
@@ -15,24 +16,33 @@ class ApiCustomerController extends Controller
     }
 
     public function index(){
-        
-        $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers');
-        $res_api = $response->json();
 
+        $users_saleman = DB::table('users')
+        ->where('status', 1)
+        ->where('team_id', Auth::user()->team_id)
+        ->get();
+
+        $api_token = $this->api_token->apiToken();
         $customer_api = array();
-        foreach ($res_api['data'] as $key => $value) {
-            $customer_api[$key] = 
-            [
-                'identify' => $value['identify'],
-                'shopname' => $value['title']." ".$value['name'],
-                'address' => $value['amphoe_name']." , ".$value['province_name'],
-                'InMonthDays' => $value['InMonthDays'],
-                'TotalDays' => $value['TotalDays'],
-                'TotalCampaign' => $value['TotalCampaign'],
-            ];
+        foreach($users_saleman as $saleman){
+            $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/sellers/'.$saleman->api_identify.'/customers');
+            $res_api = $response->json();
+
+            foreach ($res_api['data'] as $key => $value) {
+                $customer_api[] = 
+                [
+                    'identify' => $value['identify'],
+                    'shopname' => $value['title']." ".$value['name'],
+                    'address' => $value['amphoe_name']." , ".$value['province_name'],
+                    'telephone' => $value['telephone']." , ".$value['mobile'],
+                    'TotalCampaign' => $value['TotalCampaign'],
+                ];
+            }
         }
-        return view('customer.customer-api', compact('customer_api'));
+
+        // dd(Auth::user()->team_id);
+
+        return view('reports.report_store', compact('customer_api'));
 
     }
 
@@ -68,6 +78,6 @@ class ApiCustomerController extends Controller
 
         //dd($data);
 
-        return view('customer.customer-api_detail', $data);
+        return view('reports.report_store_detail', $data);
     }
 }

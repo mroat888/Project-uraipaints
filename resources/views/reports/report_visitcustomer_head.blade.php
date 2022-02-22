@@ -30,7 +30,7 @@
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
                         <div class="col-sm-12 col-md-6">
-                            <h5 class="hk-sec-title">ตารางรายงานเข้าพบลูกค้า<span style="color: rgb(128, 19, 0);">(ประจำปี 2564)</span></h5>
+                            <h5 class="hk-sec-title">ตารางรายงานเข้าพบลูกค้า<span style="color: rgb(128, 19, 0);">(ประจำปี <?php echo thaidate('Y', date('Y-m-d')); ?>)</span></h5>
                         </div>
                         <div class="col-sm-12 col-md-6">
                         </div>
@@ -44,151 +44,78 @@
                                         <tr>
                                             <th rowspan="2">#</th>
                                             <th rowspan="2">เดือน</th>
-                                            <th colspan="4" style="text-align:center;">เข้าพบลูกค้า</th>
+                                            <th colspan="2" style="text-align:center;">เข้าพบลูกค้า</th>
+                                            <th colspan="3" style="text-align:center;">ผลดำเนินการ</th>
                                             <th colspan="2" style="text-align:center;">คิดเป็นเปอร์เซ็น (%)</th>
                                         </tr>
 
                                         <tr>
                                             <th>ลูกค้าตามแผน</th>
+                                            <th>ลูกค้าเพิ่มเติม</th>
+                                            <th>ระหว่างดำเนินการ</th>
                                             <th>สำเร็จ</th>
                                             <th>ไม่สำเร็จ</th>
-                                            <th>ลูกค้าใหม่</th>
                                             <th>สำเร็จ</th>
                                             <th>ไม่สำเร็จ</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>มกราคม</td>
-                                            <td><span class="text-success">3</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-danger">2</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-success">80%</span> </td>
-                                            <td><span class="text-danger">20%</span> </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>กุมภาพันธ์</td>
-                                            <td><span class="text-success">3</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-danger">2</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-success">80%</span> </td>
-                                            <td><span class="text-danger">20%</span> </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td>มีนาคม</td>
-                                            <td><span class="text-success">3</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-danger">2</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-success">80%</span> </td>
-                                            <td><span class="text-danger">20%</span> </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">4</th>
-                                            <td>เมษายน</td>
-                                            <td><span class="text-success">3</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-danger">2</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-success">80%</span> </td>
-                                            <td><span class="text-danger">20%</span> </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">5</th>
-                                            <td>พฤษภาคม</td>
-                                            <td><span class="text-success">3</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-danger">2</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-success">80%</span> </td>
-                                            <td><span class="text-danger">20%</span> </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">6</th>
-                                            <td>มิถุนายน</td>
-                                            <td><span class="text-success">3</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-danger">2</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-success">80%</span> </td>
-                                            <td><span class="text-danger">20%</span> </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">7</th>
-                                            <td>กรกฎาคม</td>
-                                            <td><span class="text-success">3</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-danger">2</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-success">80%</span> </td>
-                                            <td><span class="text-danger">20%</span> </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">8</th>
-                                            <td>สิงหาคม</td>
-                                            <td><span class="text-success">3</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-danger">2</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-success">80%</span> </td>
-                                            <td><span class="text-danger">20%</span> </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">9</th>
-                                            <td>กันยายน</td>
-                                            <td><span class="text-success">3</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-danger">2</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-success">80%</span> </td>
-                                            <td><span class="text-danger">20%</span> </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">10</th>
-                                            <td>ตุลาคม</td>
-                                            <td><span class="text-success">3</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-danger">2</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-success">80%</span> </td>
-                                            <td><span class="text-danger">20%</span> </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">11</th>
-                                            <td>พฤศจิกายน</td>
-                                            <td><span class="text-success">3</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-danger">2</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-success">80%</span> </td>
-                                            <td><span class="text-danger">20%</span> </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">12</th>
-                                            <td>ธันวาคม</td>
-                                            <td><span class="text-success">3</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-danger">2</span> </td>
-                                            <td><span class="text-success">1</span> </td>
-                                            <td><span class="text-success">80%</span> </td>
-                                            <td><span class="text-danger">20%</span> </td>
-                                        </tr>
+                                    <?php
+                                        $month_array = [
+                                            'มกราคม', 'กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน',
+                                            'กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'
+                                        ];
+                                        $total_cus_is_plan = 0;
+                                        $total_cus_isnot_plan = 0;
+                                        $total_cus_visit_in_process = 0;
+                                        $total_cus_visit_success = 0;
+                                        $total_cus_visit_failed = 0;
 
+                                        for($i = 1; $i <= 12; $i++ ){
+                                            if($report[$i]['cus_is_plan'] != "-"){
+                                                $total_cus_is_plan =  $total_cus_is_plan + $report[$i]['cus_is_plan'];
+                                            }
+                                            if($report[$i]['cus_isnot_plan'] != "-"){
+                                                $total_cus_isnot_plan =  $total_cus_isnot_plan + $report[$i]['cus_isnot_plan'];
+                                            }
+                                            if($report[$i]['cus_visit_in_process'] != "-"){
+                                                $total_cus_visit_in_process =  $total_cus_visit_in_process + $report[$i]['cus_visit_in_process'];
+                                            }
+                                            if($report[$i]['cus_visit_success'] != "-"){
+                                                $total_cus_visit_success =  $total_cus_visit_success + $report[$i]['cus_visit_success'];
+                                            }
+                                            if($report[$i]['cus_visit_failed'] != "-"){
+                                                $total_cus_visit_failed =  $total_cus_visit_failed + $report[$i]['cus_visit_failed'];
+                                            } 
+                                    ?>
+                                        <tr>
+                                            <td scope="row"><?php echo $i; ?></td>
+                                            <td><?php echo $month_array[$i-1]; ?></td>
+                                            <td><span class="text-success"><?php echo $report[$i]['cus_is_plan']; ?></span> </td>
+                                            <td><span class="text-success"><?php echo $report[$i]['cus_isnot_plan']; ?></span> </td>
+                                            <td><span class="text-danger"><?php echo $report[$i]['cus_visit_in_process']; ?></span> </td>
+                                            <td><span class="text-success"><?php echo $report[$i]['cus_visit_success']; ?></span> </td>
+                                            <td><span class="text-danger"><?php echo $report[$i]['cus_visit_failed']; ?></span> </td>
+                                            <td><span class="text-success"><?php echo $report[$i]['percent_success']; ?>%</span> </td>
+                                            <td><span class="text-danger"><?php echo $report[$i]['percent_failed']; ?>%</span> </td>
+                                        </tr>
+                                    <?php
+                                        }
+
+                                        $sum_visit = $total_cus_is_plan + $total_cus_isnot_plan; // จำนวนการเข้าพบทั้งหมด
+                                        $percent_success = ($total_cus_visit_success*100)/$sum_visit;
+                                        $percent_failed = ($total_cus_visit_failed*100)/$sum_visit;
+                                    ?>
                                     </tbody>
                                     <tfoot style="font-weight: bold;">
-                                        <td colspan="2" align="center">ทั้งหมด</td>
-                                        <td class="text-success">36</td>
-                                        <td class="text-success">12</td>
-                                        <td class="text-danger">24</td>
-                                        <td class="text-success">12</td>
-                                        <td class="text-success">60%</td>
-                                        <td class="text-danger">48%</td>
-                                        {{-- <td class="text-success"></td> --}}
+                                        <td colspan="2" style="text-align:center;">ทั้งหมด</td>
+                                        <td class="text-success"><?php echo $total_cus_is_plan; ?></td>
+                                        <td class="text-success"><?php echo $total_cus_isnot_plan; ?></td>
+                                        <td class="text-danger"><?php echo $total_cus_visit_in_process; ?></td>
+                                        <td class="text-success"><?php echo $total_cus_visit_success; ?></td>
+                                        <td class="text-danger"><?php echo $total_cus_visit_failed; ?></td>
+                                        <td class="text-success"><?php echo @round($percent_success); ?>%</td>
+                                        <td class="text-danger"><?php echo @round($percent_failed); ?>%</td>
                                     </tfoot>
                                 </table>
                             </div>

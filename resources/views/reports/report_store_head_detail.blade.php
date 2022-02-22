@@ -1,21 +1,23 @@
-@extends('layouts.master')
+@extends('layouts.masterHead')
 
 @section('content')
-    <!-- Breadcrumb -->
-    <nav class="hk-breadcrumb" aria-label="breadcrumb">
-        <ol class="breadcrumb breadcrumb-light bg-transparent">
-            <li class="breadcrumb-item"><a href="#">ข้อมูลลูกค้า</a></li>
-            <li class="breadcrumb-item active" aria-current="page">รายละเอียดลูกค้า</li>
-        </ol>
-    </nav>
-    <!-- /Breadcrumb -->
 
-    <!-- Container -->
+<!-- Breadcrumb -->
+<nav class="hk-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light bg-transparent">
+        <li class="breadcrumb-item"><a href="#">Page</a></li>
+        <li class="breadcrumb-item active" aria-current="page">รายละเอียดร้านค้า</li>
+    </ol>
+</nav>
+<!-- /Breadcrumb -->
+
+
+<!-- Container -->
     <div class="container-fluid px-xxl-65 px-xl-20">
         <!-- Title -->
         <div class="hk-pg-header mb-10">
             <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-people"></i></span>รายละเอียดลูกค้า</h4>
+                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-people"></i></span>รายละเอียดร้านค้า</h4>
             </div>
             <div class="d-flex">
 
@@ -126,10 +128,12 @@
     <!-- /Container -->
     </div>
 
-@endsection('content')
-
 @section('footer')
     @include('layouts.footer')
-@endsection('footer')
+@endsection
 
+ <!-- EChartJS JavaScript -->
+ <script src="{{asset('public/template/vendors/echarts/dist/echarts-en.min.js')}}"></script>
+ <script src="{{asset('public/template/barcharts/barcharts-data.js')}}"></script>
+@endsection
 
