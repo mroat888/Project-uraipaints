@@ -30,7 +30,7 @@ class ApprovalSalePlanController extends Controller
             ->where('monthly_plans.status_approve', 1)->select('users.name', 'monthly_plans.*')->get();
 
 
-        return view('HeadManager.approval_saleplan', $data);
+        return view('headManager.approval_saleplan', $data);
         // return $data['monthly_plan'];
     }
 
@@ -46,7 +46,7 @@ class ApprovalSalePlanController extends Controller
         ->orderBy('id', 'desc')->get();
 
         // -----  API Login ----------- //
-        $api_token = $this->apicontroller->apiToken(); // API Login 
+        $api_token = $this->apicontroller->apiToken(); // API Login
         //--- End Api Login ------------ //
         // -----  API ลูกค้าที่ sale ดูแล ----------- //
         $mon_plan = DB::table('monthly_plans')->where('id', $id)->first(); // ค้นหา id ผู้ขออนุมัติ
@@ -100,7 +100,7 @@ class ApprovalSalePlanController extends Controller
             ->where('monthly_plan_id', $id)
             ->select('customer_visits.*')
             ->orderBy('id', 'desc')->get();
-        
+
         $data['customer_visit_api'] = array();
 
         foreach($customer_visits as $key => $cus_visit){
@@ -121,7 +121,7 @@ class ApprovalSalePlanController extends Controller
             }
         }
 
-        return view('HeadManager.approval_saleplan_detail', $data);
+        return view('headManager.approval_saleplan_detail', $data);
     }
 
     public function comment_saleplan($id, $createID)
@@ -143,9 +143,9 @@ class ApprovalSalePlanController extends Controller
 
             // return $data;
             if ($data) {
-                return view('HeadManager.create_comment_saleplan', $data);
+                return view('headManager.create_comment_saleplan', $data);
             }else {
-                return view('HeadManager.create_comment_saleplan', $data);
+                return view('headManager.create_comment_saleplan', $data);
             }
     }
 
@@ -171,9 +171,9 @@ class ApprovalSalePlanController extends Controller
             $data['customer'] = Customer::where('id', $id)->first();
             // return $data;
             if ($data) {
-                return view('HeadManager.create_comment_customer_new', $data);
+                return view('headManager.create_comment_customer_new', $data);
             }else {
-                return view('HeadManager.create_comment_customer_new', $data);
+                return view('headManager.create_comment_customer_new', $data);
             }
     }
 
