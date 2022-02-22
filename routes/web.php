@@ -272,7 +272,11 @@ Route::post('admin/create_comment_request_approval', 'Admin\ApprovalController@c
 Route::get('admin/approvalgeneral/history', function () { return view('admin.approval_general_history'); });
 
 Route::get('admin/assignment-add', 'Admin\AssignmentController@index');
-Route::get('admin/searchselect', 'Admin\AssignmentController@searchselect');
+Route::get('admin/fetch_user/{id}', 'Admin\AssignmentController@fetch_user');
+Route::post('admin/create_assignment', 'Admin\AssignmentController@store');
+Route::get('admin/edit_assignment/{id}', 'Admin\AssignmentController@edit');
+Route::post('admin/update_assignment', 'Admin\AssignmentController@update');
+Route::get('admin/delete_assignment/{id}', 'Admin\AssignmentController@destroy');
 
 
 // Note

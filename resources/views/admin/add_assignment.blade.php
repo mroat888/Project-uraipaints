@@ -62,7 +62,7 @@
                         <div class="col-sm">
                             <div class="table-responsive-sm">
                                 <table class="table table-sm table-hover">
-                                    <thead align="center">
+                                    <thead style="text-align:center;">
                                         <tr>
                                             <th>#</th>
                                             <th>เรื่อง</th>
@@ -72,8 +72,8 @@
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody align="center">
-                                        {{-- @foreach ($assignments as $key => $value)
+                                    <tbody style="text-align:center;">
+                                        @foreach ($assignments as $key => $value)
                                         <tr>
                                             <td>{{$key + 1}}</td>
                                             <td>{{$value->assign_title}}</td>
@@ -95,12 +95,12 @@
                                                     data-target="#modalEdit">
                                                     <span class="btn-icon-wrap"><i
                                                             data-feather="edit"></i></span></button>
-                                                <a href="{{url('head/delete_assignment', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
+                                                <a href="{{url('admin/delete_assignment', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
                                                     <span class="btn-icon-wrap"><i data-feather="trash-2"></i></span></a>
                                                 @endif
                                             </td>
                                         </tr>
-                                        @endforeach --}}
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -125,24 +125,23 @@
                     </button>
                 </div>
             <form id="from_createassign" enctype="multipart/form-data">
-                {{-- <form action="{{url('/lead/create_assignment')}}" method="POST" enctype="multipart/form-data"> --}}
-                    @csrf
+                @csrf
                 <div class="modal-body">
                         <div class="form-group">
                             <label for="firstName">เรื่อง</label>
-                            <input class="form-control" name="assign_title" placeholder="กรุณาใส่ชื่อเรื่อง" type="text">
+                            <input class="form-control" name="assign_title" placeholder="กรุณาใส่ชื่อเรื่อง" type="text" required>
                         </div>
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label for="username">รายละเอียด</label>
-                                <textarea class="form-control" cols="30" rows="5" placeholder="" name="assign_detail"
+                                <textarea class="form-control" cols="30" rows="5" placeholder="รายละเอียด" name="assign_detail"
                                     type="text" required> </textarea>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">วันที่</label>
-                                <input class="form-control" type="date" name="date" />
+                                <input class="form-control" type="date" name="date" required/>
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ไฟล์เอกสาร</label>
@@ -152,34 +151,21 @@
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="username">เลือกชื่อผู้จัดการเขต</label>
-                                <input class="form-control" name="visit_result_status" id="searchTeam" type="text">
-                                {{-- <select class="form-control custom-select" name="visit_result_status" id="searchTeam">
+                                <!-- <input class="form-control" name="visit_result_status" id="searchTeam" type="text"> -->
+                                <select id="sel_manager" class="form-control custom-select select2 " name="assign_manager" required>
                                     <option selected>-- กรุณาเลือก --</option>
                                     @foreach ($managers as $value)
                                     <option value="{{$value->id}}">{{$value->name}}</option>
                                     @endforeach
-                                </select> --}}
+                                </select>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label for="firstName">สั่งงานให้</label>
-                                <select class="select2 select2-multiple form-control" multiple="multiple" data-placeholder="Choose" name="assign_emp_id[]" required>
-                                    <optgroup label="เลือกข้อมูล">
-                                <option id="search_list"></option>
-                            </optgroup>
-                        </select>
-                                {{-- <select class="select2 select2-multiple form-control" multiple="multiple" data-placeholder="Choose" name="assign_emp_id[]" id="get_id" required>
+                                <select id="sel_saleman" class="select2 select2-multiple form-control" multiple="multiple" data-placeholder="Choose" name="assign_emp_id[]" required>
 
-                                </select> --}}
-
-                                {{-- <select class="select2 select2-multiple form-control" multiple="multiple" data-placeholder="Choose" name="assign_emp_id[]" required>
-                                    <optgroup label="เลือกข้อมูล">
-                                        @foreach($users as $value)
-                                        <option value="{{ $value->id }}">{{ $value->name }}</option>
-                                    @endforeach
-                                    </optgroup>
-                                </select> --}}
+                                </select>
                             </div>
                         </div>
                 </div>
@@ -203,7 +189,6 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <!-- <form action="{{ url('head/update_assignment') }}" method="post" enctype="multipart/form-data"> -->
                 <form id="from_updateassign" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
@@ -215,7 +200,7 @@
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label for="username">รายละเอียด</label>
-                                <textarea class="form-control" cols="30" rows="5" id="get_detail" name="assign_detail"
+                                <textarea class="form-control" cols="30" rows="5" id="get_detail" name="assign_detail_edit"
                                     type="text" required> </textarea>
                             </div>
                         </div>
@@ -224,13 +209,20 @@
                                 <label for="firstName">วันที่</label>
                                 <input class="form-control" type="date" name="date" id="get_date"/>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ไฟล์เอกสาร</label>
                                 <input type="file" name="assignment_fileupload_update" id="assignment_fileupload_update" class="form-control">
                                 <div id="img_show" class="mt-5"></div>
                             </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="username">เลือกชื่อผู้จัดการเขต</label>
+                                <select id="get_manager" class="form-control custom-select select2 " name="get_manager" required>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">สั่งงานให้</label>
                                 <select class="form-control custom-select select2" name="assign_emp_id_edit" id="get_emp" required>
@@ -248,85 +240,82 @@
         </div>
     </div>
 
-    <script>
-        //Edit
-        function edit_modal(id) {
-            $.ajax({
-                type: "GET",
-                url: '{{ url("admin/edit_assignment/") }}/'+id,
-                dataType: "JSON",
-                async: false,
-                success: function(data) {
-                    $('#get_emp').children().remove().end();
-                    $('#img_show').children().remove().end();
-
-                    $('#get_id').val(data.dataEdit.id);
-                    $('#get_date').val(data.dataEdit.assign_work_date);
-                    $('#get_title').val(data.dataEdit.assign_title);
-                    $('#get_detail').val(data.dataEdit.assign_detail);
-                    // $('#get_emp').val(data.dataEdit.assign_emp_id);
-
-                    let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataEdit.assign_fileupload;
-                    if(data.dataEdit.assign_fileupload != ""){
-                        ext = data.dataEdit.assign_fileupload.split('.').pop().toLowerCase();
-                        console.log(img_name);
-                        if(ext == "pdf"){
-                            $('#img_show').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');
-                        }else{
-                            $('#img_show').append('<img src = "'+img_name+'" style="max-width:100%;">');
-                        }
-                    }
-
-                    $.each(data.dataUser, function(key, value){
-                        if(value.id == data.dataEdit.assign_emp_id){
-                            $('#get_emp').append('<option value='+value.id+' selected>'+value.name+'</option>');
-                        }else{
-                            $('#get_emp').append('<option value='+value.id+'>'+value.name+'</option>');
-                        }
-                    });
-
-                    $('#modalEdit').modal('toggle');
-                }
-            });
-        }
-    </script>
-
-{{-- <script>
-    $(document).ready(function() {
-        $('#knowledgeSearch').on('keyup', function() {
-            var query = $(this).val();
-            $.ajax({
-                url: "admin/searchselect",
-                type: "GET",
-                success: function(data) {
-                    $('#search_list').html(data);
-                }
-            });
-            // end of ajax call
-        });
-
-    });
-</script> --}}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
+
     $(document).ready(function() {
-        $('#searchTeam').on('keyup', function() {
-            var query = $(this).val();
+        $( "#sel_manager" ).change(function(e) {
+            e.preventDefault();
+            let umanager = $(this).val();
             $.ajax({
-                url: "searchselect",
-                type: "GET",
-                data: {
-                    'visit_result_status': query
-                },
-                success: function(data) {
-                    $('#search_list').html(data);
+                method: 'GET',
+                url: '{{ url("/admin/fetch_user") }}/'+umanager,
+                datatype: 'json',
+                success: function(response){
+                    if(response.status == 200){
+                        console.log(response)
+                        $('#sel_saleman').children().remove().end();
+                        $.each(response.saleman, function(key, value){
+                            $('#sel_saleman').append('<option value='+value.id+'>'+value.name+'</option>')	;
+                        });
+                    }
                 }
             });
-            // end of ajax call
         });
-
     });
+
+    //Edit
+    function edit_modal(id) {
+
+        $.ajax({
+            type: "GET",
+            url: '{{ url("/admin/edit_assignment") }}/'+id,
+            dataType: "JSON",
+            async: false,
+            success: function(data) {
+                $('#get_emp').children().remove().end();
+                $('#get_manager').children().remove().end();
+                $('#img_show').children().remove().end();
+
+                $('#get_id').val(data.dataEdit.id);
+                $('#get_date').val(data.dataEdit.assign_work_date);
+                $('#get_title').val(data.dataEdit.assign_title);
+                $('#get_detail').val(data.dataEdit.assign_detail);
+
+                let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataEdit.assign_fileupload;
+                if(data.dataEdit.assign_fileupload != ""){
+                    ext = data.dataEdit.assign_fileupload.split('.').pop().toLowerCase();
+                    console.log(img_name);
+                    if(ext == "pdf"){
+                        $('#img_show').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');
+                    }else{
+                        $('#img_show').append('<img src = "'+img_name+'" style="max-width:20%;">');
+                    }
+                }
+
+                $.each(data.dataManager, function(key, value){
+                    if(value.id == data.dataManager.assign_approve_id){
+                        $('#get_manager').append('<option value='+value.id+' selected>'+value.name+'</option>');
+                    }else{
+                        $('#get_manager').append('<option value='+value.id+'>'+value.name+'</option>');
+                    }
+                });
+
+                $.each(data.dataUser, function(key, value){
+                    if(value.id == data.dataEdit.assign_emp_id){
+                        $('#get_emp').append('<option value='+value.id+' selected>'+value.name+'</option>');
+                    }else{
+                        $('#get_emp').append('<option value='+value.id+'>'+value.name+'</option>');
+                    }
+                });
+
+                $('#modalEdit').modal('toggle');
+            }
+        });
+    }
 </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 
 <script>
     function displayMessage(message) {
@@ -352,7 +341,7 @@
     $("#from_createassign").on("submit", function (e) {
         e.preventDefault();
         var formData = new FormData(this);
-        console.log(formData);
+        // console.log(formData);
         $.ajax({
             type:'POST',
             url: '{{ url("/admin/create_assignment") }}',

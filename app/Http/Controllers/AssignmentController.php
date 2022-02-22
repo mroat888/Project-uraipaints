@@ -25,6 +25,7 @@ class AssignmentController extends Controller
             ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
             ->get();
 
+
         return view('leadManager.add_assignment', compact('assignments', 'users'));
     }
 
@@ -161,6 +162,8 @@ class AssignmentController extends Controller
             'dataEdit'  => $dataEdit,
             'dataUser'  => $dataUser,
         );
+        dd($data); 
+        
         echo json_encode($data);
     }
 
