@@ -221,6 +221,13 @@ Route::get('head/edit_assignment/{id}', 'AssignmentController@edit');
 Route::post('head/update_assignment', 'AssignmentController@update');
 Route::get('head/delete_assignment/{id}', 'AssignmentController@destroy');
 
+// อนุมัติลูกค้าใหม่นอกแผน
+Route::get('head/approval-customer-except', 'HeadManager\ApprovalCustomerExceptController@index');
+Route::post('head/approval_customer_confirm_all', 'HeadManager\ApprovalCustomerExceptController@approval_customer_confirm_all');
+Route::get('head/approval_customer_except_detail/{id}', 'HeadManager\ApprovalCustomerExceptController@approval_customer_except_detail');
+Route::get('head/comment_customer_except/{id}/{custsaleplanID}/{createID}', 'HeadManager\ApprovalCustomerExceptController@comment_customer_except');
+Route::post('head/create_comment_customer_except', 'HeadManager\ApprovalCustomerExceptController@create_comment_customer_except');
+
 // Note Head Manage
 Route::get('head/note', 'NoteController@note_head');
 Route::post('head/create_note', 'NoteController@store');
