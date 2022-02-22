@@ -60,10 +60,10 @@
                                             </tr>
                                         </thead>
                                         <tbody id="table_body">
-                                            @php 
-                                                @$row = count($customer_api)
-                                            @endphp
-
+                                        @php 
+                                             @$row = count($customer_api)
+                                        @endphp
+                                        @if(isset($cust_campaigns_api))
                                             @foreach ($customer_api as $key => $value)
                                                 <tr>
                                                     <td>{{ $customer_api[$key]['identify'] }}</td>
@@ -81,6 +81,7 @@
                                                 
                                                 </tr>
                                             @endforeach
+                                        @endif
                                         </tbody>
                                     </table>
                                 </div>
