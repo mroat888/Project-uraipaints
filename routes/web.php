@@ -121,7 +121,7 @@ Route::get('/reportSale/reportVisitCustomer', 'Report\ReportVisitCustomerControl
 
 Route::middleware(['auth', 'lead'])->group(function () {
 // lead
-Route::get('leadManager', 'LeadManager\DashboardController@index');
+
 Route::get('lead/dashboard', 'LeadManager\DashboardController@index');
 Route::get('lead/planMonth', function () { return view('leadManager.planMonth'); });
 Route::get('lead/dailyWork', function () { return view('leadManager.dailyWork'); });
@@ -184,7 +184,7 @@ Route::get('lead/product_new', 'ProductNewController@lead_frontend_product_new')
 Route::get('/leadManage/reportcustomer', function () { return view('reports.report_customer'); });
 Route::get('/leadManage/reportStore', function () { return view('reports.report_store'); });
 Route::get('/leadManage/reportTeam', 'LeadManager\ReportTeamController@index');
-Route::get('/leadManage/reportSaleplan', function () { return view('reports.report_saleplan_lead'); });
+Route::get('/leadManage/reportSaleplan', 'LeadManager\ReportSalePlanController@index');
 Route::get('/leadManage/reportYear', function () { return view('reports.report_year'); });
 
 });
