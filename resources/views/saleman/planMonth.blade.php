@@ -102,7 +102,7 @@
                                                                     Approve
                                                                 </span>
                                                             @endif
-                                
+
 
                                                         </td>
                                                         <td style="text-align:center">
@@ -951,7 +951,7 @@
             $("#customer_shops").on("change", function (e) {
                 e.preventDefault();
                 let shop_id = $(this).val();
-                
+
                 if(shop_id != ""){
                     $('#customer_shops_id').val(shop_id);
                     $('#shop_name').attr('readonly', true);

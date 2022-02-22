@@ -274,7 +274,7 @@ License: You must have a valid license purchased only from themeforest to legall
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{ url('approval-customer-except') }}">
+                                            <a class="nav-link" href="{{ url('head/approval-customer-except') }}">
                                                 <i class="ion ion-md-checkbox"></i>
                                                 <span class="nav-link-text">ลูกค้าใหม่ นอกแผน</span>
                                             </a>
