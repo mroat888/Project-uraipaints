@@ -245,7 +245,7 @@ Route::get('/headManage/reportcustomer', function () { return view('reports.repo
 Route::get('/headManage/reportStore', function () { return view('reports.report_store_head'); });
 Route::get('/headManage/reportTeam', 'HeadManager\ReportTeamController@index');
 Route::get('/headManage/reportSaleplan', 'HeadManager\ReportSalePlanController@index');
-Route::get('/headManage/report_visitcustomer_goal_head', function () { return view('reports.report_visitcustomer_goal_head'); });
+Route::get('/headManage/report_visitcustomer_goal_head', 'HeadManager\ReportVisitCustomerGoalController@index');
 Route::get('/headManage/visitCustomer', function () { return view('reports.report_visitcustomer_head'); });
 Route::get('/headManage/reportYear', function () { return view('reports.report_year_head'); });
 
