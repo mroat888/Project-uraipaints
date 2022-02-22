@@ -184,7 +184,7 @@ Route::get('lead/product_new', 'ProductNewController@lead_frontend_product_new')
 Route::get('/leadManage/reportcustomer', function () { return view('reports.report_customer'); });
 Route::get('/leadManage/reportStore', function () { return view('reports.report_store'); });
 Route::get('/leadManage/reportTeam', 'LeadManager\ReportTeamController@index');
-Route::get('/leadManage/reportSaleplan', function () { return view('reports.report_saleplan_lead'); });
+Route::get('/leadManage/reportSaleplan', 'LeadManager\ReportSalePlanController@index');
 Route::get('/leadManage/reportYear', function () { return view('reports.report_year'); });
 
 });

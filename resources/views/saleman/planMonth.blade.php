@@ -265,6 +265,8 @@
                                             <tbody>
                                                 @foreach ($list_saleplan as $key => $value)
                                                     @php
+                                                        $shop_name = "";
+                                                        $shop_address = "";
                                                         foreach($customer_api as $key_api => $value_api){
                                                             if($customer_api[$key_api]['id'] == $value->customer_shop_id){
                                                                 $shop_name = $customer_api[$key_api]['shop_name'];
@@ -276,10 +278,14 @@
                                                         <td>{{ $key + 1 }}</td>
                                                         <td>{!! Str::limit($value->sale_plans_title, 20) !!}</td>
                                                         <td>
-                                                            {!! Str::limit($shop_name,20) !!}
+                                                            @if($shop_name != "")
+                                                                {!! Str::limit($shop_name,20) !!}
+                                                            @endif
                                                         </td>
                                                         <td>
-                                                            {{ $shop_address }}
+                                                            @if($shop_address != "")
+                                                                {{ $shop_address }}
+                                                            @endif
                                                         </td>
                                                         {{-- <td>
                                                             @if ($value->saleplan_id)
