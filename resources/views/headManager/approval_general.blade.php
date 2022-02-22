@@ -95,6 +95,7 @@
                                                 </a>
                                             </td>
                                         </tr>
+                                        @endif
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -109,11 +110,6 @@
     </div>
     <!-- /Container -->
 
-
-<!-- Modal -->
-<div class="modal fade" id="Modalsaleplan" tabindex="-1" role="dialog" >
-    @include('leadManager.saleplan_display')
-</div>
 
 <script type="text/javascript">
     function chkAll(checkbox) {
