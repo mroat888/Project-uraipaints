@@ -26,9 +26,16 @@
                                         <div id="e_chart_1" style="height:140px;"></div>
                                     </div>
                                     <div class="col-sm mt-30" style="color: black;">
-                                        <p class="mb-10">แผนทำงาน {{ $monthly_plan->sale_plan_amount }}</p>
+                                        @php
+                                            if(!is_null($monthly_plan)){
+                                                $msale_plan_amount = $monthly_plan->sale_plan_amount;
+                                            }else{
+                                                $msale_plan_amount = 0;
+                                            }
+                                        @endphp
+                                        <p class="mb-10">แผนทำงาน {{ $msale_plan_amount }}</p>
                                         <p class="mb-10">ทำแล้ว {{ $count_sale_plans_result }}</p>
-                                        <p class="mb-10">รอดำเนินการ {{ $monthly_plan->sale_plan_amount - $count_sale_plans_result }}</p>
+                                        <p class="mb-10">รอดำเนินการ {{ $msale_plan_amount - $count_sale_plans_result }}</p>
                                     </div>
                                 </div>
                             </section>
@@ -40,9 +47,16 @@
                                         <div id="e_chart_5" style="height:140px;"></div>
                                     </div>
                                     <div class="col-sm mt-30" style="color: black;">
-                                        <p class="mb-10">ลูกค้าใหม่ {{ $monthly_plan->cust_new_amount }}</p>
+                                        @php
+                                            if(!is_null($monthly_plan)){
+                                                $mcust_new_amount = $monthly_plan->cust_new_amount;
+                                            }else{
+                                                $mcust_new_amount = 0;
+                                            }
+                                        @endphp
+                                        <p class="mb-10">ลูกค้าใหม่ {{ $mcust_new_amount }}</p>
                                         <p class="mb-10">ทำแล้ว {{ $count_shops_saleplan_result }}</p>
-                                        <p class="mb-10">รอดำเนินการ {{ $monthly_plan->cust_new_amount - $count_shops_saleplan_result }}</p>
+                                        <p class="mb-10">รอดำเนินการ {{ $mcust_new_amount - $count_shops_saleplan_result }}</p>
                                     </div>
                                 </div>
                             </section>
@@ -54,9 +68,16 @@
                                         <div id="e_chart_3" style="height:140px;"></div>
                                     </div>
                                     <div class="col-sm mt-30" style="color: black;">
-                                        <p class="mb-10">เยี่ยมลูกค้า {{ $monthly_plan->cust_visits_amount }}</p>
+                                        @php
+                                            if(!is_null($monthly_plan)){
+                                                $mcust_visits_amount = $monthly_plan->cust_visits_amount;
+                                            }else{
+                                                $mcust_visits_amount = 0;
+                                            }
+                                        @endphp
+                                        <p class="mb-10">เยี่ยมลูกค้า {{ $mcust_visits_amount }}</p>
                                         <p class="mb-10">ทำแล้ว {{ $count_isit_results_result }}</p>
-                                        <p class="mb-10">รอดำเนินการ {{ $monthly_plan->cust_visits_amount - $count_isit_results_result }}</p>
+                                        <p class="mb-10">รอดำเนินการ {{ $mcust_visits_amount - $count_isit_results_result }}</p>
                                     </div>
                                 </div>
                             </section>

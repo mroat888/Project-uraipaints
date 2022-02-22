@@ -243,8 +243,8 @@ Route::get('head/product_new', 'ProductNewController@head_frontend_product_new')
 //report
 Route::get('/headManage/reportcustomer', function () { return view('reports.report_customer'); });
 Route::get('/headManage/reportStore', function () { return view('reports.report_store_head'); });
-Route::get('/headManage/reportTeam', function () { return view('reports.report_team_head'); });
-Route::get('/headManage/reportSaleplan', function () { return view('reports.report_saleplan_head'); });
+Route::get('/headManage/reportTeam', 'HeadManager\ReportTeamController@index');
+Route::get('/headManage/reportSaleplan', 'HeadManager\ReportSalePlanController@index');
 Route::get('/headManage/report_visitcustomer_goal_head', function () { return view('reports.report_visitcustomer_goal_head'); });
 Route::get('/headManage/visitCustomer', function () { return view('reports.report_visitcustomer_head'); });
 Route::get('/headManage/reportYear', function () { return view('reports.report_year_head'); });

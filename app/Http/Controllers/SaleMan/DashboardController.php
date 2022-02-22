@@ -111,7 +111,7 @@ class DashboardController extends Controller
         $data['count_shops_saleplan_result'] = 0;  // -- นับจำนวน ลูกค้าใหม่
         $data['count_isit_results_result'] = 0;    // -- นับจำนวน ลูกค้าเยี่ยม
 
-        if($data['monthly_plan']->id != ""){ // ตรวจสอบไม่เป็นค่าว่าง
+        if(!is_null($data['monthly_plan'])){ // ตรวจสอบไม่เป็นค่าว่าง
             // -- นับจำนวน slaeplans
             $sale_plans = DB::table('sale_plans')->where('monthly_plan_id', $data['monthly_plan']->id)->where('sale_plans_status', 2)->get();
 

@@ -32,7 +32,7 @@ $customer_shops = DB::table('customer_shops')
                     <?php
                         $nextmonth =date('Y-m-t', strtotime("+1 month")); //+ วันสุดท้ายเดือนหน้า
                     ?>
-                    <input class="form-control" type="date" name="date" min="<?= date('Y-m-d') ?>" max="<?=$nextmonth?>"required/>
+                    <input class="form-control" type="date" id="date" name="date" min="<?= date('Y-m-d') ?>" max="<?=$nextmonth?>"required/>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="objective">วัตถุประสงค์</label>
@@ -141,6 +141,12 @@ $customer_shops = DB::table('customer_shops')
 
 <script>
     $(document).ready(function() {
+
+        $('#visit_id').val('');
+        $('#visit_phone').val('');
+        $('#visit_mobile').val('');
+        $('#visit_address').val('');
+        $('#date').val('');
 
         $("#sel_searchShop").on("change", function (e) {
             //alert('ssdsd');

@@ -263,6 +263,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                @if(!is_null($list_saleplan))
                                                 @foreach ($list_saleplan as $key => $value)
                                                     @php
                                                         $shop_name = "";
@@ -287,10 +288,6 @@
                                                                 {{ $shop_address }}
                                                             @endif
                                                         </td>
-                                                        {{-- <td>
-                                                            @if ($value->saleplan_id)
-                                                            <span class="badge badge-soft-indigo mt-15 mr-10" style="font-size: 12px;">Comment</span>
-                                                            @endif --}}
                                                             @php
                                                                 switch($value->sale_plans_status){
                                                                     case 0 :    $text_status = "Draf";
@@ -310,11 +307,7 @@
                                                                                 $btn_disabled = "disabled";
                                                                         break;
                                                                 }
-                                                            @endphp
-                                                            {{-- <span class="badge {{ $badge_color }} mt-15 mr-10"style="font-size: 12px;">
-                                                                {{ $text_status }}
-                                                            </span>
-                                                        </td> --}}
+                                                            @endphp  
                                                         <td style="text-align:right">
                                                             <div class="button-list">
                                                                 @if ($value->saleplan_id)
@@ -341,6 +334,7 @@
                                                         </td>
                                                     </tr>
                                                 @endforeach
+                                                @endif
                                             </tbody>
                                         </table>
                                     </div>
@@ -384,6 +378,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                @if(!is_null($customer_new))
                                                 @foreach ($customer_new as $key => $value)
                                                 <?php
                                                     $date = Carbon\Carbon::parse($value->shop_saleplan_date)->format('Y-m');
@@ -401,9 +396,22 @@
                                                         <td style="text-align:right;">
                                                             <div class="button-list">
                                                                 @php
+
                                                                     $count_new = DB::table('customer_shop_comments')
                                                                     ->where('customer_shops_saleplan_id', $value->id)
                                                                     ->count();
+
+                                                                        switch($value->shop_aprove_status){
+                                                                            case 0 :  $btn_disabled = "";
+                                                                                break;
+                                                                            case 1 :  $btn_disabled = "";
+                                                                                break;
+                                                                            case 2 :  $btn_disabled = "disabled";
+                                                                                break;
+                                                                            default :  $btn_disabled = "disabled";
+                                                                                break;
+                                                                        }
+
                                                                 @endphp
 
                                                                 @if ($count_new > 0)
@@ -431,6 +439,7 @@
                                                          }
                                                     ?>
                                                 @endforeach
+                                                @endif
                                             </tbody>
                                         </table>
                                     </div>
@@ -470,8 +479,8 @@
                                             </thead>
                                             <tbody>
                                                 <?php $no = 1; ?>
-                                                @foreach ($customer_visit_api as $key => $value)
 
+                                                @foreach ($customer_visit_api as $key => $value)
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
                                                     <td>{{ $customer_visit_api[$key]['shop_name'] }}</td>
@@ -485,6 +494,7 @@
                                                     </td>
                                                 </tr>
                                                 @endforeach
+                                                
                                             </tbody>
                                         </table>
                                     </div>
