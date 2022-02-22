@@ -121,7 +121,7 @@ Route::get('/reportSale/reportVisitCustomer', 'Report\ReportVisitCustomerControl
 
 Route::middleware(['auth', 'lead'])->group(function () {
 // lead
-Route::get('leadManager', 'LeadManager\DashboardController@index');
+// Route::get('leadManager', 'LeadManager\DashboardController@index');
 Route::get('lead/dashboard', 'LeadManager\DashboardController@index');
 Route::get('lead/planMonth', function () { return view('leadManager.planMonth'); });
 Route::get('lead/dailyWork', function () { return view('leadManager.dailyWork'); });

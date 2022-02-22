@@ -25,14 +25,15 @@ class HomeController extends Controller
     public function index()
     {
         if (Auth::user()->status == 1) {
-            return view('dashboard');
+            return redirect('dashboard');
         }elseif (Auth::user()->status == 2) {
-            return view('leadManager');
+            return redirect('lead/dashboard');
         }elseif (Auth::user()->status == 3) {
-            return view('headManage');
+            return redirect('headManage');
         }elseif (Auth::user()->status == 4) {
-            return view('admin');
+            return redirect('admin');
         }
+        // return view('home');
 
     }
 }

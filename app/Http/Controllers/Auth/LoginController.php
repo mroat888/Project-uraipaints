@@ -74,7 +74,7 @@ class LoginController extends Controller
             if (auth()->user()->status == 1) {
                 return redirect('dashboard');
             }elseif (auth()->user()->status == 2) {
-                return redirect('leadManager');
+                return redirect('lead/dashboard');
             }elseif (auth()->user()->status == 3) {
                 return redirect('headManage');
             }elseif (auth()->user()->status == 4){
