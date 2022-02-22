@@ -108,6 +108,7 @@ class DashboardController extends Controller
         $data['sum_totalAmtSale'] = 0; // เป้ายอดขายปีปัจจุบัน
 
         foreach($user_teams as $team){
+            
             $response = Http::withToken($api_token)
             ->get('http://49.0.64.92:8020/api/v1/sellers/'.$team->api_identify.'/dashboards', [
                 'year' => $year,

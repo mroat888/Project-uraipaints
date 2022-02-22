@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
+<meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Urai Paints</title>
     <meta name="description" content="A responsive bootstrap 4 admin dashboard template by hencework" />
@@ -17,9 +17,6 @@
     <script src="{{ asset('https://code.jquery.com/jquery-3.5.1.min.js') }}" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ asset('https://cdn.jsdelivr.net/npm/fullcalendar@3.9.0/dist/fullcalendar.min.css') }}" />
 
-    <!-- Morris Charts CSS -->
-    <link href="{{ asset('publiccpublic/template/vendors/morris.js/morris.css') }}" rel="stylesheet" type="text/css" />
-
     <!-- select2 CSS -->
     <link href="{{ asset('public/template/vendors/select2/dist/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
 
@@ -29,11 +26,13 @@
     <link href="{{ asset('public/template/vendors/datatables.net-responsive-dt/css/responsive.dataTables.min.css') }}"
         rel="stylesheet" type="text/css" />
 
-    <!-- Custom CSS -->
-    <link href="{{ asset('public/template/dist/css/style.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('public/template/dist/css/layout.css') }}" rel="stylesheet" type="text/css">
+    <!-- Morris Charts CSS -->
+    <link href="{{ asset('public/template/vendors/morris.js/morris.css') }}" rel="stylesheet" type="text/css" />
 
-    <!-- OAT -->
+    <!-- Custom CSS -->
+    <link href="{{ asset('/public/template/dist/css/style.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('/public/template/dist/css/layout.css') }}" rel="stylesheet" type="text/css">
+
     <!-- sweetalert2 -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -575,17 +574,17 @@
     <!-- /HK Wrapper -->
 
     <!-- jQuery -->
-    <script src="{{ asset('public/template/vendors/jquery/dist/jquery.min.js') }}"></script>
+   <script src="{{ asset('/public/template/vendors/jquery/dist/jquery.min.js') }}"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="{{ asset('public/template/vendors/popper.js/dist/umd/popper.min.js') }}"></script>
-    <script src="{{ asset('public/template/vendors/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('/public/template/vendors/popper.js/dist/umd/popper.min.js') }}"></script>
+    <script src="{{ asset('/public/template/vendors/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 
     <!-- Slimscroll JavaScript -->
-    <script src="{{ asset('public/template/dist/js/jquery.slimscroll.js') }}"></script>
+    <script src="{{ asset('/public/template/dist/js/jquery.slimscroll.js') }}"></script>
 
     <!-- Fancy Dropdown JS -->
-    <script src="{{ asset('public/template/dist/js/dropdown-bootstrap-extended.js') }}"></script>
+    <script src="{{ asset('/public/template/dist/js/dropdown-bootstrap-extended.js') }}"></script>
 
     <!-- Morris Charts JavaScript -->
     <script src="{{ asset('public/template/vendors/raphael/raphael.min.js') }}"></script>
@@ -601,39 +600,39 @@
     <script src="{{ asset('public/template/dist/js/easypiechart-data.js') }}"></script>
 
     <!-- FeatherIcons JavaScript -->
-    <script src="{{ asset('public/template/dist/js/feather.min.js') }}"></script>
+    <script src="{{ asset('/public/template/dist/js/feather.min.js') }}"></script>
 
     <!-- Toggles JavaScript -->
-    <script src="{{ asset('public/template/vendors/jquery-toggles/toggles.min.js') }}"></script>
-    <script src="{{ asset('public/template/dist/js/toggle-data.js') }}"></script>
+    <script src="{{ asset('/public/template/vendors/jquery-toggles/toggles.min.js') }}"></script>
+    <script src="{{ asset('/public/template/dist/js/toggle-data.js') }}"></script>
 
     <!-- Counter Animation JavaScript -->
-    <script src="{{ asset('public/template/vendors/waypoints/lib/jquery.waypoints.min.js') }}"></script>
-    <script src="{{ asset('public/template/vendors/jquery.counterup/jquery.counterup.min.js') }}"></script>
+    <script src="{{ asset('/public/template/vendors/waypoints/lib/jquery.waypoints.min.js') }}"></script>
+    <script src="{{ asset('/public/template/vendors/jquery.counterup/jquery.counterup.min.js') }}"></script>
 
     <!-- Sparkline JavaScript -->
-    <script src="{{ asset('public/template/vendors/jquery.sparkline/dist/jquery.sparkline.min.js') }}"></script>
+    <script src="{{ asset('/public/template/vendors/jquery.sparkline/dist/jquery.sparkline.min.js') }}"></script>
 
     <!-- Vector Maps template -->
-    <script src="{{ asset('public/template/vendors/vectormap/jquery-jvectormap-2.0.3.min.js') }}"></script>
-    <script src="{{ asset('public/template/vendors/vectormap/jquery-jvectormap-world-mill-en.js') }}"></script>
-    <script src="{{ asset('public/template/dist/js/vectormap-data.js') }}"></script>
+    <script src="{{ asset('/public/template/vendors/vectormap/jquery-jvectormap-2.0.3.min.js') }}"></script>
+    <script src="{{ asset('/public/template/vendors/vectormap/jquery-jvectormap-world-mill-en.js') }}"></script>
+    <script src="{{ asset('/public/template/dist/js/vectormap-data.js') }}"></script>
 
     <!-- Owl JavaScript -->
-    <script src="{{ asset('public/template/vendors/owl.carousel/dist/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('/public/template/vendors/owl.carousel/dist/owl.carousel.min.js') }}"></script>
 
     <!-- Owl Init JavaScript -->
-    <script src="{{ asset('public/template/dist/js/owl-data.js') }}"></script>
+    <script src="{{ asset('/public/template/dist/js/owl-data.js') }}"></script>
 
     <!-- Select2 JavaScript -->
-    <script src="{{ asset('public/template/vendors/select2/dist/js/select2.full.min.js') }}"></script>
-    <script src="{{ asset('public/template/dist/js/select2-data.js') }}"></script>
+    <script src="{{ asset('/public/template/vendors/select2/dist/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('/public/template/dist/js/select2-data.js') }}"></script>
 
     <!-- Bootstrap Tagsinput JavaScript -->
-    {{-- <script src="{{asset('public/template/vendors/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js')}}"></script> --}}
+    {{-- <script src="{{asset('/public/template/vendors/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js')}}"></script> --}}
 
     <!-- Jasny-bootstrap  JavaScript -->
-    <script src="{{ asset('public/template/vendors/jasny-bootstrap/dist/js/jasny-bootstrap.min.js') }}"></script>
+    <script src="{{ asset('/public/template/vendors/jasny-bootstrap/dist/js/jasny-bootstrap.min.js') }}"></script>
 
     <!-- Data Table JavaScript -->
     <script src="{{ asset('public/template/vendors/datatables.net/js/jquery.dataTables.min.js') }}"></script>
@@ -646,8 +645,8 @@
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@3.9.0/dist/fullcalendar.min.js"></script>
 
     <!-- Init JavaScript -->
-    <script src="{{ asset('public/template/dist/js/init.js') }}"></script>
-    <script src="{{ asset('public/template/dist/js/gmap-data.js') }}"></script>
+    <script src="{{ asset('/public/template/dist/js/init.js') }}"></script>
+    <script src="{{ asset('/public/template/dist/js/gmap-data.js') }}"></script>
 
     <script src="{{ asset('https://unpkg.com/sweetalert/dist/sweetalert.min.js')}}"></script>
 
