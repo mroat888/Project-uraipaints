@@ -109,9 +109,15 @@ Route::get('product_new', 'ProductNewController@frontend_product_new');
 
 // Report
 Route::get('/reportSale/reportSaleplan', 'Report\ReportSalePlanController@index');
-
 Route::get('/reportSale/reportVisitCustomerGoal', 'Report\ReportVisitCustomerGoalController@index');
 Route::get('/reportSale/reportVisitCustomer', 'Report\ReportVisitCustomerController@index');
+
+// ข้อมูลที่ใช้ร่วมกัน
+Route::get('data_report_product-new', 'ShareData\ProductNewController@index');
+Route::get('data_report_full-year', 'ShareData\ReportFullYearController@index');
+Route::get('data_report_historical-year', 'ShareData\ReportHistoricalYearController@index');
+Route::get('data_report_historical-quarter', 'ShareData\ReportHistoricalQuarterController@index');
+Route::get('data_report_historical-month', 'ShareData\ReportHistoricalMonthController@index');
 
 });
 
@@ -382,9 +388,9 @@ Route::get('admin/delete_master_tag/{id}', 'Admin\MasterNoteTagController@destro
 
 
 // MustBeReport
-Route::middleware(['auth', 'report'])->group(function () {
-    Route::get('test2', function () { return "Report"; });
-});
+// Route::middleware(['auth', 'report'])->group(function () {
+//     Route::get('test2', function () { return "Report"; });
+// });
 
 
 //fullcalender

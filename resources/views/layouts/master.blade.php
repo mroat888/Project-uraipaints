@@ -410,47 +410,63 @@ License: You must have a valid license purchased only from themeforest to legall
                     </ul>
                     <hr class="nav-separator">
                     <div class="nav-header">
-                        <span>ผู้จัดการ</span>
-                        <span>MG</span>
+                        <span>ข้อมูลที่ใช้ร่วมกัน</span>
+                        <span>DATA</span>
                     </div>
                     <ul class="navbar-nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('leadManage') }}">
-                                <i class="ion ion-md-bookmarks" style="color: #044067;"></i>
-                                <span class="nav-link-text">ผู้จัดการเขต</span>
+                            <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
+                                data-target="#charts_drp_data">
+                                <i class="ion ion-md-book" style="color: #044067;"></i>
+                                <span class="nav-link-text">การดูข้อมูล (ใช้ร่วมกัน)</span>
                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('headManage') }}">
-                                <i class="ion ion-md-bookmarks" style="color: #044067;"></i>
-                                <span class="nav-link-text">ผู้จัดการฝ่าย</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <hr class="nav-separator">
-                    <div class="nav-header">
-                        <span>ผู้ดูแล</span>
-                        <span>AM</span>
-                    </div>
-                    <ul class="navbar-nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('admin') }}">
-                                <i class="ion ion-md-bookmarks" style="color: #044067;"></i>
-                                <span class="nav-link-text">ผู้ดูแล</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <hr class="nav-separator">
-                    <div class="nav-header">
-                        <span>รายงาน</span>
-                        <span>RP</span>
-                    </div>
-                    <ul class="navbar-nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('#') }}">
-                                <i class="ion ion-md-bookmarks" style="color: #044067;"></i>
-                                <span class="nav-link-text">รายงาน(ใช้ร่วมกัน)</span>
-                            </a>
+                            <ul id="charts_drp_data" class="nav flex-column collapse collapse-level-1">
+                                <li class="nav-item">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link"
+                                                href="{{ url('#') }}">
+                                                <i class="ion ion-md-home" style="color: #044067;"></i>ตรวจสอบรายชื่อร้านค้า</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link"
+                                                href="{{ url('#') }}">
+                                                <i class="ion ion-md-search"
+                                                    style="color: #044067;"></i>ค้นหารายการสินค้า</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link"
+                                                href="{{ url('data_report_product-new') }}">
+                                                <i class="ion ion-md-stats"
+                                                    style="color: #044067;"></i>รายงานยอดขายสินค้าใหม่</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link"
+                                                href="{{ url('data_report_full-year') }}">
+                                                <i class="ion ion-md-stats"
+                                                    style="color: #044067;"></i>รายงานสรุปยอด (ทั้งปี)</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link"
+                                                href="{{ url('data_report_historical-year') }}">
+                                                <i class="ion ion-md-stats"
+                                                    style="color: #044067;"></i>รายงานเทียบย้อนหลัง (ทั้งปี)</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link"
+                                                href="{{ url('data_report_historical-quarter') }}">
+                                                <i class="ion ion-md-stats"
+                                                    style="color: #044067;"></i>รายงานเทียบย้อนหลัง (Quarter)</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link"
+                                                href="{{ url('data_report_historical-month') }}">
+                                                <i class="ion ion-md-stats"
+                                                    style="color: #044067;"></i>รายงานเทียบย้อนหลัง (รายเดือน)</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </div>
