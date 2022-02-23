@@ -27,14 +27,6 @@
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
                     data-feather="file-text"></i></span></span>บันทึกข้อมูลการอนุมัติลูกค้าใหม่ (นอกแผน)</h4>
             </div>
-            <div class="d-flex">
-                <form action="{{ url('lead/approval_customer_confirm_all') }}" method="POST"
-                enctype="multipart/form-data">
-                @csrf
-                <button type="submit" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" name="approve" value="approve">อนุมัติ</button>
-
-                <button type="submit" class="btn btn_purple btn-danger btn-sm btn-rounded px-3 ml-5" name="failed" value="failed">ไม่อนุมัติ</button>
-            </div>
         </div>
         <!-- /Title -->
 
@@ -65,8 +57,27 @@
                             <div class="col-md-3">
                                 <h5 class="hk-sec-title">ตารางข้อมูลการอนุมัติลูกค้าใหม่ (นอกแผน)</h5>
                             </div>
-                            <div class="col-md-9">
+                            <div class="col-sm-12 col-md-9">
+                                <!-- ------ -->
+                                <span class="form-inline pull-right pull-sm-center">
 
+                                    <button style="margin-left:5px; margin-right:5px;" id="bt_showdate"
+                                        class="btn btn-light btn-sm" onclick="showselectdate()">เลือกวันที่</button>
+                                    <span id="selectdate" style="display:none;">
+                                        date : <input type="date" class="form-control form-control-sm"
+                                            style="margin-left:10px; margin-right:10px;" id="selectdateFrom"
+                                            value="<?= date('Y-m-d') ?>" />
+
+                                        to <input type="date" class="form-control form-control-sm"
+                                            style="margin-left:10px; margin-right:10px;" id="selectdateTo"
+                                            value="<?= date('Y-m-d') ?>" />
+
+                                        <button style="margin-left:5px; margin-right:5px;" class="btn btn-success btn-sm"
+                                            id="submit_request" onclick="hidetdate()">ค้นหา</button>
+                                    </span>
+
+                                </span>
+                                <!-- ------ -->
                             </div>
                         </div>
                     <div class="row">
@@ -75,14 +86,6 @@
                                 <table class="table table-sm table-hover">
                                     <thead>
                                         <tr>
-                                            <th>
-                                                <div class="custom-control custom-checkbox checkbox-info">
-                                                    <input type="checkbox" class="custom-control-input"
-                                                        id="customCheck4" onclick="chkAll(this);" name="CheckAll" value="Y">
-                                                    <label class="custom-control-label"
-                                                        for="customCheck4">ทั้งหมด</label>
-                                                </div>
-                                            </th>
                                             <th>#</th>
                                             <th>วันที่</th>
                                             {{-- <th>เรื่อง</th> --}}
@@ -101,13 +104,6 @@
                                         @if ($chk)
                                         <tr>
                                             <input type="hidden" name="monthly_plan_id" value="{{$chk->monthly_plan_id}}">
-                                            <td>
-                                                <div class="custom-control custom-checkbox checkbox-info">
-                                                    <input type="checkbox" class="custom-control-input checkapprove"
-                                                        name="checkapprove[]" id="customCheck{{$key + 1}}" value="{{$value->shop_created_by}}">
-                                                    <label class="custom-control-label" for="customCheck{{$key + 1}}"></label>
-                                                </div>
-                                            </td>
                                             <td>{{$key + 1}}</td>
                                             <td>{{$chk->created_at}}</td>
                                             <td>{{$chk->name}}</td>

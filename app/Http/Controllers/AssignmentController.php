@@ -162,8 +162,8 @@ class AssignmentController extends Controller
             'dataEdit'  => $dataEdit,
             'dataUser'  => $dataUser,
         );
-        dd($data); 
-        
+        dd($data);
+
         echo json_encode($data);
     }
 
@@ -224,5 +224,51 @@ class AssignmentController extends Controller
     // echo json_encode($data);
 
     // }
+
+    public function lead_search_month_add_assignment(Request $request)
+    {
+        // dd($request);
+        // $from = Carbon::parse($request->fromMonth)->format('m');
+        // $to = Carbon::parse($request->toMonth)->format('m');
+        $from = $request->fromMonth."-01";
+        $to = $request->toMonth."-31";
+        $assignments = Assignment::join('users', 'assignments.assign_emp_id', 'users.id')
+        ->where('assignments.created_by', Auth::user()->id)
+        ->where('assignments.assign_status', 3)
+        ->whereDate('assignments.assign_work_date', '>=', $from)
+        ->whereDate('assignments.assign_work_date', '<=', $to)
+        ->orderBy('assignments.id', 'desc')
+        ->select('assignments.*', 'users.name')->get();
+
+        $users = DB::table('users')
+            ->where('team_id', Auth::user()->team_id)
+            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+            ->get();
+
+        return view('leadManager.add_assignment', compact('assignments', 'users'));
+    }
+
+    public function head_search_month_add_assignment(Request $request)
+    {
+        // dd($request);
+        // $from = Carbon::parse($request->fromMonth)->format('m');
+        // $to = Carbon::parse($request->toMonth)->format('m');
+        $from = $request->fromMonth."-01";
+        $to = $request->toMonth."-31";
+        $assignments = Assignment::join('users', 'assignments.assign_emp_id', 'users.id')
+        ->where('assignments.created_by', Auth::user()->id)
+        ->where('assignments.assign_status', 3)
+        ->whereDate('assignments.assign_work_date', '>=', $from)
+        ->whereDate('assignments.assign_work_date', '<=', $to)
+        ->orderBy('assignments.id', 'desc')
+        ->select('assignments.*', 'users.name')->get();
+
+        $users = DB::table('users')
+            ->where('team_id', Auth::user()->team_id)
+            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+            ->get();
+
+        return view('headManager.add_assignment', compact('assignments', 'users'));
+    }
 
 }

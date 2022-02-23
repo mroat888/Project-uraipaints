@@ -36,23 +36,22 @@
                         </div>
                         <div class="col-sm-12 col-md-9">
                             <!-- ------ -->
+
                             <span class="form-inline pull-right pull-sm-center">
-
-                                <button style="margin-left:5px; margin-right:5px;" id="bt_showdate"
-                                    class="btn btn-light btn-sm" onclick="showselectdate()">เลือกวันที่</button>
+                                <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</button>
+                                <form action="{{ url('head/search_month_add-assignment') }}" method="post" enctype="multipart/form-data">
+                                    @csrf
                                 <span id="selectdate" style="display:none;">
-                                    date : <input type="date" class="form-control form-control-sm"
-                                        style="margin-left:10px; margin-right:10px;" id="selectdateFrom"
-                                        value="<?= date('Y-m-d') ?>" />
 
-                                    to <input type="date" class="form-control form-control-sm"
-                                        style="margin-left:10px; margin-right:10px;" id="selectdateTo"
-                                        value="<?= date('Y-m-d') ?>" />
+                                    เดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateFrom" name="fromMonth"/>
 
-                                    <button style="margin-left:5px; margin-right:5px;" class="btn btn-success btn-sm"
-                                        id="submit_request" onclick="hidetdate()">ค้นหา</button>
+                                    ถึงเดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name="toMonth"/>
+
+                                <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm">ค้นหา</button>
+
+                                {{-- <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button> --}}
                                 </span>
-
+                            </form>
                             </span>
                             <!-- ------ -->
                         </div>
@@ -61,7 +60,7 @@
                     <div class="row">
                         <div class="col-sm">
                             <div class="table-responsive-sm">
-                                <table class="table table-sm table-hover">
+                                <table id="datable_1" class="table table-sm table-hover">
                                     <thead align="center">
                                         <tr>
                                             <th>#</th>

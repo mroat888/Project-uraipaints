@@ -112,6 +112,13 @@ Route::get('/reportSale/reportSaleplan', 'Report\ReportSalePlanController@index'
 Route::get('/reportSale/reportVisitCustomerGoal', 'Report\ReportVisitCustomerGoalController@index');
 Route::get('/reportSale/reportVisitCustomer', 'Report\ReportVisitCustomerController@index');
 
+// ข้อมูลที่ใช้ร่วมกัน
+Route::get('data_report_product-new', 'ShareData\ProductNewController@index');
+Route::get('data_report_full-year', 'ShareData\ReportFullYearController@index');
+Route::get('data_report_historical-year', 'ShareData\ReportHistoricalYearController@index');
+Route::get('data_report_historical-quarter', 'ShareData\ReportHistoricalQuarterController@index');
+Route::get('data_report_historical-month', 'ShareData\ReportHistoricalMonthController@index');
+
 });
 
 
@@ -165,6 +172,7 @@ Route::get('lead/edit_assignment/{id}', 'AssignmentController@edit');
 Route::post('lead/update_assignment', 'AssignmentController@update');
 Route::get('lead/delete_assignment/{id}', 'AssignmentController@destroy');
 Route::get('lead/assignment_result_get/{id}', 'AssignmentController@assignment_result_get');
+Route::post('lead/search_month_add-assignment', 'AssignmentController@lead_search_month_add_assignment');
 
 // NOTE Lead Manage
 Route::get('/leadManage/note', 'NoteController@note_lead');
@@ -214,11 +222,15 @@ Route::get('head/approvalgeneral/history', function () { return view('headManage
 Route::get('head/approval_general_detail/{id}', 'HeadManager\ApprovalController@approval_general_detail');
 Route::get('head/comment_approval/{id}/{createID}', 'HeadManager\ApprovalController@comment_approval');
 Route::post('head/create_comment_request_approval', 'HeadManager\ApprovalController@create_comment_request_approval');
+
+// Assignment
 Route::get('head/assignment/add', 'AssignmentController@assignIndex');
 Route::post('head/create_assignment', 'AssignmentController@store_head');
 Route::get('head/edit_assignment/{id}', 'AssignmentController@edit');
 Route::post('head/update_assignment', 'AssignmentController@update');
 Route::get('head/delete_assignment/{id}', 'AssignmentController@destroy');
+Route::post('head/search_month_add-assignment', 'AssignmentController@head_search_month_add_assignment');
+
 
 // อนุมัติลูกค้าใหม่นอกแผน
 Route::get('head/approval-customer-except', 'HeadManager\ApprovalCustomerExceptController@index');
@@ -377,14 +389,20 @@ Route::get('/admin/edit_master_tag/{id}', 'Admin\MasterNoteTagController@edit');
 Route::post('/admin/update_master_tag', 'Admin\MasterNoteTagController@update');
 Route::get('admin/delete_master_tag/{id}', 'Admin\MasterNoteTagController@destroy');
 
+Route::get('admin/master_objective_visit', 'Admin\MastrObjectiveVisitController@index');
+Route::post('admin/create_master_objective_visit', 'Admin\MastrObjectiveVisitController@store');
+Route::get('/admin/edit_master_objective_visit/{id}', 'Admin\MastrObjectiveVisitController@edit');
+Route::post('/admin/update_master_objective_visit', 'Admin\MastrObjectiveVisitController@update');
+Route::get('admin/delete_master_objective_visit/{id}', 'Admin\MastrObjectiveVisitController@destroy');
+
 
 });
 
 
 // MustBeReport
-Route::middleware(['auth', 'report'])->group(function () {
-    Route::get('test2', function () { return "Report"; });
-});
+// Route::middleware(['auth', 'report'])->group(function () {
+//     Route::get('test2', function () { return "Report"; });
+// });
 
 
 //fullcalender

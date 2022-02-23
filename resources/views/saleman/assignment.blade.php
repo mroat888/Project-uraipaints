@@ -129,7 +129,7 @@
                             <h5 id="header_title" class="card-title"></h5>
                             <div class="my-3"><span>ผู้สั่งงาน : </span><span id="get_assign_approve_id"></span></div>
                             <div class="my-3"><span>วันที่ปฎิบัติ : </span><span id="get_assign_work_date"></span></div>
-                            
+
                             <div class="my-3">
                                 <p>รายละเอียด : </p>
                                 <p  id="get_detail" class="card-text"></p>
@@ -137,15 +137,15 @@
                             <div class="my-3" id="img_show"></div>
                         </div>
                     </div>
-    
+
                     <form action="{{ url('assignment_Result') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="assign_id" id="get_assign_id">
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="username">สรุปผลลัพธ์</label>
-                                <select class="form-control custom-select" id="get_result" name="assign_result">
-                                    <option selected>-- กรุณาเลือก --</option>
+                                <select class="form-control custom-select" id="get_result" name="assign_result" required>
+                                    <option selected value="">-- กรุณาเลือก --</option>
                                     <option value="1">สำเร็จ</option>
                                     <option value="2">ไม่สำเร็จ</option>
                                 </select>
@@ -173,7 +173,7 @@
                 success: function(data) {
                     console.log(data);
                     $('#img_show').children().remove().end();
-                    
+
                     $('#get_assign_id').val(data.dataResult.id);
                     $('#get_detail').text(data.dataResult.assign_detail);
                     $('#header_title').text(data.dataResult.assign_title);
@@ -188,7 +188,7 @@
                             $('#img_show').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');
                         }else{
                             $('#img_show').append('<img src = "'+img_name+'" style="max-width:100%;">');
-                        }  
+                        }
                     }
 
                     if (data.dataResult.assign_result_status != 0) {
