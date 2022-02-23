@@ -94,9 +94,10 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @php $no = 0; @endphp
                                         @foreach($report as $key => $value)
                                         <tr>
-                                            <th scope="row">1</th>
+                                            <th scope="row">{{ ++$no }}</th>
                                             <td>{{ $report[$key]['user_name'] }}</td>
                                             <!-- ลูกค้าเยี่ยม -->
                                             <td class="bg-success"><span class="text-white">{{ $report[$key]['cust_visits_amount'] }}</span></td>
@@ -130,8 +131,8 @@
                                         <td colspan="2" style="text-align:center; ">ทั้งหมด</td>
                                         <td><span class="text-success">{{ $report_footer[0]['sum_cust_visits_amount'] }}</span></td>
                                         <td><span class="text-gray">{{ $report_footer[0]['sum_cus_visit_in_process'] }}</span></td>
-                                        <td><span class="text-danger">{{ $report_footer[0]['sum_cus_visit_success'] }}</span></td>
-                                        <td><span class="text-success">{{ $report_footer[0]['sum_cus_visit_failed'] }}</span></td>
+                                        <td><span class="text-success">{{ $report_footer[0]['sum_cus_visit_success'] }}</span></td>
+                                        <td><span class="text-danger">{{ $report_footer[0]['sum_cus_visit_failed'] }}</span></td>
                                         <td><span class="text-success">{{ $report_footer[0]['sum_percent_custvisit_success'] }}%</span></td>
                                         <td><span class="text-danger">{{ $report_footer[0]['sum_percent_custvisit_failed'] }}%</span></td>
                                         <td><span class="text-success">{{ $report_footer[0]['sum_cust_new_amount'] }}</span></td>
