@@ -307,7 +307,7 @@
                                                                                 $btn_disabled = "disabled";
                                                                         break;
                                                                 }
-                                                            @endphp  
+                                                            @endphp
                                                         <td style="text-align:right">
                                                             <div class="button-list">
                                                                 @if ($value->saleplan_id)
@@ -494,7 +494,7 @@
                                                     </td>
                                                 </tr>
                                                 @endforeach
-                                                
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -781,10 +781,11 @@
                         $('#saleplan_address_edit').val(response.shop_address);
                         $('#get_tags').html(
                                     "<optgroup label='กรุณาเลือก'>"+
-                                        "<option value='"+response.salepaln.sale_plans_tags+"' selected>"+ response.salepaln.sale_plans_tags +"</option>"+
-                                        "<option value='AK'>เพิ่มเติม</option>"+
-                                        "<option value='HI'>เข้าพบลูกค้า</option>"+
-                                        "<option value='HB'>งานใหม่</option>"+
+                                        "<option value='"+response.salepaln.sale_plans_tags+"' selected>"+ response.salepaln.present_title +"</option>"+
+                                        "@foreach ($master_present as $value)"+
+                                        "<option value='"+{{$value->id}}+"'>{{$value->present_title}}</option>"+
+                                        "@endforeach"+
+
                                     "</optgroup>");
 
                         $.each(response.customer_api, function(key, value){

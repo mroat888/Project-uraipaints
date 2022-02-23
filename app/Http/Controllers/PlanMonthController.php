@@ -15,6 +15,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\Api\ApiController;
+use App\MasterPresentSaleplan;
+use App\ObjectiveVisit;
 
 class PlanMonthController extends Controller
 {
@@ -31,6 +33,8 @@ class PlanMonthController extends Controller
         // dd($data);
 
         $data['objective'] = ObjectiveSaleplan::all();
+        // $data['objective_visit'] = ObjectiveVisit::all();
+        $data['master_present'] = MasterPresentSaleplan::orderBy('id', 'desc')->get();
 
         // -- ข้อมูล แผนงานงาน Saleplan
         $data['list_saleplan'] = DB::table('sale_plans')
@@ -112,7 +116,7 @@ class PlanMonthController extends Controller
                         'shop_address' => $res_visit_api['amphoe_name']." , ".$res_visit_api['province_name'],
                         'shop_phone' => $res_visit_api['telephone'],
                         'shop_mobile' => $res_visit_api['mobile'],
-                        'focusdate' => $res_visit_api['focusdate'], 
+                        'focusdate' => $res_visit_api['focusdate'],
                     ];
                 }
             }

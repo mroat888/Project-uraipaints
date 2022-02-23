@@ -484,6 +484,12 @@
                                                     <span class="nav-link-text">ป้ายกำกับ (บันทึกโน๊ต)</span>
                                                 </a>
                                             </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ url('admin/master_objective_visit') }}">
+                                                    <i class="ion ion-md-bookmark" style="color: #044067;"></i>
+                                                    <span class="nav-link-text">วัตถุประสงค์เยี่ยมลูกค้า</span>
+                                                </a>
+                                            </li>
                                         </ul>
                                     </li>
                                 </ul>

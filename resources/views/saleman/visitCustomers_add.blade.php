@@ -1,4 +1,4 @@
-<?php $objective = App\ObjectiveSaleplan::all();
+<?php $objective_visit = App\ObjectiveVisit::all();
 
 $customer_shops = DB::table('customer_shops')
 ->join('customer_contacts', 'customer_shops.id', '=', 'customer_contacts.customer_shop_id')
@@ -38,8 +38,8 @@ $customer_shops = DB::table('customer_shops')
                     <label for="objective">วัตถุประสงค์</label>
                     <select class="form-control custom-select" name="visit_objective" required>
                         <option selected>กรุณาเลือก</option>
-                        @foreach ($objective as $value)
-                        <option value="{{$value->id}}">{{$value->masobj_title}}</option>
+                        @foreach ($objective_visit as $value)
+                        <option value="{{$value->id}}">{{$value->visit_name}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -75,18 +75,6 @@ $customer_shops = DB::table('customer_shops')
                         type="text" readonly> </textarea>
                 </div>
 
-                {{-- <div class="row">
-                    <div class="form-group col-md-6">
-                        <label for="username">รายการนำเสนอ</label>
-                        <select class="form-control custom-select" name="product" required>
-                            <option selected>กรุณาเลือก</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
-                    </div>
-
-                </div> --}}
                 <input type="hidden" name="id" value="{{-- $monthly_plan_id --}}">
         </div>
         <div class="modal-footer">

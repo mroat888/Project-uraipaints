@@ -385,6 +385,12 @@ Route::get('/admin/edit_master_tag/{id}', 'Admin\MasterNoteTagController@edit');
 Route::post('/admin/update_master_tag', 'Admin\MasterNoteTagController@update');
 Route::get('admin/delete_master_tag/{id}', 'Admin\MasterNoteTagController@destroy');
 
+Route::get('admin/master_objective_visit', 'Admin\MastrObjectiveVisitController@index');
+Route::post('admin/create_master_objective_visit', 'Admin\MastrObjectiveVisitController@store');
+Route::get('/admin/edit_master_objective_visit/{id}', 'Admin\MastrObjectiveVisitController@edit');
+Route::post('/admin/update_master_objective_visit', 'Admin\MastrObjectiveVisitController@update');
+Route::get('admin/delete_master_objective_visit/{id}', 'Admin\MastrObjectiveVisitController@destroy');
+
 
 });
 

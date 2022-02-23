@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\Api\ApiController;
+use App\MasterPresentSaleplan;
 
 class SalePlanController extends Controller
 {
@@ -25,8 +26,7 @@ class SalePlanController extends Controller
     {
         $list_saleplan = DB::table('sale_plans')
             ->where('created_by', Auth::user()->id)
-            ->orderby('id', 'desc')
-            ->get();
+            ->orderby('id', 'desc')->get();
         return view('saleplan.salePlan', compact('list_saleplan'));
     }
 
@@ -79,9 +79,27 @@ class SalePlanController extends Controller
     public function edit($id)
     {
         $dataEdit = SalePlan::find($id);
+        // $dataEdit = SalePlan::join('customer_shops', 'sale_plans.customer_shop_id', '=', 'customer_shops.id')
+        //     ->join('customer_contacts', 'customer_shops.id', '=', 'customer_contacts.customer_shop_id')
+        //     ->where('sale_plans.id', $id)->select(
+        //         'customer_contacts.customer_contact_name',
+        //         'customer_contacts.customer_contact_phone',
+        //         'customer_shops.shop_address',
+        //         'customer_shops.id as shop_id',
+        //         'customer_shops.shop_name',
+        //         'sale_plans.id',
+        //         'sale_plans.sale_plans_title',
+        //         'sale_plans.sale_plans_date',
+        //         'sale_plans.sale_plans_tags',
+        //         'sale_plans.sale_plans_objective',
+        //         'sale_plans.sale_plans_status'
+        //     )->first();
+
         $dataEdit = SalePlan::join('customer_shops', 'sale_plans.customer_shop_id', '=', 'customer_shops.id')
             ->join('customer_contacts', 'customer_shops.id', '=', 'customer_contacts.customer_shop_id')
+            ->join('master_present_saleplan', 'sale_plans.sale_plans_tags', '=', 'master_present_saleplan.id')
             ->where('sale_plans.id', $id)->select(
+                'master_present_saleplan.present_title',
                 'customer_contacts.customer_contact_name',
                 'customer_contacts.customer_contact_phone',
                 'customer_shops.shop_address',
@@ -104,7 +122,18 @@ class SalePlanController extends Controller
 
     public function edit_fetch(Request $request)
     {
-        $saleplan = DB::table('sale_plans')->where('id', $request->id)->first();
+        $saleplan = DB::table('sale_plans')->join('master_present_saleplan', 'sale_plans.sale_plans_tags', '=', 'master_present_saleplan.id')
+        ->where('sale_plans.id', $request->id)
+        ->select(
+            'master_present_saleplan.present_title',
+            'sale_plans.id',
+            'sale_plans.customer_shop_id',
+            'sale_plans.sale_plans_title',
+            'sale_plans.sale_plans_date',
+            'sale_plans.sale_plans_tags',
+            'sale_plans.sale_plans_objective',
+            'sale_plans.sale_plans_status'
+        )->first();
 
         // ------ API
         $response = Http::withToken($request->api_token)->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers');

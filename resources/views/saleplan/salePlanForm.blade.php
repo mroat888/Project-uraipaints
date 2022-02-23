@@ -1,19 +1,5 @@
 <?php
-
-// $objective = App\ObjectiveSaleplan::all();
-
-// $customer_shops = DB::table('customer_shops')
-//     ->join('customer_contacts', 'customer_shops.id', '=', 'customer_contacts.customer_shop_id')
-//     ->whereIn('customer_shops.shop_status', [0, 1]) // ดึงเฉพาะ ลูกค้าเป้าหมายและทะเบียนลูกค้า
-//     ->where('customer_shops.created_by',Auth::user()->id)
-//     ->orderby('customer_shops.shop_name','asc')
-//     ->select(
-//             'customer_contacts.customer_contact_name',
-//             'customer_contacts.customer_contact_phone',
-//             'customer_shops.*'
-//             )
-//     ->get();
-
+$master_present = App\MasterPresentSaleplan::orderBy('id', 'desc')->get();
 ?>
 
 <div class="modal-dialog modal-lg" role="document">
@@ -82,8 +68,9 @@
                         <label for="firstName">รายการนำเสนอ</label>
                         <select class="select2 select2-multiple form-control" multiple="multiple" data-placeholder="Choose" name="sale_plans_tags[]">
                             <optgroup label="เลือกข้อมูล">
-                                <option value="1">สีรองพื้นปูนกันชื้น</option>
-                                <option value="2">4 in 1</option>
+                                @foreach ($master_present as $value)
+                                <option value="{{$value->id}}">{{$value->present_title}}</option>
+                                @endforeach
                             </optgroup>
                         </select>
                     </div>
