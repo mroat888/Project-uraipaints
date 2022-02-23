@@ -41,6 +41,7 @@ class ApiCustomerController extends Controller
             }
         }
 
+        //dd($res_api);
         
         return view('reports.report_store_head', compact('customer_api'));
 

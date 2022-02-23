@@ -109,7 +109,6 @@ Route::get('product_new', 'ProductNewController@frontend_product_new');
 
 // Report
 Route::get('/reportSale/reportSaleplan', 'Report\ReportSalePlanController@index');
-
 Route::get('/reportSale/reportVisitCustomerGoal', 'Report\ReportVisitCustomerGoalController@index');
 Route::get('/reportSale/reportVisitCustomer', 'Report\ReportVisitCustomerController@index');
 
@@ -186,8 +185,7 @@ Route::get('/leadManage/reportStore','LeadManager\ApiCustomerController@index');
 Route::get('/leadManage/reportStore/detail/{id}','LeadManager\ApiCustomerController@show');
 Route::get('/leadManage/reportTeam', 'LeadManager\ReportTeamController@index');
 Route::get('/leadManage/reportSaleplan', 'LeadManager\ReportSalePlanController@index');
-Route::get('/leadManage/reportYear', function () { return view('reports.report_year'); });
-
+Route::get('/leadManage/reportYear', 'LeadManager\ReportYearController@index');
 });
 
 
@@ -249,7 +247,7 @@ Route::get('/headManage/reportTeam', 'HeadManager\ReportTeamController@index');
 Route::get('/headManage/reportSaleplan', 'HeadManager\ReportSalePlanController@index');
 Route::get('/headManage/report_visitcustomer_goal_head', 'HeadManager\ReportVisitCustomerGoalController@index');
 Route::get('/headManage/reportVisitCustomer', 'HeadManager\ReportVisitCustomerController@index');
-Route::get('/headManage/reportYear', function () { return view('reports.report_year_head'); });
+Route::get('/headManage/reportYear', 'HeadManager\ReportYearController@index');
 
 });
 
