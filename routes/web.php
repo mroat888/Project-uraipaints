@@ -172,6 +172,7 @@ Route::get('lead/edit_assignment/{id}', 'AssignmentController@edit');
 Route::post('lead/update_assignment', 'AssignmentController@update');
 Route::get('lead/delete_assignment/{id}', 'AssignmentController@destroy');
 Route::get('lead/assignment_result_get/{id}', 'AssignmentController@assignment_result_get');
+Route::post('lead/search_month_add-assignment', 'AssignmentController@lead_search_month_add_assignment');
 
 // NOTE Lead Manage
 Route::get('/leadManage/note', 'NoteController@note_lead');
@@ -222,11 +223,15 @@ Route::get('head/approvalgeneral/history', function () { return view('headManage
 Route::get('head/approval_general_detail/{id}', 'HeadManager\ApprovalController@approval_general_detail');
 Route::get('head/comment_approval/{id}/{createID}', 'HeadManager\ApprovalController@comment_approval');
 Route::post('head/create_comment_request_approval', 'HeadManager\ApprovalController@create_comment_request_approval');
+
+// Assignment
 Route::get('head/assignment/add', 'AssignmentController@assignIndex');
 Route::post('head/create_assignment', 'AssignmentController@store_head');
 Route::get('head/edit_assignment/{id}', 'AssignmentController@edit');
 Route::post('head/update_assignment', 'AssignmentController@update');
 Route::get('head/delete_assignment/{id}', 'AssignmentController@destroy');
+Route::post('head/search_month_add-assignment', 'AssignmentController@head_search_month_add_assignment');
+
 
 // อนุมัติลูกค้าใหม่นอกแผน
 Route::get('head/approval-customer-except', 'HeadManager\ApprovalCustomerExceptController@index');

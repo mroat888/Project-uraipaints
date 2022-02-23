@@ -84,9 +84,9 @@ class ApprovalController extends Controller
 
             // return $data;
             if ( $data['comment']) {
-                return view('HeadManager.create_comment_request_approval', $data);
+                return view('headManager.create_comment_request_approval', $data);
             }else {
-                return view('HeadManager.create_comment_request_approval', $data);
+                return view('headManager.create_comment_request_approval', $data);
             }
     }
 
