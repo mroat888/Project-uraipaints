@@ -188,7 +188,8 @@ Route::get('lead/product_new', 'ProductNewController@lead_frontend_product_new')
 
 //report
 Route::get('/leadManage/reportcustomer', function () { return view('reports.report_customer'); });
-Route::get('/leadManage/reportStore', function () { return view('reports.report_store'); });
+Route::get('/leadManage/reportStore','LeadManager\ApiCustomerController@index');
+Route::get('/leadManage/reportStore/detail/{id}','LeadManager\ApiCustomerController@show');
 Route::get('/leadManage/reportTeam', 'LeadManager\ReportTeamController@index');
 Route::get('/leadManage/reportSaleplan', 'LeadManager\ReportSalePlanController@index');
 Route::get('/leadManage/reportYear', function () { return view('reports.report_year'); });
@@ -248,11 +249,12 @@ Route::get('head/product_new', 'ProductNewController@head_frontend_product_new')
 
 //report
 Route::get('/headManage/reportcustomer', function () { return view('reports.report_customer'); });
-Route::get('/headManage/reportStore', function () { return view('reports.report_store_head'); });
+Route::get('/headManage/reportStore','HeadManager\ApiCustomerController@index');
+Route::get('/headManage/reportStore/detail/{id}','HeadManager\ApiCustomerController@show');
 Route::get('/headManage/reportTeam', 'HeadManager\ReportTeamController@index');
 Route::get('/headManage/reportSaleplan', 'HeadManager\ReportSalePlanController@index');
-Route::get('/headManage/report_visitcustomer_goal_head', function () { return view('reports.report_visitcustomer_goal_head'); });
-Route::get('/headManage/visitCustomer', function () { return view('reports.report_visitcustomer_head'); });
+Route::get('/headManage/report_visitcustomer_goal_head', 'HeadManager\ReportVisitCustomerGoalController@index');
+Route::get('/headManage/reportVisitCustomer', 'HeadManager\ReportVisitCustomerController@index');
 Route::get('/headManage/reportYear', function () { return view('reports.report_year_head'); });
 
 });
@@ -402,7 +404,8 @@ Route::post('calendar/update','FullCalendarController@update');
 Route::post('calendar/delete','FullCalendarController@destroy');
 
 
-Route::get('/clear-cache', function() {
+// Route::get('/clear-cache', function() {
+Route::get('/clc', function() {
     Artisan::call('cache:clear');
     Artisan::call('route:clear');
     Artisan::call('config:clear');

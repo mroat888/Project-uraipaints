@@ -103,8 +103,17 @@
                                         }
 
                                         $sum_visit = $total_cus_is_plan + $total_cus_isnot_plan; // จำนวนการเข้าพบทั้งหมด
-                                        $percent_success = ($total_cus_visit_success*100)/$sum_visit;
-                                        $percent_failed = ($total_cus_visit_failed*100)/$sum_visit;
+      
+                                        if($total_cus_visit_success != 0){
+                                            $percent_success = ($total_cus_visit_success*100)/$sum_visit;
+                                        }else{
+                                            $percent_success = 0;
+                                        }
+                                        if($total_cus_visit_failed != 0){
+                                            $percent_failed = ($total_cus_visit_failed*100)/$sum_visit;
+                                        }else{
+                                            $percent_failed = 0;
+                                        }
                                     ?>
                                     </tbody>
                                     <tfoot style="font-weight: bold;">

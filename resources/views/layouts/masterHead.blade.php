@@ -366,10 +366,10 @@ License: You must have a valid license purchased only from themeforest to legall
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" href="{{ url('/headManage/report_visitcustomer_goal_head') }}">
-                                                <i class="ion ion-md-stats" style="color: #044067;"></i>รายงานเข้าพบลูกค้าเป้าหมาย</a>
+                                                <i class="ion ion-md-stats" style="color: #044067;"></i>รายงานเข้าพบลูกค้าใหม่</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{ url('/headManage/visitCustomer') }}">
+                                            <a class="nav-link" href="{{ url('/headManage/reportVisitCustomer') }}">
                                                 <i class="ion ion-md-stats" style="color: #044067;"></i>รายงานเข้าพบลูกค้า</a>
                                         </li>
                                         <li class="nav-item">
