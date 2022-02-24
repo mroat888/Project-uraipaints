@@ -115,6 +115,8 @@ class DashboardController extends Controller
             // -- นับจำนวน slaeplans
             $sale_plans = DB::table('sale_plans')->where('monthly_plan_id', $data['monthly_plan']->id)->where('sale_plans_status', 2)->get();
 
+            $data['count_sale_plans_amount'] = $sale_plans->count();
+
             foreach($sale_plans as $sp_value){
                 $check_result = DB::table('sale_plan_results')->where('sale_plan_id', $sp_value->id)->first();
                 if(!is_null($check_result)){
@@ -124,6 +126,7 @@ class DashboardController extends Controller
 
             // -- นับจำนวน ลูกค้าใหม่
             $customer_shops_saleplan = DB::table('customer_shops_saleplan')->where('monthly_plan_id', $data['monthly_plan']->id)->get();
+            $data['count_shops_saleplan_amount'] = $customer_shops_saleplan->count();
             foreach($customer_shops_saleplan as $sp_value){
                 $check_result = DB::table('customer_shops_saleplan_result')->where('customer_shops_saleplan_id', $sp_value->id)->first();
                 if(!is_null($check_result)){
@@ -133,6 +136,7 @@ class DashboardController extends Controller
 
             // -- นับจำนวน ลูกค้าเยี่ยม
             $customer_visits = DB::table('customer_visits')->where('monthly_plan_id', $data['monthly_plan']->id)->get();
+            $data['count_isit_amount'] = $customer_visits->count();
             foreach($customer_visits as $sp_value){
                 $check_result = DB::table('customer_visit_results')->where('customer_visit_id', $sp_value->id)->first();
                 if(!is_null($check_result)){
