@@ -109,23 +109,8 @@ class CustomerController extends Controller
 
                 $path = 'upload/CustomerImage';
                 $image = '';
-                // if (!empty($request->file('image'))) {
-                //     $img = $request->file('image');
-                //     $img_name = 'img-' . time() . '.' . $img->getClientOriginalExtension();
-                //     $save_path = $img->move(public_path($path), $img_name);
-                //     $image = $img_name;
-                // }
-
                 $pathFle = 'upload/CustomerFile';
                 $uploadfile = '';
-                // if (!empty($request->file('shop_fileupload'))) {
-                //     $uploadF = $request->file('shop_fileupload');
-                //     $file_name = 'file-' . time() . '.' . $uploadF->getClientOriginalExtension();
-                //     $save_path2 = $uploadF->move(public_path($pathFle), $file_name);
-                //     $uploadfile = $file_name;
-                // }
-
-                // $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->first();
 
                 DB::table('customer_shops')
                 ->insert([
@@ -524,6 +509,27 @@ class CustomerController extends Controller
         ]);
     }
 
+    public function customer_shops_saleplan_delete(Request $request){
+
+        DB::beginTransaction();
+        try {
+
+            DB::table('customer_shops_saleplan')
+                ->where('id', $request->shop_id_delete)->delete();
+                
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+        }
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'ลบข้อมูลลูกค้าเรียบร้อยแล้ว',
+        ]);
+
+    }
+
+
     public function destroy(Request $request)
     {
         // DB::table('customer_shops')
@@ -692,6 +698,10 @@ class CustomerController extends Controller
 
         }
 
+    }
+
+    public function fetch_customer_shops(){
+        
     }
 
 

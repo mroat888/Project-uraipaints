@@ -65,6 +65,7 @@ Route::get('/customer-api/detail/{id}','Customer\ApiCustomerController@show');
 
 Route::post('/leadtocustomer','Customer\CustomerController@lead_to_customer');
 Route::post('/customerdelete','Customer\CustomerController@customer_delete');
+Route::post('/customer_shops_saleplan_delete','Customer\CustomerController@customer_shops_saleplan_delete');
 
 Route::post('customer_new_checkin', 'Customer\CustomerController@customer_new_checkin');
 Route::get('customer_new_result_get/{id}', 'Customer\CustomerController@customer_new_result_get');

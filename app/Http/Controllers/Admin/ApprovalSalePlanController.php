@@ -29,8 +29,6 @@ class ApprovalSalePlanController extends Controller
         $data['monthly_plan'] = MonthlyPlan::join('users', 'monthly_plans.created_by', '=', 'users.id')
             ->whereNotIn('monthly_plans.status_approve', [0])
             ->select('users.name', 'monthly_plans.*')->get();
-
-
         return view('admin.approval_saleplan', $data);
         // return $data['monthly_plan'];
     }

@@ -89,14 +89,6 @@
                                                         <td>{{ $sale_plan_amount }}</td>
                                                         <td>{{ $cust_new_amount }}</td>
                                                         <td>{{ $total_plan }}</td>
-                                                        <!-- <td>
-                                                            @if ($value->outstanding_plan == 0)
-                                                                0
-                                                            @else
-                                                                {{ $value->outstanding_plan }}
-                                                            @endif
-                                                        </td>
-                                                        <td>{{ $value->success_plan }}</td> -->
                                                         <td>{{ $cust_visits_amount }}</td>
                                                         <td>
 
@@ -450,15 +442,13 @@
                                                                     <span class="btn-icon-wrap"><i data-feather="message-square"></i></span>
                                                                 </button>
                                                                 @endif
-                                                                {{-- <a href="{{ url('edit_customerLead', $value->cust_id )}}">cc</a> --}}
                                                                 <button class="btn btn-icon btn-warning mr-10 btn_editshop"
                                                                     value="{{ $value->cust_id }}" {{ $btn_disabled }}>
                                                                     <h4 class="btn-icon-wrap" style="color: white;"><i
                                                                             class="ion ion-md-create"></i></h4>
                                                                 </button>
-                                                                <button id="btn_delete"
-                                                                    class="btn btn-icon btn-danger mr-10"
-                                                                    value="{{ $value->cust_id }}" {{ $btn_disabled }}>
+                                                                <button class="btn btn-icon btn-danger mr-10 btn_cust_new_delete"
+                                                                    value="{{ $value->id }}" {{ $btn_disabled }}>
                                                                     <h4 class="btn-icon-wrap" style="color: white;"><i
                                                                             class="ion ion-md-trash"></i></h4>
                                                                 </button>
@@ -584,7 +574,7 @@
                     </div>
                     <div class="modal-body" style="text-align:center;">
                         <h3>คุณต้องการลบข้อมูลลูกค้า ใช่หรือไม่ ?</h3>
-                        <input class="form-control" id="shop_id_delete" name="shop_id_delete" type="hidden" />
+                        <input class="form-control" id="shop_id_delete" name="shop_id_delete" type="้hidden" />
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
@@ -633,9 +623,6 @@
                 </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <!-- <label for="username">รายละเอียดความคิดเห็น</label> -->
-                            <!-- <textarea class="form-control" cols="30" rows="5" id="get_comment" name="assign_comment"
-                                type="text" readonly></textarea> -->
                             <div id="div_comment">
 
                             </div>
@@ -782,144 +769,61 @@
         }
     </script>
 
-    <script>
+<script>
+    // -- SalePlan
+    $(document).on('click', '.btn_editsalepaln', function(e){
+        e.preventDefault();
+        let salepaln_id = $(this).val();
+        let api_token = '<?=$api_token?>';
+        console.log(salepaln_id);
+        $.ajax({
+            method: 'POST',
+            url: '{{ url("/saleplanEdit_fetch") }}',
+            data:{
+                "_token": "{{ csrf_token() }}",
+                'id': salepaln_id,
+                'api_token': api_token
+            },
+            success: function(response){
+                console.log(response);
+                if(response.status == 200){
+                    $("#saleplanEdit").modal('show');
+                    $('#get_id2').val(salepaln_id);
+                    $('#saleplan_id_edit').val(response.salepaln.customer_shop_id);
+                    $('#get_title').val(response.salepaln.sale_plans_title);
+                    $('#get_objective').val(response.salepaln.sale_plans_objective);
+                    $('#get_tag').val(response.salepaln.sale_plans_tags)
+                    $('#saleplan_phone_edit').val(response.shop_phone);
+                    $('#saleplan_address_edit').val(response.shop_address);
+                    $('#get_tags').html(
+                                "<optgroup label='กรุณาเลือก'>"+
+                                    "<option value='"+response.salepaln.sale_plans_tags+"' selected>"+ response.salepaln.present_title +"</option>"+
+                                    "@foreach ($master_present as $value)"+
+                                    "<option value='"+{{$value->id}}+"'>{{$value->present_title}}</option>"+
+                                    "@endforeach"+
 
-        // -- SalePlan
-        $(document).on('click', '.btn_editsalepaln', function(e){
-            e.preventDefault();
-            let salepaln_id = $(this).val();
-            let api_token = '<?=$api_token?>';
-            console.log(salepaln_id);
-            $.ajax({
-                method: 'POST',
-                url: '{{ url("/saleplanEdit_fetch") }}',
-                data:{
-                    "_token": "{{ csrf_token() }}",
-                    'id': salepaln_id,
-                    'api_token': api_token
-                },
-                success: function(response){
-                    console.log(response);
-                    if(response.status == 200){
-                        $("#saleplanEdit").modal('show');
-                        $('#get_id2').val(salepaln_id);
-                        $('#saleplan_id_edit').val(response.salepaln.customer_shop_id);
-                        $('#get_title').val(response.salepaln.sale_plans_title);
-                        $('#get_objective').val(response.salepaln.sale_plans_objective);
-                        $('#get_tag').val(response.salepaln.sale_plans_tags)
-                        $('#saleplan_phone_edit').val(response.shop_phone);
-                        $('#saleplan_address_edit').val(response.shop_address);
-                        $('#get_tags').html(
-                                    "<optgroup label='กรุณาเลือก'>"+
-                                        "<option value='"+response.salepaln.sale_plans_tags+"' selected>"+ response.salepaln.present_title +"</option>"+
-                                        "@foreach ($master_present as $value)"+
-                                        "<option value='"+{{$value->id}}+"'>{{$value->present_title}}</option>"+
-                                        "@endforeach"+
+                                "</optgroup>");
 
-                                    "</optgroup>");
-
-                        $.each(response.customer_api, function(key, value){
-                            if(response.customer_api[key]['id'] == response.salepaln.customer_shop_id){
-                                $('#sel_searchShopEdit').append('<option value='+response.customer_api[key]['id']+' selected>'+response.customer_api[key]['shop_name']+'</option>');
-                            }else{
-                                $('#sel_searchShopEdit').append('<option value='+response.customer_api[key]['id']+'>'+response.customer_api[key]['shop_name']+'</option>');
-                            }
-                        });
-
-                    }
-                }
-            });
-        });
-
-
-
-        $(document).on('click', '#btn_update', function() {
-            let shop_id = $(this).val();
-            $('#shop_id').val(shop_id);
-            $('#Modalapprove').modal('show');
-        });
-
-        $(document).on('click', '#btn_delete', function() {
-            let shop_id_delete = $(this).val();
-            $('#shop_id_delete').val(shop_id_delete);
-            $('#ModalapproveDelete').modal('show');
-        });
-
-        $(document).on('click', '#btn_saleplan_delete', function() {
-            let saleplan_id_delete = $(this).val();
-            $('#saleplan_id_delete').val(saleplan_id_delete);
-            $('#ModalSaleplanDelete').modal('show');
-        });
-
-        $("#from_cus_update").on("submit", function(e) {
-            e.preventDefault();
-            //var formData = $(this).serialize();
-            var formData = new FormData(this);
-            console.log(formData);
-            $.ajax({
-                type: 'POST',
-                url: '{{ url('/leadtocustomer') }}',
-                data: formData,
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function(response) {
-                    console.log(response);
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Update Success',
-                        text: "เปลี่ยนสถานะลูกค้าเรียบร้อยแล้วค่ะ",
-                        showConfirmButton: false,
-                        timer: 1500
+                    $.each(response.customer_api, function(key, value){
+                        if(response.customer_api[key]['id'] == response.salepaln.customer_shop_id){
+                            $('#sel_searchShopEdit').append('<option value='+response.customer_api[key]['id']+' selected>'+response.customer_api[key]['shop_name']+'</option>');
+                        }else{
+                            $('#sel_searchShopEdit').append('<option value='+response.customer_api[key]['id']+'>'+response.customer_api[key]['shop_name']+'</option>');
+                        }
                     });
-                    $('#Modalapprove').modal('hide');
-                    $('#shop_status_name_lead').text('ลูกค้าใหม่')
-                    $('#btn_update').prop('disabled', true);
-                    //location.reload();
-                },
-                error: function(response) {
-                    console.log("error");
-                    console.log(response);
+
                 }
-            });
+            }
         });
+    });
 
-        $("#from_cus_delete").on("submit", function(e) {
-            e.preventDefault();
-            //var formData = $(this).serialize();
-            var formData = new FormData(this);
-            console.log(formData);
-            $.ajax({
-                type: 'POST',
-                url: '{{ url('/customerdelete') }}',
-                data: formData,
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function(response) {
-                    console.log(response);
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Deleted!',
-                        text: "ลบข้อมูลลูกค้าเรียบร้อยแล้วค่ะ",
-                        showConfirmButton: false,
-                        timer: 1500,
-                    });
-                    $('#ModalapproveDelete').modal('hide');
-                    $('#shop_status_name_lead').text('ลบข้อมูลลูกค้าเรียบร้อย')
-                    $('#btn_update').prop('disabled', true);
-                    $('#btn_delete').prop('disabled', true);
+    $(document).on('click', '#btn_saleplan_delete', function() { // ปุ่มลบ Slaplan
+        let saleplan_id_delete = $(this).val();
+        $('#saleplan_id_delete').val(saleplan_id_delete);
+        $('#ModalSaleplanDelete').modal('show');
+    });
 
-                    location.reload();
-                },
-                error: function(response) {
-                    console.log("error");
-                    console.log(response);
-                }
-            });
-        });
-
-        $("#from_saleplan_delete").on("submit", function(e) {
+    $("#from_saleplan_delete").on("submit", function(e) {
             e.preventDefault();
             //var formData = $(this).serialize();
             var formData = new FormData(this);
@@ -951,115 +855,228 @@
                 }
             });
         });
-    </script>
 
-    <script>
-        $(document).ready(function() {
-            $('.requestApproval').click(function(evt) {
-                var form = $(this).closest("form");
-                evt.preventDefault();
+    // $(document).on('click', '#btn_update', function() {
+    //     let shop_id = $(this).val();
+    //     $('#shop_id').val(shop_id);
+    //     $('#Modalapprove').modal('show');
+    // });
 
-                swal({
-                    title: `ต้องการขออนุมัติแผนงานหรือไม่ ?`,
-                    // text: "ถ้าลบแล้วไม่สามารถกู้คืนข้อมูลได้",
-                    icon: "warning",
-                    // buttons: true,
-                    buttons: [
-                        'ยกเลิก',
-                        'ขออนุมัติ'
-                    ],
-                    infoMode: true
-                }).then((willDelete) => {
-                    if (willDelete) {
-                        form.submit();
+</script>
+
+
+<script>
+    //-- ส่วนลูกค้าใหม่
+    $(document).on('click', '.btn_cust_new_delete', function() { // ปุ่มลบลูกค้าใหม่
+        let shop_id_delete = $(this).val();
+        $('#shop_id_delete').val(shop_id_delete);
+        $('#ModalapproveDelete').modal('show');
+    });
+    
+    $(document).on('click','.btn_editshop', function(e){ // แก้ไขลูกค้าใหม่
+        e.preventDefault();
+        let shop_id = $(this).val();
+
+        $.ajax({
+            method: 'GET',
+            url: '{{ url("/edit_customerLead") }}/'+shop_id,
+            datatype: 'json',
+            success: function(response){
+                //console.log(response);
+                if(response.status == 200){
+                    $("#editCustomer").modal('show');
+                    $("#edit_shop_id").val(shop_id);
+                    $("#edit_shop_name").val(response.dataEdit.shop_name);
+                    // $("#edit_shop_objective2").val(response.dataEdit.cust_name);
+                    $('#edit_shop_objective').append('<option value='+response.dataEdit.customer_shop_objective+' selected>'+response.dataEdit.cust_name+'</option>')	;
+                    if(response.customer_contacts != null){
+                        $("#edit_cus_contacts_id").val(response.customer_contacts.id);
+                        $("#edit_contact_name").val(response.customer_contacts.customer_contact_name);
+                        $("#edit_customer_contact_phone").val(response.customer_contacts.customer_contact_phone);
                     }
-                })
+                    $("#edit_shop_address").val(response.dataEdit.shop_address);
 
-            });
-
-            $('#is_monthly_plan').val('Y'); // กำหนดสถานะ Y = อยู่ในแผน , N = ไม่อยู่ในแผน (เพิ่มระหว่างเดือน)
-
-            $("#customer_shops").on("change", function (e) {
-                e.preventDefault();
-                let shop_id = $(this).val();
-
-                if(shop_id != ""){
-                    $('#customer_shops_id').val(shop_id);
-                    $('#shop_name').attr('readonly', true);
-                    $('#contact_name').attr('readonly', true);
-                    $('#shop_phone').attr('readonly', true);
-                    $('#shop_address').attr('readonly', true);
-                    $('#province').attr('disabled', 'disabled');
-                    $('#amphur').attr('disabled', 'disabled');
-                    $('#district').attr('disabled', 'disabled');
-                    $('#postcode').attr('readonly', true);
-                }else{
-                    $('#customer_shops_id').val('');
-                    $('#shop_name').attr('readonly', false);
-                    $('#contact_name').attr('readonly', false);
-                    $('#shop_phone').attr('readonly', false);
-                    $('#shop_address').attr('readonly', false);
-                    $('#province').removeAttr("disabled");
-                    $('#amphur').removeAttr("disabled");
-                    $('#district').removeAttr("disabled");
-                    $('#postcode').attr('readonly', false);
-                }
-
-                $.ajax({
-                    method: 'GET',
-                    url: '{{ url("/edit_customerLead") }}/'+shop_id,
-                    datatype: 'json',
-                    success: function(response){
-                        console.log(response);
-                        if(response.status == 200){
-                            $("#customer_shops_id").val(shop_id);
-                            $("#shop_name").val(response.dataEdit.shop_name);
-                            if(response.customer_contacts != null){
-                                $("#contact_name").val(response.customer_contacts.customer_contact_name);
-                                $("#shop_phone").val(response.customer_contacts.customer_contact_phone);
-                            }
-                            $("#shop_address").val(response.dataEdit.shop_address);
-
-                            $.each(response.shop_province, function(key, value){
-                                if(value.PROVINCE_ID == response.dataEdit.shop_province_id){
-                                    $('#province').append('<option value='+value.PROVINCE_ID+' selected>'+value.PROVINCE_NAME+'</option>')	;
-                                }else{
-                                    $('#province').append('<option value='+value.PROVINCE_ID+'>'+value.PROVINCE_NAME+'</option>')	;
-                                }
-                            });
-
-                            $.each(response.shop_amphur, function(key, value){
-                                if(value.AMPHUR_ID == response.dataEdit.shop_amphur_id){
-                                    $('#amphur').append('<option value='+value.AMPHUR_ID+' selected>'+value.AMPHUR_NAME+'</option>')	;
-                                }else{
-                                    $('#amphur').append('<option value='+value.AMPHUR_ID+'>'+value.AMPHUR_NAME+'</option>')	;
-                                }
-                            });
-
-                            $.each(response.shop_district, function(key, value){
-                                if(value.DISTRICT_ID == response.dataEdit.shop_district_id){
-                                    $('#district').append('<option value='+value.DISTRICT_ID+' selected>'+value.DISTRICT_NAME+'</option>')	;
-                                }else{
-                                    $('#district').append('<option value='+value.DISTRICT_ID+'>'+value.DISTRICT_NAME+'</option>')	;
-                                }
-                            });
-
-                            $("#postcode").val(response.dataEdit.shop_zipcode);
+                    $.each(response.shop_province, function(key, value){
+                        if(value.PROVINCE_ID == response.dataEdit.shop_province_id){
+                            $('#edit_province').append('<option value='+value.PROVINCE_ID+' selected>'+value.PROVINCE_NAME+'</option>')	;
+                        }else{
+                            $('#edit_province').append('<option value='+value.PROVINCE_ID+'>'+value.PROVINCE_NAME+'</option>')	;
                         }
-                    }
-                });
+                    });
 
+                    $.each(response.shop_amphur, function(key, value){
+                        if(value.AMPHUR_ID == response.dataEdit.shop_amphur_id){
+                            $('#edit_amphur').append('<option value='+value.AMPHUR_ID+' selected>'+value.AMPHUR_NAME+'</option>')	;
+                        }else{
+                            $('#edit_amphur').append('<option value='+value.AMPHUR_ID+'>'+value.AMPHUR_NAME+'</option>')	;
+                        }
+                    });
 
-            });
+                    $.each(response.shop_district, function(key, value){
+                        if(value.DISTRICT_ID == response.dataEdit.shop_district_id){
+                            $('#edit_district').append('<option value='+value.DISTRICT_ID+' selected>'+value.DISTRICT_NAME+'</option>')	;
+                        }else{
+                            $('#edit_district').append('<option value='+value.DISTRICT_ID+'>'+value.DISTRICT_NAME+'</option>')	;
+                        }
+                    });
+
+                    $("#edit_shop_zipcode").val(response.dataEdit.shop_zipcode);
+
+                }
+            }
         });
 
-    </script>
+    });
+
+    $("#from_cus_delete").on("submit", function(e) {
+        e.preventDefault();
+        //var formData = $(this).serialize();
+        var formData = new FormData(this);
+        console.log(formData);
+        $.ajax({
+            type: 'POST',
+            url: '{{ url('/customer_shops_saleplan_delete') }}',
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                console.log(response);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Deleted!',
+                    text: "ลบข้อมูลลูกค้าเรียบร้อยแล้วค่ะ",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+                $('#ModalapproveDelete').modal('hide');
+                $('#shop_status_name_lead').text('ลบข้อมูลลูกค้าเรียบร้อย')
+                $('#btn_update').prop('disabled', true);
+                $('#btn_delete').prop('disabled', true);
+
+                location.reload();
+            },
+            error: function(response) {
+                console.log("error");
+                console.log(response);
+            }
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('.requestApproval').click(function(evt) {
+            var form = $(this).closest("form");
+            evt.preventDefault();
+
+            swal({
+                title: `ต้องการขออนุมัติแผนงานหรือไม่ ?`,
+                // text: "ถ้าลบแล้วไม่สามารถกู้คืนข้อมูลได้",
+                icon: "warning",
+                // buttons: true,
+                buttons: [
+                    'ยกเลิก',
+                    'ขออนุมัติ'
+                ],
+                infoMode: true
+            }).then((willDelete) => {
+                if (willDelete) {
+                    form.submit();
+                }
+            })
+
+        });
+    
+
+        $('#is_monthly_plan').val('Y'); // กำหนดสถานะ Y = อยู่ในแผน , N = ไม่อยู่ในแผน (เพิ่มระหว่างเดือน)
+
+        $("#customer_shops").on("change", function (e) {
+            e.preventDefault();
+            let shop_id = $(this).val();
+            if(shop_id != ""){
+                $('#customer_shops_id').val(shop_id);
+                $('#shop_name').attr('readonly', true);
+                $('#contact_name').attr('readonly', true);
+                $('#shop_phone').attr('readonly', true);
+                $('#shop_address').attr('readonly', true);
+                $('#province').attr('disabled', 'disabled');
+                $('#amphur').attr('disabled', 'disabled');
+                $('#district').attr('disabled', 'disabled');
+                $('#postcode').attr('readonly', true);
+            }else{
+                $('#customer_shops_id').val('');
+                $('#shop_name').val('');
+                $('#contact_name').val('');
+                $('#shop_phone').val('');
+                $('#shop_address').val('');
+                // $('#province').val('');
+                // $('#district').val('');
+                // $('#postcode').val('');
+                // document.getElementById("shop_name").value = "";
+
+                $('#shop_name').attr('readonly', false);
+                $('#contact_name').attr('readonly', false);
+                $('#shop_phone').attr('readonly', false);
+                $('#shop_address').attr('readonly', false);
+                $('#province').removeAttr("disabled");
+                $('#amphur').removeAttr("disabled");
+                $('#district').removeAttr("disabled");
+                $('#postcode').attr('readonly', false);
+            }
+            $.ajax({
+                method: 'GET',
+                url: '{{ url("/edit_customerLead") }}/'+shop_id,
+                datatype: 'json',
+                success: function(response){
+                    console.log(response);
+                    if(response.status == 200){
+                        $("#customer_shops_id").val(shop_id);
+                        $("#shop_name").val(response.dataEdit.shop_name);
+                        if(response.customer_contacts != null){
+                            $("#contact_name").val(response.customer_contacts.customer_contact_name);
+                            $("#shop_phone").val(response.customer_contacts.customer_contact_phone);
+                        }
+                        $("#shop_address").val(response.dataEdit.shop_address);
+
+                        $.each(response.shop_province, function(key, value){
+                            if(value.PROVINCE_ID == response.dataEdit.shop_province_id){
+                                $('#province').append('<option value='+value.PROVINCE_ID+' selected>'+value.PROVINCE_NAME+'</option>')	;
+                            }else{
+                                $('#province').append('<option value='+value.PROVINCE_ID+'>'+value.PROVINCE_NAME+'</option>')	;
+                            }
+                        });
+
+                        $.each(response.shop_amphur, function(key, value){
+                            if(value.AMPHUR_ID == response.dataEdit.shop_amphur_id){
+                                $('#amphur').append('<option value='+value.AMPHUR_ID+' selected>'+value.AMPHUR_NAME+'</option>')	;
+                            }else{
+                                $('#amphur').append('<option value='+value.AMPHUR_ID+'>'+value.AMPHUR_NAME+'</option>')	;
+                            }
+                        });
+
+                        $.each(response.shop_district, function(key, value){
+                            if(value.DISTRICT_ID == response.dataEdit.shop_district_id){
+                                $('#district').append('<option value='+value.DISTRICT_ID+' selected>'+value.DISTRICT_NAME+'</option>')	;
+                            }else{
+                                $('#district').append('<option value='+value.DISTRICT_ID+'>'+value.DISTRICT_NAME+'</option>')	;
+                            }
+                        });
+
+                        $("#postcode").val(response.dataEdit.shop_zipcode);
+                    }
+                }
+            });
+
+        });
+
+    });
+</script>
 
 
-
+@endsection
 
 @section('footer')
     @include('layouts.footer')
 @endsection('footer')
 
-@endsection
