@@ -61,7 +61,7 @@ class PlanMonthController extends Controller
             'customer_shops.id as cust_id',
             'customer_shops_saleplan.*'
         )
-        ->orderBy('customer_shops.id', 'desc')
+        ->orderBy('customer_shops_saleplan.id', 'desc')
         ->get();
 
         $data['customer_shops'] = DB::table('customer_shops')->where('created_by', Auth::user()->id)->get();

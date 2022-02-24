@@ -22,9 +22,6 @@
                                 <label for="objective">วัตถุประสงค์</label>
                                 <select class="form-control custom-select" id="edit_shop_objective" name="edit_customer_shop_objective" required>
                                     {{-- <option selected>กรุณาเลือก</option> --}}
-                                    @foreach ($objective_cust_new as $value)
-                                    <option value="{{$value->id}}">{{$value->cust_name}}</option>
-                                    @endforeach
                                 </select>
                             </div>
                             <div class="col-md-6 form-group">

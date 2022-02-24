@@ -443,7 +443,7 @@
                                                                 </button>
                                                                 @endif
                                                                 <button class="btn btn-icon btn-warning mr-10 btn_editshop"
-                                                                    value="{{ $value->cust_id }}" {{ $btn_disabled }}>
+                                                                    value="{{ $value->id }}" {{ $btn_disabled }}>
                                                                     <h4 class="btn-icon-wrap" style="color: white;"><i
                                                                             class="ion ion-md-create"></i></h4>
                                                                 </button>
@@ -876,24 +876,34 @@
     $(document).on('click','.btn_editshop', function(e){ // แก้ไขลูกค้าใหม่
         e.preventDefault();
         let shop_id = $(this).val();
-
+        
         $.ajax({
             method: 'GET',
-            url: '{{ url("/edit_customerLead") }}/'+shop_id,
+            //url: '{{ url("/edit_customerLead") }}/'+shop_id,
+            url: '{{ url("/edit_shopsaleplan") }}/'+shop_id,
             datatype: 'json',
             success: function(response){
-                //console.log(response);
+                console.log(response);
+                $('#edit_shop_objective').children().remove().end();
                 if(response.status == 200){
                     $("#editCustomer").modal('show');
                     $("#edit_shop_id").val(shop_id);
                     $("#edit_shop_name").val(response.dataEdit.shop_name);
-                    // $("#edit_shop_objective2").val(response.dataEdit.cust_name);
-                    $('#edit_shop_objective').append('<option value='+response.dataEdit.customer_shop_objective+' selected>'+response.dataEdit.cust_name+'</option>')	;
+  
+                    $.each(response.master_customer_new, function(key, value){
+                        if(value.id == response.dataEdit.customer_shop_objective){
+                            $('#edit_shop_objective').append('<option value='+value.id+' selected>'+value.cust_name+'</option>')	;
+                        }else{
+                            $('#edit_shop_objective').append('<option value='+value.id+'>'+value.cust_name+'</option>')	;
+                        }
+                    });
+
                     if(response.customer_contacts != null){
                         $("#edit_cus_contacts_id").val(response.customer_contacts.id);
                         $("#edit_contact_name").val(response.customer_contacts.customer_contact_name);
                         $("#edit_customer_contact_phone").val(response.customer_contacts.customer_contact_phone);
                     }
+
                     $("#edit_shop_address").val(response.dataEdit.shop_address);
 
                     $.each(response.shop_province, function(key, value){
