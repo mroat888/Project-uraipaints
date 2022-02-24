@@ -486,8 +486,14 @@
                                             </li>
                                             <li class="nav-item">
                                                 <a class="nav-link" href="{{ url('admin/master_objective_visit') }}">
-                                                    <i class="ion ion-md-bookmark" style="color: #044067;"></i>
-                                                    <span class="nav-link-text">วัตถุประสงค์เยี่ยมลูกค้า</span>
+                                                    <i class="ion ion-md-create" style="color: #044067;"></i>
+                                                    <span class="nav-link-text">จุดประสงค์เยี่ยมลูกค้า</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ url('admin/master_customer_new') }}">
+                                                    <i class="ion ion-md-create" style="color: #044067;"></i>
+                                                    <span class="nav-link-text">จุดประสงค์พบลูกค้าใหม่</span>
                                                 </a>
                                             </li>
                                         </ul>

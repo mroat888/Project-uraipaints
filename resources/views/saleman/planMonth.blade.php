@@ -389,10 +389,7 @@
                                                         <td>{{ $key + 1 }}</td>
                                                         <td>{{ $value->shop_name }}</td>
                                                         <td>{{ $value->AMPHUR_NAME }}, {{ $value->PROVINCE_NAME }}</td>
-                                                        <td>
-                                                            <!-- <span class="badge badge-soft-indigo mt-15 mr-10"
-                                                                style="font-size: 12px;">ลูกค้าใหม่</span> -->
-                                                        </td>
+                                                        <td>{{$value->cust_name}}</td>
                                                         <td style="text-align:right;">
                                                             <div class="button-list">
                                                                 @php
@@ -421,6 +418,7 @@
                                                                     <span class="btn-icon-wrap"><i data-feather="message-square"></i></span>
                                                                 </button>
                                                                 @endif
+                                                                {{-- <a href="{{ url('edit_customerLead', $value->cust_id )}}">cc</a> --}}
                                                                 <button class="btn btn-icon btn-warning mr-10 btn_editshop"
                                                                     value="{{ $value->cust_id }}" {{ $btn_disabled }}>
                                                                     <h4 class="btn-icon-wrap" style="color: white;"><i
