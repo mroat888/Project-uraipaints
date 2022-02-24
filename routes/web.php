@@ -155,6 +155,7 @@ Route::get('comment_approval/{id}/{createID}', 'LeadManager\ApprovalController@c
 Route::post('lead/create_comment_request_approval', 'LeadManager\ApprovalController@create_comment_request_approval');
 Route::get('/approvalgeneral/history', 'LeadManager\ApprovalController@approval_history');
 Route::get('lead/approval_general_history_detail/{id}', 'LeadManager\ApprovalController@approval_general_history_detail');
+Route::get('lead/view_approval/{id}', 'LeadManager\ApprovalController@view_approval');
 
 // อนุมัติลูกค้าใหม่นอกแผน
 Route::get('approval-customer-except', 'LeadManager\ApprovalCustomerExceptController@index');
@@ -217,12 +218,15 @@ Route::get('head/comment_saleplan/{id}/{createID}', 'HeadManager\ApprovalSalePla
 Route::post('head/create_comment_saleplan', 'HeadManager\ApprovalSalePlanController@create_comment_saleplan');
 Route::get('head/comment_customer_new/{id}/{custsaleplanID}/{createID}', 'HeadManager\ApprovalSalePlanController@comment_customer_new');
 Route::post('head/create_comment_customer_new', 'HeadManager\ApprovalSalePlanController@create_comment_customer_new');
+Route::post('head/approvalsaleplan/search', 'HeadManager\ApprovalSalePlanController@search');
 
 Route::get('head/approvalgeneral', 'HeadManager\ApprovalController@index');
 Route::get('head/approvalgeneral/history', function () { return view('headManager.approval_general_history'); });
 Route::get('head/approval_general_detail/{id}', 'HeadManager\ApprovalController@approval_general_detail');
 Route::get('head/comment_approval/{id}/{createID}', 'HeadManager\ApprovalController@comment_approval');
 Route::post('head/create_comment_request_approval', 'HeadManager\ApprovalController@create_comment_request_approval');
+Route::post('head/approvalgeneral/search', 'HeadManager\ApprovalController@search');
+Route::get('head/view_approval/{id}', 'HeadManager\ApprovalController@view_approval');
 
 // Assignment
 Route::get('head/assignment/add', 'AssignmentController@assignIndex');
@@ -239,6 +243,7 @@ Route::post('head/approval_customer_confirm_all', 'HeadManager\ApprovalCustomerE
 Route::get('head/approval_customer_except_detail/{id}', 'HeadManager\ApprovalCustomerExceptController@approval_customer_except_detail');
 Route::get('head/comment_customer_except/{id}/{custsaleplanID}/{createID}', 'HeadManager\ApprovalCustomerExceptController@comment_customer_except');
 Route::post('head/create_comment_customer_except', 'HeadManager\ApprovalCustomerExceptController@create_comment_customer_except');
+Route::post('head/approvalcustomer-except/search', 'HeadManager\ApprovalCustomerExceptController@search');
 
 // Note Head Manage
 Route::get('head/note', 'NoteController@note_head');
@@ -283,13 +288,17 @@ Route::get('admin/comment_saleplan/{id}/{createID}', 'Admin\ApprovalSalePlanCont
 Route::post('admin/create_comment_saleplan', 'Admin\ApprovalSalePlanController@create_comment_saleplan');
 Route::get('admin/comment_customer_new/{id}/{custsaleplanID}/{createID}', 'Admin\ApprovalSalePlanController@comment_customer_new');
 Route::post('admin/create_comment_customer_new', 'Admin\ApprovalSalePlanController@create_comment_customer_new');
-Route::get('admin/retrospective/{id}', 'Admin\ApprovalSalePlanController@retrospective');
+// Route::get('admin/retrospective/{id}', 'Admin\ApprovalSalePlanController@retrospective');
+Route::post('admin/retrospective', 'Admin\ApprovalSalePlanController@retrospective');
+Route::post('admin/approvalsaleplan/search', 'Admin\ApprovalSalePlanController@search');
 
 Route::get('admin/approvalgeneral', 'Admin\ApprovalController@index');
 Route::get('admin/approval_general_detail/{id}', 'Admin\ApprovalController@approval_general_detail');
 Route::get('admin/comment_approval/{id}/{createID}', 'Admin\ApprovalController@comment_approval');
 Route::post('admin/create_comment_request_approval', 'Admin\ApprovalController@create_comment_request_approval');
 Route::get('admin/approvalgeneral/history', function () { return view('admin.approval_general_history'); });
+Route::post('admin/approvalgeneral/search', 'Admin\ApprovalController@search');
+Route::get('admin/view_approval/{id}', 'Admin\ApprovalController@view_approval');
 
 Route::get('admin/assignment-add', 'Admin\AssignmentController@index');
 Route::get('admin/fetch_user/{id}', 'Admin\AssignmentController@fetch_user');
@@ -297,6 +306,7 @@ Route::post('admin/create_assignment', 'Admin\AssignmentController@store');
 Route::get('admin/edit_assignment/{id}', 'Admin\AssignmentController@edit');
 Route::post('admin/update_assignment', 'Admin\AssignmentController@update');
 Route::get('admin/delete_assignment/{id}', 'Admin\AssignmentController@destroy');
+Route::post('admin/search_month_add-assignment', 'Admin\AssignmentController@search');
 
 
 // Note
@@ -348,6 +358,8 @@ Route::get('/admin/userPermission', 'Admin\UserPermissionController@index');
 Route::post('/admin/userPermissionCreate', 'Admin\UserPermissionController@store');
 Route::get('/admin/userPermissionEdit/{id}', 'Admin\UserPermissionController@edit');
 Route::post('/admin/userPermissionUpdate', 'Admin\UserPermissionController@update');
+Route::get('admin/update-status-use/{id}', 'Admin\UserPermissionController@update_status_use');
+
 
 Route::get('admin/checkHistory', 'Admin\UsageHistoryController@index');
 
@@ -361,9 +373,7 @@ Route::get('/admin/reportYear', function () { return view('reports.report_year_a
 
 
 Route::get('admin/teamSales', 'Admin\TeamSaleController@index');
-Route::post('admin/teamsalesCreate', 'Admin\TeamSaleController@store');
-Route::get('admin/teamsalesEdit/{id}', 'Admin\TeamSaleController@edit');
-Route::post('admin/teamsalesUpdate', 'Admin\TeamSaleController@update');
+Route::get('admin/teamSales_detail/{id}', 'Admin\TeamSaleController@teamSales_detail');
 
 // Master
 Route::get('admin/master_present_saleplan', 'Admin\MasterPresentSaleplanController@index');
@@ -401,6 +411,11 @@ Route::post('admin/create_master_customer_new', 'Admin\MastrCustomerNewControlle
 Route::get('/admin/edit_master_customer_new/{id}', 'Admin\MastrCustomerNewController@edit');
 Route::post('/admin/update_master_customer_new', 'Admin\MastrCustomerNewController@update');
 Route::get('admin/delete_master_customer_new/{id}', 'Admin\MastrCustomerNewController@destroy');
+
+Route::get('admin/master_teamSales', 'Admin\TeamSaleController@add_index');
+Route::post('admin/teamsalesCreate', 'Admin\TeamSaleController@store');
+Route::get('admin/teamsalesEdit/{id}', 'Admin\TeamSaleController@edit');
+Route::post('admin/teamsalesUpdate', 'Admin\TeamSaleController@update');
 
 
 });

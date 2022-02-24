@@ -6,6 +6,7 @@ use App\Assignment;
 use App\AssignmentComment;
 use App\CustomerShopComment;
 use App\Http\Controllers\Controller;
+use App\RequestApproval;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -72,6 +73,15 @@ class ApprovalController extends Controller
         ->orderBy('id', 'desc')->get();
 
         return view('leadManager.approval_general_detail', $data);
+    }
+
+    public function view_approval($id)
+    {
+        $dataEdit = RequestApproval::find($id);
+        $data = array(
+            'dataEdit'     => $dataEdit,
+        );
+        echo json_encode($data);
     }
 
     public function comment_approval($id, $createID)

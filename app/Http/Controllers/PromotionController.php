@@ -44,28 +44,48 @@ class PromotionController extends Controller
 
     public function store(Request $request)
     {
-        $path = 'upload/PromotionImage';
-        $image = '';
-        if (!empty($request->file('news_image'))) {
-            $img = $request->file('news_image');
-            $img_name = 'p-' . time() . '.' . $img->getClientOriginalExtension();
-            $save_path = $img->move(public_path($path), $img_name);
-            $image = $img_name;
+        DB::beginTransaction();
+        try {
+
+            $path = 'upload/PromotionImage';
+            $image = '';
+            if (!empty($request->file('news_image'))) {
+                $img = $request->file('news_image');
+                $img_name = 'p-' . time() . '.' . $img->getClientOriginalExtension();
+                $save_path = $img->move(public_path($path), $img_name);
+                $image = $img_name;
+            }
+
+
+            News::create([
+                'news_date' => $request->news_date,
+                'news_title' => $request->news_title,
+                'news_detail' => $request->news_detail,
+                'news_image' => $image,
+                'url'       => $request->url,
+                'status'    => "P",
+                'created_by' => Auth::user()->id,
+
+            ]);
+
+            DB::commit();
+            return response()->json([
+                'status' => 200,
+                'message' => 'บันทึกข้อมูลสำเร็จ',
+                'data' => $img_name,
+            ]);
+
+        } catch (\Exception $e) {
+
+            DB::rollback();
+
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกข้อมูลได้',
+                'data' => $request,
+            ]);
         }
 
-        News::create([
-            'news_date' => $request->news_date,
-            'news_title' => $request->news_title,
-            'news_detail' => $request->news_detail,
-            'news_image' => $image,
-            'url'       => $request->url,
-            'status'    => "P",
-            'created_by' => Auth::user()->id,
-
-        ]);
-
-        // return back();
-        echo ("<script>alert('บันทึกข้อมูลสำเร็จ'); location.href='pomotion'; </script>");
     }
 
     public function edit($id)
@@ -120,8 +140,7 @@ class PromotionController extends Controller
             $data2->update();
             DB::commit();
         }
-
-        echo ("<script>alert('บันทึกข้อมูลสำเร็จ'); location.href='pomotion'; </script>");
+        return back();
     }
 
 

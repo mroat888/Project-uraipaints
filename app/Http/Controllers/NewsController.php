@@ -46,7 +46,7 @@ class NewsController extends Controller
 
     public function index()
     {
-        $list_news = News::orderBy('id', 'desc')->get();
+        $list_news = News::where('status', "N")->orderBy('id', 'desc')->get();
         return view('admin.news', compact('list_news'));
     }
 
@@ -58,6 +58,10 @@ class NewsController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request);
+        DB::beginTransaction();
+        try {
+
         $path = 'upload/NewsImage';
         $image = '';
         if (!empty($request->file('news_image'))) {
@@ -66,6 +70,7 @@ class NewsController extends Controller
             $save_path = $img->move(public_path($path), $img_name);
             $image = $img_name;
         }
+
 
         News::create([
             'news_date' => $request->news_date,
@@ -78,8 +83,23 @@ class NewsController extends Controller
 
         ]);
 
-        // return back();
-        echo ("<script>alert('บันทึกข้อมูลสำเร็จ'); location.href='news'; </script>");
+            DB::commit();
+            return response()->json([
+                'status' => 200,
+                'message' => 'บันทึกข้อมูลสำเร็จ',
+                'data' => $img_name,
+            ]);
+
+        } catch (\Exception $e) {
+
+            DB::rollback();
+
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกข้อมูลได้',
+                'data' => $request,
+            ]);
+        }
     }
 
     public function edit($id)
@@ -135,7 +155,7 @@ class NewsController extends Controller
             DB::commit();
         }
 
-        echo ("<script>alert('บันทึกข้อมูลสำเร็จ'); location.href='news'; </script>");
+        return back();
     }
 
     public function destroy($id)
@@ -164,13 +184,13 @@ class NewsController extends Controller
 
         NewsBanner::create([
             'date' => $request->date,
+            'detail' => $request->detail,
             'banner' => $image,
             'created_by' => Auth::user()->id,
 
         ]);
 
-        // return back();
-        echo ("<script>alert('บันทึกข้อมูลสำเร็จ'); location.href='newsBanner'; </script>");
+        return back();
     }
 
     public function banner_edit($id)
@@ -204,6 +224,7 @@ class NewsController extends Controller
 
                 $data2 = NewsBanner::find($request->id);
                 $data2->date              = $request->date;
+                $data2->detail              = $request->detail;
                 $data2->banner            = $image;
                 $data2->updated_by        = Auth::user()->id;
                 $data2->updated_at        = Carbon::now();
@@ -214,13 +235,14 @@ class NewsController extends Controller
 
             $data2 = NewsBanner::find($request->id);
             $data2->date              = $request->date;
+            $data2->detail              = $request->detail;
             $data2->updated_by        = Auth::user()->id;
             $data2->updated_at        = Carbon::now();
             $data2->update();
             DB::commit();
         }
 
-        echo ("<script>alert('บันทึกข้อมูลสำเร็จ'); location.href='newsBanner'; </script>");
+        return back();
     }
 
     public function banner_destroy($id)

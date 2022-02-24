@@ -125,6 +125,19 @@ class ApprovalSalePlanController extends Controller
         return view('admin.approval_saleplan_detail', $data);
     }
 
+    public function search(Request $request){
+        list($year,$month) = explode('-', $request->selectdateTo);
+
+        $data['monthly_plan'] = MonthlyPlan::join('users', 'monthly_plans.created_by', '=', 'users.id')
+            ->whereNotIn('monthly_plans.status_approve', [0])
+            ->whereYear('month_date', $year)
+            ->whereMonth('month_date', $month)
+            ->select('users.name', 'monthly_plans.*')->get();
+
+
+        return view('admin.approval_saleplan', $data);
+    }
+
     public function comment_saleplan($id, $createID)
     {
         // return $id;
@@ -243,20 +256,20 @@ class ApprovalSalePlanController extends Controller
 
     }
 
-    public function retrospective($id)
+    public function retrospective(Request $request)
     {
 
-        $request_approval_month = MonthlyPlan::find($id);
+        $request_approval_month = MonthlyPlan::find($request->restros_id);
         $request_approval_month->status_approve   = 0; // ย้อนกับเป็นแบบร่าง
         $request_approval_month->update();
 
-        $request_approval = SalePlan::where('monthly_plan_id', $id)->get();
+        $request_approval = SalePlan::where('monthly_plan_id', $request->restros_id)->get();
         foreach ($request_approval as $key => $value) {
             $value->sale_plans_status   = 0; // ย้อนกับเป็นแบบร่าง
             $value->update();
         }
 
-        DB::table('customer_shops_saleplan')->where('monthly_plan_id', $id)
+        DB::table('customer_shops_saleplan')->where('monthly_plan_id', $request->restros_id)
         ->update([
             'shop_aprove_status' => 0,  // ย้อนกับเป็นแบบร่าง
         ]);

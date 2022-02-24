@@ -48,23 +48,24 @@
                             <div class="col-sm-12 col-md-9">
                                 <!-- ------ -->
                                 <span class="form-inline pull-right">
-
                                     <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</button>
-                                    <span id="selectdate" style="display:none;">
-                                         <input type="month" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" value="<?= date('Y-m-d'); ?>" />
+                                    <form action="{{ url('head/approvalsaleplan/search') }}" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        <span id="selectdate" style="display:none;">
+                                             <input type="month" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name ="selectdateTo" value="<?= date('Y-m-d'); ?>" />
 
-                                        <button style="margin-left:5px; margin-right:5px;" class="btn btn-success btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button>
+                                            <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-success btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button>
+                                        </span>
+                                    </form>
                                     </span>
-
-                                </span>
-                                <!-- ------ -->
+                                    <!-- ------ -->
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-sm">
                                 <div class="table-responsive-sm">
-                                    <table class="table table-sm table-hover">
+                                    <table id="datable_1" class="table table-sm table-hover">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
@@ -81,7 +82,19 @@
                                                         <td>{{$value->month_date}}</td>
                                                         <td>{{$value->name}}</td>
                                                         {{-- <td>{{$value->id}}</td> --}}
-                                                        <td><span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span></td>
+                                                        <td>
+                                                            @if ($value->status_approve == 1)
+                                                                <span class="badge badge-soft-warning"
+                                                                    style="font-size: 12px;">
+                                                                    Pending
+                                                                </span>
+                                                            @elseif ($value->status_approve == 2)
+                                                                <span class="badge badge-soft-success"
+                                                                    style="font-size: 12px;">
+                                                                    Approve
+                                                                </span>
+                                                            @endif
+                                                        </td>
                                                         <td>
                                                             <a href="{{ url('head/approvalsaleplan_detail', $value->id) }}" type="button" class="btn btn-icon btn-primary pt-5">
                                                                 <i data-feather="file-text"></i>

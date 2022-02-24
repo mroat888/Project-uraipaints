@@ -16,16 +16,6 @@ class ApprovalCustomerExceptController extends Controller
 
     public function index()
     {
-        // $month = MonthlyPlan::whereMonth('month_date', Carbon::now()->format('m'))->first();
-        // $data['customers'] = DB::table('customer_shops')
-        // ->join('users', 'customer_shops.created_by', '=', 'users.id')
-        // ->where('customer_shops.shop_status', 0)
-        // ->where('customer_shops.shop_aprove_status', 0)
-        // ->where('users.team_id', Auth::user()->team_id)
-        // ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
-        // ->where('customer_shops.monthly_plan_id', $month->id)
-        // ->select('customer_shops.created_by as shop_created_by')
-        // ->distinct()->get();
 
         $data['customers'] = DB::table('customer_shops_saleplan')
         ->join('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
@@ -45,19 +35,6 @@ class ApprovalCustomerExceptController extends Controller
 
     public function approval_customer_except_detail($id)
     {
-        // $data['customer_except'] =  DB::table('customer_shops')
-        // ->join('customer_shops_saleplan', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
-        // ->join('users', 'customer_shops_saleplan.created_by', '=', 'users.id')
-        // ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
-        // ->select(
-        //     'province.PROVINCE_NAME',
-        //     'users.name' ,
-        //     'customer_shops.*')
-        // ->where('customer_shops_saleplan.is_monthly_plan', "N")
-        // ->where('customer_shops_saleplan.shop_aprove_status', 1)
-        // ->where('customer_shops_saleplan.created_by', $id)
-        // ->orderBy('id', 'desc')->get();
-
         $data['customer_except'] = DB::table('customer_shops_saleplan')
         ->join('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
         ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
@@ -76,6 +53,28 @@ class ApprovalCustomerExceptController extends Controller
 
         return view('headManager.approval_customer_except_detail', $data);
     }
+
+    public function search(Request $request){
+        list($year,$month) = explode('-', $request->selectdateTo);
+
+            $data['customers'] = DB::table('customer_shops_saleplan')
+        ->join('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
+        ->join('users', 'customer_shops_saleplan.created_by', '=', 'users.id')
+        ->where('customer_shops.shop_status', 0)
+        ->where('customer_shops_saleplan.shop_aprove_status', 1) // ส่งขออนุมัติ
+        ->where('users.team_id', Auth::user()->team_id)
+        ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+        ->where('customer_shops_saleplan.is_monthly_plan', 'N')
+        ->whereYear('customer_shops_saleplan.created_at', $year)
+        ->whereMonth('customer_shops_saleplan.created_at', $month)
+        ->select('customer_shops_saleplan.created_by as shop_created_by')
+        ->distinct()->get();
+
+        // dd($data['customers']);
+
+        return view('headManager.approval_customer_except', $data);
+    }
+
 
     public function comment_customer_except($id, $custsaleplanID, $createID)
     {
@@ -100,6 +99,8 @@ class ApprovalCustomerExceptController extends Controller
             return view('headManager.create_comment_customer_except', $data);
         }
     }
+
+
 
     public function create_comment_customer_except(Request $request)
     {

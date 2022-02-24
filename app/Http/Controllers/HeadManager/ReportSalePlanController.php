@@ -21,7 +21,7 @@ class ReportSalePlanController extends Controller
         $sum_saleplan_updatestatus = 0;
 
         $users_saleman = DB::table('users')->where('status', 1)->where('team_id', Auth::user()->team_id)->get();
-        
+
         for($i=1; $i<=12; $i++){
             foreach($users_saleman as $saleman){
                 $monthly_plans = DB::table('monthly_plans')
@@ -34,7 +34,7 @@ class ReportSalePlanController extends Controller
 
                     $count_saleplan = DB::table('sale_plans')
                         ->where('monthly_plan_id', $monthly_plans->id)
-                        ->where('sale_plans_status', 2) // สถานะอนุมัติ (0=ฉบับร่าง ,1 = ส่งอนุมัติ , 2 = อนุมัติ , 3= ปฎิเสธ))	
+                        ->where('sale_plans_status', 2) // สถานะอนุมัติ (0=ฉบับร่าง ,1 = ส่งอนุมัติ , 2 = อนุมัติ , 3= ปฎิเสธ))
                         ->count();
 
                     $count_saleplan_updatestatus = DB::table('sale_plans')
@@ -102,4 +102,6 @@ class ReportSalePlanController extends Controller
 
         return view('reports.report_saleplan_head', compact('report'));
     }
+
+
 }

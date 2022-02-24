@@ -20,7 +20,7 @@ class AssignmentController extends Controller
             ->select('assignments.*', 'users.name')
             ->orderBy('assignments.id', 'desc')
             ->get();
-        
+
         $managers = DB::table('users')->where('status', 2)->get();
         return view('admin.add_assignment', compact('managers', 'assignments'));
     }
@@ -63,7 +63,7 @@ class AssignmentController extends Controller
          // dd($request);
          DB::beginTransaction();
          try {
- 
+
              $pathFle = 'upload/AssignmentFile';
              $uploadfile = '';
              if (!empty($request->file('assignment_fileupload'))) {
@@ -72,7 +72,7 @@ class AssignmentController extends Controller
                  $uploadF->move(public_path($pathFle), $file_name);
                  $uploadfile = $file_name;
              }
- 
+
              foreach ($request->assign_emp_id as $key => $emp_id) {
                  DB::table('assignments')
                  ->insert([
@@ -90,18 +90,18 @@ class AssignmentController extends Controller
                      'created_at' => Carbon::now(),
                  ]);
              }
- 
+
              DB::commit();
              return response()->json([
                  'status' => 200,
                  'message' => 'บันทึกข้อมูลสำเร็จ',
                  'data' => $uploadfile,
              ]);
- 
+
          } catch (\Exception $e) {
- 
+
              DB::rollback();
- 
+
              return response()->json([
                  'status' => 404,
                  'message' => 'ไม่สามารถบันทึกข้อมูลได้',
@@ -202,12 +202,31 @@ class AssignmentController extends Controller
                 }
 
             Assignment::where('id', $id)->delete();
-        
+
             DB::commit();
             return back();
 
         } catch (\Exception $e) {
             DB::rollback();
         }
+    }
+
+    public function search(Request $request)
+    {
+        list($year,$month) = explode('-', $request->selectdateTo);
+
+        $assignments = DB::table('assignments')
+            ->join('users', 'assignments.assign_emp_id', 'users.id')
+            ->whereIn('assignments.assign_status', [3])
+            ->where('assignments.created_by', Auth::user()->id)
+            ->whereYear('assignments.created_at', $year)
+            ->whereMonth('assignments.created_at', $month)
+            ->select('assignments.*', 'users.name')
+            ->orderBy('assignments.id', 'desc')
+            ->get();
+
+        $managers = DB::table('users')->where('status', 2)->get();
+
+        return view('admin.add_assignment', compact('assignments', 'managers'));
     }
 }

@@ -20,6 +20,8 @@
             </div>
             <div class="d-flex">
                 <button type="button" class="btn btn-teal btn-sm btn-rounded px-3 mr-10" data-toggle="modal" data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button>
+
+                <a href="{{ url('admin/news')}}" type="button" class="btn btn-secondary btn-sm btn-rounded px-3 mr-10"> ย้อนกลับ </a>
             </div>
         </div>
         <!-- /Title -->
@@ -39,6 +41,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>รูปภาพ</th>
+                                        <th>รายละเอียด</th>
                                         <th>วันที่แจ้งเตือน</th>
                                         <th>Action</th>
                                     </tr>
@@ -47,12 +50,13 @@
                                     @foreach ($list_banner as $key => $value)
                                     <tr>
                                         <td>{{$key + 1}}</td>
-                                        <td><img src="{{ isset($value->banner) ? asset('public/upload/NewsBanner/' . $value->banner) : '' }}" width="500"></td>
+                                        <td><img src="{{ isset($value->banner) ? asset('public/upload/NewsBanner/' . $value->banner) : '' }}" width="200"></td>
+                                        <td>{{$value->detail}}</td>
                                         <td>{{$value->date}}</td>
                                         <td>
                                             <div class="button-list">
-                                                <button class="btn btn-icon btn-primary mr-10">
-                                                    <span class="btn-icon-wrap"><i data-feather="feather"></i></span></button>
+                                                {{-- <button class="btn btn-icon btn-primary mr-10">
+                                                    <span class="btn-icon-wrap"><i data-feather="feather"></i></span></button> --}}
                                                     <button onclick="edit_modal({{ $value->id }})"
                                                         class="btn btn-icon btn-warning mr-10" data-toggle="modal" data-target="#editBanner">
                                                         <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
@@ -85,6 +89,10 @@
                 <form action="{{ url('admin/create_newsBanner') }}" method="post" enctype="multipart/form-data">
                     @csrf
                 <div class="modal-body">
+                    <div class="form-group">
+                        <label for="detail">รายละเอียดเกี่ยวกับแบนเนอร์</label>
+                        <input class="form-control" type="text" name="detail" required>
+                    </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="banner">รูปภาพ</label>
@@ -122,10 +130,14 @@
                 <form action="{{ url('admin/update_banner') }}" method="post" enctype="multipart/form-data">
                     @csrf
                 <div class="modal-body">
+                    <div class="form-group">
+                        <label for="detail">รายละเอียดเกี่ยวกับแบนเนอร์</label>
+                        <input class="form-control" type="text" name="detail" id="get_detail" required>
+                    </div>
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label for="banner">รูปภาพ</label>
-                            <input class="form-control" type="file" id="get_image" name="banner" required>
+                            <input class="form-control" type="file" id="get_image" name="banner">
                         </div>
                         <div class="col-md-6 form-group">
                             <label for="banner">วันที่</label>
@@ -158,7 +170,9 @@
                 success: function(data) {
                     $('#get_id').val(data.dataEdit.id);
                     $('#get_date').val(data.dataEdit.date);
+                    $('#get_detail').val(data.dataEdit.detail);
                     $('#get_image').val(data.dataEdit.banner);
+
 
                     $('#editBanner').modal('toggle');
                 }

@@ -48,23 +48,24 @@
                             <div class="col-sm-12 col-md-9">
                                 <!-- ------ -->
                                 <span class="form-inline pull-right">
-
                                     <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</button>
-                                    <span id="selectdate" style="display:none;">
-                                         <input type="month" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" value="<?= date('Y-m-d'); ?>" />
+                                    <form action="{{ url('admin/approvalsaleplan/search') }}" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        <span id="selectdate" style="display:none;">
+                                             <input type="month" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name ="selectdateTo" value="<?= date('Y-m-d'); ?>" required/>
 
-                                        <button style="margin-left:5px; margin-right:5px;" class="btn btn-success btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button>
+                                            <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-success btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button>
+                                        </span>
+                                    </form>
                                     </span>
-
-                                </span>
-                                <!-- ------ -->
+                                    <!-- ------ -->
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-sm">
                                 <div class="table-responsive-sm">
-                                    <table class="table table-sm table-hover">
+                                    <table id="datable_1" class="table table-sm table-hover">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
@@ -105,9 +106,12 @@
                                                             <a href="{{ url('admin/approvalsaleplan_detail', $value->id) }}" type="button" class="btn btn-icon btn-primary pt-5">
                                                                 <i data-feather="file-text"></i>
                                                             </a>
-                                                            <a href="{{ url('admin/retrospective', $value->id) }}" type="button" class="btn btn-icon btn-warning pt-5 ml-2">
+                                                            {{-- <a href="{{ url('admin/retrospective', $value->id) }}" type="button" class="btn btn-icon btn-warning pt-5 ml-2">
                                                                 <i data-feather="refresh-ccw"></i>
-                                                            </a>
+                                                            </a> --}}
+                                                            <button id="btn_saleplan_restrospective" type="button" class="btn btn-icon btn-warning ml-2" value="{{ $value->id }}">
+                                                                <i data-feather="refresh-ccw"></i>
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -122,6 +126,32 @@
 
             </div>
             <!-- /Row -->
+    </div>
+
+    <!-- Modal Delete Saleplan -->
+    <div class="modal fade" id="ModalSaleplanRestorespective" tabindex="-1" role="dialog" aria-labelledby="ModalSaleplanRestorespective"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form id="from_saleplan_restorespective" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">คุณต้องการส่งข้อมูล Sale Plan กลับใช่หรือไม่</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="text-align:center;">
+                        <h3>คุณต้องการส่งข้อมูล Sale Plan กลับใช่หรือไม่ ?</h3>
+                        <input class="form-control" id="restros_id" name="restros_id" type="hidden" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                        <button type="submit" class="btn btn-primary" id="btn_save_edit">ยืนยัน</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 
     <script type="text/javascript">
@@ -157,6 +187,45 @@
         $("#selectdate").css("display", "none");
         $("#bt_showdate").show();
     }
+
+    $(document).on('click', '#btn_saleplan_restrospective', function() {
+            let restros_id = $(this).val();
+            $('#restros_id').val(restros_id);
+            $('#ModalSaleplanRestorespective').modal('show');
+        });
+
+        $("#from_saleplan_restorespective").on("submit", function(e) {
+            e.preventDefault();
+            //var formData = $(this).serialize();
+            var formData = new FormData(this);
+            console.log(formData);
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('admin/retrospective') }}',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    console.log(response);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'เรียบร้อย!',
+                        text: "ส่งข้อมูลกลับเรียบร้อยแล้วค่ะ",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    $('#ModalSaleplanRestorespective').modal('hide');
+                    $('#shop_status_name_lead').text('ส่งข้อมูล Sale Plan กลับเรียบร้อย')
+                    $('#btn_saleplan_restrospective').prop('disabled', true);
+                    location.reload();
+                },
+                error: function(response) {
+                    console.log("error");
+                    console.log(response);
+                }
+            });
+        });
 </script>
 
 <script>

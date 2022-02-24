@@ -34,7 +34,7 @@
         <div class="row">
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-sm">
                             <a href="{{ url('/approvalgeneral') }}" type="button" class="btn btn-violet btn-wth-icon icon-wthot-bg btn-sm text-white">
                                 <span class="icon-label">
@@ -52,38 +52,31 @@
                             <hr>
                             <div id="calendar"></div>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="row mb-2">
                             <div class="col-md-3">
                                 <h5 class="hk-sec-title">ตารางข้อมูลการอนุมัติลูกค้าใหม่ (นอกแผน)</h5>
                             </div>
                             <div class="col-sm-12 col-md-9">
                                 <!-- ------ -->
-                                <span class="form-inline pull-right pull-sm-center">
+                                <span class="form-inline pull-right">
+                                    <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</button>
+                                    <form action="{{ url('head/approvalcustomer-except/search') }}" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        <span id="selectdate" style="display:none;">
+                                             <input type="month" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name ="selectdateTo" value="<?= date('Y-m-d'); ?>" />
 
-                                    <button style="margin-left:5px; margin-right:5px;" id="bt_showdate"
-                                        class="btn btn-light btn-sm" onclick="showselectdate()">เลือกวันที่</button>
-                                    <span id="selectdate" style="display:none;">
-                                        date : <input type="date" class="form-control form-control-sm"
-                                            style="margin-left:10px; margin-right:10px;" id="selectdateFrom"
-                                            value="<?= date('Y-m-d') ?>" />
-
-                                        to <input type="date" class="form-control form-control-sm"
-                                            style="margin-left:10px; margin-right:10px;" id="selectdateTo"
-                                            value="<?= date('Y-m-d') ?>" />
-
-                                        <button style="margin-left:5px; margin-right:5px;" class="btn btn-success btn-sm"
-                                            id="submit_request" onclick="hidetdate()">ค้นหา</button>
+                                            <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-success btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button>
+                                        </span>
+                                    </form>
                                     </span>
-
-                                </span>
-                                <!-- ------ -->
+                                    <!-- ------ -->
                             </div>
                         </div>
                     <div class="row">
                         <div class="col-sm">
                             <div class="table-responsive-sm">
-                                <table class="table table-sm table-hover">
+                                <table id="datable_1" class="table table-sm table-hover">
                                     <thead>
                                         <tr>
                                             <th>#</th>

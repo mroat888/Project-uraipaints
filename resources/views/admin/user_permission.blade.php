@@ -46,6 +46,7 @@
                                     <th>อีเมล์</th>
                                     <th>สิทธิ์การใช้งาน</th>
                                     <th>ทีม</th>
+                                    <th>การใช้งาน</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -74,11 +75,23 @@
                                     @endphp
                                     </td>
                                     <td>
+                                        @if ($value->status_use == 1)
+                                        <span class='badge badge-soft-teal' style='font-size: 14px;'>ใช้งานอยู่</span>
+                                        @else
+                                        <span class='badge badge-soft-danger' style='font-size: 14px;'>ปิดใช้งาน</span>
+                                        @endif
+                                    </td>
+                                    <td>
                                         <div class="button-list">
+                                            <a href="{{ url('admin/update-status-use', $value->id)}}" class="btn btn-icon btn-teal mr-10">
+                                                <span class="btn-icon-wrap"><i data-feather="power"></i></span></a>
                                             <button class="btn btn-icon btn-warning mr-10 btn_edit" value="{{ $value->id }}">
                                                 <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
-                                            <button class="btn btn-icon btn-danger mr-10">
-                                                <span class="btn-icon-wrap"><i data-feather="trash-2"></i></span></button>
+                                                @if ($value->status_use == 0)
+                                                <button class="btn btn-icon btn-danger mr-10">
+                                                    <span class="btn-icon-wrap"><i data-feather="trash-2"></i></span></button>
+                                            @endif
+
                                         </div>
                                     </td>
                                 </tr>
@@ -131,7 +144,7 @@
                                     @foreach($master_permission as $key => $value)
                                         <option value="{{ $value->id }}">{{ $value->permission_name }}</option>
                                     @endforeach
-                                    
+
                                 </select>
                             </div>
                             <div class="form-group col-md-6">
@@ -143,7 +156,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                        </div> 
+                        </div>
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="username">ทีม</label>
@@ -170,7 +183,7 @@
     <div class="modal fade" id="modaledit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLarge01"aria-hidden="true">
         @include('admin.user_permission_edit')
     </div>
-    
+
 
 
 <script>
@@ -199,15 +212,15 @@
                             $('#edit_sel_status').append('<option value='+value.id+' selected>'+value.permission_name+'</option>');
                         }else{
                             $('#edit_sel_status').append('<option value='+value.id+'>'+value.permission_name+'</option>');
-                        }   
+                        }
                     });
-                    
+
                     $.each(response.sellers_api, function(key, value){
                         if(response.sellers_api[key]['id'] == response.dataUser.api_identify){
                             $('#edit_sel_api_identify').append('<option value='+response.sellers_api[key]['id']+' selected>'+response.sellers_api[key]['name']+'</option>');
                         }else{
                             $('#edit_sel_api_identify').append('<option value='+response.sellers_api[key]['id']+'>'+response.sellers_api[key]['name']+'</option>');
-                        }   
+                        }
                     });
 
                     $.each(response.master_teamsale, function(key, value){
@@ -215,7 +228,7 @@
                             $('#edit_sel_team').append('<option value='+value.id+' selected>'+value.team_name+'</option>');
                         }else{
                             $('#edit_sel_team').append('<option value='+value.id+'>'+value.team_name+'</option>');
-                        }   
+                        }
                     });
 
                 }
