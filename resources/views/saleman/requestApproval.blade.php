@@ -168,9 +168,10 @@
                             <label for="firstName">ขออนุมัติสำหรับ</label>
                                 <select class="form-control custom-select" name="approved_for" required>
                                     <option selected disabled>กรุณาเลือก</option>
-                                    <option value="1">เพื่อทราบ/For your informatiion</option>
-                                    <option value="2">ความคิดเห็นของท่าน/For your informatiion</option>
-                                    <option value="3">เพื่อการอนุมัติของท่าน/For your approval </option>
+                                    <?php $masters = App\ObjectiveAssign::get(); ?>
+                                    @foreach ($masters as $value)
+                                    <option value="{{$value->id}}">{{$value->masassign_title}}</option>
+                                    @endforeach
                                 </select>
                         </div>
                     </div>
@@ -228,9 +229,10 @@
                                 <label for="firstName">ขออนุมัติสำหรับ</label>
                                     <select class="form-control custom-select" name="approved_for" id="get_for" required>
                                         <option selected disabled>เลือก</option>
-                                        <option value="1">เพื่อทราบ/For your informatiion</option>
-                                        <option value="2">ความคิดเห็นของท่าน/For your informatiion</option>
-                                        <option value="3">เพื่อการอนุมัติของท่าน/For your approval </option>
+                                        <?php $masters = App\ObjectiveAssign::get(); ?>
+                                    @foreach ($masters as $value)
+                                    <option value="{{$value->id}}">{{$value->masassign_title}}</option>
+                                    @endforeach
                                     </select>
                             </div>
                         </div>

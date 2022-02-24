@@ -15,6 +15,20 @@ class TeamSaleController extends Controller
         return view('admin.team_sales', compact('teamSales'));
     }
 
+    public function add_index(){
+        $teamSales = DB::table('master_team_sales')->orderBy('id', 'asc')->get();
+        return view('admin.add_team_sales', compact('teamSales'));
+    }
+
+    public function teamSales_detail($id){
+        $teamSalesDetail = DB::table('users')->join('master_team_sales', 'users.team_id', 'master_team_sales.id')
+        ->join('master_permission', 'users.status', 'master_permission.id')
+        ->where('users.team_id', $id)
+        ->select('users.*', 'master_team_sales.team_name', 'master_permission.permission_name')
+        ->get();
+        return view('admin.team_sales_detail', compact('teamSalesDetail'));
+    }
+
     public function store(Request $request){
         $check_name = DB::table('master_team_sales')
         ->where('team_name', $request->team_name)

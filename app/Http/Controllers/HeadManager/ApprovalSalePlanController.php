@@ -27,7 +27,7 @@ class ApprovalSalePlanController extends Controller
     {
 
         $data['monthly_plan'] = MonthlyPlan::join('users', 'monthly_plans.created_by', '=', 'users.id')
-            ->where('monthly_plans.status_approve', 1)->select('users.name', 'monthly_plans.*')->get();
+            ->whereIn('monthly_plans.status_approve', [1, 2])->select('users.name', 'monthly_plans.*')->get();
 
 
         return view('headManager.approval_saleplan', $data);
@@ -122,6 +122,23 @@ class ApprovalSalePlanController extends Controller
         }
 
         return view('headManager.approval_saleplan_detail', $data);
+    }
+
+    public function search(Request $request){
+        list($year,$month) = explode('-', $request->selectdateTo);
+        $data['monthly_plan'] = DB::table('monthly_plans')
+        ->join('users', 'users.id', 'monthly_plans.created_by')
+        ->where('monthly_plans.status_approve', 1)
+        ->where('users.team_id', Auth::user()->team_id)
+        ->whereYear('month_date', $year)
+        ->whereMonth('month_date', $month)
+        ->select(
+            'users.*',
+            'monthly_plans.*'
+        )
+        ->get();
+
+        return view('headManager.approval_saleplan', $data);
     }
 
     public function comment_saleplan($id, $createID)

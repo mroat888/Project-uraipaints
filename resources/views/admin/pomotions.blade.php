@@ -84,7 +84,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ url('admin/create_promotion') }}" method="post" enctype="multipart/form-data">
+                <form id="form_insert_promotion" enctype="multipart/form-data">
+                {{-- <form action="{{ url('admin/create_promotion') }}" method="post" enctype="multipart/form-data"> --}}
                     @csrf
                     <div class="modal-body">
                         <div class="row">
@@ -151,7 +152,7 @@
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">รูปภาพ</label>
-                                <input type="file" name="news_image" id="get_image" class="form-control" required>
+                                <input type="file" name="news_image" id="get_image" class="form-control">
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="firstName">วันที่แจ้งเตือน</label>
@@ -170,6 +171,49 @@
     </div>
 
     <script>
+        $("#form_insert_promotion").on("submit", function (e) {
+            e.preventDefault();
+            // var formData = $(this).serialize();
+            var formData = new FormData(this);
+            //console.log(formData);
+            $.ajax({
+                type:'POST',
+                url: '{{ url("admin/create_promotion") }}',
+                data:formData,
+                cache:false,
+                contentType: false,
+                processData: false,
+                success:function(response){
+                    console.log(response);
+                    if(response.status == 200){
+                        $("#exampleModalLarge01").modal('hide');
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'บันทึกข้อมูลสำเร็จ',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        location.reload();
+                    }else{
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'บันทึกข้อมูลไม่สำเร็จ',
+                            text: response.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+
+                },
+                error: function(response){
+                    console.log("error");
+                    console.log(response);
+                }
+            });
+        });
+    </script>
+
+    <script>
         //Edit
         function edit_modal(id) {
             $.ajax({
@@ -182,8 +226,8 @@
                     $('#get_date').val(data.dataEdit.news_date);
                     $('#get_title').val(data.dataEdit.news_title);
                     $('#get_detail').val(data.dataEdit.news_detail);
-                    $('#get_image').val(data.dataEdit.news_image);
                     $('#get_url').val(data.dataEdit.url);
+                    $('#get_image').val(data.dataEdit.news_image);
 
                     $('#editPromotion').modal('toggle');
                 }

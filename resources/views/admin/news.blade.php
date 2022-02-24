@@ -54,8 +54,8 @@
                                         <td>{{$value->news_date}}</td>
                                         <td>
                                             <div class="button-list">
-                                                <button class="btn btn-icon btn-primary mr-10">
-                                                    <span class="btn-icon-wrap"><i data-feather="feather"></i></span></button>
+                                                {{-- <button class="btn btn-icon btn-primary mr-10">
+                                                    <span class="btn-icon-wrap"><i data-feather="feather"></i></span></button> --}}
                                                     <button onclick="edit_modal({{ $value->id }})"
                                                         class="btn btn-icon btn-warning mr-10" data-toggle="modal" data-target="#editNews">
                                                         <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
@@ -85,7 +85,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ url('admin/create_news') }}" method="post" enctype="multipart/form-data">
+                <form id="form_insert_news" enctype="multipart/form-data">
+                {{-- <form action="{{ url('admin/create_news') }}" method="post" enctype="multipart/form-data"> --}}
                     @csrf
                 <div class="modal-body">
                         <div class="row">
@@ -171,6 +172,49 @@
     </div>
 
     <script>
+        $("#form_insert_news").on("submit", function (e) {
+            e.preventDefault();
+            // var formData = $(this).serialize();
+            var formData = new FormData(this);
+            //console.log(formData);
+            $.ajax({
+                type:'POST',
+                url: '{{ url("admin/create_news") }}',
+                data:formData,
+                cache:false,
+                contentType: false,
+                processData: false,
+                success:function(response){
+                    console.log(response);
+                    if(response.status == 200){
+                        $("#exampleModalLarge01").modal('hide');
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'บันทึกข้อมูลสำเร็จ',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        location.reload();
+                    }else{
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'บันทึกข้อมูลไม่สำเร็จ',
+                            text: response.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+
+                },
+                error: function(response){
+                    console.log("error");
+                    console.log(response);
+                }
+            });
+        });
+    </script>
+
+    <script>
         //Edit
         function edit_modal(id) {
             $.ajax({
@@ -183,7 +227,7 @@
                     $('#get_date').val(data.dataEdit.news_date);
                     $('#get_title').val(data.dataEdit.news_title);
                     $('#get_detail').val(data.dataEdit.news_detail);
-                    $('#get_image').val(data.dataEdit.news_image);
+                    // $('#get_image').val(data.dataEdit.news_image);
                     $('#get_url').val(data.dataEdit.url);
 
                     $('#editNews').modal('toggle');

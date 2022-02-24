@@ -48,7 +48,6 @@
                     <button type="submit" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" name="approve" value="approve">อนุมัติ</button>
 
                     <button type="submit" class="btn btn_purple btn-danger btn-sm btn-rounded px-3 ml-5" name="failed" value="failed">ไม่อนุมัติ</button>
-                </form>
             </div>
         </div>
         <!-- /Title -->
@@ -62,7 +61,7 @@
                                 <h5 class="hk-sec-title">ตารางอนุมัติ Sale Plan</h5>
                             </div>
                             <div class="col-sm-12 col-md-9">
-                                <!-- ------ -->
+                                {{-- <!-- ------ -->
                                 <span class="form-inline pull-right">
                                 <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</button>
                                 <form action="{{ url('approvalsaleplan/search') }}" method="POST" enctype="multipart/form-data">
@@ -74,14 +73,14 @@
                                     </span>
                                 </form>
                                 </span>
-                                <!-- ------ -->
+                                <!-- ------ --> --}}
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-sm">
                                 <div class="table-responsive-sm">
-                                    <table class="table table-sm table-hover">
+                                    <table id="datable_1" class="table table-sm table-hover">
                                         <thead>
                                             <tr>
                                                 <th>
@@ -141,7 +140,7 @@
                                                 @endforeach
                                         </tbody>
                                     </table>
-                                
+                                </form>
                                 </div>
                             </div>
                         </div>

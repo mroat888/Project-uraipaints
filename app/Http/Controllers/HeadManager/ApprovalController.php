@@ -6,6 +6,7 @@ use App\Assignment;
 use App\AssignmentComment;
 use App\CustomerShopComment;
 use App\Http\Controllers\Controller;
+use App\RequestApproval;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,6 +20,7 @@ class ApprovalController extends Controller
         $data['request_approval'] = DB::table('assignments')
         ->join('users', 'assignments.created_by', '=', 'users.id')
         ->whereIn('assignments.assign_status', [0,1,2])
+        ->where('users.team_id', Auth::user()->team_id)
             ->select('assignments.created_by')
             ->distinct()->get();
 
@@ -72,6 +74,30 @@ class ApprovalController extends Controller
         ->orderBy('id', 'desc')->get();
 
         return view('headManager.approval_general_detail', $data);
+    }
+
+    public function search(Request $request){
+        list($year,$month) = explode('-', $request->selectdateTo);
+
+        $data['request_approval'] = DB::table('assignments')
+        ->join('users', 'assignments.created_by', '=', 'users.id')
+        ->whereIn('assignments.assign_status', [0,1,2])
+        ->where('users.team_id', Auth::user()->team_id)
+        ->whereYear('assignments.created_at', $year)
+        ->whereMonth('assignments.created_at', $month)
+            ->select('assignments.created_by')
+            ->distinct()->get();
+
+            return view('headManager.approval_general', $data);
+    }
+
+    public function view_approval($id)
+    {
+        $dataEdit = RequestApproval::find($id);
+        $data = array(
+            'dataEdit'     => $dataEdit,
+        );
+        echo json_encode($data);
     }
 
     public function comment_approval($id, $createID)

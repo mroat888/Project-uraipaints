@@ -39,7 +39,7 @@
 
                              <span class="form-inline pull-right pull-sm-center">
                                 <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</button>
-                                <form action="{{ url('head/search_month_add-assignment') }}" method="post" enctype="multipart/form-data">
+                                <form action="{{ url('lead/search_month_add-assignment') }}" method="post" enctype="multipart/form-data">
                                     @csrf
                                 <span id="selectdate" style="display:none;">
 

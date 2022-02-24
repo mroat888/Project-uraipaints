@@ -25,13 +25,13 @@ class UserPermissionController extends Controller
         $res_api = $this->apicontroller->getAllSellers();
         $sellers_api = array();
         foreach ($res_api['data'] as $key => $value) {
-            $sellers_api[$key] = 
+            $sellers_api[$key] =
             [
                 'id' => $value['identify'],
                 'name' => $value['name'],
             ];
         }
-        // -----  END API 
+        // -----  END API
 
         return view('admin.user_permission', compact('users', 'master_permission', 'sellers_api', 'master_team'));
     }
@@ -65,7 +65,7 @@ class UserPermissionController extends Controller
                     'status' => $request->sel_status,
                     'team_id' => $request->sel_team,
                     'created_at' => date('Y-m-d H:i:s'),
-                    'created_by' => Auth::user()->id,                   
+                    'created_by' => Auth::user()->id,
                 ]);
 
                 DB::commit();
@@ -86,23 +86,23 @@ class UserPermissionController extends Controller
         $master_permission = DB::table('master_permission')->get();
         $master_teamsale = DB::table('master_team_sales')->get();
 
-        // -----  API 
+        // -----  API
         $res_api = $this->apicontroller->getAllSellers();
 
         $sellers_api = array();
         foreach ($res_api['data'] as $key => $value) {
-            $sellers_api[$key] = 
+            $sellers_api[$key] =
             [
                 'id' => $value['identify'],
                 'name' => $value['name'],
             ];
         }
-        // -----  END API 
+        // -----  END API
 
         return response()->json([
             'status' => 200,
             'dataUser' => $users,
-            'master_permission' => $master_permission, 
+            'master_permission' => $master_permission,
             'sellers_api' => $sellers_api,
             'master_teamsale' => $master_teamsale,
         ]);
@@ -113,7 +113,7 @@ class UserPermissionController extends Controller
         ->where('id', $request->edit_tuser_id)
         ->first();
 
-        
+
         if(($user_chkid->email == $request->edit_temail) && ($user_chkid->api_identify == $request->edit_sel_api_identify)){
             DB::table('users')
             ->where('id', $request->edit_tuser_id)
@@ -122,18 +122,18 @@ class UserPermissionController extends Controller
                 'status' => $request->edit_sel_status,
                 'team_id' => $request->edit_sel_team,
                 'updated_at' => date('Y-m-d H:i:s'),
-                'updated_by' =>  Auth::user()->id, 
+                'updated_by' =>  Auth::user()->id,
             ]);
             $message = "บันทึกข้อมูลสำเร็จ";
-        }else{        
-            
+        }else{
+
             $user_check_email = DB::table('users')
             ->where('email', $request->edit_temail)
             ->orWhere('api_identify', $request->edit_sel_api_identify)
             ->first();
 
             if($user_check_email != null){
-                
+
                 if($user_check_email->email == $user_chkid->email){
                     // $message = "อีเมลเดิมค่ะ";
 
@@ -151,7 +151,7 @@ class UserPermissionController extends Controller
                                 'team_id' => $request->edit_sel_team,
                                 'api_identify' => $request->edit_sel_api_identify,
                                 'updated_at' => date('Y-m-d H:i:s'),
-                                'updated_by' =>  Auth::user()->id, 
+                                'updated_by' =>  Auth::user()->id,
                             ]);
                             $message = "บันทึกข้อมูลสำเร็จ";
                             return response()->json([
@@ -175,7 +175,7 @@ class UserPermissionController extends Controller
                             'team_id' => $request->edit_sel_team,
                             'api_identify' => $request->edit_sel_api_identify,
                             'updated_at' => date('Y-m-d H:i:s'),
-                            'updated_by' =>  Auth::user()->id, 
+                            'updated_by' =>  Auth::user()->id,
                         ]);
                         $message = "บันทึกข้อมูลสำเร็จ";
                         return response()->json([
@@ -190,7 +190,7 @@ class UserPermissionController extends Controller
                         'message' => $message,
                     ]);
                 }
-               
+
             }else{  // กรณีเปลี่ยนทั้งอีเมล และชื่อพนักงาน ไม่ซ้ำกัน
                 DB::table('users')
                 ->where('id', $request->edit_tuser_id)
@@ -201,18 +201,39 @@ class UserPermissionController extends Controller
                     'team_id' => $request->edit_sel_team,
                     'api_identify' => $request->edit_sel_api_identify,
                     'updated_at' => date('Y-m-d H:i:s'),
-                    'updated_by' =>  Auth::user()->id, 
+                    'updated_by' =>  Auth::user()->id,
                 ]);
                 $message = "บันทึกข้อมูลสำเร็จ";
             }
-            
+
         }
 
         return response()->json([
             'status' => 200,
             'message' => $message,
         ]);
-        
-        
+
+
+    }
+
+    public function update_status_use($id){
+        $chk = DB::table('users')->where('id', $id)->first();
+
+        if ($chk->status_use == 1) {
+            DB::table('users')->where('id', $chk->id)
+            ->update([
+                'status_use' => 0,
+                'updated_at' => date('Y-m-d H:i:s'),
+                'updated_by' =>  Auth::user()->id,
+            ]);
+        }else {
+            DB::table('users')->where('id', $chk->id)
+            ->update([
+                'status_use' => 1,
+                'updated_at' => date('Y-m-d H:i:s'),
+                'updated_by' =>  Auth::user()->id,
+            ]);
+        }
+        return back();
     }
 }
