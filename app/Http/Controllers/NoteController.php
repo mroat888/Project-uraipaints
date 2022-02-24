@@ -122,13 +122,13 @@ class NoteController extends Controller
         // $to = Carbon::parse($request->toMonth)->format('m');
         $from = $request->fromMonth."-01";
         $to = $request->toMonth."-31";
-        $data =  DB::table('notes')
-        ->where('employee_id', Auth::user()->id)
+        $data =  DB::table('notes')->join('master_note', 'notes.note_tags', 'master_note.id')
         ->whereDate('note_date', '>=', $from)
         ->whereDate('note_date', '<=', $to)
-        ->orderBy('status_pin', 'desc')
-        ->orderBy('note_date', 'asc')->get();
-
+        ->where('notes.employee_id', Auth::user()->id)
+        ->select('notes.*', 'master_note.name_tag')
+        ->orderBy('notes.status_pin', 'desc')
+        ->orderBy('notes.note_date', 'asc')->get();
 
         // return $list_approval;
 
@@ -142,12 +142,13 @@ class NoteController extends Controller
         // $to = Carbon::parse($request->toMonth)->format('m');
         $from = $request->fromMonth."-01";
         $to = $request->toMonth."-31";
-        $data =  DB::table('notes')
-        ->where('employee_id', Auth::user()->id)
+        $data =  DB::table('notes')->join('master_note', 'notes.note_tags', 'master_note.id')
         ->whereDate('note_date', '>=', $from)
         ->whereDate('note_date', '<=', $to)
-        ->orderBy('status_pin', 'desc')
-        ->orderBy('note_date', 'asc')->get();
+        ->where('notes.employee_id', Auth::user()->id)
+        ->select('notes.*', 'master_note.name_tag')
+        ->orderBy('notes.status_pin', 'desc')
+        ->orderBy('notes.note_date', 'asc')->get();
 
 
         // return $list_approval;
@@ -162,12 +163,13 @@ class NoteController extends Controller
         // $to = Carbon::parse($request->toMonth)->format('m');
         $from = $request->fromMonth."-01";
         $to = $request->toMonth."-31";
-        $data =  DB::table('notes')
-        ->where('employee_id', Auth::user()->id)
+        $data =  DB::table('notes')->join('master_note', 'notes.note_tags', 'master_note.id')
         ->whereDate('note_date', '>=', $from)
         ->whereDate('note_date', '<=', $to)
-        ->orderBy('status_pin', 'desc')
-        ->orderBy('note_date', 'asc')->get();
+        ->where('notes.employee_id', Auth::user()->id)
+        ->select('notes.*', 'master_note.name_tag')
+        ->orderBy('notes.status_pin', 'desc')
+        ->orderBy('notes.note_date', 'asc')->get();
 
 
         // return $list_approval;
@@ -182,12 +184,13 @@ class NoteController extends Controller
         // $to = Carbon::parse($request->toMonth)->format('m');
         $from = $request->fromMonth."-01";
         $to = $request->toMonth."-31";
-        $data =  DB::table('notes')
-        ->where('employee_id', Auth::user()->id)
+        $data =  DB::table('notes')->join('master_note', 'notes.note_tags', 'master_note.id')
         ->whereDate('note_date', '>=', $from)
         ->whereDate('note_date', '<=', $to)
-        ->orderBy('status_pin', 'desc')
-        ->orderBy('note_date', 'asc')->get();
+        ->where('notes.employee_id', Auth::user()->id)
+        ->select('notes.*', 'master_note.name_tag')
+        ->orderBy('notes.status_pin', 'desc')
+        ->orderBy('notes.note_date', 'asc')->get();
 
 
         // return $list_approval;

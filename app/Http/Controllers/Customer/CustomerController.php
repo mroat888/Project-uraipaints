@@ -75,7 +75,7 @@ class CustomerController extends Controller
         DB::beginTransaction();
         try {
             if($request->customer_shops_id != ""){ // ถ้ามีการค้นหาร้านค้าที่มีในระบบ
-                
+
                 // $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->first();
                 //-- เพิ่ม monthly_plans
                 DB::table('monthly_plans')->where('id', $monthly_plan->id)
@@ -89,12 +89,13 @@ class CustomerController extends Controller
                 DB::table('customer_shops_saleplan')
                     ->insert([
                         'customer_shop_id' => $request->customer_shops_id,
-                        'shop_aprove_status' => $shop_aprove_status, 
-                        'is_monthly_plan' => $request->is_monthly_plan, 
+                        'customer_shop_objective' => $request->customer_shop_objective,
+                        'shop_aprove_status' => $shop_aprove_status,
+                        'is_monthly_plan' => $request->is_monthly_plan,
                         'monthly_plan_id' => $monthly_plan->id,
                         'created_by' => Auth::user()->id,
                         'created_at' => Carbon::now(),
-                    ]);            
+                    ]);
 
                 DB::commit();
 
@@ -103,7 +104,7 @@ class CustomerController extends Controller
                     'message' => 'บันทึกข้อมูลสำเร็จ',
                     'data' => $request,
                 ]);
-                
+
             }else{ // ถ้าไม่มีให้เพิ่มร้านค้าเข้าไปใหม่
 
                 $path = 'upload/CustomerImage';
@@ -166,12 +167,13 @@ class CustomerController extends Controller
                 DB::table('customer_shops_saleplan')
                     ->insert([
                         'customer_shop_id' => $sql_shops->id,
-                        'shop_aprove_status' => $shop_aprove_status, 
-                        'is_monthly_plan' => $request->is_monthly_plan, 
+                        'customer_shop_objective' => $request->customer_shop_objective,
+                        'shop_aprove_status' => $shop_aprove_status,
+                        'is_monthly_plan' => $request->is_monthly_plan,
                         'monthly_plan_id' => $monthly_plan->id,
                         'created_by' => Auth::user()->id,
                         'created_at' => Carbon::now(),
-                    ]);            
+                    ]);
 
                 DB::commit();
 
@@ -199,8 +201,15 @@ class CustomerController extends Controller
     public function edit($id)
     {
 
-        $dataEdit = DB::table('customer_shops')
-            ->where('id', $id)
+        // $dataEdit = DB::table('customer_shops')
+        //     ->where('id', $id)
+        //     ->first();
+
+        $dataEdit = DB::table('customer_shops_saleplan')
+        ->join('customer_shops', 'customer_shops_saleplan.customer_shop_id', 'customer_shops.id')
+        ->join('master_customer_new', 'customer_shops_saleplan.customer_shop_objective', 'master_customer_new.id')
+            ->where('customer_shops_saleplan.customer_shop_id', $id)
+            ->select('customer_shops.*', 'master_customer_new.cust_name')
             ->first();
 
         $customer_contacts = DB::table('customer_contacts')
@@ -300,6 +309,14 @@ class CustomerController extends Controller
                         'updated_at' => date('Y-m-d H:i:s'),
                     ]);
 
+                    DB::table('customer_shops_saleplan')
+                    ->where('customer_shop_id', $request->edit_cus_contacts_id)
+                    ->update([
+                        'customer_shop_objective' => $request->edit_customer_shop_objective,
+                        'updated_by' => Auth::user()->id,
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ]);
+
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollback();
@@ -324,6 +341,14 @@ class CustomerController extends Controller
                     ->update([
                         'customer_contact_name' => $request->edit_contact_name,
                         'customer_contact_phone' => $request->edit_customer_contact_phone,
+                        'updated_by' => Auth::user()->id,
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ]);
+
+                    DB::table('customer_shops_saleplan')
+                    ->where('customer_shop_id', $request->edit_cus_contacts_id)
+                    ->update([
+                        'customer_shop_objective' => $request->edit_customer_shop_objective,
                         'updated_by' => Auth::user()->id,
                         'updated_at' => date('Y-m-d H:i:s'),
                     ]);
@@ -356,6 +381,14 @@ class CustomerController extends Controller
                         'updated_at' => date('Y-m-d H:i:s'),
                     ]);
 
+                    DB::table('customer_shops_saleplan')
+                    ->where('customer_shop_id', $request->edit_cus_contacts_id)
+                    ->update([
+                        'customer_shop_objective' => $request->edit_customer_shop_objective,
+                        'updated_by' => Auth::user()->id,
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ]);
+
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollback();
@@ -379,6 +412,14 @@ class CustomerController extends Controller
                     ->update([
                         'customer_contact_name' => $request->edit_contact_name,
                         'customer_contact_phone' => $request->edit_customer_contact_phone,
+                        'updated_by' => Auth::user()->id,
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ]);
+
+                    DB::table('customer_shops_saleplan')
+                    ->where('customer_shop_id', $request->edit_cus_contacts_id)
+                    ->update([
+                        'customer_shop_objective' => $request->edit_customer_shop_objective,
                         'updated_by' => Auth::user()->id,
                         'updated_at' => date('Y-m-d H:i:s'),
                     ]);
@@ -414,12 +455,12 @@ class CustomerController extends Controller
             ->where('customer_shop_id', $data['customer_shops']->id)
             ->orderBy('id', 'desc')
             ->get();
-        
+
         $data['customer_shops_saleplan'] = DB::table('customer_shops_saleplan')
             ->where('customer_shop_id', $data['customer_shops']->id)
             ->orderBy('monthly_plan_id', 'desc')
             ->get();
-        
+
         return view('customer.customer_detail', $data);
     }
 
@@ -653,5 +694,5 @@ class CustomerController extends Controller
 
     }
 
-    
+
 }

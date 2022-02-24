@@ -1,4 +1,6 @@
-<?php $province = DB::table('province')->get(); ?>
+<?php $province = DB::table('province')->get();
+      $objective_cust_new = App\MasterCustomerNew::get();
+?>
  <!-- Modal -->
      {{-- <div class="modal fade" id="editCustomer" tabindex="-1" role="dialog" aria-labelledby="editCustomer" aria-hidden="true"> --}}
         <div class="modal-dialog modal-lg" role="document">
@@ -16,16 +18,25 @@
                         <input class="form-control" id="edit_shop_id" name="edit_shop_id" type="hidden">
                         <input class="form-control" id="edit_cus_contacts_id" name="edit_cus_contacts_id" type="hidden">
                         <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="objective">วัตถุประสงค์</label>
+                                <select class="form-control custom-select" id="edit_shop_objective" name="edit_customer_shop_objective" required>
+                                    {{-- <option selected>กรุณาเลือก</option> --}}
+                                    @foreach ($objective_cust_new as $value)
+                                    <option value="{{$value->id}}">{{$value->cust_name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ชื่อร้าน</label>
                                 <input class="form-control" id="edit_shop_name" name="edit_shop_name" type="text">
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ชื่อผู้ติดต่อ</label>
                                 <input class="form-control" id="edit_contact_name" placeholder="" name="edit_contact_name" type="text">
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">เบอร์โทรศัพท์</label>
                                 <input class="form-control" id="edit_customer_contact_phone" placeholder="" name="edit_customer_contact_phone" type="text">

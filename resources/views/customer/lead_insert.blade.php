@@ -1,4 +1,8 @@
-<?php $province = DB::table('province')->get(); ?>
+<?php $province = DB::table('province')->get();
+
+      $objective_cust_new = App\MasterCustomerNew::get();
+
+?>
 <!-- <div class="modal fade" id="addCustomer" tabindex="-1" role="dialog" aria-labelledby="addCustomer" aria-hidden="true"> -->
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -13,7 +17,16 @@
                 @csrf
             <div class="modal-body">
                     @if(isset($customer_shops ))
-                        <div class="row"> 
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="objective">วัตถุประสงค์</label>
+                                <select class="form-control custom-select" name="customer_shop_objective" required>
+                                    <option selected>กรุณาเลือก</option>
+                                    @foreach ($objective_cust_new as $value)
+                                    <option value="{{$value->id}}">{{$value->cust_name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ค้นหาชื่อร้าน</label>
                                 <select name="customer_shops" id="customer_shops" class="form-control custom-select select2">
@@ -188,6 +201,8 @@ $(document).on('click','.btn_editshop', function(e){
                 $(".modal-title").text('แก้ไขข้อมูลลูกค้า');
                 $("#edit_shop_id").val(shop_id);
                 $("#edit_shop_name").val(response.dataEdit.shop_name);
+                // $("#edit_shop_objective2").val(response.dataEdit.cust_name);
+                $('#edit_shop_objective').append('<option value='+response.dataEdit.customer_shop_objective+' selected>'+response.dataEdit.cust_name+'</option>')	;
                 if(response.customer_contacts != null){
                     $("#edit_cus_contacts_id").val(response.customer_contacts.id);
                     $("#edit_contact_name").val(response.customer_contacts.customer_contact_name);

@@ -396,6 +396,12 @@ Route::get('/admin/edit_master_objective_visit/{id}', 'Admin\MastrObjectiveVisit
 Route::post('/admin/update_master_objective_visit', 'Admin\MastrObjectiveVisitController@update');
 Route::get('admin/delete_master_objective_visit/{id}', 'Admin\MastrObjectiveVisitController@destroy');
 
+Route::get('admin/master_customer_new', 'Admin\MastrCustomerNewController@index');
+Route::post('admin/create_master_customer_new', 'Admin\MastrCustomerNewController@store');
+Route::get('/admin/edit_master_customer_new/{id}', 'Admin\MastrCustomerNewController@edit');
+Route::post('/admin/update_master_customer_new', 'Admin\MastrCustomerNewController@update');
+Route::get('admin/delete_master_customer_new/{id}', 'Admin\MastrCustomerNewController@destroy');
+
 
 });
 
