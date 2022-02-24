@@ -38,7 +38,23 @@ class ApprovalSalePlanController extends Controller
         ->get();
 
         return view('leadManager.approval_saleplan', $data);
+    }
 
+    public function search(Request $request){
+        list($year,$month) = explode('-', $request->selectdateTo);
+        $data['monthly_plan'] = DB::table('monthly_plans')
+        ->join('users', 'users.id', 'monthly_plans.created_by')
+        ->where('monthly_plans.status_approve', 1)
+        ->where('users.team_id', Auth::user()->team_id)
+        ->whereYear('month_date', $year)
+        ->whereMonth('month_date', $month)
+        ->select(
+            'users.*',
+            'monthly_plans.*'
+        )
+        ->get();
+
+        return view('leadManager.approval_saleplan', $data);
     }
 
     public function approvalsaleplan_detail($id)
@@ -68,21 +84,7 @@ class ApprovalSalePlanController extends Controller
             ];
         }
 
-        // -- ข้อมูลลูกค้าใหม่
-        // $data['customer_new'] = DB::table('customer_shops')
-        // ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
-        // ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
-        // ->whereIn('customer_shops.shop_aprove_status', [1, 2, 3])
-        // // ->where('customer_shops.created_by', Auth::user()->id)
-        // ->where('customer_shops.monthly_plan_id', $id)
-        // ->select(
-        //     'province.PROVINCE_NAME',
-        //     'customer_shops.*'
-        // )
-        // ->orderBy('customer_shops.id', 'desc')
-        // ->get();
-
-        // ลูกค้าใหม่เปลี่ยนมาใช้อันนี้
+        // ลูกค้าใหม่
         $data['customer_new'] = DB::table('customer_shops_saleplan')
         ->join('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
         ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
