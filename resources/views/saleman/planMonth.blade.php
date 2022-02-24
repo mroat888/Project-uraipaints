@@ -30,17 +30,15 @@
                                     <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</button>
                                     <form action="{{ url('search_month_planMonth') }}" method="post" enctype="multipart/form-data">
                                         @csrf
-                                    <span id="selectdate" style="display:none;">
+                                        <span id="selectdate" style="display:none;">
 
-                                        เดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateFrom" name="fromMonth"/>
+                                            เดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateFrom" name="fromMonth"/>
 
-                                        ถึงเดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name="toMonth"/>
+                                            ถึงเดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name="toMonth"/>
 
-                                    <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm">ค้นหา</button>
-
-                                    {{-- <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button> --}}
-                                    </span>
-                                </form>
+                                            <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm">ค้นหา</button>
+                                        </span>
+                                    </form>
                                 </span>
                                 <!-- ------ -->
                             </div>
@@ -59,8 +57,8 @@
                                                     <th>ลูกค้าใหม่</th>
                                                     <th>รวมงาน</th>
                                                     {{-- <th>ดำเนินการแล้ว</th> --}}
-                                                    <th>คงเหลือ</th>
-                                                    <th>สำเร็จ %</th>
+                                                    <!-- <th>คงเหลือ</th>
+                                                    <th>สำเร็จ %</th> -->
                                                     <th>เยี่ยมลูกค้า</th>
                                                     <th>สถานะ</th>
                                                     <th class="text-center">Action</th>
@@ -68,21 +66,38 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($monthly_plan as $key => $value)
+                                                    @php
+                                                        $sale_plan_amount = DB::table('sale_plans')
+                                                            ->where('monthly_plan_id', $value->id)
+                                                            ->whereIn('sale_plans_status', [0,1,2])
+                                                            ->count();
+
+                                                        $cust_new_amount = DB::table('customer_shops_saleplan')
+                                                            ->where('monthly_plan_id', $value->id)
+                                                            ->whereIn('shop_aprove_status', [0,1,2])
+                                                            ->count();
+
+                                                        $total_plan = $sale_plan_amount + $cust_new_amount;
+
+                                                        $cust_visits_amount = DB::table('customer_visits')
+                                                            ->where('monthly_plan_id', $value->id)
+                                                            ->count();
+                                                    @endphp
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
                                                         <td>{{ thaidate('F Y', $value->month_date) }}</td>
-                                                        <td>{{ $value->sale_plan_amount }}</td>
-                                                        <td>{{ $value->cust_new_amount }}</td>
-                                                        <td>{{ $value->total_plan }}</td>
-                                                        <td>
+                                                        <td>{{ $sale_plan_amount }}</td>
+                                                        <td>{{ $cust_new_amount }}</td>
+                                                        <td>{{ $total_plan }}</td>
+                                                        <!-- <td>
                                                             @if ($value->outstanding_plan == 0)
                                                                 0
                                                             @else
                                                                 {{ $value->outstanding_plan }}
                                                             @endif
                                                         </td>
-                                                        <td>{{ $value->success_plan }}</td>
-                                                        <td>{{ $value->cust_visits_amount }}</td>
+                                                        <td>{{ $value->success_plan }}</td> -->
+                                                        <td>{{ $cust_visits_amount }}</td>
                                                         <td>
 
                                                             @if ($value->status_approve == 0)
@@ -165,7 +180,13 @@
                                             </div>
                                             <div class="mb-10">
                                                 <span style="font-weight: bold; font-size: 18px;">
-                                                    {{ $monthly_plan_next->sale_plan_amount }}
+                                                    @php
+                                                        $sale_plan_amount_next = DB::table('sale_plans')
+                                                            ->where('monthly_plan_id', $monthly_plan_next->id)
+                                                            ->whereIn('sale_plans_status', [0,1,2])
+                                                            ->count();
+                                                    @endphp
+                                                    {{ $sale_plan_amount_next }}
                                                 </span>
                                             </div>
                                         </div>
@@ -191,7 +212,13 @@
                                             </div>
                                             <div class="mb-10">
                                                 <span style="font-weight: bold; font-size: 18px;">
-                                                    {{ $monthly_plan_next->cust_new_amount }}
+                                                    @php
+                                                        $cust_new_amount_next = DB::table('customer_shops_saleplan')
+                                                            ->where('monthly_plan_id', $monthly_plan_next->id)
+                                                            ->whereIn('shop_aprove_status', [0,1,2])
+                                                            ->count();
+                                                    @endphp
+                                                    {{ $cust_new_amount_next }}
                                                 </span>
                                             </div>
                                         </div>
@@ -217,7 +244,12 @@
                                             </div>
                                             <div class="mb-10">
                                                 <span style="font-weight: bold; font-size: 18px;">
-                                                    {{ $monthly_plan_next->cust_visits_amount }}
+                                                    @php
+                                                        $cust_visits_amount_next = DB::table('customer_visits')
+                                                            ->where('monthly_plan_id', $monthly_plan_next->id)
+                                                            ->count();
+                                                    @endphp
+                                                    {{ $cust_visits_amount_next }}
                                                 </span>
                                             </div>
                                         </div>
