@@ -848,7 +848,7 @@
     <!-- Modal VisitCustomer -->
     <div class="modal fade" id="addCustomerVisit" tabindex="-1" role="dialog" aria-labelledby="addCustomerVisit"
         aria-hidden="true">
-        @include('saleman.visitCustomers_add')
+        @include('saleman.visitCustomers_add_dailyWork')
     </div>
 
     <!-- Modal Check-in/Out Saleplan -->
@@ -1169,7 +1169,7 @@
                 cust.innerHTML = "Geolocation is not supported by this browser.";
             }
             $("#id").val(id);
-            
+
             $("#cust_id").val(id);
             $("#custvisit_id").val(id);
             console.log(id);
