@@ -43,12 +43,12 @@
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-analytics"></i></span>อนุมัติ Sale Plan</h4>
             </div>
             <div class="d-flex">
-                <form action="{{ url('lead/approval_saleplan_confirm_all') }}" method="POST"
-                enctype="multipart/form-data">
-                @csrf
-                <button type="submit" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" name="approve" value="approve">อนุมัติ</button>
+                <form action="{{ url('lead/approval_saleplan_confirm_all') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <button type="submit" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" name="approve" value="approve">อนุมัติ</button>
 
-                <button type="submit" class="btn btn_purple btn-danger btn-sm btn-rounded px-3 ml-5" name="failed" value="failed">ไม่อนุมัติ</button>
+                    <button type="submit" class="btn btn_purple btn-danger btn-sm btn-rounded px-3 ml-5" name="failed" value="failed">ไม่อนุมัติ</button>
+                </form>
             </div>
         </div>
         <!-- /Title -->
@@ -64,14 +64,15 @@
                             <div class="col-sm-12 col-md-9">
                                 <!-- ------ -->
                                 <span class="form-inline pull-right">
-
-                                    <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</button>
+                                <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</button>
+                                <form action="{{ url('approvalsaleplan/search') }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
                                     <span id="selectdate" style="display:none;">
-                                         <input type="month" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" value="<?= date('Y-m-d'); ?>" />
+                                         <input type="month" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name ="selectdateTo" value="<?= date('Y-m-d'); ?>" />
 
-                                        <button style="margin-left:5px; margin-right:5px;" class="btn btn-success btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button>
+                                        <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-success btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button>
                                     </span>
-
+                                </form>
                                 </span>
                                 <!-- ------ -->
                             </div>
@@ -140,7 +141,7 @@
                                                 @endforeach
                                         </tbody>
                                     </table>
-                                </form>
+                                
                                 </div>
                             </div>
                         </div>
@@ -152,6 +153,23 @@
     </div>
 
     <script type="text/javascript">
+        function showselectdate(){
+            $("#selectdate").css("display", "block");
+            $("#bt_showdate").hide();
+        }
+
+        function hidetdate(){
+            $("#selectdate").css("display", "none");
+            $("#bt_showdate").show();
+        }
+
+        function displayMessage(message) {
+            $(".response").html("<div class='success'>" + message + "</div>");
+            setInterval(function() {
+                $(".success").fadeOut();
+            }, 1000);
+        }
+
         function chkAll(checkbox) {
 
             var cboxes = document.getElementsByName('checkapprove[]');
@@ -173,38 +191,5 @@
 
 @section('scripts')
 
-
-<script>
-    function showselectdate(){
-        $("#selectdate").css("display", "block");
-        $("#bt_showdate").hide();
-    }
-
-    function hidetdate(){
-        $("#selectdate").css("display", "none");
-        $("#bt_showdate").show();
-    }
-</script>
-
-<script>
-    function displayMessage(message) {
-        $(".response").html("<div class='success'>" + message + "</div>");
-        setInterval(function() {
-            $(".success").fadeOut();
-        }, 1000);
-    }
-</script>
-
-<script>
-    function showselectdate() {
-        $("#selectdate").css("display", "block");
-        $("#bt_showdate").hide();
-    }
-
-    function hidetdate() {
-        $("#selectdate").css("display", "none");
-        $("#bt_showdate").show();
-    }
-</script>
 
 @endsection('scripts')
