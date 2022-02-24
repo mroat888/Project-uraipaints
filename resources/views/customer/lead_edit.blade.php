@@ -15,8 +15,9 @@
                 <form id="form_edit" enctype="multipart/form-data">
                     @csrf
                 <div class="modal-body">
-                        <input class="form-control" id="edit_shop_id" name="edit_shop_id" type="hidden">
-                        <input class="form-control" id="edit_cus_contacts_id" name="edit_cus_contacts_id" type="hidden">
+                        <!-- <input class="form-control" id="edit_shop_id" name="edit_shop_id" type="text"> -->
+                        <input class="form-control" id="edit_cus_contacts_id" name="edit_cus_contacts_id" type="text">
+                        <input class="form-control" id="edit_shops_saleplan_id" name="edit_shops_saleplan_id" type="text">
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="objective">วัตถุประสงค์</label>
@@ -102,7 +103,8 @@
         //console.log(formData);
         $.ajax({
             type:'POST',
-            url: '{{ url("/update_customerLead") }}',
+           // url: '{{ url("/update_customerLead") }}',
+            url: '{{ url("/update_shopsaleplan") }}',
             data:formData,
             cache:false,
             contentType: false,

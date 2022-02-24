@@ -879,7 +879,7 @@
         
         $.ajax({
             method: 'GET',
-            //url: '{{ url("/edit_customerLead") }}/'+shop_id,
+            // url: '{{ url("/edit_customerLead") }}/'+shop_id,
             url: '{{ url("/edit_shopsaleplan") }}/'+shop_id,
             datatype: 'json',
             success: function(response){
@@ -887,7 +887,7 @@
                 $('#edit_shop_objective').children().remove().end();
                 if(response.status == 200){
                     $("#editCustomer").modal('show');
-                    $("#edit_shop_id").val(shop_id);
+                    $("#edit_shops_saleplan_id").val(shop_id);
                     $("#edit_shop_name").val(response.dataEdit.shop_name);
   
                     $.each(response.master_customer_new, function(key, value){

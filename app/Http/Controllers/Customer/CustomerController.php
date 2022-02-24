@@ -224,48 +224,6 @@ class CustomerController extends Controller
         ]);
     }
 
-    public function edit_shopsaleplan($id){
-        $dataEdit = DB::table('customer_shops_saleplan')
-        ->join('customer_shops', 'customer_shops_saleplan.customer_shop_id', 'customer_shops.id')
-        ->join('master_customer_new', 'customer_shops_saleplan.customer_shop_objective', 'master_customer_new.id')
-        ->where('customer_shops_saleplan.id', $id)
-        ->select(
-            'master_customer_new.*',
-            'customer_contacts.*',
-            'customer_shops.*', 
-            'customer_shops_saleplan.*',
-            'customer_shops.id as shop_id',
-        )
-        ->first();
-
-        $customer_contacts = DB::table('customer_contacts')
-            ->where('customer_shop_id', $dataEdit->shop_id)
-            ->orderBy('id', 'desc')
-            ->first();
-
-        $shop_province = DB::table('province')->get();
-
-        $shop_amphur = DB::table('amphur')
-            ->where('PROVINCE_ID', $dataEdit->shop_province_id)
-            ->get();
-
-        $shop_district = DB::table('district')
-            ->where('AMPHUR_ID', $dataEdit->shop_amphur_id)
-            ->get();
-
-        $master_customer_new = DB::table('master_customer_new')->orderBy('id','asc')->get();
-
-        return response()->json([
-            'status' => 200,
-            'dataEdit' => $dataEdit,
-            'customer_contacts' => $customer_contacts,
-            'shop_province' => $shop_province,
-            'shop_amphur' => $shop_amphur,
-            'shop_district' => $shop_district,
-            'master_customer_new' => $master_customer_new,
-        ]);
-    }
-
     public function update(Request $request)
     {
         //dd($request);
