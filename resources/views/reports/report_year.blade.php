@@ -41,7 +41,7 @@
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
                         <div class="col-sm-12 col-md-6">
-                            <h5 class="hk-sec-title">ตารางสรุปข้อมูลประจำปี <span style="color: rgb(128, 19, 0);">(ประจำปี 2564)</span></h5>
+                            <h5 class="hk-sec-title">ตารางสรุปข้อมูลประจำปี <span style="color: rgb(128, 19, 0);">(ประจำปี <?php echo thaidate('Y', date('Y-m-d')); ?>)</span></h5>
                         </div>
                         <div class="col-sm-12 col-md-6">
                             <!-- ------ -->
@@ -58,90 +58,99 @@
 
                     <div class="row">
                         <div class="col-sm">
-                            <div class="table-responsive-sm">
-                                <table class="table table-sm table-hover table-bordered">
+                            <div id="table_list" class="table-responsive col-md-12">
+                                <table id="datable_1" class="table table-hover">
                                     <thead>
                                         <tr>
                                             <th rowspan="2">#</th>
                                             <th rowspan="2" style="text-align:center;">รายชื่อผู้แทนขาย</th>
-                                            <th colspan="5" style="text-align:center;">จำนวนลูกค้าที่เข้าพบ (ทั้งหมด)</th>
-                                            <th colspan="5" style="text-align:center;">งานที่รับผิดชอบ (ทั้งหมด)</th>
+                                            <th colspan="6" class="bg-success text-white" style="text-align:center;">จำนวนลูกค้าเยี่ยม(ทั้งหมด)</th>
+                                            <th colspan="6" class="bg-info text-white" style="text-align:center;">จำนวนลูกค้าใหม่ (ทั้งหมด)</th>
+                                            <th colspan="6" class="bg-warning text-dark" style="text-align:center;">แผนงาน (ทั้งหมด)</th>
                                         </tr>
 
                                         <tr>
-                                            <th>งาน</th>
-                                            <th>สำเร็จ</th>
-                                            <th>ไม่สำเร็จ</th>
-                                            <th>สำเร็จ (%)</th>
-                                            <th>ไม่สำเร็จ (%)</th>
-                                            <th>งาน</th>
-                                            <th>สำเร็จ</th>
-                                            <th>ไม่สำเร็จ</th>
-                                            <th>สำเร็จ (%)</th>
-                                            <th>ไม่สำเร็จ (%)</th>
+                                            
+                                            <th class="bg-success text-white">งาน</th>
+                                            <th class="bg-success text-white">ยังไม่ทำ</th>
+                                            <th class="bg-success text-white">สำเร็จ</th>
+                                            <th class="bg-success text-white">ไม่สำเร็จ</th>
+                                            <th class="bg-success text-white">สำเร็จ (%)</th>
+                                            <th class="bg-success text-white">ไม่สำเร็จ (%)</th>
+
+                                            <th class="bg-info text-white">งาน</th>
+                                            <th class="bg-info text-white">ยังไม่ทำ</th>
+                                            <th class="bg-info text-white">สำเร็จ</th>
+                                            <th class="bg-info text-white">ไม่สำเร็จ</th>
+                                            <th class="bg-info text-white">สำเร็จ (%)</th>
+                                            <th class="bg-info text-white">ไม่สำเร็จ (%)</th>
+
+                                            <th class="bg-warning text-dark">งาน</th>
+                                            <th class="bg-warning text-dark">ยังไม่ทำ</th>
+                                            <th class="bg-warning text-dark">สำเร็จ</th>
+                                            <th class="bg-warning text-dark">ไม่สำเร็จ</th>
+                                            <th class="bg-warning text-dark">สำเร็จ (%)</th>
+                                            <th class="bg-warning text-dark">ไม่สำเร็จ (%)</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @php $no = 0; @endphp
+                                        @foreach($report as $key => $value)
                                         <tr>
-                                            <th scope="row">1</th>
-                                            <td>พงษ์ศักดิ์</td>
-                                            <td><span class="text-success">5</span></td>
-                                            <td><span class="text-success">2</span></td>
-                                            <td><span class="text-danger">3</span></td>
-                                            <td><span class="text-success">30%</span></td>
-                                            <td><span class="text-danger">50%</span></td>
-                                            <td><span class="text-success">5</span></td>
-                                            <td><span class="text-success">3</span></td>
-                                            <td><span class="text-danger">2</span></td>
-                                            <td><span class="text-success">30%</span></td>
-                                            <td><span class="text-danger">30%</span></td>
+                                            <th scope="row">{{ ++$no }}</th>
+                                            <td>{{ $report[$key]['user_name'] }}</td>
+                                            <!-- ลูกค้าเยี่ยม -->
+                                            <td class="bg-success"><span class="text-white">{{ $report[$key]['cust_visits_amount'] }}</span></td>
+                                            <td class="bg-secondary"><span class="text-white">{{ $report[$key]['cus_visit_in_process'] }}</span></td>
+                                            <td><span class="text-success">{{ $report[$key]['cus_visit_success'] }}</span></td>
+                                            <td><span class="text-danger">{{ $report[$key]['cus_visit_failed'] }}</span></td>
+                                            <td><span class="text-success">{{ $report[$key]['percent_custvisit_success'] }}%</span></td>
+                                            <td><span class="text-danger">{{ $report[$key]['percent_custvisit_failed'] }}%</span></td>
+                                            <!-- จบ ลูกค้าเยี่ยม -->
+                                            <!-- ลูกค้าใหม่ -->
+                                            <td class="bg-info"><span class="text-white">{{ $report[$key]['cust_new_amount'] }}</span></td>
+                                            <td class="bg-secondary"><span class="text-white">{{ $report[$key]['cust_new_in_process'] }}</span></td>
+                                            <td><span class="text-success">{{ $report[$key]['cust_new_success'] }}</span></td>
+                                            <td><span class="text-danger">{{ $report[$key]['cust_new_failed'] }}</span></td>
+                                            <td><span class="text-success">{{ $report[$key]['percent_custnew_success'] }}%</span></td>
+                                            <td><span class="text-danger">{{ $report[$key]['percent_custnew_failed'] }}%</span></td>
+                                            <!-- จบลูกค้าใหม่ -->
+                                            <!-- แผนงาน Sale plan -->
+                                            <td class="bg-warning"><span class="text-dark">{{ $report[$key]['sale_plans_amount'] }}</span></td>
+                                            <td class="bg-secondary"><span class="text-white">{{ $report[$key]['sale_plans_in_process'] }}</span></td>
+                                            <td><span class="text-success">{{ $report[$key]['sale_plans_success'] }}</span></td>
+                                            <td><span class="text-danger">{{ $report[$key]['sale_plans_failed'] }}</span></td>
+                                            <td><span class="text-success">{{ $report[$key]['percent_saleplans_success'] }}%</span></td>
+                                            <td><span class="text-danger">{{ $report[$key]['percent_saleplans_failed'] }}%</span></td>
+                                            <!-- จบ แผนงาน Sale plan -->
                                         </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>ชัยรุ่งเรือง</td>
-                                            <td><span class="text-success">5</span></td>
-                                            <td><span class="text-success">2</span></td>
-                                            <td><span class="text-danger">3</span></td>
-                                            <td><span class="text-success">30%</span></td>
-                                            <td><span class="text-danger">50%</span></td>
-                                            <td><span class="text-success">5</span></td>
-                                            <td><span class="text-success">3</span></td>
-                                            <td><span class="text-danger">2</span></td>
-                                            <td><span class="text-success">30%</span></td>
-                                            <td><span class="text-danger">30%</span></td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td>กิตติศักดิ์</td>
-                                            <td><span class="text-success">5</span></td>
-                                            <td><span class="text-success">2</span></td>
-                                            <td><span class="text-danger">3</span></td>
-                                            <td><span class="text-success">30%</span></td>
-                                            <td><span class="text-danger">50%</span></td>
-                                            <td><span class="text-success">5</span></td>
-                                            <td><span class="text-success">3</span></td>
-                                            <td><span class="text-danger">2</span></td>
-                                            <td><span class="text-success">30%</span></td>
-                                            <td><span class="text-danger">30%</span></td>
-                                        </tr>
+                                        @endforeach
+                                        
                                     </tbody>
                                     <tfoot style="font-weight: bold;">
-                                        <td colspan="2" align="center">ทั้งหมด</td>
-                                        {{-- <td colspan="11"><span class="text-success">3</span></td> --}}
-                                        <td><span class="text-success">36</span></td>
-                                        <td><span class="text-success">12</span></td>
-                                        <td><span class="text-danger">24</span></td>
-                                        <td><span class="text-success">50%</span></td>
-                                        <td><span class="text-danger">40%</span></td>
-                                        <td><span class="text-success">15</span></td>
-                                        <td><span class="text-success">9</span></td>
-                                        <td><span class="text-danger">6</span></td>
-                                        <td><span class="text-success">50%</span></td>
-                                        <td><span class="text-danger">40%</span></td>
-                                        <td></td>
+                                        <td colspan="2" style="text-align:center; ">ทั้งหมด</td>
+                                        <td><span class="text-success">{{ $report_footer[0]['sum_cust_visits_amount'] }}</span></td>
+                                        <td><span class="text-gray">{{ $report_footer[0]['sum_cus_visit_in_process'] }}</span></td>
+                                        <td><span class="text-success">{{ $report_footer[0]['sum_cus_visit_success'] }}</span></td>
+                                        <td><span class="text-danger">{{ $report_footer[0]['sum_cus_visit_failed'] }}</span></td>
+                                        <td><span class="text-success">{{ $report_footer[0]['sum_percent_custvisit_success'] }}%</span></td>
+                                        <td><span class="text-danger">{{ $report_footer[0]['sum_percent_custvisit_failed'] }}%</span></td>
+                                        <td><span class="text-success">{{ $report_footer[0]['sum_cust_new_amount'] }}</span></td>
+                                        <td><span class="text-gray">{{ $report_footer[0]['sum_cus_new_in_process'] }}</span></td>
+                                        <td><span class="text-success">{{ $report_footer[0]['sum_cus_new_success'] }}</span></td>
+                                        <td><span class="text-danger">{{ $report_footer[0]['sum_cus_new_failed'] }}</span></td>
+                                        <td><span class="text-success">{{ $report_footer[0]['sum_percent_custnew_success'] }}%</span></td>
+                                        <td><span class="text-danger">{{ $report_footer[0]['sum_percent_custnew_failed'] }}%</span></td>
+                                        <td><span class="text-success">{{ $report_footer[0]['sum_sale_plans_amount'] }}</span></td>
+                                        <td><span class="text-gray">{{ $report_footer[0]['sum_sale_plans_in_process'] }}</span></td>
+                                        <td><span class="text-success">{{ $report_footer[0]['sum_sale_plans_success'] }}</span></td>
+                                        <td><span class="text-danger">{{ $report_footer[0]['sum_sale_plans_failed'] }}</span></td>
+                                        <td><span class="text-success">{{ $report_footer[0]['sum_percent_saleplans_success'] }}%</span></td>
+                                        <td><span class="text-danger">{{ $report_footer[0]['sum_percent_saleplans_failed'] }}%</span></td>
                                     </tfoot>
                                 </table>
                             </div>
+
                         </div>
                     </div>
                 </section>
@@ -150,6 +159,7 @@
         </div>
         <!-- /Row -->
     </div>
+
 
 @section('footer')
     @include('layouts.footer')

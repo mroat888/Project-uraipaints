@@ -34,6 +34,7 @@ class ReportSalePlanController extends Controller
 
                     $count_saleplan = DB::table('sale_plans')
                         ->where('monthly_plan_id', $monthly_plans->id)
+                        ->where('sale_plans_status', 2) // สถานะอนุมัติ (0=ฉบับร่าง ,1 = ส่งอนุมัติ , 2 = อนุมัติ , 3= ปฎิเสธ))	
                         ->count();
 
                     $count_saleplan_updatestatus = DB::table('sale_plans')

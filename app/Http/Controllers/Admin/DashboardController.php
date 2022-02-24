@@ -107,50 +107,61 @@ class DashboardController extends Controller
         $data['sum_totalAmtSale_Previous'] = 0; // เป้ายอดขายปีที่แล้ว
         $data['sum_totalAmtSale'] = 0; // เป้ายอดขายปีปัจจุบัน
 
-        foreach($user_teams as $team){
-            
-            $response = Http::withToken($api_token)
-            ->get('http://49.0.64.92:8020/api/v1/sellers/'.$team->api_identify.'/dashboards', [
-                'year' => $year,
-                'month' => $month
-            ]);
-            $res_api = $response->json(); 
+        if(!is_null($user_teams)){
+            foreach($user_teams as $team){
+                
+                $response = Http::withToken($api_token)
+                ->get('http://49.0.64.92:8020/api/v1/sellers/'.$team->api_identify.'/dashboards', [
+                    'year' => $year,
+                    'month' => $month
+                ]);
+                $res_api = $response->json(); 
 
-            $Customers_check_data = count($res_api["data"][0]["Customers"]);
-            if($Customers_check_data > 0){
-                $data['sum_CustTotal'] = $data['sum_CustTotal'] + $res_api["data"][0]["Customers"][0]["CustTotal"]; // ร้านค้าทั้งหมด
-                $data['sum_ActiveTotal'] = $data['sum_ActiveTotal'] + $res_api["data"][0]["Customers"][0]["ActiveTotal"]; // ร้านที่ Active
-                $data['sum_InactiveTotal'] = $data['sum_InactiveTotal'] + $res_api["data"][0]["Customers"][0]["InactiveTotal"]; // ร้านที่ Active
+                if(!empty($res_api["data"][0]["Customers"])){
+                    $Customers_check_data = count($res_api["data"][0]["Customers"]);
+                    if($Customers_check_data > 0){
+                        $data['sum_CustTotal'] = $data['sum_CustTotal'] + $res_api["data"][0]["Customers"][0]["CustTotal"]; // ร้านค้าทั้งหมด
+                        $data['sum_ActiveTotal'] = $data['sum_ActiveTotal'] + $res_api["data"][0]["Customers"][0]["ActiveTotal"]; // ร้านที่ Active
+                        $data['sum_InactiveTotal'] = $data['sum_InactiveTotal'] + $res_api["data"][0]["Customers"][0]["InactiveTotal"]; // ร้านที่ Active
+                    }
+                }
+                
+                if(!empty($res_api["data"][1]["FocusDates"])){
+                    $FocusDates_check_data = count($res_api["data"][1]["FocusDates"]);  
+                    if($FocusDates_check_data > 0){
+                        $data['sum_FotalCustomers'] = $data['sum_FotalCustomers'] + $res_api["data"][1]["FocusDates"][0]["TotalCustomers"];
+                        $data['sum_TotalDays'] = $data['sum_TotalDays'] + $res_api["data"][1]["FocusDates"][0]["TotalDays"];
+                    }
+                }
+                
+                $response = Http::withToken($api_token) // ดึงข้อมูลปีที่แล้ว
+                ->get('http://49.0.64.92:8020/api/v1/sellers/'.$team->api_identify.'/dashboards', [
+                    'year' => $year-1,
+                    'month' => $month
+                ]);
+                $res_api_previous = $response->json();
+
+                
+                //-- เปรียบเทียบยอดขาย ปีที่แล้วกับปีปัจจุบัน ในเดือน
+                if(!empty($res_api_previous["data"][3]["SalesPrevious"])){
+                    $SalesPrevious_check_data = count($res_api_previous["data"][3]["SalesPrevious"]);
+                    if($SalesPrevious_check_data > 0){
+                        $SalesPrevious = $res_api_previous["data"][3]["SalesPrevious"];
+                        $data['sum_totalAmtSale_Previous'] = $data['sum_totalAmtSale_Previous'] + $SalesPrevious[0]["totalAmtSale"]; // เป้ายอดขายปีที่แล้ว
+                    }
+                }
+                
+                if(!empty($res_api["data"][2]["SalesCurrent"])){
+                    $SalesCurrent_check_data = count($res_api["data"][2]["SalesCurrent"]);
+                    if($SalesCurrent_check_data > 0){
+                        $SalesCurrent = $res_api["data"][2]["SalesCurrent"];
+                        $data['sum_totalAmtSale'] = $data['sum_totalAmtSale'] + $SalesCurrent[0]["totalAmtSale"]; // ยอดที่ทำได้ปีนี้
+                    }
+                }
             }
-
-            $FocusDates_check_data = count($res_api["data"][1]["FocusDates"]);          
-            if($FocusDates_check_data > 0){
-                $data['sum_FotalCustomers'] = $data['sum_FotalCustomers'] + $res_api["data"][1]["FocusDates"][0]["TotalCustomers"];
-                $data['sum_TotalDays'] = $data['sum_TotalDays'] + $res_api["data"][1]["FocusDates"][0]["TotalDays"];
-            }
-            
-            $response = Http::withToken($api_token) // ดึงข้อมูลปีที่แล้ว
-            ->get('http://49.0.64.92:8020/api/v1/sellers/'.$team->api_identify.'/dashboards', [
-                'year' => $year-1,
-                'month' => $month
-            ]);
-            $res_api_previous = $response->json();
-
-            //-- เปรียบเทียบยอดขาย ปีที่แล้วกับปีปัจจุบัน ในเดือน
-            $SalesPrevious_check_data = count($res_api_previous["data"][3]["SalesPrevious"]);
-            if($SalesPrevious_check_data > 0){
-                $SalesPrevious = $res_api_previous["data"][3]["SalesPrevious"];
-                $data['sum_totalAmtSale_Previous'] = $data['sum_totalAmtSale_Previous'] + $SalesPrevious[0]["totalAmtSale"]; // เป้ายอดขายปีที่แล้ว
-            }
-
-            $SalesCurrent_check_data = count($res_api["data"][2]["SalesCurrent"]);
-            if($SalesCurrent_check_data > 0){
-                $SalesCurrent = $res_api["data"][2]["SalesCurrent"];
-                $data['sum_totalAmtSale'] = $data['sum_totalAmtSale'] + $SalesCurrent[0]["totalAmtSale"]; // ยอดที่ทำได้ปีนี้
-            }
-
         }
-        
+     
+
         return view('admin.dashboard', $data);
 
     }

@@ -63,7 +63,7 @@
                                          @php 
                                              @$row = count($customer_api)
                                         @endphp
-                                        @if(isset($cust_campaigns_api))
+                                        @if(isset($customer_api))
                                             @foreach ($customer_api as $key => $value)
                                                 <tr>
                                                     <td>{{ $customer_api[$key]['identify'] }}</td>
