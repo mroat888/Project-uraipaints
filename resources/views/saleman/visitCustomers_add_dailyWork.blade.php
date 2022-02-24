@@ -32,7 +32,7 @@ $customer_shops = DB::table('customer_shops')
                     <?php
                         $nextmonth =date('Y-m-t', strtotime("+1 month")); //+ วันสุดท้ายเดือนหน้า
                     ?>
-                    <input class="form-control" type="date" id="date" name="date" min="<?= date('Y-m-01', strtotime("+1 month")) ?>" max="<?=$nextmonth?>"required/>
+                    <input class="form-control" type="date" id="date" name="date" min="<?= date('Y-m-d') ?>" max="<?= date('Y-m-t') ?>"required/>
 
                    {{-- <input class="form-control" type="date" id="date" name="date" min="<?= date('Y-m-d') ?>" max="<?=$nextmonth?>"required/> --}}
                 </div>
