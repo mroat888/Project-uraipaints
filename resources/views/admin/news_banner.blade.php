@@ -42,7 +42,8 @@
                                         <th>#</th>
                                         <th>รูปภาพ</th>
                                         <th>รายละเอียด</th>
-                                        <th>วันที่แจ้งเตือน</th>
+                                        <th>วันที่เริ่มต้น</th>
+                                        <th>วันที่สิ้นสุด</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -53,6 +54,7 @@
                                         <td><img src="{{ isset($value->banner) ? asset('public/upload/NewsBanner/' . $value->banner) : '' }}" width="200"></td>
                                         <td>{{$value->detail}}</td>
                                         <td>{{$value->date}}</td>
+                                        <td>{{$value->date_last}}</td>
                                         <td>
                                             <div class="button-list">
                                                 {{-- <button class="btn btn-icon btn-primary mr-10">
@@ -89,18 +91,24 @@
                 <form action="{{ url('admin/create_newsBanner') }}" method="post" enctype="multipart/form-data">
                     @csrf
                 <div class="modal-body">
-                    <div class="form-group">
+                    <div class="row">
+                    <div class="col-md-6 form-group">
                         <label for="detail">รายละเอียดเกี่ยวกับแบนเนอร์</label>
                         <input class="form-control" type="text" name="detail" required>
                     </div>
+                    <div class="col-md-6 form-group">
+                        <label for="banner">รูปภาพ</label>
+                        <input class="form-control" type="file" name="banner" required>
+                    </div>
+                    </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
-                                <label for="banner">รูปภาพ</label>
-                                <input class="form-control" type="file" name="banner" required>
+                                <label for="banner">วันที่เริ่มต้น</label>
+                                <input class="form-control" type="date" name="date" required>
                             </div>
                             <div class="col-md-6 form-group">
-                                <label for="banner">วันที่</label>
-                                <input class="form-control" type="date" name="date" required>
+                                <label for="banner">วันที่สิ้นสุด</label>
+                                <input class="form-control" type="date" name="date_last" required>
                             </div>
                         </div>
                         {{-- <div class="form-group">
@@ -130,18 +138,24 @@
                 <form action="{{ url('admin/update_banner') }}" method="post" enctype="multipart/form-data">
                     @csrf
                 <div class="modal-body">
-                    <div class="form-group">
+                    <div class="row">
+                    <div class="col-md-6 form-group">
                         <label for="detail">รายละเอียดเกี่ยวกับแบนเนอร์</label>
                         <input class="form-control" type="text" name="detail" id="get_detail" required>
                     </div>
+                    <div class="col-md-6 form-group">
+                        <label for="banner">รูปภาพ</label>
+                        <input class="form-control" type="file" id="get_image" name="banner">
+                    </div>
+                    </div>
                     <div class="row">
                         <div class="col-md-6 form-group">
-                            <label for="banner">รูปภาพ</label>
-                            <input class="form-control" type="file" id="get_image" name="banner">
+                            <label for="banner">วันที่เริ่มต้น</label>
+                            <input class="form-control" type="date" name="date" id="get_date" required>
                         </div>
                         <div class="col-md-6 form-group">
-                            <label for="banner">วันที่</label>
-                            <input class="form-control" type="date" id="get_date" name="date" required>
+                            <label for="banner">วันที่สิ้นสุด</label>
+                            <input class="form-control" type="date" name="date_last" id="get_date_last" required>
                         </div>
                     </div>
                     {{-- <div class="form-group">
@@ -170,6 +184,7 @@
                 success: function(data) {
                     $('#get_id').val(data.dataEdit.id);
                     $('#get_date').val(data.dataEdit.date);
+                    $('#get_date_last').val(data.dataEdit.date_last);
                     $('#get_detail').val(data.dataEdit.detail);
                     $('#get_image').val(data.dataEdit.banner);
 

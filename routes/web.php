@@ -118,6 +118,8 @@ Route::get('/reportSale/reportVisitCustomerGoal', 'Report\ReportVisitCustomerGoa
 Route::get('/reportSale/reportVisitCustomer', 'Report\ReportVisitCustomerController@index');
 
 // ข้อมูลที่ใช้ร่วมกัน
+Route::get('data_name_store', 'ShareData\CheckStoreController@index');
+Route::get('data_search_product', 'ShareData\SearchroductController@index');
 Route::get('data_report_product-new', 'ShareData\ProductNewController@index');
 Route::get('data_report_full-year', 'ShareData\ReportFullYearController@index');
 Route::get('data_report_historical-year', 'ShareData\ReportHistoricalYearController@index');

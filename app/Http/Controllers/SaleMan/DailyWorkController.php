@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\Api\ApiController;
+use App\NewsBanner;
 
 class DailyWorkController extends Controller
 {
@@ -60,7 +61,7 @@ class DailyWorkController extends Controller
         ->where('sale_plans_status', 2)
         ->select('sale_plans.*', 'sale_plan_comments.saleplan_id')->distinct()
         ->orderBy('sale_plans.id', 'desc')->get();
-        
+
         // -- ข้อมูลลูกค้าใหม่ // ลูกค้าใหม่เปลี่ยนมาใช้อันนี้
         $data['customer_new'] = DB::table('customer_shops_saleplan')
         ->leftJoin('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
@@ -115,7 +116,7 @@ class DailyWorkController extends Controller
 
             foreach ($res_api['data'] as $key_api => $value_api) {
                 $res_visit_api = $res_api['data'][$key_api];
-                if($cus_visit->customer_shop_id == $res_visit_api['identify']){ 
+                if($cus_visit->customer_shop_id == $res_visit_api['identify']){
                     $data['customer_visit_api'][$key_api] =
                     [
                         'id' => $cus_visit->id,
@@ -125,7 +126,7 @@ class DailyWorkController extends Controller
                         'shop_address' => $res_visit_api['amphoe_name']." , ".$res_visit_api['province_name'],
                         'shop_phone' => $res_visit_api['telephone'],
                         'shop_mobile' => $res_visit_api['mobile'],
-                        'focusdate' => $res_visit_api['focusdate'], 
+                        'focusdate' => $res_visit_api['focusdate'],
                         'visit_status' => $cus_visit->cust_visit_status,
                         'visit_checkin_date' => $cus_visit->cust_visit_checkin_date,
                         'visit_checkout_date' => $cus_visit->cust_visit_checkout_date,
@@ -135,12 +136,19 @@ class DailyWorkController extends Controller
 
         }
 
-   
+
         $data['list_approval'] = RequestApproval::where('created_by', Auth::user()->id)->whereMonth('assign_request_date', Carbon::now()->format('m'))->get();
 
         $data['assignments'] = Assignment::where('assign_emp_id', Auth::user()->id)->whereMonth('assign_work_date', Carbon::now()->format('m'))->get();
 
-        $data['notes'] = Note::where('employee_id', Auth::user()->id)->whereMonth('note_date', Carbon::now()->format('m'))->get();  
+        $data['notes'] = Note::where('employee_id', Auth::user()->id)->whereMonth('note_date', Carbon::now()->format('m'))->get();
+
+        $data['list_news_a'] = NewsBanner::where('date', '>=', Carbon::today()->format('Y-m-d'))
+        ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
+        ->orderBy('id', 'desc')->first();
+        $data['list_banner'] = NewsBanner::where('date', '>=', Carbon::today()->format('Y-m-d'))
+        ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
+        ->orderBy('id', 'desc')->get();
 
         return view('saleman.dailyWork', $data);
     }

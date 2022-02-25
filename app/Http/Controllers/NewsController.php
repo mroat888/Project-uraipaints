@@ -14,33 +14,49 @@ class NewsController extends Controller
 {
     public function frontend_news()
     {
-        $list_news_a = NewsBanner::orderBy('id', 'desc')->first();
+        $list_news_a = NewsBanner::where('date', '>=', Carbon::today()->format('Y-m-d'))
+        ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
+        ->orderBy('id', 'desc')->first();
         $list_news = News::where('status', "N")->orderBy('id', 'desc')->paginate(10);
-        $list_banner = NewsBanner::orderBy('id', 'desc')->get();
+        $list_banner = NewsBanner::where('date', '>=', Carbon::today()->format('Y-m-d'))
+        ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
+        ->orderBy('id', 'desc')->get();
         return view('saleman.news', compact('list_news', 'list_banner', 'list_news_a'));
     }
 
     public function lead_frontend_news()
     {
-        $list_news_a = NewsBanner::orderBy('id', 'desc')->first();
+        $list_news_a = NewsBanner::where('date', '>=', Carbon::today()->format('Y-m-d'))
+        ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
+        ->orderBy('id', 'desc')->first();
         $list_news = News::where('status', "N")->orderBy('id', 'desc')->paginate(10);
-        $list_banner = NewsBanner::orderBy('id', 'desc')->get();
+        $list_banner = NewsBanner::where('date', '>=', Carbon::today()->format('Y-m-d'))
+        ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
+        ->orderBy('id', 'desc')->get();
         return view('leadManager.news', compact('list_news', 'list_banner', 'list_news_a'));
     }
 
     public function head_frontend_news()
     {
-        $list_news_a = NewsBanner::orderBy('id', 'desc')->first();
+        $list_news_a = NewsBanner::where('date', '>=', Carbon::today()->format('Y-m-d'))
+        ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
+        ->orderBy('id', 'desc')->first();
         $list_news = News::where('status', "N")->orderBy('id', 'desc')->paginate(10);
-        $list_banner = NewsBanner::orderBy('id', 'desc')->get();
+        $list_banner = NewsBanner::where('date', '>=', Carbon::today()->format('Y-m-d'))
+        ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
+        ->orderBy('id', 'desc')->get();
         return view('headManager.news', compact('list_news', 'list_banner', 'list_news_a'));
     }
 
     public function admin_frontend_news()
     {
-        $list_news_a = NewsBanner::orderBy('id', 'desc')->first();
+        $list_news_a = NewsBanner::where('date', '>=', Carbon::today()->format('Y-m-d'))
+        ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
+        ->orderBy('id', 'desc')->first();
         $list_news = News::where('status', "N")->orderBy('id', 'desc')->paginate(10);
-        $list_banner = NewsBanner::orderBy('id', 'desc')->get();
+        $list_banner = NewsBanner::where('date', '>=', Carbon::today()->format('Y-m-d'))
+        ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
+        ->orderBy('id', 'desc')->get();
         return view('admin.fontendNews', compact('list_news', 'list_banner', 'list_news_a'));
     }
 
@@ -184,6 +200,7 @@ class NewsController extends Controller
 
         NewsBanner::create([
             'date' => $request->date,
+            'date_last' => $request->date_last,
             'detail' => $request->detail,
             'banner' => $image,
             'created_by' => Auth::user()->id,
@@ -224,7 +241,8 @@ class NewsController extends Controller
 
                 $data2 = NewsBanner::find($request->id);
                 $data2->date              = $request->date;
-                $data2->detail              = $request->detail;
+                $data2->date_last         = $request->date_last;
+                $data2->detail            = $request->detail;
                 $data2->banner            = $image;
                 $data2->updated_by        = Auth::user()->id;
                 $data2->updated_at        = Carbon::now();
@@ -235,7 +253,8 @@ class NewsController extends Controller
 
             $data2 = NewsBanner::find($request->id);
             $data2->date              = $request->date;
-            $data2->detail              = $request->detail;
+            $data2->date_last         = $request->date_last;
+            $data2->detail            = $request->detail;
             $data2->updated_by        = Auth::user()->id;
             $data2->updated_at        = Carbon::now();
             $data2->update();
