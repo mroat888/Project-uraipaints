@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\HeadManager;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -15,7 +15,7 @@ class ReportYearController extends Controller
         $report = array();
         $users = DB::table('users')
         ->whereIn('status',[1,2,3])
-        ->where('team_id', Auth::user()->team_id)
+        // ->where('team_id', Auth::user()->team_id)
         ->get();
 
         //-- ตัวแปรผลรวม ลูกค้าเยี่ยม
@@ -43,7 +43,6 @@ class ReportYearController extends Controller
         $sum_percent_saleplans_failed = 0;
 
         if(!is_null($users)){
-
             foreach($users as $user){
 
                 $monthly_plans = DB::table('monthly_plans')
@@ -284,7 +283,6 @@ class ReportYearController extends Controller
 
        //dd($report);
 
-        return view('reports.report_year_head', compact('report','report_footer'));
+        return view('reports.report_year_admin', compact('report','report_footer'));
     }
-
 }

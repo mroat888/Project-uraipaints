@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\HeadManager;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\DB;
 class ReportVisitCustomerController extends Controller
 {
     public function index(){
-
         $user_team = DB::table('users')
         ->whereIn('status',[1,2,3])
         ->where('team_id', Auth::user()->team_id)
@@ -139,6 +138,6 @@ class ReportVisitCustomerController extends Controller
             'sum_percent_failed' => $sum_percent_failed,
         ];
 
-        return view('reports.report_visitcustomer_head', compact('report', 'summary_report'));
+        return view('reports.report_visitcustomer_admin', compact('report', 'summary_report'));
     }
 }

@@ -369,12 +369,13 @@ Route::get('admin/update-status-use/{id}', 'Admin\UserPermissionController@updat
 Route::get('admin/checkHistory', 'Admin\UsageHistoryController@index');
 
 Route::get('/admin/reportcustomer', function () { return view('reports.report_customer_admin'); });
-Route::get('/admin/reportStore', function () { return view('reports.report_store_admin'); });
-Route::get('/admin/reportTeam', function () { return view('reports.report_team_admin'); });
-Route::get('/admin/reportSaleplan', function () { return view('reports.report_saleplan_admin'); });
-Route::get('/admin/report_visitcustomer_goal', function () { return view('reports.report_visitcustomer_goal_admin'); });
-Route::get('/admin/visitCustomer', function () { return view('reports.report_visitcustomer_admin'); });
-Route::get('/admin/reportYear', function () { return view('reports.report_year_admin'); });
+Route::get('/admin/reportStore','Admin\ApiCustomerController@index');
+Route::get('/admin/reportStore/detail/{id}','Admin\ApiCustomerController@show');
+Route::get('/admin/reportTeam', 'Admin\ReportTeamController@index');
+Route::get('/admin/reportSaleplan', 'Admin\ReportSalePlanController@index');
+Route::get('/admin/report_visitcustomer_goal', 'Admin\ReportVisitCustomerGoalController@index');
+Route::get('/admin/reportVisitCustomer', 'Admin\ReportVisitCustomerController@index');
+Route::get('/admin/reportYear', 'Admin\ReportYearController@index');
 
 
 Route::get('admin/teamSales', 'Admin\TeamSaleController@index');

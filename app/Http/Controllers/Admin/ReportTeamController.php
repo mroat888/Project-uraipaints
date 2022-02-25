@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\HeadManager;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -16,10 +16,11 @@ class ReportTeamController extends Controller
     }
 
     public function index(){
+
         // $data['users'] = DB::table('users')->where('team_id',Auth::user()->team_id)->get();
         $users = DB::table('users')
-        ->where('team_id',Auth::user()->team_id)
-        ->whereIn('status', [1,2,3])
+        // ->where('team_id',Auth::user()->team_id)
+        ->whereIN('status', [1,2,3])
         ->get();
 
         $api_token = $this->apicontroller->apiToken(); 
@@ -35,9 +36,8 @@ class ReportTeamController extends Controller
                 'count_shop' => $res_api['records'],
             ];
         }
+
         // dd($data['users_api']);
-
-        return view('reports.report_team_head', $data);
+        return view('reports.report_team_admin', $data);
     }
-
 }

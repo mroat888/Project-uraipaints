@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\HeadManager;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -22,7 +22,7 @@ class ReportSalePlanController extends Controller
 
         $users_saleman = DB::table('users')
         ->whereIn('status', [1,2,3])
-        ->where('team_id', Auth::user()->team_id)
+        // ->where('team_id', Auth::user()->team_id)
         ->get();
 
         for($i=1; $i<=12; $i++){
@@ -125,8 +125,6 @@ class ReportSalePlanController extends Controller
             'sum_percent_failed' => $percent_failed,
         ];
 
-        return view('reports.report_saleplan_head', compact('report', 'summary_report'));
+        return view('reports.report_saleplan_admin', compact('report', 'summary_report'));
     }
-
-
 }

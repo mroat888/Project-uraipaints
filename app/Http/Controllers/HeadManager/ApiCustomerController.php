@@ -18,7 +18,7 @@ class ApiCustomerController extends Controller
     public function index(){
 
         $users_saleman = DB::table('users')
-        ->where('status', 1)
+        ->whereIn('status', [1,2,3])
         ->where('team_id', Auth::user()->team_id)
         ->get();
 

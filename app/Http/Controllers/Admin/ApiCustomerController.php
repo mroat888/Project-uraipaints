@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\LeadManager;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -18,8 +18,8 @@ class ApiCustomerController extends Controller
     public function index(){
 
         $users_saleman = DB::table('users')
-        ->whereIn('status', [1,2])
-        ->where('team_id', Auth::user()->team_id)
+        ->whereIn('status', [1,2,3])
+        // ->where('team_id', Auth::user()->team_id)
         ->get();
 
         $api_token = $this->api_token->apiToken();
@@ -44,8 +44,7 @@ class ApiCustomerController extends Controller
 
         // dd(Auth::user()->team_id);
 
-        return view('reports.report_store', compact('customer_api'));
-
+        return view('reports.report_store_admin', compact('customer_api'));
     }
 
     public function show($id){
@@ -79,7 +78,6 @@ class ApiCustomerController extends Controller
         }
 
         //dd($data);
-
-        return view('reports.report_store_detail', $data);
+        return view('reports.report_store_detail_admin', $data);
     }
 }

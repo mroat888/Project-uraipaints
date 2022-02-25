@@ -13,7 +13,10 @@ class ReportYearController extends Controller
 {
     public function index(){
         $report = array();
-        $users = DB::table('users')->where('status',1)->where('team_id', Auth::user()->team_id)->get();
+        $users = DB::table('users')
+        ->whereIn('status',[1,2])
+        ->where('team_id', Auth::user()->team_id)
+        ->get();
 
         //-- ตัวแปรผลรวม ลูกค้าเยี่ยม
         $sum_cust_visits_amount = 0;

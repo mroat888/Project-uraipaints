@@ -362,7 +362,7 @@
                                                 <i class="ion ion-md-stats" style="color: #044067;"></i>รายงานเข้าพบลูกค้าเป้าหมาย</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{ url('/admin/visitCustomer') }}">
+                                            <a class="nav-link" href="{{ url('/admin/reportVisitCustomer') }}">
                                                 <i class="ion ion-md-stats" style="color: #044067;"></i>รายงานเข้าพบลูกค้า</a>
                                         </li>
                                         <li class="nav-item">

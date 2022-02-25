@@ -64,42 +64,43 @@
                                         <tr>
                                             <th rowspan="2">#</th>
                                             <th colspan="2" style="text-align:center;">รายชื่อ</th>
-                                            <th colspan="2" style="text-align:center;">จำนวน</th>
+                                            <th rowspan="2" style="text-align:right;">ร้านค้า</th>
                                         </tr>
 
                                         <tr>
                                             <th>ชื่อ-นามสกุล</th>
                                             <th>เบอร์โทรศัพท์</th>
-                                            <th>ร้านค้า</th>
-                                            <th>เขต</th>
+                                            <!-- <th>เขต</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>พงษ์ศักดิ์</td>
-                                            <td>0985632516</td>
-                                            <td>5</td>
-                                            <td>2</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>ชัยรุ่งเรือง</td>
-                                            <td>0214552223</td>
-                                            <td>3</td>
-                                            <td>1</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td>กิตติศักดิ์</td>
-                                            <td>0245278965</td>
-                                            <td>2</td>
-                                            <td>1</td>
-                                        </tr>
+
+                                    <?php
+                                        $row = count($users_api);
+                                        $key = 0;
+                                        $no = 1;
+                                        $sum_shops = 0;
+                                        for($i = 0; $i< $row; $i++){
+                                    ?>
+                                            <tr>
+                                                <th scope="row"><?php echo $no++; ?></th>
+                                                <td><?php echo $users_api[$key]['name']; ?></td>
+                                                <td>-</td>
+                                                <td style="text-align:right;"><?php echo number_format($users_api[$key]['count_shop']); ?></td>
+                                                <!-- <td>-</td> -->
+                                            </tr>
+                                    <?php
+                                            $sum_shops = $sum_shops+$users_api[$key]['count_shop'];
+                                            $key++;
+                                        }
+                                    ?>
                                     </tbody>
                                     <tfoot style="font-weight: bold;">
-                                        <td colspan="2" align="center">ทั้งหมด</td>
-                                        <td colspan="5">3</td>
+                                        <td style="text-align:right;">ทั้งหมด</td>
+                                        <td>{{ $row }}</td>
+                                        <td style="text-align:right;">ร้านค้าทั้งหมด</td>
+                                        <td style="text-align:right;">{{ number_format($sum_shops) }}</td>
+                                        <!-- <td></td> -->
                                     </tfoot>
                                 </table>
                             </div>
@@ -111,7 +112,6 @@
         </div>
         <!-- /Row -->
     </div>
-
 
 @section('footer')
     @include('layouts.footer')

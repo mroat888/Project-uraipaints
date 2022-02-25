@@ -21,7 +21,10 @@ class ReportSalePlanController extends Controller
         $sum_result_success = 0;
         $sum_saleplan_updatestatus = 0;
 
-        $users_saleman = DB::table('users')->where('status', 1)->where('team_id', Auth::user()->team_id)->get();
+        $users_saleman = DB::table('users')
+        ->whereIn('status', [1,2])
+        ->where('team_id', Auth::user()->team_id)
+        ->get();
         
         for($i=1; $i<=12; $i++){
             foreach($users_saleman as $saleman){
