@@ -185,19 +185,10 @@ class CustomerController extends Controller
 
     public function edit($id)
     {
-        $dataEdit = DB::table('customer_shops_saleplan')
-        ->join('customer_shops', 'customer_shops_saleplan.customer_shop_id', 'customer_shops.id')
-        ->join('master_customer_new', 'customer_shops_saleplan.customer_shop_objective', 'master_customer_new.id')
-            ->where('customer_shops_saleplan.customer_shop_id', $id)
-            ->select(
-                'master_customer_new.*',
-                'customer_shops.*', 
-                'customer_shops_saleplan.*'
-            )
-            ->first();
+        $dataEdit = DB::table('customer_shops')->where('id', $id)->first();
 
         $customer_contacts = DB::table('customer_contacts')
-            ->where('customer_shop_id', $id)
+            ->where('customer_shop_id', $dataEdit->id)
             ->orderBy('id', 'desc')
             ->first();
 
@@ -296,14 +287,6 @@ class CustomerController extends Controller
                         'updated_at' => date('Y-m-d H:i:s'),
                     ]);
 
-                    DB::table('customer_shops_saleplan')
-                    ->where('customer_shop_id', $request->edit_cus_contacts_id)
-                    ->update([
-                        'customer_shop_objective' => $request->edit_customer_shop_objective,
-                        'updated_by' => Auth::user()->id,
-                        'updated_at' => date('Y-m-d H:i:s'),
-                    ]);
-
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollback();
@@ -331,14 +314,6 @@ class CustomerController extends Controller
                         'updated_by' => Auth::user()->id,
                         'updated_at' => date('Y-m-d H:i:s'),
                     ]);
-
-                DB::table('customer_shops_saleplan')
-                ->where('customer_shop_id', $request->edit_cus_contacts_id)
-                ->update([
-                    'customer_shop_objective' => $request->edit_customer_shop_objective,
-                    'updated_by' => Auth::user()->id,
-                    'updated_at' => date('Y-m-d H:i:s'),
-                ]);
 
                 DB::commit();
             } catch (\Exception $e) {
@@ -368,14 +343,6 @@ class CustomerController extends Controller
                         'updated_at' => date('Y-m-d H:i:s'),
                     ]);
 
-                DB::table('customer_shops_saleplan')
-                ->where('customer_shop_id', $request->edit_cus_contacts_id)
-                ->update([
-                    'customer_shop_objective' => $request->edit_customer_shop_objective,
-                    'updated_by' => Auth::user()->id,
-                    'updated_at' => date('Y-m-d H:i:s'),
-                ]);
-
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollback();
@@ -399,14 +366,6 @@ class CustomerController extends Controller
                     ->update([
                         'customer_contact_name' => $request->edit_contact_name,
                         'customer_contact_phone' => $request->edit_customer_contact_phone,
-                        'updated_by' => Auth::user()->id,
-                        'updated_at' => date('Y-m-d H:i:s'),
-                    ]);
-
-                    DB::table('customer_shops_saleplan')
-                    ->where('customer_shop_id', $request->edit_cus_contacts_id)
-                    ->update([
-                        'customer_shop_objective' => $request->edit_customer_shop_objective,
                         'updated_by' => Auth::user()->id,
                         'updated_at' => date('Y-m-d H:i:s'),
                     ]);

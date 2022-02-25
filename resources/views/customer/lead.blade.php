@@ -225,7 +225,6 @@
                 //console.log(response);
                 if(response.status == 200){
                     $("#editCustomer").modal('show');
-                    $(".modal-title").text('แก้ไขข้อมูลลูกค้า');
                     $("#edit_shop_id").val(shop_id);
                     $("#edit_shop_name").val(response.dataEdit.shop_name);
                     if(response.customer_contacts != null){

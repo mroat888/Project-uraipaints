@@ -550,7 +550,7 @@
     <!-- Modal Edit -->
     <div class="modal fade" id="editCustomer" tabindex="-1" role="dialog" aria-labelledby="editCustomer"
         aria-hidden="true">
-        @include('customer.lead_edit')
+        @include('customer.lead_edit_saleplan')
     </div>
 
     <!-- Modal VisitCustomer -->

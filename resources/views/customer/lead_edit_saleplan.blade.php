@@ -6,18 +6,24 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">แก้ไขข้อมูลลูกค้า</h5>
+                    <h5 class="modal-title">แก้ไขข้อมูลลูกค้า saleplan</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <!-- <form action="{{ url('update_customerLead') }}" method="post" enctype="multipart/form-data"> -->
                 <form id="form_edit" enctype="multipart/form-data">
                     @csrf
                 <div class="modal-body">
-                        <input class="form-control" id="edit_shop_id" name="edit_shop_id" type="hidden">
+                        <!-- <input class="form-control" id="edit_shop_id" name="edit_shop_id" type="text"> -->
+                        <input class="form-control" id="edit_shops_saleplan_id" name="edit_shops_saleplan_id" type="hidden">
                         <input class="form-control" id="edit_cus_contacts_id" name="edit_cus_contacts_id" type="hidden">
                         <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="objective">วัตถุประสงค์</label>
+                                <select class="form-control custom-select" id="edit_shop_objective" name="edit_customer_shop_objective" required>
+                                    {{-- <option selected>กรุณาเลือก</option> --}}
+                                </select>
+                            </div>
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ชื่อร้าน</label>
                                 <input class="form-control" id="edit_shop_name" name="edit_shop_name" type="text">
@@ -96,7 +102,8 @@
         //console.log(formData);
         $.ajax({
             type:'POST',
-            url: '{{ url("/update_customerLead") }}',
+           // url: '{{ url("/update_customerLead") }}',
+            url: '{{ url("/update_shopsaleplan") }}',
             data:formData,
             cache:false,
             contentType: false,
