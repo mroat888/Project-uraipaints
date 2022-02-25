@@ -6,7 +6,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">แก้ไขข้อมูลลูกค้า saleplan</h5>
+                    <h5 class="modal-title">แก้ไขข้อมูลลูกค้า</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -21,28 +21,28 @@
                             <div class="form-group col-md-6">
                                 <label for="objective">วัตถุประสงค์</label>
                                 <select class="form-control custom-select" id="edit_shop_objective" name="edit_customer_shop_objective" required>
-                                    {{-- <option selected>กรุณาเลือก</option> --}}
+                                    <option value="" >กรุณาเลือก</option>
                                 </select>
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ชื่อร้าน</label>
-                                <input class="form-control" id="edit_shop_name" name="edit_shop_name" type="text">
+                                <input class="form-control" id="edit_shop_name" name="edit_shop_name" type="text" required>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ชื่อผู้ติดต่อ</label>
-                                <input class="form-control" id="edit_contact_name" placeholder="" name="edit_contact_name" type="text">
+                                <input class="form-control" id="edit_contact_name" placeholder="" name="edit_contact_name" type="text" required>
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="firstName">เบอร์โทรศัพท์</label>
-                                <input class="form-control" id="edit_customer_contact_phone" placeholder="" name="edit_customer_contact_phone" type="text">
+                                <input class="form-control" id="edit_customer_contact_phone" placeholder="" name="edit_customer_contact_phone" type="text" required>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label for="edit_shop_address">ที่อยู่</label>
-                                <textarea class="form-control" placeholder="" id="edit_shop_address" name="edit_shop_address" rows="3"></textarea>
+                                <textarea class="form-control" placeholder="" id="edit_shop_address" name="edit_shop_address" rows="3" required></textarea>
                             </div>
                         </div>
                         <div class="row">

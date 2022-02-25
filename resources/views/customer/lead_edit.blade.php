@@ -20,23 +20,23 @@
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ชื่อร้าน</label>
-                                <input class="form-control" id="edit_shop_name" name="edit_shop_name" type="text">
+                                <input class="form-control" id="edit_shop_name" name="edit_shop_name" type="text" required>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ชื่อผู้ติดต่อ</label>
-                                <input class="form-control" id="edit_contact_name" placeholder="" name="edit_contact_name" type="text">
+                                <input class="form-control" id="edit_contact_name" placeholder="" name="edit_contact_name" type="text" required>
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="firstName">เบอร์โทรศัพท์</label>
-                                <input class="form-control" id="edit_customer_contact_phone" placeholder="" name="edit_customer_contact_phone" type="text">
+                                <input class="form-control" id="edit_customer_contact_phone" placeholder="" name="edit_customer_contact_phone" type="text" required>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label for="edit_shop_address">ที่อยู่</label>
-                                <textarea class="form-control" placeholder="" id="edit_shop_address" name="edit_shop_address" rows="3"></textarea>
+                                <textarea class="form-control" placeholder="" id="edit_shop_address" name="edit_shop_address" rows="3" required></textarea>
                             </div>
                         </div>
                         <div class="row">

@@ -19,7 +19,7 @@
                     <div class="form-group col-md-6">
                         <label for="objective">วัตถุประสงค์</label>
                         <select class="form-control custom-select" name="customer_shop_objective" required>
-                            <option selected>กรุณาเลือก</option>
+                            <option  value="" selected>กรุณาเลือก</option>
                             @foreach ($objective_cust_new as $value)
                             <option value="{{$value->id}}">{{$value->cust_name}}</option>
                             @endforeach
@@ -45,23 +45,23 @@
                 <div class="row">
                     <div class="col-md-6 form-group">
                         <label for="firstName">ชื่อร้าน</label>
-                        <input class="form-control" id="shop_name" name="shop_name" type="text" >
+                        <input class="form-control" id="shop_name" name="shop_name" type="text" required>
                     </div>
                     <div class="col-md-6 form-group">
                         <label for="firstName">ชื่อผู้ติดต่อ</label>
-                        <input class="form-control" id="contact_name" name="contact_name"  type="text">
+                        <input class="form-control" id="contact_name" name="contact_name"  type="text" required>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6 form-group">
                         <label for="firstName">เบอร์โทรศัพท์</label>
-                        <input class="form-control" id="shop_phone" name="shop_phone" type="text" >
+                        <input class="form-control" id="shop_phone" name="shop_phone" type="text" required>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12 form-group">
                         <label for="firstName">ที่อยู่</label>
-                        <textarea class="form-control" id="shop_address" name="shop_address" rows="3"></textarea>
+                        <textarea class="form-control" id="shop_address" name="shop_address" rows="3" required></textarea>
                     </div>
                 </div>
                 <div class="row">
