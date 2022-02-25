@@ -425,12 +425,12 @@ License: You must have a valid license purchased only from themeforest to legall
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
                                             <a class="nav-link"
-                                                href="{{ url('#') }}">
+                                                href="{{ url('data_name_store') }}">
                                                 <i class="ion ion-md-home" style="color: #044067;"></i>ตรวจสอบรายชื่อร้านค้า</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link"
-                                                href="{{ url('#') }}">
+                                                href="{{ url('data_search_product') }}">
                                                 <i class="ion ion-md-search"
                                                     style="color: #044067;"></i>ค้นหารายการสินค้า</a>
                                         </li>

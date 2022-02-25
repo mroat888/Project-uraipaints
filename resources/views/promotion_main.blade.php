@@ -5,7 +5,7 @@
             <p class="mb-40">ข้อมูลโปรโมชั่นประจำวัน</p>
             @foreach ($list_promotion as $value)
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <img class="card-img"
                     src="{{ isset($value->news_image) ? asset('public/upload/PromotionImage/' . $value->news_image) : '' }}"
                     alt="{{ $value->news_title }}"
@@ -22,6 +22,7 @@
                                 {{ $value->news_detail }}
                             @endif
                         </p></div>
+                        <div class="col-md-12"><a href="{{ $value->url }}" style="font-size:14px; font-weight: bold; color:brown;">อ่านต่อ</a></div>
 
                     </div>
                 </div>

@@ -26,12 +26,19 @@
                                     <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
                                 </ol>
                                 <div class="carousel-inner">
+                                    @if ($list_news_a)
                                     <div class="carousel-item active">
-                                        <img class="d-block w-100" src="{{ asset('/public/images/banner.jpg') }}">
+                                        <img class="d-block w-100" src="{{ isset($list_news_a->banner) ? asset('public/upload/NewsBanner/' . $list_news_a->banner) : '' }}">
                                     </div>
+                                    @endif
+
+                                    @foreach ($list_banner as $value)
+                                    @if ($value->banner != $list_news_a->banner)
                                     <div class="carousel-item">
-                                        <img class="d-block w-100" src="{{ asset('/public/images/banner2.jpg') }}">
+                                        <img class="d-block w-100" src="{{ isset($value->banner) ? asset('public/upload/NewsBanner/' . $value->banner) : '' }}">
                                     </div>
+                                    @endif
+                                    @endforeach
                                 </div>
                                 <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button"
                                     data-slide="prev">
@@ -51,7 +58,6 @@
         </div>
 
 
-        <div class="container-fluid px-xxl-65 px-xl-20">
             {{-- <div class="mt-30 mb-30"> --}}
             <div class="row">
                 <div class="col-md-8">
@@ -335,226 +341,6 @@
 
         <div class="mt-30 mb-30">
             <div class="row">
-                {{-- <div class="col-md-12">
-                    <section class="hk-sec-wrapper">
-                        <div class="row mt-30">
-                            <div class="col-md-2">
-                                <div class="card card-sm text-white bg-danger">
-                                    <div class="card-body">
-                                        <span class="d-block font-16 font-weight-500 text-uppercase mb-10">
-                                            <button class="btn btn-icon btn-icon-circle btn-light btn-lg mr-25"><span class="btn-icon-wrap"><i
-                                                data-feather="edit-2"></i></span></button>
-                                            <span class="float-right">ขออนุมัติ {{$list_approval->count()}}</span></span>
-                                        <div class="d-flex align-items-end justify-content-between mt-10 font-16">
-                                            <div>
-                                                <span class="d-block">
-                                                    <span>อนุมัติ</span>
-                                                </span>
-                                            </div>
-                                            <div>
-                                                <span>ด่วน</span>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-end justify-content-between font-16">
-                                            <div>
-                                                <span class="d-block">
-                                                    <?php $approve = 0; ?>
-                                                    <span>
-                                                        @foreach ($list_approval as $value)
-                                                            @if ($value->assign_status == 1)
-                                                                <?php $approve += 1 ?>
-
-                                                            @endif
-                                                        @endforeach
-                                                        {{$approve}} </span>
-                                                </span>
-                                            </div>
-                                            <div>
-                                                <span>2</span>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-2">
-                                <div class="card card-sm text-white bg-success">
-                                    <div class="card-body">
-                                        <span class="d-block font-16 font-weight-500 text-uppercase mb-10">
-                                                <button class="btn btn-icon btn-icon-circle btn-light btn-lg mr-25"><span class="btn-icon-wrap"><i
-                                                    data-feather="clipboard"></i></span></button>
-                                            <span class="float-right">คำสั่งงาน {{ $assignments->count() }}</span></span>
-                                        <div class="d-flex align-items-end justify-content-between mt-10 font-16">
-                                            <div>
-                                                <span class="d-block">
-                                                    <span>ทำแล้ว</span>
-                                                </span>
-                                            </div>
-                                            <div>
-                                                <span>ยังไม่เสร็จ</span>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-end justify-content-between font-16">
-                                            <div>
-                                                <span class="d-block">
-                                                    <?php $success = 0; ?>
-                                                    <span>
-                                                        @foreach ($assignments as $value)
-                                                            @if ($value->assign_result_status != 0)
-                                                                <?php $success += 1 ?>
-
-                                                            @endif
-                                                        @endforeach
-                                                        {{$success}} </span>
-                                                </span>
-                                            </div>
-                                            <div>
-                                                <?php $unfinished = 0; ?>
-                                                <span>
-                                                    @foreach ($assignments as $value)
-                                                        @if ($value->assign_result_status == 0)
-                                                            <?php $unfinished += 1 ?>
-                                                        @endif
-                                                    @endforeach
-                                                    {{$unfinished}} </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-2">
-                                <div class="card card-sm text-white bg-warning">
-                                    <div class="card-body">
-                                        <span class="d-block font-16 font-weight-500 text-uppercase mb-10">
-                                            <button class="btn btn-icon btn-icon-circle btn-light btn-lg mr-25"><span class="btn-icon-wrap"><i
-                                                data-feather="file"></i></span></button>
-                                            <span class="float-right">บันทึกโน๊ต {{ $notes->count() }}</span></span>
-                                        <div class="d-flex align-items-end justify-content-between mt-10 font-16">
-                                            <div>
-                                                <span class="d-block">
-                                                    <span>เลิกใช้</span>
-                                                </span>
-                                            </div>
-                                            <div>
-                                                <span>ปักหมุด</span>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-end justify-content-between font-16">
-                                            <div>
-                                                <span class="d-block">
-                                                    <?php $disuse = 0; ?>
-                                                <span>
-                                                    @foreach ($notes as $value)
-                                                        @if ($value->status_pin == "")
-                                                            <?php $disuse += 1 ?>
-
-                                                        @endif
-                                                    @endforeach
-                                                    {{$disuse}} </span>
-                                                </span>
-                                            </div>
-                                            <div>
-                                                <?php $pin = 0; ?>
-                                                <span>
-                                                    @foreach ($notes as $value)
-                                                        @if ($value->status_pin == 1)
-                                                            <?php $pin += 1 ?>
-
-                                                        @endif
-                                                    @endforeach
-                                                    {{$pin}} </span>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-2">
-                                <div class="card card-sm text-white bg-info">
-                                    <div class="card-body">
-                                        <span class="d-block font-16 font-weight-500 text-uppercase mb-10">
-                                            <button class="btn btn-icon btn-icon-circle btn-light btn-lg mr-25"><span class="btn-icon-wrap"><i
-                                                data-feather="users"></i></span></button>
-                                            <span class="float-right">ลูกค้าใหม่ {{ $monthly_plan->cust_new_amount }}</span></span>
-                                        <div class="d-flex align-items-end justify-content-between mt-10 font-16">
-                                            <div>
-                                                <span class="d-block">
-                                                    <span>ไม่ผ่าน</span>
-                                                </span>
-                                            </div>
-                                            <div>
-                                                <span>รอตัดสินใจ</span>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-end justify-content-between font-16">
-                                            <div>
-                                                <span class="d-block">
-                                                    <?php $fail = 0; ?>
-                                                <span>
-
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="card card-sm">
-                                    <div class="card-body" style="color: black;">
-                                        <span class="d-block font-11 font-weight-500 text-dark text-uppercase mb-10"></span>
-                                        <div class="mt-15">
-                                            <span class="d-block">
-                                                <div class="media-img-wrap text-center">
-                                                    <div class="avatar avatar-sm">
-                                                        <img src="" alt="user"
-                                                            class="avatar-text avatar-text-inv-success rounded-circle">
-                                                    </div>
-                                                    <div class="avatar avatar-sm">
-                                                        <img src="" alt="user"
-                                                            class="avatar-text avatar-text-inv-pink rounded-circle">
-                                                    </div>
-                                                    <div class="avatar avatar-sm">
-                                                        <img src="" alt="user"
-                                                            class="avatar-text avatar-text-inv-info rounded-circle">
-                                                    </div>
-                                                    <div class="avatar avatar-sm">
-                                                        <img src="" alt="user"
-                                                            class="avatar-text avatar-text-inv-warning rounded-circle">
-                                                    </div>
-                                                </div>
-                                            </span>
-                                        </div>
-                                        <div class="d-flex align-items-end justify-content-between mt-5">
-                                            <div>
-                                                <span class="d-block">
-                                                    <span>ลูกค้าทั้งหมด</span>
-                                                </span>
-                                            </div>
-                                            <div>
-                                                <span>มีวันสำคัญในเดือน</span>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-end justify-content-between">
-                                            <div>
-                                                <span class="d-block">
-                                                    <span>300</span>
-                                                </span>
-                                            </div>
-                                            <div>
-                                                <span>4 ร้าน <span class="ml-40">4 วัน</span></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div> --}}
-
                 <div class="col-md-12">
                     <section class="hk-sec-wrapper">
                         <div class="hk-pg-header mb-10">

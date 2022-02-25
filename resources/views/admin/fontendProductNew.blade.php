@@ -31,7 +31,7 @@
                                     @endif
 
                                     @foreach ($list_banner as $value)
-                                    @if ($value->banner != $list_news_a->news_image)
+                                    @if ($value->banner != $list_news_a->banner)
                                     <div class="carousel-item">
                                         <img class="d-block w-100" src="{{ isset($value->banner) ? asset('public/upload/NewsBanner/' . $value->banner) : '' }}">
                                     </div>
