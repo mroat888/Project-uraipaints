@@ -23,9 +23,14 @@ class TeamSaleController extends Controller
     public function teamSales_detail($id){
         $teamSalesDetail = DB::table('users')->join('master_team_sales', 'users.team_id', 'master_team_sales.id')
         ->join('master_permission', 'users.status', 'master_permission.id')
-        ->where('users.team_id', $id)
+        ->where(function($query) use ($id) {
+            $query->where('users.team_id', $id)
+                  ->orWhere('users.team_id', 'like', $id.',%')
+                  ->orWhere('users.team_id', 'like', '%,'.$id);
+        })
         ->select('users.*', 'master_team_sales.team_name', 'master_permission.permission_name')
         ->get();
+
         return view('admin.team_sales_detail', compact('teamSalesDetail'));
     }
 

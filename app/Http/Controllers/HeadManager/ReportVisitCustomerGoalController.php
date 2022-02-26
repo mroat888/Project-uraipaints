@@ -24,10 +24,21 @@ class ReportVisitCustomerGoalController extends Controller
         $sum_result_success = 0;
         $sum_shop_updatestatus = 0;
 
-        $user_team = DB::table('users')
-        ->whereIN('status',[1,2,3])
-        ->where('team_id', Auth::user()->team_id)
-        ->get();
+        // $user_team = DB::table('users')
+        // ->whereIN('status',[1,2,3])
+        // ->where('team_id', Auth::user()->team_id)
+        // ->get();
+        $auth_team_id = explode(',',Auth::user()->team_id);
+        foreach($auth_team_id as $auth_team){
+            $user_team = DB::table('users')
+            ->whereIN('status',[1,2,3])
+            ->where(function($query) use ($auth_team) {
+                $query->where('team_id', $auth_team)
+                    ->orWhere('team_id', 'like', $auth_team.',%')
+                    ->orWhere('team_id', 'like', '%,'.$auth_team);
+            })
+            ->get();
+        }
         
         for($i=1; $i<=12; $i++){
 

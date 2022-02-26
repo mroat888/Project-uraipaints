@@ -59,71 +59,36 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php
-                                            $month_array = [
-                                            'มกราคม', 'กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน',
-                                            'กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'
+                                    <?php
+                                        $month_array = [
+                                        'มกราคม', 'กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน',
+                                        'กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'
                                         ];
 
-                                        $total_saleplan = 0;
-                                        $total_saleplan_in_process = 0;
-                                        $total_saleplan_success = 0;
-                                        $total_saleplan_failed = 0;
-
                                         for($i = 1; $i <= 12; $i++ ){
-
-                                            if($report[$i]['count_saleplan'] != "-"){
-                                                $total_saleplan =  $total_saleplan + $report[$i]['count_saleplan'];
-                                            }
-                                            if($report[$i]['saleplan_result_in_process'] != "-"){
-                                                $total_saleplan_in_process =  $total_saleplan_in_process + $report[$i]['saleplan_result_in_process'];
-                                            }
-                                            if($report[$i]['saleplan_result_success'] != "-"){
-                                                $total_saleplan_success =  $total_saleplan_success + $report[$i]['saleplan_result_success'];
-                                            }
-                                            if($report[$i]['saleplan_result_failed'] != "-"){
-                                                $total_saleplan_failed =  $total_saleplan_failed + $report[$i]['saleplan_result_failed'];
-                                            }
-
-                                        ?>
-                                            <tr>
-                                                <th scope="row"><?php echo $i; ?></th>
-                                                <td><?php echo $month_array[$i-1]; ?></td>
-                                                <td><span class="text-success"><?php echo $report[$i]['count_saleplan']; ?></span> </td>
-                                                <td><span class="text-secondary"><?php echo $report[$i]['saleplan_result_in_process']; ?></span> </td>
-                                                <td><span class="text-success"><?php echo $report[$i]['saleplan_result_success']; ?></span> </td>
-                                                <td><span class="text-danger"><?php echo $report[$i]['saleplan_result_failed']; ?></span> </td>
-                                                <td><span class="text-success"><?php echo $report[$i]['percent_success']; ?>%</span> </td>
-                                                <td><span class="text-danger"><?php echo $report[$i]['percent_failed']; ?>%</span> </td>
-                                            </tr>
-                                            <?php
-                                                }
-
-                                                $sum_saleplan = 0;
-
-                                                $sum_saleplan = $sum_saleplan + $total_saleplan; // จำนวน saleplan ทั้งหมด
-                                                if($total_saleplan_success != 0){
-                                                    $percent_success = ($total_saleplan_success*100)/$sum_saleplan;
-                                                }else{
-                                                    $percent_success = 0;
-                                                }
-                                                if($total_saleplan_failed != 0){
-                                                    $percent_failed = ($total_saleplan_failed*100)/$sum_saleplan;
-                                                }else{
-                                                    $percent_failed = 0;
-                                                }
-                                            ?>
+                                    ?>
+                                        <tr>
+                                            <th scope="row"><?php echo $i; ?></th>
+                                            <td><?php echo $month_array[$i-1]; ?></td>
+                                            <td><span class="text-success"><?php echo $report[$i]['count_saleplan']; ?></span> </td>
+                                            <td><span class="text-secondary"><?php echo $report[$i]['saleplan_result_in_process']; ?></span> </td>
+                                            <td><span class="text-success"><?php echo $report[$i]['saleplan_result_success']; ?></span> </td>
+                                            <td><span class="text-danger"><?php echo $report[$i]['saleplan_result_failed']; ?></span> </td>
+                                            <td><span class="text-success"><?php echo $report[$i]['percent_success']; ?>%</span> </td>
+                                            <td><span class="text-danger"><?php echo $report[$i]['percent_failed']; ?>%</span> </td>
+                                        </tr>
+                                    <?php
+                                        }
+                                    ?>
                                     </tbody>
                                     <tfoot style="font-weight: bold;">
                                         <td colspan="2" align="center">ทั้งหมด</td>
-                                        <td class="text-success"><?php echo $total_saleplan; ?></td>
-                                        <td class="text-secondary"><?php echo $total_saleplan_in_process; ?></td>
-                                        <td class="text-success"><?php echo $total_saleplan_success; ?></td>
-                                        <td class="text-danger"><?php echo $total_saleplan_failed; ?></td>
-                                        {{-- <td class="text-success">12</td> --}}
-                                        <td class="text-success"><?php echo @round($percent_success); ?>%</td>
-                                        <td class="text-danger"><?php echo @round($percent_failed); ?>%</td>
-                                        {{-- <td class="text-success"></td> --}}
+                                        <td class="text-success"><?php echo $summary_report['sum_count_saleplan']; ?></td>
+                                        <td class="text-secondary"><?php echo $summary_report['sum_result_in_process']; ?></td>
+                                        <td class="text-success"><?php echo $summary_report['sum_result_success']; ?></td>
+                                        <td class="text-danger"><?php echo $summary_report['sum_result_failed']; ?></td>
+                                        <td class="text-success"><?php echo $summary_report['sum_percent_success']; ?>%</td>
+                                        <td class="text-danger"><?php echo $summary_report['sum_percent_failed']; ?>%</td>
                                     </tfoot>
                                 </table>
                             </div>

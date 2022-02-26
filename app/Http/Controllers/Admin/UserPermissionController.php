@@ -33,6 +33,8 @@ class UserPermissionController extends Controller
         }
         // -----  END API
 
+        // dd($users);
+
         return view('admin.user_permission', compact('users', 'master_permission', 'sellers_api', 'master_team'));
     }
 
@@ -56,6 +58,8 @@ class UserPermissionController extends Controller
                 if($request->tpassword != ""){
                     $password_staff = Hash::make($request->tpassword);
                 }
+                // $team_id = implode( ',', $request->sel_team);
+                // dd($team_id);
                 DB::table('users')
                 ->insert([
                     'name' => $request->tname,
@@ -63,7 +67,7 @@ class UserPermissionController extends Controller
                     'password' => $password_staff,
                     'api_identify' => $request->sel_api_identify,
                     'status' => $request->sel_status,
-                    'team_id' => $request->sel_team,
+                    'team_id' => implode( ',', $request->sel_team),
                     'created_at' => date('Y-m-d H:i:s'),
                     'created_by' => Auth::user()->id,
                 ]);

@@ -17,10 +17,22 @@ class ApiCustomerController extends Controller
 
     public function index(){
 
-        $users_saleman = DB::table('users')
-        ->whereIn('status', [1,2,3])
-        ->where('team_id', Auth::user()->team_id)
-        ->get();
+        // $users_saleman = DB::table('users')
+        // ->whereIn('status', [1,2,3])
+        // ->where('team_id', Auth::user()->team_id)
+        // ->get();
+
+        $auth_team_id = explode(',',Auth::user()->team_id);
+        foreach($auth_team_id as $auth_team){
+            $users_saleman = DB::table('users')
+            ->whereIn('status', [1,2,3])
+            ->where(function($query) use ($auth_team) {
+                $query->where('team_id', $auth_team)
+                    ->orWhere('team_id', 'like', $auth_team.',%')
+                    ->orWhere('team_id', 'like', '%,'.$auth_team);
+            })
+            ->get();
+        }
 
         $api_token = $this->api_token->apiToken();
         $customer_api = array();

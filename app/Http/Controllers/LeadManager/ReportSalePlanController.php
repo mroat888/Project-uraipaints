@@ -21,12 +21,31 @@ class ReportSalePlanController extends Controller
         $sum_result_success = 0;
         $sum_saleplan_updatestatus = 0;
 
-        $users_saleman = DB::table('users')
-        ->whereIn('status', [1,2])
-        ->where('team_id', Auth::user()->team_id)
-        ->get();
-        
+        // $users_saleman = DB::table('users')
+        // ->whereIn('status', [1,2])
+        // ->where('team_id', Auth::user()->team_id)
+        // ->get();
+
+        $auth_team_id = explode(',',Auth::user()->team_id);
+        foreach($auth_team_id as $auth_team){
+            $users_saleman = DB::table('users')
+            ->whereIn('status', [1,2])
+            ->where(function($query) use ($auth_team) {
+                $query->where('team_id', $auth_team)
+                    ->orWhere('team_id', 'like', $auth_team.',%')
+                    ->orWhere('team_id', 'like', '%,'.$auth_team);
+            })
+            ->get();
+        }
+
         for($i=1; $i<=12; $i++){
+
+            $count_saleplan_month = 0;
+            $saleplan_result_failed_month = 0;
+            $saleplan_result_in_process_month = 0;
+            $saleplan_result_success_month = 0;
+            $count_saleplan_updatestatusmonth = 0;
+
             foreach($users_saleman as $saleman){
                 $monthly_plans = DB::table('monthly_plans')
                 ->whereYear('month_date', date('Y-m-d'))
@@ -38,7 +57,7 @@ class ReportSalePlanController extends Controller
 
                     $count_saleplan = DB::table('sale_plans')
                         ->where('monthly_plan_id', $monthly_plans->id)
-                        ->where('sale_plans_status', 2) // สถานะอนุมัติ (0=ฉบับร่าง ,1 = ส่งอนุมัติ , 2 = อนุมัติ , 3= ปฎิเสธ))	
+                        ->where('sale_plans_status', 2) // สถานะอนุมัติ (0=ฉบับร่าง ,1 = ส่งอนุมัติ , 2 = อนุมัติ , 3= ปฎิเสธ))
                         ->count();
 
                     $count_saleplan_updatestatus = DB::table('sale_plans')
@@ -64,48 +83,61 @@ class ReportSalePlanController extends Controller
                         ->where('sale_plan_results.sale_plan_status' , 2) // 0 = ไม่สนใจ | 1 = รอตัดสินใจ | 2 = สนใจ
                         ->count();
 
-
-                    if($count_saleplan > 0 ){
-                        $percent_success = @round(($saleplan_result_success*100)/$count_saleplan);
-                        $percent_failed = @round((($saleplan_result_failed+$saleplan_result_in_process)*100)/$count_saleplan);
-                    }else{
-                        $percent_success = 0;
-                        $percent_failed = 0;
-                    }
-
-
-                    //--- ผลรวม
-                    $sum_count_saleplan = $sum_count_saleplan + $count_saleplan;
-                    $sum_result_failed = $sum_result_failed + $saleplan_result_failed;
-                    $sum_result_in_process = $sum_result_in_process + $saleplan_result_in_process;
-                    $sum_result_success = $sum_result_success + $saleplan_result_success;
-                    $sum_shop_updatestatus = $sum_saleplan_updatestatus + $count_saleplan_updatestatus;
-
-                }else{
-                    $count_saleplan = "-";
-                    $saleplan_result_failed = "-";
-                    $saleplan_result_in_process = "-";
-                    $saleplan_result_success = "-";
-                    $count_saleplan_updatestatus = "-";
-                    $percent_success = "-";
-                    $percent_failed = "-";
+                    //--- ผลรวม สรุปเดือน
+                    $count_saleplan_month = $count_saleplan_month + $count_saleplan ;
+                    $saleplan_result_failed_month = $saleplan_result_failed_month + $saleplan_result_failed;
+                    $saleplan_result_in_process_month = $saleplan_result_in_process_month + $saleplan_result_in_process;
+                    $saleplan_result_success_month = $saleplan_result_success_month + $saleplan_result_success;
+                    $count_saleplan_updatestatusmonth = $count_saleplan_updatestatusmonth + $count_saleplan_updatestatus;
+                    
                 }
+            }
 
+                if($count_saleplan_month > 0 ){
+                    $percent_success = @round(($saleplan_result_success_month*100)/$count_saleplan_month);
+                    $percent_failed = @round((($saleplan_result_failed_month+$saleplan_result_in_process_month)*100)/$count_saleplan_month);
+                }else{
+                    $percent_success = 0;
+                    $percent_failed = 0;
+                }
                 $report[$i] = [
                     'month' => $i,
-                    'count_saleplan' => $count_saleplan,
-                    'saleplan_result_failed' => $saleplan_result_failed,
-                    'saleplan_result_in_process' => $saleplan_result_in_process,
-                    'saleplan_result_success' => $saleplan_result_success,
-                    'count_saleplan_updatestatus' => $count_saleplan_updatestatus,
+                    'count_saleplan' => $count_saleplan_month,
+                    'saleplan_result_failed' => $saleplan_result_failed_month,
+                    'saleplan_result_in_process' => $saleplan_result_in_process_month,
+                    'saleplan_result_success' => $saleplan_result_success_month,
+                    'count_saleplan_updatestatus' => $count_saleplan_updatestatusmonth,
                     'percent_success' => $percent_success,
                     'percent_failed' => $percent_failed,
                 ];
-            }
+
+                //--- ผลรวม footer
+                $sum_count_saleplan = $sum_count_saleplan + $count_saleplan_month;
+                $sum_result_failed = $sum_result_failed + $saleplan_result_failed_month;
+                $sum_result_in_process = $sum_result_in_process + $saleplan_result_in_process_month;
+                $sum_result_success = $sum_result_success + $saleplan_result_success_month;
+                $sum_shop_updatestatus = $sum_saleplan_updatestatus + $count_saleplan_updatestatusmonth;
         }
 
-        // dd($report);
+        // -- ผมรวม Precent
+        if($count_saleplan_month > 0 ){
+            $sum_percent_success = @round(($saleplan_result_in_process_month*100)/$count_saleplan_month);
+            $sum_percent_failed = @round((($saleplan_result_failed_month+$saleplan_result_in_process_month)*100)/$count_saleplan_month);
+        }else{
+            $sum_percent_success = 0;
+            $sum_percent_failed = 0;
+        }
 
-        return view('reports.report_saleplan_lead', compact('report'));
+        $summary_report = [
+            'sum_count_saleplan' => $sum_count_saleplan,
+            'sum_result_failed' => $sum_result_failed,
+            'sum_result_in_process' => $sum_result_in_process,
+            'sum_result_success' => $sum_result_success,
+            'sum_shop_updatestatus' => $sum_shop_updatestatus,
+            'sum_percent_success' => $percent_success,
+            'sum_percent_failed' => $percent_failed,
+        ];
+
+        return view('reports.report_saleplan_lead', compact('report', 'summary_report'));
     }
 }

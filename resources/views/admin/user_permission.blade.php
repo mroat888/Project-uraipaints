@@ -67,9 +67,12 @@
                                     </td>
                                     <td>
                                     @php
-                                        foreach($master_team as $value_team){
-                                            if($value->team_id ==  $value_team->id){
-                                                echo "<span class='badge badge-soft-success' style='font-size: 14px;'>$value_team->team_name</span>";
+                                        $teams = explode(',', $value->team_id);
+                                        foreach($teams as $team){
+                                            foreach($master_team as $value_team){
+                                                if($team ==  $value_team->id){
+                                                    echo "<span class='badge badge-soft-success mx-1' style='font-size: 14px;'>$value_team->team_name</span>";
+                                                }
                                             }
                                         }
                                     @endphp
@@ -129,7 +132,7 @@
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">อีเมล์</label>
-                                <input type="email" name="temail" id="temail" class="form-control">
+                                <input type="email" name="temail" id="temail" class="form-control" placeholder="อีเมล์">
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="firstName">รหัสผ่าน</label>
@@ -139,7 +142,7 @@
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="username">สิทธิ์การใช้งาน</label>
-                                <select id="sel_status" name="sel_status" class="form-control custom-select">
+                                <select id="sel_status" name="sel_status" class="form-control custom-select" placeholder="สิทธิ์การใช้งาน">
                                     <option selected disabled>เลือกข้อมูล</option>
                                     @foreach($master_permission as $key => $value)
                                         <option value="{{ $value->id }}">{{ $value->permission_name }}</option>
@@ -149,7 +152,7 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="username">ชื่อพนักงาน</label>
-                                <select name="sel_api_identify" id="sel_api_identify" class="form-control custom-select select2">
+                                <select name="sel_api_identify" id="sel_api_identify" class="form-control custom-select select2" placeholder="ชื่อพนักงาน">
                                     <option value="" selected disabled>เลือกข้อมูล</option>
                                     @foreach ($sellers_api as $key => $value)
                                         <option value="{{$sellers_api[$key]['id']}}">{{$sellers_api[$key]['name']}}</option>
@@ -158,14 +161,16 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-12">
                                 <label for="username">ทีม</label>
-                                <select id="sel_team" name="sel_team" class="form-control custom-select">
-                                    <option selected disabled>เลือกข้อมูล</option>
-                                    @foreach($master_team as $key => $value)
-                                        <option value="{{ $value->id }}">{{ $value->team_name }}</option>
-                                    @endforeach
+                                <select id="sel_team" name="sel_team[]" class="form-control custom-select select2 select2-multiple"  multiple="multiple" placeholder="เลือกข้อมูล">
+                                    <optgroup label="เลือกข้อมูล">
+                                        @foreach($master_team as $key => $value)
+                                            <option value="{{ $value->id }}">{{ $value->team_name }}</option>
+                                        @endforeach
+                                    </optgroup>
                                 </select>
+                                
                             </div>
                         </div>
                     </div>
@@ -222,14 +227,18 @@
                             $('#edit_sel_api_identify').append('<option value='+response.sellers_api[key]['id']+'>'+response.sellers_api[key]['name']+'</option>');
                         }
                     });
-
-                    $.each(response.master_teamsale, function(key, value){
-                        if(value.id == response.dataUser.team_id){
-                            $('#edit_sel_team').append('<option value='+value.id+' selected>'+value.team_name+'</option>');
-                        }else{
-                            $('#edit_sel_team').append('<option value='+value.id+'>'+value.team_name+'</option>');
-                        }
-                    });
+                    
+                    let rows_teams = response.dataUser.team_id.split(",");
+                    for (i = 0; i < rows_teams.length; i++) {
+                        $.each(response.master_teamsale, function(key, value){
+                            if(value.id == rows_teams[i]){
+                                $('#edit_sel_team').append('<option value='+value.id+' selected>'+value.team_name+'</option>');
+                            }else{
+                                $('#edit_sel_team').append('<option value='+value.id+'>'+value.team_name+'</option>');
+                            }
+                        });
+                    }
+                    
 
                 }
             }

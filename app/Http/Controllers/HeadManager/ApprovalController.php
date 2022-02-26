@@ -17,12 +17,26 @@ class ApprovalController extends Controller
 
     public function index()
     {
-        $data['request_approval'] = DB::table('assignments')
-        ->join('users', 'assignments.created_by', '=', 'users.id')
-        ->whereIn('assignments.assign_status', [0,1,2])
-        ->where('users.team_id', Auth::user()->team_id)
+        // $data['request_approval'] = DB::table('assignments')
+        // ->join('users', 'assignments.created_by', '=', 'users.id')
+        // ->whereIn('assignments.assign_status', [0,1,2])
+        // ->where('users.team_id', Auth::user()->team_id)
+        // ->select('assignments.created_by')
+        // ->distinct()->get();
+
+        $auth_team_id = explode(',',Auth::user()->team_id);
+        foreach($auth_team_id as $auth_team){
+            $data['request_approval'] = DB::table('assignments')
+            ->join('users', 'assignments.created_by', '=', 'users.id')
+            ->whereIn('assignments.assign_status', [0,1,2])
+            ->where(function($query) use ($auth_team) {
+                $query->where('users.team_id', $auth_team)
+                    ->orWhere('users.team_id', 'like', $auth_team.',%')
+                    ->orWhere('users.team_id', 'like', '%,'.$auth_team);
+            })
             ->select('assignments.created_by')
             ->distinct()->get();
+        }
 
         return view('headManager.approval_general', $data);
     }
@@ -79,16 +93,32 @@ class ApprovalController extends Controller
     public function search(Request $request){
         list($year,$month) = explode('-', $request->selectdateTo);
 
-        $data['request_approval'] = DB::table('assignments')
-        ->join('users', 'assignments.created_by', '=', 'users.id')
-        ->whereIn('assignments.assign_status', [0,1,2])
-        ->where('users.team_id', Auth::user()->team_id)
-        ->whereYear('assignments.created_at', $year)
-        ->whereMonth('assignments.created_at', $month)
+        // $data['request_approval'] = DB::table('assignments')
+        // ->join('users', 'assignments.created_by', '=', 'users.id')
+        // ->whereIn('assignments.assign_status', [0,1,2])
+        // ->where('users.team_id', Auth::user()->team_id)
+        // ->whereYear('assignments.created_at', $year)
+        // ->whereMonth('assignments.created_at', $month)
+        // ->select('assignments.created_by')
+        // ->distinct()->get();
+
+        $auth_team_id = explode(',',Auth::user()->team_id);
+        foreach($auth_team_id as $auth_team){
+            $data['request_approval'] = DB::table('assignments')
+            ->join('users', 'assignments.created_by', '=', 'users.id')
+            ->whereIn('assignments.assign_status', [0,1,2])
+            ->where(function($query) use ($auth_team) {
+                $query->where('users.team_id', $auth_team)
+                    ->orWhere('users.team_id', 'like', $auth_team.',%')
+                    ->orWhere('users.team_id', 'like', '%,'.$auth_team);
+            })
+            ->whereYear('assignments.created_at', $year)
+            ->whereMonth('assignments.created_at', $month)
             ->select('assignments.created_by')
             ->distinct()->get();
+        }
 
-            return view('headManager.approval_general', $data);
+        return view('headManager.approval_general', $data);
     }
 
     public function view_approval($id)

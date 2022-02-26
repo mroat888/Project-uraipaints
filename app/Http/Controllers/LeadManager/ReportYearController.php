@@ -13,10 +13,23 @@ class ReportYearController extends Controller
 {
     public function index(){
         $report = array();
-        $users = DB::table('users')
-        ->whereIn('status',[1,2])
-        ->where('team_id', Auth::user()->team_id)
-        ->get();
+        
+        // $users = DB::table('users')
+        // ->whereIn('status',[1,2])
+        // ->where('team_id', Auth::user()->team_id)
+        // ->get();
+
+        $auth_team_id = explode(',',Auth::user()->team_id);
+        foreach($auth_team_id as $auth_team){
+            $users = DB::table('users')
+            ->whereIn('status',[1,2])
+            ->where(function($query) use ($auth_team) {
+                $query->where('team_id', $auth_team)
+                    ->orWhere('team_id', 'like', $auth_team.',%')
+                    ->orWhere('team_id', 'like', '%,'.$auth_team);
+            })
+            ->get();
+        }
 
         //-- ตัวแปรผลรวม ลูกค้าเยี่ยม
         $sum_cust_visits_amount = 0;

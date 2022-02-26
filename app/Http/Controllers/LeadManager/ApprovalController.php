@@ -17,29 +17,64 @@ class ApprovalController extends Controller
 
     public function index()
     {
-        $data['request_approval'] = DB::table('assignments')
-        ->join('users', 'assignments.created_by', '=', 'users.id')
-        ->where('assignments.assign_status', 0)
-        ->where('users.team_id', Auth::user()->team_id)
-        ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
-        ->select('assignments.created_by')
-        ->distinct()->get();
+        // $data['request_approval'] = DB::table('assignments')
+        // ->join('users', 'assignments.created_by', '=', 'users.id')
+        // ->where('assignments.assign_status', 0)
+        // ->where('users.team_id', Auth::user()->team_id)
+        // ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+        // ->select('assignments.created_by')
+        // ->distinct()->get();
+
+        $auth_team_id = explode(',',Auth::user()->team_id);
+        foreach($auth_team_id as $auth_team){
+            $data['request_approval'] = DB::table('assignments')
+            ->join('users', 'assignments.created_by', '=', 'users.id')
+            ->where('assignments.assign_status', 0)
+            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+            ->where(function($query) use ($auth_team) {
+                $query->where('users.team_id', $auth_team)
+                    ->orWhere('users.team_id', 'like', $auth_team.',%')
+                    ->orWhere('users.team_id', 'like', '%,'.$auth_team);
+            })
+            ->select('assignments.created_by')
+            ->distinct()->get();
+        }
+
+        
 
         return view('leadManager.approval_general', $data);
     }
 
     public function approval_history()
     {
-        $data['approval_history'] = DB::table('assignments')
-        ->join('users', 'assignments.created_by', '=', 'users.id')
-        ->whereNotIn('assignments.assign_status', [0, 3])
-        ->where('users.team_id', Auth::user()->team_id)
-        ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
-        ->select(
-            'users.name',
-            'assignments.*')
-        ->groupBy('assignments.created_by')
-        ->get();
+        // $data['approval_history'] = DB::table('assignments')
+        // ->join('users', 'assignments.created_by', '=', 'users.id')
+        // ->whereNotIn('assignments.assign_status', [0, 3])
+        // ->where('users.team_id', Auth::user()->team_id)
+        // ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+        // ->select(
+        //     'users.name',
+        //     'assignments.*')
+        // ->groupBy('assignments.created_by')
+        // ->get();
+
+        $auth_team_id = explode(',',Auth::user()->team_id);
+        foreach($auth_team_id as $auth_team){
+            $data['approval_history'] = DB::table('assignments')
+            ->join('users', 'assignments.created_by', '=', 'users.id')
+            ->whereNotIn('assignments.assign_status', [0, 3])
+            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+            ->where(function($query) use ($auth_team) {
+                $query->where('users.team_id', $auth_team)
+                    ->orWhere('users.team_id', 'like', $auth_team.',%')
+                    ->orWhere('users.team_id', 'like', '%,'.$auth_team);
+            })
+            ->select(
+                'users.name',
+                'assignments.*')
+            ->groupBy('assignments.created_by')
+            ->get();
+        }
 
         return view('leadManager.approval_general_history', $data);
     }

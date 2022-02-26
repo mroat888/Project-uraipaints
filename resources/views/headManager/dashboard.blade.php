@@ -355,7 +355,11 @@
                             <div class="card card-sm">
                                 <div class="card-body" style="color: black;">
                                     @php
-                                        $percentAmtCrn = (($sum_totalAmtSale)*100)/$sum_totalAmtSale_Previous;
+                                        if($sum_totalAmtSale > 0 && $sum_totalAmtSale_Previous > 0){
+                                            $percentAmtCrn = (($sum_totalAmtSale)*100)/$sum_totalAmtSale_Previous;
+                                        }else{
+                                            $percentAmtCrn = 0 ;
+                                        }
                                     @endphp
                                     <span class="d-block font-11 font-weight-500 text-dark text-uppercase mb-10"></span>
                                             <span class="d-block text-center">
