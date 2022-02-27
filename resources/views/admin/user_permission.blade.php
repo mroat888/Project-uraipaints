@@ -30,15 +30,15 @@
             <div class="row">
                 <div class="col-sm">
                     <div class="table-wrap">
-                        <div class="hk-pg-header mb-10">
+                        <!-- <div class="hk-pg-header mb-10">
                             <div>
                             </div>
                             <div class="d-flex">
                                 <input type="text" name="" id="" class="form-control form-control-sm" placeholder="ค้นหา">
                             </div>
-                        </div>
-                        <div class="table-responsive">
-                        <table class="table table-hover mb-0">
+                        </div> -->
+                        <div class="table-responsive col-md-12">
+                            <table id="datable_1" class="table table-hover">
                             <thead>
                                 <tr>
                                     <th>#</th>
