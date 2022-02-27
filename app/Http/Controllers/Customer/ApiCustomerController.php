@@ -32,6 +32,7 @@ class ApiCustomerController extends Controller
                 'TotalCampaign' => $value['TotalCampaign'],
             ];
         }
+        
         return view('customer.customer-api', compact('customer_api'));
 
     }

@@ -119,6 +119,7 @@ Route::get('/reportSale/reportVisitCustomer', 'Report\ReportVisitCustomerControl
 
 // ข้อมูลที่ใช้ร่วมกัน
 Route::get('data_name_store', 'ShareData\CheckStoreController@index');
+Route::get('data_name_store/detail/{id}', 'ShareData\CheckStoreController@show');
 Route::get('data_search_product', 'ShareData\SearchroductController@index');
 Route::get('data_report_product-new', 'ShareData\ProductNewController@index');
 Route::get('data_report_full-year', 'ShareData\ReportFullYearController@index');
