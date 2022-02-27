@@ -4,13 +4,44 @@ namespace App\Http\Controllers\ShareData;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Api\ApiController;
 
 class SearchroductController extends Controller
 {
+    public function __construct(){
+        $this->api_token = new ApiController();
+    }
 
     public function index()
     {
-        return view('shareData.search_product');
+        $api_token = $this->api_token->apiToken();
+        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/pdglists');
+        $pdglists_api = $response->json();
+
+        return view('shareData.search_product', compact('pdglists_api'));
+    }
+
+    public function search(Request $request){
+
+        $api_token = $this->api_token->apiToken();
+        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/pdglists');
+        $pdglists_api = $response->json();
+
+        $product_api = null;
+
+        if(!is_null($request->sel_pdglists)){
+            $api_token = $this->api_token->apiToken();
+            $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/pdglists/'.$request->sel_pdglists.'/products');
+            if($response['code'] == 200){
+                $product_api = $response->json();
+            }
+        }
+
+        return view('shareData.search_product', compact('pdglists_api', 'product_api'));
+
+        
     }
 
     /**

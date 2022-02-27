@@ -121,6 +121,7 @@ Route::get('/reportSale/reportVisitCustomer', 'Report\ReportVisitCustomerControl
 Route::get('data_name_store', 'ShareData\CheckStoreController@index');
 Route::get('data_name_store/detail/{id}', 'ShareData\CheckStoreController@show');
 Route::get('data_search_product', 'ShareData\SearchroductController@index');
+Route::post('data_search_product/search', 'ShareData\SearchroductController@search');
 Route::get('data_report_product-new', 'ShareData\ProductNewController@index');
 Route::get('data_report_full-year', 'ShareData\ReportFullYearController@index');
 Route::get('data_report_historical-year', 'ShareData\ReportHistoricalYearController@index');

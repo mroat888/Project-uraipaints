@@ -64,45 +64,33 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    <?php
+                                        $rows = count($sellers_api);
+                                        $no=0;
+                                        for($i=0 ; $i< $rows; $i++){
+                                    ?>
                                         <tr>
-                                            <th scope="row">1</th>
-                                            <td>Home Paint Outlet</td>
-                                            <td>20</td>
-                                            <td>18</td>
-                                            <td>2</td>
-                                            <td>20</td>
-                                            <td>80%</td>
-                                            <td>20%</td>
+                                            <th scope="row">{{ ++$no }}</th>
+                                            <td>{{ $sellers_api[$i]['description'] }}</td>
+                                            <td>{{ $sellers_api[$i]['Target'] }}</td>
+                                            <td>{{ $sellers_api[$i]['Sales'] }}</td>
+                                            <td>{{ $sellers_api[$i]['Diff'] }}</td>
+                                            <td>-</td>
+                                            <td>{{ $sellers_api[$i]['persent_sale'] }}%</td>
+                                            <td>{{ $sellers_api[$i]['persent_diff'] }}%</td>
                                         </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>สีรองพื้น</td>
-                                            <td>20</td>
-                                            <td>18</td>
-                                            <td>2</td>
-                                            <td>20</td>
-                                            <td>80%</td>
-                                            <td>20%</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td>4 in 1</td>
-                                            <td>20</td>
-                                            <td>18</td>
-                                            <td>2</td>
-                                            <td>20</td>
-                                            <td>80%</td>
-                                            <td>20%</td>
-                                        </tr>
+                                    <?php
+                                        }
+                                    ?>
                                     </tbody>
                                     <tfoot style="font-weight: bold;">
                                         <td colspan="2" align="center">ทั้งหมด</td>
-                                        <td class="text-success">3</td>
-                                        <td class="text-success">3</td>
-                                        <td class="text-danger">3</td>
-                                        <td class="text-secondary">3</td>
-                                        <td class="text-success">3%</td>
-                                        <td class="text-danger">3%</td>
+                                        <td class="text-success">{{ $summary_sellers_api['sum_target'] }}</td>
+                                        <td class="text-success">{{ $summary_sellers_api['sum_sales'] }}</td>
+                                        <td class="text-danger">{{ $summary_sellers_api['sum_diff'] }}</td>
+                                        <td class="text-secondary">-</td>
+                                        <td class="text-success">{{ $summary_sellers_api['sum_persent_sale'] }}%</td>
+                                        <td class="text-danger">{{ $summary_sellers_api['sum_persent_diff'] }}%</td>
                                     </tfoot>
                                 </table>
                             </div>
