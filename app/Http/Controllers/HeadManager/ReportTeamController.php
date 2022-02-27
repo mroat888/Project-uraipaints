@@ -20,17 +20,22 @@ class ReportTeamController extends Controller
         // ->where('team_id',Auth::user()->team_id)
         // ->whereIn('status', [1,2,3])
         // ->get();
+
         $auth_team_id = explode(',',Auth::user()->team_id);
-        foreach($auth_team_id as $auth_team){
-            $users = DB::table('users')
+        $auth_team = array();
+        foreach($auth_team_id as $value){
+            $auth_team[] = $value;
+        }
+        $users = DB::table('users')
             ->whereIn('status', [1,2,3])
             ->where(function($query) use ($auth_team) {
-                $query->where('team_id', $auth_team)
-                    ->orWhere('team_id', 'like', $auth_team.',%')
-                    ->orWhere('team_id', 'like', '%,'.$auth_team);
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('team_id', $auth_team[$i])
+                        ->orWhere('team_id', 'like', $auth_team[$i].',%')
+                        ->orWhere('team_id', 'like', '%,'.$auth_team[$i]);
+                }
             })
             ->get();
-        }
 
         $api_token = $this->apicontroller->apiToken(); 
         $data['users_api'] = array();

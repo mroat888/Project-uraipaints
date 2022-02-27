@@ -23,17 +23,21 @@ class ApiCustomerController extends Controller
         // ->get();
 
         $auth_team_id = explode(',',Auth::user()->team_id);
-        foreach($auth_team_id as $auth_team){
-            $users_saleman = DB::table('users')
+        $auth_team = array();
+        foreach($auth_team_id as $value){
+            $auth_team[] = $value;
+        }
+        $users_saleman = DB::table('users')
             ->whereIn('status', [1,2])
             ->where(function($query) use ($auth_team) {
-                $query->where('team_id', $auth_team)
-                    ->orWhere('team_id', 'like', $auth_team.',%')
-                    ->orWhere('team_id', 'like', '%,'.$auth_team);
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('team_id', $auth_team[$i])
+                        ->orWhere('team_id', 'like', $auth_team[$i].',%')
+                        ->orWhere('team_id', 'like', '%,'.$auth_team[$i]);
+                }
             })
             ->get();
-        }
-
+   
         // dd($users_saleman);
 
         $api_token = $this->api_token->apiToken();

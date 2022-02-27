@@ -26,21 +26,26 @@ class ApprovalController extends Controller
         // ->distinct()->get();
 
         $auth_team_id = explode(',',Auth::user()->team_id);
-        foreach($auth_team_id as $auth_team){
-            $data['request_approval'] = DB::table('assignments')
+        $auth_team = array();
+        foreach($auth_team_id as $value){
+            $auth_team[] = $value;
+        }
+        
+        $data['request_approval'] = DB::table('assignments')
             ->join('users', 'assignments.created_by', '=', 'users.id')
             ->where('assignments.assign_status', 0)
             ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
             ->where(function($query) use ($auth_team) {
-                $query->where('users.team_id', $auth_team)
-                    ->orWhere('users.team_id', 'like', $auth_team.',%')
-                    ->orWhere('users.team_id', 'like', '%,'.$auth_team);
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('users.team_id', $auth_team[$i])
+                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+                }
             })
             ->select('assignments.created_by')
             ->distinct()->get();
-        }
 
-        
+        // dd($data['request_approval']);
 
         return view('leadManager.approval_general', $data);
     }
@@ -59,22 +64,41 @@ class ApprovalController extends Controller
         // ->get();
 
         $auth_team_id = explode(',',Auth::user()->team_id);
-        foreach($auth_team_id as $auth_team){
-            $data['approval_history'] = DB::table('assignments')
+        $auth_team = array();
+        foreach($auth_team_id as $value){
+            $auth_team[] = $value;
+        }
+
+        $data['approval_history'] = DB::table('assignments')
             ->join('users', 'assignments.created_by', '=', 'users.id')
             ->whereNotIn('assignments.assign_status', [0, 3])
             ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
             ->where(function($query) use ($auth_team) {
-                $query->where('users.team_id', $auth_team)
-                    ->orWhere('users.team_id', 'like', $auth_team.',%')
-                    ->orWhere('users.team_id', 'like', '%,'.$auth_team);
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('users.team_id', $auth_team[$i])
+                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+                }
             })
             ->select(
                 'users.name',
                 'assignments.*')
             ->groupBy('assignments.created_by')
             ->get();
-        }
+        
+        $data['request_approval'] = DB::table('assignments')
+            ->join('users', 'assignments.created_by', '=', 'users.id')
+            ->where('assignments.assign_status', 0)
+            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('users.team_id', $auth_team[$i])
+                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+                }
+            })
+            ->select('assignments.created_by')
+            ->distinct()->get();
 
         return view('leadManager.approval_general_history', $data);
     }

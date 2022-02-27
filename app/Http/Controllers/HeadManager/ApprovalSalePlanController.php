@@ -30,22 +30,25 @@ class ApprovalSalePlanController extends Controller
         //     ->whereIn('monthly_plans.status_approve', [1, 2])->select('users.name', 'monthly_plans.*')->get();
 
         $auth_team_id = explode(',',Auth::user()->team_id);
-        foreach($auth_team_id as $auth_team){
-            $data['monthly_plan'] = DB::table('monthly_plans')
+        $auth_team = array();
+        foreach($auth_team_id as $value){
+            $auth_team[] = $value;
+        }
+        $data['monthly_plan'] = DB::table('monthly_plans')
             ->join('users', 'users.id', 'monthly_plans.created_by')
-            ->whereIn('monthly_plans.status_approve', [1,2])
-            ->where('users.team_id', $auth_team)
-            // ->where(function($query) use ($auth_team) {
-            //     $query->where('users.team_id', $auth_team)
-            //         ->orWhere('users.team_id', 'like', $auth_team.',%')
-            //         ->orWhere('users.team_id', 'like', '%,'.$auth_team);
-            // })
+            ->whereIn('monthly_plans.status_approve', [1])
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('users.team_id', $auth_team[$i])
+                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+                }
+            })
             ->select(
                 'users.*',
                 'monthly_plans.*'
             )
             ->get();
-        }
 
         // dd($data);
         return view('headManager.approval_saleplan', $data);
@@ -157,15 +160,20 @@ class ApprovalSalePlanController extends Controller
         // ->get();
 
         $auth_team_id = explode(',',Auth::user()->team_id);
-        foreach($auth_team_id as $auth_team){
-            list($year,$month) = explode('-', $request->selectdateTo);
+        $auth_team = array();
+        foreach($auth_team_id as $value){
+            $auth_team[] = $value;
+        }
+        list($year,$month) = explode('-', $request->selectdateTo);
             $data['monthly_plan'] = DB::table('monthly_plans')
             ->join('users', 'users.id', 'monthly_plans.created_by')
             ->whereIn('monthly_plans.status_approve', [1,2])
             ->where(function($query) use ($auth_team) {
-                $query->where('users.team_id', $auth_team)
-                    ->orWhere('users.team_id', 'like', $auth_team.',%')
-                    ->orWhere('users.team_id', 'like', '%,'.$auth_team);
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('users.team_id', $auth_team[$i])
+                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+                }
             })
             ->whereYear('month_date', $year)
             ->whereMonth('month_date', $month)
@@ -174,7 +182,6 @@ class ApprovalSalePlanController extends Controller
                 'monthly_plans.*'
             )
             ->get();
-        }
 
         return view('headManager.approval_saleplan', $data);
     }

@@ -36,15 +36,21 @@ class DashboardController extends Controller
         // ->get();
 
         $auth_team_id = explode(',',Auth::user()->team_id);
-        foreach($auth_team_id as $auth_team){
-            list($year,$month,$day) = explode("-",date("Y-m-d"));
-            $monthly_plans = DB::table('monthly_plans')
+        $auth_team = array();
+        foreach($auth_team_id as $value){
+            $auth_team[] = $value;
+        }
+
+        list($year,$month,$day) = explode("-",date("Y-m-d"));
+        $monthly_plans = DB::table('monthly_plans')
             ->join('users', 'users.id', 'monthly_plans.created_by')
             ->where('monthly_plans.status_approve', 2)
             ->where(function($query) use ($auth_team) {
-                $query->where('users.team_id', $auth_team)
-                    ->orWhere('users.team_id', 'like', $auth_team.',%')
-                    ->orWhere('users.team_id', 'like', '%,'.$auth_team);
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('users.team_id', $auth_team[$i])
+                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+                }
             })
             ->whereYear('month_date', $year)
             ->whereMonth('month_date', $month)
@@ -52,8 +58,6 @@ class DashboardController extends Controller
                 'monthly_plans.*'
             )
             ->get();
-        }
-
 
         $data['count_monthly_plans'] = 0;
         $data['count_cust_new_amount'] = 0;
@@ -115,20 +119,19 @@ class DashboardController extends Controller
         //     ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
         //     ->get();
 
-        $auth_team_id = explode(',',Auth::user()->team_id);
-        foreach($auth_team_id as $auth_team){
-            $data['list_approval'] = DB::table('assignments')
+        $data['list_approval'] = DB::table('assignments')
             ->join('users', 'assignments.created_by', '=', 'users.id')
             ->where(function($query) use ($auth_team) {
-                $query->where('users.team_id', $auth_team)
-                    ->orWhere('users.team_id', 'like', $auth_team.',%')
-                    ->orWhere('users.team_id', 'like', '%,'.$auth_team);
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('users.team_id', $auth_team[$i])
+                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+                }
             })
             ->whereMonth('assignments.assign_request_date', Carbon::now()->format('m'))
             ->whereIn('assignments.assign_status', [0,1,2])
             ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
             ->get();
-        }
 
 
         $data['assignments'] = DB::table('assignments')
@@ -139,18 +142,17 @@ class DashboardController extends Controller
         
         $data['notes'] = Note::where('employee_id', Auth::user()->id)->whereMonth('note_date', Carbon::now()->format('m'))->get();
         // $data['customer_shop'] = Customer::where('created_by', Auth::user()->team_id)->where('shop_status', 0)->whereMonth('created_at', Carbon::now()->format('m'))->get();
-        $auth_team_id = explode(',',Auth::user()->team_id);
-        foreach($auth_team_id as $auth_team){
-            $data['customer_shop'] = Customer::where('shop_status', 0)
+        $data['customer_shop'] = Customer::where('shop_status', 0)
             ->where(function($query) use ($auth_team) {
-                $query->where('created_by', $auth_team)
-                    ->orWhere('created_by', 'like', $auth_team.',%')
-                    ->orWhere('created_by', 'like', '%,'.$auth_team);
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('created_by', $auth_team[$i])
+                        ->orWhere('created_by', 'like', $auth_team[$i].',%')
+                        ->orWhere('created_by', 'like', '%,'.$auth_team[$i]);
+                }
             })
             ->whereMonth('created_at', Carbon::now()
             ->format('m'))
             ->get();
-        }
         
 
         $api_token = $this->api_token->apiToken();
@@ -158,16 +160,15 @@ class DashboardController extends Controller
 
         //-- หาจำนวนร้านค้าใน ทีม
         // $user_teams = DB::table('users')->where('status', 1)->where('team_id', Auth::user()->team_id)->get();
-        $auth_team_id = explode(',',Auth::user()->team_id);
-        foreach($auth_team_id as $auth_team){
-            $user_teams = DB::table('users')->where('status', 1)
+        $user_teams = DB::table('users')->whereIn('status', [1,2])
             ->where(function($query) use ($auth_team) {
-                $query->where('team_id', $auth_team)
-                    ->orWhere('team_id', 'like', $auth_team.',%')
-                    ->orWhere('team_id', 'like', '%,'.$auth_team);
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('team_id', $auth_team[$i])
+                        ->orWhere('team_id', 'like', $auth_team[$i].',%')
+                        ->orWhere('team_id', 'like', '%,'.$auth_team[$i]);
+                }
             })
             ->get();
-        }
 
         $data['sum_CustTotal'] = 0;
         $data['sum_ActiveTotal'] = 0;

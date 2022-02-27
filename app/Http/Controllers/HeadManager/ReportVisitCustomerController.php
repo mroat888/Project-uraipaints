@@ -18,16 +18,21 @@ class ReportVisitCustomerController extends Controller
         // ->get();
 
         $auth_team_id = explode(',',Auth::user()->team_id);
-        foreach($auth_team_id as $auth_team){
-            $user_team = DB::table('users')
-            ->whereIn('status',[1,2,3])
-            ->where(function($query) use ($auth_team) {
-                $query->where('team_id', $auth_team)
-                    ->orWhere('team_id', 'like', $auth_team.',%')
-                    ->orWhere('team_id', 'like', '%,'.$auth_team);
-            })
-            ->get();
+        $auth_team = array();
+        foreach($auth_team_id as $value){
+            $auth_team[] = $value;
         }
+
+        $user_team = DB::table('users')
+        ->whereIn('status',[1,2,3])
+        ->where(function($query) use ($auth_team) {
+            for ($i = 0; $i < count($auth_team); $i++){
+                $query->orWhere('team_id', $auth_team[$i])
+                    ->orWhere('team_id', 'like', $auth_team[$i].',%')
+                    ->orWhere('team_id', 'like', '%,'.$auth_team[$i]);
+            }
+        })
+        ->get();
 
         $report = array();
         $summary_report = array();
