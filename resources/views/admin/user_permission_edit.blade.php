@@ -43,7 +43,7 @@
                     </div>
                 </div> 
                 <div class="row">
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-12">
                         <label for="username">ทีม</label>
                         <select id="edit_sel_team" name="edit_sel_team[]" class="form-control custom-select select2 select2-multiple"  multiple="multiple">
                             <option selected disabled>เลือกข้อมูล</option>
