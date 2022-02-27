@@ -56,7 +56,8 @@
                     {{-- <p class="mb-40">ข้อมูลรายการสินค้า</p> --}}
                     <div class="row">
                         <div class="col-sm">
-
+                            
+                        @if(isset($product_api))
                             @if(!is_null($product_api))
                                 <div class="row">
                                 @foreach($product_api['data'] as $value)
@@ -85,6 +86,7 @@
                                 @endforeach
                                 </div>
                             @endif
+                        @endif
                             
                         </div>
                     </div>
