@@ -48,21 +48,23 @@ class ApiCustomerController extends Controller
         //- ดึงแคมเปญของร้านค้า
         $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/customers/'.$id.'/campaigns');
         $res_api = $response->json();
-
-        if($res_api['code'] == 200){
-            $data['cust_campaigns_api'] = array();
-            foreach ($res_api['data'] as $key => $value) {
-                $data['cust_campaigns_api'][$key] = 
-                [
-                    'year' => $value['year'],
-                    'campaign_id' => $value['campaign_id'],
-                    'description' => $value['description'],
-                    'saleamount' => $value['saleamount'],
-                    'amount_limit' => $value['amount_limit'],
-                    'amount_diff' => $value['amount_diff'],
-                    'amount_limit_th' => $value['amount_limit_th'],
-                    'amount_net_th' => $value['amount_net_th'],
-                ];
+        
+        if(!empty($res_api)){
+            if($res_api['code'] == 200){
+                $data['cust_campaigns_api'] = array();
+                foreach ($res_api['data'] as $key => $value) {
+                    $data['cust_campaigns_api'][$key] = 
+                    [
+                        'year' => $value['year'],
+                        'campaign_id' => $value['campaign_id'],
+                        'description' => $value['description'],
+                        'saleamount' => $value['saleamount'],
+                        'amount_limit' => $value['amount_limit'],
+                        'amount_diff' => $value['amount_diff'],
+                        'amount_limit_th' => $value['amount_limit_th'],
+                        'amount_net_th' => $value['amount_net_th'],
+                    ];
+                }
             }
         }
 

@@ -46,16 +46,18 @@ class ApiCustomerController extends Controller
             $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/sellers/'.$saleman->api_identify.'/customers');
             $res_api = $response->json();
 
-            if($res_api['code'] == 200){
-                foreach ($res_api['data'] as $key => $value) {
-                    $customer_api[] = 
-                    [
-                        'identify' => $value['identify'],
-                        'shopname' => $value['title']." ".$value['name'],
-                        'address' => $value['amphoe_name']." , ".$value['province_name'],
-                        'telephone' => $value['telephone']." , ".$value['mobile'],
-                        'TotalCampaign' => $value['TotalCampaign'],
-                    ];
+            if(!empty($res_api)){
+                if($res_api['code'] == 200){
+                    foreach ($res_api['data'] as $key => $value) {
+                        $customer_api[] = 
+                        [
+                            'identify' => $value['identify'],
+                            'shopname' => $value['title']." ".$value['name'],
+                            'address' => $value['amphoe_name']." , ".$value['province_name'],
+                            'telephone' => $value['telephone']." , ".$value['mobile'],
+                            'TotalCampaign' => $value['TotalCampaign'],
+                        ];
+                    }
                 }
             }
         }
