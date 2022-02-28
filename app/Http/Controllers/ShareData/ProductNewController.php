@@ -15,7 +15,6 @@ class ProductNewController extends Controller
         $this->api_token = new ApiController();
     }
 
-
     public function index()
     {
         $api_token = $this->api_token->apiToken();

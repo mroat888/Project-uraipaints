@@ -117,7 +117,8 @@ Route::get('/reportSale/reportSaleplan', 'Report\ReportSalePlanController@index'
 Route::get('/reportSale/reportVisitCustomerGoal', 'Report\ReportVisitCustomerGoalController@index');
 Route::get('/reportSale/reportVisitCustomer', 'Report\ReportVisitCustomerController@index');
 
-// ข้อมูลที่ใช้ร่วมกัน
+
+// ข้อมูลที่ใช้ร่วมกัน 
 Route::get('data_name_store', 'ShareData\CheckStoreController@index');
 Route::get('data_name_store/detail/{id}', 'ShareData\CheckStoreController@show');
 Route::get('data_search_product', 'ShareData\SearchroductController@index');
@@ -205,6 +206,20 @@ Route::get('/leadManage/reportStore/detail/{id}','LeadManager\ApiCustomerControl
 Route::get('/leadManage/reportTeam', 'LeadManager\ReportTeamController@index');
 Route::get('/leadManage/reportSaleplan', 'LeadManager\ReportSalePlanController@index');
 Route::get('/leadManage/reportYear', 'LeadManager\ReportYearController@index');
+
+
+// ข้อมูลที่ใช้ร่วมกัน 
+Route::get('leadManage/data_name_store', 'ShareData_LeadManager\CheckStoreController@index');
+Route::get('leadManage/data_name_store/detail/{id}', 'ShareData_LeadManager\CheckStoreController@show');
+Route::get('leadManage/data_search_product', 'ShareData_LeadManager\SearchroductController@index');
+Route::post('leadManage/data_search_product/search', 'ShareData_LeadManager\SearchroductController@search');
+Route::get('leadManage/data_report_product-new', 'ShareData_LeadManager\ProductNewController@index');
+Route::get('leadManage/data_report_full-year', 'ShareData_LeadManager\ReportFullYearController@index');
+Route::get('leadManage/data_report_historical-year', 'ShareData_LeadManager\ReportHistoricalYearController@index');
+Route::get('leadManage/data_report_historical-quarter', 'ShareData_LeadManager\ReportHistoricalQuarterController@index');
+Route::get('leadManage/data_report_historical-month', 'ShareData_LeadManager\ReportHistoricalMonthController@index');
+
+
 });
 
 

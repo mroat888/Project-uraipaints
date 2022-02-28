@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.masterLead')
 
 @section('content')
 
@@ -53,7 +53,7 @@
                                         </tr>
 
                                         <tr>
-                                            <th>เดือน</th>
+                                            <th>ปี</th>
                                             <th>จำนวนร้านค้า</th>
                                             <th>ยอดขายรวม</th>
                                             <th>ยอดคืนรวม</th>
@@ -62,8 +62,8 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    @if($yearseller_api['code'] == 200)
-                                        @foreach($yearseller_api['data'] as $key => $value)
+                                    @if($yearleader_api['code'] == 200)
+                                        @foreach($yearleader_api['data'] as $key => $value)
                                         <tr>
                                             <td>{{ ++$key }}</td>
                                             <td>{{ $value['year']+543 }}</td>

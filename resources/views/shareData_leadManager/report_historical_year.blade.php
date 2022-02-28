@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.masterLead')
 
 @section('content')
 
@@ -6,7 +6,7 @@
 <nav class="hk-breadcrumb" aria-label="breadcrumb">
     <ol class="breadcrumb breadcrumb-light bg-transparent">
         <li class="breadcrumb-item"><a href="#">Page</a></li>
-        <li class="breadcrumb-item active" aria-current="page">รายงานสรุปยอดทั้งปี</li>
+        <li class="breadcrumb-item active" aria-current="page">รายงานเทียบย้อนหลัง (ทั้งปี)</li>
     </ol>
 </nav>
 <!-- /Breadcrumb -->
@@ -16,7 +16,7 @@
         <!-- Title -->
         <div class="hk-pg-header mb-10">
             <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-document"></i></span>รายงานสรุปยอดทั้งปี</h4>
+                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-document"></i></span>รายงานเทียบย้อนหลัง (ทั้งปี)</h4>
             </div>
         </div>
         <!-- /Title -->
@@ -27,7 +27,7 @@
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
                         <div class="col-sm-12 col-md-6">
-                            <h5 class="hk-sec-title">ตารางรายงานสรุปยอดทั้งปี</h5>
+                            <h5 class="hk-sec-title">ตารางรายงานเทียบย้อนหลัง (ทั้งปี)</h5>
                         </div>
                         <div class="col-sm-12 col-md-6">
                             <!-- ------ -->
@@ -48,12 +48,11 @@
                                 <table class="table table-sm table-hover table-bordered">
                                     <thead>
                                         <tr>
-                                            <th rowspan="2">#</th>
-                                            <th colspan="6" style="text-align:center;">รายงานสรุปยอด</th>
+                                            <th colspan="6" style="text-align:center;">รายงานเทียบย้อนหลัง (ทั้งปี)</th>
                                         </tr>
 
                                         <tr>
-                                            <th>เดือน</th>
+                                            <th>ปี</th>
                                             <th>จำนวนร้านค้า</th>
                                             <th>ยอดขายรวม</th>
                                             <th>ยอดคืนรวม</th>
@@ -62,10 +61,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    @if($yearseller_api['code'] == 200)
-                                        @foreach($yearseller_api['data'] as $key => $value)
+                                    @if($yearleader_api_now['code'] == 200)
+                                        @foreach($yearleader_api_now['data'] as $key => $value)
                                         <tr>
-                                            <td>{{ ++$key }}</td>
                                             <td>{{ $value['year']+543 }}</td>
                                             <td>{{ $value['customers'] }}</td>
                                             <td>{{ number_format($value['sales']) }}</td>
@@ -75,6 +73,31 @@
                                         </tr>
                                         @endforeach
                                     @endif
+                                    @if($yearleader_api_old1['code'] == 200)
+                                        @foreach($yearleader_api_old1['data'] as $key => $value)
+                                        <tr>
+                                            <td>{{ $value['year']+543 }}</td>
+                                            <td>{{ $value['customers'] }}</td>
+                                            <td>{{ number_format($value['sales']) }}</td>
+                                            <td>{{ number_format($value['credits']) }}</td>
+                                            <td>{{ number_format($value['netSales']) }}</td>
+                                            <td>{{ number_format($value['%Credit'],2) }}%</td>
+                                        </tr>
+                                        @endforeach
+                                    @endif
+                                    @if($yearleader_api_old2['code'] == 200)
+                                        @foreach($yearleader_api_old2['data'] as $key => $value)
+                                        <tr>
+                                            <td>{{ $value['year']+543 }}</td>
+                                            <td>{{ $value['customers'] }}</td>
+                                            <td>{{ number_format($value['sales']) }}</td>
+                                            <td>{{ number_format($value['credits']) }}</td>
+                                            <td>{{ number_format($value['netSales']) }}</td>
+                                            <td>{{ number_format($value['%Credit'],2) }}%</td>
+                                        </tr>
+                                        @endforeach
+                                    @endif
+
                                     </tbody>
                                     <!-- <tfoot style="font-weight: bold;">
                                         <td colspan="2" align="center">ทั้งหมด</td>

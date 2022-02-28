@@ -29,6 +29,8 @@ class SearchroductController extends Controller
         $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/pdglists');
         $pdglists_api = $response->json();
 
+        // dd($pdglists_api);
+
         $product_api = null;
 
         if(!is_null($request->sel_pdglists)){
@@ -41,7 +43,6 @@ class SearchroductController extends Controller
 
         return view('shareData.search_product', compact('pdglists_api', 'product_api'));
 
-        
     }
 
     /**

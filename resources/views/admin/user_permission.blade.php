@@ -227,9 +227,9 @@
                             $('#edit_sel_api_identify').append('<option value='+response.sellers_api[key]['id']+'>'+response.sellers_api[key]['name']+'</option>');
                         }
                     });
+
                     let rows_teams = response.dataUser.team_id.split(",");
                     let count_team = rows_teams.length;
-
                     $.each(response.master_teamsale, function(key, value){
                         if(count_team == 1){
                             if(value.id == rows_teams[0]){
@@ -244,21 +244,7 @@
                                 $('#edit_sel_team').append('<option value='+value.id+'>'+value.team_name+'</option>');
                             }
                         }
-
                     });
-
-                    
-                    // let rows_teams = response.dataUser.team_id.split(",");
-                    // for (i = 0; i < rows_teams.length; i++) {
-                    //     $.each(response.master_teamsale, function(key, value){
-                    //         if(value.id == rows_teams[i]){
-                    //             $('#edit_sel_team').append('<option value='+value.id+' selected>'+value.team_name+'</option>');
-                    //         }else{
-                    //             $('#edit_sel_team').append('<option value='+value.id+'>'+value.team_name+'</option>');
-                    //         }
-                    //     });
-                    // }
-                    
 
                 }
             }

@@ -114,9 +114,7 @@
                                                         </td>
                                                         <td style="text-align:center">
                                                             <div class="button-list">
-                                                                {{-- <a href="{{url('approve_monthly_plan', $monthly_plan_id)}}" class="btn btn-icon btn-teal">
-                                                                <span class="btn-icon-wrap"><i
-                                                                        data-feather="edit"></i></span></a> --}}
+
                                                                 <form action="{{ url('approve_monthly_plan', $value->id) }}" method="GET">
                                                                     @if ($value->status_approve == 1 || $value->status_approve == 2)
                                                                     <button type="button" class="btn btn-icon btn-secondary requestApproval" disabled>
@@ -127,15 +125,17 @@
                                                                             <button type="button" class="btn btn-icon btn-teal requestApproval" disabled>
                                                                                 <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
                                                                         @else
+                                                                            @if($sale_plan_amount > 0)
                                                                             <button type="button" class="btn btn-icon btn-teal requestApproval">
                                                                                 <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
+                                                                            @else
+                                                                            <button type="button" class="btn btn-icon btn-teal requestApproval" disabled>
+                                                                                <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
+                                                                            @endif
+                                                                            
                                                                         @endif
 
                                                                     @endif
-
-
-                                                                    <!-- <button class="btn btn-icon btn-danger ml-2">
-                                                                        <span class="btn-icon-wrap"><i data-feather="pie-chart"></i></span></button> -->
                                                                 </form>
 
                                                             </div>

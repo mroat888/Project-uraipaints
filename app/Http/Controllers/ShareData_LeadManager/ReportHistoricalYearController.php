@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\ShareData;
+namespace App\Http\Controllers\ShareData_LeadManager;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Api\ApiController;
 
-class ReportFullYearController extends Controller
+class ReportHistoricalYearController extends Controller
 {
     public function __construct(){
         $this->api_token = new ApiController();
@@ -17,14 +18,24 @@ class ReportFullYearController extends Controller
     public function index()
     {
         list($year,$month,$day) = explode('-',date('Y-m-d'));
-        $path_search = "reports/years/".$year."/sellers/search?sortorder=DESC&seller_id=".Auth::user()->api_identify;
+        $path_search = "reports/years/".$year."/leaders/search?sortorder=DESC&leader_id=".Auth::user()->api_identify;
         $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
-        $yearseller_api = $response->json();
+        $data['yearleader_api_now'] = $response->json();
 
-        // dd($yearseller_api);
+        $year_old1 = $year-1;
+        $path_search = "reports/years/".$year_old1."/leaders/search?sortorder=DESC&leader_id=".Auth::user()->api_identify;
+        $api_token = $this->api_token->apiToken();
+        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
+        $data['yearleader_api_old1'] = $response->json();
 
-        return view('shareData.report_full_year', compact('yearseller_api'));
+        $year_old2 = $year-2;
+        $path_search = "reports/years/".$year_old2."/leaders/search?sortorder=DESC&leader_id=".Auth::user()->api_identify;
+        $api_token = $this->api_token->apiToken();
+        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
+        $data['yearleader_api_old2'] = $response->json();
+
+        return view('shareData_leadManager.report_historical_year', $data);
     }
 
     /**

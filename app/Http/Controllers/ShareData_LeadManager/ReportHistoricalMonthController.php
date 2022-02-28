@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\ShareData;
+namespace App\Http\Controllers\ShareData_LeadManager;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Api\ApiController;
 
-class ReportFullYearController extends Controller
+class ReportHistoricalMonthController extends Controller
 {
     public function __construct(){
         $this->api_token = new ApiController();
@@ -17,14 +18,15 @@ class ReportFullYearController extends Controller
     public function index()
     {
         list($year,$month,$day) = explode('-',date('Y-m-d'));
-        $path_search = "reports/years/".$year."/sellers/search?sortorder=DESC&seller_id=".Auth::user()->api_identify;
+        $year_old1 = $year-1;
+        $year_old2 = $year-2;
+
+        $path_search = "reports/years/".$year.",".$year_old1.",".$year_old2."/months/1,2,3,4,5,6,7,8,9,10,11,12/leaders/".Auth::user()->api_identify;
         $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
-        $yearseller_api = $response->json();
+        $month_api = $response->json();
 
-        // dd($yearseller_api);
-
-        return view('shareData.report_full_year', compact('yearseller_api'));
+        return view('shareData_leadManager.report_historical_month', compact('month_api'));
     }
 
     /**
