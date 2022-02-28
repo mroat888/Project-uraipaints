@@ -203,7 +203,7 @@ License: You must have a valid license purchased only from themeforest to legall
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" data-dropdown-in="flipInX"
                         data-dropdown-out="flipOutX">
-                        <a class="dropdown-item" href="{{url('test2')}}"><i
+                        <a class="dropdown-item" href="{{url('edit-profile')}}"><i
                                 class="dropdown-icon zmdi zmdi-account"></i><span>Profile</span></a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();

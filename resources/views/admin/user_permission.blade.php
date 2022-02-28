@@ -170,7 +170,7 @@
                                         @endforeach
                                     </optgroup>
                                 </select>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -247,7 +247,7 @@
 
                     });
 
-                    
+
                     // let rows_teams = response.dataUser.team_id.split(",");
                     // for (i = 0; i < rows_teams.length; i++) {
                     //     $.each(response.master_teamsale, function(key, value){
@@ -258,7 +258,7 @@
                     //         }
                     //     });
                     // }
-                    
+
 
                 }
             }
