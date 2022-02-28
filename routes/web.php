@@ -117,8 +117,10 @@ Route::get('/reportSale/reportSaleplan', 'Report\ReportSalePlanController@index'
 Route::get('/reportSale/reportVisitCustomerGoal', 'Report\ReportVisitCustomerGoalController@index');
 Route::get('/reportSale/reportVisitCustomer', 'Report\ReportVisitCustomerController@index');
 
+Route::get('edit-profile', 'ProfileController@index');
+Route::post('userProfileUpdate', 'ProfileController@update');
 
-// ข้อมูลที่ใช้ร่วมกัน 
+// ข้อมูลที่ใช้ร่วมกัน
 Route::get('data_name_store', 'ShareData\CheckStoreController@index');
 Route::get('data_name_store/detail/{id}', 'ShareData\CheckStoreController@show');
 Route::get('data_search_product', 'ShareData\SearchroductController@index');
@@ -219,6 +221,8 @@ Route::get('leadManage/data_report_historical-year', 'ShareData_LeadManager\Repo
 Route::get('leadManage/data_report_historical-quarter', 'ShareData_LeadManager\ReportHistoricalQuarterController@index');
 Route::get('leadManage/data_report_historical-month', 'ShareData_LeadManager\ReportHistoricalMonthController@index');
 
+Route::get('lead/edit-profile', 'ProfileController@lead_index');
+Route::post('lead/userProfileUpdate', 'ProfileController@update');
 
 });
 
@@ -290,6 +294,9 @@ Route::get('/headManage/reportSaleplan', 'HeadManager\ReportSalePlanController@i
 Route::get('/headManage/report_visitcustomer_goal_head', 'HeadManager\ReportVisitCustomerGoalController@index');
 Route::get('/headManage/reportVisitCustomer', 'HeadManager\ReportVisitCustomerController@index');
 Route::get('/headManage/reportYear', 'HeadManager\ReportYearController@index');
+
+Route::get('head/edit-profile', 'ProfileController@head_index');
+Route::post('head/userProfileUpdate', 'ProfileController@update');
 
 });
 
@@ -442,6 +449,8 @@ Route::post('admin/teamsalesCreate', 'Admin\TeamSaleController@store');
 Route::get('admin/teamsalesEdit/{id}', 'Admin\TeamSaleController@edit');
 Route::post('admin/teamsalesUpdate', 'Admin\TeamSaleController@update');
 
+Route::get('admin/edit-profile', 'ProfileController@admin_index');
+Route::post('admin/userProfileUpdate', 'ProfileController@update');
 
 });
 
