@@ -30,7 +30,7 @@
         <div class="hk-pg-header mb-10">
             <div>
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><i
-                            class="ion ion-md-analytics"></i></span>รายละเอียดแผนประจำเดือน<?php echo thaidate('F Y', date('Y-m')); ?></h4>
+                            class="ion ion-md-analytics"></i></span>รายละเอียดแผนประจำเดือน<?php echo thaidate('F Y', date('Y-m')); ?> / {{ $sale_name->name }}</h4>
             </div>
             <div class="d-flex">
                 <a href="{{ url('approvalsaleplan')}}" type="button" class="btn btn-secondary btn-sm btn-rounded px-3 mr-10"> ย้อนกลับ </a>

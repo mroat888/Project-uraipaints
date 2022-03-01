@@ -109,6 +109,8 @@ class ApprovalSalePlanController extends Controller
             ];
         }
 
+        $data['sale_name'] = DB::table('users')->where('id',$mon_plan->created_by)->select('name')->first(); // ชื่อเซลล์
+
         // ลูกค้าใหม่
         $data['customer_new'] = DB::table('customer_shops_saleplan')
         ->join('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
