@@ -346,9 +346,15 @@
                                         $totalAmtSale_th_Previous = $SalesPrevious[0]["totalAmtSale_th"]; // เป้ายอดขายปีที่แล้ว
                                         $totalAmtSale_Previous = $SalesPrevious[0]["totalAmtSale"]; // เป้ายอดขายปีที่แล้ว
 
-                                        $SalesCurrent = $res_api["data"][2]["SalesCurrent"];
-                                        $totalAmtSale_th = $SalesCurrent[0]["totalAmtSale_th"]; // ยอดที่ทำได้ปีนี้
-                                        $totalAmtSale = $SalesCurrent[0]["totalAmtSale"]; // ยอดที่ทำได้ปีนี้
+                                        if($res_api["data"][2]["SalesCurrent"] == ""){
+                                            $SalesCurrent = $res_api["data"][2]["SalesCurrent"];
+                                        
+                                            $totalAmtSale_th = $SalesCurrent[0]["totalAmtSale_th"]; // ยอดที่ทำได้ปีนี้
+                                            $totalAmtSale = $SalesCurrent[0]["totalAmtSale"]; // ยอดที่ทำได้ปีนี้
+                                        }else{
+                                            $totalAmtSale_th = "0";
+                                            $totalAmtSale = 0;
+                                        }
 
                                         $percentAmtCrn = (($totalAmtSale)*100)/$totalAmtSale_Previous;
                                     @endphp

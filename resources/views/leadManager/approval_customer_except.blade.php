@@ -22,14 +22,14 @@
         </div>
     @endif
         <!-- Title -->
+        <form action="{{ url('lead/approval_customer_confirm_all') }}" method="POST" enctype="multipart/form-data">
         <div class="hk-pg-header mb-10">
             <div>
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
                     data-feather="file-text"></i></span></span>บันทึกข้อมูลการอนุมัติลูกค้าใหม่ (นอกแผน)</h4>
             </div>
             <div class="d-flex">
-                <form action="{{ url('lead/approval_customer_confirm_all') }}" method="POST"
-                enctype="multipart/form-data">
+                
                 @csrf
                 <button type="submit" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" name="approve" value="approve">อนุมัติ</button>
 
@@ -130,8 +130,9 @@
                 </section>
             </div>
         </div>
-    </form>
+    
         <!-- /Row -->
+    </form>
     </div>
     <!-- /Container -->
 

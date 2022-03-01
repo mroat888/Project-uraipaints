@@ -64,7 +64,9 @@ class PlanMonthController extends Controller
         ->orderBy('customer_shops_saleplan.id', 'desc')
         ->get();
 
-        $data['customer_shops'] = DB::table('customer_shops')->where('created_by', Auth::user()->id)->get();
+        // dd($data['customer_new']);
+
+        $data['customer_shops'] = DB::table('customer_shops')->where('customer_shops.shop_status', 0)->where('created_by', Auth::user()->id)->get();
 
         // -----  API  //
         $api_token = $this->apicontroller->apiToken(); // API Login

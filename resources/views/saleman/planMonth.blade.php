@@ -405,9 +405,9 @@
                                                 @if(!is_null($customer_new))
                                                 @foreach ($customer_new as $key => $value)
                                                 <?php
-                                                    $date = Carbon\Carbon::parse($value->shop_saleplan_date)->format('Y-m');
-                                                    $dateNow = Carbon\Carbon::today()->addMonth(1)->format('Y-m');
-                                                    if ($dateNow == $date) {
+                                                    // $date = Carbon\Carbon::parse($value->shop_saleplan_date)->format('Y-m');
+                                                    // $dateNow = Carbon\Carbon::today()->addMonth(1)->format('Y-m');
+                                                    // if ($dateNow == $date) {
                                                 ?>
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
@@ -456,7 +456,7 @@
                                                         </td>
                                                     </tr>
                                                     <?php
-                                                         }
+                                                        // }
                                                     ?>
                                                 @endforeach
                                                 @endif
