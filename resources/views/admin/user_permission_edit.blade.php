@@ -41,7 +41,7 @@
                             <option value="" selected disabled>เลือกข้อมูล</option>
                         </select>
                     </div>
-                </div> 
+                </div>
                 <div class="row">
                     <div class="form-group col-md-12">
                         <label for="username">ทีม</label>

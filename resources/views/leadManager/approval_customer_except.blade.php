@@ -29,7 +29,7 @@
                     data-feather="file-text"></i></span></span>บันทึกข้อมูลการอนุมัติลูกค้าใหม่ (นอกแผน)</h4>
             </div>
             <div class="d-flex">
-                
+
                 @csrf
                 <button type="submit" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" name="approve" value="approve">อนุมัติ</button>
 
@@ -109,7 +109,7 @@
                                                 </div>
                                             </td>
                                             <td>{{$key + 1}}</td>
-                                            <td>{{$chk->created_at}}</td>
+                                            <td>{{Carbon\Carbon::parse($chk->created_at)->format('Y-m-d')}}</td>
                                             <td>{{$chk->name}}</td>
                                             <td>
                                                 <span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>
@@ -130,7 +130,7 @@
                 </section>
             </div>
         </div>
-    
+
         <!-- /Row -->
     </form>
     </div>

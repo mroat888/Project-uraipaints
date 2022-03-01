@@ -78,17 +78,17 @@
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
                                                     <td>{{ $value->note_title }}</td>
-                                                    <td>{{ $value->note_tags }}</td>
+                                                    <td>{{ $value->name_tag }}</td>
                                                     <?php $date = new Carbon\Carbon($value->note_date); ?>
                                                     <td>{{ $date->format('d/m/Y') }}</td>
                                                     <td>
                                                         <div class="button-list">
                                                             @if ($value->status_pin == 1)
-                                                            <a href="{{url('status_pin_update', $value->id)}}" class="btn btn-icon btn-secondary mr-10">
+                                                            <a href="{{url('head/status_pin_update', $value->id)}}" class="btn btn-icon btn-secondary mr-10">
                                                                 <span class="btn-icon-wrap"><i
                                                                         data-feather="feather"></i></span></a>
                                                             @else
-                                                            <a href="{{url('status_pin_update', $value->id)}}" class="btn btn-icon btn-primary mr-10">
+                                                            <a href="{{url('head/status_pin_update', $value->id)}}" class="btn btn-icon btn-primary mr-10">
                                                                 <span class="btn-icon-wrap"><i
                                                                         data-feather="feather"></i></span></a>
                                                             @endif

@@ -57,13 +57,9 @@
                     <div class="col-md-12 form-group">
                         <label for="firstName">รายการนำเสนอ</label>
                         <select class="select2 select2-multiple form-control" multiple="multiple" name="sale_plans_tags"  id="get_tags">
-                            {{-- <optgroup id="get_tags">
-                                <option value="1">เพิ่มเติม</option>
-                                <option value="2">เข้าพบลูกค้า</option>
-                                <option value="3">งานใหม่</option>
-                            </optgroup> --}}
+
                         </select>
-                        {{-- <input type="text" name="" id="get_tag"> --}}
+
                     </div>
                 </div>
                 <input type="hidden" name="id" id="get_id2">
@@ -75,32 +71,6 @@
     </form>
     </div>
 </div>
-
-{{-- <script>
-    //Edit
-    function edit_modal(id) {
-        $.ajax({
-            type: "GET",
-            url: "{!! url('edit_saleplan/"+id+"') !!}",
-            dataType: "JSON",
-            async: false,
-            success: function(data) {
-                $('#get_id2').val(data.dataEdit.id);
-                $('#get_date').val(data.dataEdit.sale_plans_date);
-                $('#get_title').val(data.dataEdit.sale_plans_title);
-                $('#get_objective').val(data.dataEdit.sale_plans_objective);
-                $('#get_tag').val(data.dataEdit.sale_plans_tags);
-                $('#saleplan_id_edit').val(data.dataEdit.shop_id);
-                $('#saleplan_contact_name_edit').val(data.dataEdit.customer_contact_name);
-                $('#saleplan_phone_edit').val(data.dataEdit.customer_contact_phone);
-                $('#saleplan_address_edit').val(data.dataEdit.shop_address);
-
-                $('#saleplanEdit').modal('toggle');
-            }
-        });
-    }
-
-</script> --}}
 
 <script>
 

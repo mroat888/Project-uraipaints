@@ -30,7 +30,10 @@
         <div class="hk-pg-header mb-10">
             <div>
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><i
-                            class="ion ion-md-analytics"></i></span>รายละเอียด Sale Plan</h4>
+                            class="ion ion-md-analytics"></i></span>รายละเอียดแผนประจำเดือน<?php echo thaidate('F Y', date('Y-m')); ?></h4>
+            </div>
+            <div class="d-flex">
+                <a href="{{ url('approvalsaleplan')}}" type="button" class="btn btn-secondary btn-sm btn-rounded px-3 mr-10"> ย้อนกลับ </a>
             </div>
         </div>
         <!-- /Title -->
@@ -41,7 +44,7 @@
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
                         <div class="col-sm-12 col-md-3">
-                            <h5 class="hk-sec-title mb-10">ตาราง Sale Plan</h5>
+                            <h5 class="hk-sec-title mb-10">ตารางแผนประจำเดือน<?php echo thaidate('F Y', date('Y-m')); ?></h5>
                         </div>
                     </div>
 

@@ -40,7 +40,7 @@
          <!-- Title -->
         <div class="hk-pg-header mb-10">
             <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-analytics"></i></span>อนุมัติ Sale Plan</h4>
+                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-analytics"></i></span>อนุมัติแผนประจำเดือน<?php echo thaidate('F Y', date('Y-m')); ?></h4>
             </div>
             <div class="d-flex">
                 <form action="{{ url('lead/approval_saleplan_confirm_all') }}" method="POST" enctype="multipart/form-data">
@@ -58,7 +58,7 @@
                     <section class="hk-sec-wrapper">
                         <div class="row mb-2">
                             <div class="col-sm-12 col-md-3">
-                                <h5 class="hk-sec-title">ตารางอนุมัติ Sale Plan</h5>
+                                <h5 class="hk-sec-title">ตารางอนุมัติแผนประจำเดือน<?php echo thaidate('F Y', date('Y-m')); ?></h5>
                             </div>
                             <div class="col-sm-12 col-md-9">
                                 {{-- <!-- ------ -->
@@ -125,14 +125,16 @@
                                                             ->whereIn('shop_aprove_status', [2,3])->count();
 
                                                             ?>
-                                                            {{-- {{$status_customer}}
-                                                            {{$status_saleplan}} --}}
 
                                                             @if ($status_customer == 0 && $status_saleplan == 0)
 
-                                                            <a href="{{ url('lead/retrospective', $value->id) }}" type="button" class="btn btn-icon btn-warning pt-5">
+                                                            {{-- <a href="{{ url('lead/retrospective', $value->id) }}" type="button" class="btn btn-icon btn-warning pt-5">
                                                                 <i data-feather="refresh-ccw"></i>
-                                                            </a>
+                                                            </a> --}}
+
+                                                            <button id="btn_saleplan_restrospective" type="button" class="btn btn-icon btn-warning ml-2" value="{{ $value->id }}">
+                                                                <i data-feather="refresh-ccw"></i>
+                                                            </button>
 
                                                           @endif
                                                         </td>
@@ -149,6 +151,32 @@
 
             </div>
             <!-- /Row -->
+    </div>
+
+    <!-- Modal Delete Saleplan -->
+    <div class="modal fade" id="ModalSaleplanRestorespective" tabindex="-1" role="dialog" aria-labelledby="ModalSaleplanRestorespective"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form id="from_saleplan_restorespective" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">คุณต้องการส่งข้อมูล Sale Plan กลับใช่หรือไม่</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="text-align:center;">
+                        <h3>คุณต้องการส่งข้อมูล Sale Plan กลับใช่หรือไม่ ?</h3>
+                        <input class="form-control" id="restros_id" name="restros_id" type="hidden" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                        <button type="submit" class="btn btn-primary" id="btn_save_edit">ยืนยัน</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 
     <script type="text/javascript">
@@ -184,6 +212,45 @@
                 }
             }
         }
+
+        $(document).on('click', '#btn_saleplan_restrospective', function() {
+            let restros_id = $(this).val();
+            $('#restros_id').val(restros_id);
+            $('#ModalSaleplanRestorespective').modal('show');
+        });
+
+        $("#from_saleplan_restorespective").on("submit", function(e) {
+            e.preventDefault();
+            //var formData = $(this).serialize();
+            var formData = new FormData(this);
+            console.log(formData);
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('lead/retrospective') }}',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    console.log(response);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'เรียบร้อย!',
+                        text: "ส่งข้อมูลกลับเรียบร้อยแล้วค่ะ",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    $('#ModalSaleplanRestorespective').modal('hide');
+                    $('#shop_status_name_lead').text('ส่งข้อมูล Sale Plan กลับเรียบร้อย')
+                    $('#btn_saleplan_restrospective').prop('disabled', true);
+                    location.reload();
+                },
+                error: function(response) {
+                    console.log("error");
+                    console.log(response);
+                }
+            });
+        });
     </script>
 
 @endsection

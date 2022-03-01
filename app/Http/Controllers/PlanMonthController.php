@@ -34,7 +34,7 @@ class PlanMonthController extends Controller
 
         $data['objective'] = ObjectiveSaleplan::all();
         // $data['objective_visit'] = ObjectiveVisit::all();
-        $data['master_present'] = MasterPresentSaleplan::orderBy('id', 'desc')->get();
+        $data['master_present'] = MasterPresentSaleplan::get();
 
         // -- ข้อมูล แผนงานงาน Saleplan
         $data['list_saleplan'] = DB::table('sale_plans')
@@ -107,6 +107,7 @@ class PlanMonthController extends Controller
                         'shop_phone' => $res_visit_api['telephone'],
                         'shop_mobile' => $res_visit_api['mobile'],
                         'focusdate' => $res_visit_api['focusdate'],
+                        'monthly_plan_id' => $cus_visit->monthly_plan_id,
                     ];
                 }
             }

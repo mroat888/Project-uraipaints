@@ -95,7 +95,8 @@
                                         @foreach ($request_approval as $key => $value)
                                         <?php $chk =  App\Assignment::join('users', 'assignments.created_by', '=', 'users.id')
                                         ->whereNotNull('assignments.assign_request_date')
-                                        ->where('assignments.created_by', $value->created_by)->select('users.name', 'assignments.*')->first() ?>
+                                        ->where('assignments.created_by', $value->created_by)->select('users.name', 'assignments.*')->first();
+                                        ?>
                                         <tr>
                                             <td>
                                                 <div class="custom-control custom-checkbox checkbox-info">
@@ -105,7 +106,7 @@
                                                 </div>
                                             </td>
                                             <td>{{$key + 1}}</td>
-                                            <td>{{$chk->assign_request_date}}</td>
+                                            <td>{{Carbon\Carbon::parse($chk->assign_request_date)->format('Y-m-d')}}</td>
                                             <td>{{$chk->name}}</td>
                                             <td>
                                                 <span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>
