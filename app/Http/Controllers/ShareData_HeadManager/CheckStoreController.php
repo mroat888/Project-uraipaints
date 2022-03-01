@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\ShareData_LeadManager;
+namespace App\Http\Controllers\ShareData_HeadManager;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -24,7 +24,7 @@ class CheckStoreController extends Controller
             $auth_team[] = $value;
         }
         $users_saleman = DB::table('users')
-            ->whereIn('status', [1,2])
+            ->whereIn('status', [1,2,3])
             ->where(function($query) use ($auth_team) {
                 for ($i = 0; $i < count($auth_team); $i++){
                     $query->orWhere('team_id', $auth_team[$i])
@@ -64,7 +64,7 @@ class CheckStoreController extends Controller
 
         // dd($customer_api);
         
-        return view('shareData_leadManager.check_name_store', compact('customer_api'));
+        return view('shareData_headManager.check_name_store', compact('customer_api'));
     }
 
     /**
@@ -126,7 +126,7 @@ class CheckStoreController extends Controller
             }
         }
 
-        return view('shareData_leadManager.check_name_store_detail', $data);
+        return view('shareData_headManager.check_name_store_detail', $data);
 
     }
 

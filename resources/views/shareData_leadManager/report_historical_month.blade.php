@@ -67,8 +67,8 @@
                                         <tr>
                                             <td>{{ $value['year'] }}</td>
                                             <td>{{ $value['month'] }}</td>
-                                            <td>{{ $value['Sellers'] }}</td>
-                                            <td>{{ $value['customers'] }}</td>
+                                            <td>{{ number_format($value['Sellers']) }}</td>
+                                            <td>{{ number_format($value['customers']) }}</td>
                                             <td>{{ number_format($value['sales']) }}</td>
                                             <td>{{ number_format($value['credits']) }}</td>
                                             <td>{{ number_format($value['netSales']) }}</td>
