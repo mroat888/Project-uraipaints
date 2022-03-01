@@ -298,6 +298,18 @@ Route::get('/headManage/reportYear', 'HeadManager\ReportYearController@index');
 Route::get('head/edit-profile', 'ProfileController@head_index');
 Route::post('head/userProfileUpdate', 'ProfileController@update');
 
+
+// ข้อมูลที่ใช้ร่วมกัน 
+Route::get('headManage/data_name_store', 'ShareData_HeadManager\CheckStoreController@index');
+Route::get('headManage/data_name_store/detail/{id}', 'ShareData_HeadManager\CheckStoreController@show');
+Route::get('headManage/data_search_product', 'ShareData_HeadManager\SearchroductController@index');
+Route::post('headManage/data_search_product/search', 'ShareData_HeadManager\SearchroductController@search');
+Route::get('headManage/data_report_product-new', 'ShareData_HeadManager\ProductNewController@index');
+Route::get('headManage/data_report_full-year', 'ShareData_HeadManager\ReportFullYearController@index');
+Route::get('headManage/data_report_historical-year', 'ShareData_HeadManager\ReportHistoricalYearController@index');
+Route::get('headManage/data_report_historical-quarter', 'ShareData_HeadManager\ReportHistoricalQuarterController@index');
+Route::get('headManage/data_report_historical-month', 'ShareData_HeadManager\ReportHistoricalMonthController@index');
+
 });
 
 
@@ -451,6 +463,18 @@ Route::post('admin/teamsalesUpdate', 'Admin\TeamSaleController@update');
 
 Route::get('admin/edit-profile', 'ProfileController@admin_index');
 Route::post('admin/userProfileUpdate', 'ProfileController@update');
+
+
+// ข้อมูลที่ใช้ร่วมกัน 
+Route::get('admin/data_name_store', 'ShareData_Admin\CheckStoreController@index');
+Route::get('admin/data_name_store/detail/{id}', 'ShareData_Admin\CheckStoreController@show');
+Route::get('admin/data_search_product', 'ShareData_Admin\SearchroductController@index');
+Route::post('admin/data_search_product/search', 'ShareData_Admin\SearchroductController@search');
+Route::get('admin/data_report_product-new', 'ShareData_Admin\ProductNewController@index');
+Route::get('admin/data_report_full-year', 'ShareData_Admin\ReportFullYearController@index');
+Route::get('admin/data_report_historical-year', 'ShareData_Admin\ReportHistoricalYearController@index');
+Route::get('admin/data_report_historical-quarter', 'ShareData_Admin\ReportHistoricalQuarterController@index');
+Route::get('admin/data_report_historical-month', 'ShareData_Admin\ReportHistoricalMonthController@index');
 
 });
 
