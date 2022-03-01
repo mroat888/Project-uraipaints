@@ -44,6 +44,7 @@ class PlanMonthController extends Controller
         ->select('sale_plans.*', 'sale_plan_comments.saleplan_id')->distinct()
         ->orderBy('sale_plans.id', 'desc')->get();
 
+
         // -- ข้อมูลลูกค้าใหม่ // ลูกค้าใหม่เปลี่ยนมาใช้อันนี้
         $data['customer_new'] = DB::table('customer_shops_saleplan')
         ->leftJoin('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')

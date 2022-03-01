@@ -27,16 +27,6 @@ class ApprovalSalePlanController extends Controller
 
     public function index()
     {
-        // $data['monthly_plan'] = DB::table('monthly_plans')
-        // ->join('users', 'users.id', 'monthly_plans.created_by')
-        // ->where('monthly_plans.status_approve', 1)
-        // ->where('users.team_id', Auth::user()->team_id)
-        // ->select(
-        //     'users.*',
-        //     'monthly_plans.*'
-        // )
-        // ->get();
-
         $auth_team_id = explode(',',Auth::user()->team_id);
         $auth_team = array();
         foreach($auth_team_id as $value){
@@ -62,18 +52,6 @@ class ApprovalSalePlanController extends Controller
     }
 
     public function search(Request $request){
-        // list($year,$month) = explode('-', $request->selectdateTo);
-        // $data['monthly_plan'] = DB::table('monthly_plans')
-        // ->join('users', 'users.id', 'monthly_plans.created_by')
-        // ->where('monthly_plans.status_approve', 1)
-        // ->where('users.team_id', Auth::user()->team_id)
-        // ->whereYear('month_date', $year)
-        // ->whereMonth('month_date', $month)
-        // ->select(
-        //     'users.*',
-        //     'monthly_plans.*'
-        // )
-        // ->get();
 
         $auth_team_id = explode(',',Auth::user()->team_id);
         $auth_team = array();
@@ -127,12 +105,14 @@ class ApprovalSalePlanController extends Controller
             [
                 'id' => $value['identify'],
                 'shop_name' => $value['title']." ".$value['name'],
+                'shop_address' => $value['amphoe_name']." ".$value['province_name'],
             ];
         }
 
         // ลูกค้าใหม่
         $data['customer_new'] = DB::table('customer_shops_saleplan')
         ->join('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
+        ->join('master_customer_new', 'customer_shops_saleplan.customer_shop_objective', 'master_customer_new.id')
         ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
         ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
         ->whereIn('customer_shops_saleplan.shop_aprove_status', [1, 2, 3])
@@ -142,7 +122,8 @@ class ApprovalSalePlanController extends Controller
             'province.PROVINCE_NAME',
             'customer_shops.*',
             'customer_shops.id as custid',
-            'customer_shops_saleplan.*'
+            'customer_shops_saleplan.*',
+            'master_customer_new.cust_name'
         )
         ->orderBy('customer_shops.id', 'desc')
         ->get();
