@@ -230,21 +230,16 @@
 
                     let rows_teams = response.dataUser.team_id.split(",");
                     let count_team = rows_teams.length;
-                    $.each(response.master_teamsale, function(key, value){
-                        if(count_team == 1){
-                            if(value.id == rows_teams[0]){
+                    $.each(rows_teams, function(tkey, tvalue){
+                        $.each(response.master_teamsale, function(key, value){
+                            if(value.id == rows_teams[tkey]){
                                 $('#edit_sel_team').append('<option value='+value.id+' selected>'+value.team_name+'</option>');
                             }else{
                                 $('#edit_sel_team').append('<option value='+value.id+'>'+value.team_name+'</option>');
                             }
-                        }else{
-                            if(value.id == rows_teams[key]){
-                                $('#edit_sel_team').append('<option value='+value.id+' selected>'+value.team_name+'</option>');
-                            }else{
-                                $('#edit_sel_team').append('<option value='+value.id+'>'+value.team_name+'</option>');
-                            }
-                        }
+                        });
                     });
+
                 }
             }
         });
