@@ -65,32 +65,43 @@
                                     </thead>
                                     <tbody>
                                     <?php
-                                        $rows = count($sellers_api);
-                                        $no=0;
-                                        for($i=0 ; $i< $rows; $i++){
+                                        $rows1 = count($sellers_api);
+                                        
+                                        for($i=0 ; $i< $rows1; $i++){
+                                            if(isset($sellers_api[$i])){
                                     ?>
-                                        <tr>
-                                            <th scope="row">{{ ++$no }}</th>
-                                            <td>{{ $sellers_api[$i]['description'] }}</td>
-                                            <td>{{ $sellers_api[$i]['Target'] }}</td>
-                                            <td>{{ $sellers_api[$i]['Sales'] }}</td>
-                                            <td>{{ $sellers_api[$i]['Diff'] }}</td>
-                                            <td>-</td>
-                                            <td>{{ $sellers_api[$i]['persent_sale'] }}%</td>
-                                            <td>{{ $sellers_api[$i]['persent_diff'] }}%</td>
-                                        </tr>
+                                                <tr class="bg-info text-white">
+                                                    <td colspan="8"><strong>{{ $sellers_api[$i][0]['saleman_name'] }}</strong></td>
+                                                </tr>
                                     <?php
+                                                $rows2 = count($sellers_api[$i]);
+                                                $no=0;
+                                                for($in=0 ; $in< $rows2; $in++){
+                                    ?>
+                                                    <tr>
+                                                        <th scope="row">{{ ++$no }}</th>
+                                                        <td>{{ $sellers_api[$i][$in]['description'] }}</td>
+                                                        <td>{{ number_format($sellers_api[$i][$in]['Target'],2) }}</td>
+                                                        <td>{{ number_format($sellers_api[$i][$in]['Sales'],2) }}</td>
+                                                        <td>{{ number_format($sellers_api[$i][$in]['Diff'],2) }}</td>
+                                                        <td>-</td>
+                                                        <td>{{ number_format($sellers_api[$i][$in]['persent_sale'],2) }}%</td>
+                                                        <td>{{ number_format($sellers_api[$i][$in]['persent_diff'],2) }}%</td>
+                                                    </tr>
+                                    <?php
+                                                }
+                                            }
                                         }
                                     ?>
                                     </tbody>
                                     <tfoot style="font-weight: bold;">
                                         <td colspan="2" align="center">ทั้งหมด</td>
-                                        <td class="text-success">{{ $summary_sellers_api['sum_target'] }}</td>
-                                        <td class="text-success">{{ $summary_sellers_api['sum_sales'] }}</td>
-                                        <td class="text-danger">{{ $summary_sellers_api['sum_diff'] }}</td>
+                                        <td class="text-success">{{ number_format($summary_sellers_api['sum_target'],2) }}</td>
+                                        <td class="text-success">{{ number_format($summary_sellers_api['sum_sales'],2) }}</td>
+                                        <td class="text-danger">{{ number_format($summary_sellers_api['sum_diff'],2) }}</td>
                                         <td class="text-secondary">-</td>
-                                        <td class="text-success">{{ $summary_sellers_api['sum_persent_sale'] }}%</td>
-                                        <td class="text-danger">{{ $summary_sellers_api['sum_persent_diff'] }}%</td>
+                                        <td class="text-success">{{ number_format($summary_sellers_api['sum_persent_sale'],2) }}%</td>
+                                        <td class="text-danger">{{ number_format($summary_sellers_api['sum_persent_diff'],2) }}%</td>
                                     </tfoot>
                                 </table>
                             </div>
