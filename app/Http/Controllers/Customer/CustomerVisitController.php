@@ -83,7 +83,7 @@ class CustomerVisitController extends Controller
 
             $date = Carbon::parse($monthly_plan->month_date)->format('Y-m');
             $datenext = Carbon::today()->addMonth(1)->format('Y-m');
-            if ($date == $datenext) { 
+            if ($date == $datenext) {
 
                 DB::table('customer_visits')
                 ->insert([
@@ -197,28 +197,25 @@ class CustomerVisitController extends Controller
         echo ("<script>alert('บันทึกข้อมูลสำเร็จ'); location.href='visit'; </script>");
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        CustomerVisit::where('id', $id)->delete();
 
-        $monthly_plan = MonthlyPlan::where('id', $monthly_plan_id);
+        DB::beginTransaction();
+        try {
 
-        $date = Carbon::parse($monthly_plan->month_date)->format('Y-m');
-        $datenext = Carbon::today()->addMonth(1)->format('Y-m');
-        if ($date == $datenext) { // ถ้า MonthlyPlan ตรงกับเดือนหน้า ให้ลบ จำนวนเยี่ยมลูกค้าใน MonthlyPlan
+            CustomerVisit::where('id', $request->cust_visit_id_delete)->delete();
 
-            $visits_amount = $monthly_plan->cust_visits_amount-1;
-            DB::table('monthly_plans')
-            ->where('id',$monthly_plan->id)
-            ->update([
-                'cust_visits_amount' => $visits_amount,
-                'updated_by' => Auth::user()->id,
-                'updated_at' => date('Y-m-d H:i:s'),
-            ]);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
         }
 
+        return response()->json([
+            'status' => 200,
+            'message' => 'ลบข้อมูลลูกค้าเรียบร้อยแล้ว',
+        ]);
+
         return back();
-        // echo ("<script>alert('ลบข้อมูลสำเร็จ'); location.href='note'; </script>");
     }
 
     public function fetch_customer_shops_visit($id)

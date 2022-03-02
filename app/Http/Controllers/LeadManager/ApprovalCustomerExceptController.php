@@ -16,16 +16,6 @@ class ApprovalCustomerExceptController extends Controller
 
     public function index()
     {
-        // $data['customers'] = DB::table('customer_shops_saleplan')
-        // ->join('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
-        // ->join('users', 'customer_shops_saleplan.created_by', '=', 'users.id')
-        // ->where('customer_shops.shop_status', 0)
-        // ->where('customer_shops_saleplan.shop_aprove_status', 1) // ส่งขออนุมัติ
-        // ->where('users.team_id', Auth::user()->team_id)
-        // ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
-        // ->where('customer_shops_saleplan.is_monthly_plan', 'N')
-        // ->select('customer_shops_saleplan.created_by as shop_created_by')
-        // ->distinct()->get();
 
         $auth_team_id = explode(',',Auth::user()->team_id);
         $auth_team = array();
@@ -56,19 +46,6 @@ class ApprovalCustomerExceptController extends Controller
 
     public function approval_customer_except_detail($id)
     {
-        // $data['customer_except'] =  DB::table('customer_shops')
-        // ->join('customer_shops_saleplan', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
-        // ->join('users', 'customer_shops_saleplan.created_by', '=', 'users.id')
-        // ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
-        // ->select(
-        //     'province.PROVINCE_NAME',
-        //     'users.name' ,
-        //     'customer_shops.*')
-        // ->where('customer_shops_saleplan.is_monthly_plan', "N")
-        // ->where('customer_shops_saleplan.shop_aprove_status', 1)
-        // ->where('customer_shops_saleplan.created_by', $id)
-        // ->orderBy('id', 'desc')->get();
-
         $data['customer_except'] = DB::table('customer_shops_saleplan')
         ->join('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
         ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
@@ -242,16 +219,28 @@ class ApprovalCustomerExceptController extends Controller
                     }
                 }
             }else{
-                return back()->with('error', "กรุณาเลือกรายการอนุมัติ");
+                DB::rollback();
+                // return back()->with('error', "กรุณาเลือกรายการอนุมัติ");
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'กรุณาเลือกรายการอนุมัติ',
+                ]);
             }
 
             DB::commit();
-            return back();
+            return response()->json([
+                'status' => 200,
+                'message' => 'บันทึกข้อมูลได้',
+            ]);
+
 
         } catch (\Exception $e) {
 
             DB::rollback();
-            return back();
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกข้อมูลได้',
+            ]);
 
         }
     }

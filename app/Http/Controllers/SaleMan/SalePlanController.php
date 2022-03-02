@@ -154,6 +154,8 @@ class SalePlanController extends Controller
         }
         // -----  END API
 
+        $master_present = MasterPresentSaleplan::orderBy('id', 'desc')->get();
+
         return response()->json([
             'status' => 200,
             'salepaln' => $saleplan,
@@ -161,6 +163,7 @@ class SalePlanController extends Controller
             'shop_address' => $shop_address,
             'shop_phone' => $shop_phone,
             'shop_mobile' => $shop_mobile,
+            'master_present' => $master_present,
         ]);
     }
 
@@ -175,7 +178,7 @@ class SalePlanController extends Controller
                 'sale_plans_date' => $request->sale_plans_date,
                 'sale_plans_tags' => $request->sale_plans_tags,
                 'sale_plans_objective' => $request->sale_plans_objective,
-                'sale_plans_status' => 1,
+                'sale_plans_status' => 0,
                 'updated_by' => Auth::user()->id,
             ]);
 

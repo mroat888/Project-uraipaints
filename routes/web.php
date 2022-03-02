@@ -42,7 +42,7 @@ Route::get('searchShop', 'Customer\CustomerVisitController@searchShop');
 Route::post('create_visit', 'Customer\CustomerVisitController@visitStore');
 Route::get('edit_customerVisit/{id}', 'Customer\CustomerVisitController@edit_customerVisit');
 Route::post('update_customerVisit', 'Customer\CustomerVisitController@update_customerVisit');
-Route::get('delete_visit/{id}', 'Customer\CustomerVisitController@destroy');
+Route::post('delete_visit', 'Customer\CustomerVisitController@destroy');
 Route::get('/fetch_customer_shops_visit/{id}','Customer\CustomerVisitController@fetch_customer_shops_visit');
 
 Route::post('customer_visit_checkin', 'Customer\CustomerVisitController@customer_visit_checkin');
@@ -151,12 +151,13 @@ Route::get('lead/viewAssignmentDetail', function () { return view('leadManager.v
 
 Route::get('/approvalsaleplan', 'LeadManager\ApprovalSalePlanController@index');
 Route::post('/approvalsaleplan/search', 'LeadManager\ApprovalSalePlanController@search');
+// Route::get('/approvalsaleplan/search', 'LeadManager\ApprovalSalePlanController@search');
 Route::get('/approvalsaleplan_detail/{id}', 'LeadManager\ApprovalSalePlanController@approvalsaleplan_detail');
 Route::get('comment_saleplan/{id}/{createID}', 'LeadManager\ApprovalSalePlanController@comment_saleplan');
 Route::post('lead/create_comment_saleplan', 'LeadManager\ApprovalSalePlanController@create_comment_saleplan');
 Route::post('lead/approval_saleplan_confirm', 'LeadManager\ApprovalSalePlanController@approval_saleplan_confirm');
 Route::post('lead/approval_saleplan_confirm_all', 'LeadManager\ApprovalSalePlanController@approval_saleplan_confirm_all');
-Route::get('lead/retrospective/{id}', 'LeadManager\ApprovalSalePlanController@retrospective');
+Route::post('lead/retrospective', 'LeadManager\ApprovalSalePlanController@retrospective');
 
 Route::get('/approvalgeneral', 'LeadManager\ApprovalController@index');
 Route::post('lead/approval_confirm_all', 'LeadManager\ApprovalController@approval_confirm_all');
@@ -168,6 +169,11 @@ Route::post('lead/create_comment_request_approval', 'LeadManager\ApprovalControl
 Route::get('/approvalgeneral/history', 'LeadManager\ApprovalController@approval_history');
 Route::get('lead/approval_general_history_detail/{id}', 'LeadManager\ApprovalController@approval_general_history_detail');
 Route::get('lead/view_approval/{id}', 'LeadManager\ApprovalController@view_approval');
+
+Route::get('show_comment_request_approval_history/{id}/{createID}', 'LeadManager\ApprovalController@comment_approval_history');
+Route::post('lead/approvalGeneral_detail/search', 'LeadManager\ApprovalController@search_detail');
+Route::post('lead/approvalGeneral-history/search', 'LeadManager\ApprovalController@search_history');
+Route::post('lead/approvalGeneral/search', 'LeadManager\ApprovalController@search');
 
 // อนุมัติลูกค้าใหม่นอกแผน
 Route::get('approval-customer-except', 'LeadManager\ApprovalCustomerExceptController@index');
@@ -210,7 +216,7 @@ Route::get('/leadManage/reportSaleplan', 'LeadManager\ReportSalePlanController@i
 Route::get('/leadManage/reportYear', 'LeadManager\ReportYearController@index');
 
 
-// ข้อมูลที่ใช้ร่วมกัน 
+// ข้อมูลที่ใช้ร่วมกัน
 Route::get('leadManage/data_name_store', 'ShareData_LeadManager\CheckStoreController@index');
 Route::get('leadManage/data_name_store/detail/{id}', 'ShareData_LeadManager\CheckStoreController@show');
 Route::get('leadManage/data_search_product', 'ShareData_LeadManager\SearchroductController@index');
@@ -280,6 +286,7 @@ Route::get('head/edit_note/{id}', 'NoteController@edit');
 Route::post('head/update_note', 'NoteController@update');
 Route::get('head/delete_note/{id}', 'NoteController@destroy');
 Route::post('head/search_month_note', 'NoteController@head_search_month_note');
+Route::get('head/status_pin_update/{id}', 'NoteController@status_pin_update');
 
 Route::get('head/news', 'NewsController@head_frontend_news');
 Route::get('head/promotions', 'PromotionController@head_frontend_promotion');
@@ -299,7 +306,7 @@ Route::get('head/edit-profile', 'ProfileController@head_index');
 Route::post('head/userProfileUpdate', 'ProfileController@update');
 
 
-// ข้อมูลที่ใช้ร่วมกัน 
+// ข้อมูลที่ใช้ร่วมกัน
 Route::get('headManage/data_name_store', 'ShareData_HeadManager\CheckStoreController@index');
 Route::get('headManage/data_name_store/detail/{id}', 'ShareData_HeadManager\CheckStoreController@show');
 Route::get('headManage/data_search_product', 'ShareData_HeadManager\SearchroductController@index');
@@ -359,6 +366,7 @@ Route::get('admin/edit_note/{id}', 'NoteController@edit');
 Route::post('admin/update_note', 'NoteController@update');
 Route::get('admin/delete_note/{id}', 'NoteController@destroy');
 Route::post('admin/search_month_note', 'NoteController@admin_search_month_note');
+Route::get('admin/status_pin_update/{id}', 'NoteController@status_pin_update');
 
 // News
 Route::get('admin/fontendNews', 'NewsController@admin_frontend_news');
@@ -465,7 +473,7 @@ Route::get('admin/edit-profile', 'ProfileController@admin_index');
 Route::post('admin/userProfileUpdate', 'ProfileController@update');
 
 
-// ข้อมูลที่ใช้ร่วมกัน 
+// ข้อมูลที่ใช้ร่วมกัน
 Route::get('admin/data_name_store', 'ShareData_Admin\CheckStoreController@index');
 Route::get('admin/data_name_store/detail/{id}', 'ShareData_Admin\CheckStoreController@show');
 Route::get('admin/data_search_product', 'ShareData_Admin\SearchroductController@index');

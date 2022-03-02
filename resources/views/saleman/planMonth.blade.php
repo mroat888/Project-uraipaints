@@ -132,7 +132,7 @@
                                                                             <button type="button" class="btn btn-icon btn-teal requestApproval" disabled>
                                                                                 <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
                                                                             @endif
-                                                                            
+
                                                                         @endif
 
                                                                     @endif
@@ -320,7 +320,7 @@
                                                                         break;
                                                                     case 1 :    $text_status = "Pending";
                                                                                 $badge_color = "badge-soft-warning";
-                                                                                $btn_disabled = "";
+                                                                                $btn_disabled = "disabled";
                                                                         break;
                                                                     case 2 :    $text_status = "Approve";
                                                                                 $badge_color = "badge-soft-success";
@@ -404,11 +404,7 @@
                                             <tbody>
                                                 @if(!is_null($customer_new))
                                                 @foreach ($customer_new as $key => $value)
-                                                <?php
-                                                    // $date = Carbon\Carbon::parse($value->shop_saleplan_date)->format('Y-m');
-                                                    // $dateNow = Carbon\Carbon::today()->addMonth(1)->format('Y-m');
-                                                    // if ($dateNow == $date) {
-                                                ?>
+
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
                                                         <td>{{ $value->shop_name }}</td>
@@ -425,7 +421,7 @@
                                                                         switch($value->shop_aprove_status){
                                                                             case 0 :  $btn_disabled = "";
                                                                                 break;
-                                                                            case 1 :  $btn_disabled = "";
+                                                                            case 1 :  $btn_disabled = "disabled";
                                                                                 break;
                                                                             case 2 :  $btn_disabled = "disabled";
                                                                                 break;
@@ -506,11 +502,33 @@
                                                     <td>{{ $customer_visit_api[$key]['shop_name'] }}</td>
                                                     <td>{{ $customer_visit_api[$key]['shop_address'] }}</td>
                                                     <td>{{ $customer_visit_api[$key]['focusdate'] }}</td>
-                                                    <td style="text-align:right;">
-                                                        <div class="button-list">
+                                                    @php
+                                                     $month = DB::table('monthly_plans')
+                                                                    ->where('id', $customer_visit_api[$key]['monthly_plan_id'])
+                                                                    ->select('status_approve')->first();
+
+                                                            switch($month->status_approve){
+                                                            case 0 :  $btn_disabled = "";
+                                                                break;
+                                                            case 1 :  $btn_disabled = "disabled";
+                                                                break;
+                                                            case 2 :  $btn_disabled = "disabled";
+                                                                break;
+                                                            default :  $btn_disabled = "disabled";
+                                                                break;
+                                                            }
+
+                                                    @endphp
+                                                    <td>
+                                                        <button class="btn btn-icon btn-danger mr-10 btn_cust_new_delete2"
+                                                                    value="{{ $customer_visit_api[$key]['id'] }}" {{ $btn_disabled }}>
+                                                                    <h4 class="btn-icon-wrap" style="color: white;"><i
+                                                                            class="ion ion-md-trash"></i></h4>
+                                                                </button>
+                                                        {{-- <div class="button-list">
                                                             <a href="{{url('delete_visit', $customer_visit_api[$key]['id'])}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
                                                                 <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-trash"></i></h4></a>
-                                                        </div>
+                                                        </div> --}}
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -574,7 +592,33 @@
                     </div>
                     <div class="modal-body" style="text-align:center;">
                         <h3>คุณต้องการลบข้อมูลลูกค้า ใช่หรือไม่ ?</h3>
-                        <input class="form-control" id="shop_id_delete" name="shop_id_delete" type="้hidden" />
+                        <input class="form-control" id="shop_id_delete" name="shop_id_delete" type="hidden" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                        <button type="submit" class="btn btn-primary" id="btn_save_edit">ยืนยัน</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Delete Customer Visit Approve -->
+    <div class="modal fade" id="ModalapproveDelete2" tabindex="-1" role="dialog" aria-labelledby="ModalapproveDelete2"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form id="from_cus_delete2" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">คุณต้องการลบข้อมูลเยี่ยมลูกค้าใช่หรือไม่</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="text-align:center;">
+                        <h3>คุณต้องการลบข้อมูลเยี่ยมลูกค้า ใช่หรือไม่ ?</h3>
+                        <input class="form-control" id="cust_visit_id_delete" name="cust_visit_id_delete" type="hidden" />
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
@@ -792,23 +836,41 @@
                     $('#saleplan_id_edit').val(response.salepaln.customer_shop_id);
                     $('#get_title').val(response.salepaln.sale_plans_title);
                     $('#get_objective').val(response.salepaln.sale_plans_objective);
-                    $('#get_tag').val(response.salepaln.sale_plans_tags)
+                    // $('#get_tags').children().remove().end();
                     $('#saleplan_phone_edit').val(response.shop_phone);
                     $('#saleplan_address_edit').val(response.shop_address);
-                    $('#get_tags').html(
-                                "<optgroup label='กรุณาเลือก'>"+
-                                    "<option value='"+response.salepaln.sale_plans_tags+"' selected>"+ response.salepaln.present_title +"</option>"+
-                                    "@foreach ($master_present as $value)"+
-                                    "<option value='"+{{$value->id}}+"'>{{$value->present_title}}</option>"+
-                                    "@endforeach"+
+                    // $('#get_tags').html(
+                    //             "<optgroup label='กรุณาเลือก'>"+
+                    //                 "<option value='"+response.salepaln.sale_plans_tags+"' selected>"+ response.salepaln.present_title +"</option>"+
+                    //                 "@foreach ($master_present as $value)"+
+                    //                 "<option value='"+{{$value->id}}+"'>{{$value->present_title}}</option>"+
+                    //                 "@endforeach"+
 
-                                "</optgroup>");
+                    //             "</optgroup>");
 
                     $.each(response.customer_api, function(key, value){
                         if(response.customer_api[key]['id'] == response.salepaln.customer_shop_id){
                             $('#sel_searchShopEdit').append('<option value='+response.customer_api[key]['id']+' selected>'+response.customer_api[key]['shop_name']+'</option>');
                         }else{
                             $('#sel_searchShopEdit').append('<option value='+response.customer_api[key]['id']+'>'+response.customer_api[key]['shop_name']+'</option>');
+                        }
+                    });
+
+                    let rows_tags = response.salepaln.sale_plans_tags.split(",");
+                    let count_tags = rows_tags.length;
+                    $.each(response.master_present, function(key, value){
+                        if(count_tags == 1){
+                            if(value.id == rows_tags[0]){
+                                $('#get_tags').append('<option value='+value.id+' selected>'+value.present_title+'</option>');
+                            }else{
+                                $('#get_tags').append('<option value='+value.id+'>'+value.present_title+'</option>');
+                            }
+                        }else{
+                            if(value.id == rows_tags[key]){
+                                $('#get_tags').append('<option value='+value.id+' selected>'+value.present_title+'</option>');
+                            }else{
+                                $('#get_tags').append('<option value='+value.id+'>'+rows_tags[key]+'</option>');
+                            }
                         }
                     });
 
@@ -872,11 +934,18 @@
         $('#shop_id_delete').val(shop_id_delete);
         $('#ModalapproveDelete').modal('show');
     });
-    
+
+    //-- ส่วนเยี่ยมลูกค้า
+    $(document).on('click', '.btn_cust_new_delete2', function() { // ปุ่มลบเยี่ยมลูกค้า
+        let cust_visit_id_delete = $(this).val();
+        $('#cust_visit_id_delete').val(cust_visit_id_delete);
+        $('#ModalapproveDelete2').modal('show');
+    });
+
     $(document).on('click','.btn_editshop', function(e){ // แก้ไขลูกค้าใหม่
         e.preventDefault();
         let shop_id = $(this).val();
-        
+
         $.ajax({
             method: 'GET',
             // url: '{{ url("/edit_customerLead") }}/'+shop_id,
@@ -889,7 +958,7 @@
                     $("#editCustomer").modal('show');
                     $("#edit_shops_saleplan_id").val(shop_id);
                     $("#edit_shop_name").val(response.dataEdit.shop_name);
-  
+
                     $.each(response.master_customer_new, function(key, value){
                         if(value.id == response.dataEdit.customer_shop_objective){
                             $('#edit_shop_objective').append('<option value='+value.id+' selected>'+value.cust_name+'</option>')	;
@@ -975,6 +1044,43 @@
 </script>
 
 <script>
+$("#from_cus_delete2").on("submit", function(e) {
+    e.preventDefault();
+    //var formData = $(this).serialize();
+    var formData = new FormData(this);
+    console.log(formData);
+    $.ajax({
+        type: 'POST',
+        url: '{{ url('/delete_visit') }}',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+            console.log(response);
+            Swal.fire({
+                icon: 'success',
+                title: 'Deleted!',
+                text: "ลบข้อมูลเยี่ยมลูกค้าเรียบร้อยแล้วค่ะ",
+                showConfirmButton: false,
+                timer: 1500,
+            });
+            $('#ModalapproveDelete2').modal('hide');
+            $('#status_visit').text('ลบข้อมูลเยี่ยมลูกค้าเรียบร้อย')
+            $('#btn_update').prop('disabled', true);
+            $('#btn_delete').prop('disabled', true);
+
+            location.reload();
+        },
+        error: function(response) {
+            console.log("error");
+            console.log(response);
+        }
+    });
+});
+</script>
+
+<script>
     $(document).ready(function() {
         $('.requestApproval').click(function(evt) {
             var form = $(this).closest("form");
@@ -997,7 +1103,7 @@
             })
 
         });
-    
+
 
         $('#is_monthly_plan').val('Y'); // กำหนดสถานะ Y = อยู่ในแผน , N = ไม่อยู่ในแผน (เพิ่มระหว่างเดือน)
 

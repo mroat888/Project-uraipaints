@@ -40,14 +40,14 @@
          <!-- Title -->
         <div class="hk-pg-header mb-10">
             <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-analytics"></i></span>อนุมัติ Sale Plan</h4>
+                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-analytics"></i></span>อนุมัติแผนประจำเดือน<?php echo thaidate('F Y', date('Y-m', strtotime("+1 month"))); ?></h4>
             </div>
             <div class="d-flex">
-                <form action="{{ url('lead/approval_saleplan_confirm_all') }}" method="POST" enctype="multipart/form-data">
+                {{-- <form action="{{ url('lead/approval_saleplan_confirm_all') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <button type="submit" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" name="approve" value="approve">อนุมัติ</button>
 
-                    <button type="submit" class="btn btn_purple btn-danger btn-sm btn-rounded px-3 ml-5" name="failed" value="failed">ไม่อนุมัติ</button>
+                    <button type="submit" class="btn btn_purple btn-danger btn-sm btn-rounded px-3 ml-5" name="failed" value="failed">ไม่อนุมัติ</button> --}}
             </div>
         </div>
         <!-- /Title -->
@@ -57,15 +57,17 @@
                 <div class="col-xl-12">
                     <section class="hk-sec-wrapper">
                         <div class="row mb-2">
-                            <div class="col-sm-12 col-md-3">
-                                <h5 class="hk-sec-title">ตารางอนุมัติ Sale Plan</h5>
+                            <div class="col-sm-12 col-md-6">
+                                <h5 class="hk-sec-title">ตารางอนุมัติแผนประจำเดือน<?php echo thaidate('F Y', date('Y-m', strtotime("+1 month"))); ?></h5>
                             </div>
-                            <div class="col-sm-12 col-md-9">
-                                {{-- <!-- ------ -->
+                            <div class="col-sm-12 col-md-6">
+                                <!-- ------ -->
                                 <span class="form-inline pull-right">
-                                <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</button>
+                                <a style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</a>
                                 <form action="{{ url('approvalsaleplan/search') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
+                                    {{-- <input type="text" id="knowledgeSearch" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" /> --}}
+
                                     <span id="selectdate" style="display:none;">
                                          <input type="month" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name ="selectdateTo" value="<?= date('Y-m-d'); ?>" />
 
@@ -73,14 +75,22 @@
                                     </span>
                                 </form>
                                 </span>
-                                <!-- ------ --> --}}
+                                <!-- ------ -->
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-sm">
-                                <div class="table-responsive-sm">
-                                    <table id="datable_1" class="table table-sm table-hover">
+                                <div class="mb-20">
+                                {{-- <form action="{{ url('lead/approval_saleplan_confirm_all') }}" method="POST" enctype="multipart/form-data"> --}}
+                                <form id="from_saleplan_approve" enctype="multipart/form-data">
+                                    @csrf
+                                    <button type="button" id="btn_saleplan_approve" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" name="approve" value="approve">อนุมัติ</button>
+
+                                    <button type="button" id="btn_saleplan_approve2" class="btn btn_purple btn-danger btn-sm btn-rounded px-3 ml-5" name="failed" value="failed">ไม่อนุมัติ</button>
+                                </div>
+                                    <div class="table-responsive-sm">
+                                    <table class="table table-sm table-hover">
                                         <thead>
                                             <tr>
                                                 <th>
@@ -92,8 +102,11 @@
                                                     </div>
                                                 </th>
                                                 <th>#</th>
-                                                <th>วันที่</th>
+                                                {{-- <th>วันที่</th> --}}
                                                 <th>พนักงานขาย</th>
+                                                <th>แผนงาน</th>
+                                                <th>ลูกค้าใหม่</th>
+                                                <th>เยียมลูกค้า</th>
                                                 <th>การอนุมัติ</th>
                                                 <th>Action</th>
                                             </tr>
@@ -109,9 +122,11 @@
                                                             </div>
                                                         </td>
                                                         <td>{{$key + 1}}</td>
-                                                        <td>{{$value->month_date}}</td>
+                                                        {{-- <td>{{$value->month_date}}</td> --}}
                                                         <td>{{$value->name}}</td>
-                                                        {{-- <td>{{$value->id}}</td> --}}
+                                                        <td>{{$value->sale_plan_amount}}</td>
+                                                        <td>{{$value->cust_new_amount}}</td>
+                                                        <td>{{$value->cust_visits_amount}}</td>
                                                         <td><span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span></td>
                                                         <td>
                                                             <a href="{{ url('/approvalsaleplan_detail', $value->id) }}" type="button" class="btn btn-icon btn-primary pt-5">
@@ -125,30 +140,80 @@
                                                             ->whereIn('shop_aprove_status', [2,3])->count();
 
                                                             ?>
-                                                            {{-- {{$status_customer}}
-                                                            {{$status_saleplan}} --}}
 
                                                             @if ($status_customer == 0 && $status_saleplan == 0)
-
-                                                            <a href="{{ url('lead/retrospective', $value->id) }}" type="button" class="btn btn-icon btn-warning pt-5">
+                                                            <button id="btn_saleplan_restrospective" type="button" class="btn btn-icon btn-warning ml-2" value="{{ $value->id }}">
                                                                 <i data-feather="refresh-ccw"></i>
-                                                            </a>
-
+                                                            </button>
                                                           @endif
                                                         </td>
                                                     </tr>
                                                 @endforeach
                                         </tbody>
                                     </table>
-                                </form>
                                 </div>
+                                <div style="float:right;">
+                                    {{ $monthly_plan->links() }}
+                                </div>
+
+                                <!-- ModalSaleplanApprove -->
+                                <div class="modal fade" id="ModalSaleplanApprove" tabindex="-1" role="dialog" aria-labelledby="ModalSaleplanApprove"
+                                aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">ยืนยันการอนุมัติแผนงานประจำเดือน ใช่หรือไม่?</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" style="text-align:center;">
+                                                <h3>ยืนยันการอนุมัติแผนงานประจำเดือน ใช่หรือไม่?</h3>
+                                                <input class="form-control" id="approve" name="approve" type="hidden" />
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                                                <button type="submit" class="btn btn-primary" id="btn_save_edit">ยืนยัน</button>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                                <!-- End ModalSaleplanApprove -->
+
+                            </form>
                             </div>
                         </div>
                     </section>
                 </div>
-
             </div>
             <!-- /Row -->
+    </div>
+
+
+    <!-- ModalSaleplanRestorespective -->
+    <div class="modal fade" id="ModalSaleplanRestorespective" tabindex="-1" role="dialog" aria-labelledby="ModalSaleplanRestorespective"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form id="from_saleplan_restorespective" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">คุณต้องการส่งข้อมูล Sale Plan กลับใช่หรือไม่</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="text-align:center;">
+                        <h3>คุณต้องการส่งข้อมูล Sale Plan กลับใช่หรือไม่ ?</h3>
+                        <input class="form-control" id="restros_id" name="restros_id" type="hidden" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                        <button type="submit" class="btn btn-primary" id="btn_save_edit">ยืนยัน</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 
     <script type="text/javascript">
@@ -184,6 +249,100 @@
                 }
             }
         }
+
+        $(document).on('click', '#btn_saleplan_restrospective', function() {
+            let restros_id = $(this).val();
+            $('#restros_id').val(restros_id);
+            $('#ModalSaleplanRestorespective').modal('show');
+        });
+
+        $("#from_saleplan_restorespective").on("submit", function(e) {
+            e.preventDefault();
+            //var formData = $(this).serialize();
+            var formData = new FormData(this);
+            console.log(formData);
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('lead/retrospective') }}',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    console.log(response);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'เรียบร้อย!',
+                        text: "ส่งข้อมูลกลับเรียบร้อยแล้วค่ะ",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    $('#ModalSaleplanRestorespective').modal('hide');
+                    $('#shop_status_name_lead').text('ส่งข้อมูล Sale Plan กลับเรียบร้อย')
+                    $('#btn_saleplan_restrospective').prop('disabled', true);
+                    location.reload();
+                },
+                error: function(response) {
+                    console.log("error");
+                    console.log(response);
+                }
+            });
+        });
+
+        $(document).on('click', '#btn_saleplan_approve', function() {
+            let approve = $(this).val();
+            $('#approve').val(approve);
+            $('#ModalSaleplanApprove').modal('show');
+        });
+
+        $(document).on('click', '#btn_saleplan_approve2', function() {
+            let failed = $(this).val();
+            $('#failed').val(failed);
+            $('#ModalSaleplanApprove').modal('show');
+        });
+
+
+        $("#from_saleplan_approve").on("submit", function(e) {
+            e.preventDefault();
+            //var formData = $(this).serialize();
+            var formData = new FormData(this);
+            console.log(formData);
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('lead/approval_saleplan_confirm_all') }}',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    console.log(response);
+                    if(response.status == 200){
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'เรียบร้อย!',
+                        text: "ยืนยันการอนุมัติเรียบร้อยแล้วค่ะ",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    $('#ModalSaleplanApprove').modal('hide');
+                    $('#shop_status_name_lead').text('ยืนยันการอนุมัติเรียบร้อย')
+                    $('#btn_saleplan_restrospective').prop('disabled', true);
+                    location.reload();
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'ไม่สามารถบันทึกข้อมูลได้',
+                        text: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    $('#ModalSaleplanApprove').modal('hide');
+                }
+                }
+            });
+        });
+
+
     </script>
 
 @endsection
