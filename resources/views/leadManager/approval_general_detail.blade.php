@@ -91,6 +91,7 @@
                                             <th>เรื่อง</th>
                                             <th>พนักงาน</th>
                                             <th>การอนุมัติ</th>
+                                            <th>ความคิดเห็น</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -105,7 +106,7 @@
                                                 </div>
                                             </td>
                                             <td>{{$key + 1}}</td>
-                                            <td>{{$value->assign_request_date}}</td>
+                                            <td>{{Carbon\Carbon::parse($value->assign_request_date)->format('Y-m-d')}}</td>
                                             <td>
 
                                                 @if ($value->assign_is_hot == 1)
@@ -117,6 +118,14 @@
                                             <td>{{$value->name}}</td>
                                             <td>
                                                 <span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>
+                                            </td>
+                                            <td align="center">
+                                                <?php $assignComment = App\AssignmentComment::where('assign_id', $value->id)->count(); ?>
+                                                @if ($assignComment > 0)
+                                                <span class="badge badge-soft-indigo" style="font-size: 12px;">มี</span>
+                                                @else
+                                                <span class="badge badge-soft-secondary" style="font-size: 12px;">ไม่มี</span>
+                                                @endif
                                             </td>
                                             <td>
                                                 <button onclick="edit_modal({{ $value->id }})" type="button" class="btn btn-icon btn-violet mr-10"

@@ -17,20 +17,13 @@ class ApprovalController extends Controller
 
     public function index()
     {
-        // $data['request_approval'] = DB::table('assignments')
-        // ->join('users', 'assignments.created_by', '=', 'users.id')
-        // ->where('assignments.assign_status', 0)
-        // ->where('users.team_id', Auth::user()->team_id)
-        // ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
-        // ->select('assignments.created_by')
-        // ->distinct()->get();
 
         $auth_team_id = explode(',',Auth::user()->team_id);
         $auth_team = array();
         foreach($auth_team_id as $value){
             $auth_team[] = $value;
         }
-        
+
         $data['request_approval'] = DB::table('assignments')
             ->join('users', 'assignments.created_by', '=', 'users.id')
             ->where('assignments.assign_status', 0)
@@ -50,18 +43,34 @@ class ApprovalController extends Controller
         return view('leadManager.approval_general', $data);
     }
 
+    public function search(Request $request)
+    {
+        $auth_team_id = explode(',',Auth::user()->team_id);
+        $auth_team = array();
+        foreach($auth_team_id as $value){
+            $auth_team[] = $value;
+        }
+
+        $data['request_approval'] = DB::table('assignments')
+        ->join('users', 'assignments.created_by', '=', 'users.id')
+        ->where('assignments.assign_status', 0)
+        ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+        ->where('assignments.assign_request_date', $request->selectdateTo)
+        ->where(function($query) use ($auth_team) {
+            for ($i = 0; $i < count($auth_team); $i++){
+                $query->orWhere('users.team_id', $auth_team[$i])
+                    ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                    ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+            }
+        })
+        ->select('assignments.created_by')
+        ->distinct()->get();
+
+        return view('leadManager.approval_general', $data);
+    }
+
     public function approval_history()
     {
-        // $data['approval_history'] = DB::table('assignments')
-        // ->join('users', 'assignments.created_by', '=', 'users.id')
-        // ->whereNotIn('assignments.assign_status', [0, 3])
-        // ->where('users.team_id', Auth::user()->team_id)
-        // ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
-        // ->select(
-        //     'users.name',
-        //     'assignments.*')
-        // ->groupBy('assignments.created_by')
-        // ->get();
 
         $auth_team_id = explode(',',Auth::user()->team_id);
         $auth_team = array();
@@ -85,7 +94,7 @@ class ApprovalController extends Controller
                 'assignments.*')
             ->groupBy('assignments.created_by')
             ->get();
-        
+
         $data['request_approval'] = DB::table('assignments')
             ->join('users', 'assignments.created_by', '=', 'users.id')
             ->where('assignments.assign_status', 0)
@@ -105,6 +114,7 @@ class ApprovalController extends Controller
 
     public function approval_general_history_detail($id)
     {
+        $data['id_create'] = $id;
         $data['history'] = Assignment::join('users', 'assignments.created_by', '=', 'users.id')
         ->leftjoin('assignments_comments', 'assignments.id', '=', 'assignments_comments.assign_id')
         ->select(
@@ -115,6 +125,57 @@ class ApprovalController extends Controller
         ->where('assignments.created_by', $id)
         ->where('assignments.assign_request_date', '!=', "NULL")
         ->orderBy('id', 'desc')->get();
+
+        return view('leadManager.approval_general_history_detail', $data);
+    }
+
+    public function search_history(Request $request)
+    {
+        $auth_team_id = explode(',',Auth::user()->team_id);
+        $auth_team = array();
+        foreach($auth_team_id as $value){
+            $auth_team[] = $value;
+        }
+
+        $data['approval_history'] = DB::table('assignments')
+            ->join('users', 'assignments.created_by', '=', 'users.id')
+            ->whereNotIn('assignments.assign_status', [0, 3])
+            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+            ->where('assignments.assign_approve_date', $request->selectdateTo)
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('users.team_id', $auth_team[$i])
+                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+                }
+            })
+            ->select(
+                'users.name',
+                'assignments.*')
+            ->groupBy('assignments.created_by')
+            ->get();
+
+        return view('leadManager.approval_general_history', $data);
+    }
+
+    public function search_detail(Request $request)
+    {
+        // dd($request->selectdateTo);
+
+        // list($year,$month) = explode('-', $request->selectdateTo);
+        $data['history'] = Assignment::join('users', 'assignments.created_by', '=', 'users.id')
+        ->leftjoin('assignments_comments', 'assignments.id', '=', 'assignments_comments.assign_id')
+        ->whereNotIn('assignments.assign_status', [0, 3])
+        ->where('assignments.created_by', $request->id)
+        ->where('assignments.assign_request_date', '!=', "NULL")
+        ->where('assignments.assign_approve_date', $request->selectdateTo)
+        ->select(
+            'assignments_comments.assign_id',
+            'users.name',
+            'assignments.*')
+        ->orderBy('assignments.id', 'desc')->get();
+
+        $data['id_create'] = $request->id;
 
         return view('leadManager.approval_general_history_detail', $data);
     }
@@ -159,6 +220,22 @@ class ApprovalController extends Controller
             }
     }
 
+    public function comment_approval_history($id, $createID)
+    {
+        // return $createID;
+
+            $data['comment'] = AssignmentComment::where('assign_id', $id)->where('created_by', Auth::user()->id)->first();
+            $data['assignID'] = $id;
+            $data['createID'] = $createID;
+
+            // return $data;
+            if ( $data['comment']) {
+                return view('leadManager.show_comment_request_approval_history', $data);
+            }else {
+                return view('leadManager.show_comment_request_approval_history', $data);
+            }
+    }
+
     public function create_comment_request_approval(Request $request)
     {
         // dd($request);
@@ -188,7 +265,8 @@ class ApprovalController extends Controller
     public function approval_confirm_all(Request $request)
     {
         // dd($request);
-
+        DB::beginTransaction();
+        try {
 
             if ($request->checkapprove) {
                 if ($request->approve) {
@@ -205,7 +283,11 @@ class ApprovalController extends Controller
                             ]);
                         }
                     }
-                    return back();
+                    DB::commit();
+                    return response()->json([
+                        'status' => 200,
+                        'message' => 'บันทึกข้อมูลได้',
+                    ]);
                 } else {
                     foreach ($data as $value) {
                         foreach ($request->checkapprove as $key => $chk) {
@@ -217,7 +299,11 @@ class ApprovalController extends Controller
                             ]);
                         }
                     }
-                    return back();
+                    DB::commit();
+                    return response()->json([
+                        'status' => 200,
+                        'message' => 'บันทึกข้อมูลได้',
+                    ]);
                 }
         }else {
             $data = Assignment::get();
@@ -233,7 +319,11 @@ class ApprovalController extends Controller
                             ]);
                         }
                     }
-                    return back();
+                    DB::commit();
+                    return response()->json([
+                        'status' => 200,
+                        'message' => 'บันทึกข้อมูลได้',
+                    ]);
                 } else {
                     foreach ($data as $value) {
                         foreach ($request->checkapprove as $key => $chk) {
@@ -245,12 +335,38 @@ class ApprovalController extends Controller
                             ]);
                         }
                     }
-                    return back();
+                    DB::commit();
+                    return response()->json([
+                        'status' => 200,
+                        'message' => 'บันทึกข้อมูลได้',
+                    ]);
                 }
-        }
-    } else {
-        return back()->with('error', "กรุณาเลือกรายการ");
             }
+        }else{
+            DB::rollback();
+            // return back()->with('error', "กรุณาเลือกรายการอนุมัติ");
+            return response()->json([
+                'status' => 404,
+                'message' => 'กรุณาเลือกรายการอนุมัติ',
+            ]);
+        }
+
+        DB::commit();
+        return response()->json([
+            'status' => 200,
+            'message' => 'บันทึกข้อมูลได้',
+        ]);
+
+
+    } catch (\Exception $e) {
+
+        DB::rollback();
+        return response()->json([
+            'status' => 404,
+            'message' => 'ไม่สามารถบันทึกข้อมูลได้',
+        ]);
+
+    }
     }
 
     public function approval_confirm_detail(Request $request)

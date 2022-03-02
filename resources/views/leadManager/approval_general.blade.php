@@ -1,6 +1,19 @@
 @extends('layouts.masterLead')
 
 @section('content')
+@php
+
+    $date = date('m-d-Y');
+
+    $date1 = str_replace('-', '/', $date);
+
+    $yesterday = date('Y-m-d',strtotime($date1 . "-1 days"));
+
+    $date1 = str_replace('-', '/', $date);
+
+    $yesterday2 = date('Y-m-d',strtotime($date1 . "-2 days"));
+
+@endphp
     <!-- Breadcrumb -->
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
@@ -28,12 +41,12 @@
                     data-feather="file-text"></i></span></span>บันทึกข้อมูลการขออนุมัติ</h4>
             </div>
             <div class="d-flex">
-                <form action="{{ url('lead/approval_confirm_all') }}" method="POST"
-                enctype="multipart/form-data">
-                @csrf
-                <button type="submit" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" name="approve" value="approve">อนุมัติ</button>
+                {{-- <form action="{{ url('lead/approval_confirm_all') }}" method="POST" enctype="multipart/form-data"> --}}
+                {{-- <form id="from_general_approve" enctype="multipart/form-data">
+                    @csrf
+                <button type="button" id="btn_saleplan_approve" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" name="approve" value="approve">อนุมัติ</button>
 
-                <button type="submit" class="btn btn_purple btn-danger btn-sm btn-rounded px-3 ml-5" name="failed" value="failed">ไม่อนุมัติ</button>
+                <button type="button" id="btn_saleplan_approve2" class="btn btn_purple btn-danger btn-sm btn-rounded px-3 ml-5" name="failed" value="failed">ไม่อนุมัติ</button> --}}
             </div>
         </div>
         <!-- /Title -->
@@ -66,11 +79,32 @@
                                 <h5 class="hk-sec-title">ตารางข้อมูลการขออนุมัติ</h5>
                             </div>
                             <div class="col-md-9">
+                                <!-- ------ -->
+                                <span class="form-inline pull-right">
+                                   <a style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกวันที่</a>
+                                   <form action="{{ url('lead/approvalGeneral/search') }}" method="POST" enctype="multipart/form-data">
+                                       @csrf
+                                       {{-- <input type="hidden" name="id" value="{{$id_create}}" /> --}}
 
-                            </div>
+                                       <span id="selectdate" style="display:none;">
+                                            <input type="date" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" name ="selectdateTo" value="" />
+
+                                           <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-success btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button>
+                                       </span>
+                                   </form>
+                                   </span>
+                                   <!-- ------ -->
+                           </div>
                         </div>
                     <div class="row">
                         <div class="col-sm">
+                            <div class="mb-20">
+                                <form id="from_general_approve" enctype="multipart/form-data">
+                                    @csrf
+                                <button type="button" id="btn_saleplan_approve" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" name="approve" value="approve">อนุมัติ</button>
+
+                                <button type="button" id="btn_saleplan_approve2" class="btn btn_purple btn-danger btn-sm btn-rounded px-3 ml-5" name="failed" value="failed">ไม่อนุมัติ</button>
+                            </div>
                             <div class="table-responsive-sm">
                                 <table class="table table-sm table-hover">
                                     <thead>
@@ -84,7 +118,7 @@
                                                 </div>
                                             </th>
                                             <th>#</th>
-                                            <th>วันที่</th>
+                                            <th>วันที่ขออนุมัติ</th>
                                             {{-- <th>เรื่อง</th> --}}
                                             <th>พนักงาน</th>
                                             <th>การอนุมัติ</th>
@@ -126,18 +160,99 @@
                 </section>
             </div>
         </div>
+         <!-- ModalSaleplanApprove -->
+         <div class="modal fade" id="ModalSaleplanApprove" tabindex="-1" role="dialog" aria-labelledby="ModalSaleplanApprove"
+         aria-hidden="true">
+         <div class="modal-dialog" role="document">
+                 <div class="modal-content">
+                     <div class="modal-header">
+                         <h5 class="modal-title">ยืนยันการอนุมัติคำขออนุมัติ ใช่หรือไม่?</h5>
+                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                             <span aria-hidden="true">&times;</span>
+                         </button>
+                     </div>
+                     <div class="modal-body" style="text-align:center;">
+                         <h3>ยืนยันการอนุมัติคำขออนุมัติ ใช่หรือไม่?</h3>
+                         <input class="form-control" id="approve" name="approve" type="hidden" />
+                     </div>
+                     <div class="modal-footer">
+                         <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                         <button type="submit" class="btn btn-primary" id="btn_save_edit">ยืนยัน</button>
+                     </div>
+                 </div>
+         </div>
+     </div>
+         <!-- End ModalSaleplanApprove -->
     </form>
         <!-- /Row -->
     </div>
     <!-- /Container -->
 
-
-<!-- Modal -->
-<div class="modal fade" id="Modalsaleplan" tabindex="-1" role="dialog" >
-    @include('leadManager.saleplan_display')
-</div>
-
 <script type="text/javascript">
+
+function showselectdate() {
+        $("#selectdate").css("display", "block");
+        $("#bt_showdate").hide();
+    }
+
+    function hidetdate() {
+        $("#selectdate").css("display", "none");
+        $("#bt_showdate").show();
+    }
+
+$(document).on('click', '#btn_saleplan_approve', function() {
+            let approve = $(this).val();
+            $('#approve').val(approve);
+            $('#ModalSaleplanApprove').modal('show');
+        });
+
+        $(document).on('click', '#btn_saleplan_approve2', function() {
+            let failed = $(this).val();
+            $('#failed').val(failed);
+            $('#ModalSaleplanApprove').modal('show');
+        });
+
+
+        $("#from_general_approve").on("submit", function(e) {
+            e.preventDefault();
+            //var formData = $(this).serialize();
+            var formData = new FormData(this);
+            console.log(formData);
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('lead/approval_confirm_all') }}',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    console.log(response);
+                    if(response.status == 200){
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'เรียบร้อย!',
+                        text: "ยืนยันการอนุมัติเรียบร้อยแล้วค่ะ",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    $('#ModalSaleplanApprove').modal('hide');
+                    $('#shop_status_name_lead').text('ยืนยันการอนุมัติเรียบร้อย');
+                    // $('#btn_saleplan_restrospective').prop('disabled', true);
+                    location.reload();
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'ไม่สามารถบันทึกข้อมูลได้',
+                        text: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    $('#ModalSaleplanApprove').modal('hide');
+                }
+                }
+            });
+        });
+
     function chkAll(checkbox) {
 
         var cboxes = document.getElementsByName('checkapprove[]');
@@ -175,25 +290,6 @@
     }
 </script>
 
-
-{{-- <script type="text/javascript">
-    function chkAll(checkbox) {
-
-        var cboxes = document.getElementsByName('checkapprove');
-        var len = cboxes.length;
-
-        if (checkbox.checked == true) {
-            for (var i = 0; i < len; i++) {
-                cboxes[i].checked = true;
-            }
-        } else {
-            for (var i = 0; i < len; i++) {
-                cboxes[i].checked = false;
-            }
-        }
-    }
-</script> --}}
-
 <script>
     document.getElementById('btn_approve').onclick = function() {
         var markedCheckbox = document.getElementsByName('checkapprove');
@@ -214,15 +310,6 @@
         }
     }
 
-    function showselectdate() {
-        $("#selectdate").css("display", "block");
-        $("#bt_showdate").hide();
-    }
-
-    function hidetdate() {
-        $("#selectdate").css("display", "none");
-        $("#bt_showdate").show();
-    }
 </script>
 
 

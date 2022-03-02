@@ -151,6 +151,7 @@ Route::get('lead/viewAssignmentDetail', function () { return view('leadManager.v
 
 Route::get('/approvalsaleplan', 'LeadManager\ApprovalSalePlanController@index');
 Route::post('/approvalsaleplan/search', 'LeadManager\ApprovalSalePlanController@search');
+// Route::get('/approvalsaleplan/search', 'LeadManager\ApprovalSalePlanController@search');
 Route::get('/approvalsaleplan_detail/{id}', 'LeadManager\ApprovalSalePlanController@approvalsaleplan_detail');
 Route::get('comment_saleplan/{id}/{createID}', 'LeadManager\ApprovalSalePlanController@comment_saleplan');
 Route::post('lead/create_comment_saleplan', 'LeadManager\ApprovalSalePlanController@create_comment_saleplan');
@@ -168,6 +169,11 @@ Route::post('lead/create_comment_request_approval', 'LeadManager\ApprovalControl
 Route::get('/approvalgeneral/history', 'LeadManager\ApprovalController@approval_history');
 Route::get('lead/approval_general_history_detail/{id}', 'LeadManager\ApprovalController@approval_general_history_detail');
 Route::get('lead/view_approval/{id}', 'LeadManager\ApprovalController@view_approval');
+
+Route::get('show_comment_request_approval_history/{id}/{createID}', 'LeadManager\ApprovalController@comment_approval_history');
+Route::post('lead/approvalGeneral_detail/search', 'LeadManager\ApprovalController@search_detail');
+Route::post('lead/approvalGeneral-history/search', 'LeadManager\ApprovalController@search_history');
+Route::post('lead/approvalGeneral/search', 'LeadManager\ApprovalController@search');
 
 // อนุมัติลูกค้าใหม่นอกแผน
 Route::get('approval-customer-except', 'LeadManager\ApprovalCustomerExceptController@index');

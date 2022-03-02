@@ -1,6 +1,19 @@
 @extends('layouts.masterLead')
 
 @section('content')
+@php
+
+    $date = date('m-d-Y');
+
+    $date1 = str_replace('-', '/', $date);
+
+    $yesterday = date('Y-m-d',strtotime($date1 . "-1 days"));
+
+    $date1 = str_replace('-', '/', $date);
+
+    $yesterday2 = date('Y-m-d',strtotime($date1 . "-2 days"));
+
+@endphp
     <!-- Breadcrumb -->
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
@@ -53,19 +66,20 @@
                             <div class="col-md-9">
                                 <!-- ------ -->
                                 <span class="form-inline pull-right">
+                                   <a style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกวันที่</a>
+                                   <form action="{{ url('lead/approvalGeneral-history/search') }}" method="POST" enctype="multipart/form-data">
+                                       @csrf
+                                       {{-- <input type="hidden" name="id" value="{{$id_create}}" /> --}}
 
-                                    <button style="margin-left:5px; margin-right:5px;" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกวันที่</button>
-                                    <span id="selectdate" style="display:none;">
-                                    date : <input type="date" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateFrom" value="<?= date('Y-m-d'); ?>" />
+                                       <span id="selectdate" style="display:none;">
+                                            <input type="date" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" name ="selectdateTo" value="" />
 
-                                        to <input type="date" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" value="<?= date('Y-m-d'); ?>" />
-
-                                        <button style="margin-left:5px; margin-right:5px;" class="btn btn-success btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button>
-                                    </span>
-
-                                </span>
-                                <!-- ------ -->
-                            </div>
+                                           <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-success btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button>
+                                       </span>
+                                   </form>
+                                   </span>
+                                   <!-- ------ -->
+                           </div>
                         </div>
                     <div class="row">
                         <div class="col-sm">
@@ -74,10 +88,10 @@
                                     <thead align="center">
                                         <tr>
                                             <th>#</th>
-                                            {{-- <th>วันที่อนุมัติ</th> --}}
+                                            <th>วันที่อนุมัติ</th>
                                             {{-- <th>เรื่อง</th> --}}
                                             <th>พนักงาน</th>
-                                            {{-- <th>การอนุมัติ</th> --}}
+                                            <th>การอนุมัติ</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -85,20 +99,20 @@
                                         @foreach ($approval_history as $key => $value)
                                         <tr>
                                             <td>{{$key + 1}}</td>
-                                            {{-- <td>{{$value->assign_approve_date}}</td> --}}
+                                            <td>{{Carbon\Carbon::parse($value->assign_approve_date)->format('Y-m-d')}}</td>
                                             {{-- <td>{{$value->assign_title}}</td> --}}
                                             <td>{{$value->name}}</td>
-                                            {{-- <td>
+                                            <td>
                                                 @if ($value->assign_status == 1)
                                                     <span class="badge badge-soft-success" style="font-size: 12px;">Approval</span>
                                                 @elseif ($value->assign_status == 2)
                                                     <span class="badge badge-soft-secondary" style="font-size: 12px;">Reject</span>
                                                 @endif
 
-                                                @if ($value->assign_id)
+                                                {{-- @if ($value->assign_id)
                                                     <span class="badge badge-soft-indigo" style="font-size: 12px;">Comment</span>
-                                                @endif
-                                            </td> --}}
+                                                @endif --}}
+                                            </td>
                                             <td>
                                                 <a href="{{url('lead/approval_general_history_detail', $value->created_by)}}" class="btn btn-icon btn-primary btn-link btn_showplan pt-5" value="3">
                                                     <i data-feather="file-text"></i>
@@ -118,17 +132,6 @@
     </div>
     <!-- /Container -->
 
-
-<!-- Modal -->
-<div class="modal fade" id="Modalsaleplan" tabindex="-1" role="dialog" >
-    @include('leadManager.general_history_display')
-</div>
-
-
-@endsection('content')
-
-@section('scripts')
-
 <script>
     $(document).on('click', '.btn_showplan', function(){
         let plan_id = $(this).val();
@@ -137,14 +140,16 @@
     });
 </script>
 
-    <script>
-        function showselectdate(){
-        $("#selectdate").css("display", "block");
-    }
+<script type="text/javascript">
+    function showselectdate(){
+         $("#selectdate").css("display", "block");
+         $("#bt_showdate").hide();
+     }
 
-    function hidetdate(){
-        $("#selectdate").css("display", "none");
-    }
-    </script>
+     function hidetdate(){
+         $("#selectdate").css("display", "none");
+         $("#bt_showdate").show();
+     }
+ </script>
 
 @endsection

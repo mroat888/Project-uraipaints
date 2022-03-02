@@ -178,7 +178,7 @@ class SalePlanController extends Controller
                 'sale_plans_date' => $request->sale_plans_date,
                 'sale_plans_tags' => $request->sale_plans_tags,
                 'sale_plans_objective' => $request->sale_plans_objective,
-                'sale_plans_status' => 1,
+                'sale_plans_status' => 0,
                 'updated_by' => Auth::user()->id,
             ]);
 

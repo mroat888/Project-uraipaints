@@ -46,7 +46,7 @@ class ApprovalSalePlanController extends Controller
                 'users.*',
                 'monthly_plans.*'
             )
-            ->get();
+            ->paginate(1);
 
         return view('leadManager.approval_saleplan', $data);
     }
@@ -76,7 +76,7 @@ class ApprovalSalePlanController extends Controller
                 'users.*',
                 'monthly_plans.*'
             )
-            ->get();
+            ->paginate(1);
 
         return view('leadManager.approval_saleplan', $data);
     }
@@ -298,10 +298,6 @@ class ApprovalSalePlanController extends Controller
                                 'customer_shop_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
                             ]);
-                            // Customer::where('monthly_plan_id', $chk)->update([
-                            //     'shop_aprove_status' => 2,
-                            //     'updated_by' => Auth::user()->id,
-                            // ]);
                         }
                         MonthlyPlan::where('id', $chk)->update([
                             'status_approve' => 2,
@@ -323,10 +319,6 @@ class ApprovalSalePlanController extends Controller
                                 'customer_shop_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
                             ]);
-                            // Customer::where('monthly_plan_id', $chk)->update([
-                            //     'shop_aprove_status' => 2,
-                            //     'updated_by' => Auth::user()->id,
-                            // ]);
                         }
 
                         $chkSaleplan = SalePlan::where('monthly_plan_id', $chk)
@@ -335,8 +327,6 @@ class ApprovalSalePlanController extends Controller
                         $chkCustomer = DB::table('customer_shops_saleplan')
                         ->where('monthly_plan_id', $chk)
                         ->where('shop_aprove_status', 1)->count();
-                        // $chkCustomer = Customer::where('monthly_plan_id', $chk)
-                        // ->where('shop_aprove_status', 1)->count();
 
                         if ($chkSaleplan == 0 && $chkCustomer == 0) {
                             MonthlyPlan::where('id', $chk)->update([
@@ -362,10 +352,6 @@ class ApprovalSalePlanController extends Controller
                                 'customer_shop_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
                             ]);
-                            // Customer::where('monthly_plan_id', $chk)->update([
-                            //     'shop_aprove_status' => 3,
-                            //     'updated_by' => Auth::user()->id,
-                            // ]);
                         }
                         MonthlyPlan::where('id', $chk)->update([
                             'status_approve' => 3,
@@ -387,10 +373,6 @@ class ApprovalSalePlanController extends Controller
                                 'customer_shop_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
                             ]);
-                            // Customer::where('monthly_plan_id', $chk)->update([
-                            //     'shop_aprove_status' => 3,
-                            //     'updated_by' => Auth::user()->id,
-                            // ]);
                         }
                         $chkSaleplan = SalePlan::where('monthly_plan_id', $chk)
                         ->where('sale_plans_status', 1)->count();
@@ -398,8 +380,6 @@ class ApprovalSalePlanController extends Controller
                         $chkCustomer = DB::table('customer_shops_saleplan')
                             ->where('monthly_plan_id', $chk)
                             ->where('shop_aprove_status', 1)->count();
-                        // $chkCustomer = Customer::where('monthly_plan_id', $chk)
-                        //     ->where('shop_aprove_status', 1)->count();
 
                         if ($chkSaleplan == 0 && $chkCustomer == 0) {
                             MonthlyPlan::where('id', $chk)->update([
@@ -410,16 +390,28 @@ class ApprovalSalePlanController extends Controller
                     }
                 }
             }else{
-                return back()->with('error', "กรุณาเลือกรายการอนุมัติ");
+                DB::rollback();
+                // return back()->with('error', "กรุณาเลือกรายการอนุมัติ");
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'กรุณาเลือกรายการอนุมัติ',
+                ]);
             }
 
             DB::commit();
-            return back();
+            return response()->json([
+                'status' => 200,
+                'message' => 'บันทึกข้อมูลได้',
+            ]);
+
 
         } catch (\Exception $e) {
 
             DB::rollback();
-            return back();
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกข้อมูลได้',
+            ]);
 
         }
     }
