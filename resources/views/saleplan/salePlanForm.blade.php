@@ -17,11 +17,11 @@ $master_present = App\MasterPresentSaleplan::orderBy('id', 'desc')->get();
             <div class="row">
                 <div class="form-group col-md-6">
                     <label for="firstName">เรื่อง</label>
-                    <input class="form-control" placeholder="กรุณาใส่ชื่อเรื่อง" type="text" name="sale_plans_title">
+                    <input class="form-control" placeholder="กรุณาใส่ชื่อเรื่อง" type="text" name="sale_plans_title" required>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="username">วัตถุประสงค์</label>
-                    <select class="form-control custom-select" name="sale_plans_objective">
+                    <select class="form-control custom-select" name="sale_plans_objective" required>
                         <option selected>กรุณาเลือก</option>
                         @foreach ($objective as $value)
                         <option value="{{$value->id}}">{{$value->masobj_title}}</option>
@@ -32,7 +32,7 @@ $master_present = App\MasterPresentSaleplan::orderBy('id', 'desc')->get();
                 <div class="row">
                     <div class="col-md-6 form-group">
                         <label for="firstName">ค้นหาชื่อร้าน</label>
-                        <select name="sel_searchShop2" id="sel_searchShop2" class="form-control custom-select select2">
+                        <select name="sel_searchShop2" id="sel_searchShop2" class="form-control custom-select select2" required>
                             <option value="" selected disabled>กรุณาเลือกชื่อร้านค้า</option>
                             @foreach ($customer_api as $key => $value)
                                 <option value="{{$customer_api[$key]['id']}}">{{$customer_api[$key]['shop_name']}}</option>
@@ -66,7 +66,7 @@ $master_present = App\MasterPresentSaleplan::orderBy('id', 'desc')->get();
                 <div class="row">
                     <div class="col-md-12 form-group">
                         <label for="firstName">รายการนำเสนอ</label>
-                        <select class="select2 select2-multiple form-control" multiple="multiple" data-placeholder="Choose" name="sale_plans_tags[]">
+                        <select class="select2 select2-multiple form-control" multiple="multiple" data-placeholder="Choose" name="sale_plans_tags[]" required>
                             <optgroup label="เลือกข้อมูล">
                                 @foreach ($master_present as $value)
                                 <option value="{{$value->id}}">{{$value->present_title}}</option>

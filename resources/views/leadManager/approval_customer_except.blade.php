@@ -1,6 +1,19 @@
 @extends('layouts.masterLead')
 
 @section('content')
+@php
+
+    $date = date('m-d-Y');
+
+    $date1 = str_replace('-', '/', $date);
+
+    $yesterday = date('Y-m-d',strtotime($date1 . "-1 days"));
+
+    $date1 = str_replace('-', '/', $date);
+
+    $yesterday2 = date('Y-m-d',strtotime($date1 . "-2 days"));
+
+@endphp
     <!-- Breadcrumb -->
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
@@ -51,7 +64,7 @@
                                 <span class="btn-text">รออนุมัติ</span>
                             </a>
 
-                            <a href="{{ url('approval-customer-except/history') }}" type="button" class="btn btn-secondary btn-wth-icon icon-wthot-bg btn-sm text-white">
+                            <a href="{{ url('lead/approval-customer-except-history') }}" type="button" class="btn btn-secondary btn-wth-icon icon-wthot-bg btn-sm text-white">
                                 <span class="icon-label">
                                     <i class="fa fa-list"></i>
                                 </span>
@@ -66,7 +79,21 @@
                                 <h5 class="hk-sec-title">ตารางข้อมูลการอนุมัติลูกค้าใหม่ (นอกแผน)</h5>
                             </div>
                             <div class="col-md-6">
+                                 <!-- ------ -->
+                                 <span class="form-inline pull-right">
+                                    <a style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</a>
+                                    <form action="{{ url('lead/approval-customer-except/search') }}" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        {{-- <input type="hidden" name="id" value="{{$id_create}}" /> --}}
 
+                                        <span id="selectdate" style="display:none;">
+                                             <input type="month" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" name ="selectdateTo" value="" />
+
+                                            <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-success btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button>
+                                        </span>
+                                    </form>
+                                    </span>
+                                    <!-- ------ -->
                             </div>
                         </div>
                     <div class="row">
@@ -167,6 +194,18 @@
     </div>
     <!-- /Container -->
 
+    <script type="text/javascript">
+        function showselectdate(){
+             $("#selectdate").css("display", "block");
+             $("#bt_showdate").hide();
+         }
+
+         function hidetdate(){
+             $("#selectdate").css("display", "none");
+             $("#bt_showdate").show();
+         }
+     </script>
+
 <script type="text/javascript">
 
 $(document).on('click', '#btn_saleplan_approve', function() {
@@ -259,25 +298,6 @@ $(document).on('click', '#btn_saleplan_approve', function() {
     }
 </script>
 
-
-{{-- <script type="text/javascript">
-    function chkAll(checkbox) {
-
-        var cboxes = document.getElementsByName('checkapprove');
-        var len = cboxes.length;
-
-        if (checkbox.checked == true) {
-            for (var i = 0; i < len; i++) {
-                cboxes[i].checked = true;
-            }
-        } else {
-            for (var i = 0; i < len; i++) {
-                cboxes[i].checked = false;
-            }
-        }
-    }
-</script> --}}
-
 <script>
     document.getElementById('btn_approve').onclick = function() {
         var markedCheckbox = document.getElementsByName('checkapprove');
@@ -298,15 +318,6 @@ $(document).on('click', '#btn_saleplan_approve', function() {
         }
     }
 
-    function showselectdate() {
-        $("#selectdate").css("display", "block");
-        $("#bt_showdate").hide();
-    }
-
-    function hidetdate() {
-        $("#selectdate").css("display", "none");
-        $("#bt_showdate").show();
-    }
 </script>
 
 

@@ -50,7 +50,7 @@ $customer_shops = DB::table('customer_shops')
                     <div class="col-md-6 form-group">
                         <label for="firstName">ค้นหาชื่อร้าน</label>
                         <!-- <input class="form-control" id="searchShop" placeholder="" value="" type="text"> -->
-                        <select name="sel_searchShop" id="sel_searchShop" class="form-control custom-select select2">
+                        <select name="sel_searchShop" id="sel_searchShop" class="form-control custom-select select2" required>
                             <option value="" selected disabled>กรุณาเลือกชื่อร้านค้า</option>
                             @foreach ($customer_api as $key => $value)
                                 <option value="{{$customer_api[$key]['id']}}">{{$customer_api[$key]['shop_name']}}</option>

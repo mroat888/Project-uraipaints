@@ -836,7 +836,7 @@
                     $('#saleplan_id_edit').val(response.salepaln.customer_shop_id);
                     $('#get_title').val(response.salepaln.sale_plans_title);
                     $('#get_objective').val(response.salepaln.sale_plans_objective);
-                    // $('#get_tags').children().remove().end();
+                    $('#get_tags').children().remove().end();
                     $('#saleplan_phone_edit').val(response.shop_phone);
                     $('#saleplan_address_edit').val(response.shop_address);
                     // $('#get_tags').html(
@@ -858,22 +858,15 @@
 
                     let rows_tags = response.salepaln.sale_plans_tags.split(",");
                     let count_tags = rows_tags.length;
-                    $.each(response.master_present, function(key, value){
-                        if(count_tags == 1){
-                            if(value.id == rows_tags[0]){
+                    $.each(rows_tags, function(tkey, tvalue){
+                        $.each(response.master_present, function(key, value){
+                            if(value.id == rows_tags[tkey]){
                                 $('#get_tags').append('<option value='+value.id+' selected>'+value.present_title+'</option>');
                             }else{
                                 $('#get_tags').append('<option value='+value.id+'>'+value.present_title+'</option>');
                             }
-                        }else{
-                            if(value.id == rows_tags[key]){
-                                $('#get_tags').append('<option value='+value.id+' selected>'+value.present_title+'</option>');
-                            }else{
-                                $('#get_tags').append('<option value='+value.id+'>'+rows_tags[key]+'</option>');
-                            }
-                        }
+                        });
                     });
-
                 }
             }
         });

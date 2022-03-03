@@ -26,7 +26,7 @@
         <div class="hk-pg-header mb-10">
             <div>
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                    data-feather="file-text"></i></span></span>รายการข้อมูลการอนุมัติลูกค้าใหม่ (นอกแผน)</h4>
+                    data-feather="file-text"></i></span></span>รายรายละเอียดข้อมูลการอนุมัติลูกค้าใหม่ (นอกแผน)</h4>
             </div>
             {{-- <div class="d-flex">
                 <form action="{{ url('lead/approval_confirm_detail') }}" method="POST"
@@ -45,14 +45,14 @@
                 <section class="hk-sec-wrapper">
                     <div class="row">
                         <div class="col-sm">
-                            <a href="{{ url('/approval-customer-except') }}" type="button" class="btn btn-violet btn-wth-icon icon-wthot-bg btn-sm text-white">
+                            <a href="{{ url('/approval-customer-except') }}" type="button" class="btn btn-secondary btn-wth-icon icon-wthot-bg btn-sm text-white">
                                 <span class="icon-label">
                                     <i class="fa fa-file"></i>
                                 </span>
                                 <span class="btn-text">รออนุมัติ</span>
                             </a>
 
-                            <a href="{{ url('lead/approval-customer-except-history') }}" type="button" class="btn btn-secondary btn-wth-icon icon-wthot-bg btn-sm text-white">
+                            <a href="{{ url('lead/approval-customer-except-history') }}" type="button" class="btn btn-violet btn-wth-icon icon-wthot-bg btn-sm text-white">
                                 <span class="icon-label">
                                     <i class="fa fa-list"></i>
                                 </span>
@@ -64,7 +64,7 @@
                     </div>
                     <div class="row mb-2">
                             <div class="col-md-12">
-                                <h5 class="hk-sec-title">ตารางรายการข้อมูลการอนุมัติลูกค้าใหม่ (นอกแผน)</h5>
+                                <h5 class="hk-sec-title">ตารางรายละเอียดข้อมูลการอนุมัติลูกค้าใหม่ (นอกแผน)</h5>
                             </div>
                             <div class="col-md-9">
 
@@ -77,6 +77,7 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
+                                            <th>วันที่อนุมัติ</th>
                                             <th>วันที่ขออนุมัติ</th>
                                             <th>ชื่อร้าน</th>
                                             <th>อำเภอ,จังหวัด</th>
@@ -87,9 +88,9 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($customer_except as $key => $value)
-                                        @if ($value->shop_aprove_status != 1)
-                                        <tr style="background-color: rgb(219, 219, 219);">
+                                        <tr>
                                             <td>{{ $key + 1 }}</td>
+                                            <td>{{Carbon\Carbon::parse($value->created_at)->format('Y-m-d')}}</td>
                                             <td>{{Carbon\Carbon::parse($value->created_at)->format('Y-m-d')}}</td>
                                             <td>{{ $value->shop_name }}</td>
                                             <td>{{ $value->PROVINCE_NAME }}</td>
@@ -101,7 +102,7 @@
                                                 <span class="badge badge-soft-danger" style="font-size: 12px;">Reject</span></td>
                                                 @endif
                                             </td>
-                                            <td align="center">
+                                            <td>
                                                 <?php $comment = App\CustomerShopComment::where('customer_shops_saleplan_id', $value->id)->count(); ?>
                                                 @if ($comment > 0)
                                                 <span class="badge badge-soft-indigo" style="font-size: 12px;">มี</span>
@@ -110,40 +111,13 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <a href="{{ url('comment_customer_new', [$value->custid, $value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
+                                                <a href="{{ url('lead/show_comment_customer_except', [$value->custid, $value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
                                                     <h4 class="btn-icon-wrap" style="color: white;">
                                                         <i data-feather="message-square"></i>
                                                     </h4>
                                                 </a>
                                             </td>
                                         </tr>
-                                        @else
-                                            <tr>
-                                                <td>{{ $key + 1 }}</td>
-                                                <td>{{Carbon\Carbon::parse($value->created_at)->format('Y-m-d')}}</td>
-                                                <td>{{ $value->shop_name }}</td>
-                                                <td>{{ $value->PROVINCE_NAME }}</td>
-                                                <td>
-                                                    <span class="badge badge-soft-warning mt-15 mr-10"
-                                                        style="font-size: 12px;">Pending</span>
-                                                </td>
-                                                <td align="center">
-                                                    <?php $comment = App\CustomerShopComment::where('customer_shops_saleplan_id', $value->id)->count(); ?>
-                                                    @if ($comment > 0)
-                                                    <span class="badge badge-soft-indigo" style="font-size: 12px;">มี</span>
-                                                    @else
-                                                    <span class="badge badge-soft-secondary" style="font-size: 12px;">ไม่มี</span>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    <a href="{{ url('lead/comment_customer_except', [$value->custid, $value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
-                                                        <h4 class="btn-icon-wrap" style="color: white;">
-                                                            <i data-feather="message-square"></i>
-                                                        </h4>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            @endif
                                         @endforeach
                                     </tbody>
                                 </table>

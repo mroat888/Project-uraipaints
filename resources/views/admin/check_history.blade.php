@@ -30,6 +30,31 @@
             <div class="row">
                 <div class="col-sm">
                     <div class="table-wrap">
+                        <div class="hk-pg-header mb-10">
+                            <div>
+                            </div>
+                            <div class="col-sm-12 col-md-9">
+                                <!-- ------ -->
+
+                                <span class="form-inline pull-right pull-sm-center">
+                                    <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</button>
+                                    <form action="{{ url('admin/checkHistory/search') }}" method="post" enctype="multipart/form-data">
+                                        @csrf
+                                    <span id="selectdate" style="display:none;">
+
+                                        วันที่่ : <input type="date" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateFrom" name="fromMonth"/>
+
+                                        ถึงวันที่ : <input type="date" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name="toMonth"/>
+
+                                    <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm">ค้นหา</button>
+
+                                    {{-- <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button> --}}
+                                    </span>
+                                </form>
+                                </span>
+                                <!-- ------ -->
+                            </div>
+                        </div>
                         <table id="datable_1" class="table table-hover w-100 display pb-30">
                             <thead>
                                 <tr>
@@ -59,4 +84,17 @@
         </section>
     </div>
     <!-- /Container -->
+
+    <script>
+    function showselectdate(){
+        $("#selectdate").css("display", "block");
+        $("#bt_showdate").hide();
+    }
+
+    function hidetdate(){
+        $("#selectdate").css("display", "none");
+        $("#bt_showdate").show();
+    }
+
+    </script>
 @endsection

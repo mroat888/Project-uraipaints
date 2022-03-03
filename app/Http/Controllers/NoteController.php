@@ -54,11 +54,13 @@ class NoteController extends Controller
 
     public function store(Request $request)
     {
-        Note::create([
+        // dd($request);
+        DB::table('notes')->insert([
             'note_date' => $request->note_date,
             'note_title' => $request->note_title,
             'note_detail' => $request->note_detail,
-            'note_tags' => $request->note_tags,
+            // 'note_tags' => $request->note_tags,
+            'note_tags' => implode( ',', $request->note_tags),
             'employee_id' => Auth::user()->id,
         ]);
 
@@ -70,8 +72,11 @@ class NoteController extends Controller
     {
         $dataEdit = Note::join('master_note', 'notes.note_tags', 'master_note.id')
         ->where('notes.id', $id)->select('notes.*', 'master_note.name_tag')->first();
+
+        $master_note = DB::table('master_note')->get();
         $data = array(
             'dataEdit'     => $dataEdit,
+            'master_note'  => $master_note
         );
         echo json_encode($data);
     }
@@ -83,7 +88,7 @@ class NoteController extends Controller
             'note_date' => $request->note_date,
             'note_title' => $request->note_title,
             'note_detail' => $request->note_detail,
-            'note_tags' => $request->note_tags,
+            'note_tags' => implode( ',', $request->note_tags),
         ]);
 
         return back();

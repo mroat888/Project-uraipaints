@@ -150,7 +150,7 @@
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ป้ายกำกับ</label>
                                 <select class="select2 select2-multiple form-control" multiple="multiple"
-                                    data-placeholder="Choose" name="note_tags">
+                                    data-placeholder="Choose" name="note_tags[]">
                                     <optgroup label="เลือกข้อมูล">
                                         <?php $master = App\NoteTag::orderBy('id', 'desc')->get(); ?>
 
@@ -202,7 +202,7 @@
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ป้ายกำกับ</label>
-                                <select class="select2 select2-multiple form-control" multiple="multiple" name="note_tags"  id="get_tags">
+                                <select class="select2 select2-multiple form-control" multiple="multiple" name="note_tags[]"  id="get_tags">
                                     {{-- <optgroup id="get_tags">
                                         <option value="1">เพิ่มเติม</option>
                                         <option value="2">เข้าพบลูกค้า</option>
@@ -241,14 +241,27 @@
                     $('#get_date').val(data.dataEdit.note_date);
                     $('#get_title').val(data.dataEdit.note_title);
                     $('#get_detail').val(data.dataEdit.note_detail);
+                    $('#get_tags').children().remove().end();
                     // $('#get_tags').val(data.dataEdit.note_tags);
-                    $('#get_tags').html(
-                                    "<optgroup label='กรุณาเลือก'>"+
-                                        "<option value='"+data.dataEdit.note_tags+"' selected>"+ data.dataEdit.name_tag +"</option>"+
-                                        "@foreach ($master as $value)"+
-                                        "<option value='"+{{$value->id}}+"'>{{$value->name_tag}}</option>"+
-                                        "@endforeach"+
-                                    "</optgroup>");
+                    // $('#get_tags').html(
+                    //                 "<optgroup label='กรุณาเลือก'>"+
+                    //                     "<option value='"+data.dataEdit.note_tags+"' selected>"+ data.dataEdit.name_tag +"</option>"+
+                    //                     "@foreach ($master as $value)"+
+                    //                     "<option value='"+{{$value->id}}+"'>{{$value->name_tag}}</option>"+
+                    //                     "@endforeach"+
+                    //                 "</optgroup>");
+
+                    let rows_tags = data.dataEdit.note_tags.split(",");
+                    let count_tags = rows_tags.length;
+                    $.each(rows_tags, function(tkey, tvalue){
+                        $.each(data.master_note, function(key, value){
+                            if(value.id == rows_tags[tkey]){
+                                $('#get_tags').append('<option value='+value.id+' selected>'+value.name_tag+'</option>');
+                            }else{
+                                $('#get_tags').append('<option value='+value.id+'>'+value.name_tag+'</option>');
+                            }
+                        });
+                    });
 
                     $('#editNote').modal('toggle');
                 }

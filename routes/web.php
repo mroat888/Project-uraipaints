@@ -94,7 +94,8 @@ Route::get('approval', 'SaleMan\RequestApprovalController@index');
 Route::post('create_approval', 'SaleMan\RequestApprovalController@store');
 Route::get('edit_approval/{id}', 'SaleMan\RequestApprovalController@edit');
 Route::post('update_approval', 'SaleMan\RequestApprovalController@update');
-Route::get('delete_approval/{id}', 'SaleMan\RequestApprovalController@destroy');
+// Route::get('delete_approval/{id}', 'SaleMan\RequestApprovalController@destroy');
+Route::post('delete_approval', 'SaleMan\RequestApprovalController@destroy');
 Route::get('view_comment/{id}', 'SaleMan\RequestApprovalController@view_comment');
 Route::post('search_month_requestApprove', 'SaleMan\RequestApprovalController@search_month_requestApprove');
 
@@ -181,6 +182,11 @@ Route::post('lead/approval_customer_confirm_all', 'LeadManager\ApprovalCustomerE
 Route::get('lead/approval_customer_except_detail/{id}', 'LeadManager\ApprovalCustomerExceptController@approval_customer_except_detail');
 Route::get('lead/comment_customer_except/{id}/{custsaleplanID}/{createID}', 'LeadManager\ApprovalCustomerExceptController@comment_customer_except');
 Route::post('lead/create_comment_customer_except', 'LeadManager\ApprovalCustomerExceptController@create_comment_customer_except');
+Route::get('lead/approval-customer-except-history', 'LeadManager\ApprovalCustomerExceptController@customer_history');
+Route::get('lead/approval_customer_except_history_detail/{id}', 'LeadManager\ApprovalCustomerExceptController@approval_customer_except_history_detail');
+Route::get('lead/show_comment_customer_except/{id}/{custsaleplanID}/{createID}', 'LeadManager\ApprovalCustomerExceptController@show_comment_customer_except');
+Route::post('lead/approval-customer-except/search', 'LeadManager\ApprovalCustomerExceptController@search');
+Route::post('lead/approval-customer-except-history/search', 'LeadManager\ApprovalCustomerExceptController@search_history');
 
 Route::get('comment_customer_new/{id}/{custsaleplanID}/{createID}', 'LeadManager\ApprovalSalePlanController@comment_customer_new');
 Route::post('lead/create_comment_customer_new', 'LeadManager\ApprovalSalePlanController@create_comment_customer_new');
@@ -413,6 +419,7 @@ Route::get('admin/update-status-use/{id}', 'Admin\UserPermissionController@updat
 
 
 Route::get('admin/checkHistory', 'Admin\UsageHistoryController@index');
+Route::post('admin/checkHistory/search', 'Admin\UsageHistoryController@search');
 
 Route::get('/admin/reportcustomer', function () { return view('reports.report_customer_admin'); });
 Route::get('/admin/reportStore','Admin\ApiCustomerController@index');
@@ -493,7 +500,7 @@ Route::get('admin/data_report_historical-month', 'ShareData_Admin\ReportHistoric
 //     Route::get('test2', function () { return "Report"; });
 // });
 
- 
+
 //fullcalender
 
 // Route::get('fullcalendar','FullCalendarController@index');

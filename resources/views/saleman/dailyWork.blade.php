@@ -477,9 +477,14 @@
                                                 @foreach ($customer_new as $key => $value)
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
-                                                    <td>{{ $value->shop_name }}</td>
+                                                    <td>{{ $value->shop_name }}
+                                                    @if ($value->is_monthly_plan == "N")
+                                                    <span class="badge badge-soft-indigo"
+                                                    style="font-weight: bold; font-size: 12px;">นอกแผน</span>
+                                                    @endif
+                                                    </td>
                                                     <td>{{ $value->AMPHUR_NAME }}, {{ $value->PROVINCE_NAME }}</td>
-                                                    <td></td>
+                                                    <td>{{ $value->cust_name }}</td>
                                                     <td style="text-align:center;">
                                                         @php
                                                             $count_new = DB::table('customer_shop_comments')

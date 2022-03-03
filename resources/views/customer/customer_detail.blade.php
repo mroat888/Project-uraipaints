@@ -18,7 +18,7 @@
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-people"></i></span>รายละเอียดลูกค้า</h4>
             </div>
             <div class="d-flex">
-
+                <a href="{{ url('lead')}}" type="button" class="btn btn-secondary btn-sm btn-rounded px-3 mr-10"> ย้อนกลับ </a>
             </div>
         </div>
         <!-- /Title -->
@@ -32,8 +32,14 @@
                         <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <img src="{{ isset($customer_shops->shop_profile_image) ? asset('/public/upload/CustomerImage/' . $customer_shops->shop_profile_image) : '' }}" 
+                                    @if ($customer_shops->shop_profile_image)
+                                    <img src="{{ isset($customer_shops->shop_profile_image) ? asset('/public/upload/CustomerImage/' . $customer_shops->shop_profile_image) : '' }}"
                                     alt="{{ $customer_shops->shop_name }}" style="max-width:30%;">
+
+                                    @else
+                                    <img src="{{ asset('/public/images/people-33.png')}}" alt="" style="max-width:30%;">
+                                    @endif
+
                                 </div>
                                 <div class="col-md-6">
                                 @if($customer_shops->shop_status == "0")
@@ -53,12 +59,12 @@
                                     <p class="detail_listcus mb-40" style="font-size: 16px;"><span>ที่อยู่</span> : {{ $customer_shops->shop_address }}</p>
 
                                     <span style="font-size: 18px; color:#6b73bd;">รายชื่อผู้ติดต่อ</span>
-                                    <p class="detail_listcus mt-10" style="font-size: 16px;"><span>ชื่อ</span> : 
+                                    <p class="detail_listcus mt-10" style="font-size: 16px;"><span>ชื่อ</span> :
                                         @if(isset($customer_contacts->customer_contact_name))
                                             {{  $customer_contacts->customer_contact_name }}
                                         @endif
                                     </p>
-                                    <p class="detail_listcus" style="font-size: 16px;"><span>เบอร์โทรศัพท์</span> : 
+                                    <p class="detail_listcus" style="font-size: 16px;"><span>เบอร์โทรศัพท์</span> :
                                         @if(!empty($customer_contacts->customer_contact_phone))
                                             {{ $customer_contacts->customer_contact_phone }}
                                         @endif
@@ -81,7 +87,7 @@
                                 <div class="col-md-12">
                                     <span style="font-size: 18px; color:#6b73bd;">ผู้รับผิดชอบ</span>
                                     <p class="detail_listcus mt-10" style="font-size: 16px;">
-                                        <span>ชื่อพนักงาน</span> : 
+                                        <span>ชื่อพนักงาน</span> :
                                         @php
                                             $user = DB::table('users')
                                                 ->where('id', $customer_shops->created_by)
@@ -101,7 +107,7 @@
                                             $is_disabled = "";
                                         }
                                     @endphp
-                                    
+
                                         <button type="button" id="btn_update" class="btn btn_default btn_green btn-teal btn-sm btn-rounded" value="{{ $customer_shops->id }}" style="font-size: 14px;" {{ $is_disabled }}>อัพเดตเป็นลูกค้าใหม่</button>
                                         <button type="button" id="btn_delete" class="btn btn_default btn-danger btn-sm btn-rounded" value="{{ $customer_shops->id }}" style="font-size: 14px;">ลบออก</button>
                                     </p>
@@ -123,11 +129,11 @@
                 </div>
             </div>
         </div>
-        
+
             @foreach($customer_shops_saleplan as $cust_shops_saleplan)
             <div class="row">
                 <div class="col-xl-12">
-                    
+
                     <section class="hk-sec-wrapper">
                         <div class="row">
                             <div class="col-md-12">
@@ -135,7 +141,7 @@
                                     <div class="col-md-6 col-lg-3">
                                         <p class="detail_listcus">
                                             <i class="ion ion-md-calendar"></i>
-                                            <span> เดือน</span> : 
+                                            <span> เดือน</span> :
                                             @php
                                                 $monthly_plans = DB::table('monthly_plans')
                                                 ->where('id', $cust_shops_saleplan->monthly_plan_id)
@@ -146,7 +152,7 @@
                                     </div>
                                     <div class="col-md-6 col-lg-9">
                                         <p class="detail_listcus"><i class="ion ion-md-person"></i>
-                                            <span> พนักงาน</span> : 
+                                            <span> พนักงาน</span> :
                                             @php
                                                 $user = DB::table('users')
                                                     ->where('id', $cust_shops_saleplan->created_by)
@@ -166,7 +172,7 @@
                                                 ->where('customer_shops_saleplan_id', $cust_shops_saleplan->id)
                                                 ->first();
                                             @endphp
-            
+
                                             @if($cust_result != "")
                                                 <blockquote class="blockquote mb-0">
                                                     <p>{{ $cust_result->cust_result_detail }}</p>
@@ -312,7 +318,7 @@
                 $('#shop_status_name_lead').text('ลบข้อมูลลูกค้าเรียบร้อย')
                 $('#btn_update').prop('disabled', true);
                 $('#btn_delete').prop('disabled', true);
-                
+
                 //location.reload();
             },
             error: function(response){

@@ -44,6 +44,38 @@ class ApprovalCustomerExceptController extends Controller
         return view('leadManager.approval_customer_except', $data);
     }
 
+    public function search(Request $request)
+    {
+
+        $auth_team_id = explode(',',Auth::user()->team_id);
+        $auth_team = array();
+        foreach($auth_team_id as $value){
+            $auth_team[] = $value;
+        }
+
+        list($year,$month) = explode('-', $request->selectdateTo);
+        $data['customers'] = DB::table('customer_shops_saleplan')
+        ->join('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
+        ->join('users', 'customer_shops_saleplan.created_by', '=', 'users.id')
+        ->where('customer_shops.shop_status', 0)
+        ->where('customer_shops_saleplan.shop_aprove_status', 1) // ส่งขออนุมัติ
+        ->where(function($query) use ($auth_team) {
+            for ($i = 0; $i < count($auth_team); $i++){
+                $query->orWhere('users.team_id', $auth_team[$i])
+                    ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                    ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+            }
+        })
+        ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+        ->where('customer_shops_saleplan.is_monthly_plan', 'N')
+        ->whereYear('customer_shops_saleplan.created_at', $year)
+        ->whereMonth('customer_shops_saleplan.created_at', $month)
+        ->select('customer_shops_saleplan.created_by as shop_created_by')
+        ->distinct()->get();
+
+        return view('leadManager.approval_customer_except', $data);
+    }
+
     public function approval_customer_except_detail($id)
     {
         $data['customer_except'] = DB::table('customer_shops_saleplan')
@@ -63,6 +95,87 @@ class ApprovalCustomerExceptController extends Controller
         ->get();
 
         return view('leadManager.approval_customer_except_detail', $data);
+    }
+
+    public function customer_history()
+    {
+
+        $auth_team_id = explode(',',Auth::user()->team_id);
+        $auth_team = array();
+        foreach($auth_team_id as $value){
+            $auth_team[] = $value;
+        }
+        $data['customers'] = DB::table('customer_shops_saleplan')
+            ->join('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
+            ->join('users', 'customer_shops_saleplan.created_by', '=', 'users.id')
+            ->where('customer_shops.shop_status', 0)
+            ->whereIn('customer_shops_saleplan.shop_aprove_status', [2]) // อนุมัติแล้ว
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('users.team_id', $auth_team[$i])
+                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+                }
+            })
+            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+            ->where('customer_shops_saleplan.is_monthly_plan', 'N')
+            ->select('customer_shops_saleplan.created_by as shop_created_by')
+            ->distinct()->get();
+
+        return view('leadManager.approval-customer-except-history', $data);
+    }
+
+    public function search_history(Request $request)
+    {
+
+        $auth_team_id = explode(',',Auth::user()->team_id);
+        $auth_team = array();
+        foreach($auth_team_id as $value){
+            $auth_team[] = $value;
+        }
+
+        list($year,$month) = explode('-', $request->selectdateTo);
+        $data['customers'] = DB::table('customer_shops_saleplan')
+            ->join('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
+            ->join('users', 'customer_shops_saleplan.created_by', '=', 'users.id')
+            ->where('customer_shops.shop_status', 0)
+            ->whereIn('customer_shops_saleplan.shop_aprove_status', [2]) // อนุมัติแล้ว
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('users.team_id', $auth_team[$i])
+                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+                }
+            })
+            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+            ->where('customer_shops_saleplan.is_monthly_plan', 'N')
+            ->whereYear('customer_shops_saleplan.updated_at', $year)
+            ->whereMonth('customer_shops_saleplan.updated_at', $month)
+            ->select('customer_shops_saleplan.created_by as shop_created_by')
+            ->distinct()->get();
+
+        return view('leadManager.approval-customer-except-history', $data);
+    }
+
+    public function approval_customer_except_history_detail($id)
+    {
+        $data['customer_except'] = DB::table('customer_shops_saleplan')
+        ->join('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
+        ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
+        ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
+        ->whereIn('customer_shops_saleplan.shop_aprove_status', [1, 2, 3])
+        ->where('customer_shops_saleplan.is_monthly_plan', "N")
+        ->where('customer_shops_saleplan.created_by', $id)
+        ->select(
+            'province.PROVINCE_NAME',
+            'customer_shops.*',
+            'customer_shops.id as custid',
+            'customer_shops_saleplan.*'
+        )
+        ->orderBy('customer_shops.id', 'desc')
+        ->get();
+
+        return view('leadManager.approval_customer_except_history_detail', $data);
     }
 
     public function comment_customer_except($id, $custsaleplanID, $createID)
@@ -86,6 +199,30 @@ class ApprovalCustomerExceptController extends Controller
             return view('leadManager.create_comment_customer_except', $data);
         }else {
             return view('leadManager.create_comment_customer_except', $data);
+        }
+    }
+
+    public function show_comment_customer_except($id, $custsaleplanID, $createID)
+    {
+        // return $id;
+
+        $data['data'] = CustomerShopComment::where('customer_shops_saleplan_id', $custsaleplanID)->where('created_by', Auth::user()->id)->first();
+        $data['customerID'] = $id;
+        $data['customersaleplanID'] = $custsaleplanID;
+        $data['createID'] = $createID;
+
+        $data['customer_shop_comments'] = DB::table('customer_shop_comments')
+        ->where('customer_shops_saleplan_id', $custsaleplanID)
+        ->whereNotIn('created_by', [Auth::user()->id])
+        ->orderby('created_at', 'desc')
+        ->get();
+
+        $data['customer'] = Customer::where('id', $id)->first();
+        // return $data;
+        if ($data) {
+            return view('leadManager.show_comment_customer_except', $data);
+        }else {
+            return view('leadManager.show_comment_customer_except', $data);
         }
     }
 
@@ -138,11 +275,12 @@ class ApprovalCustomerExceptController extends Controller
                         foreach ($request->checkapprove as $key => $chk) {
 
                             DB::table('customer_shops_saleplan')->where('monthly_plan_id', $request->monthly_plan_id)
-                            ->where('created_by', $chk)
+                            ->where('created_by', $chk)->where('is_monthly_plan', "N")
                             ->update([
                                 'shop_aprove_status' => 2,
                                 'customer_shop_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
+                                'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
                             ]);
                             DB::table('customer_shops')->where('shop_status', 0)
                             ->where('monthly_plan_id', $request->monthly_plan_id)
@@ -151,6 +289,7 @@ class ApprovalCustomerExceptController extends Controller
                                 'shop_aprove_status' => 2,
                                 // 'customer_shop_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
+                                'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
                             ]);
                         }
 
@@ -158,11 +297,13 @@ class ApprovalCustomerExceptController extends Controller
 
                         foreach ($request->checkapprove as $key => $chk) {
 
-                            DB::table('customer_shops_saleplan')->where('monthly_plan_id', $request->monthly_plan_id)->where('created_by', $chk)
+                            DB::table('customer_shops_saleplan')->where('monthly_plan_id', $request->monthly_plan_id)
+                            ->where('created_by', $chk)->where('is_monthly_plan', "N")
                             ->update([
                                 'shop_aprove_status' => 2,
                                 'customer_shop_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
+                                'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
                             ]);
                             DB::table('customer_shops')->where('shop_status', 0)
                             ->where('monthly_plan_id', $request->monthly_plan_id)
@@ -171,6 +312,7 @@ class ApprovalCustomerExceptController extends Controller
                                 'shop_aprove_status' => 2,
                                 // 'customer_shop_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
+                                'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
                             ]);
                         }
 
@@ -181,11 +323,13 @@ class ApprovalCustomerExceptController extends Controller
                         // return "yy";
                         foreach ($request->checkapprove as $key => $chk) {
 
-                            DB::table('customer_shops_saleplan')->where('monthly_plan_id', $request->monthly_plan_id)->where('created_by', $chk)
+                            DB::table('customer_shops_saleplan')->where('monthly_plan_id', $request->monthly_plan_id)
+                            ->where('created_by', $chk)->where('is_monthly_plan', "N")
                             ->update([
                                 'shop_aprove_status' => 3,
                                 'customer_shop_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
+                                'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
                             ]);
                             DB::table('customer_shops')->where('shop_status', 0)
                             ->where('monthly_plan_id', $request->monthly_plan_id)
@@ -194,6 +338,7 @@ class ApprovalCustomerExceptController extends Controller
                                 'shop_aprove_status' => 3,
                                 // 'customer_shop_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
+                                'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
                             ]);
                         }
 
@@ -201,11 +346,13 @@ class ApprovalCustomerExceptController extends Controller
                     } else {
                         foreach ($request->checkapprove as $key => $chk) {
 
-                            DB::table('customer_shops_saleplan')->where('monthly_plan_id', $request->monthly_plan_id)->where('created_by', $chk)
+                            DB::table('customer_shops_saleplan')->where('monthly_plan_id', $request->monthly_plan_id)
+                            ->where('created_by', $chk)->where('is_monthly_plan', "N")
                             ->update([
                                 'shop_aprove_status' => 3,
                                 'customer_shop_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
+                                'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
                             ]);
                             DB::table('customer_shops')->where('shop_status', 0)
                             ->where('monthly_plan_id', $request->monthly_plan_id)
@@ -214,6 +361,7 @@ class ApprovalCustomerExceptController extends Controller
                                 'shop_aprove_status' => 3,
                                 // 'customer_shop_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
+                                'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
                             ]);
                         }
                     }
