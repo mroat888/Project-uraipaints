@@ -61,8 +61,8 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    @if($yearleader_api_now['code'] == 200)
-                                        @foreach($yearleader_api_now['data'] as $key => $value)
+                                    @if($yearadmin_api['code'] == 200)
+                                        @foreach($yearadmin_api['data'] as $key => $value)
                                         <tr>
                                             <td>{{ $value['year']+543 }}</td>
                                             <td>{{ number_format($value['customers']) }}</td>
@@ -73,31 +73,6 @@
                                         </tr>
                                         @endforeach
                                     @endif
-                                    @if($yearleader_api_old1['code'] == 200)
-                                        @foreach($yearleader_api_old1['data'] as $key => $value)
-                                        <tr>
-                                            <td>{{ $value['year']+543 }}</td>
-                                            <td>{{ number_format($value['customers']) }}</td>
-                                            <td>{{ number_format($value['sales']) }}</td>
-                                            <td>{{ number_format($value['credits']) }}</td>
-                                            <td>{{ number_format($value['netSales']) }}</td>
-                                            <td>{{ number_format($value['%Credit'],2) }}%</td>
-                                        </tr>
-                                        @endforeach
-                                    @endif
-                                    @if($yearleader_api_old2['code'] == 200)
-                                        @foreach($yearleader_api_old2['data'] as $key => $value)
-                                        <tr>
-                                            <td>{{ $value['year']+543 }}</td>
-                                            <td>{{ number_format($value['customers']) }}</td>
-                                            <td>{{ number_format($value['sales']) }}</td>
-                                            <td>{{ number_format($value['credits']) }}</td>
-                                            <td>{{ number_format($value['netSales']) }}</td>
-                                            <td>{{ number_format($value['%Credit'],2) }}%</td>
-                                        </tr>
-                                        @endforeach
-                                    @endif
-
                                     </tbody>
                                     <!-- <tfoot style="font-weight: bold;">
                                         <td colspan="2" align="center">ทั้งหมด</td>

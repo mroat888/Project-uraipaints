@@ -18,22 +18,15 @@ class ReportHistoricalYearController extends Controller
     public function index()
     {
         list($year,$month,$day) = explode('-',date('Y-m-d'));
-        $path_search = "reports/years/".$year."/headers/search?sortorder=DESC&header_id=".Auth::user()->api_identify;
+        $year = $year+0;
+        $year_old1 = $year-1; 
+     
+        $path_search = "reports/years/".$year.",".$year_old1."/headers"."/".Auth::user()->api_identify;
         $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
-        $data['yearleader_api_now'] = $response->json();
+        $data['yearheader_api'] = $response->json();
 
-        $year_old1 = $year-1;
-        $path_search = "reports/years/".$year_old1."/headers/search?sortorder=DESC&header_id=".Auth::user()->api_identify;
-        $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
-        $data['yearleader_api_old1'] = $response->json();
-
-        $year_old2 = $year-2;
-        $path_search = "reports/years/".$year_old2."/headers/search?sortorder=DESC&header_id=".Auth::user()->api_identify;
-        $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
-        $data['yearleader_api_old2'] = $response->json();
+        // dd($data);
 
         return view('shareData_headManager.report_historical_year', $data);
     }

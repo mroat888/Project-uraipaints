@@ -53,6 +53,28 @@
 
                     <div class="row">
                         <div class="col-sm">
+                            <div class="card">
+                                <div class="card-header">
+                                    รายละเอียด
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ $campaignpromotes_name_api['data'][0]['description']}}</h5>
+                                    <p class="card-text">รหัส : {{ $campaignpromotes_name_api['data'][0]['campaign_id']}}</p>
+                                    <p class="card-text">
+                                        ตั้งแต่ : {{ $campaignpromotes_name_api['data'][0]['fromdate']}}
+                                        ถึง : {{ $campaignpromotes_name_api['data'][0]['todate']}}
+                                    </p>
+                                    <p class="card-text">หมายเหตุ : {{ $campaignpromotes_name_api['data'][0]['remark']}}</p>
+                                    <p class="card-text">เป้าทั้งหมด : {{ $campaignpromotes_name_api['data'][0]['Target']}}</p>
+                                    <p class="card-text">เป้าที่ทำได้ : {{ $campaignpromotes_name_api['data'][0]['Sales']}}</p>
+                                    <p class="card-text">ผลต่าง : {{ $campaignpromotes_name_api['data'][0]['Diff']}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm">
                             <div id="table_list" class="table-responsive col-md-12">
                                 <table id="datable_1" class="table table-hover">
                                     <thead>
@@ -63,7 +85,7 @@
                                         </tr>
 
                                         <tr>
-                                            <th>ชื่อสินค้าใหม่</th>
+                                            <th>ผู้แทนขาย</th>
                                             <th>เป้าทั้งหมด</th>
                                             <th>เป้าที่ทำได้</th>
                                             <th>ผลต่าง</th>
@@ -73,44 +95,33 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    <?php
-                                        $rows1 = count($sellers_api);
-                                        
-                                        for($i=0 ; $i< $rows1; $i++){
-                                            if(isset($sellers_api[$i])){
-                                    ?>
-                                                <tr class="bg-info text-white">
-                                                    <td colspan="8"><strong>{{ $sellers_api[$i][0]['saleman_name'] }}</strong></td>
-                                                </tr>
-                                    <?php
-                                                $rows2 = count($sellers_api[$i]);
-                                                $no=0;
-                                                for($in=0 ; $in< $rows2; $in++){
-                                    ?>
-                                                    <tr>
-                                                        <th scope="row">{{ ++$no }}</th>
-                                                        <td>{{ $sellers_api[$i][$in]['description'] }}</td>
-                                                        <td>{{ number_format($sellers_api[$i][$in]['Target'],2) }}</td>
-                                                        <td>{{ number_format($sellers_api[$i][$in]['Sales'],2) }}</td>
-                                                        <td>{{ number_format($sellers_api[$i][$in]['Diff'],2) }}</td>
-                                                        <td>-</td>
-                                                        <td>{{ number_format($sellers_api[$i][$in]['persent_sale'],2) }}%</td>
-                                                        <td>{{ number_format($sellers_api[$i][$in]['persent_diff'],2) }}%</td>
-                                                    </tr>
-                                    <?php
-                                                }
-                                            }
-                                        }
-                                    ?>
+                                        @php
+                                            $no = 0;
+                                        @endphp
+                                        @foreach($campaign_detail_api as $value)
+                                        <tr>
+                                            <th scope="row">{{ ++$no }}</th>
+                                            <td>
+                                                {{ $value['identify'] }}
+                                                {{ $value['name'] }}
+                                            </td>
+                                            <td>{{ number_format($value['Target'],2) }}</td>
+                                            <td>{{ number_format($value['Sales'],2) }}</td>
+                                            <td>{{ number_format($value['Diff'],2) }}</td>
+                                            <td>-</td>
+                                            <td>{{ number_format($value['persent_sale'],2) }}%</td>
+                                            <td>{{ number_format($value['persent_diff'],2) }}%</td>
+                                        </tr>
+                                        @endforeach
                                     </tbody>
                                     <tfoot style="font-weight: bold;">
                                         <td colspan="2" align="center">ทั้งหมด</td>
-                                        <td class="text-success">{{ number_format($summary_sellers_api['sum_target'],2) }}</td>
-                                        <td class="text-success">{{ number_format($summary_sellers_api['sum_sales'],2) }}</td>
-                                        <td class="text-danger">{{ number_format($summary_sellers_api['sum_diff'],2) }}</td>
+                                        <td class="text-success">{{ number_format($summary_campaign_detail_api['sum_target'],2) }}</td>
+                                        <td class="text-success">{{ number_format($summary_campaign_detail_api['sum_sales'],2) }}</td>
+                                        <td class="text-danger">{{ number_format($summary_campaign_detail_api['sum_diff'],2) }}</td>
                                         <td class="text-secondary">-</td>
-                                        <td class="text-success">{{ number_format($summary_sellers_api['sum_persent_sale'],2) }}%</td>
-                                        <td class="text-danger">{{ number_format($summary_sellers_api['sum_persent_diff'],2) }}%</td>
+                                        <td class="text-success">{{ number_format($summary_campaign_detail_api['sum_persent_sale'],2) }}%</td>
+                                        <td class="text-danger">{{ number_format($summary_campaign_detail_api['sum_persent_diff'],2) }}%</td>
                                     </tfoot>
                                 </table>
                             </div>

@@ -21,175 +21,107 @@ class ReportHistoricalQuarterController extends Controller
         list($year,$month,$day) = explode('-',date('Y-m-d'));
         $year = $year+0;
         $year_old1 = $year-1;
-        $year_old2 = $year-2;
 
-        $path_search = "reports/years/".$year.",".$year_old1.",".$year_old2."/quaters/1,2,3,4/leaders/".Auth::user()->api_identify;
+        $path_search = "reports/years/".$year.",".$year_old1."/quaters/1,2,3,4/leaders/".Auth::user()->api_identify;
         $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
         $quarter_api = $response->json();
 
-        $data['year_search'] = array($year, $year_old1, $year_old2);
+        $data['year_search'] = array($year, $year_old1);
 
-        foreach($quarter_api['data'] as $key => $value){
-            if($value['year'] == $year){
-                switch ($value['quater']) {
-                    case 1:
-                        $data['quarter_api_year']['q1'] = [
-                            $value['Sellers'],
-                            $value['customers'],
-                            number_format($value['sales']),
-                            number_format($value['credits']),
-                            number_format($value['netSales']),
-                            number_format($value['%Credit'])."%",
-                            $value['year'],
-                            $value['quater'],
-                        ];
-                    break;
-                    case 2:
-                        $data['quarter_api_year']['q2'] = [
-                            $value['Sellers'],
-                            $value['customers'],
-                            number_format($value['sales']),
-                            number_format($value['credits']),
-                            number_format($value['netSales']),
-                            number_format($value['%Credit'])."%",
-                            $value['year'],
-                            $value['quater'],
-                        ];
-                    break;
-                    case 3:
-                        $data['quarter_api_year']['q3'] = [
-                            $value['Sellers'],
-                            $value['customers'],
-                            number_format($value['sales']),
-                            number_format($value['credits']),
-                            number_format($value['netSales']),
-                            number_format($value['%Credit'])."%",
-                            $value['year'],
-                            $value['quater'],
-                        ];
-                    break;
-                    case 4:
-                        $data['quarter_api_year']['q4'] = [
-                            $value['Sellers'],
-                            $value['customers'],
-                            number_format($value['sales']),
-                            number_format($value['credits']),
-                            number_format($value['netSales']),
-                            number_format($value['%Credit'])."%",
-                            $value['year'],
-                            $value['quater'],
-                        ];
-                    break;
+        $data['sum_present'] = array();
+        $data['total_year'] = array();
+
+        $sum_pre_q1 = 0;
+        $sum_pre_q2 = 0;
+        $sum_pre_q3 = 0;
+        $sum_pre_q4 = 0;
+
+        // dd($quarter_api['data']);
+        if($quarter_api['code'] == 200){
+
+            foreach($data['year_search'] as $key_year => $year_search ){
+                $total_year = 0;
+                $sum_netSales_q1 = 0;
+                $sum_netSales_q2 = 0;
+                $sum_netSales_q3 = 0;
+                $sum_netSales_q4 = 0;
+
+                foreach($quarter_api['data'] as $key => $value){
+                    
+                    if($value['year'] == $year_search){
+
+                        switch ($value['quater']) {
+                            case 1:
+                                $data['quarter_api_year'][$key_year]['q1'] = [
+                                    $value['Sellers'],
+                                    $value['customers'],
+                                    $value['sales'],
+                                    $value['credits'],
+                                    $value['netSales'],
+                                    $value['%Credit'],
+                                    $value['year'],
+                                    $value['quater'],
+                                ];
+                                $sum_netSales_q1 = $sum_netSales_q1 + $value['netSales'];
+                                $total_year += $value['netSales'];
+                            break;
+                            case 2:
+                                $data['quarter_api_year'][$key_year]['q2'] = [
+                                    $value['Sellers'],
+                                    $value['customers'],
+                                    $value['sales'],
+                                    $value['credits'],
+                                    $value['netSales'],
+                                    $value['%Credit'],
+                                    $value['year'],
+                                    $value['quater'],
+                                ];
+                                $sum_netSales_q2 = $sum_netSales_q2 + $value['netSales'];
+                                $total_year += $value['netSales'];
+                            break;
+                            case 3:
+                                $data['quarter_api_year'][$key_year]['q3'] = [
+                                    $value['Sellers'],
+                                    $value['customers'],
+                                    $value['sales'],
+                                    $value['credits'],
+                                    $value['netSales'],
+                                    $value['%Credit'],
+                                    $value['year'],
+                                    $value['quater'],
+                                ];
+                                $sum_netSales_q3 = $sum_netSales_q3 + $value['netSales'];
+                                $total_year += $value['netSales'];
+                            break;
+                            case 4:
+                                $data['quarter_api_year'][$key_year]['q4'] = [
+                                    $value['Sellers'],
+                                    $value['customers'],
+                                    $value['sales'],
+                                    $value['credits'],
+                                    $value['netSales'],
+                                    $value['%Credit'],
+                                    $value['year'],
+                                    $value['quater'],
+                                ];
+                                $sum_netSales_q4 = $sum_netSales_q4 + $value['netSales'];
+                                $total_year += $value['netSales'];
+                            break;
+                        }
+                        
+                    }
+
                 }
-            }
-            if($value['year'] == $year_old1){
-                switch ($value['quater']) {
-                    case 1:
-                        $data['quarter_api_year_old1']['q1'] = [
-                            $value['Sellers'],
-                            $value['customers'],
-                            number_format($value['sales']),
-                            number_format($value['credits']),
-                            number_format($value['netSales']),
-                            number_format($value['%Credit'])."%",
-                            $value['year'],
-                            $value['quater'],
-                        ];
-                    break;
-                    case 2:
-                        $data['quarter_api_year_old1']['q2'] = [
-                            $value['Sellers'],
-                            $value['customers'],
-                            number_format($value['sales']),
-                            number_format($value['credits']),
-                            number_format($value['netSales']),
-                            number_format($value['%Credit'])."%",
-                            $value['year'],
-                            $value['quater'],
-                        ];
-                    break;
-                    case 3:
-                        $data['quarter_api_year_old1']['q3'] = [
-                            $value['Sellers'],
-                            $value['customers'],
-                            number_format($value['sales']),
-                            number_format($value['credits']),
-                            number_format($value['netSales']),
-                            number_format($value['%Credit'])."%",
-                            $value['year'],
-                            $value['quater'],
-                        ];
-                    break;
-                    case 4:
-                        $data['quarter_api_year_old1']['q4'] = [
-                            $value['Sellers'],
-                            $value['customers'],
-                            number_format($value['sales']),
-                            number_format($value['credits']),
-                            number_format($value['netSales']),
-                            number_format($value['%Credit'])."%",
-                            $value['year'],
-                            $value['quater'],
-                        ];
-                    break;
-                }
-            }
-            if($value['year'] == $year_old2){
-                switch ($value['quater']) {
-                    case 1:
-                        $data['quarter_api_year_old2']['q1'] = [
-                            $value['Sellers'],
-                            $value['customers'],
-                            number_format($value['sales']),
-                            number_format($value['credits']),
-                            number_format($value['netSales']),
-                            number_format($value['%Credit'])."%",
-                            $value['year'],
-                            $value['quater'],
-                        ];
-                    break;
-                    case 2:
-                        $data['quarter_api_year_old2']['q2'] = [
-                            $value['Sellers'],
-                            $value['customers'],
-                            number_format($value['sales']),
-                            number_format($value['credits']),
-                            number_format($value['netSales']),
-                            number_format($value['%Credit'])."%",
-                            $value['year'],
-                            $value['quater'],
-                        ];
-                    break;
-                    case 3:
-                        $data['quarter_api_year_old2']['q3'] = [
-                            $value['Sellers'],
-                            $value['customers'],
-                            number_format($value['sales']),
-                            number_format($value['credits']),
-                            number_format($value['netSales']),
-                            number_format($value['%Credit'])."%",
-                            $value['year'],
-                            $value['quater'],
-                        ];
-                    break;
-                    case 4:
-                        $data['quarter_api_year_old2']['q4'] = [
-                            $value['Sellers'],
-                            $value['customers'],
-                            number_format($value['sales']),
-                            number_format($value['credits']),
-                            number_format($value['netSales']),
-                            number_format($value['%Credit'])."%",
-                            $value['year'],
-                            $value['quater'],
-                        ];
-                    break;
-                }
+                
+                $data['total_year'][] = [
+                    'total_year' => $total_year,
+                ];
             }
         }
 
-        // dd($data['quarter_api_year_old1']['q1'][2]);
+
+        // dd($data);
 
         
 
