@@ -72,12 +72,12 @@
                                         <tr>
                                             <th scope="row">{{ ++$no }}</th>
                                             <td>{{ $sellers_api[$i]['description'] }}</td>
-                                            <td>{{ $sellers_api[$i]['Target'] }}</td>
-                                            <td>{{ $sellers_api[$i]['Sales'] }}</td>
-                                            <td>{{ $sellers_api[$i]['Diff'] }}</td>
+                                            <td>{{ number_format($sellers_api[$i]['Target'],2) }}</td>
+                                            <td>{{ number_format($sellers_api[$i]['Sales'],2) }}</td>
+                                            <td>{{ number_format($sellers_api[$i]['Diff'],2) }}</td>
                                             <td>-</td>
-                                            <td>{{ $sellers_api[$i]['persent_sale'] }}%</td>
-                                            <td>{{ $sellers_api[$i]['persent_diff'] }}%</td>
+                                            <td>{{ number_format($sellers_api[$i]['persent_sale'],2) }}%</td>
+                                            <td>{{ number_format($sellers_api[$i]['persent_diff'],2) }}%</td>
                                         </tr>
                                     <?php
                                         }
@@ -85,12 +85,12 @@
                                     </tbody>
                                     <tfoot style="font-weight: bold;">
                                         <td colspan="2" align="center">ทั้งหมด</td>
-                                        <td class="text-success">{{ $summary_sellers_api['sum_target'] }}</td>
-                                        <td class="text-success">{{ $summary_sellers_api['sum_sales'] }}</td>
-                                        <td class="text-danger">{{ $summary_sellers_api['sum_diff'] }}</td>
+                                        <td class="text-success">{{ number_format($summary_sellers_api['sum_target'],2) }}</td>
+                                        <td class="text-success">{{ number_format($summary_sellers_api['sum_sales'],2) }}</td>
+                                        <td class="text-danger">{{ number_format($summary_sellers_api['sum_diff'],2) }}</td>
                                         <td class="text-secondary">-</td>
-                                        <td class="text-success">{{ $summary_sellers_api['sum_persent_sale'] }}%</td>
-                                        <td class="text-danger">{{ $summary_sellers_api['sum_persent_diff'] }}%</td>
+                                        <td class="text-success">{{ number_format($summary_sellers_api['sum_persent_sale'],2) }}%</td>
+                                        <td class="text-danger">{{ number_format($summary_sellers_api['sum_persent_diff'],2) }}%</td>
                                     </tfoot>
                                 </table>
                             </div>

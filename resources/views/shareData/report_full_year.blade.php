@@ -53,7 +53,7 @@
                                         </tr>
 
                                         <tr>
-                                            <th>เดือน</th>
+                                            <th>ปี</th>
                                             <th>จำนวนร้านค้า</th>
                                             <th>ยอดขายรวม</th>
                                             <th>ยอดคืนรวม</th>
@@ -67,10 +67,10 @@
                                         <tr>
                                             <td>{{ ++$key }}</td>
                                             <td>{{ $value['year']+543 }}</td>
-                                            <td>{{ $value['customers'] }}</td>
-                                            <td>{{ number_format($value['sales']) }}</td>
-                                            <td>{{ number_format($value['credits']) }}</td>
-                                            <td>{{ number_format($value['netSales']) }}</td>
+                                            <td>{{ number_format($value['customers']) }}</td>
+                                            <td>{{ number_format($value['sales'],2) }}</td>
+                                            <td>{{ number_format($value['credits'],2) }}</td>
+                                            <td>{{ number_format($value['netSales'],2) }}</td>
                                             <td>{{ number_format($value['%Credit'],2) }}%</td>
                                         </tr>
                                         @endforeach
