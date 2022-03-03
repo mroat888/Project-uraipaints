@@ -14,7 +14,7 @@
             <form id="form_insert" enctype="multipart/form-data">
                 @csrf
             <div class="modal-body">
-                    
+
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="objective">วัตถุประสงค์</label>
@@ -28,7 +28,7 @@
                     @if(isset($customer_shops ))
                     <div class="col-md-6 form-group">
                         <label for="firstName">ค้นหาชื่อร้าน</label>
-                        <select name="customer_shops" id="customer_shops" class="form-control select2">
+                        <select name="customer_shops" id="customer_shops" class="form-control select2" required>
                             <option value=""selected>--โปรดเลือก--</option>
                                 @foreach($customer_shops as $value)
                                     <option value="{{ $value->id }}">{{ $value->shop_name }}</option>
@@ -41,7 +41,7 @@
                     </div>
                     @endif
                 </div>
-                    
+
                 <div class="row">
                     <div class="col-md-6 form-group">
                         <label for="firstName">ชื่อร้าน</label>

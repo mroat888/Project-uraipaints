@@ -83,10 +83,23 @@ class RequestApprovalController extends Controller
         echo ("<script>alert('แก้ไขข้อมูลสำเร็จ'); location.href='approval'; </script>");
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        RequestApproval::where('id', $id)->delete();
-        return back();
+
+        DB::beginTransaction();
+        try {
+
+            RequestApproval::where('id', $request->request_id_delete)->delete();
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+        }
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'ลบข้อมูลขออนุมัติเรียบร้อยแล้ว',
+        ]);
     }
 
 

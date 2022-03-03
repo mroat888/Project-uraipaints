@@ -81,8 +81,7 @@
                                                         alt="{{ $shop->shop_name }}" class="avatar-img">
 
                                                         @else
-                                                        <img src="{{ isset($shop->shop_profile_image) ? asset('/public/upload/CustomerImage/' . $shop->shop_profile_image) : '' }}"
-                                                        alt="{{ $shop->shop_name }}" class="avatar-img">
+                                                        <img src="{{ asset('/public/images/people-33.png')}}" alt="" class="avatar-img">
                                                         @endif
 
                                                     </div>

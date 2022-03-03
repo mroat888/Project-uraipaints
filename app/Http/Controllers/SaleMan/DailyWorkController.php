@@ -68,6 +68,7 @@ class DailyWorkController extends Controller
         ->leftjoin('customer_shops_saleplan_result', 'customer_shops_saleplan_result.customer_shops_saleplan_id', 'customer_shops_saleplan.id')
         ->join('amphur', 'amphur.AMPHUR_ID', 'customer_shops.shop_amphur_id')
         ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
+        ->join('master_customer_new', 'customer_shops_saleplan.customer_shop_objective', 'master_customer_new.id')
         ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
         ->where('customer_shops_saleplan.created_by', Auth::user()->id)
         ->where('customer_shops_saleplan.monthly_plan_id', $data['monthly_plan']->id)
@@ -79,6 +80,7 @@ class DailyWorkController extends Controller
             'customer_shops.id as cust_shop_id',
             'customer_shops_saleplan_result.*',
             'customer_shops_saleplan.*',
+            'master_customer_new.cust_name'
         )
         ->orderBy('customer_shops_saleplan.id', 'desc')
         ->get();

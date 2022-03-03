@@ -103,12 +103,16 @@
                                                         @if ($value->assign_status == 0)
 
                                                             <button onclick="edit_modal({{ $value->id }})"
-                                                                class="btn btn-icon btn-warning mr-10" data-toggle="modal"
+                                                                class="btn btn-icon btn-teal mr-10" data-toggle="modal"
                                                                 data-target="#editApproval">
-                                                                <span class="btn-icon-wrap"><i
-                                                                        data-feather="edit"></i></span></button>
-                                                            <a href="{{url('delete_approval', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
-                                                                <span class="btn-icon-wrap"><i data-feather="trash-2"></i></span></a>
+                                                                <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
+                                                            {{-- <a href="{{url('delete_approval', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
+                                                                <span class="btn-icon-wrap"><i data-feather="trash-2"></i></span></a> --}}
+
+                                                                <button id="btn_request_delete" class="btn btn-icon btn-danger mr-10"
+                                                                    value="{{ $value->id }}">
+                                                                    <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-trash"></i></h4>
+                                                                </button>
 
                                                         @elseif ($value->assign_status == 1)
                                                             @if ($value->assign_id)
@@ -135,11 +139,6 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                {{-- <nav class="pagination-wrap d-inline-block mt-30 float-right" aria-label="Page navigation example">
-                                    <ul class="pagination custom-pagination">
-                                        {{ $list_approval->links() }}
-                                    </ul>
-                                </nav> --}}
                             </div>
                         </div>
                 </section>
@@ -216,7 +215,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">ฟอร์มแก้ไขข้อมูลการขออนุมัติ</h5>
+                    <h5 class="modal-title">รายละเอียดข้อมูลการขออนุมัติ</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -227,7 +226,7 @@
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ขออนุมัติสำหรับ</label>
-                                    <select class="form-control custom-select" name="approved_for" id="get_for" required>
+                                    <select class="form-control custom-select" name="approved_for" id="get_for" disabled>
                                         <option selected disabled>เลือก</option>
                                         <?php $masters = App\ObjectiveAssign::get(); ?>
                                     @foreach ($masters as $value)
@@ -239,18 +238,18 @@
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">หัวข้อ / เรื่อง</label>
-                                <input class="form-control" placeholder="กรุณาใส่หัวข้อ / เรื่อง" name="assign_title" id="get_title" type="text" required>
+                                <input class="form-control" placeholder="กรุณาใส่หัวข้อ / เรื่อง" name="assign_title" id="get_title" type="text" readonly>
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="firstName">วันที่ / Date</label>
-                                <input class="form-control" type="date" name="assign_work_date" id="get_work_date" min="<?= date('Y-m-d') ?>" required>
+                                <input class="form-control" type="date" name="assign_work_date" id="get_work_date" min="<?= date('Y-m-d') ?>" readonly>
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-md-12">
                                 <label for="username">รายละเอียด</label>
                                 <textarea class="form-control" cols="30" rows="5" id="get_detail" name="assign_detail"
-                                    type="text" required></textarea>
+                                    type="text" readonly></textarea>
                             </div>
                         </div>
                             <div class="row">
@@ -269,7 +268,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
-                        <button type="submit" class="btn btn-primary">บันทึก</button>
+                        {{-- <button type="submit" class="btn btn-primary">บันทึก</button> --}}
                     </div>
                 </form>
             </div>
@@ -315,8 +314,75 @@
         </div>
     </div>
 
+    <!-- Modal Delete Saleplan -->
+    <div class="modal fade" id="ModalSaleplanDelete" tabindex="-1" role="dialog" aria-labelledby="ModalSaleplanDelete"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form id="from_request_delete" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">คุณต้องการลบข้อมูลขออนุมัติ ใช่หรือไม่</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="text-align:center;">
+                        <h3>คุณต้องการลบข้อมูลขออนุมัติ ใช่หรือไม่ ?</h3>
+                        <input class="form-control" id="request_id_delete" name="request_id_delete" type="hidden" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                        <button type="submit" class="btn btn-primary" id="btn_save_edit">ยืนยัน</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script> --}}
     <script>
+
+    $(document).on('click', '#btn_request_delete', function() { // ปุ่มลบ Slaplan
+        let request_id_delete = $(this).val();
+        $('#request_id_delete').val(request_id_delete);
+        $('#ModalSaleplanDelete').modal('show');
+    });
+
+    $("#from_request_delete").on("submit", function(e) {
+            e.preventDefault();
+            //var formData = $(this).serialize();
+            var formData = new FormData(this);
+            console.log(formData);
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('delete_approval') }}',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    console.log(response);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Deleted!',
+                        text: "ลบข้อมูลลูกค้าเรียบร้อยแล้วค่ะ",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    $('#ModalSaleplanDelete').modal('hide');
+                    $('#shop_status_name_lead').text('ลบข้อมูล Sale Plan เรียบร้อย')
+                    $('#btn_request_delete').prop('disabled', true);
+                    location.reload();
+                },
+                error: function(response) {
+                    console.log("error");
+                    console.log(response);
+                }
+            });
+        });
+
+
         $("#form_insert_request_approval").on("submit", function (e) {
             e.preventDefault();
             // var formData = $(this).serialize();
@@ -366,9 +432,9 @@
                     $('#get_xx').val(data.dataEdit.assign_is_hot);
 
                     if (data.dataEdit.assign_is_hot == 1) {
-                        $('#customCheck6').append("<input type='checkbox' class='custom-control-input' id='customCheck7' name='assign_is_hot' value='1' checked><label class='custom-control-label' for='customCheck7'>ขออนุมัติด่วน</label>");
+                        $('#customCheck6').append("<input type='checkbox' class='custom-control-input' id='customCheck7' name='assign_is_hot' value='1' checked disabled><label class='custom-control-label' for='customCheck7'>ขออนุมัติด่วน</label>");
                     }else{
-                        $('#customCheck6').append("<input type='checkbox' class='custom-control-input' id='customCheck8' name='assign_is_hot' value='1'><label class='custom-control-label' for='customCheck8'>ขออนุมัติด่วน</label>");
+                        $('#customCheck6').append("<input type='checkbox' class='custom-control-input' id='customCheck8' name='assign_is_hot' value='1' disabled><label class='custom-control-label' for='customCheck8'>ขออนุมัติด่วน</label>");
                     }
                     // $('#customCheck2').val(data.dataEdit.assign_is_hot);
 
