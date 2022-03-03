@@ -35,46 +35,46 @@ class ProductNewController extends Controller
             })
             ->get();
         
-        dd($users_saleman);
-
-        $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/sellers/'.$users_saleman->api_identify.'/campignpromotes');
-        $res_api = $response->json();
-
-        // dd($res_api);
-
+        //dd($users_saleman);
         $sellers_api = array();
         $summary_sellers_api = array();
-
         $sum_target = 0;
         $sum_sales = 0;
         $sum_diff = 0;
         $sum_persent_sale = 0;
         $sum_persent_diff = 0;
+        foreach($users_saleman as $key => $users_iden){
 
-        
-        if($res_api['code'] == 200){
-            foreach($res_api['data'] as $value){
-                $persent_sale = round(($value['Sales']*100)/$value['Target']);
-                $persent_diff = round(($value['Diff']*100)/$value['Target']);
-                
-                $sellers_api[] = [
-                    'campaign_id' => $value['campaign_id'],
-                    'description' => $value['description'],
-                    'fromdate' => $value['fromdate'],
-                    'todate' => $value['todate'],
-                    'remark' => $value['remark'],
-                    'Target' => $value['Target'],
-                    'Sales' => $value['Sales'],
-                    'Diff' => $value['Diff'],
-                    'status' => $value['status'],
-                    'persent_sale' => $persent_sale,
-                    'persent_diff' => $persent_diff,
-                ];
+            $api_token = $this->api_token->apiToken();
+            $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/sellers/'.$users_iden->api_identify.'/campignpromotes');
+            $res_api = $response->json();
 
-                $sum_target += $value['Target'];
-                $sum_sales += $value['Sales'];
-                $sum_diff += $value['Diff'];
+           // dd($users_iden->api_identify, $res_api);
+
+            if($res_api['code'] == 200){
+                foreach($res_api['data'] as $value){
+                    $persent_sale = round(($value['Sales']*100)/$value['Target']);
+                    $persent_diff = round(($value['Diff']*100)/$value['Target']);
+                    
+                    $sellers_api[$key][] = [
+                        'saleman_name' => $users_iden->name,
+                        'campaign_id' => $value['campaign_id'],
+                        'description' => $value['description'],
+                        'fromdate' => $value['fromdate'],
+                        'todate' => $value['todate'],
+                        'remark' => $value['remark'],
+                        'Target' => $value['Target'],
+                        'Sales' => $value['Sales'],
+                        'Diff' => $value['Diff'],
+                        'status' => $value['status'],
+                        'persent_sale' => $persent_sale,
+                        'persent_diff' => $persent_diff,
+                    ];
+
+                    $sum_target += $value['Target'];
+                    $sum_sales += $value['Sales'];
+                    $sum_diff += $value['Diff'];
+                }
             }
         }
 
