@@ -79,21 +79,6 @@ class SalePlanController extends Controller
     public function edit($id)
     {
         $dataEdit = SalePlan::find($id);
-        // $dataEdit = SalePlan::join('customer_shops', 'sale_plans.customer_shop_id', '=', 'customer_shops.id')
-        //     ->join('customer_contacts', 'customer_shops.id', '=', 'customer_contacts.customer_shop_id')
-        //     ->where('sale_plans.id', $id)->select(
-        //         'customer_contacts.customer_contact_name',
-        //         'customer_contacts.customer_contact_phone',
-        //         'customer_shops.shop_address',
-        //         'customer_shops.id as shop_id',
-        //         'customer_shops.shop_name',
-        //         'sale_plans.id',
-        //         'sale_plans.sale_plans_title',
-        //         'sale_plans.sale_plans_date',
-        //         'sale_plans.sale_plans_tags',
-        //         'sale_plans.sale_plans_objective',
-        //         'sale_plans.sale_plans_status'
-        //     )->first();
 
         $dataEdit = SalePlan::join('customer_shops', 'sale_plans.customer_shop_id', '=', 'customer_shops.id')
             ->join('customer_contacts', 'customer_shops.id', '=', 'customer_contacts.customer_shop_id')
