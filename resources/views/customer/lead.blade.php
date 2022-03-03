@@ -76,8 +76,15 @@
                                             <td>
                                                 <div class="media-img-wrap">
                                                     <div class="avatar avatar-sm">
-                                                        <img src="{{ isset($shop->shop_profile_image) ? asset('/public/upload/CustomerImage/' . $shop->shop_profile_image) : '' }}" 
+                                                        @if ($shop->shop_profile_image)
+                                                        <img src="{{ isset($shop->shop_profile_image) ? asset('/public/upload/CustomerImage/' . $shop->shop_profile_image) : '' }}"
                                                         alt="{{ $shop->shop_name }}" class="avatar-img">
+
+                                                        @else
+                                                        <img src="{{ isset($shop->shop_profile_image) ? asset('/public/upload/CustomerImage/' . $shop->shop_profile_image) : '' }}"
+                                                        alt="{{ $shop->shop_name }}" class="avatar-img">
+                                                        @endif
+
                                                     </div>
                                                 </div>
                                             </td>
@@ -95,7 +102,7 @@
                                                                 $customer_contact_phone = $value->customer_contact_phone;
                                                             }
                                                             break;
-                                                        }    
+                                                        }
                                                     }
                                                 @endphp
                                             <td>{{ $customer_contact_name }}</td>
@@ -139,7 +146,7 @@
 
 <script>
     $(document).ready(function() {
-        
+
         $('#is_monthly_plan').val('N'); // กำหนดสถานะ Y = อยู่ในแผน , N = ไม่อยู่ในแผน (เพิ่มระหว่างเดือน)
 
         $("#customer_shops").on("change", function (e) {
@@ -216,7 +223,7 @@
     $(document).on('click','.btn_editshop', function(e){
         e.preventDefault();
 		let shop_id = $(this).val();
-        
+
         $.ajax({
             method: 'GET',
             url: '{{ url("/edit_customerLead") }}/'+shop_id,

@@ -19,22 +19,24 @@ class UsageHistoryController extends Controller
         return view('admin.check_history', compact('history'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function search(Request $request)
     {
-        //
+
+        // dd($request);
+
+        // $from = $request->fromMonth."-01";
+        // $to = $request->toMonth."-31";
+        // return $to;
+        $history = UsageHistory::join('users', 'usage_history.emp_id', 'users.id')
+        ->join('master_permission', 'users.status', 'master_permission.id')
+        ->whereDate('usage_history.date', '>=', $request->fromMonth)
+        ->whereDate('usage_history.date', '<=', $request->toMonth)
+        ->select('usage_history.date', 'users.name', 'users.email', 'master_permission.permission_name')
+        ->orderBy('usage_history.id', 'desc')->get();
+
+        return view('admin.check_history', compact('history'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         //

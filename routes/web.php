@@ -418,6 +418,7 @@ Route::get('admin/update-status-use/{id}', 'Admin\UserPermissionController@updat
 
 
 Route::get('admin/checkHistory', 'Admin\UsageHistoryController@index');
+Route::post('admin/checkHistory/search', 'Admin\UsageHistoryController@search');
 
 Route::get('/admin/reportcustomer', function () { return view('reports.report_customer_admin'); });
 Route::get('/admin/reportStore','Admin\ApiCustomerController@index');
@@ -497,7 +498,7 @@ Route::get('admin/data_report_historical-month', 'ShareData_Admin\ReportHistoric
 //     Route::get('test2', function () { return "Report"; });
 // });
 
- 
+
 //fullcalender
 
 // Route::get('fullcalendar','FullCalendarController@index');
