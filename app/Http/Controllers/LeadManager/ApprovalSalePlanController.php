@@ -46,7 +46,7 @@ class ApprovalSalePlanController extends Controller
                 'users.*',
                 'monthly_plans.*'
             )
-            ->paginate(1);
+            ->paginate(10);
 
         return view('leadManager.approval_saleplan', $data);
     }
@@ -76,7 +76,7 @@ class ApprovalSalePlanController extends Controller
                 'users.*',
                 'monthly_plans.*'
             )
-            ->paginate(1);
+            ->paginate(10);
 
         return view('leadManager.approval_saleplan', $data);
     }

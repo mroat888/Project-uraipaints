@@ -181,6 +181,11 @@ Route::post('lead/approval_customer_confirm_all', 'LeadManager\ApprovalCustomerE
 Route::get('lead/approval_customer_except_detail/{id}', 'LeadManager\ApprovalCustomerExceptController@approval_customer_except_detail');
 Route::get('lead/comment_customer_except/{id}/{custsaleplanID}/{createID}', 'LeadManager\ApprovalCustomerExceptController@comment_customer_except');
 Route::post('lead/create_comment_customer_except', 'LeadManager\ApprovalCustomerExceptController@create_comment_customer_except');
+Route::get('lead/approval-customer-except-history', 'LeadManager\ApprovalCustomerExceptController@customer_history');
+Route::get('lead/approval_customer_except_history_detail/{id}', 'LeadManager\ApprovalCustomerExceptController@approval_customer_except_history_detail');
+Route::get('lead/show_comment_customer_except/{id}/{custsaleplanID}/{createID}', 'LeadManager\ApprovalCustomerExceptController@show_comment_customer_except');
+Route::post('lead/approval-customer-except/search', 'LeadManager\ApprovalCustomerExceptController@search');
+Route::post('lead/approval-customer-except-history/search', 'LeadManager\ApprovalCustomerExceptController@search_history');
 
 Route::get('comment_customer_new/{id}/{custsaleplanID}/{createID}', 'LeadManager\ApprovalSalePlanController@comment_customer_new');
 Route::post('lead/create_comment_customer_new', 'LeadManager\ApprovalSalePlanController@create_comment_customer_new');
