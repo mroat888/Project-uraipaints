@@ -52,66 +52,42 @@
                                             <th colspan="12" style="text-align:center;"><strong>รายงานเทียบย้อนหลัง (Quarter)</strong></th>
                                         </tr>
                                         <tr>
-                                            <th colspan="4" style="text-align:center;"><strong>ปี {{ $year_search[0]+543 }}</strong></th>
-                                            <th colspan="4" style="text-align:center;"><strong>ปี {{ $year_search[1]+543 }}</strong></th>
-                                            <th colspan="4" style="text-align:center;"><strong>ปี {{ $year_search[2]+543 }}</strong></th>
-                                        </tr>
-                                        <tr>
-                                            <th rowspan="2" class="bg-primary text-white"><strong>Q1</strong></th>
-                                            <th rowspan="2"><strong>Q2</strong></th>
-                                            <th rowspan="2" class="bg-primary text-white"><strong>Q3</strong></th>
-                                            <th rowspan="2"><strong>Q4</strong></th>
-
-                                            <th rowspan="2" class="bg-primary text-white"><strong>Q1</strong></th>
-                                            <th rowspan="2"><strong>Q2</strong></th>
-                                            <th rowspan="2" class="bg-primary text-white"><strong>Q3</strong></th>
-                                            <th rowspan="2"><strong>Q4</strong></th>
-
-                                            <th rowspan="2" class="bg-primary text-white"><strong>Q1</strong></th>
-                                            <th rowspan="2"><strong>Q2</strong></th>
-                                            <th rowspan="2" class="bg-primary text-white"><strong>Q3</strong></th>
-                                            <th rowspan="2"><strong>Q4</strong></th>
+                                            <th><strong>Q1</strong></th>
+                                            <th><strong>Q2</strong></th>
+                                            <th><strong>Q3</strong></th>
+                                            <th><strong>Q4</strong></th>
+                                            <th><strong>Total</strong></th>
                                         </tr>
                                     </thead>
-                                    @php
-                                        $description = array('พนักงานขาย','จำนวนร้านค้า','ยอดขายรวม','ยอดคืนรวม','ยอดขายสุทธิ','เปอร์เซ็นต์คืน');
-                                    @endphp
-                                    <tbody>
-                                        @foreach($description as $key => $value)
+                                    </tbody>
+                                        @foreach($year_search as $key => $year_value)
                                         <tr>
-                                            <td style="width:200px;">{{ $value}}</td>
-
-                                            <td class="bg-primary text-white">
-                                                @if(isset($quarter_api_year['q1']))
-                                                    {{ $quarter_api_year['q1'][$key] }}
+                                            <td>{{ $year_value }}</td>
+                                            <td>
+                                                @if(isset($quarter_api_year[$key]['q1'][4]))
+                                                    {{ number_format($quarter_api_year[$key]['q1'][4],2) }}
                                                 @endif
                                             </td>
                                             <td>
-                                                @if(isset($quarter_api_year['q2']))
-                                                    {{ $quarter_api_year['q2'][$key] }}
-                                                @endif
-                                            </td>
-                                            <td class="bg-primary text-white">
-                                                @if(isset($quarter_api_year['q3']))
-                                                    {{ $quarter_api_year['q3'][$key] }}
+                                                @if(isset($quarter_api_year[$key]['q2'][4]))
+                                                    {{ number_format($quarter_api_year[$key]['q2'][4],2) }}
                                                 @endif
                                             </td>
                                             <td>
-                                                @if(isset($quarter_api_year['q4']))
-                                                    {{ $quarter_api_year['q4'][$key] }}
+                                                @if(isset($quarter_api_year[$key]['q3'][4]))
+                                                    {{ number_format($quarter_api_year[$key]['q3'][4],2) }}
                                                 @endif
                                             </td>
-
-                                            <td class="bg-primary text-white">{{ $quarter_api_year_old1['q1'][$key] }}</td>
-                                            <td>{{ $quarter_api_year_old1['q2'][$key] }}</td>
-                                            <td class="bg-primary text-white">{{ $quarter_api_year_old1['q3'][$key] }}</td>
-                                            <td>{{ $quarter_api_year_old1['q4'][$key] }}</td>
-
-                                            <td class="bg-primary text-white">{{ $quarter_api_year_old2['q1'][$key] }}</td>
-                                            <td>{{ $quarter_api_year_old2['q2'][$key] }}</td>
-                                            <td class="bg-primary text-white">{{ $quarter_api_year_old2['q3'][$key] }}</td>
-                                            <td>{{ $quarter_api_year_old2['q4'][$key] }}</td>
-                                            
+                                            <td>
+                                                @if(isset($quarter_api_year[$key]['q4'][4]))
+                                                    {{ number_format($quarter_api_year[$key]['q4'][4],2) }}
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if(isset($total_year[$key]['total_year']))
+                                                    {{ number_format($total_year[$key]['total_year'],2) }}
+                                                @endif
+                                            </td>
                                         </tr>
                                         @endforeach
                                     </tbody>

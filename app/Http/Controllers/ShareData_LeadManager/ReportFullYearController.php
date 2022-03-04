@@ -18,7 +18,7 @@ class ReportFullYearController extends Controller
     public function index()
     {
         list($year,$month,$day) = explode('-',date('Y-m-d'));
-        $path_search = "reports/years/".$year."/leaders/search?sortorder=DESC&leader_id=".Auth::user()->api_identify;
+        $path_search = "reports/years/".$year."/leaders"."/".Auth::user()->api_identify;
         $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
         $yearleader_api = $response->json();

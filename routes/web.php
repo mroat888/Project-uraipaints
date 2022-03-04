@@ -486,6 +486,7 @@ Route::get('admin/data_name_store/detail/{id}', 'ShareData_Admin\CheckStoreContr
 Route::get('admin/data_search_product', 'ShareData_Admin\SearchroductController@index');
 Route::post('admin/data_search_product/search', 'ShareData_Admin\SearchroductController@search');
 Route::get('admin/data_report_product-new', 'ShareData_Admin\ProductNewController@index');
+Route::post('admin/data_report_product-new/search', 'ShareData_Admin\ProductNewController@search');
 Route::get('admin/data_report_full-year', 'ShareData_Admin\ReportFullYearController@index');
 Route::get('admin/data_report_historical-year', 'ShareData_Admin\ReportHistoricalYearController@index');
 Route::get('admin/data_report_historical-quarter', 'ShareData_Admin\ReportHistoricalQuarterController@index');
