@@ -562,6 +562,7 @@ License: You must have a valid license purchased only from themeforest to legall
     <!-- EChartJS JavaScript -->
     <script src="{{ asset('public/template/vendors/echarts/dist/echarts-en.min.js') }}"></script>
     <script src="{{ asset('public/template/dist/js/piecharts-data.js') }}"></script>
+    <script src="{{ asset('public/template/dist/js/areacharts-data.js') }}"></script>
 
     <!-- Easy pie chart JS -->
     <script src="{{ asset('public/template/vendors/easy-pie-chart/dist/jquery.easypiechart.min.js') }}"></script>
@@ -622,9 +623,6 @@ License: You must have a valid license purchased only from themeforest to legall
     <script src="{{ asset('public/template/dist/js/gmap-data.js') }}"></script>
 
     <script src="{{ asset('https://unpkg.com/sweetalert/dist/sweetalert.min.js')}}"></script>
-
-
-
 
 
 </body>

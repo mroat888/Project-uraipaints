@@ -98,7 +98,7 @@
 
                                                         @endif
                                                     @endforeach
-                                                    {{$approve}} 
+                                                    {{$approve}}
                                                 </span>
                                             </span>
                                         </div>
@@ -111,7 +111,7 @@
 
                                                     @endif
                                                 @endforeach
-                                                {{$assign_is_hot}} 
+                                                {{$assign_is_hot}}
                                             </span>
                                         </div>
                                     </div>
@@ -147,7 +147,7 @@
                                                             <?php $success += 1 ?>
                                                         @endif
                                                     @endforeach
-                                                    {{$success}} 
+                                                    {{$success}}
                                                 </span>
                                             </span>
                                         </div>
@@ -193,7 +193,7 @@
                                                             <?php $disuse += 1 ?>
                                                         @endif
                                                     @endforeach
-                                                    {{$disuse}} 
+                                                    {{$disuse}}
                                                 </span>
                                             </span>
                                         </div>
@@ -205,7 +205,7 @@
                                                         <?php $pin += 1 ?>
                                                     @endif
                                                 @endforeach
-                                                {{$pin}} 
+                                                {{$pin}}
                                             </span>
                                         </div>
                                     </div>
@@ -241,7 +241,7 @@
                                                             <?php $fail += 1 ?>
                                                         @endif
                                                     @endforeach
-                                                    {{$fail}} 
+                                                    {{$fail}}
                                                 </span>
                                             </span>
                                         </div>
@@ -253,7 +253,7 @@
                                                         <?php $wait += 1 ?>
                                                     @endif
                                                 @endforeach
-                                                {{$wait}} 
+                                                {{$wait}}
                                             </span>
                                         </div>
                                     </div>
@@ -309,7 +309,7 @@
                                                 <span>{{ number_format($res_api["data"][0]["Customers"][0]["ActiveTotal"]) }}</span>
                                             </span>
                                         </div>
-                                        <div>                                      
+                                        <div>
                                             @php
                                                 $FocusDates_count = count($res_api["data"][1]["FocusDates"]);
                                             @endphp
@@ -331,24 +331,27 @@
                 </div>
         </div>
 
+
             <div class="col-md-12">
                 <section class="hk-sec-wrapper">
                     <h6 class="hk-sec-title mb-10" style="font-weight: bold;">สรุปยอดขาย</h6>
                     <div class="row">
                         <div class="col-md-8">
-                            <div id="m_chart_4" style="height: 294px"></div>
+                            <canvas id="myChart" style="height: 294px"></canvas>
+                            {{-- <div id="myChart" style="height: 294px"></div> --}}
+                            {{-- <div id="e_chart_6" class="echart" style="height:294px;"></div> --}}
                         </div>
                         <div class="col-md-4">
                             <div class="card card-sm">
                                 <div class="card-body" style="color: black;">
-                                    @php     
+                                    @php
                                         $SalesPrevious = $res_api_previous["data"][3]["SalesPrevious"];
                                         $totalAmtSale_th_Previous = $SalesPrevious[0]["totalAmtSale_th"]; // เป้ายอดขายปีที่แล้ว
                                         $totalAmtSale_Previous = $SalesPrevious[0]["totalAmtSale"]; // เป้ายอดขายปีที่แล้ว
 
                                         if($res_api["data"][2]["SalesCurrent"] == ""){
                                             $SalesCurrent = $res_api["data"][2]["SalesCurrent"];
-                                        
+
                                             $totalAmtSale_th = $SalesCurrent[0]["totalAmtSale_th"]; // ยอดที่ทำได้ปีนี้
                                             $totalAmtSale = $SalesCurrent[0]["totalAmtSale"]; // ยอดที่ทำได้ปีนี้
                                         }else{
@@ -450,5 +453,70 @@
 @section('footer')
     @include('layouts.footer')
 @endsection
+
+<script src="{{ asset('public/template/graph/Chart.bundle.js') }}"></script>
+
+<script>
+    var ctx = document.getElementById("myChart").getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [2011, 2012, 2013, 2014, 2015],
+            datasets: [{
+                label: 'รายงานภาพรวม แยกตามปี (บาท)',
+                data: [100, 80, 85, 30],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            },
+            {
+                label: 'รายงานภาพรวม แยกตามปี (บาท)',
+                data: [50, 60, 95, 10],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    },
+    );
+    </script>
 
 @endsection

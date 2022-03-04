@@ -1,10 +1,10 @@
 /*Dashboard Init*/
- 
-"use strict"; 
+
+"use strict";
 /*****E-Charts function start*****/
-var echartsConfig = function() { 
-	if( $('#e_chart_3').length > 0 ){
-		var e_chart_3 = echarts.init(document.getElementById('e_chart_3'));
+var echartsConfig = function() {
+    if( $('#e_chart_3_dashboard').length > 0 ){
+		var e_chart_3_dashboard = echarts.init(document.getElementById('e_chart_3_dashboard'));
 		var option3 = {
 			tooltip: {
 				show: true,
@@ -21,12 +21,12 @@ var echartsConfig = function() {
 					color: '#324148',
 					fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"',
 					fontSize: 12
-				}	
+				}
 			},
 			xAxis: {
 				type: 'category',
 				boundaryGap: false,
-				data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+				data: ['Monm', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
 				axisLine: {
 					show:false
 				},
@@ -83,11 +83,97 @@ var echartsConfig = function() {
 				}
 			]
 		};
-		e_chart_3.setOption(option3);
-		e_chart_3.resize();
+		e_chart_3_dashboard.setOption(option3);
+		e_chart_3_dashboard.resize();
 	}
-	if( $('#e_chart_6').length > 0 ){
-		var e_chart_6 = echarts.init(document.getElementById('e_chart_6'));
+	// if( $('#e_chart_3_dashboard').length > 0 ){
+	// 	var e_chart_3_dashboard = echarts.init(document.getElementById('e_chart_3_dashboard'));
+	// 	var option3 = {
+	// 		tooltip: {
+	// 			show: true,
+	// 			trigger: 'axis',
+	// 			backgroundColor: '#fff',
+	// 			borderRadius:6,
+	// 			padding:6,
+	// 			axisPointer:{
+	// 				lineStyle:{
+	// 					width:0,
+	// 				}
+	// 			},
+	// 			textStyle: {
+	// 				color: '#324148',
+	// 				fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"',
+	// 				fontSize: 12
+	// 			}
+	// 		},
+	// 		xAxis: {
+	// 			type: 'category',
+	// 			boundaryGap: false,
+	// 			data: ['Monm', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+	// 			axisLine: {
+	// 				show:false
+	// 			},
+	// 			axisTick: {
+	// 				show:false
+	// 			},
+	// 			axisLabel: {
+	// 				textStyle: {
+	// 					color: '#5e7d8a'
+	// 				}
+	// 			}
+	// 		},
+	// 		yAxis: {
+	// 			type: 'value',
+	// 			axisLine: {
+	// 				show:false
+	// 			},
+	// 			axisTick: {
+	// 				show:false
+	// 			},
+	// 			axisLabel: {
+	// 				textStyle: {
+	// 					color: '#5e7d8a'
+	// 				}
+	// 			},
+	// 			splitLine: {
+	// 				lineStyle: {
+	// 					color: '#eaecec',
+	// 				}
+	// 			}
+	// 		},
+	// 		grid: {
+	// 			top: '3%',
+	// 			left: '3%',
+	// 			right: '3%',
+	// 			bottom: '3%',
+	// 			containLabel: true
+	// 		},
+	// 		series: [
+	// 			{
+	// 				data: [820, 932, 901, 934, 1290, 1330, 1320],
+	// 				type: 'line',
+	// 				symbolSize: 6,
+	// 				itemStyle: {
+	// 					color: '#22af47',
+	// 				},
+	// 				lineStyle: {
+	// 					color: '#22af47',
+	// 					width:2,
+	// 				},
+	// 				areaStyle: {
+	// 					color: '#22af47',
+	// 				},
+	// 			}
+	// 		]
+	// 	};
+	// 	e_chart_3_dashboard.setOption(option3);
+	// 	e_chart_3_dashboard.resize();
+	// }
+
+    // $cc = "";
+
+	if( $('#e_chart_6_dashboard').length > 0 ){
+		var e_chart_6_dashboard = echarts.init(document.getElementById('e_chart_6_dashboard'));
 		var option6 = {
 			tooltip: {
 				show: true,
@@ -104,7 +190,7 @@ var echartsConfig = function() {
 					color: '#324148',
 					fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"',
 					fontSize: 12
-				}	
+				}
 			},
 			xAxis: {
 				type: 'category',
@@ -161,9 +247,9 @@ var echartsConfig = function() {
 						color: '#22af47',
 						width:2,
 					},
-					areaStyle: {
-						color: '#22af47',
-					},
+					// areaStyle: {
+					// 	color: '#22af47',
+					// },
 				},
 				{
 					data: [220, 182, 191, 234, 290, 330, 310],
@@ -177,30 +263,14 @@ var echartsConfig = function() {
 						color: '#3fb95f',
 						width:2,
 					},
-					areaStyle: {
-						color: '#3fb95f',
-					},
-				},
-				{
-					data: [150, 232, 201, 154, 190, 330, 410],
-					type: 'line',
-					stack: 'a',
-					symbolSize: 6,
-					itemStyle: {
-						color: '#90d7a3',
-					},
-					lineStyle: {
-						color: '#90d7a3',
-						width:2,
-					},
-					areaStyle: {
-						color: '#90d7a3',
-					},
+					// areaStyle: {
+					// 	color: '#3fb95f',
+					// },
 				}
 			]
 		};
-		e_chart_6.setOption(option6);
-		e_chart_6.resize();
+		e_chart_6_dashboard.setOption(option6);
+		e_chart_6_dashboard.resize();
 	}
 	if( $('#e_chart_7').length > 0 ){
 		var e_chart_7 = echarts.init(document.getElementById('e_chart_7'));
@@ -220,7 +290,7 @@ var echartsConfig = function() {
 					color: '#324148',
 					fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"',
 					fontSize: 12
-				}	
+				}
 			},
 			xAxis: {
 				type: 'category',
@@ -300,7 +370,7 @@ $(window).on("resize", function () {
 	/*E-Chart Resize*/
 	clearTimeout(echartResize);
 	echartResize = setTimeout(echartsConfig, 200);
-}).resize(); 
+}).resize();
 /*****Resize function end*****/
 
 /*****Function Call start*****/

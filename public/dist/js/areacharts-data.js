@@ -1,8 +1,8 @@
 /*Dashboard Init*/
- 
-"use strict"; 
+
+"use strict";
 /*****E-Charts function start*****/
-var echartsConfig = function() { 
+var echartsConfig = function() {
 	if( $('#e_chart_3').length > 0 ){
 		var e_chart_3 = echarts.init(document.getElementById('e_chart_3'));
 		var option3 = {
@@ -21,12 +21,12 @@ var echartsConfig = function() {
 					color: '#324148',
 					fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"',
 					fontSize: 12
-				}	
+				}
 			},
 			xAxis: {
 				type: 'category',
 				boundaryGap: false,
-				data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+				data: ['Mon6', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
 				axisLine: {
 					show:false
 				},
@@ -104,12 +104,12 @@ var echartsConfig = function() {
 					color: '#324148',
 					fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"',
 					fontSize: 12
-				}	
+				}
 			},
 			xAxis: {
 				type: 'category',
 				boundaryGap: false,
-				data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+				data: ['Mon5', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
 				axisLine: {
 					show:false
 				},
@@ -220,7 +220,7 @@ var echartsConfig = function() {
 					color: '#324148',
 					fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"',
 					fontSize: 12
-				}	
+				}
 			},
 			xAxis: {
 				type: 'category',
@@ -300,7 +300,7 @@ $(window).on("resize", function () {
 	/*E-Chart Resize*/
 	clearTimeout(echartResize);
 	echartResize = setTimeout(echartsConfig, 200);
-}).resize(); 
+}).resize();
 /*****Resize function end*****/
 
 /*****Function Call start*****/
