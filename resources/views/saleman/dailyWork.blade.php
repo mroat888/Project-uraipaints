@@ -368,6 +368,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                
                                                 @foreach ($list_saleplan as $key => $value)
                                                     @php
                                                         $shop_name = "";
@@ -379,6 +380,7 @@
                                                             }
                                                         }
                                                     @endphp
+                                                    
                                                     <tr>
                                                         <td>{{ $key + 1}}</td>
                                                         <!-- <td>{{$value->id}}</td> -->
@@ -406,14 +408,31 @@
                                                         <td style="text-align:center">
                                                             <div class="button-list">
                                                                 @php
+                                                                $text_notify = "";
                                                                 if ($value->status_result == 1){
-                                                                    $btn_primary_disabled = "disabled";
-                                                                    $btn_pumpkin_disabled = "";
-                                                                    $btn_neon_disabled = "disabled";
+
+                                                                    $sale_plan_results = DB::table('sale_plan_results')->where('sale_plan_id', $value->id)->first();
+                                                                    $master_setting = DB::table('master_setting')->where('name','OverCheckOut')->first();
+
+                                                                    $setting_day = "+".$master_setting->stipulate." days";
+                                                                    $checkin_date = str_replace('-', '/', $sale_plan_results->sale_plan_checkin_date);
+                                                                    $OverCheckOut = date('Y-m-d',strtotime($checkin_date . $setting_day));
+                                                                    $text_notify = "checkout ไม่เกิน ".$OverCheckOut;
+                                                                    if($OverCheckOut >= date('Y-m-d')){
+                                                                        $btn_primary_disabled = "disabled";
+                                                                        $btn_pumpkin_disabled = "";
+                                                                        $btn_neon_disabled = "disabled";
+                                                                    }else{
+                                                                        $btn_primary_disabled = "disabled";
+                                                                        $btn_pumpkin_disabled = "disabled";
+                                                                        $btn_neon_disabled = "disabled";
+                                                                    }
+                                                                    
                                                                 }elseif ($value->status_result == 2){
                                                                     $btn_primary_disabled = "disabled";
                                                                     $btn_pumpkin_disabled = "disabled";
                                                                     $btn_neon_disabled = "";
+
                                                                 }elseif ($value->status_result == 3){
                                                                     $btn_primary_disabled = "disabled";
                                                                     $btn_pumpkin_disabled = "disabled";
@@ -424,16 +443,18 @@
                                                                     $btn_neon_disabled = "disabled";
                                                                 }
                                                                 @endphp
+
                                                                 <button class="btn btn-icon btn-primary"
                                                                     data-toggle="modal" data-target="#Modalcheckin" onclick="getLocation({{ $value->id }})" {{ $btn_primary_disabled }}>
                                                                     <span class="btn-icon-wrap"><i data-feather="log-in"></i></span></button>
                                                                 <button class="btn btn-icon btn-pumpkin"
-                                                                data-toggle="modal" data-target="#Modalcheckin" onclick="getLocation({{ $value->id }})" {{ $btn_pumpkin_disabled }}>
-                                                                <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
+                                                                    data-toggle="modal" data-target="#Modalcheckin" onclick="getLocation({{ $value->id }})" {{ $btn_pumpkin_disabled }}>
+                                                                    <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
                                                                 <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalResult" onclick="saleplan_result({{ $value->id }})" {{ $btn_neon_disabled }}>
-                                                                <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
+                                                                    <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
 
                                                             </div>
+                                                            <span class="text-danger" style="font-size:11px;">{{ $text_notify }}</span>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -502,10 +523,28 @@
                                                     <td style="text-align:right;">
                                                         <div class="button-list">
                                                             @php
+                                                                $text_notify = "";
                                                                 if ($value->cust_result_checkin_date != "" && $value->cust_result_checkout_date == ""){
-                                                                    $btn_primary_cusnew = "disabled";
-                                                                    $btn_pumpkin_cusnew = "";
-                                                                    $btn_neon_cusnew = "disabled";
+
+                                                                    $shops_saleplan_result = DB::table('customer_shops_saleplan_result')
+                                                                    ->where('customer_shops_saleplan_id', $value->id)
+                                                                    ->first();
+                                                                    $master_setting = DB::table('master_setting')->where('name','OverCheckOut')->first();
+                                                                    $setting_day = "+".$master_setting->stipulate." days";
+                                                                    $checkin_date = str_replace('-', '/', $shops_saleplan_result->cust_result_checkin_date);
+                                                                    $OverCheckOut = date('Y-m-d',strtotime($checkin_date . $setting_day));
+                                                                    $text_notify = "checkout ไม่เกิน ".$OverCheckOut;
+                                                                    
+                                                                    if($OverCheckOut >= date('Y-m-d')){
+                                                                        $btn_primary_cusnew = "disabled";
+                                                                        $btn_pumpkin_cusnew = "";
+                                                                        $btn_neon_cusnew = "disabled";
+                                                                    }else{
+                                                                        $btn_primary_cusnew = "disabled";
+                                                                        $btn_pumpkin_cusnew = "disabled";
+                                                                        $btn_neon_cusnew = "disabled";
+                                                                    }
+
                                                                 }elseif($value->cust_result_checkin_date != "" && $value->cust_result_checkout_date != ""){
                                                                     $btn_primary_cusnew = "disabled";
                                                                     $btn_pumpkin_cusnew = "disabled";
@@ -525,6 +564,7 @@
                                                             <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalCustResult" onclick="customer_new_result({{ $value->id }})" {{ $btn_neon_cusnew }}>
                                                             <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
                                                         </div>
+                                                        <span class="text-danger mr-3" style="font-size:11px;">{{ $text_notify }}</span>
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -591,31 +631,49 @@
                                                         </td>
                                                         <td style="text-align:center;">
                                                             <div class="button-list">
-
-                                                            @php
-                                                                if($customer_visit_api[$key]['visit_checkin_date'] != "" && $customer_visit_api[$key]['visit_checkout_date'] == ""){
-                                                                    $btn_primary_cusvisit_disabled = "disabled";
-                                                                    $btn_pumpkin_cusvisit_disabled = "";
-                                                                    $btn_neon_cusvisit_disabled = "disabled";
-                                                                }elseif($customer_visit_api[$key]['visit_checkin_date'] != "" && $customer_visit_api[$key]['visit_checkout_date'] != ""){
-                                                                    $btn_primary_cusvisit_disabled = "disabled";
-                                                                    $btn_pumpkin_cusvisit_disabled = "disabled";
-                                                                    $btn_neon_cusvisit_disabled = "";
-                                                                }else{
-                                                                    $btn_primary_cusvisit_disabled = "";
-                                                                    $btn_pumpkin_cusvisit_disabled = "disabled";
-                                                                    $btn_neon_cusvisit_disabled = "disabled";
-                                                                }
-                                                            @endphp
-                                                            <button class="btn btn-icon btn-primary"
-                                                            data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $customer_visit_api[$key]['id'] }})" {{ $btn_primary_cusvisit_disabled }}>
-                                                            <span class="btn-icon-wrap"><i data-feather="log-in"></i></span></button>
-                                                            <button class="btn btn-icon btn-pumpkin"
-                                                            data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $customer_visit_api[$key]['id'] }})" {{ $btn_pumpkin_cusvisit_disabled }}>
-                                                            <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
-                                                            <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalVisitResult" onclick="customer_visit_result({{ $customer_visit_api[$key]['id'] }})" {{ $btn_neon_cusvisit_disabled }}>
-                                                            <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
-
+                                                                @php
+                                                                    $text_notify = "";
+                                                                    if($customer_visit_api[$key]['visit_checkin_date'] != "" && $customer_visit_api[$key]['visit_checkout_date'] == ""){
+                                                                        
+                                                                        $customer_visit_results = DB::table('customer_visit_results')
+                                                                        ->where('customer_visit_id', $customer_visit_api[$key]['id'])
+                                                                        ->first();
+                                                                        $master_setting = DB::table('master_setting')->where('name','OverCheckOut')->first();
+                                                                        $setting_day = "+".$master_setting->stipulate." days";
+                                                                        $checkin_date = str_replace('-', '/', $customer_visit_results->cust_visit_checkin_date);
+                                                                        $OverCheckOut = date('Y-m-d',strtotime($checkin_date . $setting_day));
+                                                                        $text_notify = "checkout ไม่เกิน ".$OverCheckOut;
+                                                                        
+                                                                        if($OverCheckOut >= date('Y-m-d')){
+                                                                            $btn_primary_cusvisit_disabled = "disabled";
+                                                                            $btn_pumpkin_cusvisit_disabled = "";
+                                                                            $btn_neon_cusvisit_disabled = "disabled";
+                                                                        }else{
+                                                                            $btn_primary_cusvisit_disabled = "disabled";
+                                                                            $btn_pumpkin_cusvisit_disabled = "disabled";
+                                                                            $btn_neon_cusvisit_disabled = "disabled";
+                                                                        }
+                                                                        
+                                                                    }elseif($customer_visit_api[$key]['visit_checkin_date'] != "" && $customer_visit_api[$key]['visit_checkout_date'] != ""){
+                                                                        $btn_primary_cusvisit_disabled = "disabled";
+                                                                        $btn_pumpkin_cusvisit_disabled = "disabled";
+                                                                        $btn_neon_cusvisit_disabled = "";
+                                                                    }else{
+                                                                        $btn_primary_cusvisit_disabled = "";
+                                                                        $btn_pumpkin_cusvisit_disabled = "disabled";
+                                                                        $btn_neon_cusvisit_disabled = "disabled";
+                                                                    }
+                                                                @endphp
+                                                                <button class="btn btn-icon btn-primary"
+                                                                    data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $customer_visit_api[$key]['id'] }})" {{ $btn_primary_cusvisit_disabled }}>
+                                                                    <span class="btn-icon-wrap"><i data-feather="log-in"></i></span></button>
+                                                                <button class="btn btn-icon btn-pumpkin"
+                                                                    data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $customer_visit_api[$key]['id'] }})" {{ $btn_pumpkin_cusvisit_disabled }}>
+                                                                    <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
+                                                                <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalVisitResult" onclick="customer_visit_result({{ $customer_visit_api[$key]['id'] }})" {{ $btn_neon_cusvisit_disabled }}>
+                                                                    <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
+                                                            </div>
+                                                            <span class="text-danger mr-3" style="font-size:11px;">{{ $text_notify }}</span>
                                                         </td>
                                                     </tr>
 

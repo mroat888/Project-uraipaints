@@ -502,6 +502,12 @@
                                                 <span class="nav-link-text">รายชื่อกลุ่มและทีม</span>
                                             </a>
                                         </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ url('admin/master_setting') }}">
+                                                <i class="ion ion-md-people" style="color: #044067;"></i>
+                                                <span class="nav-link-text">กำหนดค่าต่างๆ</span>
+                                            </a>
+                                        </li>
                                     </ul>
                                 </li>
                             </ul>

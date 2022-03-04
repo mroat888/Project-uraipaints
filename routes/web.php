@@ -476,6 +476,9 @@ Route::post('admin/teamsalesCreate', 'Admin\TeamSaleController@store');
 Route::get('admin/teamsalesEdit/{id}', 'Admin\TeamSaleController@edit');
 Route::post('admin/teamsalesUpdate', 'Admin\TeamSaleController@update');
 
+Route::get('admin/master_setting', 'Admin\MasterSettingController@index');
+Route::post('admin/master_setting/update', 'Admin\MasterSettingController@update');
+
 Route::get('admin/edit-profile', 'ProfileController@admin_index');
 Route::post('admin/userProfileUpdate', 'ProfileController@update');
 

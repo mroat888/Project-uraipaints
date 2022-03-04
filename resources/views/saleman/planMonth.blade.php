@@ -122,12 +122,46 @@
                                                                         @else
 
                                                                         @if($value->id != $monthly_plan_next->id)
-                                                                            <button type="button" class="btn btn-icon btn-teal requestApproval" disabled>
-                                                                                <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
-                                                                        @else
+                                                                            @php
+                                                                                list($myear,$mmonth,$mday) = explode("-",$value->month_date);
+                                                                                $master_setting = DB::table('master_setting')->where('name','OverSaleplan')->first();
+                                                                                $count_setting = strlen($master_setting->stipulate);
+                                                                                if($count_setting < 2){
+                                                                                    $setting_day = "0".$master_setting->stipulate;
+                                                                                }else{
+                                                                                    $setting_day = $master_setting->stipulate;
+                                                                                }
+                                                                                $OverSaleplan = $myear."-".$mmonth."-".$setting_day;
+                                                                                // dd($OverSaleplan, date('Y-m-d'));
+                                                                            @endphp
+                                                                            @if($OverSaleplan >= date('Y-m-d'))
+                                                                                <button type="button" class="btn btn-icon btn-teal requestApproval">
+                                                                                    <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
+                                                                            @else
+                                                                                <button type="button" class="btn btn-icon btn-teal requestApproval" disabled>
+                                                                                    <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
+                                                                            @endif
+                                                                    @else
                                                                             @if($sale_plan_amount > 0)
-                                                                            <button type="button" class="btn btn-icon btn-teal requestApproval">
-                                                                                <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
+                                                                                @php
+                                                                                    list($myear,$mmonth,$mday) = explode("-",$value->month_date);
+                                                                                    $master_setting = DB::table('master_setting')->where('name','OverSaleplan')->first();
+                                                                                    $count_setting = strlen($master_setting->stipulate);
+                                                                                    if($count_setting < 2){
+                                                                                        $setting_day = "0".$master_setting->stipulate;
+                                                                                    }else{
+                                                                                        $setting_day = $master_setting->stipulate;
+                                                                                    }
+                                                                                    $OverSaleplan = $myear."-".$mmonth."-".$setting_day;
+                                                                                    // dd($OverSaleplan, date('Y-m-d'));
+                                                                                @endphp
+                                                                                @if($OverSaleplan >= date('Y-m-d'))
+                                                                                    <button type="button" class="btn btn-icon btn-teal requestApproval">
+                                                                                    <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
+                                                                                @else
+                                                                                    <button type="button" class="btn btn-icon btn-teal requestApproval" disabled>
+                                                                                    <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
+                                                                                @endif
                                                                             @else
                                                                             <button type="button" class="btn btn-icon btn-teal requestApproval" disabled>
                                                                                 <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>

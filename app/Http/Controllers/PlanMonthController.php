@@ -30,8 +30,7 @@ class PlanMonthController extends Controller
         $data['monthly_plan'] = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->get();
         $data['monthly_plan_next'] = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->first();
 
-        // dd($data);
-
+        
         $data['objective'] = ObjectiveSaleplan::all();
         // $data['objective_visit'] = ObjectiveVisit::all();
         $data['master_present'] = MasterPresentSaleplan::get();
