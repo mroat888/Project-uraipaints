@@ -349,7 +349,7 @@
                                         $totalAmtSale_th_Previous = $SalesPrevious[0]["totalAmtSale_th"]; // เป้ายอดขายปีที่แล้ว
                                         $totalAmtSale_Previous = $SalesPrevious[0]["totalAmtSale"]; // เป้ายอดขายปีที่แล้ว
 
-                                        if($res_api["data"][2]["SalesCurrent"] == ""){
+                                        if(!is_null($res_api["data"][2]["SalesCurrent"])){
                                             $SalesCurrent = $res_api["data"][2]["SalesCurrent"];
 
                                             $totalAmtSale_th = $SalesCurrent[0]["totalAmtSale_th"]; // ยอดที่ทำได้ปีนี้
@@ -447,6 +447,7 @@
         </div>
     </div>
         <!-- /Row -->
+        
     </div>
     <!-- /Container -->
 
@@ -461,10 +462,10 @@
     var myChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: [2011, 2012, 2013, 2014, 2015],
+            labels: [{{ $day_month }}],
             datasets: [{
-                label: 'รายงานภาพรวม แยกตามปี (บาท)',
-                data: [100, 80, 85, 30],
+                label: 'ยอดขายปีปัจจุบัน',
+                data: [{{ $amtsale_current }}],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -484,8 +485,8 @@
                 borderWidth: 1
             },
             {
-                label: 'รายงานภาพรวม แยกตามปี (บาท)',
-                data: [50, 60, 95, 10],
+                label: 'ยอดขายปีที่แล้ว',
+                data: [{{ $amtsale_previous }}],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',

@@ -154,7 +154,70 @@ class DashboardController extends Controller
             }
         }
 
-        // dd($data);
+        // -- Chat
+        $dayinmonth = date("t");
+        $data['day_month'] = "";
+        $data['amtsale_current'] = "";
+        $data['amtsale_previous'] = "";
+        $noc=0;
+        $nop=0;
+        
+        for($i=1; $i <= $dayinmonth; $i++){
+            if($i < $dayinmonth){
+                $data['day_month'] .= $i.",";
+            }else{
+                $data['day_month'] .= $i;
+            }
+
+            if(isset($data['res_api']['data'][4]['DaysSalesCurrent'][$noc]['DayNo'])){ // ปีปัจจุบัน
+
+                if($data['res_api']['data'][4]['DaysSalesCurrent'][$noc]['DayNo'] == $i){ 
+                    $data['amtsale_current'] .= $data['res_api']['data'][4]['DaysSalesCurrent'][$noc]['totalAmtSale'].",";
+                }else{
+                    $noc--;
+                    if($i < $dayinmonth){
+                        $data['amtsale_current'] .= "0,";
+                    }else{
+                        $data['amtsale_current'] .= "0";
+                    }
+                }
+
+            }else{
+                if($i < $dayinmonth){
+                    $data['amtsale_current'] .= "0,";
+                }else{
+                    $data['amtsale_current'] .= "0";
+                }
+            }
+
+            if(isset($data['res_api']['data'][5]['DaysSalesPrevious'][$nop]['DayNo'])){ // ปีที่แล้ว
+               
+                if($data['res_api']['data'][5]['DaysSalesPrevious'][$nop]['DayNo'] == $i){ 
+                    $data['amtsale_previous'] .= $data['res_api']['data'][5]['DaysSalesPrevious'][$nop]['totalAmtSale'].",";
+                }else{
+                    $nop--;
+                    if($i < $dayinmonth){
+                        $data['amtsale_previous'] .= "0,";
+                    }else{
+                        $data['amtsale_previous'] .= "0";
+                    }
+                }
+
+            }else{
+                if($i < $dayinmonth){
+                    $data['amtsale_previous'] .= "0,";
+                }else{
+                    $data['amtsale_previous'] .= "0";
+                }
+            }
+            
+            $noc++;
+            $nop++;
+            // -- จบ Chat
+        }
+
+        // dd($data['res_api']['data'][5]['DaysSalesPrevious'], $data['amtsale_previous'], $data['day_month']);
+        
 
         return view('saleman.dashboard', $data);
     }
