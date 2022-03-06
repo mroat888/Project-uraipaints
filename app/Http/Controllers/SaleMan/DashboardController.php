@@ -100,13 +100,6 @@ class DashboardController extends Controller
         ]);
         $data['res_api'] = $response->json();
 
-        $response = Http::withToken($api_token)
-        ->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/dashboards', [
-            'year' => $year-1,
-            'month' => $month
-        ]);
-        $data['res_api_previous'] = $response->json();
-
         $data['count_sale_plans_result'] = 0;      // -- นับจำนวน slaeplans
         $data['count_shops_saleplan_result'] = 0;  // -- นับจำนวน ลูกค้าใหม่
         $data['count_isit_results_result'] = 0;    // -- นับจำนวน ลูกค้าเยี่ยม

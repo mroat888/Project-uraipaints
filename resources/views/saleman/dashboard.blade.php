@@ -345,7 +345,7 @@
                             <div class="card card-sm">
                                 <div class="card-body" style="color: black;">
                                     @php
-                                        $SalesPrevious = $res_api_previous["data"][3]["SalesPrevious"];
+                                        $SalesPrevious = $res_api["data"][3]["SalesPrevious"];
                                         $totalAmtSale_th_Previous = $SalesPrevious[0]["totalAmtSale_th"]; // เป้ายอดขายปีที่แล้ว
                                         $totalAmtSale_Previous = $SalesPrevious[0]["totalAmtSale"]; // เป้ายอดขายปีที่แล้ว
 

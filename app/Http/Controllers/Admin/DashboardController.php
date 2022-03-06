@@ -143,20 +143,12 @@ class DashboardController extends Controller
                         $data['sum_TotalDays'] = $data['sum_TotalDays'] + $res_api["data"][1]["FocusDates"][0]["TotalDays"];
                     }
                 }
-                
-                $response = Http::withToken($api_token) // ดึงข้อมูลปีที่แล้ว
-                ->get('http://49.0.64.92:8020/api/v1/sellers/'.$team->api_identify.'/dashboards', [
-                    'year' => $year-1,
-                    'month' => $month
-                ]);
-                $res_api_previous = $response->json();
-
-                
+                               
                 //-- เปรียบเทียบยอดขาย ปีที่แล้วกับปีปัจจุบัน ในเดือน
-                if(!empty($res_api_previous["data"][3]["SalesPrevious"])){
-                    $SalesPrevious_check_data = count($res_api_previous["data"][3]["SalesPrevious"]);
+                if(!empty($res_api["data"][3]["SalesPrevious"])){
+                    $SalesPrevious_check_data = count($res_api["data"][3]["SalesPrevious"]);
                     if($SalesPrevious_check_data > 0){
-                        $SalesPrevious = $res_api_previous["data"][3]["SalesPrevious"];
+                        $SalesPrevious = $res_api["data"][3]["SalesPrevious"];
                         $data['sum_totalAmtSale_Previous'] = $data['sum_totalAmtSale_Previous'] + $SalesPrevious[0]["totalAmtSale"]; // เป้ายอดขายปีที่แล้ว
                     }
                 }

@@ -110,14 +110,7 @@ class DashboardController extends Controller
             }
             
         }
-    
-        // $data['list_approval'] = DB::table('assignments')
-        //     ->join('users', 'assignments.created_by', '=', 'users.id')
-        //     ->where('users.team_id', Auth::user()->team_id)
-        //     ->whereMonth('assignments.assign_request_date', Carbon::now()->format('m'))
-        //     ->whereIn('assignments.assign_status', [0,1,2])
-        //     ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
-        //     ->get();
+
 
         $data['list_approval'] = DB::table('assignments')
             ->join('users', 'assignments.created_by', '=', 'users.id')
@@ -205,18 +198,11 @@ class DashboardController extends Controller
                     }
                 }
                 
-                $response = Http::withToken($api_token) // ดึงข้อมูลปีที่แล้ว
-                ->get('http://49.0.64.92:8020/api/v1/sellers/'.$team->api_identify.'/dashboards', [
-                    'year' => $year-1,
-                    'month' => $month
-                ]);
-                $res_api_previous = $response->json();
-
                 //-- เปรียบเทียบยอดขาย ปีที่แล้วกับปีปัจจุบัน ในเดือน
-                if(!empty($res_api_previous["data"][3]["SalesPrevious"])){
-                    $SalesPrevious_check_data = count($res_api_previous["data"][3]["SalesPrevious"]);
+                if(!empty($res_api["data"][3]["SalesPrevious"])){
+                    $SalesPrevious_check_data = count($res_api["data"][3]["SalesPrevious"]);
                     if($SalesPrevious_check_data > 0){
-                        $SalesPrevious = $res_api_previous["data"][3]["SalesPrevious"];
+                        $SalesPrevious = $res_api["data"][3]["SalesPrevious"];
                         $data['sum_totalAmtSale_Previous'] = $data['sum_totalAmtSale_Previous'] + $SalesPrevious[0]["totalAmtSale"]; // เป้ายอดขายปีที่แล้ว
                     }
                 }
@@ -230,7 +216,23 @@ class DashboardController extends Controller
                 }
             }
         }
-   
+        
+        // -- Chat
+        $dayinmonth = date("t");
+        $data['day_month'] = "";
+        $data['amtsale_current'] = "";
+        $data['amtsale_previous'] = "";
+        $noc=0;
+        $nop=0;
+
+        for($i=1; $i <= $dayinmonth; $i++){
+            if($i < $dayinmonth){
+                $data['day_month'] .= $i.",";
+            }else{
+                $data['day_month'] .= $i;
+            }
+        }
+
         return view('leadManager.dashboard', $data);
 
     }

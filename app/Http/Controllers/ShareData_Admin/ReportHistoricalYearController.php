@@ -20,31 +20,81 @@ class ReportHistoricalYearController extends Controller
         list($year,$month,$day) = explode('-',date('Y-m-d'));
         $year = $year+0;
         $year_old1 = $year-1; 
+        $year_old2 = $year-2;
      
-        $path_search = "reports/years/".$year.",".$year_old1;
+        $path_search = "reports/years/".$year.",".$year_old1.",".$year_old2;
         $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
-        $data['yearadmin_api'] = $response->json();
+        $year_api = $response->json();
+        
+        if($year_api['code'] == 200){
+            $sum_sales = 0;
+            $sum_credits = 0;
+            $sum_netSales = 0;
+            $sum_persent_credits =0 ;
+            $persent_sale =0 ;
+            $chat_customer = "";
+            $chat_netsales = "";
+            $chat_year = "";
+            foreach($year_api['data'] as $value){
+                $sum_sales += $value['sales'];
+                $sum_credits += $value['credits'];
+                $sum_netSales += $value['netSales'];
+            }
 
-        // list($year,$month,$day) = explode('-',date('Y-m-d'));
-        // $path_search = "reports/years/".$year;
-        // $api_token = $this->api_token->apiToken();
-        // $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
-        // $data['yearleader_api_now'] = $response->json();
+            $count_row = count($year_api['data']); // นับจำนวน array
+            $crow = 1;
+            foreach($year_api['data'] as $value){
+                $persent_sale =  ($value['netSales'] * 100 ) / $sum_netSales;
+                $yearadmin_api[] = [
+                    'year' => $value['year'],
+                    'customers' => $value['customers'],
+                    'Sellers' => $value['Sellers'],
+                    'months' => $value['months'],
+                    'sales' => $value['sales'],
+                    'credits' => $value['credits'],
+                    '%Credit' => $value['%Credit'],
+                    'netSales' => $value['netSales'],
+                    '%Sale' => $persent_sale,
+                ];
 
-        // $year_old1 = $year-1;
-        // $path_search = "reports/years/".$year_old1;
-        // $api_token = $this->api_token->apiToken();
-        // $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
-        // $data['yearleader_api_old1'] = $response->json();
+                // -- Caht data
+                if($crow != $count_row){
+                    if(!is_null($value['customers'])){
+                        $chat_customer .= $value['customers'].",";
+                        $chat_netsales .= $value['netSales'].",";
+                    }else{
+                        $chat_customer .= "0,";
+                        $chat_netsales .= "0,";
+                    }
+                }else{
+                    if(!is_null($value['customers'])){
+                        $chat_customer .= $value['customers'];
+                        $chat_netsales .= $value['netSales'];
+                    }else{
+                        $chat_customer .= "0";
+                        $chat_netsales .= "0";
+                    }
+                }
+                // -- Caht data
 
-        // $year_old2 = $year-2;
-        // $path_search = "reports/years/".$year_old2;
-        // $api_token = $this->api_token->apiToken();
-        // $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
-        // $data['yearleader_api_old2'] = $response->json();
+            }
 
-        return view('shareData_admin.report_historical_year', $data);
+            $sum_persent_credits = ($sum_credits * 100)/$sum_sales;
+
+            $summary_yearadmin_api = [
+                'sum_sales' => $sum_sales,
+                'sum_credits' => $sum_credits,
+                'sum_persent_credits' => $sum_persent_credits,
+                'sum_netSales' => $sum_netSales,
+            ];
+
+            // -- Chat
+            $chat_year = $year_old2.",".$year_old1.",".$year;
+
+        }
+
+        return view('shareData_admin.report_historical_year', compact('yearadmin_api', 'summary_yearadmin_api', 'chat_year', 'chat_customer', 'chat_netsales'));
     }
 
     /**

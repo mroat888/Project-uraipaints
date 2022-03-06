@@ -17,16 +17,85 @@ class ReportHistoricalYearController extends Controller
 
     public function index()
     {
+
         list($year,$month,$day) = explode('-',date('Y-m-d'));
         $year = $year+0;
         $year_old1 = $year-1; 
-     
-        $path_search = "reports/years/".$year.",".$year_old1."/headers"."/".Auth::user()->api_identify;
+        $year_old2 = $year-2;
+    
+        $path_search = "reports/years/".$year.",".$year_old1.",".$year_old2."/headers"."/".Auth::user()->api_identify;
         $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
-        $data['yearheader_api'] = $response->json();
+        $year_api = $response->json();
 
-        // dd($data);
+        if($year_api['code'] == 200){
+            $sum_sales = 0;
+            $sum_credits = 0;
+            $sum_netSales = 0;
+            $sum_persent_credits =0 ;
+            $persent_sale =0 ;
+            $chat_customer = "";
+            $chat_netsales = "";
+            $chat_year = "";
+            foreach($year_api['data'] as $value){
+                $sum_sales += $value['sales'];
+                $sum_credits += $value['credits'];
+                $sum_netSales += $value['netSales'];
+            }
+
+            $count_row = count($year_api['data']); // นับจำนวน array
+            $crow = 1;
+            foreach($year_api['data'] as $value){
+                $persent_sale =  ($value['netSales'] * 100 ) / $sum_netSales;
+                $data['$yearadmin_api'][] = [
+                    'year' => $value['year'],
+                    'customers' => $value['customers'],
+                    'Sellers' => $value['Sellers'],
+                    'months' => $value['months'],
+                    'sales' => $value['sales'],
+                    'credits' => $value['credits'],
+                    '%Credit' => $value['%Credit'],
+                    'netSales' => $value['netSales'],
+                    '%Sale' => $persent_sale,
+                ];
+
+                // -- Caht data
+                if($crow != $count_row){
+                    if(!is_null($value['customers'])){
+                        $chat_customer .= $value['customers'].",";
+                        $chat_netsales .= $value['netSales'].",";
+                    }else{
+                        $chat_customer .= "0,";
+                        $chat_netsales .= "0,";
+                    }
+                }else{
+                    if(!is_null($value['customers'])){
+                        $chat_customer .= $value['customers'];
+                        $chat_netsales .= $value['netSales'];
+                    }else{
+                        $chat_customer .= "0";
+                        $chat_netsales .= "0";
+                    }
+                }
+                // -- Caht data
+
+            }
+
+            $sum_persent_credits = ($sum_credits * 100)/$sum_sales;
+
+            $data['summary_yearadmin_api'] = [
+                'sum_sales' => $sum_sales,
+                'sum_credits' => $sum_credits,
+                'sum_persent_credits' => $sum_persent_credits,
+                'sum_netSales' => $sum_netSales,
+            ];
+
+            // -- Chat
+            $data['chat_year'] = $year_old2.",".$year_old1.",".$year;
+            $data['chat_customer'] = $chat_customer;
+            $data['chat_netsales'] = $chat_netsales;
+        }
+            
 
         return view('shareData_headManager.report_historical_year', $data);
     }
