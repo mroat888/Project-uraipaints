@@ -350,7 +350,8 @@
                     <h6 class="hk-sec-title mb-10" style="font-weight: bold;">สรุปยอดขาย</h6>
                     <div class="row">
                         <div class="col-md-8">
-                            <div id="m_chart_4" style="height: 294px"></div>
+                            <canvas id="myChart" style="height: 294px"></canvas>
+                            <!-- <div id="m_chart_4" style="height: 294px"></div> -->
                         </div>
                         <div class="col-md-4">
                             <div class="card card-sm">
@@ -450,5 +451,76 @@
 @section('footer')
     @include('layouts.footer')
 @endsection
+
+
+<script src="{{ asset('public/template/graph/Chart.bundle.js') }}"></script>
+
+<script>
+    var ctx = document.getElementById("myChart").getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [{{ $day_month }}],
+            datasets: [{
+                label: 'ยอดขายปีปัจจุบัน',
+                data: [{{ $amtsale_current }}],
+                backgroundColor: [
+                    // 'rgba(255, 99, 132, 0.3)',
+                    'rgba(255, 99, 132, 0)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            },
+            {
+                label: 'ยอดขายปีที่แล้ว',
+                data: [{{ $amtsale_previous }}],
+                backgroundColor: [
+                    // 'rgba(255, 99, 132, 0.2)',
+                    // 'rgba(127, 121, 228, 0.4)',
+                    'rgba(127, 121, 228, 0)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    // 'rgba(255,99,132,1)',
+                    'rgba(127, 121, 228,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+
+        options: {
+            responsive: true,
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    },
+    );
+    </script>
 
 @endsection
