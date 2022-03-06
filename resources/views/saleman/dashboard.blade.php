@@ -467,7 +467,8 @@
                 label: 'ยอดขายปีปัจจุบัน',
                 data: [{{ $amtsale_current }}],
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.3)',
+                    // 'rgba(255, 99, 132, 0.3)',
+                    'rgba(255, 99, 132, 0)',
                     'rgba(54, 162, 235, 0.2)',
                     'rgba(255, 206, 86, 0.2)',
                     'rgba(75, 192, 192, 0.2)',
@@ -489,7 +490,8 @@
                 data: [{{ $amtsale_previous }}],
                 backgroundColor: [
                     // 'rgba(255, 99, 132, 0.2)',
-                    'rgba(127, 121, 228, 0.4)',
+                    // 'rgba(127, 121, 228, 0.4)',
+                    'rgba(127, 121, 228, 0)',
                     'rgba(54, 162, 235, 0.2)',
                     'rgba(255, 206, 86, 0.2)',
                     'rgba(75, 192, 192, 0.2)',
@@ -510,6 +512,7 @@
         },
 
         options: {
+            responsive: true,
             scales: {
                 yAxes: [{
                     ticks: {
