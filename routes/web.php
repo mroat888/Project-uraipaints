@@ -128,6 +128,7 @@ Route::get('data_search_product', 'ShareData\SearchroductController@index');
 Route::post('data_search_product/search', 'ShareData\SearchroductController@search');
 Route::get('data_report_product-new', 'ShareData\ProductNewController@index');
 Route::get('data_report_full-year', 'ShareData\ReportFullYearController@index');
+Route::post('data_report_full-year/search', 'ShareData\ReportFullYearController@search');
 Route::get('data_report_historical-year', 'ShareData\ReportHistoricalYearController@index');
 Route::get('data_report_historical-quarter', 'ShareData\ReportHistoricalQuarterController@index');
 Route::get('data_report_historical-month', 'ShareData\ReportHistoricalMonthController@index');
@@ -229,6 +230,7 @@ Route::get('leadManage/data_search_product', 'ShareData_LeadManager\Searchroduct
 Route::post('leadManage/data_search_product/search', 'ShareData_LeadManager\SearchroductController@search');
 Route::get('leadManage/data_report_product-new', 'ShareData_LeadManager\ProductNewController@index');
 Route::get('leadManage/data_report_full-year', 'ShareData_LeadManager\ReportFullYearController@index');
+Route::post('leadManage/data_report_full-year/search', 'ShareData_LeadManager\ReportFullYearController@search');
 Route::get('leadManage/data_report_historical-year', 'ShareData_LeadManager\ReportHistoricalYearController@index');
 Route::get('leadManage/data_report_historical-quarter', 'ShareData_LeadManager\ReportHistoricalQuarterController@index');
 Route::get('leadManage/data_report_historical-month', 'ShareData_LeadManager\ReportHistoricalMonthController@index');
@@ -319,6 +321,7 @@ Route::get('headManage/data_search_product', 'ShareData_HeadManager\Searchroduct
 Route::post('headManage/data_search_product/search', 'ShareData_HeadManager\SearchroductController@search');
 Route::get('headManage/data_report_product-new', 'ShareData_HeadManager\ProductNewController@index');
 Route::get('headManage/data_report_full-year', 'ShareData_HeadManager\ReportFullYearController@index');
+Route::post('headManage/data_report_full-year/search', 'ShareData_HeadManager\ReportFullYearController@search');
 Route::get('headManage/data_report_historical-year', 'ShareData_HeadManager\ReportHistoricalYearController@index');
 Route::get('headManage/data_report_historical-quarter', 'ShareData_HeadManager\ReportHistoricalQuarterController@index');
 Route::get('headManage/data_report_historical-month', 'ShareData_HeadManager\ReportHistoricalMonthController@index');
@@ -490,8 +493,11 @@ Route::get('admin/data_search_product', 'ShareData_Admin\SearchroductController@
 Route::post('admin/data_search_product/search', 'ShareData_Admin\SearchroductController@search');
 Route::get('admin/data_report_product-new', 'ShareData_Admin\ProductNewController@index');
 Route::post('admin/data_report_product-new/search', 'ShareData_Admin\ProductNewController@search');
+Route::get('admin/data_report_product-new/show/{id}', 'ShareData_Admin\ProductNewController@show');
 Route::get('admin/data_report_full-year', 'ShareData_Admin\ReportFullYearController@index');
+Route::post('admin/data_report_full-year/search', 'ShareData_Admin\ReportFullYearController@search');
 Route::get('admin/data_report_historical-year', 'ShareData_Admin\ReportHistoricalYearController@index');
+Route::post('admin/data_report_historical-year/search', 'ShareData_Admin\ReportHistoricalYearController@search');
 Route::get('admin/data_report_historical-quarter', 'ShareData_Admin\ReportHistoricalQuarterController@index');
 Route::get('admin/data_report_historical-month', 'ShareData_Admin\ReportHistoricalMonthController@index');
 

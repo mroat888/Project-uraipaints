@@ -27,6 +27,16 @@ class ReportFullYearController extends Controller
         return view('shareData.report_full_year', compact('yearseller_api'));
     }
 
+    public function search(Request $request){
+
+        $path_search = "reports/years/".$request->sel_year."/sellers/search?sortorder=DESC&seller_id=".Auth::user()->api_identify;
+        $api_token = $this->api_token->apiToken();
+        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
+        $yearseller_api = $response->json();
+
+        return view('shareData.report_full_year', compact('yearseller_api'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *

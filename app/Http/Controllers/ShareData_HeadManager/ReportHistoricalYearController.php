@@ -47,7 +47,7 @@ class ReportHistoricalYearController extends Controller
             $crow = 1;
             foreach($year_api['data'] as $value){
                 $persent_sale =  ($value['netSales'] * 100 ) / $sum_netSales;
-                $data['$yearadmin_api'][] = [
+                $data['yearadmin_api'][] = [
                     'year' => $value['year'],
                     'customers' => $value['customers'],
                     'Sellers' => $value['Sellers'],
