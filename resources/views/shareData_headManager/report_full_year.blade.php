@@ -26,18 +26,31 @@
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
-                        <div class="col-sm-12 col-md-6">
+                        <div class="col-sm-12 col-md-8">
                             <h5 class="hk-sec-title">ตารางรายงานสรุปยอดทั้งปี</h5>
                         </div>
-                        <div class="col-sm-12 col-md-6">
+                        <div class="col-sm-12 col-md-4">
                             <!-- ------ -->
-                            <span class="form-inline pull-right">
-                                <!-- <span class="mr-5">เลือก</span> -->
-                                <!-- <input type="month" name="" id="" class="form-control"> -->
-                                {{-- <button class="btn btn-primary btn-sm ml-10 mr-15"><i data-feather="printer"></i> พิมพ์</button> --}}
-                                </span>
+                            <form action="{{ url('headManage/data_report_full-year/search') }}" method="post" enctype="multipart/form-data">
+                                @csrf
+                                <div class="form-row">
+                                    <div class="form-group col-md-9">
+                                        <select name="sel_year" id="sel_year" class="form-control" required>
+                                            <option value="">--ค้นหาปี--</option>
+                                            @php
+                                                list($year,$month,$day) = explode('-', date('Y-m-d'));
+                                            @endphp
 
-                            </span>
+                                            @for($i = 0; $i<4; $i++)
+                                                <option value="{{ $year-$i}}">{{ $year-$i}}</option>
+                                            @endfor
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <button type="submit" class="btn btn-teal btn-sm px-3 ml-2">ค้นหา</button>
+                                    </div>
+                                </div>
+                            </form>
                             <!-- ------ -->
                         </div>
                     </div>
@@ -66,7 +79,7 @@
                                         @foreach($yearleader_api['data'] as $key => $value)
                                         <tr>
                                             <td>{{ ++$key }}</td>
-                                            <td>{{ $value['year']+543 }}</td>
+                                            <td>{{ $value['year'] }}</td>
                                             <td>{{ $value['customers'] }}</td>
                                             <td>{{ number_format($value['sales']) }}</td>
                                             <td>{{ number_format($value['credits']) }}</td>

@@ -28,6 +28,18 @@ class ReportFullYearController extends Controller
         return view('shareData_admin.report_full_year', compact('yearleader_api'));
     }
 
+    public function search(Request $request){
+
+        $path_search = "reports/years/".$request->sel_year;
+        $api_token = $this->api_token->apiToken();
+        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
+        $yearleader_api = $response->json();
+
+        // dd($yearleader_api);
+
+        return view('shareData_admin.report_full_year', compact('yearleader_api'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
