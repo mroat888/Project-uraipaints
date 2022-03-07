@@ -136,6 +136,8 @@ Route::get('data_report_historical-month', 'ShareData\ReportHistoricalMonthContr
 });
 
 
+
+
 // ------------------------------------------------------------------Manager-----------------------------------------------------------------------------//
 
 
@@ -534,8 +536,10 @@ Route::get('/clc', function() {
 Route::get('/fetch_amphur/{id}',[ProvinceController::class, 'amphur']);
 Route::get('/fetch_district/{id}',[ProvinceController::class, 'district']);
 Route::get('/fetch_postcode/{id}',[ProvinceController::class, 'postcode']);
-
 Route::get('/customer/autocomplete',[CustomerController::class, 'fetch_autocomplete']);
+
+Route::get('fetch_subgroups/{id}', 'Api\ApiController@fetch_subgroups');
+Route::get('fetch_pdglists/{id}', 'Api\ApiController@fetch_pdglists');
 
 Auth::routes();
 // Route::get('/', function () { return view('saleman.dashboard'); });

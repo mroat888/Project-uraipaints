@@ -322,11 +322,11 @@
                                         <div class="d-flex align-items-end justify-content-between">
                                             <div>
                                                 <span class="d-block">
-                                                    <span>300</span>
+                                                    <span>{{ $total_shop }}</span>
                                                 </span>
                                             </div>
                                             <div>
-                                                <span>4 ร้าน <span class="ml-40">4 วัน</span></span>
+                                                <span>{{ $ShopInMonthDays }} ร้าน <span class="ml-40">{{ $InMonthDays }} วัน</span></span>
                                             </div>
                                         </div>
                                     </div>

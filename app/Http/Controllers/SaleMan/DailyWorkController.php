@@ -90,6 +90,8 @@ class DailyWorkController extends Controller
         $res_api = $response->json();
 
         $data['customer_api'] = array();
+        $data['InMonthDays'] = 0;
+        $data['ShopInMonthDays'] = 0;
         foreach ($res_api['data'] as $key => $value) {
             $data['customer_api'][$key] =
             [
@@ -97,7 +99,16 @@ class DailyWorkController extends Controller
                 'shop_name' => $value['title']." ".$value['name'],
                 'shop_address' => $value['amphoe_name']." , ".$value['province_name'],
             ];
+
+            if($value['InMonthDays'] != 0){
+                $data['ShopInMonthDays'] += 1;
+                $data['InMonthDays'] += $value['InMonthDays'];
+            }
+            
         }
+
+        $data['total_shop'] = $res_api['records'];
+
 
         // ---- สร้างข้อมูล เยี่ยมลูกค้า โดย link กับ api ------- //
         $customer_visits = CustomerVisit::where('customer_visits.created_by', Auth::user()->id)
@@ -152,6 +163,7 @@ class DailyWorkController extends Controller
         ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
         ->orderBy('id', 'desc')->get();
 
+        
         return view('saleman.dailyWork', $data);
     }
 

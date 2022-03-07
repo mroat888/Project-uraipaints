@@ -17,19 +17,17 @@ class SearchroductController extends Controller
     public function index()
     {
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/pdglists');
-        $pdglists_api = $response->json();
+        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/groups?sortorder=DESC/');
+        $groups_api = $response->json();
 
-        return view('shareData.search_product', compact('pdglists_api'));
+        return view('shareData.search_product', compact('groups_api'));
     }
 
     public function search(Request $request){
 
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/pdglists');
-        $pdglists_api = $response->json();
-
-        // dd($pdglists_api);
+        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/groups?sortorder=DESC/');
+        $groups_api = $response->json();
 
         $product_api = null;
 
@@ -41,7 +39,7 @@ class SearchroductController extends Controller
             }
         }
 
-        return view('shareData.search_product', compact('pdglists_api', 'product_api'));
+        return view('shareData.search_product', compact('product_api', 'groups_api'));
 
     }
 
