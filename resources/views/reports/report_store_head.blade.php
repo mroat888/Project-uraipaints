@@ -19,7 +19,7 @@
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-document"></i></span>รายงานสรุปยอดจำนวนร้านค้า</h4>
             </div>
             <div class="d-flex">
-                <button class="btn btn-primary btn-sm"><i data-feather="printer"></i> พิมพ์</button>
+                <!-- <button class="btn btn-primary btn-sm"><i data-feather="printer"></i> พิมพ์</button> -->
             </div>
         </div>
         <!-- /Title -->

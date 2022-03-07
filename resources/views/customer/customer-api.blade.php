@@ -37,7 +37,7 @@
                                     </div>
                                     <div class="col-sm-12 col-md-9">
                                         <!-- ------ -->
-                                        <span class="form-inline pull-right pull-sm-center">
+                                        <!-- <span class="form-inline pull-right pull-sm-center">
                                             <select class="form-control custom-select form-control-sm" style="margin-left:5px; margin-right:5px;">
                                                 <option selected>เลือกจังหวัด</option>
                                                 <option value="1">กรุงเทพมหานคร</option>
@@ -57,7 +57,7 @@
 
                                             <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm">ค้นหา</button>
 
-                                        </span>
+                                        </span> -->
                                         <!-- ------ -->
                                     </div>
                                 </div>
