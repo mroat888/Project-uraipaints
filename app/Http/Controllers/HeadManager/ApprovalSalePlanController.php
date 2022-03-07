@@ -36,7 +36,7 @@ class ApprovalSalePlanController extends Controller
         }
         $data['monthly_plan'] = DB::table('monthly_plans')
             ->join('users', 'users.id', 'monthly_plans.created_by')
-            ->whereIn('monthly_plans.status_approve', [1])
+            ->whereIn('monthly_plans.status_approve', [1,2])
             ->where(function($query) use ($auth_team) {
                 for ($i = 0; $i < count($auth_team); $i++){
                     $query->orWhere('users.team_id', $auth_team[$i])
@@ -81,26 +81,14 @@ class ApprovalSalePlanController extends Controller
             [
                 'id' => $value['identify'],
                 'shop_name' => $value['title']." ".$value['name'],
+                'shop_address' => $value['amphoe_name']." ".$value['province_name'],
             ];
         }
 
-        // -- ข้อมูลลูกค้าใหม่
-        // $data['customer_new'] = DB::table('customer_shops')
-        // ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
-        // ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
-        // ->whereIn('customer_shops.shop_aprove_status', [1, 2, 3])
-        // // ->where('customer_shops.created_by', Auth::user()->id)
-        // ->where('customer_shops.monthly_plan_id', $id)
-        // ->select(
-        //     'province.PROVINCE_NAME',
-        //     'customer_shops.*'
-        // )
-        // ->orderBy('customer_shops.id', 'desc')
-        // ->get();
-
-        // ลูกค้าใหม่เปลี่ยนมาใช้อันนี้
+        // ลูกค้าใหม่
         $data['customer_new'] = DB::table('customer_shops_saleplan')
         ->join('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
+        ->join('master_customer_new', 'customer_shops_saleplan.customer_shop_objective', 'master_customer_new.id')
         ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
         ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
         ->whereIn('customer_shops_saleplan.shop_aprove_status', [1, 2, 3])
@@ -110,7 +98,8 @@ class ApprovalSalePlanController extends Controller
             'province.PROVINCE_NAME',
             'customer_shops.*',
             'customer_shops.id as custid',
-            'customer_shops_saleplan.*'
+            'customer_shops_saleplan.*',
+            'master_customer_new.cust_name'
         )
         ->orderBy('customer_shops.id', 'desc')
         ->get();
@@ -121,6 +110,7 @@ class ApprovalSalePlanController extends Controller
             ->where('monthly_plan_id', $id)
             ->select('customer_visits.*')
             ->orderBy('id', 'desc')->get();
+
 
         $data['customer_visit_api'] = array();
 
@@ -142,23 +132,14 @@ class ApprovalSalePlanController extends Controller
             }
         }
 
+        $data['sale_name'] = DB::table('users')->where('id',$mon_plan->created_by)->select('name')->first(); // ชื่อเซลล์
+
+
         return view('headManager.approval_saleplan_detail', $data);
     }
 
-    public function search(Request $request){
-        // list($year,$month) = explode('-', $request->selectdateTo);
-        // $data['monthly_plan'] = DB::table('monthly_plans')
-        // ->join('users', 'users.id', 'monthly_plans.created_by')
-        // ->where('monthly_plans.status_approve', 1)
-        // ->where('users.team_id', Auth::user()->team_id)
-        // ->whereYear('month_date', $year)
-        // ->whereMonth('month_date', $month)
-        // ->select(
-        //     'users.*',
-        //     'monthly_plans.*'
-        // )
-        // ->get();
-
+    public function search(Request $request)
+    {
         $auth_team_id = explode(',',Auth::user()->team_id);
         $auth_team = array();
         foreach($auth_team_id as $value){
