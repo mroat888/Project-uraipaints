@@ -20,7 +20,10 @@
         <div class="hk-pg-header mb-10">
             <div>
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><i
-                            class="ion ion-md-analytics"></i></span>รายละเอียด Sale Plan</h4>
+                            class="ion ion-md-analytics"></i></span>รายละเอียดแผนประจำเดือน<?php echo thaidate('F Y', date('Y-m', strtotime("+1 month"))); ?> ({{ $sale_name->name }})</h4>
+            </div>
+            <div class="d-flex">
+                <a href="{{ url('head/approvalsaleplan')}}" type="button" class="btn btn-secondary btn-sm btn-rounded px-3 mr-10"> ย้อนกลับ </a>
             </div>
         </div>
         <!-- /Title -->
@@ -31,7 +34,7 @@
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
                         <div class="col-sm-12 col-md-3">
-                            <h5 class="hk-sec-title mb-10">ตาราง Sale Plan</h5>
+                            <h5 class="hk-sec-title mb-10">ตารางแผนประจำเดือน<?php echo thaidate('F Y', date('Y-m', strtotime("+1 month"))); ?></h5>
                         </div>
                     </div>
 
@@ -45,12 +48,14 @@
                                             <th>#</th>
                                             <th>เรื่อง</th>
                                             <th>ลูกค้า</th>
+                                            <th>อำเภอ,จังหวัด</th>
                                             <th>การอนุมัติ</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($list_saleplan as $key => $value)
+
                                         @if ($value->sale_plans_status != 1)
                                         <tr style="background-color: rgb(219, 219, 219);">
                                             <td>{{ $key + 1 }}</td>
@@ -64,6 +69,13 @@
                                                         @endforeach
                                             </td>
                                             <td>
+                                                @foreach($customer_api as $key_api => $value_api)
+                                                @if($customer_api[$key_api]['id'] == $value->customer_shop_id)
+                                                    {{ $customer_api[$key_api]['shop_address'] }}
+                                                @endif
+                                            @endforeach
+                                            </td>
+                                            <td>
                                                 @if ($value->sale_plans_status == 2)
                                                 <span class="badge badge-soft-success" style="font-size: 12px;">Approve</span></td>
 
@@ -72,7 +84,7 @@
                                                 @endif
 
                                             <td>
-                                                <a href="{{ url('head/comment_saleplan', [$value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
+                                                <a href="{{ url('comment_saleplan', [$value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
                                                     <h4 class="btn-icon-wrap" style="color: white;">
                                                         <i data-feather="message-square"></i>
                                                     </h4>
@@ -92,7 +104,13 @@
                                                             @endif
                                                         @endforeach
                                             </td>
-                                            {{-- <td>{{ $value->name }}</td> --}}
+                                            <td>
+                                                @foreach($customer_api as $key_api => $value_api)
+                                                @if($customer_api[$key_api]['id'] == $value->customer_shop_id)
+                                                    {{ $customer_api[$key_api]['shop_address'] }}
+                                                @endif
+                                            @endforeach
+                                            </td>
                                             <td><span class="badge badge-soft-warning"
                                                     style="font-size: 12px;">Pending</span></td>
                                             <td>
@@ -135,6 +153,7 @@
                                                 <th>#</th>
                                                 <th>ชื่อร้าน</th>
                                                 <th>อำเภอ,จังหวัด</th>
+                                                <th>วัตถุประสงค์</th>
                                                 <th>การอนุมัติ</th>
                                                 <th class="text-center">Action</th>
                                             </tr>
@@ -167,6 +186,7 @@
                                                     <td>{{ $key + 1 }}</td>
                                                     <td>{{ $value->shop_name }}</td>
                                                     <td>{{ $value->PROVINCE_NAME }}</td>
+                                                    <td>{{ $value->cust_name }}</td>
                                                     <td>
                                                         <span class="badge badge-soft-warning mt-15 mr-10"
                                                             style="font-size: 12px;">Pending</span>
@@ -210,7 +230,7 @@
                                             <tr>
                                                 <th>#</th>
                                                 <th>ชื่อร้าน</th>
-                                                <th>ที่อยู่</th>
+                                                <th>อำเภอ,จังหวัด</th>
                                                 <th>วันสำคัญ</th>
                                             </tr>
                                         </thead>

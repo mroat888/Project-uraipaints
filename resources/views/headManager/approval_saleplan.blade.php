@@ -43,7 +43,7 @@
                     <section class="hk-sec-wrapper">
                         <div class="row mb-2">
                             <div class="col-sm-12 col-md-3">
-                                <h5 class="hk-sec-title">ตารางอนุมัติ Sale Plan</h5>
+                                <h5 class="hk-sec-title">ตารางอนุมัติแผนประจำเดือน<?php echo thaidate('F Y', date('Y-m', strtotime("+1 month"))); ?></h5>
                             </div>
                             <div class="col-sm-12 col-md-9">
                                 <!-- ------ -->
@@ -69,8 +69,11 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>วันที่</th>
+                                                {{-- <th>วันที่</th> --}}
                                                 <th>พนักงานขาย</th>
+                                                <th>แผนงาน</th>
+                                                <th>ลูกค้าใหม่</th>
+                                                <th>เยียมลูกค้า</th>
                                                 <th>การอนุมัติ</th>
                                                 <th>Action</th>
                                             </tr>
@@ -79,9 +82,11 @@
                                             @foreach ($monthly_plan as $key => $value)
                                                     <tr>
                                                         <td>{{$key + 1}}</td>
-                                                        <td>{{$value->month_date}}</td>
+                                                        {{-- <td>{{$value->month_date}}</td> --}}
                                                         <td>{{$value->name}}</td>
-                                                        {{-- <td>{{$value->id}}</td> --}}
+                                                        <td>{{$value->sale_plan_amount}}</td>
+                                                        <td>{{$value->cust_new_amount}}</td>
+                                                        <td>{{$value->cust_visits_amount}}</td>
                                                         <td>
                                                             @if ($value->status_approve == 1)
                                                                 <span class="badge badge-soft-warning"
@@ -100,6 +105,27 @@
                                                                 <i data-feather="file-text"></i>
                                                             </a>
                                                         </td>
+                                                        {{-- <td>{{$key + 1}}</td>
+                                                        <td>{{$value->month_date}}</td>
+                                                        <td>{{$value->name}}</td>
+                                                        <td>
+                                                            @if ($value->status_approve == 1)
+                                                                <span class="badge badge-soft-warning"
+                                                                    style="font-size: 12px;">
+                                                                    Pending
+                                                                </span>
+                                                            @elseif ($value->status_approve == 2)
+                                                                <span class="badge badge-soft-success"
+                                                                    style="font-size: 12px;">
+                                                                    Approve
+                                                                </span>
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            <a href="{{ url('head/approvalsaleplan_detail', $value->id) }}" type="button" class="btn btn-icon btn-primary pt-5">
+                                                                <i data-feather="file-text"></i>
+                                                            </a>
+                                                        </td> --}}
                                                     </tr>
                                                 @endforeach
                                         </tbody>
