@@ -42,10 +42,10 @@
                 <div class="col-xl-12">
                     <section class="hk-sec-wrapper">
                         <div class="row mb-2">
-                            <div class="col-sm-12 col-md-3">
+                            <div class="col-sm-12 col-md-6">
                                 <h5 class="hk-sec-title">ตารางอนุมัติแผนประจำเดือน<?php echo thaidate('F Y', date('Y-m', strtotime("+1 month"))); ?></h5>
                             </div>
-                            <div class="col-sm-12 col-md-9">
+                            <div class="col-sm-12 col-md-6">
                                 <!-- ------ -->
                                 <span class="form-inline pull-right">
                                     <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</button>

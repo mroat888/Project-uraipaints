@@ -30,7 +30,7 @@ class PlanMonthController extends Controller
         $data['monthly_plan'] = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->get();
         $data['monthly_plan_next'] = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->first();
 
-        
+
         $data['objective'] = ObjectiveSaleplan::all();
         // $data['objective_visit'] = ObjectiveVisit::all();
         $data['master_present'] = MasterPresentSaleplan::get();
@@ -308,13 +308,14 @@ class PlanMonthController extends Controller
                if($cus_visit->customer_shop_id == $res_visit_api['identify']){
                    $data['customer_visit_api'][$key_api] =
                    [
-                       'id' => $cus_visit->id,
-                       'identify' => $res_visit_api['identify'],
-                       'shop_name' => $res_visit_api['title']." ".$res_visit_api['name'],
-                       'shop_address' => $res_visit_api['amphoe_name']." , ".$res_visit_api['province_name'],
-                       'shop_phone' => $res_visit_api['telephone'],
-                       'shop_mobile' => $res_visit_api['mobile'],
-                       'focusdate' => $res_visit_api['focusdate'],
+                    'id' => $cus_visit->id,
+                    'identify' => $res_visit_api['identify'],
+                    'shop_name' => $res_visit_api['title']." ".$res_visit_api['name'],
+                    'shop_address' => $res_visit_api['amphoe_name']." , ".$res_visit_api['province_name'],
+                    'shop_phone' => $res_visit_api['telephone'],
+                    'shop_mobile' => $res_visit_api['mobile'],
+                    'focusdate' => $res_visit_api['focusdate'],
+                    'monthly_plan_id' => $cus_visit->monthly_plan_id,
                    ];
                }
            }
