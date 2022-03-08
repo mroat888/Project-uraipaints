@@ -4,9 +4,16 @@ namespace App\Http\Controllers\ShareData;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Api\ApiController;
 
 class ReportHistoricalYearController extends Controller
 {
+    public function __construct(){
+        $this->api_token = new ApiController();
+    }
 
     public function index()
     {

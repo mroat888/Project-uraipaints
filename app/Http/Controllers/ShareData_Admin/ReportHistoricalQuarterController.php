@@ -147,7 +147,7 @@ class ReportHistoricalQuarterController extends Controller
         $year_text = "";
         $search_year = "";
         
-        if($reage_year > 1){
+        if($reage_year >= 1){
             for($i=1; $i<$reage_year; $i++){
                 if($request->sel_year_form >= $request->sel_year_to){
                     $year_text .= $request->sel_year_to+$i."," ;
@@ -165,11 +165,13 @@ class ReportHistoricalQuarterController extends Controller
                 $search_year =  $request->sel_year_form.",".$year_text.$request->sel_year_to;
                 $data['year_search'][] = $request->sel_year_to+0;
             }
+        }else{
+            $search_year =  $request->sel_year_form;
         }
 
 
         $path_search = "reports/years/".$search_year."/quaters/1,2,3,4";
-
+        // dd($path_search);
         $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
         $quarter_api = $response->json();
@@ -267,7 +269,7 @@ class ReportHistoricalQuarterController extends Controller
         // Chat
         $data['search_year'] = $search_year;
 
-        dd($data['search_year']);
+        // dd($data['search_year']);
 
        return view('shareData_admin.report_historical_quarter', $data);
     }
