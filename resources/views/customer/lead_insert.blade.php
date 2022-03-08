@@ -28,7 +28,7 @@
                     @if(isset($customer_shops ))
                     <div class="col-md-6 form-group">
                         <label for="firstName">ค้นหาชื่อร้าน</label>
-                        <select name="customer_shops" id="customer_shops" class="form-control select2" required>
+                        <select name="customer_shops" id="customer_shops" class="form-control select2">
                             <option value=""selected>--โปรดเลือก--</option>
                                 @foreach($customer_shops as $value)
                                     <option value="{{ $value->id }}">{{ $value->shop_name }}</option>
