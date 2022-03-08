@@ -78,7 +78,35 @@
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
                                                     <td>{{ $value->note_title }}</td>
-                                                    <td>{{ $value->name_tag }}</td>
+                                                    <td>
+                                                        <?php
+                                                            $masterNote = App\NoteTag::get();
+                                                            $auth_team_id = explode(',', $value->note_tags);
+                                                            $auth_team = array();
+                                                            foreach($auth_team_id as $value1){
+                                                                $auth_team[] = $value1;
+                                                            }
+
+                                                            $number = 1;
+
+                                                            // foreach ($auth_team as $key => $value2) {
+                                                                foreach ($masterNote as $key3 => $value3) {
+                                                                    for ($i = 0; $i < count($auth_team); $i++){
+                                                                    if ($auth_team[$i] == $value3->id) {
+                                                        ?>
+
+                                                        @if ($number++ < count($auth_team))
+                                                        {{ $value3->name_tag }},
+                                                        @else
+                                                        {{ $value3->name_tag }}
+                                                        @endif
+                                                        <?php  }
+                                                        }
+
+                                                        }
+
+                                                        ?>
+                                                    </td>
                                                     <?php $date = new Carbon\Carbon($value->note_date); ?>
                                                     <td>{{ $date->format('d/m/Y') }}</td>
                                                     <td>

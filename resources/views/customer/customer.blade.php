@@ -80,8 +80,13 @@
                                             <td>
                                                 <div class="media-img-wrap">
                                                     <div class="avatar avatar-sm">
-                                                        <img src="{{ isset($shop->shop_profile_image) ? asset('/public/upload/CustomerImage/' . $shop->shop_profile_image) : '' }}" 
+                                                        @if ($shop->shop_profile_image)
+                                                        <img src="{{ isset($shop->shop_profile_image) ? asset('/public/upload/CustomerImage/' . $shop->shop_profile_image) : '' }}"
                                                         alt="{{ $shop->shop_name }}" class="avatar-img">
+
+                                                        @else
+                                                        <img src="{{ asset('/public/images/people-33.png')}}" alt="" class="avatar-img">
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </td>
@@ -99,7 +104,7 @@
                                                                 $customer_contact_phone = $value->customer_contact_phone;
                                                             }
                                                             break;
-                                                        }    
+                                                        }
                                                     }
                                                 @endphp
                                             <td>{{ $customer_contact_name }}</td>

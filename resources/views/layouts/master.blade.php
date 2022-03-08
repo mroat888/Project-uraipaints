@@ -293,7 +293,7 @@ License: You must have a valid license purchased only from themeforest to legall
                                             <a class="nav-link"
                                                 href="{{ url('/reportSale/reportVisitCustomer') }}">
                                                 <i class="ion ion-md-stats"
-                                                    style="color: #044067;"></i>รายงานเข้าพบลูกค้า</a>
+                                                    style="color: #044067;"></i>รายงานเข้าเยี่ยมลูกค้า</a>
                                         </li>
                                     </ul>
                                 </li>

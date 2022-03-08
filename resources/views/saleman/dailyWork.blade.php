@@ -368,7 +368,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                
+
                                                 @foreach ($list_saleplan as $key => $value)
                                                     @php
                                                         $shop_name = "";
@@ -380,7 +380,7 @@
                                                             }
                                                         }
                                                     @endphp
-                                                    
+
                                                     <tr>
                                                         <td>{{ $key + 1}}</td>
                                                         <!-- <td>{{$value->id}}</td> -->
@@ -427,7 +427,7 @@
                                                                         $btn_pumpkin_disabled = "disabled";
                                                                         $btn_neon_disabled = "disabled";
                                                                     }
-                                                                    
+
                                                                 }elseif ($value->status_result == 2){
                                                                     $btn_primary_disabled = "disabled";
                                                                     $btn_pumpkin_disabled = "disabled";
@@ -534,7 +534,7 @@
                                                                     $checkin_date = str_replace('-', '/', $shops_saleplan_result->cust_result_checkin_date);
                                                                     $OverCheckOut = date('Y-m-d',strtotime($checkin_date . $setting_day));
                                                                     $text_notify = "checkout ไม่เกิน ".$OverCheckOut;
-                                                                    
+
                                                                     if($OverCheckOut >= date('Y-m-d')){
                                                                         $btn_primary_cusnew = "disabled";
                                                                         $btn_pumpkin_cusnew = "";
@@ -634,7 +634,7 @@
                                                                 @php
                                                                     $text_notify = "";
                                                                     if($customer_visit_api[$key]['visit_checkin_date'] != "" && $customer_visit_api[$key]['visit_checkout_date'] == ""){
-                                                                        
+
                                                                         $customer_visit_results = DB::table('customer_visit_results')
                                                                         ->where('customer_visit_id', $customer_visit_api[$key]['id'])
                                                                         ->first();
@@ -643,7 +643,7 @@
                                                                         $checkin_date = str_replace('-', '/', $customer_visit_results->cust_visit_checkin_date);
                                                                         $OverCheckOut = date('Y-m-d',strtotime($checkin_date . $setting_day));
                                                                         $text_notify = "checkout ไม่เกิน ".$OverCheckOut;
-                                                                        
+
                                                                         if($OverCheckOut >= date('Y-m-d')){
                                                                             $btn_primary_cusvisit_disabled = "disabled";
                                                                             $btn_pumpkin_cusvisit_disabled = "";
@@ -653,7 +653,7 @@
                                                                             $btn_pumpkin_cusvisit_disabled = "disabled";
                                                                             $btn_neon_cusvisit_disabled = "disabled";
                                                                         }
-                                                                        
+
                                                                     }elseif($customer_visit_api[$key]['visit_checkin_date'] != "" && $customer_visit_api[$key]['visit_checkout_date'] != ""){
                                                                         $btn_primary_cusvisit_disabled = "disabled";
                                                                         $btn_pumpkin_cusvisit_disabled = "disabled";

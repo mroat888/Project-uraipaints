@@ -58,7 +58,7 @@ class DailyWorkController extends Controller
         ->leftjoin('sale_plan_comments', 'sale_plans.id', 'sale_plan_comments.saleplan_id')
         ->where('sale_plans.monthly_plan_id', $data['monthly_plan']->id)
         ->where('sale_plans.created_by', Auth::user()->id)
-        ->where('sale_plans_status', 2)
+        ->where('sale_plans.sale_plans_status', 2)
         ->select('sale_plans.*', 'sale_plan_comments.saleplan_id')->distinct()
         ->orderBy('sale_plans.id', 'desc')->get();
 
@@ -104,7 +104,7 @@ class DailyWorkController extends Controller
                 $data['ShopInMonthDays'] += 1;
                 $data['InMonthDays'] += $value['InMonthDays'];
             }
-            
+
         }
 
         $data['total_shop'] = $res_api['records'];
@@ -163,7 +163,7 @@ class DailyWorkController extends Controller
         ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
         ->orderBy('id', 'desc')->get();
 
-        
+
         return view('saleman.dailyWork', $data);
     }
 
