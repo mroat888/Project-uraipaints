@@ -6,7 +6,7 @@
 <nav class="hk-breadcrumb" aria-label="breadcrumb">
     <ol class="breadcrumb breadcrumb-light bg-transparent">
         <li class="breadcrumb-item"><a href="#">Page</a></li>
-        <li class="breadcrumb-item active" aria-current="page">รายงานเข้าพบลูกค้า</li>
+        <li class="breadcrumb-item active" aria-current="page">รายงานเข้าเยี่ยมลูกค้า</li>
     </ol>
 </nav>
 <!-- /Breadcrumb -->
@@ -16,11 +16,11 @@
         <!-- Title -->
         <div class="hk-pg-header mb-10">
             <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-document"></i></span>รายงานเข้าพบลูกค้า</h4>
+                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-document"></i></span>รายงานเข้าเยี่ยมลูกค้า</h4>
             </div>
-            <div class="d-flex">
+            {{-- <div class="d-flex">
                 <button class="btn btn-primary btn-sm"><i data-feather="printer"></i> พิมพ์</button>
-            </div>
+            </div> --}}
         </div>
         <!-- /Title -->
 
@@ -30,7 +30,7 @@
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
                         <div class="col-sm-12 col-md-6">
-                            <h5 class="hk-sec-title">ตารางรายงานเข้าพบลูกค้า<span style="color: rgb(128, 19, 0);">(ประจำปี <?php echo thaidate('Y', date('Y-m-d')); ?>)</span></h5>
+                            <h5 class="hk-sec-title">ตารางรายงานเข้าเยี่ยมลูกค้า<span style="color: rgb(128, 19, 0);">(ประจำปี <?php echo thaidate('Y', date('Y-m-d')); ?>)</span></h5>
                         </div>
                         <div class="col-sm-12 col-md-6">
                         </div>
@@ -86,7 +86,7 @@
                                             }
                                             if($report[$i]['cus_visit_failed'] != "-"){
                                                 $total_cus_visit_failed =  $total_cus_visit_failed + $report[$i]['cus_visit_failed'];
-                                            } 
+                                            }
                                     ?>
                                         <tr>
                                             <td scope="row"><?php echo $i; ?></td>
@@ -103,7 +103,7 @@
                                         }
 
                                         $sum_visit = $total_cus_is_plan + $total_cus_isnot_plan; // จำนวนการเข้าพบทั้งหมด
-      
+
                                         if($total_cus_visit_success != 0){
                                             $percent_success = ($total_cus_visit_success*100)/$sum_visit;
                                         }else{

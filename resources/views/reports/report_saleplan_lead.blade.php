@@ -18,9 +18,9 @@
             <div>
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-document"></i></span>รายงาน Sale plan</h4>
             </div>
-            <div class="d-flex">
+            {{-- <div class="d-flex">
                 <button class="btn btn-primary btn-sm"><i data-feather="printer"></i> พิมพ์</button>
-            </div>
+            </div> --}}
         </div>
         <!-- /Title -->
 
@@ -100,7 +100,7 @@
         </div>
         <!-- /Row -->
     </div>
-    
+
 @section('footer')
     @include('layouts.footer')
 @endsection

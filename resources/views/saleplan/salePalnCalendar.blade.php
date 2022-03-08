@@ -26,7 +26,7 @@
                     {{-- <h5 class="hk-sec-title">ปฏิทิน</h5> --}}
                     <div class="row">
                         <div class="col-sm">
-                            <a href="{{url('palncalendar')}}" type="button" class="btn bg-violet btn-wth-icon icon-wthot-bg btn-sm text-white">
+                            {{-- <a href="{{url('palncalendar')}}" type="button" class="btn bg-violet btn-wth-icon icon-wthot-bg btn-sm text-white">
                                 <span class="icon-label">
                                     <i class="fa fa-calendar"></i>
                                 </span>
@@ -38,8 +38,8 @@
                                     <i class="fa fa-list"></i>
                                 </span>
                                 <span class="btn-text">List</span>
-                            </a>
-                            <hr>
+                            </a> --}}
+                            {{-- <hr> --}}
                             <div id="calendar"></div>
                         </div>
                     </div>
