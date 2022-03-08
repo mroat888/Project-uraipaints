@@ -26,18 +26,46 @@
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
-                        <div class="col-sm-12 col-md-6">
+                        <div class="col-sm-12 col-md-7">
                             <h5 class="hk-sec-title">รายงานเทียบย้อนหลัง (Quarter)</h5>
                         </div>
-                        <div class="col-sm-12 col-md-6">
+                        <div class="col-sm-12 col-md-5">
                             <!-- ------ -->
-                            <span class="form-inline pull-right">
-                                <!-- <span class="mr-5">เลือก</span> -->
-                                <!-- <input type="month" name="" id="" class="form-control"> -->
-                                {{-- <button class="btn btn-primary btn-sm ml-10 mr-15"><i data-feather="printer"></i> พิมพ์</button> --}}
-                                </span>
-
-                            </span>
+                            <form action="{{ url('admin/data_report_historical-quarter/search') }}" method="post" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4">
+                                            <select name="sel_year_form" id="sel_year_form" class="form-control" required>
+                                                <option value="">--ค้นหาปี--</option>
+                                                <?php
+                                                    list($year,$month,$day) = explode("-", date("Y-m-d"));
+                                                    for($i = 0; $i<4; $i++){
+                                                ?>
+                                                        <option value="{{ $year-$i }}">{{ $year-$i }}</option>
+                                                <?php
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-1" style="text-align:center; margin-top:10px;"> ถึง </div>
+                                        <div class="form-group col-md-4">
+                                            <select name="sel_year_to" id="sel_year_to" class="form-control" required>
+                                                <option value="">--ค้นหาปี--</option>
+                                                <?php
+                                                    list($year,$month,$day) = explode("-", date("Y-m-d"));
+                                                    for($i = 0; $i<4; $i++){
+                                                ?>
+                                                        <option value="{{ $year-$i }}">{{ $year-$i }}</option>
+                                                <?php
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <button type="submit" class="btn btn-teal btn-sm px-3 ml-2">ค้นหา</button>
+                                        </div>
+                                    </div>
+                                </form>
                             <!-- ------ -->
                         </div>
                     </div>
@@ -105,11 +133,63 @@
 
         </div>
         <!-- /Row -->
+        <!-- Row -->
+        <!-- <div class="row">
+            <div class="col-xl-12">
+                <section class="hk-sec-wrapper">
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <canvas id="myChart" style="height: 294px"></canvas>
+                        </div>
+                        <div class="col-md-6">
+                            
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div> -->
+        <!-- /Row -->
     </div>
 
 @section('footer')
     @include('layouts.footer')
 @endsection
+<!-- 
+<script src="{{ asset('public/template/graph/Chart.bundle.js') }}"></script>
+
+<script>
+    var ctx = document.getElementById("myChart").getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [1,2,3,4],
+            datasets: [
+                {
+                    label: 'จำนวนลูกค้าปัจจุบัน',
+                    data: [100,200,330,400],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0)',
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                    ],
+                    borderWidth: 1
+                }
+            ]
+        },
+
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true
+                        }
+                    }]
+                }
+            }
+        },
+    );
+</script> -->
 
  <!-- EChartJS JavaScript -->
  <script src="{{asset('public/template/vendors/echarts/dist/echarts-en.min.js')}}"></script>

@@ -21,11 +21,28 @@ class ReportFullYearController extends Controller
         $path_search = "reports/years/".$year;
         $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
-        $yearleader_api = $response->json();
+        $yearseller_api = $response->json();
 
-        // dd($yearleader_api);
+        // สินค้า Top Group
+        $path_search_top = "reports/years/".$year."/pdgroups?sortorder=DESC&limits=10"; 
+        $api_token = $this->api_token->apiToken();
+        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search_top);
+        $grouptop_api = $response->json();
 
-        return view('shareData_admin.report_full_year', compact('yearleader_api'));
+        // สินค้า Top SubGroup
+        $path_search_top = "reports/years/".$year."/pdsubgroups?sortorder=DESC&limits=10&group_id=10"; 
+        $api_token = $this->api_token->apiToken();
+        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search_top);
+        $subgrouptop_api = $response->json();
+
+        // สินค้า Top Product List
+        $path_search_top = "reports/years/".$year."/pdlists?sortorder=DESC&limits=10"; 
+        $api_token = $this->api_token->apiToken();
+        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search_top);
+        $pdlisttop_api = $response->json();
+
+
+        return view('shareData_admin.report_full_year', compact('yearseller_api', 'grouptop_api', 'subgrouptop_api', 'pdlisttop_api'));
     }
 
     public function search(Request $request){
@@ -33,11 +50,29 @@ class ReportFullYearController extends Controller
         $path_search = "reports/years/".$request->sel_year;
         $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
-        $yearleader_api = $response->json();
+        $yearseller_api = $response->json();
+
+        // สินค้า Top Group
+        $path_search_top = "reports/years/".$request->sel_year."/pdgroups?sortorder=DESC&limits=10"; 
+        $api_token = $this->api_token->apiToken();
+        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search_top);
+        $grouptop_api = $response->json();
+        
+        // สินค้า Top SubGroup
+        $path_search_top = "reports/years/".$request->sel_year."/pdsubgroups?sortorder=DESC&limits=10&group_id=10"; 
+        $api_token = $this->api_token->apiToken();
+        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search_top);
+        $subgrouptop_api = $response->json();
+
+        // สินค้า Top Product List
+        $path_search_top = "reports/years/".$request->sel_year."/pdlists?sortorder=DESC&limits=10"; 
+        $api_token = $this->api_token->apiToken();
+        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search_top);
+        $pdlisttop_api = $response->json();
 
         // dd($yearleader_api);
 
-        return view('shareData_admin.report_full_year', compact('yearleader_api'));
+        return view('shareData_admin.report_full_year', compact('yearseller_api', 'grouptop_api', 'subgrouptop_api','pdlisttop_api'));
     }
 
     /**
