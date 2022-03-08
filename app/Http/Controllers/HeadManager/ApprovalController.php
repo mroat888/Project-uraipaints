@@ -17,12 +17,6 @@ class ApprovalController extends Controller
 
     public function index()
     {
-        // $data['request_approval'] = DB::table('assignments')
-        // ->join('users', 'assignments.created_by', '=', 'users.id')
-        // ->whereIn('assignments.assign_status', [0,1,2])
-        // ->where('users.team_id', Auth::user()->team_id)
-        // ->select('assignments.created_by')
-        // ->distinct()->get();
 
         $auth_team_id = explode(',',Auth::user()->team_id);
         $auth_team = array();
@@ -86,7 +80,7 @@ class ApprovalController extends Controller
         ->select(
             'users.name' ,
             'assignments.*')
-        ->where('assignments.assign_status', 0)
+        ->whereIn('assignments.assign_status', [0, 1, 2])
         ->where('assignments.created_by', $id)
         ->where('assignments.assign_request_date', '!=', "NULL")
         ->orderBy('id', 'desc')->get();

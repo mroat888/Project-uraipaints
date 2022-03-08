@@ -67,8 +67,8 @@ class ApprovalController extends Controller
         ->select(
             'users.name' ,
             'assignments.*')
-        ->where('assignments.assign_status', 0)
-        ->where('assignments.created_by', $id)
+        ->whereIn('assignments.assign_status', [0,1,2])
+        // ->where('assignments.created_by', $id)
         ->where('assignments.assign_request_date', '!=', "NULL")
         ->orderBy('id', 'desc')->get();
 

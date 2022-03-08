@@ -72,7 +72,7 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>วันที่</th>
+                                            <th>วันที่ขออนุมัติ</th>
                                             {{-- <th>เรื่อง</th> --}}
                                             <th>พนักงาน</th>
                                             <th>การอนุมัติ</th>
@@ -88,7 +88,7 @@
                                         @if ($chk)
                                         <tr>
                                             <td>{{$count++}}</td>
-                                            <td>{{$chk->assign_request_date}}</td>
+                                            <td>{{Carbon\Carbon::parse($chk->assign_request_date)->format('Y-m-d')}}</td>
                                             <td>{{$chk->name}}</td>
                                             <td>
                                                 @if ($chk->assign_status == 0)

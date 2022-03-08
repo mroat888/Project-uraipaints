@@ -18,9 +18,6 @@
             <div>
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-document"></i></span>รายงานเข้าพบลูกค้าใหม่</h4>
             </div>
-            <div class="d-flex">
-                <button class="btn btn-primary btn-sm"><i data-feather="printer"></i> พิมพ์</button>
-            </div>
         </div>
         <!-- /Title -->
 
@@ -84,7 +81,7 @@
                                         </tr>
                                         <?php
                                             }
-                                        ?>      
+                                        ?>
                                     </tbody>
                                     <tfoot style="font-weight: bold;">
                                         <td colspan="2" style="text-align:center;">ทั้งหมด</td>
