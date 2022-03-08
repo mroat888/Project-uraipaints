@@ -501,6 +501,7 @@ Route::post('admin/data_report_full-year/search', 'ShareData_Admin\ReportFullYea
 Route::get('admin/data_report_historical-year', 'ShareData_Admin\ReportHistoricalYearController@index');
 Route::post('admin/data_report_historical-year/search', 'ShareData_Admin\ReportHistoricalYearController@search');
 Route::get('admin/data_report_historical-quarter', 'ShareData_Admin\ReportHistoricalQuarterController@index');
+Route::post('admin/data_report_historical-quarter/search', 'ShareData_Admin\ReportHistoricalQuarterController@search');
 Route::get('admin/data_report_historical-month', 'ShareData_Admin\ReportHistoricalMonthController@index');
 
 });
