@@ -176,19 +176,16 @@ class ReportHistoricalQuarterController extends Controller
         $data['sum_present'] = array();
         $data['total_year'] = array();
 
-        $sum_pre_q1 = 0;
-        $sum_pre_q2 = 0;
-        $sum_pre_q3 = 0;
-        $sum_pre_q4 = 0;
+        $data['sum_netSales_q1'] = 0;
+        $data['sum_netSales_q2'] = 0;
+        $data['sum_netSales_q3'] = 0;
+        $data['sum_netSales_q4'] = 0;
 
         if($quarter_api['code'] == 200){
 
             foreach($data['year_search'] as $key_year => $year_search ){
                 $total_year = 0;
-                $sum_netSales_q1 = 0;
-                $sum_netSales_q2 = 0;
-                $sum_netSales_q3 = 0;
-                $sum_netSales_q4 = 0;
+                
 
                 foreach($quarter_api['data'] as $key => $value){
                     
@@ -206,7 +203,7 @@ class ReportHistoricalQuarterController extends Controller
                                     $value['year'],
                                     $value['quater'],
                                 ];
-                                $sum_netSales_q1 = $sum_netSales_q1 + $value['netSales'];
+                                $data['sum_netSales_q1'] += $value['netSales'];
                                 $total_year += $value['netSales'];
                             break;
                             case 2:
@@ -220,7 +217,7 @@ class ReportHistoricalQuarterController extends Controller
                                     $value['year'],
                                     $value['quater'],
                                 ];
-                                $sum_netSales_q2 = $sum_netSales_q2 + $value['netSales'];
+                                $data['sum_netSales_q2'] += $value['netSales'];
                                 $total_year += $value['netSales'];
                             break;
                             case 3:
@@ -234,7 +231,7 @@ class ReportHistoricalQuarterController extends Controller
                                     $value['year'],
                                     $value['quater'],
                                 ];
-                                $sum_netSales_q3 = $sum_netSales_q3 + $value['netSales'];
+                                $data['sum_netSales_q3'] += $value['netSales'];
                                 $total_year += $value['netSales'];
                             break;
                             case 4:
@@ -248,7 +245,7 @@ class ReportHistoricalQuarterController extends Controller
                                     $value['year'],
                                     $value['quater'],
                                 ];
-                                $sum_netSales_q4 = $sum_netSales_q4 + $value['netSales'];
+                                $data['sum_netSales_q4'] += $value['netSales'];
                                 $total_year += $value['netSales'];
                             break;
                         }
