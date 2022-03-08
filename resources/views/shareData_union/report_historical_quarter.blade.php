@@ -119,6 +119,19 @@
                                         </tr>
                                         @endforeach
                                     </tbody>
+                                    <tfoot>
+                                        <tr style="font-weight: bold;">
+                                            <td style=" text-align:center; font-weight: bold;">ทั้งหมด</td>
+                                            <td style="font-weight: bold;">{{ number_format($sum_netSales_q1,2) }}</td>
+                                            <td style="font-weight: bold;">{{ number_format($sum_netSales_q2,2) }}</td>
+                                            <td style="font-weight: bold;">{{ number_format($sum_netSales_q3,2) }}</td>
+                                            <td style="font-weight: bold;">{{ number_format($sum_netSales_q4,2) }}</td>
+                                            @php 
+                                                $sum_all = $sum_netSales_q1+$sum_netSales_q2+$sum_netSales_q3+$sum_netSales_q4;
+                                            @endphp
+                                            <td style="font-weight: bold;">{{ number_format($sum_all,2) }}</td>
+                                        </tr>
+                                    </tfoot>
                                 </table>
                             </div>
 
