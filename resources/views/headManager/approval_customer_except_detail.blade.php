@@ -43,7 +43,7 @@
         <div class="row">
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-sm">
                             <a href="{{ url('/approvalgeneral') }}" type="button" class="btn btn-violet btn-wth-icon icon-wthot-bg btn-sm text-white">
                                 <span class="icon-label">
@@ -61,7 +61,7 @@
                             <hr>
                             <div id="calendar"></div>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="row mb-2">
                             <div class="col-md-12">
                                 <h5 class="hk-sec-title">ตารางรายการข้อมูลการอนุมัติลูกค้าใหม่ (นอกแผน)</h5>
@@ -98,8 +98,8 @@
                                                 <span class="badge badge-soft-danger" style="font-size: 12px;">Reject</span></td>
                                                 @endif
                                             </td>
-                                            <td style="text-align:center">
-                                                <a href="{{ url('comment_customer_new', [$value->custid, $value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
+                                            <td>
+                                                <a href="{{ url('head/comment_customer_new', [$value->custid, $value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
                                                     <h4 class="btn-icon-wrap" style="color: white;">
                                                         <i data-feather="message-square"></i>
                                                     </h4>
@@ -115,8 +115,8 @@
                                                     <span class="badge badge-soft-warning mt-15 mr-10"
                                                         style="font-size: 12px;">Pending</span>
                                                 </td>
-                                                <td style="text-align:center">
-                                                    <a href="{{ url('lead/comment_customer_except', [$value->custid, $value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
+                                                <td>
+                                                    <a href="{{ url('head/comment_customer_except', [$value->custid, $value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
                                                         <h4 class="btn-icon-wrap" style="color: white;">
                                                             <i data-feather="message-square"></i>
                                                         </h4>

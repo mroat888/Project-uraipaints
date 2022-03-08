@@ -72,7 +72,7 @@
                                         @foreach ($request_approval as $key => $value)
                                         <tr>
                                             <td>{{$key + 1}}</td>
-                                            <td>{{$value->assign_request_date}}</td>
+                                            <td>{{Carbon\Carbon::parse($value->assign_request_date)->format('Y-m-d')}}</td>
                                             <td>
 
                                                 @if ($value->assign_is_hot == 1)
@@ -83,7 +83,13 @@
                                             </td>
                                             <td>{{$value->name}}</td>
                                             <td>
+                                                @if ($value->assign_status == 0)
                                                 <span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>
+                                                @elseif ($value->assign_status == 1)
+                                                <span class="badge badge-soft-success" style="font-size: 12px;">Approve</span>
+                                                @else
+                                                <span class="badge badge-soft-danger" style="font-size: 12px;">Reject</span>
+                                                @endif
                                             </td>
                                             <td>
                                                 <button onclick="edit_modal({{ $value->id }})" type="button" class="btn btn-icon btn-violet mr-10"

@@ -50,10 +50,23 @@ class AssignmentController extends Controller
         ->select('assignments.*', 'users.name')
         ->orderBy('assignments.id', 'desc')->get();
 
-        $users = DB::table('users')
-            ->where('team_id', Auth::user()->team_id)
-            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
-            ->get();
+            $auth_team_id = explode(',',Auth::user()->team_id);
+            $auth_team = array();
+            foreach($auth_team_id as $value){
+                $auth_team[] = $value;
+            }
+
+            $users = DB::table('users')
+                // ->where('team_id', Auth::user()->team_id)
+                ->where('status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+                ->where(function($query) use ($auth_team) {
+                    for ($i = 0; $i < count($auth_team); $i++){
+                        $query->orWhere('team_id', $auth_team[$i])
+                            ->orWhere('team_id', 'like', $auth_team[$i].',%')
+                            ->orWhere('team_id', 'like', '%,'.$auth_team[$i]);
+                    }
+                })
+                ->get();
 
         return view('headManager.add_assignment', compact('assignments', 'users'));
     }

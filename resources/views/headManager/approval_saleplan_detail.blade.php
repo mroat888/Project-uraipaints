@@ -84,7 +84,7 @@
                                                 @endif
 
                                             <td>
-                                                <a href="{{ url('comment_saleplan', [$value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
+                                                <a href="{{ url('head/comment_saleplan', [$value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
                                                     <h4 class="btn-icon-wrap" style="color: white;">
                                                         <i data-feather="message-square"></i>
                                                     </h4>
@@ -165,6 +165,8 @@
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $value->shop_name }}</td>
                                                 <td>{{ $value->PROVINCE_NAME }}</td>
+                                                <td>{{ $value->cust_name }}</td>
+
                                                 <td>
                                                     @if ($value->shop_aprove_status == 2)
                                                     <span class="badge badge-soft-success" style="font-size: 12px;">Approve</span></td>
@@ -174,7 +176,7 @@
                                                     @endif
                                                 </td>
                                                 <td style="text-align:center">
-                                                    <a href="{{ url('head/comment_customer_new', [$value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
+                                                    <a href="{{ url('head/comment_customer_new', [$value->custid, $value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
                                                         <h4 class="btn-icon-wrap" style="color: white;">
                                                             <i data-feather="message-square"></i>
                                                         </h4>

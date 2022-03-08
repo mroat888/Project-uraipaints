@@ -54,10 +54,10 @@
                         </div>
                     </div> --}}
                     <div class="row mb-2">
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <h5 class="hk-sec-title">ตารางข้อมูลการอนุมัติลูกค้าใหม่ (นอกแผน)</h5>
                             </div>
-                            <div class="col-sm-12 col-md-9">
+                            <div class="col-sm-12 col-md-6">
                                 <!-- ------ -->
                                 <span class="form-inline pull-right">
                                     <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</button>
@@ -91,20 +91,28 @@
                                         @foreach ($customers as $key => $value)
                                         <?php $chk =  DB::table('customer_shops_saleplan')->join('users', 'customer_shops_saleplan.created_by', '=', 'users.id')
                                         ->where('customer_shops_saleplan.is_monthly_plan', '=', "N")
-                                        ->where('customer_shops_saleplan.shop_aprove_status', '=', 1)
+                                        ->whereIn('customer_shops_saleplan.shop_aprove_status', [1, 2, 3])
                                         ->where('customer_shops_saleplan.created_by', $value->shop_created_by)->select('users.name', 'customer_shops_saleplan.created_at',
-                                        'customer_shops_saleplan.monthly_plan_id')->first(); ?>
+                                        'customer_shops_saleplan.monthly_plan_id', 'customer_shops_saleplan.shop_aprove_status')->first(); ?>
                                         @if ($chk)
                                         <tr>
                                             <input type="hidden" name="monthly_plan_id" value="{{$chk->monthly_plan_id}}">
                                             <td>{{$key + 1}}</td>
-                                            <td>{{$chk->created_at}}</td>
+                                            <td>{{Carbon\Carbon::parse($chk->created_at)->format('Y-m-d')}}</td>
                                             <td>{{$chk->name}}</td>
                                             <td>
-                                                <span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>
+                                                @if ($chk->shop_aprove_status == 2)
+                                                <span class="badge badge-soft-success" style="font-size: 12px;">Approve</span></td>
+
+                                                @elseif ($chk->shop_aprove_status == 3)
+                                                <span class="badge badge-soft-danger" style="font-size: 12px;">Reject</span></td>
+
+                                                @else
+                                                <span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span></td>
+                                                @endif
                                             </td>
                                             <td>
-                                                <a href="{{url('lead/approval_customer_except_detail', $value->shop_created_by)}}" class="btn btn-icon btn-primary btn-link btn_showplan pt-5" value="3">
+                                                <a href="{{url('head/approval_customer_except_detail', $value->shop_created_by)}}" class="btn btn-icon btn-primary btn-link btn_showplan pt-5" value="3">
                                                     <i data-feather="file-text"></i>
                                                 </a>
                                             </td>

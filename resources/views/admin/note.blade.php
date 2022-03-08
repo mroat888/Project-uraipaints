@@ -1,4 +1,4 @@
-@extends('layouts.masteradmin')
+@extends('layouts.masterAdmin')
 
 @section('content')
     <!-- Breadcrumb -->

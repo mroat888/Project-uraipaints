@@ -18,9 +18,6 @@
             <div>
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-document"></i></span>รายงานสรุปข้อมูลประจำปี</h4>
             </div>
-            <div class="d-flex">
-                <button class="btn btn-primary btn-sm"><i data-feather="printer"></i> พิมพ์</button>
-            </div>
         </div>
         <!-- /Title -->
 
@@ -70,7 +67,7 @@
                                         </tr>
 
                                         <tr>
-                                            
+
                                             <th class="bg-success text-white">งาน</th>
                                             <th class="bg-success text-white">ยังไม่ทำ</th>
                                             <th class="bg-success text-white">สำเร็จ</th>
@@ -125,7 +122,7 @@
                                             <!-- จบ แผนงาน Sale plan -->
                                         </tr>
                                         @endforeach
-                                        
+
                                     </tbody>
                                     <tfoot style="font-weight: bold;">
                                         <td colspan="2" style="text-align:center; ">ทั้งหมด</td>
@@ -159,7 +156,7 @@
         </div>
         <!-- /Row -->
     </div>
-    
+
 @section('footer')
     @include('layouts.footer')
 @endsection
