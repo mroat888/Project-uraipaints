@@ -338,7 +338,7 @@ License: You must have a valid license purchased only from themeforest to legall
                                                 <i class="ion ion-md-stats"
                                                     style="color: #044067;"></i>รายงานสรุปยอด (ทั้งปี)</a>
                                         </li>
-                                        <!-- <li class="nav-item">
+                                        <li class="nav-item">
                                             <a class="nav-link"
                                                 href="{{ url('data_report_historical-year') }}">
                                                 <i class="ion ion-md-stats"
@@ -355,7 +355,7 @@ License: You must have a valid license purchased only from themeforest to legall
                                                 href="{{ url('data_report_historical-month') }}">
                                                 <i class="ion ion-md-stats"
                                                     style="color: #044067;"></i>รายงานเทียบย้อนหลัง (รายเดือน)</a>
-                                        </li> -->
+                                        </li>
                                     </ul>
                                 </li>
                             </ul>

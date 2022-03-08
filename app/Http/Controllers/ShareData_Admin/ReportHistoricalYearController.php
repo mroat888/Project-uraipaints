@@ -105,7 +105,7 @@ class ReportHistoricalYearController extends Controller
         }
         $year_text = "";
         $search_year = "";
-        if($reage_year > 1){
+        if($reage_year >= 1){
             for($i=1; $i<$reage_year; $i++){
                 if($request->sel_year_form >= $request->sel_year_to){
                     $year_text .= $request->sel_year_to+$i."," ;
@@ -118,6 +118,8 @@ class ReportHistoricalYearController extends Controller
             }else{
                 $search_year =  $request->sel_year_form.",".$year_text.$request->sel_year_to;
             }
+        }else{
+            $search_year =  $request->sel_year_form;
         }
 
         $path_search = "reports/years/".$search_year;
