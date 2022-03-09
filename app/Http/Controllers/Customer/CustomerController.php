@@ -229,7 +229,7 @@ class CustomerController extends Controller
 
                 $data = Customer::find($request->edit_shop_id);
 
-                //ลบรูปเก่าเพื่ออัพโหลดรูปใหม่แทน
+                //ลบรูปเก่า (เพื่ออัพโหลดรูปใหม่แทน)
                 if (!empty($data->shop_profile_image)) {
                     $path2 = 'upload/CustomerImage/';
                     unlink(public_path($path2 . $data->shop_profile_image));
