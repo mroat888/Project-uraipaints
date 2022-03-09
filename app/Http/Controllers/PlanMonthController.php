@@ -73,7 +73,7 @@ class PlanMonthController extends Controller
         $data['api_token'] = $api_token;
 
         // -----  API ลูกค้าที่ sale ดูแล ----------- //
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers');
+        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/sellers/'.Auth::user()->api_identify.'/customers');
         $res_api = $response->json();
 
         $data['customer_api'] = array();
@@ -281,7 +281,7 @@ class PlanMonthController extends Controller
        $data['api_token'] = $api_token;
 
        // -----  API ลูกค้าที่ sale ดูแล ----------- //
-       $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers');
+       $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/sellers/'.Auth::user()->api_identify.'/customers');
        $res_api = $response->json();
 
        $data['customer_api'] = array();

@@ -164,11 +164,11 @@ class DashboardController extends Controller
         $sum_amtsale_previous = array();
         $data['amtsale_current'] = "";
         $data['amtsale_previous'] = "";
-
+        
         if(!is_null($user_teams)){
             foreach($user_teams as $team){
                 $response = Http::withToken($api_token)
-                ->get('http://49.0.64.92:8020/api/v1/sellers/'.$team->api_identify.'/dashboards', [
+                ->get(env("API_LINK").'api/v1/sellers/'.$team->api_identify.'/dashboards', [
                     'year' => $year,
                     'month' => $month
                 ]);

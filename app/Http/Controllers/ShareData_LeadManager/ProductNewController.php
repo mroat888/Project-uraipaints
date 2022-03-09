@@ -46,7 +46,7 @@ class ProductNewController extends Controller
         foreach($users_saleman as $key => $users_iden){
 
             $api_token = $this->api_token->apiToken();
-            $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/sellers/'.$users_iden->api_identify.'/campignpromotes');
+            $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/sellers/'.$users_iden->api_identify.'/campignpromotes');
             $res_api = $response->json();
 
            // dd($users_iden->api_identify, $res_api);
@@ -123,7 +123,7 @@ class ProductNewController extends Controller
 
         foreach($users_saleman as $key => $users_iden){
             $api_token = $this->api_token->apiToken();
-            $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/campaignpromotes/'.$request->sel_campaign.'/sellertargets'.'/'.$users_iden->api_identify);
+            $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/campaignpromotes/'.$request->sel_campaign.'/sellertargets'.'/'.$users_iden->api_identify);
             $res_api = $response->json();
 
             if($res_api['code'] == 200){
@@ -193,12 +193,12 @@ class ProductNewController extends Controller
 
         // ดึงรายการสินค้าใหม่
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/campaignpromotes/');
+        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/campaignpromotes/');
         $campaignpromotes_api = $response->json();
 
         // ดึงรายละเอียดแคมเปญ
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/campaignpromotes/'.$request->sel_campaign);
+        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/campaignpromotes/'.$request->sel_campaign);
         $campaignpromotes_name_api = $response->json();
         
         dd($campaign_detail_api['data']);

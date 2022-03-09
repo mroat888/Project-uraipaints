@@ -20,7 +20,7 @@ class ReportFullYearController extends Controller
         list($year,$month,$day) = explode('-',date('Y-m-d'));
         $path_search = "reports/years/".$year."/headers"."/".Auth::user()->api_identify;
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
+        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/'.$path_search);
         $yearleader_api = $response->json();
 
         // dd($yearleader_api);
@@ -33,7 +33,7 @@ class ReportFullYearController extends Controller
 
         $path_search = "reports/years/".$request->sel_year."/headers"."/".Auth::user()->api_identify;
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
+        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/'.$path_search);
         $yearleader_api = $response->json();
 
         // dd($yearleader_api);

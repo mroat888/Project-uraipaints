@@ -13,10 +13,14 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
+use App\Http\Controllers\Api\ApiController;
 
 
 class CustomerVisitController extends Controller
 {
+    public function __construct(){
+        $this->api_token = new ApiController();
+    }
 
     public function visit()
     {
@@ -26,22 +30,9 @@ class CustomerVisitController extends Controller
             ->where('customer_visits.created_by', Auth::user()->id) // OAT เพิ่ม
             ->get();
 
-        // $customer_shops = DB::table('customer_shops')
-        //     ->whereIn('shop_status', [0, 1]) // ดึงเฉพาะ ลูกค้าเป้าหมายและทะเบียนลูกค้า
-        //     ->where('created_by', Auth::user()->id)
-        //     ->orderby('shop_name', 'asc')
-        //     ->get();
-
-        // -----  API
-        $response = Http::post('http://49.0.64.92:8020/api/auth/login', [
-            'username' => 'apiuser',
-            'password' => 'testapi',
-        ]);
-        $res = $response->json();
-        $api_token = $res['data'][0]['access_token'];
-
+        $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)
-                    ->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers');
+                    ->get(env("API_LINK").'api/v1/sellers/'.Auth::user()->api_identify.'/customers');
         $res_api = $response->json();
         // $res_api = $res['data'];
 
@@ -221,14 +212,8 @@ class CustomerVisitController extends Controller
     public function fetch_customer_shops_visit($id)
     {
         // -----  API
-        $response = Http::post('http://49.0.64.92:8020/api/auth/login', [
-            'username' => 'apiuser',
-            'password' => 'testapi',
-        ]);
-        $res = $response->json();
-        $api_token = $res['data'][0]['access_token'];
-
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/customers/'.$id);
+        $api_token = $this->api_token->apiToken();
+        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/customers/'.$id);
         $res_api = $response->json();
 
         $customer_api = array();

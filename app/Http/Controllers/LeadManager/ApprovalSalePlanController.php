@@ -96,7 +96,7 @@ class ApprovalSalePlanController extends Controller
         // -----  API ลูกค้าที่ sale ดูแล ----------- //
         $mon_plan = DB::table('monthly_plans')->where('id', $id)->first(); // ค้นหา id ผู้ขออนุมัติ
         $user_api = DB::table('users')->where('id',$mon_plan->created_by)->first(); // ค้นหา user api เพื่อใช้ดึง api
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/sellers/'.$user_api->api_identify.'/customers');
+        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/sellers/'.$user_api->api_identify.'/customers');
         $res_api = $response->json();
 
         $data['customer_api'] = array();

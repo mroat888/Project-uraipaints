@@ -25,7 +25,7 @@ class ReportHistoricalQuarterController extends Controller
 
         $path_search = "reports/years/".$year.",".$year_old1.",".$year_old2."/quaters/1,2,3,4";
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
+        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/'.$path_search);
         $quarter_api = $response->json();
 
         $data['year_search'] = array($year, $year_old1, $year_old2);
@@ -170,7 +170,7 @@ class ReportHistoricalQuarterController extends Controller
         $path_search = "reports/years/".$search_year."/quaters/1,2,3,4";
         // dd($path_search);
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
+        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/'.$path_search);
         $quarter_api = $response->json();
 
         $data['sum_present'] = array();
