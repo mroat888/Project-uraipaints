@@ -116,21 +116,44 @@ class ApprovalSalePlanController extends Controller
 
         foreach($customer_visits as $key => $cus_visit){
 
-            foreach ($res_api['data'] as $key_api => $value_api) {
-                $res_visit_api = $res_api['data'][$key_api];
-                if($cus_visit->customer_shop_id == $res_visit_api['identify']){
-                    $data['customer_visit_api'][$key_api] =
+            $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/customers/'.$cus_visit->customer_shop_id);
+            $res_visit_api = $response->json();
+            // dd($res_visit_api);
+            if($res_visit_api['code'] == 200){
+                foreach ($res_visit_api['data'] as $key_api => $value_api) {
+                    $res_visit_api = $res_visit_api['data'][$key_api];
+                    $data['customer_visit_api'][] =
                     [
                         'id' => $cus_visit->id,
                         'identify' => $res_visit_api['identify'],
                         'shop_name' => $res_visit_api['title']." ".$res_visit_api['name'],
-                        'shop_address' => $res_visit_api['amphoe_name']." ".$res_visit_api['province_name'],
+                        'shop_address' => $res_visit_api['amphoe_name']." , ".$res_visit_api['province_name'],
                         'shop_phone' => $res_visit_api['telephone'],
                         'shop_mobile' => $res_visit_api['mobile'],
+                        'focusdate' => $res_visit_api['focusdate'],
+                        'monthly_plan_id' => $cus_visit->monthly_plan_id,
                     ];
                 }
             }
         }
+
+        // foreach($customer_visits as $key => $cus_visit){
+
+        //     foreach ($res_api['data'] as $key_api => $value_api) {
+        //         $res_visit_api = $res_api['data'][$key_api];
+        //         if($cus_visit->customer_shop_id == $res_visit_api['identify']){
+        //             $data['customer_visit_api'][$key_api] =
+        //             [
+        //                 'id' => $cus_visit->id,
+        //                 'identify' => $res_visit_api['identify'],
+        //                 'shop_name' => $res_visit_api['title']." ".$res_visit_api['name'],
+        //                 'shop_address' => $res_visit_api['amphoe_name']." ".$res_visit_api['province_name'],
+        //                 'shop_phone' => $res_visit_api['telephone'],
+        //                 'shop_mobile' => $res_visit_api['mobile'],
+        //             ];
+        //         }
+        //     }
+        // }
 
         $data['sale_name'] = DB::table('users')->where('id',$mon_plan->created_by)->select('name')->first(); // ชื่อเซลล์
 

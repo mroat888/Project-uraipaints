@@ -26,7 +26,7 @@ class ApprovalController extends Controller
 
         $data['request_approval'] = DB::table('assignments')
             ->join('users', 'assignments.created_by', '=', 'users.id')
-            ->where('assignments.assign_status', 0)
+            ->where('assignments.assign_status', 0) // สถานะการอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน)
             ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
             ->where(function($query) use ($auth_team) {
                 for ($i = 0; $i < count($auth_team); $i++){

@@ -16,7 +16,8 @@ class AssignmentController extends Controller
     {
         $assignments = Assignment::join('users', 'assignments.assign_emp_id', 'users.id')
         ->where('assignments.created_by', Auth::user()->id)
-        // ->where('assignments.assign_status', 1)
+        ->orWhere('assignments.assign_approve_id', Auth::user()->id)
+        ->where('assignments.assign_status', 3) // สถานะการอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน)
         ->select('assignments.*', 'users.name')
         ->orderBy('assignments.id', 'desc')->get();
 

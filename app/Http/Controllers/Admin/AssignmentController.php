@@ -27,7 +27,24 @@ class AssignmentController extends Controller
 
     public function fetch_user($id){
         $users = DB::table('users')->where('id', $id)->first();
-        $saleman = DB::table('users')->where('status', 1)->where('team_id', $users->team_id)->get();
+
+        $auth_team_id = explode(',',$users->team_id);
+        $auth_team = array();
+        foreach($auth_team_id as $value){
+            $auth_team[] = $value;
+        }
+
+        // $saleman = DB::table('users')->where('status', 1)->where('team_id', $users->team_id)->get();
+        $saleman = DB::table('users')
+        ->where('status', 1)
+        ->where(function($query) use ($auth_team) {
+            for ($i = 0; $i < count($auth_team); $i++){
+                $query->orWhere('users.team_id', $auth_team[$i])
+                    ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                    ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+            }
+        })
+        ->get();
         return response()->json([
             'status' => 200,
             'saleman' => $saleman

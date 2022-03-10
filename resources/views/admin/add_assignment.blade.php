@@ -239,6 +239,7 @@
         $( "#sel_manager" ).change(function(e) {
             e.preventDefault();
             let umanager = $(this).val();
+            console.log(umanager);
             $.ajax({
                 method: 'GET',
                 url: '{{ url("/admin/fetch_user") }}/'+umanager,
@@ -249,6 +250,28 @@
                         $('#sel_saleman').children().remove().end();
                         $.each(response.saleman, function(key, value){
                             $('#sel_saleman').append('<option value='+value.id+'>'+value.name+'</option>')	;
+                        });
+                    }
+                }
+            });
+        });
+    });
+
+    $(document).ready(function() {
+        $( "#get_manager" ).change(function(e) {
+            e.preventDefault();
+            let umanager = $(this).val();
+            console.log(umanager);
+            $.ajax({
+                method: 'GET',
+                url: '{{ url("/admin/fetch_user") }}/'+umanager,
+                datatype: 'json',
+                success: function(response){
+                    if(response.status == 200){
+                        console.log(response)
+                        $('#get_emp').children().remove().end();
+                        $.each(response.saleman, function(key, value){
+                            $('#get_emp').append('<option value='+value.id+'>'+value.name+'</option>')	;
                         });
                     }
                 }
