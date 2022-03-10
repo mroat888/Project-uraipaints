@@ -12,8 +12,8 @@ class ApiController extends Controller
         // -----  API 
         // dd(env("API_LINK"));
         $response = Http::post(env("API_LINK").'api/auth/login', [
-            'username' => 'apiuser',
-            'password' => 'testapi',
+            'username' => env("API_USER"),
+            'password' => env("API_PASS"),
         ]);
         $res = $response->json();
         $api_token = $res['data'][0]['access_token'];
