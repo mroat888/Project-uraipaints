@@ -156,7 +156,9 @@ Route::get('lead/viewAssignmentDetail', function () { return view('leadManager.v
 
 Route::get('/approvalsaleplan', 'LeadManager\ApprovalSalePlanController@index');
 Route::post('/approvalsaleplan/search', 'LeadManager\ApprovalSalePlanController@search');
-// Route::get('/approvalsaleplan/search', 'LeadManager\ApprovalSalePlanController@search');
+Route::post('lead/approvalsaleplan-history/search', 'LeadManager\ApprovalSalePlanController@history_search');
+Route::get('lead/approvalsaleplan-history', 'LeadManager\ApprovalSalePlanController@saleplan_history');
+Route::get('lead/approvalsaleplan-history-detail/{id}', 'LeadManager\ApprovalSalePlanController@saleplan_history_detail');
 Route::get('/approvalsaleplan_detail/{id}', 'LeadManager\ApprovalSalePlanController@approvalsaleplan_detail');
 Route::get('comment_saleplan/{id}/{createID}', 'LeadManager\ApprovalSalePlanController@comment_saleplan');
 Route::post('lead/create_comment_saleplan', 'LeadManager\ApprovalSalePlanController@create_comment_saleplan');

@@ -43,11 +43,7 @@
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-analytics"></i></span>อนุมัติแผนประจำเดือน<?php echo thaidate('F Y', date('Y-m', strtotime("+1 month"))); ?></h4>
             </div>
             <div class="d-flex">
-                {{-- <form action="{{ url('lead/approval_saleplan_confirm_all') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <button type="submit" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" name="approve" value="approve">อนุมัติ</button>
 
-                    <button type="submit" class="btn btn_purple btn-danger btn-sm btn-rounded px-3 ml-5" name="failed" value="failed">ไม่อนุมัติ</button> --}}
             </div>
         </div>
         <!-- /Title -->
@@ -56,6 +52,25 @@
         <div class="row">
                 <div class="col-xl-12">
                     <section class="hk-sec-wrapper">
+                        <div class="row">
+                            <div class="col-sm">
+                                <a href="{{ url('/approvalsaleplan') }}" type="button" class="btn btn-violet btn-wth-icon icon-wthot-bg btn-sm text-white">
+                                    <span class="icon-label">
+                                        <i class="fa fa-file"></i>
+                                    </span>
+                                    <span class="btn-text">รออนุมัติ</span>
+                                </a>
+
+                                <a href="{{ url('lead/approvalsaleplan-history') }}" type="button" class="btn btn-secondary btn-wth-icon icon-wthot-bg btn-sm text-white">
+                                    <span class="icon-label">
+                                        <i class="fa fa-list"></i>
+                                    </span>
+                                    <span class="btn-text">ประวัติ</span>
+                                </a>
+                                <hr>
+                                <div id="calendar"></div>
+                            </div>
+                        </div>
                         <div class="row mb-2">
                             <div class="col-sm-12 col-md-6">
                                 <h5 class="hk-sec-title">ตารางอนุมัติแผนประจำเดือน<?php echo thaidate('F Y', date('Y-m', strtotime("+1 month"))); ?></h5>
