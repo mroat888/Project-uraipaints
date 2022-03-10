@@ -93,6 +93,9 @@ class PlanMonthController extends Controller
             ->orderBy('id', 'desc')->get();
 
         $data['customer_visit_api'] = array();
+
+        // dd($customer_visits); 
+
         foreach($customer_visits as $key => $cus_visit){
 
             foreach ($res_api['data'] as $key_api => $value_api) {

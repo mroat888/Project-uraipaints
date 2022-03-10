@@ -36,7 +36,7 @@
                                     </div>
                                     <div class="col-sm-12 col-md-9">
                                         <!-- ------ -->
-                                        <span class="form-inline pull-right pull-sm-center">
+                                        <!-- <span class="form-inline pull-right pull-sm-center">
                                             <select class="form-control custom-select form-control-sm" style="margin-left:5px; margin-right:5px;">
                                                 <option selected>เลือกจังหวัด</option>
                                                 <option value="1">กรุงเทพมหานคร</option>
@@ -56,7 +56,7 @@
 
                                             <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm">ค้นหา</button>
 
-                                        </span>
+                                        </span> -->
                                         <!-- ------ -->
                                     </div>
                                 </div>
@@ -115,8 +115,8 @@
                                                         <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-create"></i></h4></button> -->
                                                     <button class="btn btn-icon btn-warning mr-10 btn_editshop" value="{{ $shop->id }}">
                                                         <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-create"></i></h4></button>
-                                                    <button class="btn btn-icon btn-info mr-10">
-                                                        <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-calendar"></i></h4></button>
+                                                    <!-- <button class="btn btn-icon btn-info mr-10">
+                                                        <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-calendar"></i></h4></button> -->
                                                     <a href="{{ url('/customer/detail', $shop->id) }}" class="btn btn-icon btn-success mr-10">
                                                         <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></a>
                                                 </div>

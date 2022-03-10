@@ -105,7 +105,7 @@ class DashboardController extends Controller
                 }
             })
             ->whereMonth('assignments.assign_request_date', Carbon::now()->format('m'))
-            ->whereIn('assignments.assign_status', [0,1,2])
+            ->whereIn('assignments.assign_status', [1,2])
             ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
             ->get();
 

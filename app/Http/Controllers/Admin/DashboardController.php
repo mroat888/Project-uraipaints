@@ -89,7 +89,7 @@ class DashboardController extends Controller
         $data['list_approval'] = DB::table('assignments')
             ->join('users', 'assignments.created_by', '=', 'users.id')
             ->whereMonth('assignments.assign_request_date', Carbon::now()->format('m'))
-            ->whereIn('assignments.assign_status', [0,1,2])
+            ->whereIn('assignments.assign_status', [1,2])
             ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
             ->get();
 
