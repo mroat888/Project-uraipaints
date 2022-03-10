@@ -528,6 +528,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+
                                                 <?php $no = 1; ?>
 
                                                 @foreach ($customer_visit_api as $key => $value)
