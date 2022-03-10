@@ -43,7 +43,7 @@ class ApiCustomerController extends Controller
         $api_token = $this->api_token->apiToken();
         $customer_api = array();
         foreach($users_saleman as $saleman){
-            $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/sellers/'.$saleman->api_identify.'/customers');
+            $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/sellers/'.$saleman->api_identify.'/customers');
             $res_api = $response->json();
 
             if(!empty($res_api)){
@@ -73,12 +73,12 @@ class ApiCustomerController extends Controller
         $api_token = $this->api_token->apiToken();
 
         //- ดึงชื่อร้านค้า ตาม ID
-        $response_cust = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/customers/'.$id);
+        $response_cust = Http::withToken($api_token)->get(env("API_LINK").'api/v1/customers/'.$id);
         $res_custapi = $response_cust->json();
         $data['customer_shop'] = $res_custapi['data'][0];
         
         //- ดึงแคมเปญของร้านค้า
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/customers/'.$id.'/campaigns');
+        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/customers/'.$id.'/campaigns');
         $res_api = $response->json();
 
         if($res_api['code'] == 200){

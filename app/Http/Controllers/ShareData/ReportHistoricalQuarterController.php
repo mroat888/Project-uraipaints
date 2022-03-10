@@ -25,7 +25,7 @@ class ReportHistoricalQuarterController extends Controller
 
         $path_search = "reports/years/".$year.",".$year_old1.",".$year_old2."/quaters/1,2,3,4/sellers/".Auth::user()->api_identify;
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
+        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/'.$path_search);
         $quarter_api = $response->json();
 
         $data['year_search'] = array($year, $year_old1, $year_old2);
@@ -34,10 +34,10 @@ class ReportHistoricalQuarterController extends Controller
         $data['sum_present'] = array();
         $data['total_year'] = array();
 
-        $sum_pre_q1 = 0;
-        $sum_pre_q2 = 0;
-        $sum_pre_q3 = 0;
-        $sum_pre_q4 = 0;
+        $data['sum_netSales_q1'] = 0;
+        $data['sum_netSales_q2'] = 0;
+        $data['sum_netSales_q3'] = 0;
+        $data['sum_netSales_q4'] = 0;
 
         // Chat
         $data_year = "";
@@ -46,11 +46,7 @@ class ReportHistoricalQuarterController extends Controller
 
             foreach($data['year_search'] as $key_year => $year_search ){
                 $total_year = 0;
-                $sum_netSales_q1 = 0;
-                $sum_netSales_q2 = 0;
-                $sum_netSales_q3 = 0;
-                $sum_netSales_q4 = 0;
-
+    
                 foreach($quarter_api['data'] as $key => $value){
                     
                     if($value['year'] == $year_search){
@@ -67,7 +63,7 @@ class ReportHistoricalQuarterController extends Controller
                                     $value['year'],
                                     $value['quater'],
                                 ];
-                                $sum_netSales_q1 = $sum_netSales_q1 + $value['netSales'];
+                                $data['sum_netSales_q1'] += $value['netSales'];
                                 $total_year += $value['netSales'];
                             break;
                             case 2:
@@ -81,7 +77,7 @@ class ReportHistoricalQuarterController extends Controller
                                     $value['year'],
                                     $value['quater'],
                                 ];
-                                $sum_netSales_q2 = $sum_netSales_q2 + $value['netSales'];
+                                $data['sum_netSales_q2'] += $value['netSales'];
                                 $total_year += $value['netSales'];
                             break;
                             case 3:
@@ -95,7 +91,7 @@ class ReportHistoricalQuarterController extends Controller
                                     $value['year'],
                                     $value['quater'],
                                 ];
-                                $sum_netSales_q3 = $sum_netSales_q3 + $value['netSales'];
+                                $data['sum_netSales_q3'] += $value['netSales'];
                                 $total_year += $value['netSales'];
                             break;
                             case 4:
@@ -110,7 +106,7 @@ class ReportHistoricalQuarterController extends Controller
                                     $value['year'],
                                     $value['quater'],
                                 ];
-                                $sum_netSales_q4 = $sum_netSales_q4 + $value['netSales'];
+                                $data['sum_netSales_q4'] += $value['netSales'];
                                 $total_year += $value['netSales'];
                             break;
                         }
@@ -169,25 +165,21 @@ class ReportHistoricalQuarterController extends Controller
         $path_search = "reports/years/".$search_year."/quaters/1,2,3,4";
         // dd($path_search);
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
+        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/'.$path_search);
         $quarter_api = $response->json();
 
         $data['sum_present'] = array();
         $data['total_year'] = array();
 
-        $sum_pre_q1 = 0;
-        $sum_pre_q2 = 0;
-        $sum_pre_q3 = 0;
-        $sum_pre_q4 = 0;
+        $data['sum_netSales_q1'] = 0;
+        $data['sum_netSales_q2'] = 0;
+        $data['sum_netSales_q3'] = 0;
+        $data['sum_netSales_q4'] = 0;
 
         if($quarter_api['code'] == 200){
 
             foreach($data['year_search'] as $key_year => $year_search ){
                 $total_year = 0;
-                $sum_netSales_q1 = 0;
-                $sum_netSales_q2 = 0;
-                $sum_netSales_q3 = 0;
-                $sum_netSales_q4 = 0;
 
                 foreach($quarter_api['data'] as $key => $value){
                     
@@ -205,7 +197,7 @@ class ReportHistoricalQuarterController extends Controller
                                     $value['year'],
                                     $value['quater'],
                                 ];
-                                $sum_netSales_q1 = $sum_netSales_q1 + $value['netSales'];
+                                $data['sum_netSales_q1'] += $value['netSales'];
                                 $total_year += $value['netSales'];
                             break;
                             case 2:
@@ -220,7 +212,7 @@ class ReportHistoricalQuarterController extends Controller
                                     $value['year'],
                                     $value['quater'],
                                 ];
-                                $sum_netSales_q2 = $sum_netSales_q2 + $value['netSales'];
+                                $data['sum_netSales_q2'] += $value['netSales'];
                                 $total_year += $value['netSales'];
                             break;
                             case 3:
@@ -235,7 +227,7 @@ class ReportHistoricalQuarterController extends Controller
                                     $value['year'],
                                     $value['quater'],
                                 ];
-                                $sum_netSales_q3 = $sum_netSales_q3 + $value['netSales'];
+                                $data['sum_netSales_q3'] += $value['netSales'];
                                 $total_year += $value['netSales'];
                             break;
                             case 4:
@@ -249,7 +241,7 @@ class ReportHistoricalQuarterController extends Controller
                                     $value['year'],
                                     $value['quater'],
                                 ];
-                                $sum_netSales_q4 = $sum_netSales_q4 + $value['netSales'];
+                                $data['sum_netSales_q4'] += $value['netSales'];
                                 $total_year += $value['netSales'];
                             break;
                         }

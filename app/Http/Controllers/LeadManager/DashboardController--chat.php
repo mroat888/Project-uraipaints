@@ -175,7 +175,7 @@ class DashboardController extends Controller
         if(!is_null($user_teams)){
             foreach($user_teams as $team){
                 $response = Http::withToken($api_token)
-                ->get('http://49.0.64.92:8020/api/v1/sellers/'.$team->api_identify.'/dashboards', [
+                ->get(env("API_LINK").'api/v1/sellers/'.$team->api_identify.'/dashboards', [
                     'year' => $year,
                     'month' => $month
                 ]);
@@ -199,7 +199,7 @@ class DashboardController extends Controller
                 }
                 
                 $response = Http::withToken($api_token) // ดึงข้อมูลปีที่แล้ว
-                ->get('http://49.0.64.92:8020/api/v1/sellers/'.$team->api_identify.'/dashboards', [
+                ->get(env("API_LINK").'api/v1/sellers/'.$team->api_identify.'/dashboards', [
                     'year' => $year-1,
                     'month' => $month
                 ]);
@@ -234,8 +234,7 @@ class DashboardController extends Controller
 
         foreach($user_teams as $team){
             for($i=1; $i <= $dayinmonth; $i++){
-                $response = Http::withToken($api_token)
-                ->get('http://49.0.64.92:8020/api/v1/sellers/'.$team->api_identify.'/dashboards', [
+                $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/sellers/'.$team->api_identify.'/dashboards', [
                     'year' => $year,
                     'month' => $month
                 ]);

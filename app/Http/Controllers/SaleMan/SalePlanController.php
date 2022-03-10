@@ -121,7 +121,7 @@ class SalePlanController extends Controller
         )->first();
 
         // ------ API
-        $response = Http::withToken($request->api_token)->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers');
+        $response = Http::withToken($request->api_token)->get(env("API_LINK").'api/v1/sellers/'.Auth::user()->api_identify.'/customers');
         $res_api = $response->json();
 
         $customer_api = array();
@@ -228,7 +228,7 @@ class SalePlanController extends Controller
     {
         // -----  API
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/customers/'.$id);
+        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/customers/'.$id);
         $res_api = $response->json();
 
         $customer_api = array();

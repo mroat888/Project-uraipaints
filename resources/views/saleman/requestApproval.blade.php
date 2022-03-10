@@ -103,11 +103,9 @@
                                                         @if ($value->assign_status == 0)
 
                                                             <button onclick="edit_modal({{ $value->id }})"
-                                                                class="btn btn-icon btn-teal mr-10" data-toggle="modal"
+                                                                class="btn btn-icon btn-warning mr-10" data-toggle="modal"
                                                                 data-target="#editApproval">
-                                                                <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
-                                                            {{-- <a href="{{url('delete_approval', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
-                                                                <span class="btn-icon-wrap"><i data-feather="trash-2"></i></span></a> --}}
+                                                                <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
 
                                                                 <button id="btn_request_delete" class="btn btn-icon btn-danger mr-10"
                                                                     value="{{ $value->id }}">
@@ -128,8 +126,15 @@
                                                                             data-target="#editApproval">
                                                                             <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
                                                             @endif
-
+                                                            <button onclick="approval_detail({{ $value->id }})"
+                                                                class="btn btn-icon btn-primary mr-10" data-toggle="modal"
+                                                                data-target="#Approvaldetail">
+                                                                <span class="btn-icon-wrap">
+                                                                    <i data-feather="file-text"></i></span>
+                                                                </button>
+                                        
                                                         @elseif ($value->assign_status == 2)
+    
                                                             @if ($value->assign_id)
                                                             <button onclick="approval_comment({{ $value->id }})"
                                                                 class="btn btn-icon btn-violet mr-10" data-toggle="modal"
@@ -142,6 +147,7 @@
                                                                             data-target="#editApproval">
                                                                             <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
                                                             @endif
+
                                                         @endif
                                                     </div>
                                                 </td>
@@ -286,6 +292,41 @@
         </div>
     </div>
 
+    <!-- Modal Approval Detail-->
+    <div class="modal fade" id="ApprovalDetail" tabindex="-1" role="dialog" aria-labelledby="ApprovalDetail" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">รายละเอียด</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                    <div class="modal-body">
+
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 id="header_title" class="card-title"></h5>
+                                <div class="my-3"><span>หัวข้อ/เรื่อง : </span><span id="get_assign_title"></span></div>
+                                <div class="my-3"><span>วันที่ปฎิบัติ : </span><span id="get_assign_work_date"></span></div>
+
+                                <div class="my-3">
+                                    <p>รายละเอียด : </p>
+                                    <p  id="assign_detail" class="card-text"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal ApprovalComment -->
     <div class="modal fade" id="ApprovalComment" tabindex="-1" role="dialog" aria-labelledby="ApprovalComment" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -425,38 +466,56 @@
         });
     </script>
 
-    <script>
-        //Edit
-        function edit_modal(id) {
-            $.ajax({
-                type: "GET",
-                url: "{!! url('edit_approval/"+id+"') !!}",
-                dataType: "JSON",
-                async: false,
-                success: function(data) {
-                    $('#customCheck6').children().remove().end();
-                    $('#get_id').val(data.dataEdit.id);
-                    $('#get_work_date').val(data.dataEdit.assign_work_date);
-                    $('#get_title').val(data.dataEdit.assign_title);
-                    $('#get_detail').val(data.dataEdit.assign_detail);
-                    $('#get_for').val(data.dataEdit.approved_for);
-                    $('#get_xx').val(data.dataEdit.assign_is_hot);
+<script>
+    //Edit
+    function edit_modal(id) {
+        $.ajax({
+            type: "GET",
+            url: "{!! url('edit_approval/"+id+"') !!}",
+            dataType: "JSON",
+            async: false,
+            success: function(data) {
+                $('#customCheck6').children().remove().end();
+                $('#get_id').val(data.dataEdit.id);
+                $('#get_work_date').val(data.dataEdit.assign_work_date);
+                $('#get_title').val(data.dataEdit.assign_title);
+                $('#get_detail').val(data.dataEdit.assign_detail);
+                $('#get_for').val(data.dataEdit.approved_for);
+                $('#get_xx').val(data.dataEdit.assign_is_hot);
 
-                    if (data.dataEdit.assign_is_hot == 1) {
-                        $('#customCheck6').append("<input type='checkbox' class='custom-control-input' id='customCheck7' name='assign_is_hot' value='1' checked disabled><label class='custom-control-label' for='customCheck7'>ขออนุมัติด่วน</label>");
-                    }else{
-                        $('#customCheck6').append("<input type='checkbox' class='custom-control-input' id='customCheck8' name='assign_is_hot' value='1' disabled><label class='custom-control-label' for='customCheck8'>ขออนุมัติด่วน</label>");
-                    }
-                    // $('#customCheck2').val(data.dataEdit.assign_is_hot);
-
-                    $('#editApproval').modal('toggle');
+                if (data.dataEdit.assign_is_hot == 1) {
+                    $('#customCheck6').append("<input type='checkbox' class='custom-control-input' id='customCheck7' name='assign_is_hot' value='1' checked disabled><label class='custom-control-label' for='customCheck7'>ขออนุมัติด่วน</label>");
+                }else{
+                    $('#customCheck6').append("<input type='checkbox' class='custom-control-input' id='customCheck8' name='assign_is_hot' value='1' disabled><label class='custom-control-label' for='customCheck8'>ขออนุมัติด่วน</label>");
                 }
-            });
-        }
-    </script>
+                // $('#customCheck2').val(data.dataEdit.assign_is_hot);
 
+                $('#editApproval').modal('toggle');
+            }
+        });
+    }
+
+    function approval_detail(id){
+        $.ajax({
+            type: "GET",
+            url: "{!! url('edit_approval/"+id+"') !!}",
+            dataType: "JSON",
+            async: false,
+            success: function(data) {
+               // console.log(data);
+                $('#get_assign_work_date').text(data.dataEdit.assign_work_date);
+                $('#get_assign_title').text(data.dataEdit.assign_title);
+                $('#assign_detail').text(data.dataEdit.assign_detail);
+
+                $('#ApprovalDetail').modal('toggle');
+            }
+        });
+    }
+
+</script>
 
 <script>
+    
     //Edit
     function approval_comment(id) {
         $.ajax({

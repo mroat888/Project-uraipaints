@@ -24,7 +24,7 @@ class ReportHistoricalYearController extends Controller
      
         $path_search = "reports/years/".$year.",".$year_old1.",".$year_old2;
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
+        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/'.$path_search);
         $year_api = $response->json();
         
         if($year_api['code'] == 200){
@@ -124,7 +124,7 @@ class ReportHistoricalYearController extends Controller
 
         $path_search = "reports/years/".$search_year;
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
+        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/'.$path_search);
         $year_api = $response->json();
         
         if($year_api['code'] == 200){

@@ -18,7 +18,7 @@ class CheckStoreController extends Controller
     public function index()
     {
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/customers');
+        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/sellers/'.Auth::user()->api_identify.'/customers');
         $res_api = $response->json();
 
         $customer_api = array();
@@ -69,12 +69,12 @@ class CheckStoreController extends Controller
         $api_token = $this->api_token->apiToken();
 
         //- ดึงชื่อร้านค้า ตาม ID
-        $response_cust = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/customers/'.$id);
+        $response_cust = Http::withToken($api_token)->get(env("API_LINK").'api/v1/customers/'.$id);
         $res_custapi = $response_cust->json();
         $data['customer_shop'] = $res_custapi['data'][0];
         
         //- ดึงแคมเปญของร้านค้า
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/customers/'.$id.'/campaigns');
+        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/customers/'.$id.'/campaigns');
         $res_api = $response->json();
         
         if(!empty($res_api)){

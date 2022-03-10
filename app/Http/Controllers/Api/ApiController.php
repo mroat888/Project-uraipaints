@@ -10,7 +10,8 @@ class ApiController extends Controller
 {
     public function apiToken(){
         // -----  API 
-        $response = Http::post('http://49.0.64.92:8020/api/auth/login', [
+        // dd(env("API_LINK"));
+        $response = Http::post(env("API_LINK").'api/auth/login', [
             'username' => 'apiuser',
             'password' => 'testapi',
         ]);
@@ -22,7 +23,7 @@ class ApiController extends Controller
 
     public function getAllSellers(){
         $api_token = $this->apiToken();
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/sellers');    
+        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/sellers');    
         $res_api = $response->json();               
         return $res_api;
     }
@@ -30,7 +31,7 @@ class ApiController extends Controller
     public function fetch_subgroups($id){
 
         $api_token = $this->apiToken();
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/subgroups/');
+        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/subgroups/');
         $res_api = $response->json();
         $subgroups = array();
         foreach($res_api['data'] as $value){
@@ -53,7 +54,7 @@ class ApiController extends Controller
     public function fetch_pdglists($id){
 
         $api_token = $this->apiToken();
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/pdglists/');
+        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/pdglists/');
         $res_api = $response->json();
         $pdglists = array();
         foreach($res_api['data'] as $value){

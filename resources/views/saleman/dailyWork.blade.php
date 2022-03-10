@@ -398,7 +398,13 @@
                                                                     $setting_day = "+".$master_setting->stipulate." days";
                                                                     $checkin_date = str_replace('-', '/', $sale_plan_results->sale_plan_checkin_date);
                                                                     $OverCheckOut = date('Y-m-d',strtotime($checkin_date . $setting_day));
-                                                                    $text_notify = "checkout ไม่เกิน ".$OverCheckOut;
+
+                                                                    $lastday = date('Y-m-t');
+                                                                    if($lastday < $OverCheckOut){
+                                                                        $OverCheckOut = $lastday;
+                                                                    }
+                                                                
+                                                                    $text_notify = "checkout ไม่เกิน ".$OverCheckOut ;
                                                                     if($OverCheckOut >= date('Y-m-d')){
                                                                         $btn_primary_disabled = "disabled";
                                                                         $btn_pumpkin_disabled = "";
@@ -514,8 +520,14 @@
                                                                     $setting_day = "+".$master_setting->stipulate." days";
                                                                     $checkin_date = str_replace('-', '/', $shops_saleplan_result->cust_result_checkin_date);
                                                                     $OverCheckOut = date('Y-m-d',strtotime($checkin_date . $setting_day));
-                                                                    $text_notify = "checkout ไม่เกิน ".$OverCheckOut;
 
+                                                                    $lastday = date('Y-m-t');
+                                                                    if($lastday < $OverCheckOut){
+                                                                        $OverCheckOut = $lastday;
+                                                                    }
+
+                                                                    $text_notify = "checkout ไม่เกิน ".$OverCheckOut;
+                                                                
                                                                     if($OverCheckOut >= date('Y-m-d')){
                                                                         $btn_primary_cusnew = "disabled";
                                                                         $btn_pumpkin_cusnew = "";
@@ -623,6 +635,12 @@
                                                                         $setting_day = "+".$master_setting->stipulate." days";
                                                                         $checkin_date = str_replace('-', '/', $customer_visit_results->cust_visit_checkin_date);
                                                                         $OverCheckOut = date('Y-m-d',strtotime($checkin_date . $setting_day));
+                                                                       
+                                                                        $lastday = date('Y-m-t');
+                                                                        if($lastday < $OverCheckOut){
+                                                                            $OverCheckOut = $lastday;
+                                                                        }
+
                                                                         $text_notify = "checkout ไม่เกิน ".$OverCheckOut;
 
                                                                         if($OverCheckOut >= date('Y-m-d')){

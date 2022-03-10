@@ -20,19 +20,19 @@ class ReportHistoricalYearController extends Controller
         // list($year,$month,$day) = explode('-',date('Y-m-d'));
         // $path_search = "reports/years/".$year."/leaders/search?sortorder=DESC&leader_id=".Auth::user()->api_identify;
         // $api_token = $this->api_token->apiToken();
-        // $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
+        // $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/'.$path_search);
         // $data['yearleader_api_now'] = $response->json();
 
         // $year_old1 = $year-1;
         // $path_search = "reports/years/".$year_old1."/leaders/search?sortorder=DESC&leader_id=".Auth::user()->api_identify;
         // $api_token = $this->api_token->apiToken();
-        // $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
+        // $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/'.$path_search);
         // $data['yearleader_api_old1'] = $response->json();
 
         // $year_old2 = $year-2;
         // $path_search = "reports/years/".$year_old2."/leaders/search?sortorder=DESC&leader_id=".Auth::user()->api_identify;
         // $api_token = $this->api_token->apiToken();
-        // $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
+        // $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/'.$path_search);
         // $data['yearleader_api_old2'] = $response->json();
 
         list($year,$month,$day) = explode('-',date('Y-m-d'));
@@ -42,7 +42,7 @@ class ReportHistoricalYearController extends Controller
     
         $path_search = "reports/years/".$year.",".$year_old1.",".$year_old2."/leaders"."/".Auth::user()->api_identify;
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/'.$path_search);
+        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/'.$path_search);
         $year_api = $response->json();
 
         if($year_api['code'] == 200){

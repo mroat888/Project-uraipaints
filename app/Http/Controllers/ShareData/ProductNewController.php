@@ -18,7 +18,7 @@ class ProductNewController extends Controller
     public function index()
     {
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get('http://49.0.64.92:8020/api/v1/sellers/'.Auth::user()->api_identify.'/campignpromotes');
+        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/sellers/'.Auth::user()->api_identify.'/campignpromotes');
         $res_api = $response->json();
 
         $sellers_api = array();

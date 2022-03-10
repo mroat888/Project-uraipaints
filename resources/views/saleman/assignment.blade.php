@@ -93,7 +93,14 @@
                                             </td>
                                             <td>
                                                 <div class="button-list">
-                                                    <button class="btn btn-icon btn-teal mr-10" data-toggle="modal" data-target="#ModalResult" onclick="assignment_result({{$value->id}})">
+                                                    @php 
+                                                        if($value->assign_work_date < date('Y-m-d')){
+                                                            $btn_disabled = "disabled";
+                                                        }else{
+                                                            $btn_disabled = "";
+                                                        }
+                                                    @endphp
+                                                    <button class="btn btn-icon btn-teal mr-10" data-toggle="modal" data-target="#ModalResult" onclick="assignment_result({{$value->id}})" {{ $btn_disabled }}>
                                                         <h4 class="btn-icon-wrap" style="color: white;"><i
                                                                 class="ion ion-md-book"></i></h4>
                                                     </button>
