@@ -50,7 +50,7 @@
                 href="javascript:void(0);"><span class="feather-icon"><i data-feather="more-vertical"></i></span></a>
             <a id="navbar_toggle_btn" class="navbar-toggle-btn nav-link-hover" href="javascript:void(0);"><span
                     class="feather-icon"><i data-feather="menu"></i></span></a>
-            <a class="navbar-brand" href="index.html">
+            <a class="navbar-brand" href="{{ url('admin') }}">
                 <img class="brand-img d-inline-block" src="{{ asset('public/images/logo.png') }}" alt="Uraipaint" style="max-height:30px;"/>
                 {{-- URAI PAINTS --}}
             </a>

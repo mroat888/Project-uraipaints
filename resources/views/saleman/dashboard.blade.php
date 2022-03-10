@@ -70,6 +70,7 @@
                     {{-- <h6 class="hk-sec-title mb-10" style="font-weight: bold;">สรุปยอดขาย</h6> --}}
                     <div class="row mt-30">
                         <div class="col-md-6">
+                            <a href="{{ url('approval') }}">
                             <div class="card card-sm text-white bg-danger">
                                 <div class="card-body">
                                     <span class="d-block font-16 font-weight-500 text-uppercase mb-10">
@@ -118,8 +119,12 @@
 
                                 </div>
                             </div>
+                            </a>
                         </div>
+                        
+
                         <div class="col-md-6">
+                            <a href="{{ url('assignment') }}">
                             <div class="card card-sm text-white bg-success">
                                 <div class="card-body">
                                     <span class="d-block font-16 font-weight-500 text-uppercase mb-10">
@@ -165,8 +170,10 @@
                                     </div>
                                 </div>
                             </div>
+                            </a>
                         </div>
                         <div class="col-md-6">
+                            <a href="{{ url('note') }}">
                             <div class="card card-sm text-white bg-warning">
                                 <div class="card-body">
                                     <span class="d-block font-16 font-weight-500 text-uppercase mb-10">
@@ -212,9 +219,11 @@
 
                                 </div>
                             </div>
+                            </a>
                         </div>
 
                         <div class="col-md-6">
+                            <a href="{{ url('lead') }}">
                             <div class="card card-sm text-white bg-info">
                                 <div class="card-body">
                                     <span class="d-block font-16 font-weight-500 text-uppercase mb-10">
@@ -259,6 +268,7 @@
                                     </div>
                                 </div>
                             </div>
+                            </a>
                         </div>
                     </div>
                 </section>

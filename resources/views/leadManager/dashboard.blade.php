@@ -68,6 +68,7 @@
                 <section class="hk-sec-wrapper">
                     <div class="row mt-30">
                         <div class="col-md-2">
+                            <a href="{{ url('approvalgeneral') }}">
                             <div class="card card-sm text-white bg-danger">
                                 <div class="card-body">
                                     <span class="d-block font-11 font-weight-500 text-white text-uppercase mb-10"><i data-feather="edit-2"></i>
@@ -119,9 +120,11 @@
 
                                 </div>
                             </div>
+                            </a>
                         </div>
 
                         <div class="col-md-2">
+                            <a href="{{ url('add_assignment') }}">
                             <div class="card card-sm text-white bg-success">
                                 <div class="card-body">
                                     <span class="d-block font-11 font-weight-500 text-white text-uppercase mb-10"><i data-feather="user"></i>
@@ -173,9 +176,11 @@
                                     </div>
                                 </div>
                             </div>
+                            </a>
                         </div>
 
                         <div class="col-md-2">
+                            <a href="{{ url('leadManage/note') }}">
                             <div class="card card-sm text-white bg-warning">
                                 <div class="card-body" >
                                     <span class="d-block font-11 font-weight-500 text-white text-uppercase mb-10"><i data-feather="file"></i>
@@ -227,6 +232,7 @@
 
                                 </div>
                             </div>
+                            </a>
                         </div>
 
                         <div class="col-md-2">
