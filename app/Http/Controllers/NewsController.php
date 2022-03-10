@@ -14,11 +14,11 @@ class NewsController extends Controller
 {
     public function frontend_news()
     {
-        $list_news_a = NewsBanner::where('date', '>=', Carbon::today()->format('Y-m-d'))
+        $list_news_a = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
         ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
         ->orderBy('id', 'desc')->first();
         $list_news = News::where('status', "N")->orderBy('id', 'desc')->paginate(10);
-        $list_banner = NewsBanner::where('date', '>=', Carbon::today()->format('Y-m-d'))
+        $list_banner = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
         ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
         ->orderBy('id', 'desc')->get();
         return view('saleman.news', compact('list_news', 'list_banner', 'list_news_a'));
@@ -26,11 +26,11 @@ class NewsController extends Controller
 
     public function lead_frontend_news()
     {
-        $list_news_a = NewsBanner::where('date', '>=', Carbon::today()->format('Y-m-d'))
+        $list_news_a = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
         ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
         ->orderBy('id', 'desc')->first();
         $list_news = News::where('status', "N")->orderBy('id', 'desc')->paginate(10);
-        $list_banner = NewsBanner::where('date', '>=', Carbon::today()->format('Y-m-d'))
+        $list_banner = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
         ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
         ->orderBy('id', 'desc')->get();
         return view('leadManager.news', compact('list_news', 'list_banner', 'list_news_a'));
@@ -38,11 +38,11 @@ class NewsController extends Controller
 
     public function head_frontend_news()
     {
-        $list_news_a = NewsBanner::where('date', '>=', Carbon::today()->format('Y-m-d'))
+        $list_news_a = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
         ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
         ->orderBy('id', 'desc')->first();
         $list_news = News::where('status', "N")->orderBy('id', 'desc')->paginate(10);
-        $list_banner = NewsBanner::where('date', '>=', Carbon::today()->format('Y-m-d'))
+        $list_banner = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
         ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
         ->orderBy('id', 'desc')->get();
         return view('headManager.news', compact('list_news', 'list_banner', 'list_news_a'));
@@ -50,11 +50,11 @@ class NewsController extends Controller
 
     public function admin_frontend_news()
     {
-        $list_news_a = NewsBanner::where('date', '>=', Carbon::today()->format('Y-m-d'))
+        $list_news_a = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
         ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
         ->orderBy('id', 'desc')->first();
         $list_news = News::where('status', "N")->orderBy('id', 'desc')->paginate(10);
-        $list_banner = NewsBanner::where('date', '>=', Carbon::today()->format('Y-m-d'))
+        $list_banner = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
         ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
         ->orderBy('id', 'desc')->get();
         return view('admin.fontendNews', compact('list_news', 'list_banner', 'list_news_a'));

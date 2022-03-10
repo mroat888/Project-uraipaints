@@ -116,11 +116,17 @@
 
                                                         @elseif ($value->assign_status == 1)
                                                             @if ($value->assign_id)
+
                                                             <button onclick="approval_comment({{ $value->id }})"
                                                                 class="btn btn-icon btn-violet mr-10" data-toggle="modal"
                                                                 data-target="#ApprovalComment">
                                                                 <span class="btn-icon-wrap"><i
                                                                         data-feather="message-square"></i></span></button>
+
+                                                                        <button onclick="edit_modal({{ $value->id }})"
+                                                                            class="btn btn-icon btn-info mr-10" data-toggle="modal"
+                                                                            data-target="#editApproval">
+                                                                            <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
                                                             @endif
 
                                                         @elseif ($value->assign_status == 2)
@@ -130,6 +136,11 @@
                                                                 data-target="#ApprovalComment">
                                                                 <span class="btn-icon-wrap"><i
                                                                         data-feather="message-square"></i></span></button>
+
+                                                                        <button onclick="edit_modal({{ $value->id }})"
+                                                                            class="btn btn-icon btn-info mr-10" data-toggle="modal"
+                                                                            data-target="#editApproval">
+                                                                            <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
                                                             @endif
                                                         @endif
                                                     </div>

@@ -60,7 +60,7 @@
 
             {{-- <div class="mt-30 mb-30"> --}}
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-sm-12 col-md-8">
                     <section class="hk-sec-wrapper">
                         {{-- <h6 class="hk-sec-title mb-10" style="font-weight: bold;">สรุปยอดขาย</h6> --}}
                         <div class="row mt-30">
@@ -72,13 +72,6 @@
                                                 data-feather="edit-2"></i></span></button>
                                             <span class="float-right">ขออนุมัติ {{$list_approval->count()}}</span>
                                         </span>
-                                        {{-- <div class="d-flex align-items-end justify-content-between">
-                                            <div>
-                                                <span class="d-block">
-                                                    <span>คำขออนุมัติ 5</span>
-                                                </span>
-                                            </div>
-                                        </div> --}}
                                         <div class="d-flex align-items-end justify-content-between mt-10 font-16">
                                             <div>
                                                 <span class="d-block">
@@ -100,11 +93,21 @@
 
                                                             @endif
                                                         @endforeach
-                                                        {{$approve}} </span>
+                                                        {{$approve}}
+                                                    </span>
                                                 </span>
                                             </div>
                                             <div>
-                                                <span>2</span>
+                                                <?php $assign_is_hot = 0; ?>
+                                                <span>
+                                                    @foreach ($list_approval as $value)
+                                                        @if ($value->assign_status == 1 && $value->assign_is_hot == 1)
+                                                            <?php $assign_is_hot += 1 ?>
+
+                                                        @endif
+                                                    @endforeach
+                                                    {{$assign_is_hot}}
+                                                </span>
                                             </div>
                                         </div>
 
@@ -119,13 +122,6 @@
                                                     data-feather="clipboard"></i></span></button>
                                             <span class="float-right">คำสั่งงาน {{ $assignments->count() }}</span>
                                         </span>
-                                        {{-- <div class="d-flex align-items-end justify-content-between">
-                                            <div>
-                                                <span class="d-block">
-                                                    <span>คำสั่งงาน 8</span>
-                                                </span>
-                                            </div>
-                                        </div> --}}
                                         <div class="d-flex align-items-end justify-content-between mt-10 font-16">
                                             <div>
                                                 <span class="d-block">
@@ -144,10 +140,10 @@
                                                         @foreach ($assignments as $value)
                                                             @if ($value->assign_result_status != 0)
                                                                 <?php $success += 1 ?>
-
                                                             @endif
                                                         @endforeach
-                                                        {{$success}} </span>
+                                                        {{$success}}
+                                                    </span>
                                                 </span>
                                             </div>
                                             <div>
@@ -156,10 +152,10 @@
                                                     @foreach ($assignments as $value)
                                                         @if ($value->assign_result_status == 0)
                                                             <?php $unfinished += 1 ?>
-
                                                         @endif
                                                     @endforeach
-                                                    {{$unfinished}} </span>
+                                                    {{$unfinished}}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -172,16 +168,10 @@
                                             <button class="btn btn-icon btn-icon-circle btn-light btn-lg mr-25"><span class="btn-icon-wrap"><i
                                                 data-feather="file"></i></span></button>
                                             <span class="float-right">บันทึกโน๊ต {{ $notes->count() }}</span></span>
-                                            {{-- <div>
-                                                <span class="d-block">
-                                                    <span>บันทึกโน๊ต 3</span>
-                                                </span>
-                                            </div>
-                                        </div> --}}
                                         <div class="d-flex align-items-end justify-content-between mt-10">
                                             <div>
                                                 <span class="d-block">
-                                                    <span>เลิกใช้</span>
+                                                    <span>ไม่ปัก</span>
                                                 </span>
                                             </div>
                                             <div>
@@ -192,14 +182,14 @@
                                             <div>
                                                 <span class="d-block">
                                                     <?php $disuse = 0; ?>
-                                                <span>
-                                                    @foreach ($notes as $value)
-                                                        @if ($value->status_pin == "")
-                                                            <?php $disuse += 1 ?>
-
-                                                        @endif
-                                                    @endforeach
-                                                    {{$disuse}} </span>
+                                                    <span>
+                                                        @foreach ($notes as $value)
+                                                            @if ($value->status_pin == "")
+                                                                <?php $disuse += 1 ?>
+                                                            @endif
+                                                        @endforeach
+                                                        {{$disuse}}
+                                                    </span>
                                                 </span>
                                             </div>
                                             <div>
@@ -208,10 +198,10 @@
                                                     @foreach ($notes as $value)
                                                         @if ($value->status_pin == 1)
                                                             <?php $pin += 1 ?>
-
                                                         @endif
                                                     @endforeach
-                                                    {{$pin}} </span>
+                                                    {{$pin}}
+                                                </span>
                                             </div>
                                         </div>
 
@@ -225,38 +215,29 @@
                                         <span class="d-block font-16 font-weight-500 text-uppercase mb-10">
                                             <button class="btn btn-icon btn-icon-circle btn-light btn-lg mr-25"><span class="btn-icon-wrap"><i
                                                 data-feather="users"></i></span></button>
-                                            <span class="float-right">ลูกค้าใหม่ {{ $monthly_plan->cust_new_amount }}</span></span>
-                                        {{-- <div class="d-flex align-items-end justify-content-between">
-                                            <div>
-                                                <span class="d-block">
-                                                    <span>ลูกค้าใหม่ 6</span>
-                                                </span>
-                                            </div>
-                                        </div> --}}
+                                            <span class="float-right">ลูกค้าใหม่ {{ $customer_shop->count() }}</span></span>
                                         <div class="d-flex align-items-end justify-content-between mt-10">
                                             <div>
                                                 <span class="d-block">
-                                                    <span>ไม่ผ่าน</span>
+                                                    <span>ระหว่างดำเนินการ</span>
                                                 </span>
                                             </div>
                                             <div>
-                                                <span>ตัดสินใจ</span>
+                                                <span>เปลี่ยนเป็นลูกค้า</span>
                                             </div>
                                         </div>
                                         <div class="d-flex align-items-end justify-content-between font-16">
                                             <div>
                                                 <span class="d-block">
                                                     <?php $fail = 0; ?>
-                                                <span>
-                                                    {{--
-
-                                                    @foreach ($customer_shop as $value)
-                                                        @if ($value->shop_result_status == 0)
-                                                            <?php $fail += 1 ?>
-
-                                                        @endif
-                                                    @endforeach
-                                                    {{$fail}} </span>
+                                                    <span>
+                                                        @foreach ($customer_shop as $value)
+                                                            @if ($value->shop_result_status == 0)
+                                                                <?php $fail += 1 ?>
+                                                            @endif
+                                                        @endforeach
+                                                        {{$fail}}
+                                                    </span>
                                                 </span>
                                             </div>
                                             <div>
@@ -265,12 +246,10 @@
                                                     @foreach ($customer_shop as $value)
                                                         @if ($value->shop_result_status == 2)
                                                             <?php $wait += 1 ?>
-
                                                         @endif
                                                     @endforeach
-                                                    {{$wait}} </span>
-
-                                                    --}}
+                                                    {{$wait}}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -279,6 +258,8 @@
                         </div>
                     </section>
                 </div>
+                    </section>
+                {{-- </div> --}}
 
                 <div class="col-md-4">
                     <section class="hk-sec-wrapper">

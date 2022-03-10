@@ -152,14 +152,26 @@ class DailyWorkController extends Controller
 
         $data['list_approval'] = RequestApproval::where('created_by', Auth::user()->id)->whereMonth('assign_request_date', Carbon::now()->format('m'))->get();
 
+        $data['customer_shop'] = Customer::where('shop_status', 0)
+        // ->where(function($query) use ($auth_team) {
+        //     for ($i = 0; $i < count($auth_team); $i++){
+        //         $query->orWhere('created_by', $auth_team[$i])
+        //             ->orWhere('created_by', 'like', $auth_team[$i].',%')
+        //             ->orWhere('created_by', 'like', '%,'.$auth_team[$i]);
+        //     }
+        // })
+        ->whereMonth('created_at', Carbon::now()
+        ->format('m'))
+        ->get();
+
         $data['assignments'] = Assignment::where('assign_emp_id', Auth::user()->id)->whereMonth('assign_work_date', Carbon::now()->format('m'))->get();
 
         $data['notes'] = Note::where('employee_id', Auth::user()->id)->whereMonth('note_date', Carbon::now()->format('m'))->get();
 
-        $data['list_news_a'] = NewsBanner::where('date', '>=', Carbon::today()->format('Y-m-d'))
+        $data['list_news_a'] = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
         ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
         ->orderBy('id', 'desc')->first();
-        $data['list_banner'] = NewsBanner::where('date', '>=', Carbon::today()->format('Y-m-d'))
+        $data['list_banner'] = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
         ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
         ->orderBy('id', 'desc')->get();
 

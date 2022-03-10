@@ -87,8 +87,8 @@ class PlanMonthController extends Controller
         }
 
         // ---- สร้างข้อมูล เยี่ยมลูกค้า โดย link กับ api ------- //
-        $customer_visits = CustomerVisit::where('customer_visits.created_by', Auth::user()->id)
-            ->where('customer_visits.monthly_plan_id', $data['monthly_plan_next']->id)
+        $customer_visits = CustomerVisit::where('created_by', Auth::user()->id)
+            ->where('monthly_plan_id', $data['monthly_plan_next']->id)
             ->select('customer_visits.*')
             ->orderBy('id', 'desc')->get();
 
