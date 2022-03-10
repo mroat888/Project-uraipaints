@@ -207,10 +207,10 @@
                     $('#edit_sel_status').children().remove().end();
                     $('#edit_sel_api_identify').children().remove().end();
                     $('#edit_sel_team').children().remove().end();
-                    $("#modaledit").modal('show');
                     $('#edit_tuser_id').val(user_id);
                     $('#edit_tname').val(response.dataUser.name);
                     $('#edit_temail').val(response.dataUser.email);
+                    $("#modaledit").modal('show');
 
                     $.each(response.master_permission, function(key, value){
                         if(value.id == response.dataUser.status){
@@ -230,13 +230,25 @@
 
                     let rows_teams = response.dataUser.team_id.split(",");
                     let count_team = rows_teams.length;
+                    var check_value = [];
                     $.each(rows_teams, function(tkey, tvalue){
                         $.each(response.master_teamsale, function(key, value){
                             if(value.id == rows_teams[tkey]){
                                 $('#edit_sel_team').append('<option value='+value.id+' selected>'+value.team_name+'</option>');
+                                check_value.push(value.id);
                             }else{
-                                $('#edit_sel_team').append('<option value='+value.id+'>'+value.team_name+'</option>');
+                                let result = check_value.filter((check_value) => {
+                                        return check_value === value.id
+                                    });
+                                console.log(result.length);
+                                if(result.length == 0 ){
+                                    $('#edit_sel_team').append('<option value='+value.id+'>'+value.team_name+'</option>');
+                                    check_value.push(value.id);
+                                    console.log(value.id);
+                                }
+                                // $('#edit_sel_team').append('<option value='+value.id+'>'+value.team_name+'</option>');
                             }
+                            console.log(check_value);
                         });
                     });
 
