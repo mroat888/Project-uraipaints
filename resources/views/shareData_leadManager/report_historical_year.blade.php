@@ -26,18 +26,46 @@
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
-                        <div class="col-sm-12 col-md-6">
+                        <div class="col-sm-12 col-md-8">
                             <h5 class="hk-sec-title">ตารางรายงานเทียบย้อนหลัง (ทั้งปี)</h5>
                         </div>
-                        <div class="col-sm-12 col-md-6">
+                        <div class="col-sm-12 col-md-4">
                             <!-- ------ -->
-                            <span class="form-inline pull-right">
-                                <!-- <span class="mr-5">เลือก</span> -->
-                                <!-- <input type="month" name="" id="" class="form-control"> -->
-                                {{-- <button class="btn btn-primary btn-sm ml-10 mr-15"><i data-feather="printer"></i> พิมพ์</button> --}}
-                                </span>
-
-                            </span>
+                                <form action="{{ url('leadManage/data_report_historical-year/search') }}" method="post" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4">
+                                            <select name="sel_year_form" id="sel_year_form" class="form-control" required>
+                                                <option value="">--ค้นหาปี--</option>
+                                                <?php
+                                                    list($year,$month,$day) = explode("-", date("Y-m-d"));
+                                                    for($i = 0; $i<4; $i++){
+                                                ?>
+                                                        <option value="{{ $year-$i }}">{{ $year-$i }}</option>
+                                                <?php
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-1" style="text-align:center; margin-top:10px;"> ถึง </div>
+                                        <div class="form-group col-md-4">
+                                            <select name="sel_year_to" id="sel_year_to" class="form-control" required>
+                                                <option value="">--ค้นหาปี--</option>
+                                                <?php
+                                                    list($year,$month,$day) = explode("-", date("Y-m-d"));
+                                                    for($i = 0; $i<4; $i++){
+                                                ?>
+                                                        <option value="{{ $year-$i }}">{{ $year-$i }}</option>
+                                                <?php
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <button type="submit" class="btn btn-teal btn-sm px-3 ml-2">ค้นหา</button>
+                                        </div>
+                                    </div>
+                                </form>
                             <!-- ------ -->
                         </div>
                     </div>
@@ -68,7 +96,7 @@
                                     @php
                                         $sum_present_sale = 0;
                                     @endphp
-                                    @if(isset($yearadmin_api) && !is_null($yearadmin_api))
+                                    @if(!is_null($yearadmin_api))
                                         @foreach($yearadmin_api as $key => $value)
                                         <tr>
                                             <td>{{ $value['year'] }}</td>
@@ -87,7 +115,6 @@
                                         @endforeach
                                     @endif
                                     </tbody>
-                                    @if(isset($summary_yearadmin_api) && !is_null($summary_yearadmin_api))
                                     <tfoot style="font-weight: bold;">
                                         <td style="text-align:center">รวม</td>
                                         <td colspan="3" style="text-align:center"></td>
@@ -97,7 +124,6 @@
                                         <td>{{ number_format($summary_yearadmin_api['sum_netSales']) }}</td>
                                         <td>{{ $sum_present_sale }}%</td>
                                     </tfoot>
-                                    @endif
                                 </table>
                             </div>
                         </div>
