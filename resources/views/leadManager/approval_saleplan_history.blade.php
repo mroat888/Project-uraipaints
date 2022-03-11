@@ -124,7 +124,7 @@
                                                         <td>
                                                             <span class="badge badge-soft-success" style="font-size: 12px;">Approval</span></td>
                                                         <td>
-                                                            <a href="{{url('lead/approvalsaleplan-history-detail', $value->created_by)}}" class="btn btn-icon btn-primary btn-link btn_showplan pt-5">
+                                                            <a href="{{url('lead/approvalsaleplan-history-detail', $value->id)}}" class="btn btn-icon btn-primary btn-link btn_showplan pt-5">
                                                                 <i data-feather="file-text"></i>
                                                             </a>
                                                             <?php

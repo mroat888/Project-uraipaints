@@ -85,11 +85,11 @@
                                                 @endif
 
                                             <td>
-                                                <a href="{{ url('comment_saleplan', [$value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
+                                                <!-- <a href="{{ url('comment_saleplan', [$value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
                                                     <h4 class="btn-icon-wrap" style="color: white;">
                                                         <i data-feather="message-square"></i>
                                                     </h4>
-                                                </a>
+                                                </a> -->
                                             </td>
                                         </tr>
 
@@ -115,11 +115,11 @@
                                             <td><span class="badge badge-soft-warning"
                                                     style="font-size: 12px;">Pending</span></td>
                                             <td>
-                                                <a href="{{ url('comment_saleplan', [$value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
+                                                <!-- <a href="{{ url('comment_saleplan', [$value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
                                                     <h4 class="btn-icon-wrap" style="color: white;">
                                                         <i data-feather="message-square"></i>
                                                     </h4>
-                                                </a>
+                                                </a> -->
                                             </td>
                                         </tr>
                                         @endif
@@ -176,11 +176,11 @@
                                                     @endif
                                                 </td>
                                                 <td style="text-align:center">
-                                                    <a href="{{ url('comment_customer_new', [$value->custid, $value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
+                                                    <!-- <a href="{{ url('comment_customer_new', [$value->custid, $value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
                                                         <h4 class="btn-icon-wrap" style="color: white;">
                                                             <i data-feather="message-square"></i>
                                                         </h4>
-                                                    </a>
+                                                    </a> -->
                                                 </td>
                                             </tr>
                                             @else
@@ -195,11 +195,11 @@
                                                     </td>
 
                                                     <td style="text-align:center">
-                                                        <a href="{{ url('comment_customer_new', [$value->custid, $value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
+                                                        <!-- <a href="{{ url('comment_customer_new', [$value->custid, $value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
                                                             <h4 class="btn-icon-wrap" style="color: white;">
                                                                 <i data-feather="message-square"></i>
                                                             </h4>
-                                                        </a>
+                                                        </a> -->
                                                     </td>
                                                 </tr>
                                                 @endif
