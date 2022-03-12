@@ -149,10 +149,24 @@ class AssignmentController extends Controller
         $dataEdit = Assignment::find($id);
         $dataManager = DB::table('users')->where('status',2)->get();
         $users_team = DB::table('users')->where('id',$dataEdit->assign_approve_id)->first();
+
+        $auth_team_id = explode(',',$users_team->team_id);
+        $auth_team = array();
+        foreach($auth_team_id as $value){
+            $auth_team[] = $value;
+        }
+        
         $dataUser = DB::table('users')
-            ->where('team_id', $users_team->team_id)
-            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
-            ->get();
+        ->where('status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+        ->where(function($query) use ($auth_team) {
+            for ($i = 0; $i < count($auth_team); $i++){
+                $query->orWhere('team_id', $auth_team[$i])
+                    ->orWhere('team_id', 'like', $auth_team[$i].',%')
+                    ->orWhere('team_id', 'like', '%,'.$auth_team[$i]);
+            }
+        })
+        ->get();
+        
 
         $data = array(
             'dataEdit'  => $dataEdit,

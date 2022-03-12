@@ -83,13 +83,18 @@
                                             </td>
                                             <td>
                                                 @if ($value->assign_result_status == 0)
-                                                <button onclick="edit_modal({{ $value->id }})"
-                                                    class="btn btn-icon btn-warning mr-10" data-toggle="modal"
-                                                    data-target="#modalEdit">
-                                                    <span class="btn-icon-wrap"><i
-                                                            data-feather="edit"></i></span></button>
-                                                <a href="{{url('admin/delete_assignment', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
-                                                    <span class="btn-icon-wrap"><i data-feather="trash-2"></i></span></a>
+                                                    <button onclick="edit_modal({{ $value->id }})"
+                                                        class="btn btn-icon btn-warning mr-10" data-toggle="modal"
+                                                        data-target="#modalEdit">
+                                                        <span class="btn-icon-wrap"><i
+                                                                data-feather="edit"></i></span></button>
+                                                    <a href="{{url('admin/delete_assignment', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
+                                                        <span class="btn-icon-wrap"><i data-feather="trash-2"></i></span></a>
+                                                @else
+                                                    <button  onclick="show_result({{ $value->id }})" 
+                                                        class="btn btn-icon btn-neon" data-toggle="modal" 
+                                                        data-target="#ModalResult" >
+                                                        <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
                                                 @endif
                                             </td>
                                         </tr>
@@ -233,6 +238,60 @@
         </div>
     </div>
 
+    <!-- Show Edit -->
+    <div class="modal fade" id="ModalResult" tabindex="-1" role="dialog" aria-labelledby="ModalResult"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">ฟอร์มแก้ไขข้อมูลการสั่งงาน</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" name="id" id="get_id">
+                        <div class="form-group">
+                            <label for="firstName">เรื่อง</label>
+                            <span id="get_title_text"></span>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <label for="username">รายละเอียด</label>
+                                <span id="get_detail_text"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">วันที่</label>
+                                <span id="get_date_text"></span>
+                            </div>
+                        </div>
+                       <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">ผู้สั่งาน</label>
+                                <span id="get_manager_text"></span>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">สั่งงานให้</label>
+                                <span id="get_emp_text"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">ไฟล์เอกสาร</label>
+                                <div id="img_show_text" class="mt-5"></div>
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 <script>
 
     $(document).ready(function() {
@@ -279,6 +338,48 @@
         });
     });
 
+    //Show
+    function show_result(id) {
+        $.ajax({
+            type: "GET",
+            url: '{{ url("/admin/edit_assignment") }}/'+id,
+            dataType: "JSON",
+            async: false,
+            success: function(data) {
+                console.log(data);
+                $('#img_show_text').children().remove().end();
+                $('#get_date_text').text(data.dataEdit.assign_work_date);
+                $('#get_title_text').text(data.dataEdit.assign_title);
+                $('#get_detail_text').text(data.dataEdit.assign_detail);
+
+                let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataEdit.assign_fileupload;
+                if(data.dataEdit.assign_fileupload != ""){
+                    ext = data.dataEdit.assign_fileupload.split('.').pop().toLowerCase();
+                    console.log(img_name);
+                    if(ext == "pdf"){
+                        $('#img_show_text').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');
+                    }else{
+                        $('#img_show_text').append('<img src = "'+img_name+'" style="max-width:100%;">');
+                    }
+                }
+                
+                $.each(data.dataManager, function(key, value){
+                    if(value.id == data.dataEdit.assign_approve_id){
+                        $('#get_manager_text').text(value.name);
+                    }
+                });
+
+                $.each(data.dataUser, function(key, value){
+                    if(value.id == data.dataEdit.assign_emp_id){
+                        $('#get_emp_text').text(value.name);
+                    }
+                });
+
+                $('#ModalResult').modal('toggle');
+            }
+        });
+    }
+
     //Edit
     function edit_modal(id) {
 
@@ -309,7 +410,7 @@
                 }
 
                 $.each(data.dataManager, function(key, value){
-                    if(value.id == data.dataManager.assign_approve_id){
+                    if(value.id == data.dataEdit.assign_approve_id){
                         $('#get_manager').append('<option value='+value.id+' selected>'+value.name+'</option>');
                     }else{
                         $('#get_manager').append('<option value='+value.id+'>'+value.name+'</option>');

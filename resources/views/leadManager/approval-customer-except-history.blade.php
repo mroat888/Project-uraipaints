@@ -109,7 +109,7 @@
                                             <td>{{Carbon\Carbon::parse($chk->updated_at)->format('Y-m-d')}}</td>
                                             <td>{{$chk->name}}</td>
                                             <td>
-                                                <span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>
+                                                <span class="badge badge-soft-success" style="font-size: 12px;">Approve</span></td>
                                             </td>
                                             <td>
                                                 <a href="{{url('lead/approval_customer_except_history_detail', $value->shop_created_by)}}" class="btn btn-icon btn-primary btn-link btn_showplan pt-5" value="3">

@@ -178,7 +178,7 @@
                 dataType: "JSON",
                 async: false,
                 success: function(data) {
-                    console.log(data);
+                    // console.log(data);
                     $('#img_show').children().remove().end();
 
                     $('#get_assign_id').val(data.dataResult.id);
