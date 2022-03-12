@@ -56,7 +56,7 @@ class ReportFullYearController extends Controller
         $path_search_top = "reports/years/".$request->sel_year."/sellers/".Auth::user()->api_identify."/pdgroups?sortorder=DESC&limits=10"; 
         $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/'.$path_search_top);
-        $subgrouptop_api = $response->json();
+        $grouptop_api = $response->json();
 
         // สินค้า Top SubGroup
         $path_search_top = "reports/years/".$request->sel_year."/sellers/".Auth::user()->api_identify."/pdsubgroups?sortorder=DESC&limits=10"; 

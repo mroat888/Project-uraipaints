@@ -26,6 +26,11 @@ class ReportHistoricalMonthController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/'.$path_search);
         $month_api = $response->json();
 
+        // $month = 1;
+        // for($i=0; $i<12; $i++){
+        //     if()
+        // }
+
         return view('shareData_admin.report_historical_month', compact('month_api'));
     }
 

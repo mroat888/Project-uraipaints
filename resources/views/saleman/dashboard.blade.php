@@ -359,18 +359,21 @@
                                         $totalAmtSale_th_Previous = $SalesPrevious[0]["totalAmtSale_th"]; // เป้ายอดขายปีที่แล้ว
                                         $totalAmtSale_Previous = $SalesPrevious[0]["totalAmtSale"]; // เป้ายอดขายปีที่แล้ว
 
-                                        if(!is_null($res_api["data"][2]["SalesCurrent"])){
+                                        $percentAmtCrn =0;
+                                        if(!empty($res_api["data"][2]["SalesCurrent"])){
                                             $SalesCurrent = $res_api["data"][2]["SalesCurrent"];
 
                                             $totalAmtSale_th = $SalesCurrent[0]["totalAmtSale_th"]; // ยอดที่ทำได้ปีนี้
                                             $totalAmtSale = $SalesCurrent[0]["totalAmtSale"]; // ยอดที่ทำได้ปีนี้
+                                            $percentAmtCrn = (($totalAmtSale)*100)/$totalAmtSale_Previous;
                                         }else{
                                             $totalAmtSale_th = "0";
                                             $totalAmtSale = 0;
+                                            $percentAmtCrn = 0;
                                         }
 
-                                        $percentAmtCrn = (($totalAmtSale)*100)/$totalAmtSale_Previous;
                                     @endphp
+
                                     <span class="d-block font-11 font-weight-500 text-dark text-uppercase mb-10"></span>
                                             <span class="d-block text-center">
                                                 <span id="pie_chart_2" class="easy-pie-chart" data-percent="{{ $percentAmtCrn }}">
