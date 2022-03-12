@@ -116,7 +116,7 @@ class UserPermissionController extends Controller
         $user_chkid = DB::table('users')
         ->where('id', $request->edit_tuser_id)
         ->first();
-
+        // dd($request->edit_tuser_id, $user_chkid->email, $request->edit_temail, $user_chkid->api_identify, $request->edit_sel_api_identify);
 
         if(($user_chkid->email == $request->edit_temail) && ($user_chkid->api_identify == $request->edit_sel_api_identify)){
             DB::table('users')
