@@ -86,6 +86,29 @@ class ReportVisitCustomerController extends Controller
                     $sum_cus_visit_failed_month = $sum_cus_visit_failed_month + $cus_visit_failed;
     
                     $sum_visit_month = $sum_cus_is_plan_month + $sum_cus_isnot_plan_month; // จำนวนการเข้าพบทั้งหมด
+
+                    //-- รายละเอียด
+                    $sum_visit = $cus_is_plan + $cus_isnot_plan;
+                    if($sum_visit > 0 ){
+                        $percent_success = @round(($cus_visit_success*100)/$sum_visit);
+                        $percent_failed = @round(($cus_visit_failed*100)/$sum_visit);
+                    }else{
+                        $percent_success = 0;
+                        $percent_failed = 0;
+                    }
+
+                    $report_detail[$i][] = [
+                        'saleman' => $team->name,
+                        'team_id' => $team->team_id,
+                        'cus_is_plan' => $cus_is_plan,
+                        'cus_isnot_plan' => $cus_isnot_plan,
+                        'cus_visit_in_process' => $cus_visit_in_process,
+                        'cus_visit_success' => $cus_visit_success,
+                        'cus_visit_failed' => $cus_visit_failed,
+                        'percent_success' => $percent_success,
+                        'percent_failed' => $percent_failed,
+                    ];
+                    //-- จบ รายละเอียด
                     
                 }
 
@@ -138,6 +161,6 @@ class ReportVisitCustomerController extends Controller
             'sum_percent_failed' => $sum_percent_failed,
         ];
 
-        return view('reports.report_visitcustomer_admin', compact('report', 'summary_report'));
+        return view('reports.report_visitcustomer_admin', compact('report', 'summary_report', 'report_detail'));
     }
 }

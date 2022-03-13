@@ -112,6 +112,29 @@ class ReportVisitCustomerGoalController extends Controller
                     $sum_cus_result_in_process_month = $sum_cus_result_in_process_month + $cus_result_in_process;
                     $sum_cus_result_success_month = $sum_cus_result_success_month + $cus_result_success;
                     $sum_count_shop_updatestatus_month = $sum_count_shop_updatestatus_month + $count_shop_updatestatus;
+
+                    // -- รายละเอียด
+                    if($inout_shop_saleplan > 0 ){
+                        $percent_success = @round(($cus_result_success*100)/$inout_shop_saleplan);
+                        $percent_failed = @round((($cus_result_failed+$cus_result_in_process)*100)/$inout_shop_saleplan);
+                    }else{
+                        $percent_success = 0;
+                        $percent_failed = 0;
+                    }
+                    $report_detail[$i][] = [
+                        'saleman' => $team->name,
+                        'team_id' => $team->team_id,
+                        'count_shop' => $count_shop,
+                        'count_shop_noplan' => $count_shop_noplan,
+                        'count_inout_shop_saleplan' => $inout_shop_saleplan,
+                        'cus_result_failed' => $cus_result_failed,
+                        'cus_result_in_process' => $cus_result_in_process,
+                        'cus_result_success' => $cus_result_success,
+                        'count_shop_updatestatus' => $count_shop_updatestatus,
+                        'percent_success' => $percent_success,
+                        'percent_failed' => $percent_failed,
+                    ];
+                     //-- จบ รายละเอียด
                 }
           
             }
@@ -168,6 +191,7 @@ class ReportVisitCustomerGoalController extends Controller
             'sum_percent_failed' => $sum_percent_failed,
         ];
 
-        return view('reports.report_visitcustomer_goal_head', compact('report', 'summary_report'));
+       //  dd($report_detail);
+        return view('reports.report_visitcustomer_goal_head', compact('report', 'summary_report', 'report_detail'));
     }
 }

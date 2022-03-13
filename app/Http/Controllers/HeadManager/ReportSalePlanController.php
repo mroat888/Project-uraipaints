@@ -94,6 +94,27 @@ class ReportSalePlanController extends Controller
                     $saleplan_result_success_month = $saleplan_result_success_month + $saleplan_result_success;
                     $count_saleplan_updatestatusmonth = $count_saleplan_updatestatusmonth + $count_saleplan_updatestatus;
                     
+                    // -- รายละเอียด
+                    if($count_saleplan > 0 ){
+                        $percent_success = @round(($saleplan_result_success*100)/$count_saleplan);
+                        $percent_failed = @round((($saleplan_result_failed+$saleplan_result_in_process)*100)/$count_saleplan);
+                    }else{
+                        $percent_success = 0;
+                        $percent_failed = 0;
+                    }
+                    $report_detail[$i][] = [
+                        'saleman' => $saleman->name,
+                        'team_id' => $saleman->team_id,
+                        'count_saleplan' => $count_saleplan,
+                        'count_saleplan_updatestatus' => $count_saleplan_updatestatus,
+                        'saleplan_result_in_process' => $saleplan_result_in_process,
+                        'saleplan_result_failed' => $saleplan_result_failed,
+                        'saleplan_result_success' => $saleplan_result_success,
+                        'percent_success' => $percent_success,
+                        'percent_failed' => $percent_failed
+                    ];
+                    //-- จบ รายละเอียด
+
                 }
             }
 
@@ -142,7 +163,7 @@ class ReportSalePlanController extends Controller
             'sum_percent_failed' => $percent_failed,
         ];
 
-        return view('reports.report_saleplan_head', compact('report', 'summary_report'));
+        return view('reports.report_saleplan_head', compact('report', 'summary_report', 'report_detail'));
     }
 
 
