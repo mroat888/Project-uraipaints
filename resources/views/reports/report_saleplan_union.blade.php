@@ -23,11 +23,35 @@
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
-                        <div class="col-sm-12 col-md-6">
-                            <h5 class="hk-sec-title">ตารางสรุป Sale plan <span style="color: rgb(128, 19, 0);">(ประจำปี <?php echo thaidate('Y', date('Y')); ?>)</span></h5>
+                        <div class="col-sm-12 col-md-7">
+                            
+                            <!-- <h5 class="hk-sec-title">ตารางสรุป Sale plan <span style="color: rgb(128, 19, 0);">(ประจำปี <?php echo thaidate('Y', $year); ?>)</span></h5> -->
+                            <h5 class="hk-sec-title">ตารางสรุป Sale plan <span style="color: rgb(128, 19, 0);">(ประจำปี <?php echo $year+543; ?>)</span></h5>
                         </div>
-                        <div class="col-sm-12 col-md-6">
-
+                        <div class="col-sm-12 col-md-4">
+                            <!-- ------ -->
+                            <form action="{{ url($action) }}" method="post" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="form-row">
+                                        <div class="form-group col-md-9">
+                                            <select name="sel_year" id="sel_year" class="form-control" required>
+                                                <option value="">--ค้นหาปี--</option>
+                                                <?php
+                                                    list($year,$month,$day) = explode("-", date("Y-m-d"));
+                                                    for($i = 0; $i<4; $i++){
+                                                ?>
+                                                        <option value="{{ $year-$i }}">{{ $year-$i }}</option>
+                                                <?php
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <button type="submit" class="btn btn-teal btn-sm px-3 ml-2">ค้นหา</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            <!-- ------ -->
                         </div>
                     </div>
 

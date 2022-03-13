@@ -226,6 +226,7 @@ Route::get('/leadManage/reportStore','LeadManager\ApiCustomerController@index');
 Route::get('/leadManage/reportStore/detail/{id}','LeadManager\ApiCustomerController@show');
 Route::get('/leadManage/reportTeam', 'LeadManager\ReportTeamController@index');
 Route::get('/leadManage/reportSaleplan', 'LeadManager\ReportSalePlanController@index');
+Route::post('/leadManage/reportSaleplan/search', 'LeadManager\ReportSalePlanController@search');
 Route::get('/leadManage/reportYear', 'LeadManager\ReportYearController@index');
 
 
@@ -314,8 +315,11 @@ Route::get('/headManage/reportStore','HeadManager\ApiCustomerController@index');
 Route::get('/headManage/reportStore/detail/{id}','HeadManager\ApiCustomerController@show');
 Route::get('/headManage/reportTeam', 'HeadManager\ReportTeamController@index');
 Route::get('/headManage/reportSaleplan', 'HeadManager\ReportSalePlanController@index');
+Route::post('/headManage/reportSaleplan/search', 'HeadManager\ReportSalePlanController@search');
 Route::get('/headManage/report_visitcustomer_goal_head', 'HeadManager\ReportVisitCustomerGoalController@index');
+Route::post('/headManage/report_visitcustomer_goal_head/search', 'HeadManager\ReportVisitCustomerGoalController@search');
 Route::get('/headManage/reportVisitCustomer', 'HeadManager\ReportVisitCustomerController@index');
+Route::post('/headManage/reportVisitCustomer/search', 'HeadManager\ReportVisitCustomerController@search');
 Route::get('/headManage/reportYear', 'HeadManager\ReportYearController@index');
 
 Route::get('head/edit-profile', 'ProfileController@head_index');
@@ -439,8 +443,11 @@ Route::get('/admin/reportStore','Admin\ApiCustomerController@index');
 Route::get('/admin/reportStore/detail/{id}','Admin\ApiCustomerController@show');
 Route::get('/admin/reportTeam', 'Admin\ReportTeamController@index');
 Route::get('/admin/reportSaleplan', 'Admin\ReportSalePlanController@index');
+Route::post('/admin/reportSaleplan/search', 'Admin\ReportSalePlanController@search');
 Route::get('/admin/report_visitcustomer_goal', 'Admin\ReportVisitCustomerGoalController@index');
+Route::post('/admin/report_visitcustomer_goal/search', 'Admin\ReportVisitCustomerGoalController@search');
 Route::get('/admin/reportVisitCustomer', 'Admin\ReportVisitCustomerController@index');
+Route::post('/admin/reportVisitCustomer/search', 'Admin\ReportVisitCustomerController@search');
 Route::get('/admin/reportYear', 'Admin\ReportYearController@index');
 
 
