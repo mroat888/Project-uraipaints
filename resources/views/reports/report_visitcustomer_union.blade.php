@@ -26,7 +26,7 @@
                             <!-- <h5 class="hk-sec-title">ตารางรายงานเข้าพบลูกค้า<span style="color: rgb(128, 19, 0);">(ประจำปี <?php echo thaidate('Y', date('Y-m-d')); ?>)</span></h5> -->
                             <h5 class="hk-sec-title">ตารางรายงานเข้าพบลูกค้า<span style="color: rgb(128, 19, 0);">(ประจำปี <?php echo $year+543; ?>)</span></h5>
                         </div>
-                        <div class="col-sm-12 col-md-4">
+                        <div class="col-sm-12 col-md-5">
                             <!-- ------ -->
                             <form action="{{ url($action) }}" method="post" enctype="multipart/form-data">
                                     @csrf

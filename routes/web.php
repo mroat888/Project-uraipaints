@@ -115,8 +115,11 @@ Route::get('product_new', 'ProductNewController@frontend_product_new');
 
 // Report
 Route::get('/reportSale/reportSaleplan', 'Report\ReportSalePlanController@index');
+Route::post('/reportSale/reportSaleplan/search', 'Report\ReportSalePlanController@search');
 Route::get('/reportSale/reportVisitCustomerGoal', 'Report\ReportVisitCustomerGoalController@index');
+Route::post('/reportSale/reportVisitCustomerGoal/search', 'Report\ReportVisitCustomerGoalController@search');
 Route::get('/reportSale/reportVisitCustomer', 'Report\ReportVisitCustomerController@index');
+Route::post('/reportSale/reportVisitCustomer/search', 'Report\ReportVisitCustomerController@search');
 
 Route::get('edit-profile', 'ProfileController@index');
 Route::post('userProfileUpdate', 'ProfileController@update');
@@ -228,6 +231,7 @@ Route::get('/leadManage/reportTeam', 'LeadManager\ReportTeamController@index');
 Route::get('/leadManage/reportSaleplan', 'LeadManager\ReportSalePlanController@index');
 Route::post('/leadManage/reportSaleplan/search', 'LeadManager\ReportSalePlanController@search');
 Route::get('/leadManage/reportYear', 'LeadManager\ReportYearController@index');
+Route::post('/leadManage/reportYear/search', 'LeadManager\ReportYearController@search');
 
 
 // ข้อมูลที่ใช้ร่วมกัน
@@ -321,6 +325,7 @@ Route::post('/headManage/report_visitcustomer_goal_head/search', 'HeadManager\Re
 Route::get('/headManage/reportVisitCustomer', 'HeadManager\ReportVisitCustomerController@index');
 Route::post('/headManage/reportVisitCustomer/search', 'HeadManager\ReportVisitCustomerController@search');
 Route::get('/headManage/reportYear', 'HeadManager\ReportYearController@index');
+Route::post('/headManage/reportYear/search', 'HeadManager\ReportYearController@search');
 
 Route::get('head/edit-profile', 'ProfileController@head_index');
 Route::post('head/userProfileUpdate', 'ProfileController@update');
@@ -449,6 +454,7 @@ Route::post('/admin/report_visitcustomer_goal/search', 'Admin\ReportVisitCustome
 Route::get('/admin/reportVisitCustomer', 'Admin\ReportVisitCustomerController@index');
 Route::post('/admin/reportVisitCustomer/search', 'Admin\ReportVisitCustomerController@search');
 Route::get('/admin/reportYear', 'Admin\ReportYearController@index');
+Route::post('/admin/reportYear/search', 'Admin\ReportYearController@search');
 
 
 Route::get('admin/teamSales', 'Admin\TeamSaleController@index');
