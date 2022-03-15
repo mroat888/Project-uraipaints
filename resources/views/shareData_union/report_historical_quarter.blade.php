@@ -2,7 +2,7 @@
 <nav class="hk-breadcrumb" aria-label="breadcrumb">
     <ol class="breadcrumb breadcrumb-light bg-transparent">
         <li class="breadcrumb-item"><a href="#">Page</a></li>
-        <li class="breadcrumb-item active" aria-current="page">รายงานเทียบย้อนหลัง (Quarter)</li>
+        <li class="breadcrumb-item active" aria-current="page">รายงานเทียบย้อนหลัง (ไตรมาส)</li>
     </ol>
 </nav>
 <!-- /Breadcrumb -->
@@ -12,7 +12,7 @@
         <!-- Title -->
         <div class="hk-pg-header mb-10">
             <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-document"></i></span>รายงานเทียบย้อนหลัง (Quarter)</h4>
+                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-document"></i></span>รายงานเทียบย้อนหลัง (ไตรมาส)</h4>
             </div>
         </div>
         <!-- /Title -->
@@ -23,7 +23,7 @@
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
                         <div class="col-sm-12 col-md-7">
-                            <h5 class="hk-sec-title">รายงานเทียบย้อนหลัง (Quarter)</h5>
+                            <h5 class="hk-sec-title">รายงานเทียบย้อนหลัง (ไตรมาส)</h5>
                         </div>
                         <div class="col-sm-12 col-md-5">
                             <!-- ------ -->
@@ -73,14 +73,14 @@
                                     <thead>
                                         <tr>
                                             <th rowspan = "3" style="width:200px;"><strong>#</strong></th>
-                                            <th colspan="12" style="text-align:center;"><strong>รายงานเทียบย้อนหลัง (Quarter)</strong></th>
+                                            <th colspan="12" style="text-align:center;"><strong>รายงานเทียบย้อนหลัง (ไตรมาส)</strong></th>
                                         </tr>
                                         <tr>
-                                            <th><strong>Q1</strong></th>
-                                            <th><strong>Q2</strong></th>
-                                            <th><strong>Q3</strong></th>
-                                            <th><strong>Q4</strong></th>
-                                            <th><strong>Total</strong></th>
+                                            <th><strong>มกราคม - มีนาคม</strong></th>
+                                            <th><strong>เมษายน - มิถุนายน</strong></th>
+                                            <th><strong>กรกฎาคม - กันยายน</strong></th>
+                                            <th><strong>ตุลาคม - ธันวาคม</strong></th>
+                                            <th><strong>รวมทั้งปี</strong></th>
                                         </tr>
                                     </thead>
                                     </tbody>
@@ -143,7 +143,7 @@
         </div>
         <!-- /Row -->
         <!-- Row -->
-        <!-- <div class="row">
+        <div class="row">
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
@@ -156,33 +156,60 @@
                     </div>
                 </section>
             </div>
-        </div> -->
+        </div>
         <!-- /Row -->
     </div>
-<!-- 
+
 <script src="{{ asset('public/template/graph/Chart.bundle.js') }}"></script>
+<?php
+    $data_chat = "200,250,300,350";
+    $data_chat2 = "250,250,280,200";
+?>
 
 <script>
     var ctx = document.getElementById("myChart").getContext('2d');
-    var myChart = new Chart(ctx, {
+    var datset =[];
+    var newDataset =[];
+
+    newDataset[0] = {
+            label: 'Dataset',
+            backgroundColor: ['rgba(255, 99, 132, 0)',],
+            borderColor: ['rgba(255,99,132,1)',],
+            borderWidth: 1,
+            data: [{{ $data_chat }}],
+        };
+    newDataset[1] = {
+            label: 'Dataset',
+            backgroundColor: ['rgba(255, 99, 132, 0)',],
+            borderColor: ['rgba(255,99,132,1)',],
+            borderWidth: 1,
+            data: [{{ $data_chat2 }}],
+        };
+
+        
+   
+    for(let i=0; i<newDataset.length ; i++){
+        datset.push(newDataset[i]);
+    }
+       myChart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: [1,2,3,4],
-            datasets: [
-                {
-                    label: 'จำนวนลูกค้าปัจจุบัน',
-                    data: [100,200,330,400],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0)',
-                    ],
-                    borderColor: [
-                        'rgba(255,99,132,1)',
-                    ],
-                    borderWidth: 1
-                }
-            ]
+            datasets: datset
+            // [
+            //     {
+            //         label: 'จำนวนลูกค้าปัจจุบัน',
+            //         data: [100,200,330,400],
+            //         backgroundColor: [
+            //             'rgba(255, 99, 132, 0)',
+            //         ],
+            //         borderColor: [
+            //             'rgba(255,99,132,1)',
+            //         ],
+            //         borderWidth: 1
+            //     },   
+            // ]
         },
-
             options: {
                 scales: {
                     yAxes: [{
@@ -194,4 +221,27 @@
             }
         },
     );
-</script> -->
+
+    const actions = [
+        {
+            name: 'Add Dataset',
+            handler(myChart) {
+            const data = myChart.data;
+            const dsColor = Utils.namedColor(myChart.data.datasets.length);
+            const newDataset = {
+                label: 'Dataset ' + (data.datasets.length + 1),
+                backgroundColor: Utils.transparentize(dsColor, 0.5),
+                borderColor: dsColor,
+                data: Utils.numbers({count: data.labels.length, min: -100, max: 100}),
+            };
+            myChart.data.datasets.push(newDataset);
+            myChart.update();
+            }
+        },
+    ];
+
+    module.exports = {
+        actions: actions,
+    };
+
+</script>
