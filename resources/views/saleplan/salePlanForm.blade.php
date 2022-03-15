@@ -22,7 +22,7 @@ $master_present = App\MasterPresentSaleplan::orderBy('id', 'desc')->get();
                 <div class="form-group col-md-6">
                     <label for="username">วัตถุประสงค์</label>
                     <select class="form-control custom-select" name="sale_plans_objective" required>
-                        <option selected>กรุณาเลือก</option>
+                        <option value="" selected>กรุณาเลือก</option>
                         @foreach ($objective as $value)
                         <option value="{{$value->id}}">{{$value->masobj_title}}</option>
                         @endforeach
@@ -68,8 +68,8 @@ $master_present = App\MasterPresentSaleplan::orderBy('id', 'desc')->get();
                         <label for="firstName">รายการนำเสนอ</label>
                         <select class="select2 select2-multiple form-control" multiple="multiple" data-placeholder="Choose" name="sale_plans_tags[]" required>
                             <optgroup label="เลือกข้อมูล">
-                                @foreach ($master_present as $value)
-                                <option value="{{$value->id}}">{{$value->present_title}}</option>
+                                @foreach ($pdglists_api as $key => $value)
+                                <option value="{{ $pdglists_api[$key]['identify'] }}">{{ $pdglists_api[$key]['name'] }}</option>
                                 @endforeach
                             </optgroup>
                         </select>

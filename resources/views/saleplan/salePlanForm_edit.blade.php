@@ -56,7 +56,7 @@
                 <div class="row">
                     <div class="col-md-12 form-group">
                         <label for="firstName">รายการนำเสนอ</label>
-                        <select class="select2 select2-multiple form-control" multiple="multiple" name="sale_plans_tags"  id="get_tags">
+                        <select class="select2 select2-multiple form-control" multiple="multiple" name="sale_plans_tags[]"  id="get_tags">
 
                         </select>
 

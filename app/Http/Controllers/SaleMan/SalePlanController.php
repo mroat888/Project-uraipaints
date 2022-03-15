@@ -107,10 +107,11 @@ class SalePlanController extends Controller
 
     public function edit_fetch(Request $request)
     {
-        $saleplan = DB::table('sale_plans')->join('master_present_saleplan', 'sale_plans.sale_plans_tags', '=', 'master_present_saleplan.id')
+        $saleplan = DB::table('sale_plans')
+        // ->join('master_present_saleplan', 'sale_plans.sale_plans_tags', '=', 'master_present_saleplan.id')
         ->where('sale_plans.id', $request->id)
         ->select(
-            'master_present_saleplan.present_title',
+            // 'master_present_saleplan.present_title',
             'sale_plans.id',
             'sale_plans.customer_shop_id',
             'sale_plans.sale_plans_title',
@@ -121,7 +122,10 @@ class SalePlanController extends Controller
         )->first();
 
         // ------ API
-        $response = Http::withToken($request->api_token)->get(env("API_LINK").'api/v1/sellers/'.Auth::user()->api_identify.'/customers');
+        $api_token = $this->api_token->apiToken();
+
+        $path_search = "sellers/".Auth::user()->api_identify."/customers";
+        $response = Http::withToken($request->api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
 
         $customer_api = array();
@@ -141,6 +145,22 @@ class SalePlanController extends Controller
 
         $master_present = MasterPresentSaleplan::orderBy('id', 'desc')->get();
 
+        // -----  API สินค้านำเสนอ----------- //
+        $path_search = "pdglists?sortorder=DESC";
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+        $res_api = $response->json();
+
+        $pdglists_api = array();
+        foreach ($res_api['data'] as $key => $value) {
+            $pdglists_api[$key] =
+            [
+                'identify' => $value['identify'],
+                'name' => $value['name'],
+                'sub_code' => $value['sub_code'],
+            ];
+        }
+
+
         return response()->json([
             'status' => 200,
             'salepaln' => $saleplan,
@@ -149,11 +169,13 @@ class SalePlanController extends Controller
             'shop_phone' => $shop_phone,
             'shop_mobile' => $shop_mobile,
             'master_present' => $master_present,
+            'pdglists_api' => $pdglists_api,
         ]);
     }
 
     public function update(Request $request)
     {
+        // dd($request);
         DB::beginTransaction();
         try {
 
@@ -161,7 +183,8 @@ class SalePlanController extends Controller
                 'customer_shop_id' => $request->shop_id,
                 'sale_plans_title' => $request->sale_plans_title,
                 'sale_plans_date' => $request->sale_plans_date,
-                'sale_plans_tags' => $request->sale_plans_tags,
+                // 'sale_plans_tags' => $request->sale_plans_tags,
+                'sale_plans_tags' => implode( ',', $request->sale_plans_tags),
                 'sale_plans_objective' => $request->sale_plans_objective,
                 'sale_plans_status' => 0,
                 'updated_by' => Auth::user()->id,

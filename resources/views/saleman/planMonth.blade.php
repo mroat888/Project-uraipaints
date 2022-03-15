@@ -874,14 +874,6 @@
                     $('#get_tags').children().remove().end();
                     $('#saleplan_phone_edit').val(response.shop_phone);
                     $('#saleplan_address_edit').val(response.shop_address);
-                    // $('#get_tags').html(
-                    //             "<optgroup label='กรุณาเลือก'>"+
-                    //                 "<option value='"+response.salepaln.sale_plans_tags+"' selected>"+ response.salepaln.present_title +"</option>"+
-                    //                 "@foreach ($master_present as $value)"+
-                    //                 "<option value='"+{{$value->id}}+"'>{{$value->present_title}}</option>"+
-                    //                 "@endforeach"+
-
-                    //             "</optgroup>");
 
                     $.each(response.customer_api, function(key, value){
                         if(response.customer_api[key]['id'] == response.salepaln.customer_shop_id){
@@ -893,15 +885,25 @@
 
                     let rows_tags = response.salepaln.sale_plans_tags.split(",");
                     let count_tags = rows_tags.length;
-                    $.each(rows_tags, function(tkey, tvalue){
-                        $.each(response.master_present, function(key, value){
-                            if(value.id == rows_tags[tkey]){
-                                $('#get_tags').append('<option value='+value.id+' selected>'+value.present_title+'</option>');
-                            }else{
-                                $('#get_tags').append('<option value='+value.id+'>'+value.present_title+'</option>');
-                            }
-                        });
-                    });
+                        $.each(rows_tags, function(tkey, tvalue){
+                            $.each(response.pdglists_api, function(key, value){
+                                if(response.pdglists_api[key]['identify'] == rows_tags[tkey]){
+                                    $('#get_tags').append('<option value='+response.pdglists_api[key]['identify']+' selected>'+
+                                    response.pdglists_api[key]['name']+'</option>');
+                                }else{
+                                    $('#get_tags').append('<option value='+response.pdglists_api[key]['identify']+'>'+
+                                    response.pdglists_api[key]['name']+'</option>');
+                                }
+                            });
+                        });     
+                    //     $.each(response.master_present, function(key, value){
+                    //         if(value.id == rows_tags[tkey]){
+                    //             $('#get_tags').append('<option value='+value.id+' selected>'+value.present_title+'</option>');
+                    //         }else{
+                    //             $('#get_tags').append('<option value='+value.id+'>'+value.present_title+'</option>');
+                    //         }
+                    //     });
+                    // });
                 }
             }
         });
