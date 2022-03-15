@@ -115,6 +115,7 @@ Route::get('product_new', 'ProductNewController@frontend_product_new');
 
 // Report
 Route::get('/reportSale/reportMonthlyPlans', 'Report\ReportMonthlyPlansController@index');
+Route::post('/reportSale/reportMonthlyPlans/search', 'Report\ReportMonthlyPlansController@search');
 Route::get('/reportSale/reportSaleplan', 'Report\ReportSalePlanController@index');
 Route::post('/reportSale/reportSaleplan/search', 'Report\ReportSalePlanController@search');
 Route::get('/reportSale/reportVisitCustomerGoal', 'Report\ReportVisitCustomerGoalController@index');

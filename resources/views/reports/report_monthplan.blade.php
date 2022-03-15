@@ -38,7 +38,7 @@
                                 }else{
                                     $year = date('Y');
                                 }
-                                $action = 'reportSale/reportSaleplan/search';
+                                $action = '/reportSale/reportMonthlyPlans/search';
                             @endphp
                             <h5 class="hk-sec-title">ตารางสรุป ผลดำเนินการ <span style="color: rgb(128, 19, 0);">(ประจำปี <?php echo $year+543; ?>)</span></h5>
                         </div>
