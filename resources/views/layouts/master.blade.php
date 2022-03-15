@@ -279,9 +279,13 @@ License: You must have a valid license purchased only from themeforest to legall
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
                                             <a class="nav-link"
+                                                href="{{ url('/reportSale/reportMonthlyPlans') }}">
+                                                <i class="ion ion-md-stats" style="color: #044067;"></i>รายงาน สรุปดำเนินการในเดือน</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link"
                                                 href="{{ url('/reportSale/reportSaleplan') }}">
-                                                <i class="ion ion-md-stats" style="color: #044067;"></i>รายงาน sale
-                                                plan</a>
+                                                <i class="ion ion-md-stats" style="color: #044067;"></i>รายงาน saleplan</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link"
