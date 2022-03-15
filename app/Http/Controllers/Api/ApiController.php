@@ -23,7 +23,7 @@ class ApiController extends Controller
 
     public function getAllSellers(){
         $api_token = $this->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/sellers');    
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/sellers');    
         $res_api = $response->json();               
         return $res_api;
     }
@@ -31,7 +31,7 @@ class ApiController extends Controller
     public function fetch_subgroups($id){
 
         $api_token = $this->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/subgroups/');
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/subgroups/');
         $res_api = $response->json();
         $subgroups = array();
         foreach($res_api['data'] as $value){
@@ -54,7 +54,7 @@ class ApiController extends Controller
     public function fetch_pdglists($id){
 
         $api_token = $this->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/pdglists/');
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/pdglists/');
         $res_api = $response->json();
         $pdglists = array();
         foreach($res_api['data'] as $value){

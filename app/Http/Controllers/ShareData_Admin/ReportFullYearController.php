@@ -20,25 +20,25 @@ class ReportFullYearController extends Controller
         list($year,$month,$day) = explode('-',date('Y-m-d'));
         $path_search = "reports/years/".$year;
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/'.$path_search);
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search);
         $yearseller_api = $response->json();
 
         // สินค้า Top Group
         $path_search_top = "reports/years/".$year."/pdgroups?sortorder=DESC&limits=10"; 
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/'.$path_search_top);
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search_top);
         $grouptop_api = $response->json();
 
         // สินค้า Top SubGroup
         $path_search_top = "reports/years/".$year."/pdsubgroups?sortorder=DESC&limits=10&group_id=10"; 
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/'.$path_search_top);
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search_top);
         $subgrouptop_api = $response->json();
 
         // สินค้า Top Product List
         $path_search_top = "reports/years/".$year."/pdlists?sortorder=DESC&limits=10"; 
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/'.$path_search_top);
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search_top);
         $pdlisttop_api = $response->json();
 
 
@@ -49,25 +49,25 @@ class ReportFullYearController extends Controller
 
         $path_search = "reports/years/".$request->sel_year;
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/'.$path_search);
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search);
         $yearseller_api = $response->json();
 
         // สินค้า Top Group
         $path_search_top = "reports/years/".$request->sel_year."/pdgroups?sortorder=DESC&limits=10"; 
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/'.$path_search_top);
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search_top);
         $grouptop_api = $response->json();
         
         // สินค้า Top SubGroup
         $path_search_top = "reports/years/".$request->sel_year."/pdsubgroups?sortorder=DESC&limits=10&group_id=10"; 
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/'.$path_search_top);
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search_top);
         $subgrouptop_api = $response->json();
 
         // สินค้า Top Product List
         $path_search_top = "reports/years/".$request->sel_year."/pdlists?sortorder=DESC&limits=10"; 
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/'.$path_search_top);
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search_top);
         $pdlisttop_api = $response->json();
 
         // dd($yearleader_api);

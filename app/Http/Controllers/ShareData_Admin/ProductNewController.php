@@ -20,7 +20,7 @@ class ProductNewController extends Controller
     {
         // ดึงรายการสินค้าใหม่
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/campaignpromotes/');
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/campaignpromotes/');
         $campaignpromotes_api = $response->json();
 
        // dd($campaignpromotes_api);
@@ -30,7 +30,7 @@ class ProductNewController extends Controller
 
     public function show($id){
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/campaignpromotes/'.$id.'/sellertargets');
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/campaignpromotes/'.$id.'/sellertargets');
         $res_api = $response->json();
         
         $campaign_detail_api = array();
@@ -107,12 +107,12 @@ class ProductNewController extends Controller
 
         // ดึงรายการสินค้าใหม่
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/campaignpromotes/');
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/campaignpromotes/');
         $campaignpromotes_api = $response->json();
 
         // ดึงรายละเอียดแคมเปญ
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/campaignpromotes/'.$id);
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/campaignpromotes/'.$id);
         $campaignpromotes_name_api = $response->json();
         
         // dd($campaignpromotes_name_api['data']);
@@ -124,7 +124,7 @@ class ProductNewController extends Controller
         // dd($request);
 
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/campaignpromotes/'.$request->sel_campaign.'/sellertargets');
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/campaignpromotes/'.$request->sel_campaign.'/sellertargets');
         $res_api = $response->json();
 
         $campaign_detail_api = array();
@@ -201,12 +201,12 @@ class ProductNewController extends Controller
 
         // ดึงรายการสินค้าใหม่
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/campaignpromotes/');
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/campaignpromotes/');
         $campaignpromotes_api = $response->json();
 
         // ดึงรายละเอียดแคมเปญ
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/campaignpromotes/'.$request->sel_campaign);
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/campaignpromotes/'.$request->sel_campaign);
         $campaignpromotes_name_api = $response->json();
         
         // dd($campaignpromotes_name_api['data']);

@@ -46,7 +46,7 @@ class ProductNewController extends Controller
         foreach($users_saleman as $key => $users_iden){
 
             $api_token = $this->api_token->apiToken();
-            $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/sellers/'.$users_iden->api_identify.'/campignpromotes');
+            $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/sellers/'.$users_iden->api_identify.'/campignpromotes');
             $res_api = $response->json();
 
            // dd($users_iden->api_identify, $res_api);

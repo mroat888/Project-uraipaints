@@ -23,7 +23,7 @@ class ReportHistoricalMonthController extends Controller
 
         $path_search = "reports/years/".$year.",".$year_old1.",".$year_old2."/months/1,2,3,4,5,6,7,8,9,10,11,12/leaders/".Auth::user()->api_identify;
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/'.$path_search);
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search);
         $month_api = $response->json();
 
         return view('shareData_leadManager.report_historical_month', compact('month_api'));

@@ -17,7 +17,7 @@ class SearchroductController extends Controller
     public function index()
     {
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/groups?sortorder=DESC/');
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/groups?sortorder=DESC/');
         $groups_api = $response->json();
 
         return view('shareData.search_product', compact('groups_api'));
@@ -26,14 +26,14 @@ class SearchroductController extends Controller
     public function search(Request $request){
 
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/groups?sortorder=DESC/');
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/groups?sortorder=DESC/');
         $groups_api = $response->json();
 
         $product_api = null;
 
         if(!is_null($request->sel_pdglists)){
             $api_token = $this->api_token->apiToken();
-            $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/pdglists/'.$request->sel_pdglists.'/products');
+            $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/pdglists/'.$request->sel_pdglists.'/products');
             if($response['code'] == 200){
                 $product_api = $response->json();
             }
