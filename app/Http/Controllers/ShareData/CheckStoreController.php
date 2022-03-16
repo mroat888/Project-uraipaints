@@ -33,8 +33,46 @@ class CheckStoreController extends Controller
                 'TotalCampaign' => $value['TotalCampaign'],
             ];
         }
+
+        // ดึงจังหวัด -- API
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/provinces');
+        $res_api = $response->json();
+        $provinces = $res_api;
         
-        return view('shareData.check_name_store', compact('customer_api'));
+        return view('shareData.check_name_store', compact('customer_api', 'provinces'));
+    }
+
+    public function search(request $request)
+    {   
+        
+        $api_token = $this->api_token->apiToken();
+        $patch_search = "/sellers/".Auth::user()->api_identify."/customers/search?sort_by=cust_title&province_id=".$request->province."&amphoe_id=".$request->amphur;
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$patch_search);
+        $res_api = $response->json();
+
+        $data['customer_api'] = array();
+        if($res_api['code'] == 200){
+            foreach ($res_api['data'] as $key => $value) {
+                $data['customer_api'][$key] = 
+                [
+                    'identify' => $value['identify'],
+                    'shopname' => $value['title']." ".$value['name'],
+                    'address' => $value['amphoe_name']." , ".$value['province_name'],
+                    'province_id' => $value['province_id'], 
+                    'amphoe_id' => $value['amphoe_id'],
+                    'InMonthDays' => $value['InMonthDays'],
+                    'TotalDays' => $value['TotalDays'],
+                    'TotalCampaign' => $value['TotalCampaign'],
+                ];
+            }
+        }
+
+        // ดึงจังหวัด -- API
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/provinces');
+        $res_api = $response->json();
+        $data['provinces'] = $res_api;
+        
+        return view('shareData.check_name_store', $data);
     }
 
     /**
@@ -76,6 +114,8 @@ class CheckStoreController extends Controller
         //- ดึงแคมเปญของร้านค้า
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/customers/'.$id.'/campaigns');
         $res_api = $response->json();
+
+        $year_sum= array();
         
         if(!empty($res_api)){
             if($res_api['code'] == 200){
@@ -92,9 +132,20 @@ class CheckStoreController extends Controller
                         'amount_limit_th' => $value['amount_limit_th'],
                         'amount_net_th' => $value['amount_net_th'],
                     ];
-                }
+
+                    $check_year = array_search($value['year'], $year_sum);
+                    //echo $check_year." - ".$value['year']."<br>";
+                    if($check_year!=FALSE){
+                        //echo 'ค้นพบคำว่า Toshiba<br>';
+                    }else{
+                        //echo 'ค้นหาคำว่า Toshiba ไม่พบ!! plush'.$value['year'];
+                        $year_sum[] = $value['year'];
+                    }
+                } 
             }
         }
+
+        // dd($year_sum);
 
         return view('shareData.check_name_store_detail', $data);
 

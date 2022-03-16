@@ -128,6 +128,7 @@ Route::post('userProfileUpdate', 'ProfileController@update');
 
 // ข้อมูลที่ใช้ร่วมกัน
 Route::get('data_name_store', 'ShareData\CheckStoreController@index');
+Route::post('data_name_store/search', 'ShareData\CheckStoreController@search');
 Route::get('data_name_store/detail/{id}', 'ShareData\CheckStoreController@show');
 Route::get('data_search_product', 'ShareData\SearchroductController@index');
 Route::post('data_search_product/search', 'ShareData\SearchroductController@search');
@@ -238,6 +239,7 @@ Route::post('/leadManage/reportYear/search', 'LeadManager\ReportYearController@s
 
 // ข้อมูลที่ใช้ร่วมกัน
 Route::get('leadManage/data_name_store', 'ShareData_LeadManager\CheckStoreController@index');
+Route::post('leadManage/data_name_store/search', 'ShareData_LeadManager\CheckStoreController@search');
 Route::get('leadManage/data_name_store/detail/{id}', 'ShareData_LeadManager\CheckStoreController@show');
 Route::get('leadManage/data_search_product', 'ShareData_LeadManager\SearchroductController@index');
 Route::post('leadManage/data_search_product/search', 'ShareData_LeadManager\SearchroductController@search');
@@ -335,6 +337,7 @@ Route::post('head/userProfileUpdate', 'ProfileController@update');
 
 // ข้อมูลที่ใช้ร่วมกัน
 Route::get('headManage/data_name_store', 'ShareData_HeadManager\CheckStoreController@index');
+Route::post('headManage/data_name_store/search', 'ShareData_HeadManager\CheckStoreController@search');
 Route::get('headManage/data_name_store/detail/{id}', 'ShareData_HeadManager\CheckStoreController@show');
 Route::get('headManage/data_search_product', 'ShareData_HeadManager\SearchroductController@index');
 Route::post('headManage/data_search_product/search', 'ShareData_HeadManager\SearchroductController@search');
@@ -513,6 +516,7 @@ Route::post('admin/userProfileUpdate', 'ProfileController@update');
 
 // ข้อมูลที่ใช้ร่วมกัน
 Route::get('admin/data_name_store', 'ShareData_Admin\CheckStoreController@index');
+Route::post('admin/data_name_store/search', 'ShareData_Admin\CheckStoreController@search');
 Route::get('admin/data_name_store/detail/{id}', 'ShareData_Admin\CheckStoreController@show');
 Route::get('admin/data_search_product', 'ShareData_Admin\SearchroductController@index');
 Route::post('admin/data_search_product/search', 'ShareData_Admin\SearchroductController@search');
@@ -562,8 +566,10 @@ Route::get('/fetch_district/{id}',[ProvinceController::class, 'district']);
 Route::get('/fetch_postcode/{id}',[ProvinceController::class, 'postcode']);
 Route::get('/customer/autocomplete',[CustomerController::class, 'fetch_autocomplete']);
 
+
 Route::get('fetch_subgroups/{id}', 'Api\ApiController@fetch_subgroups');
 Route::get('fetch_pdglists/{id}', 'Api\ApiController@fetch_pdglists');
+Route::get('fetch_amphur_api/{id}', 'Api\ApiController@fetch_amphur_api');
 
 Auth::routes();
 // Route::get('/', function () { return view('saleman.dashboard'); });
