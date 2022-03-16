@@ -59,11 +59,13 @@ class PromotionController extends Controller
 
             News::create([
                 'news_date' => $request->news_date,
+                'news_date_last' => $request->news_date_last,
                 'news_title' => $request->news_title,
                 'news_detail' => $request->news_detail,
                 'news_image' => $image,
                 'url'       => $request->url,
                 'status'    => "P",
+                'status_share' => $request->status_share,
                 'created_by' => Auth::user()->id,
 
             ]);
@@ -119,10 +121,12 @@ class PromotionController extends Controller
 
                 $data2 = News::find($request->id);
                 $data2->news_date         = $request->news_date;
+                $data2->news_date_last    = $request->news_date_last;
                 $data2->news_title        = $request->news_title;
                 $data2->news_detail       = $request->news_detail;
                 $data2->news_image        = $image;
                 $data2->url               = $request->url;
+                $data2->status_share      = $request->status_share;
                 $data2->updated_by        = Auth::user()->id;
                 $data2->updated_at        = Carbon::now();
                 $data2->update();
@@ -132,9 +136,11 @@ class PromotionController extends Controller
 
             $data2 = News::find($request->id);
             $data2->news_date         = $request->news_date;
+            $data2->news_date_last    = $request->news_date_last;
             $data2->news_title        = $request->news_title;
             $data2->news_detail       = $request->news_detail;
             $data2->url               = $request->url;
+            $data2->status_share      = $request->status_share;
             $data2->updated_by        = Auth::user()->id;
             $data2->updated_at        = Carbon::now();
             $data2->update();
@@ -155,6 +161,34 @@ class PromotionController extends Controller
         }
         News::where('id', $id)->delete();
         return back();
+    }
+
+    public function promotion_detail($id)
+    {
+        $data = News::where('id', $id)->first();
+
+        return view('saleman.promotions_detail', compact('data'));
+    }
+
+    public function lead_promotion_detail($id)
+    {
+        $data = News::where('id', $id)->first();
+
+        return view('leadManager.promotions_detail', compact('data'));
+    }
+
+    public function head_promotion_detail($id)
+    {
+        $data = News::where('id', $id)->first();
+
+        return view('headManager.promotions_detail', compact('data'));
+    }
+
+    public function admin_promotion_detail($id)
+    {
+        $data = News::where('id', $id)->first();
+
+        return view('admin.promotions_detail', compact('data'));
     }
 
 }

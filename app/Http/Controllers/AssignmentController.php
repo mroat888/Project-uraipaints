@@ -78,6 +78,13 @@ class AssignmentController extends Controller
         DB::beginTransaction();
         try {
 
+        $auth_team_id = explode(',',Auth::user()->team_id);
+        $auth_team = array();
+        foreach($auth_team_id as $value){
+            $auth_team[] = $value;
+        }
+
+
             $pathFle = 'upload/AssignmentFile';
             $uploadfile = '';
             if (!empty($request->file('assignment_fileupload'))) {
@@ -87,7 +94,19 @@ class AssignmentController extends Controller
                 $uploadfile = $file_name;
             }
 
-            foreach ($request->assign_emp_id as $key => $emp_id) {
+            if ($request->CheckAll) {
+            $data['users'] = DB::table('users')
+            ->where('status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('team_id', $auth_team[$i])
+                        ->orWhere('team_id', 'like', $auth_team[$i].',%')
+                        ->orWhere('team_id', 'like', '%,'.$auth_team[$i]);
+                }
+            })
+            ->get();
+
+            foreach ($data['users'] as $key => $emp_id) {
                 DB::table('assignments')
                 ->insert([
                     'assign_work_date' => $request->date,
@@ -96,13 +115,33 @@ class AssignmentController extends Controller
                     'assign_title' => $request->assign_title,
                     'assign_detail' => $request->assign_detail,
                     'assign_fileupload' => $uploadfile,
-                    'assign_emp_id' => $emp_id,
+                    'assign_emp_id' => $emp_id->id,
                     'assign_status' => 3,
                     'assign_approve_id' => Auth::user()->id,
                     'assign_result_status' => 0,
                     'created_by' => Auth::user()->id,
                     'created_at' => Carbon::now(),
                 ]);
+            }
+
+            }else{
+                foreach ($request->assign_emp_id as $key => $emp_id) {
+                    DB::table('assignments')
+                    ->insert([
+                        'assign_work_date' => $request->date,
+                        // 'assign_request_date' => Carbon::now(), // วันขอนุมัติ
+                        'assign_approve_date' => Carbon::now(), // วันที่อนุมัติ
+                        'assign_title' => $request->assign_title,
+                        'assign_detail' => $request->assign_detail,
+                        'assign_fileupload' => $uploadfile,
+                        'assign_emp_id' => $emp_id,
+                        'assign_status' => 3,
+                        'assign_approve_id' => Auth::user()->id,
+                        'assign_result_status' => 0,
+                        'created_by' => Auth::user()->id,
+                        'created_at' => Carbon::now(),
+                    ]);
+                }
             }
 
             DB::commit();

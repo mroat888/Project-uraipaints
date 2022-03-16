@@ -113,6 +113,18 @@
                                 <input class="form-control" name="news_date" type="date">
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">แชร์ข้อมูล</label>
+                                <div class="custom-control custom-checkbox checkbox-info mt-2">
+                                    <input type="checkbox" class="custom-control-input"
+                                        id="customCheck4" name="status_share" value="1">
+                                    <label class="custom-control-label"
+                                        for="customCheck4">สามารถแชร์ข้อมูลได้</label>
+                                </div>
+                            </div>
+                        </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
@@ -158,6 +170,14 @@
                             <div class="col-md-6 form-group">
                                 <label for="firstName">วันที่แจ้งเตือน</label>
                                 <input class="form-control" name="news_date_edit" id="get_date" type="date" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">แชร์ข้อมูล</label>
+                                <div class="custom-control custom-checkbox checkbox-info mt-2">
+                                    <div id="customCheck6"></div>
+                                </div>
                             </div>
                         </div>
                         <input type="hidden" name="id" id="get_id">
@@ -223,12 +243,18 @@
                 dataType: "JSON",
                 async: false,
                 success: function(data) {
+                    $('#customCheck6').children().remove().end();
                     $('#get_id').val(data.dataEdit.id);
                     $('#get_date').val(data.dataEdit.news_date);
                     $('#get_title').val(data.dataEdit.news_title);
                     $('#get_detail').val(data.dataEdit.news_detail);
                     // $('#get_image').val(data.dataEdit.news_image);
                     $('#get_url').val(data.dataEdit.url);
+                    if (data.dataEdit.status_share == 1) {
+                    $('#customCheck6').append("<input type='checkbox' class='custom-control-input' id='customCheck7' name='status_share_edit' value='1' checked><label class='custom-control-label' for='customCheck7'>สามารถแชร์ข้อมูลได้</label>");
+                }else{
+                    $('#customCheck6').append("<input type='checkbox' class='custom-control-input' id='customCheck8' name='status_share_edit' value='1'><label class='custom-control-label' for='customCheck8'>สามารถแชร์ข้อมูลได้</label>");
+                }
 
                     $('#editNews').modal('toggle');
                 }

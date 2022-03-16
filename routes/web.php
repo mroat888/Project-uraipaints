@@ -110,7 +110,9 @@ Route::post('search_month_note', 'NoteController@search_month_note');
 
 
 Route::get('news', 'NewsController@frontend_news');
+Route::get('news_detail/{id}', 'NewsController@news_detail');
 Route::get('promotions', 'PromotionController@frontend_promotion');
+Route::get('promotion_detail/{id}', 'PromotionController@promotion_detail');
 Route::get('product_new', 'ProductNewController@frontend_product_new');
 
 // Report
@@ -224,6 +226,8 @@ Route::post('lead/search_month_note', 'NoteController@lead_search_month_note');
 Route::get('lead/news', 'NewsController@lead_frontend_news');
 Route::get('lead/promotions', 'PromotionController@lead_frontend_promotion');
 Route::get('lead/product_new', 'ProductNewController@lead_frontend_product_new');
+Route::get('lead/news_detail/{id}', 'NewsController@lead_news_detail');
+Route::get('lead/promotion_detail/{id}', 'PromotionController@lead_promotion_detail');
 
 //report
 Route::get('/leadManage/reportcustomer', function () { return view('reports.report_customer'); });
@@ -314,6 +318,8 @@ Route::get('head/status_pin_update/{id}', 'NoteController@status_pin_update');
 Route::get('head/news', 'NewsController@head_frontend_news');
 Route::get('head/promotions', 'PromotionController@head_frontend_promotion');
 Route::get('head/product_new', 'ProductNewController@head_frontend_product_new');
+Route::get('head/news_detail/{id}', 'NewsController@head_news_detail');
+Route::get('head/promotion_detail/{id}', 'PromotionController@head_promotion_detail');
 
 //report
 Route::get('/headManage/reportcustomer', function () { return view('reports.report_customer'); });
@@ -405,6 +411,8 @@ Route::post('admin/create_news', 'NewsController@store');
 Route::get('admin/edit_news/{id}', 'NewsController@edit');
 Route::post('admin/update_news', 'NewsController@update');
 Route::get('admin/delete_news/{id}', 'NewsController@destroy');
+Route::get('admin/news_detail/{id}', 'NewsController@admin_news_detail');
+
 // News Banner
 Route::get('admin/newsBanner', 'NewsController@index_banner');
 Route::post('admin/create_newsBanner', 'NewsController@banner_store');
@@ -418,6 +426,8 @@ Route::post('admin/create_promotion', 'PromotionController@store');
 Route::get('admin/edit_promotion/{id}', 'PromotionController@edit');
 Route::post('admin/update_promotion', 'PromotionController@update');
 Route::get('admin/delete_promotion/{id}', 'PromotionController@destroy');
+Route::get('admin/promotion_detail/{id}', 'PromotionController@admin_promotion_detail');
+
 
 // Product New
 Route::get('admin/fontendProductNew', 'ProductNewController@admin_frontend_product_new');
@@ -426,6 +436,7 @@ Route::post('admin/create_product_new', 'ProductNewController@store');
 Route::get('admin/edit_product_new/{id}', 'ProductNewController@edit');
 Route::post('admin/update_product_new', 'ProductNewController@update');
 Route::get('admin/delete_product_new/{id}', 'ProductNewController@destroy');
+
 
 // Product New
 Route::get('admin/product_property', 'Admin\ProductPropertyController@index');

@@ -99,8 +99,8 @@
 
                                                 @else
                                                     <div class="button-list">
-                                                        <button class="btn btn-icon btn-neon" data-toggle="modal" 
-                                                        data-target="#ModalResult" 
+                                                        <button class="btn btn-icon btn-neon" data-toggle="modal"
+                                                        data-target="#ModalResult"
                                                         onclick="show_result({{$value->id}})">
                                                         <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
                                                         </div>
@@ -158,8 +158,15 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12 form-group">
-                                <label for="firstName">สั่งงานให้</label>
-                                <select class="select2 select2-multiple form-control" multiple="multiple" data-placeholder="Choose" name="assign_emp_id[]" required>
+                                <label for="firstName">สั่งงานให้
+                                    <div class="custom-control custom-checkbox checkbox-info mt-2">
+                                        <input type="checkbox" class="custom-control-input"
+                                            id="customCheck4" name="CheckAll" value="Y">
+                                        <label class="custom-control-label"
+                                            for="customCheck4">ทั้งหมด</label>
+                                    </div>
+                            </label>
+                                <select class="select2 select2-multiple form-control" multiple="multiple" data-placeholder="Choose" name="assign_emp_id[]" >
                                     <optgroup label="เลือกข้อมูล">
                                         @foreach($users as $value)
                                         <option value="{{ $value->id }}">{{ $value->name }}</option>
