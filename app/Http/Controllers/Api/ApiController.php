@@ -74,4 +74,25 @@ class ApiController extends Controller
 
     }
 
+    public function fetch_amphur_api($id){
+
+        $api_token = $this->apiToken();
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/provinces/'.$id.'/amphures/');
+        $res_api = $response->json();
+        $amphures = array();
+        foreach($res_api['data'] as $value){
+            $amphures[] = [
+                'identify' => $value['identify'],
+                'name_thai' => $value['name_thai'],
+                'province_id' => $value['province_id']
+            ];                    
+        }
+
+        return response()->json([
+            'status' => 200,
+            'id' => $id,
+            'amphures' => $res_api
+        ]);
+    }
+
 }

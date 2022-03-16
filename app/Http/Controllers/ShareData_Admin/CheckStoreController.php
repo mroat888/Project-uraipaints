@@ -48,9 +48,57 @@ class CheckStoreController extends Controller
         }
 
         // dd($customer_api);
+
+        // ดึงจังหวัด -- API
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/provinces');
+        $res_api = $response->json();
+        $provinces = $res_api;
         
-        return view('shareData_admin.check_name_store', compact('customer_api'));
+        return view('shareData_admin.check_name_store', compact('customer_api', 'provinces'));
     }
+
+    public function search(Request $request)
+    {
+        $users_saleman = DB::table('users')->get();
+        // dd($users_saleman);
+
+        $api_token = $this->api_token->apiToken();
+        $data['customer_api'] = array();
+        foreach($users_saleman as $saleman){
+            $patch_search = "/sellers/".$saleman->api_identify."/customers/search?sort_by=cust_title&province_id=".$request->province."&amphoe_id=".$request->amphur;
+            $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$patch_search);
+            $res_api = $response->json();
+
+            if(!empty($res_api)){
+                if($res_api['code'] == 200){
+                    foreach ($res_api['data'] as $key => $value) {
+                        $data['customer_api'][] = 
+                        [
+                            'identify' => $value['identify'],
+                            'shopname' => $value['title']." ".$value['name'],
+                            'address' => $value['amphoe_name']." , ".$value['province_name'],
+                            'telephone' => $value['telephone']." , ".$value['mobile'],
+                            'TotalCampaign' => $value['TotalCampaign'],
+                            'InMonthDays' => $value['InMonthDays'],
+                            'TotalDays' => $value['TotalDays'],
+                            'TotalCampaign' => $value['TotalCampaign'],
+                        ];
+                    }
+                }
+            }
+
+        }
+
+        // dd($customer_api);
+
+        // ดึงจังหวัด -- API
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/provinces');
+        $res_api = $response->json();
+        $data['provinces'] = $res_api;
+        
+        return view('shareData_admin.check_name_store', $data);
+    }
+
 
     /**
      * Show the form for creating a new resource.
