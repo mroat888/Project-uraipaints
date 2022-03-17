@@ -1,6 +1,3 @@
-@extends('layouts.master')
-
-@section('content')
 
 <!-- Breadcrumb -->
 <nav class="hk-breadcrumb" aria-label="breadcrumb">
@@ -50,6 +47,7 @@
                                     <tr>
                                         <th>เดือน</th>
                                         <th class="bg-success text-white">ปี</th>
+                                        <th class="bg-success text-white">พนักงานขาย</th>
                                         <th class="bg-success text-white"> จำนวนร้านค้า</th>
                                         <th class="bg-success text-white">ยอดขายรวม</th>
                                         <th class="bg-success text-white">ยอดคืนรวม</th>
@@ -57,6 +55,7 @@
                                         <th class="bg-success text-white">เปอร์เซ็นต์คืน</th>
 
                                         <th class="bg-info text-white">ปี</th>
+                                        <th class="bg-info text-white">พนักงานขาย</th>
                                         <th class="bg-info text-white"> จำนวนร้านค้า</th>
                                         <th class="bg-info text-white">ยอดขายรวม</th>
                                         <th class="bg-info text-white">ยอดคืนรวม</th>
@@ -64,6 +63,7 @@
                                         <th class="bg-info text-white">เปอร์เซ็นต์คืน</th>
 
                                         <th class="bg-warning text-dark">ปี</th>
+                                        <th class="bg-warning text-dark">พนักงานขาย</th>
                                         <th class="bg-warning text-dark"> จำนวนร้านค้า</th>
                                         <th class="bg-warning text-dark">ยอดขายรวม</th>
                                         <th class="bg-warning text-dark">ยอดคืนรวม</th>
@@ -90,6 +90,11 @@
                                                 <td class="bg-success text-white">
                                                     @if(!empty($month_api[$key_year][$i]['year']))
                                                         {{ $month_api[$key_year][$i]['year'] }}
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if(!empty($month_api[$key_year][$i]['Sellers']))
+                                                        {{ number_format($month_api[$key_year][$i]['Sellers']) }}
                                                     @endif
                                                 </td>
                                                 <td>
@@ -128,6 +133,11 @@
                                                     @endif
                                                 </td>
                                                 <td>
+                                                    @if(!empty($month_api[$key_year][$i]['Sellers']))
+                                                        {{ number_format($month_api[$key_year][$i]['Sellers']) }}
+                                                    @endif
+                                                </td>
+                                                <td>
                                                     @if(!empty($month_api[$key_year][$i]['customers']))
                                                         {{ number_format($month_api[$key_year][$i]['customers']) }}
                                                     @endif
@@ -160,6 +170,11 @@
                                                 <td class="bg-warning text-dark">
                                                     @if(!empty($month_api[$key_year][$i]['year']))
                                                         {{ $month_api[$key_year][$i]['year'] }}
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if(!empty($month_api[$key_year][$i]['Sellers']))
+                                                        {{ number_format($month_api[$key_year][$i]['Sellers']) }}
                                                     @endif
                                                 </td>
                                                 <td>
@@ -205,12 +220,8 @@
         <!-- /Row -->
     </div>
 
-@section('footer')
-    @include('layouts.footer')
-@endsection
-
  <!-- EChartJS JavaScript -->
  <script src="{{asset('public/template/vendors/echarts/dist/echarts-en.min.js')}}"></script>
  <script src="{{asset('public/template/barcharts/barcharts-data.js')}}"></script>
-@endsection
+
 

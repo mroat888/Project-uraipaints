@@ -21,15 +21,37 @@ class ReportHistoricalMonthController extends Controller
         $year_old1 = $year-1;
         $year_old2 = $year-2;
 
+        $array_year = array($year, $year_old1, $year_old2);
+        $month_api = array();
+
         $path_search = "reports/years/".$year.",".$year_old1.",".$year_old2."/months/1,2,3,4,5,6,7,8,9,10,11,12";
         $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search);
-        $month_api = $response->json();
+        $res_api = $response->json();
 
-        // $month = 1;
-        // for($i=0; $i<12; $i++){
-        //     if()
-        // }
+        
+        foreach($array_year as $key_year => $value_year){
+            $month = 1;
+            for($i=0; $i<12; $i++){
+                foreach($res_api['data'] as $key => $value){
+                    if(($value_year == $value['year']) && ($month == $value['month'])){
+                        $month_api[$key_year][$i] =[
+                            'year' => $value['year'],
+                            'month' => $value['month'],
+                            'Sellers' => $value['Sellers'],
+                            'customers' => $value['customers'],
+                            'sales' => $value['sales'],
+                            'credits' => $value['credits'],
+                            'netSales' => $value['netSales'],
+                            '%Credit' => $value['%Credit'],
+                        ];
+                    }
+                }
+                $month++;
+            }
+        }
+
+       // dd($month_api);
 
         return view('shareData_admin.report_historical_month', compact('month_api'));
     }
