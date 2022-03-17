@@ -356,7 +356,7 @@ Route::post('headManage/data_report_historical-year/search', 'ShareData_HeadMana
 Route::get('headManage/data_report_historical-quarter', 'ShareData_HeadManager\ReportHistoricalQuarterController@index');
 Route::post('headManage/data_report_historical-quarter/search', 'ShareData_HeadManager\ReportHistoricalQuarterController@search');
 Route::get('headManage/data_report_historical-month', 'ShareData_HeadManager\ReportHistoricalMonthController@index');
-
+Route::get('headManage/data_report_sale_compare-year','ShareData_HeadManager\ReportSaleCompareYearController@index');
 });
 
 
@@ -542,6 +542,7 @@ Route::post('admin/data_report_historical-year/search', 'ShareData_Admin\ReportH
 Route::get('admin/data_report_historical-quarter', 'ShareData_Admin\ReportHistoricalQuarterController@index');
 Route::post('admin/data_report_historical-quarter/search', 'ShareData_Admin\ReportHistoricalQuarterController@search');
 Route::get('admin/data_report_historical-month', 'ShareData_Admin\ReportHistoricalMonthController@index');
+Route::get('admin/data_report_sale_compare-year','ShareData_Admin\ReportSaleCompareYearController@index');
 
 });
 

@@ -52,19 +52,35 @@
                                     <tbody>
                                     @php
                                         $no = 0;
+                                        $sum_TotalLimit = 0;
+                                        $sum_TotalPromotion =0;
+                                        $sum_TotalCustomer =0;
                                     @endphp
                                     @if(!empty($compare_api))
                                         @foreach($compare_api['data'] as $key => $value)
+                                        @php 
+                                            $sum_TotalLimit += $value['TotalLimit'];
+                                            $sum_TotalPromotion += $value['TotalPromotion'];
+                                            $sum_TotalCustomer += $value['TotalCustomer'];
+                                        @endphp
                                         <tr>
                                             <td style="text-align:center">{{ ++$no }}</td>
                                             <td style="text-align:center">{{ $value['year'] }}</td>
                                             <td style="text-align:right">{{ number_format($value['TotalLimit'],2) }}</td>
-                                            <td style="text-align:center">{{ number_format($value['TotalPromotion']) }}</td>
-                                            <td style="text-align:center">{{ number_format($value['TotalCustomer']) }}</td>
+                                            <td style="text-align:right">{{ number_format($value['TotalPromotion']) }}</td>
+                                            <td style="text-align:right">{{ number_format($value['TotalCustomer']) }}</td>
                                         </tr>
                                         @endforeach
                                     @endif
                                     </tbody>
+                                    <tfoot>
+                                        <tr style="font-weight: bold;">
+                                            <td colspan="2" style=" text-align:center; font-weight: bold;">ทั้งหมด</td>
+                                            <td style="font-weight: bold; text-align:right">{{ number_format($sum_TotalLimit,2) }}</td>
+                                            <td style="font-weight: bold; text-align:right">{{ number_format($sum_TotalPromotion) }}</td>
+                                            <td style="font-weight: bold; text-align:right">{{ number_format($sum_TotalCustomer) }}</td>
+                                        </tr>
+                                    </tfoot>
                                 </table>
                             </div>
                         </div>
