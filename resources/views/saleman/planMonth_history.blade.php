@@ -7,193 +7,29 @@
     <!-- Breadcrumb -->
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
-            <li class="breadcrumb-item active">แผนประจำเดือน</li>
-            {{-- <li class="breadcrumb-item active" aria-current="page">ปฎิทินกิจกรรม</li> --}}
+            <li class="breadcrumb-item">แผนประจำเดือน</li>
+            <li class="breadcrumb-item active" aria-current="page">ประวัติแผนประจำเดือน <?php echo thaidate('F Y', $monthly_plan_history->month_date); ?></li>
         </ol>
     </nav>
     <!-- /Breadcrumb -->
 
     <!-- Container -->
     <div class="container-fluid px-xxl-65 px-xl-20">
+
+        <div class="hk-pg-header mb-10">
+            <div>
+                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-clock"></i></span>ประวัติแผนประจำเดือน <?php echo thaidate('F Y', $monthly_plan_history->month_date); ?></h4>
+            </div>
+            <div class="d-flex">
+                <a href="{{ url('/planMonth')}}" type="button" class="btn btn-secondary btn-sm btn-rounded px-3 mr-10"> ย้อนกลับ </a>
+            </div>
+        </div>
+
         <div class="mt-30 mb-30">
             <div class="row">
                 <div class="col-md-12">
                     <section class="hk-sec-wrapper">
-                        <div class="hk-pg-header mb-10">
-                            <div>
-                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">แผนสรุปรายเดือน ปี <?php echo thaidate('Y', date('Y')); ?></h6>
-                            </div>
-                            <div class="col-sm-12 col-md-9">
-                                <!-- ------ -->
-
-                                <span class="form-inline pull-right pull-sm-center">
-                                    <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</button>
-                                    <form action="{{ url('search_month_planMonth') }}" method="post" enctype="multipart/form-data">
-                                        @csrf
-                                        <span id="selectdate" style="display:none;">
-
-                                            เดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateFrom" name="fromMonth"/>
-
-                                            ถึงเดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name="toMonth"/>
-
-                                            <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm">ค้นหา</button>
-                                        </span>
-                                    </form>
-                                </span>
-                                <!-- ------ -->
-                            </div>
-                        </div>
-                        {{-- <h5 class="hk-sec-title">แผนสรุปรายเดือน ปี 2565</h5> --}}
-                        <div class="row">
-                            <div class="col-sm">
-                                <div class="table-wrap">
-                                    <div class="table-responsive">
-                                        <table class="table table-hover mb-0">
-                                            <thead>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>เดือน</th>
-                                                    <th>แผนทำงาน</th>
-                                                    <th>ลูกค้าใหม่</th>
-                                                    <th>รวมงาน</th>
-                                                    {{-- <th>ดำเนินการแล้ว</th> --}}
-                                                    <!-- <th>คงเหลือ</th>
-                                                    <th>สำเร็จ %</th> -->
-                                                    <th>เยี่ยมลูกค้า</th>
-                                                    <th>สถานะ</th>
-                                                    <th class="text-center">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($monthly_plan as $key => $value)
-                                                    @php
-                                                        $sale_plan_amount = DB::table('sale_plans')
-                                                            ->where('monthly_plan_id', $value->id)
-                                                            ->whereIn('sale_plans_status', [0,1,2])
-                                                            ->count();
-
-                                                        $cust_new_amount = DB::table('customer_shops_saleplan')
-                                                            ->where('monthly_plan_id', $value->id)
-                                                            ->whereIn('shop_aprove_status', [0,1,2])
-                                                            ->count();
-
-                                                        $total_plan = $sale_plan_amount + $cust_new_amount;
-
-                                                        $cust_visits_amount = DB::table('customer_visits')
-                                                            ->where('monthly_plan_id', $value->id)
-                                                            ->count();
-                                                    @endphp
-                                                    <tr>
-                                                        <td>{{ $key + 1 }}</td>
-                                                        <td>{{ thaidate('F Y', $value->month_date) }}</td>
-                                                        <td>{{ $sale_plan_amount }}</td>
-                                                        <td>{{ $cust_new_amount }}</td>
-                                                        <td>{{ $total_plan }}</td>
-                                                        <td>{{ $cust_visits_amount }}</td>
-                                                        <td>
-
-                                                            @if ($value->status_approve == 0)
-                                                                <span class="badge badge-soft-secondary"
-                                                                    style="font-size: 12px;">
-                                                                    Draf
-                                                                </span>
-
-                                                            @elseif ($value->status_approve == 1)
-                                                                <span class="badge badge-soft-warning"
-                                                                    style="font-size: 12px;">
-                                                                    Pending
-                                                                </span>
-                                                            @else
-                                                                <span class="badge badge-soft-success"
-                                                                    style="font-size: 12px;">
-                                                                    Approve
-                                                                </span>
-                                                            @endif
-
-
-                                                        </td>
-                                                        <td style="text-align:center">
-                                                            <div class="button-list">
-
-                                                                <form action="{{ url('approve_monthly_plan', $value->id) }}" method="GET">
-                                                                    @if ($value->status_approve == 1 || $value->status_approve == 2)
-                                                                    <button type="button" class="btn btn-icon btn-secondary requestApproval" disabled>
-                                                                        <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
-                                                                        @else
-
-                                                                        @if($value->id != $monthly_plan_next->id)
-                                                                            @php
-                                                                                list($myear,$mmonth,$mday) = explode("-",$value->month_date);
-                                                                                $master_setting = DB::table('master_setting')->where('name','OverSaleplan')->first();
-                                                                                $count_setting = strlen($master_setting->stipulate);
-                                                                                if($count_setting < 2){
-                                                                                    $setting_day = "0".$master_setting->stipulate;
-                                                                                }else{
-                                                                                    $setting_day = $master_setting->stipulate;
-                                                                                }
-                                                                                $OverSaleplan = $myear."-".$mmonth."-".$setting_day;
-                                                                                // dd($OverSaleplan, date('Y-m-d'));
-                                                                            @endphp
-                                                                            @if($OverSaleplan >= date('Y-m-d'))
-                                                                                <button type="button" class="btn btn-icon btn-teal requestApproval">
-                                                                                    <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
-                                                                            @else
-                                                                                <button type="button" class="btn btn-icon btn-teal requestApproval" disabled>
-                                                                                    <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
-                                                                            @endif
-                                                                    @else
-                                                                            @if($sale_plan_amount > 0)
-                                                                                @php
-                                                                                    list($myear,$mmonth,$mday) = explode("-",$value->month_date);
-                                                                                    $master_setting = DB::table('master_setting')->where('name','OverSaleplan')->first();
-                                                                                    $count_setting = strlen($master_setting->stipulate);
-                                                                                    if($count_setting < 2){
-                                                                                        $setting_day = "0".$master_setting->stipulate;
-                                                                                    }else{
-                                                                                        $setting_day = $master_setting->stipulate;
-                                                                                    }
-                                                                                    $OverSaleplan = $myear."-".$mmonth."-".$setting_day;
-                                                                                    // dd($OverSaleplan, date('Y-m-d'));
-                                                                                @endphp
-                                                                                @if($OverSaleplan >= date('Y-m-d'))
-                                                                                    <button type="button" class="btn btn-icon btn-teal requestApproval">
-                                                                                    <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
-                                                                                @else
-                                                                                    <button type="button" class="btn btn-icon btn-teal requestApproval" disabled>
-                                                                                    <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
-                                                                                @endif
-                                                                            @else
-                                                                            <button type="button" class="btn btn-icon btn-teal requestApproval" disabled>
-                                                                                <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
-                                                                            @endif
-
-                                                                        @endif
-
-                                                                    @endif
-
-                                                                    @if ($value->status_approve != 0 && $value->status_approve != 1)
-                                                                    <a href="{{url('planMonth_history', $value->id)}}" class="btn btn-icon btn-info ml-2">
-                                                                        <span class="btn-icon-wrap"><i data-feather="file"></i></span></a>
-                                                                    @endif
-
-                                                                </form>
-
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-
-                <div class="col-md-12">
-                    <section class="hk-sec-wrapper">
-                        <h5 class="hk-sec-title">แผนงานประจำเดือน <?php echo thaidate('F Y', $monthly_plan_next->month_date); ?></h5>
+                        <h5 class="hk-sec-title">แผนงานประจำเดือน <?php echo thaidate('F Y', $monthly_plan_history->month_date); ?></h5>
                         <div class="row mt-30">
                             <div class="col-md-4">
                                 <div class="card card-sm text-white bg-violet">
@@ -214,7 +50,7 @@
                                                 <span style="font-weight: bold; font-size: 18px;">
                                                     @php
                                                         $sale_plan_amount_next = DB::table('sale_plans')
-                                                            ->where('monthly_plan_id', $monthly_plan_next->id)
+                                                            ->where('monthly_plan_id', $monthly_plan_history->id)
                                                             ->whereIn('sale_plans_status', [0,1,2])
                                                             ->count();
                                                     @endphp
@@ -246,7 +82,7 @@
                                                 <span style="font-weight: bold; font-size: 18px;">
                                                     @php
                                                         $cust_new_amount_next = DB::table('customer_shops_saleplan')
-                                                            ->where('monthly_plan_id', $monthly_plan_next->id)
+                                                            ->where('monthly_plan_id', $monthly_plan_history->id)
                                                             ->whereIn('shop_aprove_status', [0,1,2])
                                                             ->count();
                                                     @endphp
@@ -278,7 +114,7 @@
                                                 <span style="font-weight: bold; font-size: 18px;">
                                                     @php
                                                         $cust_visits_amount_next = DB::table('customer_visits')
-                                                            ->where('monthly_plan_id', $monthly_plan_next->id)
+                                                            ->where('monthly_plan_id', $monthly_plan_history->id)
                                                             ->count();
                                                     @endphp
                                                     {{ $cust_visits_amount_next }}
@@ -296,16 +132,7 @@
                     <section class="hk-sec-wrapper">
                         <div class="hk-pg-header mb-10">
                             <div>
-                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">แผนงานประจำเดือน <?php echo thaidate('F Y', $monthly_plan_next->month_date); ?></h6>
-                            </div>
-                            <div class="d-flex">
-                                @if($monthly_plan_next->status_approve == 1 || $monthly_plan_next->status_approve == 2)
-                                    <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10"
-                                        data-toggle="modal" data-target="#saleplanAdd" disabled> + เพิ่มใหม่ </button>
-                                @else
-                                    <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10"
-                                        data-toggle="modal" data-target="#saleplanAdd"> + เพิ่มใหม่ </button>
-                                @endif
+                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">แผนงานประจำเดือน <?php echo thaidate('F Y', $monthly_plan_history->month_date); ?></h6>
                             </div>
                         </div>
                         <div class="row">
@@ -323,7 +150,6 @@
                                                     <th>เรื่อง</th>
                                                     <th>ลูกค้า</th>
                                                     <th>อำเภอ,จังหวัด</th>
-                                                    <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -352,50 +178,6 @@
                                                                 {{ $shop_address }}
                                                             @endif
                                                         </td>
-                                                            @php
-                                                                switch($value->sale_plans_status){
-                                                                    case 0 :    $text_status = "Draf";
-                                                                                $badge_color = "badge-soft-secondary";
-                                                                                $btn_disabled = "";
-                                                                        break;
-                                                                    case 1 :    $text_status = "Pending";
-                                                                                $badge_color = "badge-soft-warning";
-                                                                                $btn_disabled = "disabled";
-                                                                        break;
-                                                                    case 2 :    $text_status = "Approve";
-                                                                                $badge_color = "badge-soft-success";
-                                                                                $btn_disabled = "disabled";
-                                                                        break;
-                                                                    default :   $text_status = "-";
-                                                                                $badge_color = "";
-                                                                                $btn_disabled = "disabled";
-                                                                        break;
-                                                                }
-                                                            @endphp
-                                                        <td style="text-align:right">
-                                                            <div class="button-list">
-                                                                @if ($value->saleplan_id)
-                                                                <button onclick="approval_comment({{ $value->id }})"
-                                                                    class="btn btn-icon btn-violet" data-toggle="modal"
-                                                                    data-target="#ApprovalComment">
-                                                                    <span class="btn-icon-wrap"><i data-feather="message-square"></i></span>
-                                                                </button>
-                                                                @endif
-                                                                <button class="btn btn-icon btn-warning btn_editsalepaln"
-                                                                    value="{{ $value->id }}" {{ $btn_disabled }}>
-                                                                    <h4 class="btn-icon-wrap" style="color: white;"><i
-                                                                            class="ion ion-md-create"></i></h4>
-                                                                </button>
-                                                                <button id="btn_saleplan_delete"
-                                                                    class="btn btn-icon btn-danger mr-10"
-                                                                    value="{{ $value->id }}" {{ $btn_disabled }}>
-                                                                    <h4 class="btn-icon-wrap" style="color: white;"><i
-                                                                            class="ion ion-md-trash"></i></h4>
-                                                                </button>
-
-
-                                                            </div>
-                                                        </td>
                                                     </tr>
                                                 @endforeach
                                                 @endif
@@ -413,15 +195,6 @@
                             <div>
                                 <h6 class="hk-sec-title mb-10" style="font-weight: bold;">พบลูกค้าใหม่</h6>
                             </div>
-                            <div class="d-flex">
-                                @if($monthly_plan_next->status_approve == 1 || $monthly_plan_next->status_approve == 2)
-                                    <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10"
-                                    data-toggle="modal" data-target="#addCustomer" disabled> + เพิ่มใหม่ </button>
-                                @else
-                                    <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10"
-                                    data-toggle="modal" data-target="#addCustomer"> + เพิ่มใหม่ </button>
-                                @endif
-                            </div>
                         </div>
                         <div class="row">
                             <div class="col-sm">
@@ -438,7 +211,6 @@
                                                     <th>ชื่อร้าน</th>
                                                     <th>อำเภอ,จังหวัด</th>
                                                     <th>วัตถุประสงค์</th>
-                                                    <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -450,50 +222,7 @@
                                                         <td>{{ $value->shop_name }}</td>
                                                         <td>{{ $value->AMPHUR_NAME }}, {{ $value->PROVINCE_NAME }}</td>
                                                         <td>{{$value->cust_name}}</td>
-                                                        <td style="text-align:right;">
-                                                            <div class="button-list">
-                                                                @php
-
-                                                                    $count_new = DB::table('customer_shop_comments')
-                                                                    ->where('customer_shops_saleplan_id', $value->id)
-                                                                    ->count();
-
-                                                                        switch($value->shop_aprove_status){
-                                                                            case 0 :  $btn_disabled = "";
-                                                                                break;
-                                                                            case 1 :  $btn_disabled = "disabled";
-                                                                                break;
-                                                                            case 2 :  $btn_disabled = "disabled";
-                                                                                break;
-                                                                            default :  $btn_disabled = "disabled";
-                                                                                break;
-                                                                        }
-
-                                                                @endphp
-
-                                                                @if ($count_new > 0)
-                                                                <button onclick="custnew_comment({{ $value->id }})"
-                                                                    class="btn btn-icon btn-violet" data-toggle="modal"
-                                                                    data-target="#CustNewComment">
-                                                                    <span class="btn-icon-wrap"><i data-feather="message-square"></i></span>
-                                                                </button>
-                                                                @endif
-                                                                <button class="btn btn-icon btn-warning mr-10 btn_editshop"
-                                                                    value="{{ $value->id }}" {{ $btn_disabled }}>
-                                                                    <h4 class="btn-icon-wrap" style="color: white;"><i
-                                                                            class="ion ion-md-create"></i></h4>
-                                                                </button>
-                                                                <button class="btn btn-icon btn-danger mr-10 btn_cust_new_delete"
-                                                                    value="{{ $value->id }}" {{ $btn_disabled }}>
-                                                                    <h4 class="btn-icon-wrap" style="color: white;"><i
-                                                                            class="ion ion-md-trash"></i></h4>
-                                                                </button>
-                                                            </div>
-                                                        </td>
                                                     </tr>
-                                                    <?php
-                                                        // }
-                                                    ?>
                                                 @endforeach
                                                 @endif
                                             </tbody>
@@ -509,10 +238,6 @@
                         <div class="hk-pg-header mb-10">
                             <div>
                                 <h6 class="hk-sec-title mb-10" style="font-weight: bold;">เยี่ยมลูกค้า</h6>
-                            </div>
-                            <div class="d-flex">
-                                <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10"
-                                    data-toggle="modal" data-target="#addCustomerVisit"> + เพิ่มใหม่ </button>
                             </div>
                         </div>
                         <div class="row">
@@ -530,7 +255,6 @@
                                                     <th>ชื่อร้าน</th>
                                                     <th>อำเภอ,จังหวัด</th>
                                                     <th>วันสำคัญ</th>
-                                                    <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -543,34 +267,6 @@
                                                     <td>{{ $customer_visit_api[$key]['shop_name'] }}</td>
                                                     <td>{{ $customer_visit_api[$key]['shop_address'] }}</td>
                                                     <td>{{ $customer_visit_api[$key]['focusdate'] }}</td>
-                                                    @php
-                                                     $month = DB::table('monthly_plans')
-                                                                    ->where('id', $customer_visit_api[$key]['monthly_plan_id'])
-                                                                    ->select('status_approve')->first();
-
-                                                            switch($month->status_approve){
-                                                            case 0 :  $btn_disabled = "";
-                                                                break;
-                                                            case 1 :  $btn_disabled = "disabled";
-                                                                break;
-                                                            case 2 :  $btn_disabled = "disabled";
-                                                                break;
-                                                            default :  $btn_disabled = "disabled";
-                                                                break;
-                                                            }
-
-                                                    @endphp
-                                                    <td>
-                                                        <button class="btn btn-icon btn-danger mr-10 btn_cust_new_delete2"
-                                                                    value="{{ $customer_visit_api[$key]['id'] }}" {{ $btn_disabled }}>
-                                                                    <h4 class="btn-icon-wrap" style="color: white;"><i
-                                                                            class="ion ion-md-trash"></i></h4>
-                                                                </button>
-                                                        {{-- <div class="button-list">
-                                                            <a href="{{url('delete_visit', $customer_visit_api[$key]['id'])}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
-                                                                <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-trash"></i></h4></a>
-                                                        </div> --}}
-                                                    </td>
                                                 </tr>
                                                 @endforeach
 
@@ -587,114 +283,6 @@
         <!-- /Row -->
     </div>
     <!-- /Container -->
-
-    <!-- Modal -->
-    <div class="modal fade" id="saleplanAdd" tabindex="-1" role="dialog" aria-labelledby="saleplanAdd"
-        aria-hidden="true">
-        @include('saleplan.salePlanForm')
-    </div>
-
-    <!-- Modal Edit -->
-    <div class="modal fade" id="saleplanEdit" tabindex="-1" role="dialog" aria-labelledby="saleplanEdit"
-        aria-hidden="true">
-        @include('saleplan.salePlanForm_edit')
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="addCustomer" tabindex="-1" role="dialog" aria-labelledby="addCustomer"
-        aria-hidden="true">
-        @include('customer.lead_insert')
-    </div>
-
-    <!-- Modal Edit -->
-    <div class="modal fade" id="editCustomer" tabindex="-1" role="dialog" aria-labelledby="editCustomer"
-        aria-hidden="true">
-        @include('customer.lead_edit_saleplan')
-    </div>
-
-    <!-- Modal VisitCustomer -->
-    <div class="modal fade" id="addCustomerVisit" tabindex="-1" role="dialog" aria-labelledby="addCustomerVisit"
-        aria-hidden="true">
-        @include('saleman.visitCustomers_add')
-    </div>
-
-    <!-- Modal Delete Customer Approve -->
-    <div class="modal fade" id="ModalapproveDelete" tabindex="-1" role="dialog" aria-labelledby="Modalapprove"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <form id="from_cus_delete" enctype="multipart/form-data">
-                @csrf
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">คุณต้องการลบข้อมูลลูกค้าใช่หรือไม่</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body" style="text-align:center;">
-                        <h3>คุณต้องการลบข้อมูลลูกค้า ใช่หรือไม่ ?</h3>
-                        <input class="form-control" id="shop_id_delete" name="shop_id_delete" type="hidden" />
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-                        <button type="submit" class="btn btn-primary" id="btn_save_edit">ยืนยัน</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal Delete Customer Visit Approve -->
-    <div class="modal fade" id="ModalapproveDelete2" tabindex="-1" role="dialog" aria-labelledby="ModalapproveDelete2"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <form id="from_cus_delete2" enctype="multipart/form-data">
-                @csrf
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">คุณต้องการลบข้อมูลเยี่ยมลูกค้าใช่หรือไม่</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body" style="text-align:center;">
-                        <h3>คุณต้องการลบข้อมูลเยี่ยมลูกค้า ใช่หรือไม่ ?</h3>
-                        <input class="form-control" id="cust_visit_id_delete" name="cust_visit_id_delete" type="hidden" />
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-                        <button type="submit" class="btn btn-primary" id="btn_save_edit">ยืนยัน</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal Delete Saleplan -->
-    <div class="modal fade" id="ModalSaleplanDelete" tabindex="-1" role="dialog" aria-labelledby="ModalSaleplanDelete"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <form id="from_saleplan_delete" enctype="multipart/form-data">
-                @csrf
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">คุณต้องการลบข้อมูล Sale Plan ใช่หรือไม่</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body" style="text-align:center;">
-                        <h3>คุณต้องการลบข้อมูล Sale Plan ใช่หรือไม่ ?</h3>
-                        <input class="form-control" id="saleplan_id_delete" name="saleplan_id_delete" type="hidden" />
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-                        <button type="submit" class="btn btn-primary" id="btn_save_edit">ยืนยัน</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <!-- Modal Comment -->
     <div class="modal fade" id="ApprovalComment" tabindex="-1" role="dialog" aria-labelledby="ApprovalComment" aria-hidden="true">

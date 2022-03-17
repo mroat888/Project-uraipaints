@@ -22,13 +22,13 @@ Route::get('/index.html', 'Saleman\DashboardController@index');
 // Sale
 Route::get('dashboard',  'SaleMan\DashboardController@index');
 Route::get('/planMonth', 'PlanMonthController@index');
+Route::get('planMonth_history/{id}', 'PlanMonthController@history');
 Route::post('search_month_planMonth', 'PlanMonthController@search_month_planMonth');
 Route::get('approve_monthly_plan/{id}', 'PlanMonthController@approve');
 Route::get('dailyWork', 'SaleMan\DailyWorkController@index');
 Route::get('saleplan_view_comment/{id}', 'PlanMonthController@saleplan_view_comment');
 Route::get('customernew_view_comment/{id}', 'PlanMonthController@customernew_view_comment');
 Route::get('/palncalendar', function () { return view('saleplan.salePalnCalendar'); });
-// Route::get('/planDetail', function () { return view('saleplan.saleplanDetail'); });
 
 // Assignments
 Route::get('assignment', 'SaleMan\AssignmentController@index');

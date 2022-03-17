@@ -109,7 +109,7 @@ class PlanMonthController extends Controller
             ];
         }
 
-        // dd($data['pdglists_api']); 
+        // dd($data['pdglists_api']);
 
         foreach($customer_visits as $key => $cus_visit){
 
@@ -140,8 +140,125 @@ class PlanMonthController extends Controller
         return view('saleman.planMonth', $data);
     }
 
+    public function history($id)
+    {
+
+        $data['monthly_plan'] = MonthlyPlan::where('created_by', Auth::user()->id)->where('id', $id)->orderBy('month_date', 'desc')->get();
+        $data['monthly_plan_history'] = MonthlyPlan::where('created_by', Auth::user()->id)->where('id', $id)->orderBy('month_date', 'desc')->first();
+        $data['monthly_plan_next'] = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->first();
+
+
+        $data['objective'] = ObjectiveSaleplan::all();
+        // $data['objective_visit'] = ObjectiveVisit::all();
+       // $data['master_present'] = MasterPresentSaleplan::get();
+
+        // -- ข้อมูล แผนงานงาน Saleplan
+        $data['list_saleplan'] = DB::table('sale_plans')
+        ->leftjoin('sale_plan_comments', 'sale_plans.id', 'sale_plan_comments.saleplan_id')
+        ->where('sale_plans.monthly_plan_id', $id)
+        ->where('sale_plans.created_by', Auth::user()->id)
+        ->select('sale_plans.*', 'sale_plan_comments.saleplan_id')->distinct()
+        ->orderBy('sale_plans.id', 'desc')->get();
+
+
+        // -- ข้อมูลลูกค้าใหม่ // ลูกค้าใหม่เปลี่ยนมาใช้อันนี้
+        $data['customer_new'] = DB::table('customer_shops_saleplan')
+        ->leftJoin('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
+        ->join('master_customer_new', 'customer_shops_saleplan.customer_shop_objective', 'master_customer_new.id')
+        ->join('amphur', 'amphur.AMPHUR_ID', 'customer_shops.shop_amphur_id')
+        ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
+        ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
+        ->where('customer_shops.created_by', Auth::user()->id)
+        ->where('customer_shops_saleplan.monthly_plan_id', $id)
+        ->select(
+            'master_customer_new.cust_name',
+            'province.PROVINCE_NAME',
+            'amphur.AMPHUR_NAME',
+            'customer_shops.*',
+            'customer_shops.id as cust_id',
+            'customer_shops_saleplan.*'
+        )
+        ->orderBy('customer_shops_saleplan.id', 'desc')
+        ->get();
+
+        // dd($data['customer_new']);
+
+        $data['customer_shops'] = DB::table('customer_shops')->where('customer_shops.shop_status', 0)->where('created_by', Auth::user()->id)->get();
+
+        // -----  API  //
+        $api_token = $this->apicontroller->apiToken(); // API Login
+        $data['api_token'] = $api_token;
+
+        // -----  API ลูกค้าที่ sale ดูแล ----------- //
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/sellers/'.Auth::user()->api_identify.'/customers');
+        $res_api = $response->json();
+
+        $data['customer_api'] = array();
+        foreach ($res_api['data'] as $key => $value) {
+            $data['customer_api'][$key] =
+            [
+                'id' => $value['identify'],
+                'shop_name' => $value['title']." ".$value['name'],
+                'shop_address' => $value['amphoe_name']." , ".$value['province_name'],
+            ];
+        }
+
+        // ---- สร้างข้อมูล เยี่ยมลูกค้า โดย link กับ api ------- //
+        $customer_visits = CustomerVisit::where('created_by', Auth::user()->id)
+            ->where('monthly_plan_id', $id)
+            ->select('customer_visits.*')
+            ->orderBy('id', 'desc')->get();
+
+        $data['customer_visit_api'] = array();
+
+        // -----  API สินค้านำเสนอ----------- //
+        $path_search = "pdglists?sortorder=DESC";
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+        $res_api = $response->json();
+
+        $data['pdglists_api'] = array();
+        foreach ($res_api['data'] as $key => $value) {
+            $data['pdglists_api'][$key] =
+            [
+                'identify' => $value['identify'],
+                'name' => $value['name'],
+                'sub_code' => $value['sub_code'],
+            ];
+        }
+
+        // dd($data['pdglists_api']);
+
+        foreach($customer_visits as $key => $cus_visit){
+
+            $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/customers/'.$cus_visit->customer_shop_id);
+            $res_visit_api = $response->json();
+            // dd($res_visit_api);
+            if($res_visit_api['code'] == 200){
+                foreach ($res_visit_api['data'] as $key_api => $value_api) {
+                    $res_visit_api = $res_visit_api['data'][$key_api];
+                    $data['customer_visit_api'][] =
+                    [
+                        'id' => $cus_visit->id,
+                        'identify' => $res_visit_api['identify'],
+                        'shop_name' => $res_visit_api['title']." ".$res_visit_api['name'],
+                        'shop_address' => $res_visit_api['amphoe_name']." , ".$res_visit_api['province_name'],
+                        'shop_phone' => $res_visit_api['telephone'],
+                        'shop_mobile' => $res_visit_api['mobile'],
+                        'focusdate' => $res_visit_api['focusdate'],
+                        'monthly_plan_id' => $cus_visit->monthly_plan_id,
+                    ];
+                }
+            }
+
+        }
+        // -----  END API
+
+        // dd($data);
+        return view('saleman.planMonth_history', $data);
+    }
+
     public function approve($id)
-    { 
+    {
         DB::table('sale_plans')->where('monthly_plan_id', $id)
         ->update([
             'sale_plans_status' => 1,
@@ -229,107 +346,113 @@ class PlanMonthController extends Controller
 
         $data['monthly_plan_next'] = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->first();
 
-       // dd($data);
 
-       $data['objective'] = ObjectiveSaleplan::all();
-       // $data['objective_visit'] = ObjectiveVisit::all();
-      // $data['master_present'] = MasterPresentSaleplan::orderBy('id', 'desc')->get();
+        $data['objective'] = ObjectiveSaleplan::all();
+        // $data['objective_visit'] = ObjectiveVisit::all();
+       // $data['master_present'] = MasterPresentSaleplan::get();
 
-       // -- ข้อมูล แผนงานงาน Saleplan
-       $data['list_saleplan'] = DB::table('sale_plans')
-       ->leftjoin('sale_plan_comments', 'sale_plans.id', 'sale_plan_comments.saleplan_id')
-       ->where('sale_plans.monthly_plan_id', $data['monthly_plan_next']->id)
-       ->where('sale_plans.created_by', Auth::user()->id)
-       ->select('sale_plans.*', 'sale_plan_comments.saleplan_id')->distinct()
-       ->orderBy('sale_plans.id', 'desc')->get();
+        // -- ข้อมูล แผนงานงาน Saleplan
+        $data['list_saleplan'] = DB::table('sale_plans')
+        ->leftjoin('sale_plan_comments', 'sale_plans.id', 'sale_plan_comments.saleplan_id')
+        ->where('sale_plans.monthly_plan_id', $data['monthly_plan_next']->id)
+        ->where('sale_plans.created_by', Auth::user()->id)
+        ->select('sale_plans.*', 'sale_plan_comments.saleplan_id')->distinct()
+        ->orderBy('sale_plans.id', 'desc')->get();
 
-       // -- ข้อมูลลูกค้าใหม่ // ลูกค้าใหม่เปลี่ยนมาใช้อันนี้
-       $data['customer_new'] = DB::table('customer_shops_saleplan')
-       ->leftJoin('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
-       ->join('master_customer_new', 'customer_shops_saleplan.customer_shop_objective', 'master_customer_new.id')
-       ->join('amphur', 'amphur.AMPHUR_ID', 'customer_shops.shop_amphur_id')
-       ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
-       ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
-       ->where('customer_shops.created_by', Auth::user()->id)
-       ->where('customer_shops_saleplan.monthly_plan_id', $data['monthly_plan_next']->id)
-       ->select(
-           'master_customer_new.cust_name',
-           'province.PROVINCE_NAME',
-           'amphur.AMPHUR_NAME',
-           'customer_shops.*',
-           'customer_shops.id as cust_id',
-           'customer_shops_saleplan.*'
-       )
-       ->orderBy('customer_shops_saleplan.id', 'desc')
-       ->get();
 
-       $data['customer_shops'] = DB::table('customer_shops')->where('created_by', Auth::user()->id)->get();
+        // -- ข้อมูลลูกค้าใหม่ // ลูกค้าใหม่เปลี่ยนมาใช้อันนี้
+        $data['customer_new'] = DB::table('customer_shops_saleplan')
+        ->leftJoin('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
+        ->join('master_customer_new', 'customer_shops_saleplan.customer_shop_objective', 'master_customer_new.id')
+        ->join('amphur', 'amphur.AMPHUR_ID', 'customer_shops.shop_amphur_id')
+        ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
+        ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
+        ->where('customer_shops.created_by', Auth::user()->id)
+        ->where('customer_shops_saleplan.monthly_plan_id', $data['monthly_plan_next']->id)
+        ->select(
+            'master_customer_new.cust_name',
+            'province.PROVINCE_NAME',
+            'amphur.AMPHUR_NAME',
+            'customer_shops.*',
+            'customer_shops.id as cust_id',
+            'customer_shops_saleplan.*'
+        )
+        ->orderBy('customer_shops_saleplan.id', 'desc')
+        ->get();
 
-       // -----  API  //
-       $api_token = $this->apicontroller->apiToken(); // API Login
-       $data['api_token'] = $api_token;
+        // dd($data['customer_new']);
 
-       // -----  API ลูกค้าที่ sale ดูแล ----------- //
-       $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/sellers/'.Auth::user()->api_identify.'/customers');
-       $res_api = $response->json();
+        $data['customer_shops'] = DB::table('customer_shops')->where('customer_shops.shop_status', 0)->where('created_by', Auth::user()->id)->get();
 
-       $data['customer_api'] = array();
-       foreach ($res_api['data'] as $key => $value) {
-           $data['customer_api'][$key] =
-           [
-               'id' => $value['identify'],
-               'shop_name' => $value['title']." ".$value['name'],
-               'shop_address' => $value['amphoe_name']." , ".$value['province_name'],
-           ];
-       }
+        // -----  API  //
+        $api_token = $this->apicontroller->apiToken(); // API Login
+        $data['api_token'] = $api_token;
 
-       // ---- สร้างข้อมูล เยี่ยมลูกค้า โดย link กับ api ------- //
-       $customer_visits = CustomerVisit::where('customer_visits.created_by', Auth::user()->id)
-           ->where('customer_visits.monthly_plan_id', $data['monthly_plan_next']->id)
-           ->select('customer_visits.*')
-           ->orderBy('id', 'desc')->get();
+        // -----  API ลูกค้าที่ sale ดูแล ----------- //
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/sellers/'.Auth::user()->api_identify.'/customers');
+        $res_api = $response->json();
 
-       $data['customer_visit_api'] = array();
-       foreach($customer_visits as $key => $cus_visit){
+        $data['customer_api'] = array();
+        foreach ($res_api['data'] as $key => $value) {
+            $data['customer_api'][$key] =
+            [
+                'id' => $value['identify'],
+                'shop_name' => $value['title']." ".$value['name'],
+                'shop_address' => $value['amphoe_name']." , ".$value['province_name'],
+            ];
+        }
 
-           foreach ($res_api['data'] as $key_api => $value_api) {
-               $res_visit_api = $res_api['data'][$key_api];
-               if($cus_visit->customer_shop_id == $res_visit_api['identify']){
-                   $data['customer_visit_api'][$key_api] =
-                   [
-                    'id' => $cus_visit->id,
-                    'identify' => $res_visit_api['identify'],
-                    'shop_name' => $res_visit_api['title']." ".$res_visit_api['name'],
-                    'shop_address' => $res_visit_api['amphoe_name']." , ".$res_visit_api['province_name'],
-                    'shop_phone' => $res_visit_api['telephone'],
-                    'shop_mobile' => $res_visit_api['mobile'],
-                    'focusdate' => $res_visit_api['focusdate'],
-                    'monthly_plan_id' => $cus_visit->monthly_plan_id,
-                   ];
-               }
-           }
+        // ---- สร้างข้อมูล เยี่ยมลูกค้า โดย link กับ api ------- //
+        $customer_visits = CustomerVisit::where('created_by', Auth::user()->id)
+            ->where('monthly_plan_id', $data['monthly_plan_next']->id)
+            ->select('customer_visits.*')
+            ->orderBy('id', 'desc')->get();
 
-       }
+        $data['customer_visit_api'] = array();
 
-       // -----  API สินค้านำเสนอ----------- //
-       $path_search = "/pdglists?sortorder=DESC";
-       $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search);
-       $res_api = $response->json();
+        // -----  API สินค้านำเสนอ----------- //
+        $path_search = "pdglists?sortorder=DESC";
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+        $res_api = $response->json();
 
-       $data['pdglists_api'] = array();
-       foreach ($res_api['data'] as $key => $value) {
-           $data['pdglists_api'][$key] =
-           [
-               'identify' => $value['identify'],
-               'name' => $value['name'],
-               'sub_code' => $value['sub_code'],
-           ];
-       }
+        $data['pdglists_api'] = array();
+        foreach ($res_api['data'] as $key => $value) {
+            $data['pdglists_api'][$key] =
+            [
+                'identify' => $value['identify'],
+                'name' => $value['name'],
+                'sub_code' => $value['sub_code'],
+            ];
+        }
 
-       // -----  END API
+        // dd($data['pdglists_api']);
 
-       // dd($data['pdglists_api'] );
+        foreach($customer_visits as $key => $cus_visit){
 
+            $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/customers/'.$cus_visit->customer_shop_id);
+            $res_visit_api = $response->json();
+            // dd($res_visit_api);
+            if($res_visit_api['code'] == 200){
+                foreach ($res_visit_api['data'] as $key_api => $value_api) {
+                    $res_visit_api = $res_visit_api['data'][$key_api];
+                    $data['customer_visit_api'][] =
+                    [
+                        'id' => $cus_visit->id,
+                        'identify' => $res_visit_api['identify'],
+                        'shop_name' => $res_visit_api['title']." ".$res_visit_api['name'],
+                        'shop_address' => $res_visit_api['amphoe_name']." , ".$res_visit_api['province_name'],
+                        'shop_phone' => $res_visit_api['telephone'],
+                        'shop_mobile' => $res_visit_api['mobile'],
+                        'focusdate' => $res_visit_api['focusdate'],
+                        'monthly_plan_id' => $cus_visit->monthly_plan_id,
+                    ];
+                }
+            }
+
+        }
+        // -----  END API
+
+        // dd($data);
         return view('saleman.planMonth', $data);
     }
 }

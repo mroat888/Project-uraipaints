@@ -814,8 +814,13 @@
                     <form id="from_saleplan_result">
                         @csrf
                         <input type="hidden" name="saleplan_id" id="get_saleplan_id">
+                        <div class="my-3"><span>เรื่อง : </span><span id="get_title"></span></div>
+                            <div class="my-3"><span>ลูกค้า : </span><span id="get_shop"></span></div>
+                            <div class="my-3"><span>อำเภอ, จังหวัด : </span><span id="get_shop_address"></span></div>
+                            <div class="my-3"><span>วัตถุประสงค์ : </span><span id="get_objective"></span></div>
+                            <div class="my-3"><span>รายการนำเสนอ : </span><span id="get_name"></span></div>
                         <div class="form-group">
-                            <label for="username">รายละเอียด</label>
+                            <label for="username">สรุปรายละเอียด</label>
                             <textarea class="form-control" id="get_detail" cols="30" rows="5" placeholder="" name="saleplan_detail"
                                 type="text"> </textarea>
                         </div>
@@ -854,6 +859,10 @@
                     <form id="from_customer_new_result">
                         @csrf
                         <input type="hidden" name="cust_id" id="get_cust_new_id">
+                        <div class="my-3"><span>ชื่อร้าน : </span><span id="get_cust_name"></span></div>
+                            <div class="my-3"><span>ชื่อผู้ติดต่อ : </span><span id="get_cust_contact_name"></span></div>
+                            <div class="my-3"><span>อำเภอ, จังหวัด : </span><span id="get_shop_address"></span></div>
+                            <div class="my-3"><span>วัตถุประสงค์ : </span><span id="get_objective"></span></div>
                         <div class="form-group">
                             <label for="username">รายละเอียด</label>
                             <textarea class="form-control" id="get_cust_detail" cols="30" rows="5" placeholder="" name="shop_result_detail"
@@ -862,7 +871,7 @@
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="username">สรุปผลลัพธ์</label>
-                                <select class="form-control custom-select" id="get_cust_result" name="shop_result_status" require>
+                                <select class="form-control custom-select" id="get_cust_result" name="shop_result_status">
                                     <option selected>-- กรุณาเลือก --</option>
                                     <option value="0">ไม่สนใจ</option>
                                     <option value="1">รอตัดสินใจ</option>
@@ -1083,9 +1092,26 @@
             dataType: "JSON",
             async: false,
             success: function(data) {
+
                 $('#get_saleplan_id').val(data.dataResult.sale_plan_id);
+                $('#get_title').text(data.dataResult.sale_plans_title);
+                $('#get_objective').text(data.dataResult.masobj_title);
+                $('#get_shop_address').text(data.customer_api);
+                $('#get_shop').text(data.customer_name);
                 $('#get_detail').val(data.dataResult.sale_plan_detail);
                 $('#get_result').val(data.dataResult.sale_plan_status);
+
+                let rows_tags = data.dataResult.sale_plans_tags.split(",");
+                    let count_tags = rows_tags.length;
+                        $.each(rows_tags, function(tkey, tvalue){
+                            $.each(data.pdglists_api, function(key, value){
+                                if(data.pdglists_api[key]['identify'] == rows_tags[tkey]){
+                                    $('#get_name').text(data.pdglists_api[key]['name']);
+                                }else{
+                                    $('#get_name').text();
+                                }
+                            });
+                        });
 
                 $('#ModalResult').modal('toggle');
             }
@@ -1097,19 +1123,26 @@
     //Edit
     function customer_new_result(id) {
         $('#get_cust_new_id').val(id);
-        $('#get_cust_detail').val('');
-        $('#get_cust_result').val('');
+        // $('#get_cust_detail').val('');
+        // $('#get_cust_result').val('');
         $.ajax({
             type: "GET",
             url: "{!! url('customer_new_result_get/"+id+"') !!}",
             dataType: "JSON",
             async: false,
             success: function(data) {
-                console.log(data.dataResult);
+                // console.log(data.dataResult);
 
                 $('#get_cust_new_id').val(data.dataResult.id);
+                $('#get_cust_contact_name').text(data.dataResult.customer_contact_name);
                 $('#get_cust_detail').val(data.dataResult.cust_result_detail);
                 $('#get_cust_result').val(data.dataResult.cust_result_status);
+
+                if (data.dataResult.shop_name == '') {
+                    $('#get_cust_name').text(data.cust_new_name);
+                }else{
+                    $('#get_cust_name').text(data.dataResult.shop_name);
+                }
 
                 $('#ModalCustResult').modal('toggle');
             }
