@@ -65,7 +65,7 @@ class ReportSaleCompareYearController extends Controller
 
         $data['array_year'] = $array_year;
 
-        return view('shareData_headManager.report_sale_compare_year', $data);
+        return view('shareData_admin.report_sale_compare_year', $data);
 
     }
 
