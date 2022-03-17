@@ -140,6 +140,9 @@ class CheckStoreController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/customers/'.$id.'/campaigns');
         $res_api = $response->json();
         
+        $year_sum= array();
+        $check_year = array();
+
         if(!empty($res_api)){
             if($res_api['code'] == 200){
                 $data['cust_campaigns_api'] = array();
@@ -155,9 +158,41 @@ class CheckStoreController extends Controller
                         'amount_limit_th' => $value['amount_limit_th'],
                         'amount_net_th' => $value['amount_net_th'],
                     ];
+
+                    // -- Sum Year
+                    if(!empty($check_year)){
+                        if (in_array($value['year'], $check_year)){
+                            foreach($year_sum as $key_year_sum => $value_year_sum){
+                                if($year_sum[$key_year_sum]['year'] == $value['year']){
+                                    $year_sum[$key_year_sum]['saleamount'] = $year_sum[$key_year_sum]['saleamount'] + $value['saleamount'];
+                                    $year_sum[$key_year_sum]['amount_limit'] = $year_sum[$key_year_sum]['amount_limit'] + $value['amount_limit'];
+                                }
+                            }
+                        }else{
+                            // echo "ไม่พบพบข้อมูล ".$value['year']."<br>";
+                            $check_year[] = $value['year'];
+                            $year_sum[] = [
+                                'year' => $value['year'],
+                                'saleamount' => $value['saleamount'],
+                                'amount_limit' => $value['amount_limit'],
+                            ];
+                        }
+                    }else{
+                        // echo "ไม่พบพบข้อมูล ".$value['year']."<br>";
+                        $check_year[] = $value['year'];
+                        $year_sum[] = [
+                                'year' => $value['year'],
+                                'saleamount' => $value['saleamount'],
+                                'amount_limit' => $value['amount_limit'],
+                            ];
+                    }
+                    // -- End Sum Year
+
                 }
             }
         }
+
+        $data['year_sum'] = $year_sum;
 
         return view('shareData_admin.check_name_store_detail', $data);
 

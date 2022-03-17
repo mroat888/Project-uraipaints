@@ -360,6 +360,12 @@ License: You must have a valid license purchased only from themeforest to legall
                                                 <i class="ion ion-md-stats"
                                                     style="color: #044067;"></i>รายงานเทียบย้อนหลัง (รายเดือน)</a>
                                         </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link"
+                                                href="{{ url('data_report_sale_compare-year') }}">
+                                                <i class="ion ion-md-stats"
+                                                    style="color: #044067;"></i>รายงานสรุปยอดทำเป้า เทียบปี</a>
+                                        </li>
                                     </ul>
                                 </li>
                             </ul>

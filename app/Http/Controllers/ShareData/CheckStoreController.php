@@ -116,6 +116,7 @@ class CheckStoreController extends Controller
         $res_api = $response->json();
 
         $year_sum= array();
+        $check_year = array();
         
         if(!empty($res_api)){
             if($res_api['code'] == 200){
@@ -133,19 +134,42 @@ class CheckStoreController extends Controller
                         'amount_net_th' => $value['amount_net_th'],
                     ];
 
-                    $check_year = array_search($value['year'], $year_sum);
-                    //echo $check_year." - ".$value['year']."<br>";
-                    if($check_year!=FALSE){
-                        //echo 'ค้นพบคำว่า Toshiba<br>';
+                    // -- Sum Year
+                    if(!empty($check_year)){
+                        if (in_array($value['year'], $check_year)){
+                            foreach($year_sum as $key_year_sum => $value_year_sum){
+                                if($year_sum[$key_year_sum]['year'] == $value['year']){
+                                    $year_sum[$key_year_sum]['saleamount'] = $year_sum[$key_year_sum]['saleamount'] + $value['saleamount'];
+                                    $year_sum[$key_year_sum]['amount_limit'] = $year_sum[$key_year_sum]['amount_limit'] + $value['amount_limit'];
+                                }
+                            }
+                        }else{
+                            // echo "ไม่พบพบข้อมูล ".$value['year']."<br>";
+                            $check_year[] = $value['year'];
+                            $year_sum[] = [
+                                'year' => $value['year'],
+                                'saleamount' => $value['saleamount'],
+                                'amount_limit' => $value['amount_limit'],
+                            ];
+                        }
                     }else{
-                        //echo 'ค้นหาคำว่า Toshiba ไม่พบ!! plush'.$value['year'];
-                        $year_sum[] = $value['year'];
+                        // echo "ไม่พบพบข้อมูล ".$value['year']."<br>";
+                        $check_year[] = $value['year'];
+                        $year_sum[] = [
+                                'year' => $value['year'],
+                                'saleamount' => $value['saleamount'],
+                                'amount_limit' => $value['amount_limit'],
+                            ];
                     }
+                    // -- End Sum Year
+                    
                 } 
             }
         }
+        
 
-        // dd($year_sum);
+       // dd($data['year_sum']);
+       $data['year_sum'] = $year_sum;
 
         return view('shareData.check_name_store_detail', $data);
 

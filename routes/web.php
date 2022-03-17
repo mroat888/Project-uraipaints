@@ -140,7 +140,7 @@ Route::post('data_report_historical-year/search', 'ShareData\ReportHistoricalYea
 Route::get('data_report_historical-quarter', 'ShareData\ReportHistoricalQuarterController@index');
 Route::post('data_report_historical-quarter/search', 'ShareData\ReportHistoricalQuarterController@search');
 Route::get('data_report_historical-month', 'ShareData\ReportHistoricalMonthController@index');
-
+Route::get('data_report_sale_compare-year','ShareData\ReportSaleCompareYearController@index');
 });
 
 
@@ -251,6 +251,7 @@ Route::post('leadManage/data_report_historical-year/search', 'ShareData_LeadMana
 Route::get('leadManage/data_report_historical-quarter', 'ShareData_LeadManager\ReportHistoricalQuarterController@index');
 Route::post('leadManage/data_report_historical-quarter/search', 'ShareData_LeadManager\ReportHistoricalQuarterController@search');
 Route::get('leadManage/data_report_historical-month', 'ShareData_LeadManager\ReportHistoricalMonthController@index');
+Route::get('leadManage/data_report_sale_compare-year','ShareData_LeadManager\ReportSaleCompareYearController@index');
 
 Route::get('lead/edit-profile', 'ProfileController@lead_index');
 Route::post('lead/userProfileUpdate', 'ProfileController@update');

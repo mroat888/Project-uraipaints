@@ -98,9 +98,9 @@
                                                 <td>{{ $cust_campaigns_api[$key]['year'] }}</td>
                                                 <td>{{ $cust_campaigns_api[$key]['campaign_id'] }}</td>
                                                 <td>{{ $cust_campaigns_api[$key]['description'] }}</td>
-                                                <td>{{ $cust_campaigns_api[$key]['saleamount'] }}</td>
-                                                <td>{{ $cust_campaigns_api[$key]['amount_limit'] }}</td>
-                                                <td>{{ $cust_campaigns_api[$key]['amount_diff'] }}</td>
+                                                <td>{{ number_format($cust_campaigns_api[$key]['saleamount'],2) }}</td>
+                                                <td>{{ number_format($cust_campaigns_api[$key]['amount_limit'],2) }}</td>
+                                                <td>{{ number_format($cust_campaigns_api[$key]['amount_diff'],2) }}</td>
                                                 <td>{{ $cust_campaigns_api[$key]['amount_limit_th'] }}</td>
                                                 <td>{{ $cust_campaigns_api[$key]['amount_net_th'] }}</td>
                                             </tr>
@@ -120,6 +120,49 @@
             </div>
         </div>
 
+        <!-- Row -->
+        <div class="row">
+            <div class="col-xl-12">
+                
+                <section class="hk-sec-wrapper">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+
+                                <div id="table_list" class="table-responsive col-md-12">
+                                    <table id="datable_1" class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th style="font-weight: bold;">#</th>
+                                                <th style="font-weight: bold;">ปี</th>
+                                                <th style="font-weight: bold;">ยอดซื้อเป้า</th>
+                                                <th style="font-weight: bold;">ยอดซื้อเกิดจริง</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table_body">
+                                        @if(isset($year_sum))
+                                            @foreach($year_sum as $key => $value)
+                                            <tr>
+                                                <td>{{ $key+1 }}</td>
+                                                <td>{{ $year_sum[$key]['year']}}</td>
+                                                <td>{{ number_format($year_sum[$key]['saleamount'],2) }}</td>
+                                                <td>{{ number_format($year_sum[$key]['amount_limit'],2) }}</td>
+                                            </tr>
+                                            @endforeach
+                                        @endif
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+        <!-- Row -->
 
     </div>
 
