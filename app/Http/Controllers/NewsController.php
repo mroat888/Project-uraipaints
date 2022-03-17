@@ -60,6 +60,34 @@ class NewsController extends Controller
         return view('admin.fontendNews', compact('list_news', 'list_banner', 'list_news_a'));
     }
 
+    public function news_detail($id)
+    {
+        $data = News::where('id', $id)->first();
+
+        return view('saleman.news_detail', compact('data'));
+    }
+
+    public function lead_news_detail($id)
+    {
+        $data = News::where('id', $id)->first();
+
+        return view('leadManager.news_detail', compact('data'));
+    }
+
+    public function head_news_detail($id)
+    {
+        $data = News::where('id', $id)->first();
+
+        return view('headManager.news_detail', compact('data'));
+    }
+
+    public function admin_news_detail($id)
+    {
+        $data = News::where('id', $id)->first();
+
+        return view('admin.news_detail', compact('data'));
+    }
+
     public function index()
     {
         $list_news = News::where('status', "N")->orderBy('id', 'desc')->get();
@@ -93,9 +121,10 @@ class NewsController extends Controller
             'news_title' => $request->news_title,
             'news_detail' => $request->news_detail,
             'news_image' => $image,
-            'url'       => $request->url,
-            'status'    => "N",
-            'created_by' => Auth::user()->id,
+            'url'        => $request->url,
+            'status'     => "N",
+            'status_share' => $request->status_share,
+            'created_by'   => Auth::user()->id,
 
         ]);
 
@@ -153,6 +182,7 @@ class NewsController extends Controller
                 $data2->news_detail       = $request->news_detail_edit;
                 $data2->news_image        = $image;
                 $data2->url               = $request->url_edit;
+                $data2->status_share      = $request->status_share_edit;
                 $data2->updated_by        = Auth::user()->id;
                 $data2->updated_at        = Carbon::now();
                 $data2->update();
@@ -165,6 +195,7 @@ class NewsController extends Controller
             $data2->news_title        = $request->news_title_edit;
             $data2->news_detail       = $request->news_detail_edit;
             $data2->url               = $request->url_edit;
+            $data2->status_share      = $request->status_share_edit;
             $data2->updated_by        = Auth::user()->id;
             $data2->updated_at        = Carbon::now();
             $data2->update();

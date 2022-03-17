@@ -116,7 +116,7 @@
                             </div>
                             </a>
                         </div>
-                        
+
 
                         <div class="col-md-6">
                             <a href="{{ url('assignment') }}">
@@ -413,7 +413,7 @@
                                                                     if($lastday < $OverCheckOut){
                                                                         $OverCheckOut = $lastday;
                                                                     }
-                                                                
+
                                                                     $text_notify = "checkout ไม่เกิน ".$OverCheckOut ;
                                                                     if($OverCheckOut >= date('Y-m-d')){
                                                                         $btn_primary_disabled = "disabled";
@@ -537,7 +537,7 @@
                                                                     }
 
                                                                     $text_notify = "checkout ไม่เกิน ".$OverCheckOut;
-                                                                
+
                                                                     if($OverCheckOut >= date('Y-m-d')){
                                                                         $btn_primary_cusnew = "disabled";
                                                                         $btn_pumpkin_cusnew = "";
@@ -645,7 +645,7 @@
                                                                         $setting_day = "+".$master_setting->stipulate." days";
                                                                         $checkin_date = str_replace('-', '/', $customer_visit_results->cust_visit_checkin_date);
                                                                         $OverCheckOut = date('Y-m-d',strtotime($checkin_date . $setting_day));
-                                                                       
+
                                                                         $lastday = date('Y-m-t');
                                                                         if($lastday < $OverCheckOut){
                                                                             $OverCheckOut = $lastday;

@@ -40,7 +40,8 @@
                                         <th>#</th>
                                         <th>ชื่อโปรโมชั่น</th>
                                         <th>รูปภาพ</th>
-                                        <th>วันที่</th>
+                                        <th>วันที่เริ่ม</th>
+                                        <th>วันที่สิ้นสุด</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -51,6 +52,7 @@
                                         <td>{{$value->news_title}}</td>
                                         <td><img src="{{ isset($value->news_image) ? asset('public/upload/PromotionImage/' . $value->news_image) : '' }}" width="100"></td>
                                         <td>{{$value->news_date}}</td>
+                                        <td>{{$value->news_date_last}}</td>
                                         <td>
                                             <div class="button-list">
                                                 {{-- <button class="btn btn-icon btn-primary mr-10">
@@ -89,7 +91,7 @@
                     @csrf
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-md-6 form-group">
+                            <div class="col-md-12 form-group">
                                 <label for="firstName">เรื่อง</label>
                                 <input class="form-control" placeholder="กรุณาใส่ชื่อเรื่อง" type="text" name="news_title" required>
                             </div>
@@ -108,8 +110,23 @@
                                 <input type="file" name="news_image" class="form-control">
                             </div>
                             <div class="col-md-6 form-group">
-                                <label for="firstName">วันที่แจ้งเตือน</label>
-                                <input class="form-control" name="news_date" type="date">
+                                <label for="firstName">แชร์ข้อมูล</label>
+                                <div class="custom-control custom-checkbox checkbox-info mt-2">
+                                    <input type="checkbox" class="custom-control-input"
+                                        id="customCheck4" name="status_share" value="1">
+                                    <label class="custom-control-label"
+                                        for="customCheck4">สามารถแชร์ข้อมูลได้</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">วันที่เริ่มต้น</label>
+                                <input class="form-control" name="news_date" type="date" required>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">วันที่สิ้นสุด</label>
+                                <input class="form-control" name="news_date_last" type="date" required>
                             </div>
                         </div>
                 </div>
@@ -136,7 +153,7 @@
                     @csrf
                 <div class="modal-body">
                         <div class="row">
-                            <div class="col-md-6 form-group">
+                            <div class="col-md-12 form-group">
                                 <label for="firstName">เรื่อง</label>
                                 <input class="form-control" id="get_title" type="text" name="news_title" required>
                             </div>
@@ -155,8 +172,20 @@
                                 <input type="file" name="news_image" id="get_image" class="form-control">
                             </div>
                             <div class="col-md-6 form-group">
-                                <label for="firstName">วันที่แจ้งเตือน</label>
+                                <label for="firstName">แชร์ข้อมูล</label>
+                                <div class="custom-control custom-checkbox checkbox-info mt-2">
+                                    <div id="customCheck6"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">วันที่เริ่มต้น</label>
                                 <input class="form-control" name="news_date" id="get_date" type="date" required>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">วันที่สิ้นสุด</label>
+                                <input class="form-control" name="news_date_last" id="get_date_last" type="date" required>
                             </div>
                         </div>
                         <input type="hidden" name="id" id="get_id">
@@ -222,11 +251,18 @@
                 dataType: "JSON",
                 async: false,
                 success: function(data) {
+                    $('#customCheck6').children().remove().end();
                     $('#get_id').val(data.dataEdit.id);
                     $('#get_date').val(data.dataEdit.news_date);
+                    $('#get_date_last').val(data.dataEdit.news_date_last);
                     $('#get_title').val(data.dataEdit.news_title);
                     $('#get_detail').val(data.dataEdit.news_detail);
                     $('#get_url').val(data.dataEdit.url);
+                    if (data.dataEdit.status_share == 1) {
+                    $('#customCheck6').append("<input type='checkbox' class='custom-control-input' id='customCheck7' name='status_share' value='1' checked><label class='custom-control-label' for='customCheck7'>สามารถแชร์ข้อมูลได้</label>");
+                }else{
+                    $('#customCheck6').append("<input type='checkbox' class='custom-control-input' id='customCheck8' name='status_share' value='1'><label class='custom-control-label' for='customCheck8'>สามารถแชร์ข้อมูลได้</label>");
+                }
                     $('#get_image').val(data.dataEdit.news_image);
 
                     $('#editPromotion').modal('toggle');

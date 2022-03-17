@@ -29,14 +29,6 @@
                     data-feather="file-text"></i></span></span>รายการข้อมูลการขออนุมัติ</h4>
             </div>
             <div class="d-flex">
-                <form action="{{ url('lead/approval_confirm_detail') }}" method="POST"
-                enctype="multipart/form-data">
-                @csrf
-                <button type="submit" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" name="approve" value="approve">อนุมัติ</button>
-
-                <button type="submit" class="btn btn_purple btn-danger btn-sm btn-rounded px-3 ml-5" name="failed" value="failed">ไม่อนุมัติ</button>
-
-                <a href="{{ url('approvalgeneral')}}" type="button" class="btn btn_purple btn-secondary btn-sm btn-rounded px-3 ml-5">ย้อนกลับ</a>
             </div>
         </div>
         <!-- /Title -->
@@ -78,14 +70,6 @@
                                 <table class="table table-sm table-hover">
                                     <thead>
                                         <tr>
-                                            <th>
-                                                <div class="custom-control custom-checkbox checkbox-info">
-                                                    <input type="checkbox" class="custom-control-input"
-                                                        id="customCheck4" onclick="chkAll(this);" name="CheckAll" value="Y">
-                                                    <label class="custom-control-label"
-                                                        for="customCheck4">ทั้งหมด</label>
-                                                </div>
-                                            </th>
                                             <th>#</th>
                                             <th>วันที่</th>
                                             <th>เรื่อง</th>
@@ -98,13 +82,6 @@
                                     <tbody>
                                         @foreach ($request_approval as $key => $value)
                                         <tr>
-                                            <td>
-                                                <div class="custom-control custom-checkbox checkbox-info">
-                                                    <input type="checkbox" class="custom-control-input checkapprove"
-                                                        name="checkapprove[]" id="customCheck{{$key + 1}}" value="{{$value->id}}">
-                                                    <label class="custom-control-label" for="customCheck{{$key + 1}}"></label>
-                                                </div>
-                                            </td>
                                             <td>{{$key + 1}}</td>
                                             <td>{{Carbon\Carbon::parse($value->assign_request_date)->format('Y-m-d')}}</td>
                                             <td>
@@ -148,7 +125,6 @@
                 </section>
             </div>
         </div>
-    </form>
         <!-- /Row -->
     </div>
     <!-- /Container -->

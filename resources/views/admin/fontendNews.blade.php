@@ -59,32 +59,6 @@
 
         @include('news_main')
 
-        <!-- <div class="row">
-            <div class="col-md-12">
-                <section class="hk-sec-wrapper">
-                    <h5 class="hk-sec-title">ข้อมูลข่าวสาร</h5>
-                    <p class="mb-40">ข้อมูลข่าวสารประจำวัน</p>
-                    <div class="row">
-                        <div class="col-sm">
-                            <div id="owl_demo_4" class="owl-carousel owl-theme">
-                                @foreach ($list_news as $value)
-                                <div class="item">
-                                    <div class="card">
-                                        <img class="card-img-top" src="{{ isset($value->news_image) ? asset('public/upload/NewsImage/' . $value->news_image) : '' }}" alt="Card image cap">
-                                        <div class="card-body">
-                                            <h6>{{$value->news_title}}</h6>
-                                            <span>วันที่ : {{$value->news_date}}</span>
-                                            <p class="card-text">{{$value->news_detail}}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </div> -->
         <!-- /Row -->
     </div>
     <!-- /Container -->

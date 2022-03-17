@@ -132,9 +132,9 @@
                                                                 <span class="btn-icon-wrap">
                                                                     <i data-feather="file-text"></i></span>
                                                                 </button>
-                                        
+
                                                         @elseif ($value->assign_status == 2)
-    
+
                                                             @if ($value->assign_id)
                                                             <button onclick="approval_comment({{ $value->id }})"
                                                                 class="btn btn-icon btn-violet mr-10" data-toggle="modal"
@@ -275,8 +275,6 @@
                                     {{-- <input type="text" name="" id="get_xx"> --}}
                                     <div class="custom-control custom-checkbox">
                                         <div id="customCheck6"></div>
-                                        {{-- <input type="checkbox" class="custom-control-input" id="customCheck6" name="assign_is_hot" value="1">
-                                        <label class="custom-control-label" for="customCheck6">ขออนุมัติด่วน</label> --}}
                                     </div>
                                 </div>
                         </div>
@@ -515,7 +513,7 @@
 </script>
 
 <script>
-    
+
     //Edit
     function approval_comment(id) {
         $.ajax({
