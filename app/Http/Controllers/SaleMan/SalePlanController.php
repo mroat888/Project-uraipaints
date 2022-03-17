@@ -108,10 +108,8 @@ class SalePlanController extends Controller
     public function edit_fetch(Request $request)
     {
         $saleplan = DB::table('sale_plans')
-        // ->join('master_present_saleplan', 'sale_plans.sale_plans_tags', '=', 'master_present_saleplan.id')
         ->where('sale_plans.id', $request->id)
         ->select(
-            // 'master_present_saleplan.present_title',
             'sale_plans.id',
             'sale_plans.customer_shop_id',
             'sale_plans.sale_plans_title',
@@ -364,11 +362,49 @@ class SalePlanController extends Controller
 
     public function saleplan_result_get($id)
     {
-        $dataResult = SalePlanResult::where('sale_plan_id', $id)->first();
+        $dataResult = SalePlanResult::join('sale_plans', 'sale_plan_results.sale_plan_id', 'sale_plans.id')
+        ->join('master_objective_saleplans', 'sale_plans.sale_plans_objective', 'master_objective_saleplans.id')
+        ->where('sale_plans.id', $id)
+        ->select('sale_plan_results.*',
+        'sale_plans.sale_plans_title',
+        'master_objective_saleplans.masobj_title',
+        'sale_plans.sale_plans_tags',
+        'sale_plans.customer_shop_id')->first();
+
+
+         // -----  API สินค้านำเสนอ----------- //
+         $api_token = $this->api_token->apiToken();
+         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/sellers/'.Auth::user()->api_identify.'/customers');
+         $res_api = $response->json();
+
+        // $customer_api = array();
+        foreach ($res_api['data'] as $key => $value) {
+            if ($dataResult->customer_shop_id == $value['identify']) {
+                $customer_api = $value['amphoe_name']." , ".$value['province_name'];
+                $customer_name = $value['title']." ".$value['name'];
+            }
+        }
+
+         $path_search = "pdglists?sortorder=DESC";
+         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+         $res_api = $response->json();
+
+         $pdglists_api = array();
+         foreach ($res_api['data'] as $key => $value) {
+             $pdglists_api[$key] =
+             [
+                 'identify' => $value['identify'],
+                 'name' => $value['name'],
+                 'sub_code' => $value['sub_code'],
+             ];
+         }
 
 
     $data = array(
         'dataResult'     => $dataResult,
+        'pdglists_api' => $pdglists_api,
+        'customer_api' => $customer_api,
+        'customer_name' => $customer_name
     );
     echo json_encode($data);
 

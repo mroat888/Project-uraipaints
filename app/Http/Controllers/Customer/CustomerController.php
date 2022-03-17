@@ -13,11 +13,19 @@ use App\MonthlyPlan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
+use App\Http\Controllers\Api\ApiController;
 
 // use DataTables;
 
 class CustomerController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->api_token = new ApiController();
+    }
+
     public function index()
     {
         $data['customer_shop'] = DB::table('customer_shops')
@@ -477,7 +485,7 @@ class CustomerController extends Controller
 
             DB::table('customer_shops_saleplan')
                 ->where('id', $request->shop_id_delete)->delete();
-                
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
@@ -587,13 +595,35 @@ class CustomerController extends Controller
     {
 
         $cus_result = DB::table('customer_shops_saleplan_result')
-            ->where('customer_shops_saleplan_id', $id)
-            ->first();
+        // ->join('customer_shops_saleplan', 'customer_shops_saleplan_result.customer_shops_saleplan_id', 'customer_shops_saleplan.customer_shop_id')
+        ->join('customer_shops', 'customer_shops_saleplan_result.customer_shops_saleplan_id', 'customer_shops.id')
+        ->join('customer_contacts', 'customer_shops.id', 'customer_contacts.customer_shop_id')
+        ->where('customer_shops_saleplan_result.customer_shops_saleplan_id', $id)
+        ->select('customer_shops_saleplan_result.*',
+        'customer_shops.shop_name',
+        'customer_contacts.customer_contact_name')
+        ->first();
+
+        $api_token = $this->api_token->apiToken();
+         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/sellers/'.Auth::user()->api_identify.'/customers');
+         $res_api = $response->json();
+
+        // $customer_api = array();
+        foreach ($res_api['data'] as $key => $value) {
+            if ($id == $value['identify']) {
+                $cust_new_address = $value['amphoe_name']." , ".$value['province_name'];
+                $cust_new_name = $value['title']." ".$value['name'];
+            }else{
+                $cust_new_name = '';
+            }
+
+        }
 
         if(!is_null($cus_result)){
             return response()->json([
                 'status' => 200,
                 'dataResult' => $cus_result,
+                'cust_new_name' => $cust_new_name,
             ]);
         }
 
@@ -662,7 +692,7 @@ class CustomerController extends Controller
     }
 
     public function fetch_customer_shops(){
-        
+
     }
 
 
