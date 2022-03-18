@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use DataTables;
 
 class ApiController extends Controller
 {
@@ -73,6 +74,39 @@ class ApiController extends Controller
         ]);
 
     }
+
+
+    public function fetch_products($id){
+        
+        $api_token = $this->apiToken();
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/products?productlist_id='.$id);
+        $res_api = $response->json();
+        $products = array();
+        foreach($res_api['data'] as $value){
+            if($value['list_code'] == $id){
+                $products[] = [
+                    'identify' => $value['identify'],
+                    'name' => $value['name'],
+                ];                    
+            }
+        }
+        return Datatables::of($products)
+        ->addIndexColumn()
+        ->editColumn('identify',function($row){
+            return $row['identify'];
+        })
+        ->editColumn('name',function($row){
+            return $row['name'];
+        })
+        ->make(true);
+
+        // return response()->json([
+        //     'status' => 200,
+        //     'id' => $id,
+        //     'products' => $products
+        // ]);
+    }
+
 
     public function fetch_amphur_api($id){
 

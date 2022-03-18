@@ -41,7 +41,7 @@
                                         <form action="{{ url($action_search) }}" method="post" enctype="multipart/form-data">
                                             @csrf
                                             <span class="form-inline pull-right pull-sm-center">
-                                                <select name="province" id="province" class="form-control province" style="margin-left:5px; margin-right:5px;" required>
+                                                <select name="province" id="province" class="form-control province" style="margin-left:5px; margin-right:5px;">
                                                     <option value="" selected>เลือกจังหวัด</option>
                                                     @if($provinces['code'] == 200)
                                                         @foreach($provinces['data'] as $key => $value)
@@ -72,8 +72,8 @@
                                                 <th style="font-weight: bold;">ที่อยู่</th>
                                                 <th style="font-weight: bold;">จำนวนวันสำคัญ<br />ในเดือน (วัน)</th>
                                                 <th style="font-weight: bold;">จำนวนวันสำคัญ<br />รวม (วัน)</th>
-                                                <th style="font-weight: bold;">จำนวนเป้าที่ซื้อในปี</th>
-                                                <th style="font-weight: bold;">ยอดเป้ารวม</th>
+                                                <!-- <th style="font-weight: bold;">จำนวนเป้าที่ซื้อในปี</th> -->
+                                                <th style="font-weight: bold;">ยอดเป้ารวม {{ date("Y") }}</th>
                                                 <th style="font-weight: bold;">Action</th>
                                             </tr>
                                         </thead>
@@ -87,10 +87,10 @@
                                                     <td>{{ $customer_api[$key]['identify'] }}</td>
                                                     <td>{{ $customer_api[$key]['shopname'] }}</td>
                                                     <td>{{ $customer_api[$key]['address'] }}</td>
-                                                    <td>{{ $customer_api[$key]['InMonthDays'] }}</td>
-                                                    <td>{{ $customer_api[$key]['TotalDays'] }}</td>
-                                                    <td>{{ $customer_api[$key]['TotalCampaign'] }}</td>
-                                                    <td>{{ number_format($customer_api[$key]['TotalLimit'],2) }}</td>
+                                                    <td style="text-align:center;">{{ $customer_api[$key]['InMonthDays'] }}</td>
+                                                    <td style="text-align:center;">{{ $customer_api[$key]['TotalDays'] }}</td>
+                                                    {{-- <td>{{ $customer_api[$key]['TotalCampaign'] }}</td> --}}
+                                                    <td style="text-align:right;">{{ number_format($customer_api[$key]['TotalLimit'],2) }}</td>
                                                     <td>
                                                         @php
                                                             $pathurl = url($path_detail).'/'.$customer_api[$key]['identify'];

@@ -20,7 +20,10 @@ class SearchroductController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/groups?sortorder=DESC/');
         $groups_api = $response->json();
 
-        return view('shareData.search_product', compact('groups_api'));
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/pdglists/');
+        $pdglists = $response->json();
+
+        return view('shareData.search_product', compact('groups_api', 'pdglists'));
     }
 
     public function search(Request $request){
