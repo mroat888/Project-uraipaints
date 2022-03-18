@@ -56,6 +56,7 @@ class CheckStoreController extends Controller
                             'InMonthDays' => $value['InMonthDays'],
                             'TotalDays' => $value['TotalDays'],
                             'TotalCampaign' => $value['TotalCampaign'],
+                            'TotalLimit' => $value['TotalLimit'],
                         ];
                     }
                 }
@@ -112,6 +113,7 @@ class CheckStoreController extends Controller
                             'InMonthDays' => $value['InMonthDays'],
                             'TotalDays' => $value['TotalDays'],
                             'TotalCampaign' => $value['TotalCampaign'],
+                            'TotalLimit' => $value['TotalLimit'],
                         ];
                     }
                 }

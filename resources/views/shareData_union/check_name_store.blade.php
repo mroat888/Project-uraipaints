@@ -73,6 +73,7 @@
                                                 <th style="font-weight: bold;">จำนวนวันสำคัญ<br />ในเดือน (วัน)</th>
                                                 <th style="font-weight: bold;">จำนวนวันสำคัญ<br />รวม (วัน)</th>
                                                 <th style="font-weight: bold;">จำนวนเป้าที่ซื้อในปี</th>
+                                                <th style="font-weight: bold;">ยอดเป้ารวม</th>
                                                 <th style="font-weight: bold;">Action</th>
                                             </tr>
                                         </thead>
@@ -89,6 +90,7 @@
                                                     <td>{{ $customer_api[$key]['InMonthDays'] }}</td>
                                                     <td>{{ $customer_api[$key]['TotalDays'] }}</td>
                                                     <td>{{ $customer_api[$key]['TotalCampaign'] }}</td>
+                                                    <td>{{ number_format($customer_api[$key]['TotalLimit'],2) }}</td>
                                                     <td>
                                                         @php
                                                             $pathurl = url($path_detail).'/'.$customer_api[$key]['identify'];
