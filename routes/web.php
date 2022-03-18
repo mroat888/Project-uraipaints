@@ -585,6 +585,35 @@ Route::get('fetch_pdglists/{id}', 'Api\ApiController@fetch_pdglists');
 Route::get('fetch_products/{id}', 'Api\ApiController@fetch_products');
 Route::get('fetch_amphur_api/{id}', 'Api\ApiController@fetch_amphur_api');
 
+
+//-- Salller
+Route::get('fetch_provinces_products/{id}', 'Api\ApiController@fetch_provinces_products');
+Route::get('fetch_amphur_products/{pdgid}/{id}', 'Api\ApiController@fetch_amphur_products');
+Route::get('fetch_datatable_customer_sellers/{pdgid}/{pvid}/{ampid}', 'Api\ApiController@fetch_datatable_customer_sellers');
+Route::get('fetch_datatable_customer_sellers_pdglist_pvid/{pdgid}/{pvid}', 'Api\ApiController@fetch_datatable_customer_sellers_pdglist_pvid');
+Route::get('fetch_datatable_customer_sellers_pdglist/{pdgid}', 'Api\ApiController@fetch_datatable_customer_sellers_pdglist');
+
+// Leader
+Route::get('fetch_provinces_products_leaders/{id}', 'Api\ApiController@fetch_provinces_products_leaders');
+Route::get('fetch_amphur_products_leaders/{pdgid}/{id}', 'Api\ApiController@fetch_amphur_products_leaders');
+Route::get('fetch_datatable_customer_leaders/{pdgid}/{pvid}/{ampid}', 'Api\ApiController@fetch_datatable_customer_leaders');
+Route::get('fetch_datatable_customer_leaders_pdglist_pvid/{pdgid}/{pvid}', 'Api\ApiController@fetch_datatable_customer_leaders_pdglist_pvid');
+Route::get('fetch_datatable_customer_leaders_pdglist/{pdgid}', 'Api\ApiController@fetch_datatable_customer_leaders_pdglist');
+
+// header
+Route::get('fetch_provinces_products_headers/{id}', 'Api\ApiController@fetch_provinces_products_headers');
+Route::get('fetch_amphur_products_headers/{pdgid}/{id}', 'Api\ApiController@fetch_amphur_products_headers');
+Route::get('fetch_datatable_customer_headers/{pdgid}/{pvid}/{ampid}', 'Api\ApiController@fetch_datatable_customer_headers');
+Route::get('fetch_datatable_customer_headers_pdglist_pvid/{pdgid}/{pvid}', 'Api\ApiController@fetch_datatable_customer_headers_pdglist_pvid');
+Route::get('fetch_datatable_customer_headers_pdglist/{pdgid}', 'Api\ApiController@fetch_datatable_customer_headers_pdglist');
+
+// admin
+Route::get('fetch_provinces_products_admin/{id}', 'Api\ApiController@fetch_provinces_products_admin');
+Route::get('fetch_amphur_products_admin/{pdgid}/{id}', 'Api\ApiController@fetch_amphur_products_admin');
+Route::get('fetch_datatable_customer_admin/{pdgid}/{pvid}/{ampid}', 'Api\ApiController@fetch_datatable_customer_admin');
+Route::get('fetch_datatable_customer_admin_pdglist_pvid/{pdgid}/{pvid}', 'Api\ApiController@fetch_datatable_customer_admin_pdglist_pvid');
+Route::get('fetch_datatable_customer_admin_pdglist/{pdgid}', 'Api\ApiController@fetch_datatable_customer_admin_pdglist');
+
 Auth::routes();
 // Route::get('/', function () { return view('saleman.dashboard'); });
 

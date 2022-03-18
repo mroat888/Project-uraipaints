@@ -35,17 +35,34 @@
                     </div>
                     <div class="row mb-2">
                         <div class="col-sm-6 col-md-6">
-                            <p class="mb-40">ข้อมูลรายการสินค้า</p>
-                            <div class="row">
-                                <div class="col-sm" id="table_product">
+                            <div class="card">
+                                <div class="card-header">
+                                    ข้อมูลรายการสินค้า
+                                </div>
+                                <div class="card-body">
+                                    <div class="col-sm" id="table_product">
                                     
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-6">
-                            <div class="row">
-                                <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <span class="form-inline pull-right pull-sm-center">
+                                        <select name="province" id="province" class="form-control province" style="margin-left:5px; margin-right:5px;">
+                                            <option value="" selected>เลือกจังหวัด</option>
+                                        </select>
 
+                                        <select name="amphur" id="amphur" class="form-control amphur" style="margin-left:5px; margin-right:5px;">
+                                            <option value="" selected>เลือกอำเภอ</option>
+                                        </select>
+                                    </span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="col-sm" id="table_customer">
+                                    
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -59,66 +76,3 @@
 
     </div>
     <!-- /Container -->
-
-<script>
-
-// $(document).ready(function (){
-
-    
-
-// }
-
-$(document).on('change','#sel_pdglists', function(e){
-        e.preventDefault();
-        var pdglist = $(this).val();
-        console.log(pdglist)
-
-        var content = "<div id='table_list' class='table-responsive col-md-12'>";
-                content += "<table id='datable_1' class='table table-hover data-table'>";
-                    content += "<thead>";
-                        content += "<tr>";
-                            content += "<th style='font-weight: bold;'>รหัสสินค้า</th>";
-                            content += "<th style='font-weight: bold;'>ชื่อสินค้า</th>";
-                        content += "</tr>";
-                    content += "</thead>";
-                    content += "<tbody>";
-                    content += "<tbody>";
-                content += "</table>";
-            content += "</div>";
-
-        $("#table_product").html(content);
-
-
-            $('.data-table').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: {
-                    method:"GET",
-                    url:"{{url('fetch_products')}}/"+pdglist,
-                    dataType: 'json',
-                    data:{
-                            "_token": "{{ csrf_token() }}",
-                        },
-                    },
-                    columns: [
-                        {data: 'identify', name: 'identify'},
-                        {data: 'name', name: 'name'},
-                    ]
-            });
-
-
-
-        // $.ajax({
-        //     method: 'GET',
-        //     url: '{{ url("/fetch_products") }}/'+pdglist,
-        //     datatype: 'json',
-        //     success: function(response){
-        //         if(response.status == 200){
-        //             console.log(response.products)
-                    
-        //         }
-        //     }
-        // });
-    });
-
-</script>
