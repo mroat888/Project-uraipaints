@@ -53,10 +53,8 @@
                                                 <select name="amphur" id="amphur" class="form-control amphur" style="margin-left:5px; margin-right:5px;">
                                                     <option value="" selected>เลือกอำเภอ</option>
                                                 </select>
-
-                                                <select  name="district" id="district" class="form-control district" style="margin-left:5px; margin-right:5px;">
-                                                    <option value="" selected>ยอดเป้า</option>
-                                                </select>
+                                                จำนวนเป้า
+                                                <input type="number" name="campaign_count" style="width:80px;" class="form-control amphur">
 
                                                 <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm">ค้นหา</button>
 

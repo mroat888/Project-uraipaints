@@ -39,7 +39,8 @@ class CheckStoreController extends Controller
         $api_token = $this->api_token->apiToken();
         $customer_api = array();
         foreach($users_saleman as $saleman){
-            $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/sellers/'.$saleman->api_identify.'/customers');
+            $path_search = "customers?sortorder=DESC&region_id=&province_id=&amphoe_id=&campaign_count=";
+            $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/sellers/'.$saleman->api_identify.'/'.$path_search);
             $res_api = $response->json();
 
             if(!empty($res_api)){
@@ -95,7 +96,7 @@ class CheckStoreController extends Controller
         $api_token = $this->api_token->apiToken();
         $data['customer_api'] = array();
         foreach($users_saleman as $saleman){
-            $patch_search = "/sellers/".$saleman->api_identify."/customers/search?sort_by=cust_title&province_id=".$request->province."&amphoe_id=".$request->amphur;
+            $patch_search = "/sellers/".$saleman->api_identify."/customers/search?sort_by=cust_title&province_id=".$request->province."&amphoe_id=".$request->amphur."&campaign_count=".$request->campaign_count;
             $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$patch_search);
             $res_api = $response->json();
 

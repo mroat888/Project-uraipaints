@@ -17,8 +17,9 @@ class CheckStoreController extends Controller
 
     public function index()
     {
-        $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/sellers/'.Auth::user()->api_identify.'/customers');
+        $api_token = $this->api_token->apiToken();     
+        $patch_search = "/sellers/".Auth::user()->api_identify."/customers?sortorder=DESC&region_id=&province_id=&amphoe_id=&campaign_count=";
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$patch_search);
         $res_api = $response->json();
 
         $customer_api = array();
@@ -46,7 +47,7 @@ class CheckStoreController extends Controller
     {   
         
         $api_token = $this->api_token->apiToken();
-        $patch_search = "/sellers/".Auth::user()->api_identify."/customers/search?sort_by=cust_title&province_id=".$request->province."&amphoe_id=".$request->amphur;
+        $patch_search = "/sellers/".Auth::user()->api_identify."/customers/search?sort_by=cust_title&province_id=".$request->province."&amphoe_id=".$request->amphur."&campaign_count=".$request->campaign_count;
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$patch_search);
         $res_api = $response->json();
 
