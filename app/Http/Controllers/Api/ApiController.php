@@ -489,6 +489,126 @@ class ApiController extends Controller
     }
     //-- จบ สำหรับ Header--
 
+    //-- สำหรับ Header--
+
+    public function fetch_provinces_products_admin($id){
+
+        $api_token = $this->apiToken();
+        $path_search = "/provinces";
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
+        $res_api = $response->json();
+        $provinces = array();
+        foreach($res_api['data'] as $value){
+            $provinces[] = [
+                'identify' => $value['identify'],
+                'name_thai' => $value['name_thai'],
+                'region_id' => $value['region_id']
+            ];                    
+        }
+
+        return response()->json([
+            'status' => 200,
+            'id' => $id,
+            'provinces' => $provinces
+        ]);
+    }
+
+    public function fetch_amphur_products_admin($id){
+
+        $api_token = $this->apiToken();
+        $path_search = "/provinces/".$id."/amphures";
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
+        $res_api = $response->json();
+        $provinces = array();
+        foreach($res_api['data'] as $value){
+            $amphures[] = [
+                'identify' => $value['identify'],
+                'name_thai' => $value['name_thai'],
+                'province_id' => $value['province_id']
+            ];                    
+        }
+
+        return response()->json([
+            'status' => 200,
+            'id' => $id,
+            'amphures' => $amphures
+        ]);
+    }
+
+    public function fetch_datatable_customer_admin($ampid){    
+        $api_token = $this->apiToken();
+        $path_search = "amphures/".$ampid."/customers";
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+        $res_api = $response->json();
+        $customer = array();
+        foreach($res_api['data'] as $value){
+            $customer[] = [
+                'identify' => $value['identify'],
+                'title' => $value['title'],
+                'name' => $value['name'],
+            ];                    
+        }
+        return Datatables::of($customer)
+        ->addIndexColumn()
+        ->editColumn('identify',function($row){
+            return $row['identify'];
+        })
+        ->editColumn('name',function($row){
+            return $row['title']." ".$row['name'];
+        })
+        ->make(true);
+    }
+
+    // public function fetch_datatable_customer_headers_pdglist($pdgid){    
+    //     $api_token = $this->apiToken();
+    //     $path_search = "saleheaders/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers";
+    //     $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+    //     $res_api = $response->json();
+    //     $customer = array();
+    //     foreach($res_api['data'] as $value){
+    //         $customer[] = [
+    //             'identify' => $value['identify'],
+    //             'title' => $value['title'],
+    //             'name' => $value['name'],
+    //         ];                    
+    //     }
+    //     return Datatables::of($customer)
+    //     ->addIndexColumn()
+    //     ->editColumn('identify',function($row){
+    //         return $row['identify'];
+    //     })
+    //     ->editColumn('name',function($row){
+    //         return $row['title']." ".$row['name'];
+    //     })
+    //     ->make(true);
+    // }
+
+    public function fetch_datatable_customer_admin_pdglist_pvid($pvid){    
+        $api_token = $this->apiToken();
+        $path_search = "provinces/".$pvid."/customers";
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+        $res_api = $response->json();
+        $customer = array();
+        foreach($res_api['data'] as $value){
+            $customer[] = [
+                'identify' => $value['identify'],
+                'title' => $value['title'],
+                'name' => $value['name'],
+            ];                    
+        }
+        return Datatables::of($customer)
+        ->addIndexColumn()
+        ->editColumn('identify',function($row){
+            return $row['identify'];
+        })
+        ->editColumn('name',function($row){
+            return $row['title']." ".$row['name'];
+        })
+        ->make(true);
+    }
+
+    //-- จบ สำหรับ Header--
+
 
     
 

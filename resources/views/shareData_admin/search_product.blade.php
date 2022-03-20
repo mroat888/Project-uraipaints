@@ -57,7 +57,7 @@ $(document).on('change','#sel_pdglists', function(e){
 
     $.ajax({
         method: 'GET',
-        url: '{{ url("/fetch_provinces_products_headers") }}/'+pdglist, // --เปลี่ยน
+        url: '{{ url("/fetch_provinces_products_admin") }}/'+pdglist, // --เปลี่ยน
         datatype: 'json',
         success: function(response){
             if(response.status == 200){
@@ -75,38 +75,38 @@ $(document).on('change','#sel_pdglists', function(e){
     });
 
     //-- Table Customer
-    var pdglist = $(this).val();
-    var content2 = "<div id='table_list' class='table-responsive col-md-12'>";
-            content2 += "<table id='datable_2' class='table table-hover data-table'>";
-                content2 += "<thead>";
-                    content2 += "<tr>";
-                        content2 += "<th style='font-weight: bold;'>รหัสสินค้า</th>";
-                        content2 += "<th style='font-weight: bold;'>ชื่อร้าน</th>";
-                    content2 += "</tr>";
-                content2 += "</thead>";
-                content2 += "<tbody>";
-                content2 += "<tbody>";
-            content2 += "</table>";
-        content2 += "</div>";
+    // var pdglist = $(this).val();
+    // var content2 = "<div id='table_list' class='table-responsive col-md-12'>";
+    //         content2 += "<table id='datable_2' class='table table-hover data-table'>";
+    //             content2 += "<thead>";
+    //                 content2 += "<tr>";
+    //                     content2 += "<th style='font-weight: bold;'>รหัสสินค้า</th>";
+    //                     content2 += "<th style='font-weight: bold;'>ชื่อร้าน</th>";
+    //                 content2 += "</tr>";
+    //             content2 += "</thead>";
+    //             content2 += "<tbody>";
+    //             content2 += "<tbody>";
+    //         content2 += "</table>";
+    //     content2 += "</div>";
 
-    $("#table_customer").html(content2);
+    // $("#table_customer").html(content2);
 
-    $('#datable_2').DataTable({
-        processing: false,
-        serverSide: false,
-        ajax: {
-            method:"GET",
-            url:"{{url('fetch_datatable_customer_headers_pdglist')}}/"+pdglist, //-- เปลี่ยน
-            dataType: 'json',
-            data:{
-                    "_token": "{{ csrf_token() }}",
-                },
-            },
-            columns: [
-                {data: 'identify', name: 'identify'},
-                {data: 'name', name: 'name'},
-            ]
-    });
+    // $('#datable_2').DataTable({
+    //     processing: false,
+    //     serverSide: false,
+    //     ajax: {
+    //         method:"GET",
+    //         url:"{{url('fetch_datatable_customer_headers_pdglist')}}/"+pdglist, //-- เปลี่ยน
+    //         dataType: 'json',
+    //         data:{
+    //                 "_token": "{{ csrf_token() }}",
+    //             },
+    //         },
+    //         columns: [
+    //             {data: 'identify', name: 'identify'},
+    //             {data: 'name', name: 'name'},
+    //         ]
+    // });
     //-- Table Customer
 
 
@@ -140,7 +140,7 @@ $(document).on('change','.province', function(e){
         serverSide: false,
         ajax: {
             method:"GET",
-            url:"{{url('fetch_datatable_customer_headers_pdglist_pvid')}}/"+pdglist+'/'+pvid, //-- เปลี่ยน
+            url:"{{url('fetch_datatable_customer_admin_pdglist_pvid')}}/"+pvid, //-- เปลี่ยน
             dataType: 'json',
             data:{
                     "_token": "{{ csrf_token() }}",
@@ -155,7 +155,7 @@ $(document).on('change','.province', function(e){
 
     $.ajax({
         method: 'GET',
-        url: '{{ url("/fetch_amphur_products_headers") }}/'+pdglist+'/'+pvid, //-- เปลี่ยน
+        url: '{{ url("/fetch_amphur_products_admin") }}/'+pvid, //-- เปลี่ยน
         datatype: 'json',
         success: function(response){
             if(response.status == 200){
@@ -200,7 +200,7 @@ $(document).on('change','#amphur', function(e){
         serverSide: false,
         ajax: {
             method:"GET",
-            url:"{{url('fetch_datatable_customer_headers')}}/"+pdglist+"/"+pvid+"/"+ampid,
+            url:"{{url('fetch_datatable_customer_admin')}}/"+ampid,
             dataType: 'json',
             data:{
                     "_token": "{{ csrf_token() }}",
