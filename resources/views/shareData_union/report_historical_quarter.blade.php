@@ -35,7 +35,7 @@
                                                 <option value="">--ค้นหาปี--</option>
                                                 <?php
                                                     list($year,$month,$day) = explode("-", date("Y-m-d"));
-                                                    for($i = 0; $i<4; $i++){
+                                                    for($i = 0; $i<3; $i++){
                                                 ?>
                                                         <option value="{{ $year-$i }}">{{ $year-$i }}</option>
                                                 <?php
@@ -49,7 +49,7 @@
                                                 <option value="">--ค้นหาปี--</option>
                                                 <?php
                                                     list($year,$month,$day) = explode("-", date("Y-m-d"));
-                                                    for($i = 0; $i<4; $i++){
+                                                    for($i = 0; $i<3; $i++){
                                                 ?>
                                                         <option value="{{ $year-$i }}">{{ $year-$i }}</option>
                                                 <?php
@@ -84,27 +84,46 @@
                                         </tr>
                                     </thead>
                                     </tbody>
+                                        @php 
+                                            $data= array();
+                                            $data_label = array();
+                                        @endphp
                                         @foreach($year_search as $key => $year_value)
+                                            @php
+                                                $data_label[] = $year_value;
+                                            @endphp
                                         <tr>
                                             <td>{{ $year_value }}</td>
                                             <td>
                                                 @if(isset($quarter_api_year[$key]['q1'][4]))
                                                     {{ number_format($quarter_api_year[$key]['q1'][4],2) }}
+                                                    @php 
+                                                        $data[$key][] = $quarter_api_year[$key]['q1'][4];
+                                                    @endphp
                                                 @endif
                                             </td>
                                             <td>
                                                 @if(isset($quarter_api_year[$key]['q2'][4]))
                                                     {{ number_format($quarter_api_year[$key]['q2'][4],2) }}
+                                                    @php 
+                                                        $data[$key][] = $quarter_api_year[$key]['q2'][4];
+                                                    @endphp
                                                 @endif
                                             </td>
                                             <td>
                                                 @if(isset($quarter_api_year[$key]['q3'][4]))
                                                     {{ number_format($quarter_api_year[$key]['q3'][4],2) }}
+                                                    @php 
+                                                        $data[$key][] = $quarter_api_year[$key]['q3'][4];
+                                                    @endphp
                                                 @endif
                                             </td>
                                             <td>
                                                 @if(isset($quarter_api_year[$key]['q4'][4]))
                                                     {{ number_format($quarter_api_year[$key]['q4'][4],2) }}
+                                                    @php 
+                                                        $data[$key][] = $quarter_api_year[$key]['q4'][4];
+                                                    @endphp
                                                 @endif
                                             </td>
                                             <td>
@@ -162,32 +181,69 @@
 
 <script src="{{ asset('public/template/graph/Chart.bundle.js') }}"></script>
 <?php
-    $data_chat = "200,250,300,350";
-    $data_chat2 = "250,250,280,200";
+    //$data_chat1 = "200,250,380,350";
+    //$data_chat2 = "250,180,280,200";
+    // $data_chat3 = "180,200,250,220";
+    //$data_chat3 = "";
+    $count = count($data);
+    
+    $data_text = array();
+
+    for($i=0;$i<3;$i++){
+        $data_text[$i] = "";
+        if(isset($data_label[$i])){
+            $data_label[$i] = $data_label[$i];
+        }else{
+            $data_label[$i] = "";
+        }
+        for($n=0; $n<4; $n++){
+
+            if(isset($data[$i][$n])){
+                $value = $data[$i][$n];
+            }else{
+                $value = 0;
+            }
+            // dd($value);
+            if($n == 3){
+                $data_text[$i] .= $value;
+            }else{
+                $data_text[$i] .= $value.",";
+            } 
+        } 
+
+    }
+
+    // dd($data, $count, $data_text);
+
 ?>
 
 <script>
     var ctx = document.getElementById("myChart").getContext('2d');
     var datset =[];
     var newDataset =[];
-
-    newDataset[0] = {
-            label: 'Dataset',
-            backgroundColor: ['rgba(255, 99, 132, 0)',],
-            borderColor: ['rgba(255,99,132,1)',],
-            borderWidth: 1,
-            data: [{{ $data_chat }}],
-        };
-    newDataset[1] = {
-            label: 'Dataset',
-            backgroundColor: ['rgba(255, 99, 132, 0)',],
-            borderColor: ['rgba(255,99,132,1)',],
-            borderWidth: 1,
-            data: [{{ $data_chat2 }}],
-        };
-
-        
    
+    newDataset[0] = {
+        label: '{{ $data_label[0] }}',
+        backgroundColor: ['rgba(255, 99, 132, 0)',],
+        borderColor: ['rgba(255,99,132,1)',],
+        borderWidth: 1,
+        data: [{{ $data_text[0] }}],
+    };
+    newDataset[1] = {
+        label: '{{ $data_label[1] }}',
+        backgroundColor: ['rgba(255, 99, 132, 0)',],
+        borderColor: ['rgba(0,0,255,1)',],
+        borderWidth: 1,
+        data: [{{ $data_text[1]  }}],
+    };
+    newDataset[2] = {
+        label: '{{ $data_label[2] }}',
+        backgroundColor: ['rgba(200, 150, 100, 0)',],
+        borderColor: ['rgba(255,128,0,1)',],
+        borderWidth: 1,
+        data: [{{ $data_text[2]  }}],
+    };
+
     for(let i=0; i<newDataset.length ; i++){
         datset.push(newDataset[i]);
     }
@@ -196,19 +252,6 @@
         data: {
             labels: [1,2,3,4],
             datasets: datset
-            // [
-            //     {
-            //         label: 'จำนวนลูกค้าปัจจุบัน',
-            //         data: [100,200,330,400],
-            //         backgroundColor: [
-            //             'rgba(255, 99, 132, 0)',
-            //         ],
-            //         borderColor: [
-            //             'rgba(255,99,132,1)',
-            //         ],
-            //         borderWidth: 1
-            //     },   
-            // ]
         },
             options: {
                 scales: {
