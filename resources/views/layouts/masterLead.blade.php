@@ -120,6 +120,59 @@ License: You must have a valid license purchased only from themeforest to legall
         </form>
         <!-- /Top Navbar -->
 
+        <?php
+        $auth_team_id = explode(',',Auth::user()->team_id);
+        $auth_team = array();
+        foreach($auth_team_id as $value){
+            $auth_team[] = $value;
+        }
+            $monthly_plan = DB::table('monthly_plans')
+            ->join('users', 'users.id', 'monthly_plans.created_by')
+            ->where('monthly_plans.status_approve', 1)
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('users.team_id', $auth_team[$i])
+                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+                }
+            })
+            ->select(
+                'users.*',
+                'monthly_plans.*')->count();
+
+            $request_approval = DB::table('assignments')
+            ->join('users', 'assignments.created_by', '=', 'users.id')
+            ->where('assignments.assign_status', 0) // สถานะการอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน)
+            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('users.team_id', $auth_team[$i])
+                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+                }
+            })
+            ->select('assignments.created_by')
+            ->distinct()->count();
+
+            $customers = DB::table('customer_shops_saleplan')
+            ->join('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
+            ->join('users', 'customer_shops_saleplan.created_by', '=', 'users.id')
+            ->where('customer_shops.shop_status', 0)
+            ->where('customer_shops_saleplan.shop_aprove_status', 1) // ส่งขออนุมัติ
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('users.team_id', $auth_team[$i])
+                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+                }
+            })
+            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+            ->where('customer_shops_saleplan.is_monthly_plan', 'N')
+            ->select('customer_shops_saleplan.created_by as shop_created_by')
+            ->distinct()->count();
+
+        ?>
+
         <!-- Vertical Nav -->
         <nav class="hk-nav hk-nav-light">
             <a href="javascript:void(0);" id="hk_nav_close" class="hk-nav-close"><span class="feather-icon"><i
@@ -133,48 +186,35 @@ License: You must have a valid license purchased only from themeforest to legall
                                 <span class="nav-link-text">หน้าแรก</span>
                             </a>
                         </li>
-                        {{-- <li class="nav-item">
-                            <a class="nav-link" href="{{ url('lead/planMonth') }}">
-                                <i class="ion ion-md-time" style="color: #044067;"></i>
-                                <span class="nav-link-text">แผนประจำเดือน</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('lead/dailyWork') }}">
-                                <i class="ion ion-md-star" style="color: #044067;"></i>
-                                <span class="nav-link-text">งานประจำวัน</span>
-                            </a>
-                        </li> --}}
-                        <!-- <li class="nav-item">
-                            <a class="nav-link" href="{{ url('lead/palncalendar') }}">
-                                <i class="ion ion-md-calendar"></i>
-                                <span class="nav-link-text">ปฎิทินกิจกรรม</span>
-                            </a>
-                        </li> -->
                         <li class="nav-item">
                             <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
                                 data-target="#charts_drp2">
                                 <i class="ion ion-md-create" style="color: #044067;"></i>
-                                <span class="nav-link-text">อนุมัติ และ สั่งงาน</span>
+                                <span class="nav-link-text">อนุมัติและสั่งงาน</span>
+                                <span class="badge badge-danger badge-pill ml-2">{{$monthly_plan + $request_approval + $customers }}</span>
                             </a>
                             <ul id="charts_drp2" class="nav flex-column collapse collapse-level-1">
                                 <li class="nav-item">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{ url('/approvalsaleplan') }}">
+                                            <a class="nav-link link-with-badge" href="{{ url('/approvalsaleplan') }}">
                                                 <i class="ion ion-md-today" style="color: #044067;"></i>
-                                                อนุมัติ sale plan</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{ url('/approvalgeneral') }}">
-                                                <i class="ion ion-md-checkbox"></i>
-                                                <span class="nav-link-text">อนุมัติคำขออนุมัติ</span>
+                                                <span class="nav-link-text">อนุมัติ sale plan</span>
+                                                <span class="badge badge-danger badge-pill">{{$monthly_plan}}</span>
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{ url('approval-customer-except') }}">
+                                            <a class="nav-link link-with-badge" href="{{ url('/approvalgeneral') }}">
                                                 <i class="ion ion-md-checkbox"></i>
+                                                <span class="nav-link-text">อนุมัติคำขออนุมัติ</span>
+                                                <span class="badge badge-danger badge-pill">{{$request_approval}}</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link link-with-badge" href="{{ url('approval-customer-except') }}">
+                                                <i class="ion ion-md-people"></i>
                                                 <span class="nav-link-text">ลูกค้าใหม่ นอกแผน</span>
+                                                <span class="badge badge-danger badge-pill">{{$customers}}</span>
                                             </a>
                                         </li>
                                         <li class="nav-item">
@@ -186,24 +226,6 @@ License: You must have a valid license purchased only from themeforest to legall
                                 </li>
                             </ul>
                         </li>
-                        {{-- <li class="nav-item">
-                            <a class="nav-link" href="{{ url('lead/saleWork') }}">
-                                <i class="ion ion-md-grid"></i>
-                                <span class="nav-link-text">ตารางงานของเซลล์</span>
-                            </a>
-                        </li> --}}
-                        {{-- <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/approvalsaleplan') }}">
-                                <i class="ion ion-md-calendar"></i>
-                                <span class="nav-link-text">อนุมัติ Sale plan</span>
-                            </a>
-                        </li> --}}
-                        {{-- <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/approvalgeneral') }}">
-                                <i class="ion ion-md-calendar"></i>
-                                <span class="nav-link-text">อนุมัติคำขออนุมัติ</span>
-                            </a>
-                        </li> --}}
                         <li class="nav-item">
                             <a class="nav-link link-with-badge" href="{{ url('/leadManage/note') }}">
                                 <i class="ion ion-md-document"></i>

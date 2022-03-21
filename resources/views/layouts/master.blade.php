@@ -110,6 +110,15 @@ License: You must have a valid license purchased only from themeforest to legall
         </nav>
         <!-- /Top Navbar -->
 
+        <?php
+            $count_quest = App\RequestApproval::where('assign_status_actoin', 0)
+                ->where('created_by', Auth::user()->id)->count();
+
+            $count_assign = App\RequestApproval::where('assign_status', 3)
+                ->where('assign_emp_id', Auth::user()->id)->count();
+
+        ?>
+
         <!-- Vertical Nav -->
         <nav class="hk-nav hk-nav-light">
             <a href="javascript:void(0);" id="hk_nav_close" class="hk-nav-close"><span class="feather-icon"><i
@@ -146,55 +155,30 @@ License: You must have a valid license purchased only from themeforest to legall
                                 data-target="#charts_drp2">
                                 <i class="ion ion-md-create" style="color: #044067;"></i>
                                 <span class="nav-link-text">ขออนุมัติ และ สั่งงาน</span>
+                                <span class="badge badge-danger badge-pill ml-1">{{$count_assign + $count_quest}}</span>
                             </a>
                             <ul id="charts_drp2" class="nav flex-column collapse collapse-level-1">
                                 <li class="nav-item">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{ url('approval') }}">
+                                            <a class="nav-link link-with-badge" href="{{ url('approval') }}">
                                                 <i class="ion ion-md-clipboard" style="color: #044067;"></i>
-                                                บันทึกขออนุมัติ</a>
+                                                <span class="nav-link-text">บันทึกขออนุมัติ</span>
+                                                <span class="badge badge-danger badge-pill">{{$count_quest}}</span>
+                                            </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{ url('assignment') }}">
+                                            <a class="nav-link link-with-badge" href="{{ url('assignment') }}">
                                                 <i class="ion ion-md-flag" style="color: #044067;"></i>
-                                                รายการสั่งงาน</a>
-                                        </li>
-                                        {{-- <li class="nav-item">
-                                            <a class="nav-link" href="{{ url('saleplan') }}">
-                                                <i class="ion ion-md-calendar" style="color: #044067;"></i>
-                                                <span class="nav-link-text">Sale plan</span>
+                                                <span class="nav-link-text">รายการสั่งงาน</span>
+                                                <span class="badge badge-danger badge-pill">{{$count_assign}}</span>
+
                                             </a>
-                                        </li> --}}
+                                        </li>
                                     </ul>
                                 </li>
                             </ul>
                         </li>
-                        {{-- <li class="nav-item">
-                            <a class="nav-link" href="{{ url('saleplan') }}">
-                                <i class="ion ion-md-calendar" style="color: #044067;"></i>
-                                <span class="nav-link-text">Sale plan</span>
-                            </a>
-                        </li> --}}
-                        {{-- <li class="nav-item">
-                            <a class="nav-link" href="{{ url('assignment') }}">
-                                <i class="ion ion-md-clipboard" style="color: #044067;"></i>
-                                <span class="nav-link-text">งานที่ได้รับมอบหมาย</span>
-                            </a>
-                        </li> --}}
-                        {{-- <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/lead') }}">
-                                <i class="ion ion-md-person" style="color: #044067;"></i>
-                                <span class="nav-link-text">ลูกค้าเป้าหมาย</span>
-                            </a>
-                        </li> --}}
-
-                        {{-- <li class="nav-item">
-                            <a class="nav-link" href="{{ url('customer') }}">
-                                <i class="ion ion-md-people" style="color: #044067;"></i>
-                                <span class="nav-link-text">ทะเบียนลูกค้า</span>
-                            </a>
-                        </li> --}}
                         <li class="nav-item">
                             <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
                                 data-target="#customer">
