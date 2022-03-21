@@ -93,7 +93,7 @@
                                             </td>
                                             <td>
                                                 <div class="button-list">
-                                                    @php 
+                                                    @php
                                                         if($value->assign_work_date < date('Y-m-d')){
                                                             $btn_disabled = "disabled";
                                                         }else{

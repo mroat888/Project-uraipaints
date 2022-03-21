@@ -76,6 +76,84 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($list_approval as $key => $value)
+                                            @if ($value->assign_status_actoin == 0)
+                                            <tr style="background-color: #D3D3D3;">
+                                                <td>{{$key + 1}}</td>
+                                                <td>{{$value->assign_title}}</td>
+                                                <td>{{$value->assign_work_date}}</td>
+                                                <td>
+                                                    @if ($value->assign_status == 0)
+                                                    <span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>
+                                                    @elseif ($value->assign_status == 1)
+                                                    <span class="badge badge-soft-success" style="font-size: 12px;">Approval</span>
+                                                    @else
+                                                    <span class="badge badge-soft-secondary" style="font-size: 12px;">Reject</span>
+                                                    @endif
+
+                                                    {{-- เรื่องด่วน --}}
+                                                    @if ($value->assign_is_hot == 1)
+                                                    <span class="badge badge-soft-danger" style="font-size: 12px;">HOT</span>
+                                                    @endif
+
+                                                    @if ($value->assign_id)
+                                                            <span class="badge badge-soft-indigo" style="font-size: 12px;">Comment</span>
+                                                    @endif
+                                                </td>
+                                                    <td>
+                                                        <div class="button-list">
+                                                        @if ($value->assign_status == 0)
+
+                                                            <button onclick="edit_modal({{ $value->id }})"
+                                                                class="btn btn-icon btn-warning mr-10" data-toggle="modal"
+                                                                data-target="#editApproval">
+                                                                <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
+
+                                                                <button id="btn_request_delete" class="btn btn-icon btn-danger mr-10"
+                                                                    value="{{ $value->id }}">
+                                                                    <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-trash"></i></h4>
+                                                                </button>
+
+                                                        @elseif ($value->assign_status == 1)
+                                                            @if ($value->assign_id)
+
+                                                            <button onclick="approval_comment({{ $value->id }})"
+                                                                class="btn btn-icon btn-violet mr-10" data-toggle="modal"
+                                                                data-target="#ApprovalComment">
+                                                                <span class="btn-icon-wrap"><i
+                                                                        data-feather="message-square"></i></span></button>
+
+                                                                        <button onclick="edit_modal({{ $value->id }})"
+                                                                            class="btn btn-icon btn-info mr-10" data-toggle="modal"
+                                                                            data-target="#editApproval">
+                                                                            <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
+                                                            @endif
+                                                            <button onclick="approval_detail({{ $value->id }})"
+                                                                class="btn btn-icon btn-primary mr-10" data-toggle="modal"
+                                                                data-target="#Approvaldetail">
+                                                                <span class="btn-icon-wrap">
+                                                                    <i data-feather="file-text"></i></span>
+                                                                </button>
+
+                                                        @elseif ($value->assign_status == 2)
+
+                                                            @if ($value->assign_id)
+                                                            <button onclick="approval_comment({{ $value->id }})"
+                                                                class="btn btn-icon btn-violet mr-10" data-toggle="modal"
+                                                                data-target="#ApprovalComment">
+                                                                <span class="btn-icon-wrap"><i
+                                                                        data-feather="message-square"></i></span></button>
+
+                                                                        <button onclick="edit_modal({{ $value->id }})"
+                                                                            class="btn btn-icon btn-info mr-10" data-toggle="modal"
+                                                                            data-target="#editApproval">
+                                                                            <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
+                                                            @endif
+
+                                                        @endif
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @else
                                             <tr>
                                                 <td>{{$key + 1}}</td>
                                                 <td>{{$value->assign_title}}</td>
@@ -152,6 +230,7 @@
                                                     </div>
                                                 </td>
                                             </tr>
+                                            @endif
                                             @endforeach
                                         </tbody>
                                     </table>

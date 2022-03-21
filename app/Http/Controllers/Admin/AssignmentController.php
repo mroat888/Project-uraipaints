@@ -155,7 +155,7 @@ class AssignmentController extends Controller
         foreach($auth_team_id as $value){
             $auth_team[] = $value;
         }
-        
+
         $dataUser = DB::table('users')
         ->where('status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
         ->where(function($query) use ($auth_team) {
@@ -166,7 +166,7 @@ class AssignmentController extends Controller
             }
         })
         ->get();
-        
+
 
         $data = array(
             'dataEdit'  => $dataEdit,
