@@ -26,20 +26,7 @@
                     {{-- <h5 class="hk-sec-title">ปฏิทิน</h5> --}}
                     <div class="row">
                         <div class="col-sm">
-                            {{-- <a href="{{url('palncalendar')}}" type="button" class="btn bg-violet btn-wth-icon icon-wthot-bg btn-sm text-white">
-                                <span class="icon-label">
-                                    <i class="fa fa-calendar"></i>
-                                </span>
-                                <span class="btn-text">ปฎิทิน</span>
-                            </a>
 
-                            <a href="{{url('planDetail')}}" type="button" class="btn btn-secondary btn-wth-icon icon-wthot-bg btn-sm text-white">
-                                <span class="icon-label">
-                                    <i class="fa fa-list"></i>
-                                </span>
-                                <span class="btn-text">List</span>
-                            </a> --}}
-                            {{-- <hr> --}}
                             <div id="calendar"></div>
                         </div>
                     </div>
@@ -63,6 +50,8 @@
                 events: "calendar", // -- แก้ไข url ได้
                 displayEventTime: false,
                 editable: true,
+                eventColor: '#6A5ACD',
+                eventTextColor: '#FFFFFF',
                 eventRender: function(event, element, view) {
                     if (event.allDay === 'true') {
                         event.allDay = true;
