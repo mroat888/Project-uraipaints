@@ -595,16 +595,23 @@ class CustomerController extends Controller
     {
 
         $cus_result = DB::table('customer_shops_saleplan_result')
-        // ->join('customer_shops_saleplan', 'customer_shops_saleplan_result.customer_shops_saleplan_id', 'customer_shops_saleplan.customer_shop_id')
+        ->join('customer_shops_saleplan', 'customer_shops_saleplan_result.customer_shops_saleplan_id', 'customer_shops_saleplan.customer_shop_id')
+        ->join('master_customer_new', 'customer_shops_saleplan.customer_shop_objective', 'master_customer_new.id')
         ->join('customer_shops', 'customer_shops_saleplan_result.customer_shops_saleplan_id', 'customer_shops.id')
         ->join('customer_contacts', 'customer_shops.id', 'customer_contacts.customer_shop_id')
-        ->where('customer_shops_saleplan_result.customer_shops_saleplan_id', $id)
+        ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
+        ->leftjoin('amphur', 'amphur.AMPHUR_ID', 'customer_shops.shop_amphur_id')
+        // ->where('customer_shops_saleplan_result.customer_shops_saleplan_id', $id)
+        ->where('customer_shops_saleplan.id', $id)
         ->select('customer_shops_saleplan_result.*',
         'customer_shops.shop_name',
-        'customer_contacts.customer_contact_name')
-        ->first();
+        'customer_contacts.customer_contact_name',
+        'amphur.AMPHUR_NAME',
+        'province.PROVINCE_NAME',
+        'master_customer_new.cust_name'
+        )->first();
 
-        $api_token = $this->api_token->apiToken();
+         $api_token = $this->api_token->apiToken();
          $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/sellers/'.Auth::user()->api_identify.'/customers');
          $res_api = $response->json();
 
@@ -615,6 +622,7 @@ class CustomerController extends Controller
                 $cust_new_name = $value['title']." ".$value['name'];
             }else{
                 $cust_new_name = '';
+                $cust_new_address = $cus_result->AMPHUR_NAME.", ".$cus_result->PROVINCE_NAME;
             }
 
         }
@@ -624,6 +632,8 @@ class CustomerController extends Controller
                 'status' => 200,
                 'dataResult' => $cus_result,
                 'cust_new_name' => $cust_new_name,
+                'cust_new_address' => $cust_new_address,
+                'id' => $id
             ]);
         }
 
