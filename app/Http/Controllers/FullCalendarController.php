@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Redirect,Response;
 use App\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FullCalendarController extends Controller
 {
@@ -16,7 +17,7 @@ class FullCalendarController extends Controller
          $start = (!empty($_GET["start"])) ? ($_GET["start"]) : ('');
          $end = (!empty($_GET["end"])) ? ($_GET["end"]) : ('');
 
-         $data = Event::whereDate('start', '>=', $start)->whereDate('end',   '<=', $end)->get(['id','title','start', 'end']);
+         $data = Event::where('created_by', Auth::user()->id)->whereDate('start', '>=', $start)->whereDate('end',   '<=', $end)->get(['id','title','start', 'end']);
          return Response::json($data);
         }
         return view('fullcalendar');
