@@ -55,10 +55,8 @@
                 eventRender: function(event, element, view) {
                     if (event.allDay === 'true') {
                         event.allDay = true;
-                        alert("OK");
                     } else {
                         event.allDay = false;
-                        alert("OK2");
                     }
                 },
             });
