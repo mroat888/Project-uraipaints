@@ -59,6 +59,26 @@
                         event.allDay = false;
                     }
                 },
+                eventClick: function(event) {
+                    // alert(event.id);
+                    var eventid = event.id;
+                    $('#Modalvisit').modal('show');
+                    $('#header').text('');
+                    $('#title').text('');
+                    $('#shop_name').text('');
+                    $.ajax({
+                        type: "GET",
+                        url: '{{ url("calendar/show") }}/'+eventid,
+                        success: function(response) {
+                            // console.log(response);
+                            if(response.status == 200){
+                                $('#header').text(response.data_show.header);
+                                $('#title').text(response.data_show.title);
+                                $('#shop_name').text(response.data_show.shop_name);
+                            }
+                        }
+                    });
+                }
             });
         });
 
@@ -69,6 +89,27 @@
             }, 1000);
         }
     </script>
+
+    <!-- Modal -->
+    <div class="modal fade" id="Modalvisit" tabindex="-1" role="dialog" aria-labelledby="Modalvisit" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="header"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h3 id="title"></h3>
+                    <h3 id="shop_name"></h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 @endsection
