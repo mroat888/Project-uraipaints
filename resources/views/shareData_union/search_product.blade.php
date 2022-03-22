@@ -22,7 +22,7 @@
                             <!-- ------ -->
                             <span>
                                 <div class="form-group col-md-12">
-                                    <select name="sel_pdglists" id="sel_pdglists" class="form-control sel_pdglists" required>
+                                    <select name="sel_pdglists" id="sel_pdglists" class="form-control sel_pdglists select2" required>
                                         <option value="">--ค้นหารายการสินค้า--</option>
                                         @foreach($pdglists['data'] as $value)
                                             <option value="{{ $value['identify'] }}">{{ $value['name'] }}</option>

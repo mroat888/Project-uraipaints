@@ -14,102 +14,103 @@
 
 <script>
 
-$(document).on('change','#sel_pdglists', function(e){
-    e.preventDefault();
-    var pdglist = $(this).val();
-    console.log(pdglist);
-    $('.province').children().remove().end();
-    $('.amphur').children().remove().end();
-    $('.province').append('<option selected value="">เลือกจังหวัด</option>');
-    $('.amphur').append('<option selected value="">เลือกอำเภอ</option>');
+$(document).ready(function(){
+    // $(document).on('change','#sel_pdglists', function(e){
+    $('#sel_pdglists').on("change", function(e) { 
+        e.preventDefault();
+        var pdglist = $(this).val();
+        console.log(pdglist);
+        $('.province').children().remove().end();
+        $('.amphur').children().remove().end();
+        $('.province').append('<option selected value="">เลือกจังหวัด</option>');
+        $('.amphur').append('<option selected value="">เลือกอำเภอ</option>');
 
-    var content = "<div id='table_list' class='table-responsive col-md-12'>";
-            content += "<table id='datable_1' class='table table-hover data-table'>";
-                content += "<thead>";
-                    content += "<tr>";
-                        content += "<th style='font-weight: bold;'>รหัสสินค้า</th>";
-                        content += "<th style='font-weight: bold;'>ชื่อสินค้า</th>";
-                    content += "</tr>";
-                content += "</thead>";
-                content += "<tbody>";
-                content += "<tbody>";
-            content += "</table>";
-        content += "</div>";
+        var content = "<div id='table_list' class='table-responsive col-md-12'>";
+                content += "<table id='datable_1' class='table table-hover data-table'>";
+                    content += "<thead>";
+                        content += "<tr>";
+                            content += "<th style='font-weight: bold;'>รหัสสินค้า</th>";
+                            content += "<th style='font-weight: bold;'>ชื่อสินค้า</th>";
+                        content += "</tr>";
+                    content += "</thead>";
+                    content += "<tbody>";
+                    content += "<tbody>";
+                content += "</table>";
+            content += "</div>";
 
-    $("#table_product").html(content);
+        $("#table_product").html(content);
 
-    $('#datable_1').DataTable({
-        processing: false,
-        serverSide: false,
-        ajax: {
-            method:"GET",
-            url:"{{url('fetch_products')}}/"+pdglist, //-- ใช้เหมือนกัน
-            dataType: 'json',
-            data:{
-                    "_token": "{{ csrf_token() }}",
+        $('#datable_1').DataTable({
+            processing: false,
+            serverSide: false,
+            ajax: {
+                method:"GET",
+                url:"{{url('fetch_products')}}/"+pdglist, //-- ใช้เหมือนกัน
+                dataType: 'json',
+                data:{
+                        "_token": "{{ csrf_token() }}",
+                    },
                 },
-            },
-            columns: [
-                {data: 'identify', name: 'identify'},
-                {data: 'name', name: 'name'},
-            ]
-    });
+                columns: [
+                    {data: 'identify', name: 'identify'},
+                    {data: 'name', name: 'name'},
+                ]
+        });
 
-    $.ajax({
-        method: 'GET',
-        url: '{{ url("/fetch_provinces_products_leaders") }}/'+pdglist,
-        datatype: 'json',
-        success: function(response){
-            if(response.status == 200){
-                console.log(response.provinces);
-                $('.province').children().remove().end();
-                $('.amphur').children().remove().end();
-                $('.province').append('<option selected value="">เลือกจังหวัด</option>');
-                $('.amphur').append('<option selected value="">เลือกอำเภอ</option>');
-                let rows = response.provinces.length;
-                for(let i=0 ;i<rows; i++){
-                    $('.province').append('<option value="'+response.provinces[i]['identify']+'">'+response.provinces[i]['name_thai']+'</option>');
+        $.ajax({
+            method: 'GET',
+            url: '{{ url("/fetch_provinces_products_leaders") }}/'+pdglist,
+            datatype: 'json',
+            success: function(response){
+                if(response.status == 200){
+                    console.log(response.provinces);
+                    $('.province').children().remove().end();
+                    $('.amphur').children().remove().end();
+                    $('.province').append('<option selected value="">เลือกจังหวัด</option>');
+                    $('.amphur').append('<option selected value="">เลือกอำเภอ</option>');
+                    let rows = response.provinces.length;
+                    for(let i=0 ;i<rows; i++){
+                        $('.province').append('<option value="'+response.provinces[i]['identify']+'">'+response.provinces[i]['name_thai']+'</option>');
+                    }
                 }
             }
-        }
-    });
+        });
 
-    //-- Table Customer
-    var pdglist = $(this).val();
-    var content2 = "<div id='table_list' class='table-responsive col-md-12'>";
-            content2 += "<table id='datable_2' class='table table-hover data-table'>";
-                content2 += "<thead>";
-                    content2 += "<tr>";
-                        content2 += "<th style='font-weight: bold;'>รหัสสินค้า</th>";
-                        content2 += "<th style='font-weight: bold;'>ชื่อร้าน</th>";
-                    content2 += "</tr>";
-                content2 += "</thead>";
-                content2 += "<tbody>";
-                content2 += "<tbody>";
-            content2 += "</table>";
-        content2 += "</div>";
+        //-- Table Customer
+        var pdglist = $(this).val();
+        var content2 = "<div id='table_list' class='table-responsive col-md-12'>";
+                content2 += "<table id='datable_2' class='table table-hover data-table'>";
+                    content2 += "<thead>";
+                        content2 += "<tr>";
+                            content2 += "<th style='font-weight: bold;'>รหัสสินค้า</th>";
+                            content2 += "<th style='font-weight: bold;'>ชื่อร้าน</th>";
+                        content2 += "</tr>";
+                    content2 += "</thead>";
+                    content2 += "<tbody>";
+                    content2 += "<tbody>";
+                content2 += "</table>";
+            content2 += "</div>";
 
-    $("#table_customer").html(content2);
+        $("#table_customer").html(content2);
 
-    $('#datable_2').DataTable({
-        processing: false,
-        serverSide: false,
-        ajax: {
-            method:"GET",
-            url:"{{url('fetch_datatable_customer_leaders_pdglist')}}/"+pdglist,
-            dataType: 'json',
-            data:{
-                    "_token": "{{ csrf_token() }}",
+        $('#datable_2').DataTable({
+            processing: false,
+            serverSide: false,
+            ajax: {
+                method:"GET",
+                url:"{{url('fetch_datatable_customer_leaders_pdglist')}}/"+pdglist,
+                dataType: 'json',
+                data:{
+                        "_token": "{{ csrf_token() }}",
+                    },
                 },
-            },
-            columns: [
-                {data: 'identify', name: 'identify'},
-                {data: 'name', name: 'name'},
-            ]
+                columns: [
+                    {data: 'identify', name: 'identify'},
+                    {data: 'name', name: 'name'},
+                ]
+        });
+        //-- Table Customer
     });
-    //-- Table Customer
-
-
 });
 
 $(document).on('change','.province', function(e){
