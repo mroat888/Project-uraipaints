@@ -131,12 +131,15 @@ class ApiController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
         $res_api = $response->json();
         $provinces = array();
-        foreach($res_api['data'] as $value){
-            $provinces[] = [
-                'identify' => $value['identify'],
-                'name_thai' => $value['name_thai'],
-                'region_id' => $value['region_id']
-            ];                    
+
+        if($res_api['code'] == 200){
+            foreach($res_api['data'] as $value){
+                $provinces[] = [
+                    'identify' => $value['identify'],
+                    'name_thai' => $value['name_thai'],
+                    'region_id' => $value['region_id']
+                ];                    
+            }
         }
 
         return response()->json([
@@ -153,12 +156,15 @@ class ApiController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
         $res_api = $response->json();
         $provinces = array();
-        foreach($res_api['data'] as $value){
-            $amphures[] = [
-                'identify' => $value['identify'],
-                'name_thai' => $value['name_thai'],
-                'province_id' => $value['province_id']
-            ];                    
+        
+        if($res_api['code'] == 200){
+            foreach($res_api['data'] as $value){
+                $amphures[] = [
+                    'identify' => $value['identify'],
+                    'name_thai' => $value['name_thai'],
+                    'province_id' => $value['province_id']
+                ];                    
+            }
         }
 
         return response()->json([
@@ -174,13 +180,17 @@ class ApiController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
         $customer = array();
-        foreach($res_api['data'] as $value){
-            $customer[] = [
-                'identify' => $value['identify'],
-                'title' => $value['title'],
-                'name' => $value['name'],
-            ];                    
+
+        if($res_api['code'] == 200){
+            foreach($res_api['data'] as $value){
+                $customer[] = [
+                    'identify' => $value['identify'],
+                    'title' => $value['title'],
+                    'name' => $value['name'],
+                ];                    
+            }
         }
+
         return Datatables::of($customer)
         ->addIndexColumn()
         ->editColumn('identify',function($row){
@@ -198,13 +208,17 @@ class ApiController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
         $customer = array();
-        foreach($res_api['data'] as $value){
-            $customer[] = [
-                'identify' => $value['identify'],
-                'title' => $value['title'],
-                'name' => $value['name'],
-            ];                    
+
+        if($res_api['code'] == 200){
+            foreach($res_api['data'] as $value){
+                $customer[] = [
+                    'identify' => $value['identify'],
+                    'title' => $value['title'],
+                    'name' => $value['name'],
+                ];                    
+            }
         }
+
         return Datatables::of($customer)
         ->addIndexColumn()
         ->editColumn('identify',function($row){
@@ -214,6 +228,7 @@ class ApiController extends Controller
             return $row['title']." ".$row['name'];
         })
         ->make(true);
+    
     }
 
     public function fetch_datatable_customer_sellers_pdglist_pvid($pdgid, $pvid){    
@@ -222,13 +237,17 @@ class ApiController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
         $customer = array();
-        foreach($res_api['data'] as $value){
-            $customer[] = [
-                'identify' => $value['identify'],
-                'title' => $value['title'],
-                'name' => $value['name'],
-            ];                    
+        
+        if($res_api['code'] == 200){
+            foreach($res_api['data'] as $value){
+                $customer[] = [
+                    'identify' => $value['identify'],
+                    'title' => $value['title'],
+                    'name' => $value['name'],
+                ];                    
+            }
         }
+
         return Datatables::of($customer)
         ->addIndexColumn()
         ->editColumn('identify',function($row){
@@ -255,12 +274,15 @@ class ApiController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
         $res_api = $response->json();
         $provinces = array();
-        foreach($res_api['data'] as $value){
-            $provinces[] = [
-                'identify' => $value['identify'],
-                'name_thai' => $value['name_thai'],
-                'region_id' => $value['region_id']
-            ];                    
+
+        if($res_api['code'] == 200){
+            foreach($res_api['data'] as $value){
+                $provinces[] = [
+                    'identify' => $value['identify'],
+                    'name_thai' => $value['name_thai'],
+                    'region_id' => $value['region_id']
+                ];                    
+            }
         }
 
         return response()->json([
@@ -277,12 +299,15 @@ class ApiController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
         $res_api = $response->json();
         $provinces = array();
-        foreach($res_api['data'] as $value){
-            $amphures[] = [
-                'identify' => $value['identify'],
-                'name_thai' => $value['name_thai'],
-                'province_id' => $value['province_id']
-            ];                    
+
+        if($res_api['code'] == 200){
+            foreach($res_api['data'] as $value){
+                $amphures[] = [
+                    'identify' => $value['identify'],
+                    'name_thai' => $value['name_thai'],
+                    'province_id' => $value['province_id']
+                ];                    
+            }
         }
 
         return response()->json([
@@ -298,12 +323,15 @@ class ApiController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
         $customer = array();
-        foreach($res_api['data'] as $value){
-            $customer[] = [
-                'identify' => $value['identify'],
-                'title' => $value['title'],
-                'name' => $value['name'],
-            ];                    
+
+        if($res_api['code'] == 200){
+            foreach($res_api['data'] as $value){
+                $customer[] = [
+                    'identify' => $value['identify'],
+                    'title' => $value['title'],
+                    'name' => $value['name'],
+                ];                    
+            }
         }
         return Datatables::of($customer)
         ->addIndexColumn()
@@ -322,13 +350,17 @@ class ApiController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
         $customer = array();
-        foreach($res_api['data'] as $value){
-            $customer[] = [
-                'identify' => $value['identify'],
-                'title' => $value['title'],
-                'name' => $value['name'],
-            ];                    
+
+        if($res_api['code'] == 200){
+            foreach($res_api['data'] as $value){
+                $customer[] = [
+                    'identify' => $value['identify'],
+                    'title' => $value['title'],
+                    'name' => $value['name'],
+                ];                    
+            }
         }
+
         return Datatables::of($customer)
         ->addIndexColumn()
         ->editColumn('identify',function($row){
@@ -346,12 +378,15 @@ class ApiController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
         $customer = array();
-        foreach($res_api['data'] as $value){
-            $customer[] = [
-                'identify' => $value['identify'],
-                'title' => $value['title'],
-                'name' => $value['name'],
-            ];                    
+
+        if($res_api['code'] == 200){
+            foreach($res_api['data'] as $value){
+                $customer[] = [
+                    'identify' => $value['identify'],
+                    'title' => $value['title'],
+                    'name' => $value['name'],
+                ];                    
+            }
         }
         return Datatables::of($customer)
         ->addIndexColumn()
@@ -379,12 +414,15 @@ class ApiController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
         $res_api = $response->json();
         $provinces = array();
-        foreach($res_api['data'] as $value){
-            $provinces[] = [
-                'identify' => $value['identify'],
-                'name_thai' => $value['name_thai'],
-                'region_id' => $value['region_id']
-            ];                    
+
+        if($res_api['code'] == 200){
+            foreach($res_api['data'] as $value){
+                $provinces[] = [
+                    'identify' => $value['identify'],
+                    'name_thai' => $value['name_thai'],
+                    'region_id' => $value['region_id']
+                ];                    
+            }
         }
 
         return response()->json([
@@ -401,12 +439,15 @@ class ApiController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
         $res_api = $response->json();
         $provinces = array();
-        foreach($res_api['data'] as $value){
-            $amphures[] = [
-                'identify' => $value['identify'],
-                'name_thai' => $value['name_thai'],
-                'province_id' => $value['province_id']
-            ];                    
+
+        if($res_api['code'] == 200){
+            foreach($res_api['data'] as $value){
+                $amphures[] = [
+                    'identify' => $value['identify'],
+                    'name_thai' => $value['name_thai'],
+                    'province_id' => $value['province_id']
+                ];                    
+            }
         }
 
         return response()->json([
@@ -422,13 +463,18 @@ class ApiController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
         $customer = array();
-        foreach($res_api['data'] as $value){
-            $customer[] = [
-                'identify' => $value['identify'],
-                'title' => $value['title'],
-                'name' => $value['name'],
-            ];                    
+
+        if($res_api['code'] == 200){
+            foreach($res_api['data'] as $value){
+                $customer[] = [
+                    'identify' => $value['identify'],
+                    'title' => $value['title'],
+                    'name' => $value['name'],
+                ];                    
+            }
         }
+
+
         return Datatables::of($customer)
         ->addIndexColumn()
         ->editColumn('identify',function($row){
@@ -446,13 +492,17 @@ class ApiController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
         $customer = array();
-        foreach($res_api['data'] as $value){
-            $customer[] = [
-                'identify' => $value['identify'],
-                'title' => $value['title'],
-                'name' => $value['name'],
-            ];                    
+        
+        if($res_api['code'] == 200){
+            foreach($res_api['data'] as $value){
+                $customer[] = [
+                    'identify' => $value['identify'],
+                    'title' => $value['title'],
+                    'name' => $value['name'],
+                ];                    
+            }
         }
+
         return Datatables::of($customer)
         ->addIndexColumn()
         ->editColumn('identify',function($row){
@@ -470,13 +520,18 @@ class ApiController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
         $customer = array();
-        foreach($res_api['data'] as $value){
-            $customer[] = [
-                'identify' => $value['identify'],
-                'title' => $value['title'],
-                'name' => $value['name'],
-            ];                    
+
+        if($res_api['code'] == 200){
+            foreach($res_api['data'] as $value){
+                $customer[] = [
+                    'identify' => $value['identify'],
+                    'title' => $value['title'],
+                    'name' => $value['name'],
+                ];                    
+            }
         }
+
+
         return Datatables::of($customer)
         ->addIndexColumn()
         ->editColumn('identify',function($row){
@@ -498,12 +553,15 @@ class ApiController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
         $res_api = $response->json();
         $provinces = array();
-        foreach($res_api['data'] as $value){
-            $provinces[] = [
-                'identify' => $value['identify'],
-                'name_thai' => $value['name_thai'],
-                'region_id' => $value['region_id']
-            ];                    
+
+        if($res_api['code'] == 200){
+            foreach($res_api['data'] as $value){
+                $provinces[] = [
+                    'identify' => $value['identify'],
+                    'name_thai' => $value['name_thai'],
+                    'region_id' => $value['region_id']
+                ];                    
+            }
         }
 
         return response()->json([
@@ -520,12 +578,15 @@ class ApiController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
         $res_api = $response->json();
         $provinces = array();
-        foreach($res_api['data'] as $value){
-            $amphures[] = [
-                'identify' => $value['identify'],
-                'name_thai' => $value['name_thai'],
-                'province_id' => $value['province_id']
-            ];                    
+
+        if($res_api['code'] == 200){
+            foreach($res_api['data'] as $value){
+                $amphures[] = [
+                    'identify' => $value['identify'],
+                    'name_thai' => $value['name_thai'],
+                    'province_id' => $value['province_id']
+                ];                    
+            }
         }
 
         return response()->json([
@@ -541,13 +602,17 @@ class ApiController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
         $customer = array();
-        foreach($res_api['data'] as $value){
-            $customer[] = [
-                'identify' => $value['identify'],
-                'title' => $value['title'],
-                'name' => $value['name'],
-            ];                    
+
+        if($res_api['code'] == 200){
+            foreach($res_api['data'] as $value){
+                $customer[] = [
+                    'identify' => $value['identify'],
+                    'title' => $value['title'],
+                    'name' => $value['name'],
+                ];                    
+            }
         }
+
         return Datatables::of($customer)
         ->addIndexColumn()
         ->editColumn('identify',function($row){
@@ -589,12 +654,15 @@ class ApiController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
         $customer = array();
-        foreach($res_api['data'] as $value){
-            $customer[] = [
-                'identify' => $value['identify'],
-                'title' => $value['title'],
-                'name' => $value['name'],
-            ];                    
+
+        if($res_api['code'] == 200){
+            foreach($res_api['data'] as $value){
+                $customer[] = [
+                    'identify' => $value['identify'],
+                    'title' => $value['title'],
+                    'name' => $value['name'],
+                ];                    
+            }
         }
         return Datatables::of($customer)
         ->addIndexColumn()
