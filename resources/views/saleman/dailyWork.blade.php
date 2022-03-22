@@ -495,7 +495,7 @@
                                                 @foreach ($customer_new as $key => $value)
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
-                                                    <td>{{ $value->shop_name }}
+                                                    <td>{{ $value->shop_name}}
                                                     @if ($value->is_monthly_plan == "N")
                                                     <span class="badge badge-soft-indigo"
                                                     style="font-weight: bold; font-size: 12px;">นอกแผน</span>
@@ -859,10 +859,11 @@
                     <form id="from_customer_new_result">
                         @csrf
                         <input type="hidden" name="cust_id" id="get_cust_new_id">
-                        <div class="my-3"><span>ชื่อร้าน : </span><span id="get_cust_name"></span></div>
+                        {{-- <div class="my-3"><span>ID : </span><span id="get_cust_id2"></span></div> --}}
+                            <div class="my-3"><span>ชื่อร้าน : </span><span id="get_cust_name"></span></div>
                             <div class="my-3"><span>ชื่อผู้ติดต่อ : </span><span id="get_cust_contact_name"></span></div>
-                            <div class="my-3"><span>อำเภอ, จังหวัด : </span><span id="get_shop_address"></span></div>
-                            <div class="my-3"><span>วัตถุประสงค์ : </span><span id="get_objective"></span></div>
+                            <div class="my-3"><span>อำเภอ, จังหวัด : </span><span id="get_cust_address"></span></div>
+                            <div class="my-3"><span>วัตถุประสงค์ : </span><span id="get_cust_objective"></span></div>
                         <div class="form-group">
                             <label for="username">รายละเอียด</label>
                             <textarea class="form-control" id="get_cust_detail" cols="30" rows="5" placeholder="" name="shop_result_detail"
@@ -904,6 +905,10 @@
                     <form id="from_customer_visit_result">
                         @csrf
                         <input type="hidden" name="visit_id" id="get_visit_id">
+                        <div class="my-3"><span>ชื่อร้าน : </span><span id="get_visit_name"></span></div>
+                        <div class="my-3"><span>ชื่อผู้ติดต่อ : </span><span id="get_visit_contact_name"></span></div>
+                        <div class="my-3"><span>อำเภอ, จังหวัด : </span><span id="get_visit_address"></span></div>
+                        <div class="my-3"><span>วัตถุประสงค์ : </span><span id="get_visit_objective"></span></div>
                         <div class="form-group">
                             <label for="username">รายละเอียด</label>
                             <textarea class="form-control" id="get_visit_detail" cols="30" rows="5" placeholder="" name="visit_result_detail"
@@ -913,7 +918,7 @@
                             <div class="form-group col-md-6">
                                 <label for="username">สรุปผลลัพธ์</label>
                                 <select class="form-control custom-select" id="get_visit_result" name="visit_result_status">
-                                    <option selected>-- กรุณาเลือก --</option>
+                                    {{-- <option selected>-- กรุณาเลือก --</option> --}}
                                     <option value="1">สำเร็จ</option>
                                     <option value="2">ไม่สำเร็จ</option>
                                 </select>
@@ -1123,7 +1128,7 @@
     //Edit
     function customer_new_result(id) {
         $('#get_cust_new_id').val(id);
-        // $('#get_cust_detail').val('');
+        $('#get_cust_name').text('');
         // $('#get_cust_result').val('');
         $.ajax({
             type: "GET",
@@ -1135,6 +1140,9 @@
 
                 $('#get_cust_new_id').val(data.dataResult.id);
                 $('#get_cust_contact_name').text(data.dataResult.customer_contact_name);
+                $('#get_cust_address').text(data.cust_new_address);
+                $('#get_cust_objective').text(data.dataResult.cust_name);
+                $('#get_cust_id2').text(data.id);
                 $('#get_cust_detail').val(data.dataResult.cust_result_detail);
                 $('#get_cust_result').val(data.dataResult.cust_result_status);
 
@@ -1160,7 +1168,11 @@
             dataType: "JSON",
             async: false,
             success: function(data) {
-                $('#get_visit_id').val(data.dataResult.customer_visit_id);
+                $('#get_visit_id').val(data.dataResult.id);
+                $('#get_visit_name').text(data.visit_name);
+                $('#get_visit_contact_name').text(data.dataResult.customer_contact_name);
+                $('#get_visit_address').text(data.visit_address);
+                $('#get_visit_objective').text(data.dataResult.visit_name);
                 $('#get_visit_detail').val(data.dataResult.cust_visit_detail);
                 $('#get_visit_result').val(data.dataResult.cust_visit_status);
 

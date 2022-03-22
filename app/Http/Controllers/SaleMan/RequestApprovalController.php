@@ -50,6 +50,11 @@ class RequestApprovalController extends Controller
     public function edit($id)
     {
         $dataEdit = RequestApproval::find($id);
+        RequestApproval::find($id)->update([
+            'assign_status_actoin' => 1,
+            'updated_by' => Auth::user()->id,
+        ]);
+
         $data = array(
             'dataEdit'     => $dataEdit,
         );
@@ -107,6 +112,12 @@ class RequestApprovalController extends Controller
     {
         $request_comment = AssignmentComment::where('assign_id', $id)->get();
         $dataResult = Assignment::where('id', $id)->first();
+
+        RequestApproval::find($id)->update([
+            'assign_status_actoin' => 1,
+            'updated_by' => Auth::user()->id,
+        ]);
+
 
         $comment = array();
         foreach ($request_comment as $key => $value) {

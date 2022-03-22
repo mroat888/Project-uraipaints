@@ -78,7 +78,8 @@ class DailyWorkController extends Controller
             'amphur.AMPHUR_NAME',
             'customer_shops.*',
             'customer_shops.id as cust_shop_id',
-            'customer_shops_saleplan_result.*',
+            'customer_shops_saleplan_result.cust_result_checkin_date',
+            'customer_shops_saleplan_result.cust_result_checkout_date',
             'customer_shops_saleplan.*',
             'master_customer_new.cust_name'
         )

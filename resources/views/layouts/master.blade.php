@@ -13,6 +13,17 @@ License: You must have a valid license purchased only from themeforest to legall
     <title>Urai Paints</title>
     <meta name="description" content="A responsive bootstrap 4 admin dashboard template by hencework" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <style>
+        /* Style the buttons */
+        .btn2 {
+          border: none;
+          outline: none;
+          /* padding: 10px 16px; */
+          background-color: #E6E6FA;
+          cursor: pointer;
+          color: white;
+        }
+    </style>
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="favicon.ico">
@@ -110,129 +121,108 @@ License: You must have a valid license purchased only from themeforest to legall
         </nav>
         <!-- /Top Navbar -->
 
+        <?php
+            $count_quest = App\RequestApproval::where('assign_status_actoin', 0)
+                ->where('created_by', Auth::user()->id)->count();
+
+            $count_assign = App\RequestApproval::where('assign_status', 3)
+                ->where('assign_emp_id', Auth::user()->id)->count();
+
+        ?>
+
         <!-- Vertical Nav -->
         <nav class="hk-nav hk-nav-light">
             <a href="javascript:void(0);" id="hk_nav_close" class="hk-nav-close"><span class="feather-icon"><i
                         data-feather="x"></i></span></a>
-            <div class="nicescroll-bar">
+            <div class="nicescroll-bar" id="myDIV">
                 <div class="navbar-nav-wrap">
                     <ul class="navbar-nav flex-column">
-                        <li class="nav-item">
+                        <li class="nav-item {{ (request()->is('dashboard')) ? 'btn2' : '' }}">
                             <a class="nav-link" href="{{ url('dashboard') }}">
                                 <i class="ion ion-md-home" style="color: #044067;"></i>
                                 <span class="nav-link-text">หน้าแรก</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item {{ (request()->is('planMonth')) ? 'btn2' : '' }}">
                             <a class="nav-link" href="{{ url('planMonth') }}">
                                 <i class="ion ion-md-time" style="color: #044067;"></i>
                                 <span class="nav-link-text">แผนประจำเดือน</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item {{ (request()->is('dailyWork')) ? 'btn2' : '' }}">
                             <a class="nav-link" href="{{ url('dailyWork') }}">
                                 <i class="ion ion-md-star" style="color: #044067;"></i>
                                 <span class="nav-link-text">งานประจำวัน</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item {{ (request()->is('palncalendar')) ? 'btn2' : '' }}">
                             <a class="nav-link" href="{{ url('palncalendar') }}">
                                 <i class="ion ion-md-calendar" style="color: #044067;"></i>
                                 <span class="nav-link-text">ปฎิทินกิจกรรม</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
-                                data-target="#charts_drp2">
+                            <a class="nav-link {{ (request()->is('approval')) ? 'btn2' : '' }} {{ (request()->is('assignment')) ? 'btn2' : '' }}"
+                                href="javascript:void(0);" data-toggle="collapse" data-target="#charts_drp2">
                                 <i class="ion ion-md-create" style="color: #044067;"></i>
                                 <span class="nav-link-text">ขออนุมัติ และ สั่งงาน</span>
+                                <span class="badge badge-danger badge-pill ml-2">{{$count_assign + $count_quest}}</span>
                             </a>
                             <ul id="charts_drp2" class="nav flex-column collapse collapse-level-1">
                                 <li class="nav-item">
                                     <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{ url('approval') }}">
+                                        <li class="nav-item {{ (request()->is('approval')) ? 'btn2' : '' }}">
+                                            <a class="nav-link link-with-badge" href="{{ url('approval') }}">
                                                 <i class="ion ion-md-clipboard" style="color: #044067;"></i>
-                                                บันทึกขออนุมัติ</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{ url('assignment') }}">
-                                                <i class="ion ion-md-flag" style="color: #044067;"></i>
-                                                รายการสั่งงาน</a>
-                                        </li>
-                                        {{-- <li class="nav-item">
-                                            <a class="nav-link" href="{{ url('saleplan') }}">
-                                                <i class="ion ion-md-calendar" style="color: #044067;"></i>
-                                                <span class="nav-link-text">Sale plan</span>
+                                                <span class="nav-link-text">บันทึกขออนุมัติ</span>
+                                                <span class="badge badge-danger badge-pill">{{$count_quest}}</span>
                                             </a>
-                                        </li> --}}
+                                        </li>
+                                        <li class="nav-item {{ (request()->is('assignment')) ? 'btn2' : '' }}">
+                                            <a class="nav-link link-with-badge" href="{{ url('assignment') }}">
+                                                <i class="ion ion-md-flag" style="color: #044067;"></i>
+                                                <span class="nav-link-text">รายการสั่งงาน</span>
+                                                <span class="badge badge-danger badge-pill">{{$count_assign}}</span>
+
+                                            </a>
+                                        </li>
                                     </ul>
                                 </li>
                             </ul>
                         </li>
-                        {{-- <li class="nav-item">
-                            <a class="nav-link" href="{{ url('saleplan') }}">
-                                <i class="ion ion-md-calendar" style="color: #044067;"></i>
-                                <span class="nav-link-text">Sale plan</span>
-                            </a>
-                        </li> --}}
-                        {{-- <li class="nav-item">
-                            <a class="nav-link" href="{{ url('assignment') }}">
-                                <i class="ion ion-md-clipboard" style="color: #044067;"></i>
-                                <span class="nav-link-text">งานที่ได้รับมอบหมาย</span>
-                            </a>
-                        </li> --}}
-                        {{-- <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/lead') }}">
-                                <i class="ion ion-md-person" style="color: #044067;"></i>
-                                <span class="nav-link-text">ลูกค้าเป้าหมาย</span>
-                            </a>
-                        </li> --}}
-
-                        {{-- <li class="nav-item">
-                            <a class="nav-link" href="{{ url('customer') }}">
-                                <i class="ion ion-md-people" style="color: #044067;"></i>
-                                <span class="nav-link-text">ทะเบียนลูกค้า</span>
-                            </a>
-                        </li> --}}
                         <li class="nav-item">
-                            <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
-                                data-target="#customer">
+                            <a class="nav-link {{ (request()->is('customer-api')) ? 'btn2' : '' }} {{ (request()->is('customer')) ? 'btn2' : '' }} {{ (request()->is('lead')) ? 'btn2' : '' }}"
+                                href="javascript:void(0);" data-toggle="collapse" data-target="#customer">
                                 <i class="ion ion-md-person" style="color: #044067;"></i>
                                 <span class="nav-link-text">ลูกค้า</span>
                             </a>
                             <ul id="customer" class="nav flex-column collapse collapse-level-1">
                                 <li class="nav-item">
                                     <ul class="nav flex-column">
-                                        <li class="nav-item">
+                                        <li class="nav-item {{ (request()->is('customer-api')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('customer-api') }}">
                                                 <i class="ion ion-md-people" style="color: #044067;"></i>
                                                 <span class="nav-link-text">ทะเบียนลูกค้า API</span>
                                             </a>
                                         </li>
-                                        <li class="nav-item">
+                                        <li class="nav-item {{ (request()->is('customer')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('customer') }}">
                                                 <i class="ion ion-md-people" style="color: #044067;"></i>
                                                 <span class="nav-link-text">ทะเบียนลูกค้า</span>
                                             </a>
                                         </li>
-                                        <li class="nav-item">
+                                        <li class="nav-item {{ (request()->is('lead')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('/lead') }}">
                                                 <i class="ion ion-md-person-add" style="color: #044067;"></i>
                                                 <span class="nav-link-text">ลูกค้าใหม่</span>
                                             </a>
                                         </li>
-                                        {{-- <li class="nav-item">
-                                            <a class="nav-link" href="{{ url('visit') }}">
-                                                <i class="ion ion-md-swap" style="color: #044067;"></i>
-                                                <span class="nav-link-text">เข้าเยี่ยมลูกค้า</span>
-                                            </a>
-                                        </li> --}}
                                     </ul>
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item">
+
+                        <li class="nav-item {{ (request()->is('note')) ? 'btn2' : '' }}">
                             <a class="nav-link link-with-badge" href="{{ url('note') }}">
                                 <i class="ion ion-md-document" style="color: #044067;"></i>
                                 <span class="nav-link-text">บันทึกโน้ต</span>
@@ -244,23 +234,23 @@ License: You must have a valid license purchased only from themeforest to legall
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
-                                data-target="#charts_drp3">
+                            <a class="nav-link {{ (request()->is('news')) ? 'btn2' : '' }} {{ (request()->is('promotions')) ? 'btn2' : '' }} {{ (request()->is('product_new')) ? 'btn2' : '' }}"
+                                href="javascript:void(0);" data-toggle="collapse" data-target="#charts_drp3">
                                 <i class="ion ion-md-globe" style="color: #044067;"></i>
                                 <span class="nav-link-text">ข่าวสาร และ โปรโมชั่น</span>
                             </a>
                             <ul id="charts_drp3" class="nav flex-column collapse collapse-level-1">
                                 <li class="nav-item">
                                     <ul class="nav flex-column">
-                                        <li class="nav-item">
+                                        <li class="nav-item {{ (request()->is('news')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('news') }}">
                                                 <i class="ion ion-md-wifi" style="color: #044067;"></i>ข่าวสาร</a>
                                         </li>
-                                        <li class="nav-item">
+                                        <li class="nav-item {{ (request()->is('promotions')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('promotions') }}">
                                                 <i class="ion ion-md-gift" style="color: #044067;"></i>โปรโมชั่น</a>
                                         </li>
-                                        <li class="nav-item">
+                                        <li class="nav-item {{ (request()->is('product_new')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('product_new') }}">
                                                 <i class="ion ion-md-cube" style="color: #044067;"></i>สินค้าใหม่</a>
                                         </li>
@@ -269,35 +259,30 @@ License: You must have a valid license purchased only from themeforest to legall
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
-                                data-target="#charts_drp">
+                            <a class="nav-link {{ (request()->is('reportSale/reportMonthlyPlans')) ? 'btn2' : '' }} {{ (request()->is('reportSale/reportSaleplan')) ? 'btn2' : '' }}
+                                {{ (request()->is('reportSale/reportVisitCustomerGoal')) ? 'btn2' : '' }} {{ (request()->is('reportSale/reportVisitCustomer')) ? 'btn2' : '' }}"
+                            href="javascript:void(0);" data-toggle="collapse" data-target="#charts_drp">
                                 <i class="ion ion-md-stats" style="color: #044067;"></i>
                                 <span class="nav-link-text">รายงาน</span>
                             </a>
                             <ul id="charts_drp" class="nav flex-column collapse collapse-level-1">
                                 <li class="nav-item">
                                     <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <a class="nav-link"
-                                                href="{{ url('/reportSale/reportMonthlyPlans') }}">
+                                        <li class="nav-item {{ (request()->is('reportSale/reportMonthlyPlans')) ? 'btn2' : '' }}">
+                                            <a class="nav-link" href="{{ url('/reportSale/reportMonthlyPlans') }}">
                                                 <i class="ion ion-md-stats" style="color: #044067;"></i>สรุปดำเนินการในเดือน</a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link"
-                                                href="{{ url('/reportSale/reportSaleplan') }}">
+                                        <li class="nav-item {{ (request()->is('reportSale/reportSaleplan')) ? 'btn2' : '' }}">
+                                            <a class="nav-link" href="{{ url('/reportSale/reportSaleplan') }}">
                                                 <i class="ion ion-md-stats" style="color: #044067;"></i>รายงาน saleplan</a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link"
-                                                href="{{ url('/reportSale/reportVisitCustomerGoal') }}">
-                                                <i class="ion ion-md-stats"
-                                                    style="color: #044067;"></i>รายงานเข้าพบลูกค้าใหม่</a>
+                                        <li class="nav-item {{ (request()->is('reportSale/reportVisitCustomerGoal')) ? 'btn2' : '' }}">
+                                            <a class="nav-link" href="{{ url('/reportSale/reportVisitCustomerGoal') }}">
+                                                <i class="ion ion-md-stats" style="color: #044067;"></i>รายงานเข้าพบลูกค้าใหม่</a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link"
-                                                href="{{ url('/reportSale/reportVisitCustomer') }}">
-                                                <i class="ion ion-md-stats"
-                                                    style="color: #044067;"></i>รายงานเข้าเยี่ยมลูกค้า</a>
+                                        <li class="nav-item {{ (request()->is('reportSale/reportVisitCustomer')) ? 'btn2' : '' }}">
+                                            <a class="nav-link" href="{{ url('/reportSale/reportVisitCustomer') }}">
+                                                <i class="ion ion-md-stats" style="color: #044067;"></i>รายงานเข้าเยี่ยมลูกค้า</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -311,60 +296,48 @@ License: You must have a valid license purchased only from themeforest to legall
                     </div>
                     <ul class="navbar-nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
-                                data-target="#charts_drp_data">
+                            <a class="nav-link {{ (request()->is('data_name_store')) ? 'btn2' : '' }} {{ (request()->is('data_search_product')) ? 'btn2' : '' }}
+                                {{ (request()->is('data_report_product-new')) ? 'btn2' : '' }} {{ (request()->is('data_report_full-year')) ? 'btn2' : '' }}
+                                {{ (request()->is('data_report_historical-year')) ? 'btn2' : '' }} {{ (request()->is('data_report_historical-quarter')) ? 'btn2' : '' }}
+                                {{ (request()->is('data_report_historical-month')) ? 'btn2' : '' }} {{ (request()->is('data_report_sale_compare-year')) ? 'btn2' : '' }}"
+                            href="javascript:void(0);" data-toggle="collapse" data-target="#charts_drp_data">
                                 <i class="ion ion-md-book" style="color: #044067;"></i>
                                 <span class="nav-link-text">การดูข้อมูล (ใช้ร่วมกัน)</span>
                             </a>
                             <ul id="charts_drp_data" class="nav flex-column collapse collapse-level-1">
                                 <li class="nav-item">
                                     <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <a class="nav-link"
-                                                href="{{ url('data_name_store') }}">
+                                        <li class="nav-item {{ (request()->is('data_name_store')) ? 'btn2' : '' }}">
+                                            <a class="nav-link" href="{{ url('data_name_store') }}">
                                                 <i class="ion ion-md-home" style="color: #044067;"></i>ตรวจสอบรายชื่อร้านค้า</a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link"
-                                                href="{{ url('data_search_product') }}">
-                                                <i class="ion ion-md-search"
-                                                    style="color: #044067;"></i>ค้นหารายการสินค้า</a>
+                                        <li class="nav-item {{ (request()->is('data_search_product')) ? 'btn2' : '' }}">
+                                            <a class="nav-link" href="{{ url('data_search_product') }}">
+                                                <i class="ion ion-md-search" style="color: #044067;"></i>ค้นหารายการสินค้า</a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link"
-                                                href="{{ url('data_report_product-new') }}">
-                                                <i class="ion ion-md-stats"
-                                                    style="color: #044067;"></i>รายงานยอดขายสินค้าใหม่</a>
+                                        <li class="nav-item {{ (request()->is('data_report_product-new')) ? 'btn2' : '' }}">
+                                            <a class="nav-link" href="{{ url('data_report_product-new') }}">
+                                                <i class="ion ion-md-stats" style="color: #044067;"></i>รายงานยอดขายสินค้าใหม่</a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link"
-                                                href="{{ url('data_report_full-year') }}">
-                                                <i class="ion ion-md-stats"
-                                                    style="color: #044067;"></i>รายงานสรุปยอด (ทั้งปี)</a>
+                                        <li class="nav-item {{ (request()->is('data_report_full-year')) ? 'btn2' : '' }}">
+                                            <a class="nav-link" href="{{ url('data_report_full-year') }}">
+                                                <i class="ion ion-md-stats" style="color: #044067;"></i>รายงานสรุปยอด (ทั้งปี)</a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link"
-                                                href="{{ url('data_report_historical-year') }}">
-                                                <i class="ion ion-md-stats"
-                                                    style="color: #044067;"></i>รายงานเทียบย้อนหลัง (ทั้งปี)</a>
+                                        <li class="nav-item {{ (request()->is('data_report_historical-year')) ? 'btn2' : '' }}">
+                                            <a class="nav-link" href="{{ url('data_report_historical-year') }}">
+                                                <i class="ion ion-md-stats" style="color: #044067;"></i>รายงานเทียบย้อนหลัง (ทั้งปี)</a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link"
-                                                href="{{ url('data_report_historical-quarter') }}">
-                                                <i class="ion ion-md-stats"
-                                                    style="color: #044067;"></i>รายงานเทียบย้อนหลัง (Quarter)</a>
+                                        <li class="nav-item {{ (request()->is('data_report_historical-quarter')) ? 'btn2' : '' }}">
+                                            <a class="nav-link" href="{{ url('data_report_historical-quarter') }}">
+                                                <i class="ion ion-md-stats" style="color: #044067;"></i>รายงานเทียบย้อนหลัง (Quarter)</a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link"
-                                                href="{{ url('data_report_historical-month') }}">
-                                                <i class="ion ion-md-stats"
-                                                    style="color: #044067;"></i>รายงานเทียบย้อนหลัง (รายเดือน)</a>
+                                        <li class="nav-item {{ (request()->is('data_report_historical-month')) ? 'btn2' : '' }}">
+                                            <a class="nav-link" href="{{ url('data_report_historical-month') }}">
+                                                <i class="ion ion-md-stats" style="color: #044067;"></i>รายงานเทียบย้อนหลัง (รายเดือน)</a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link"
-                                                href="{{ url('data_report_sale_compare-year') }}">
-                                                <i class="ion ion-md-stats"
-                                                    style="color: #044067;"></i>รายงานสรุปยอดทำเป้า เทียบปี</a>
+                                        <li class="nav-item {{ (request()->is('data_report_sale_compare-year')) ? 'btn2' : '' }}">
+                                            <a class="nav-link" href="{{ url('data_report_sale_compare-year') }}">
+                                                <i class="ion ion-md-stats" style="color: #044067;"></i>รายงานสรุปยอดทำเป้า เทียบปี</a>
                                         </li>
                                     </ul>
                                 </li>

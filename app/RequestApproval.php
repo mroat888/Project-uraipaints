@@ -20,6 +20,7 @@ class RequestApproval extends Model
         'assign_status',
         'assign_result_detail',
         'assign_result_status',
+        'assign_status_actoin',
         'created_by',
         'updated_by',
         'deleted_by',
