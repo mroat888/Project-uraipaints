@@ -11,7 +11,7 @@ use DataTables;
 class ApiController extends Controller
 {
     public function apiToken(){
-        // -----  API 
+        // -----  API
         // dd(env("API_LINK"));
         $response = Http::post(env("API_LINK").'api/auth/login', [
             'username' => env("API_USER"),
@@ -25,8 +25,8 @@ class ApiController extends Controller
 
     public function getAllSellers(){
         $api_token = $this->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/sellers');    
-        $res_api = $response->json();               
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/sellers');
+        $res_api = $response->json();
         return $res_api;
     }
 
@@ -42,7 +42,7 @@ class ApiController extends Controller
                     'identify' => $value['identify'],
                     'name' => $value['name'],
                     'group_id' => $value['group_id']
-                ];                    
+                ];
             }
         }
         return response()->json([
@@ -65,7 +65,7 @@ class ApiController extends Controller
                     'identify' => $value['identify'],
                     'name' => $value['name'],
                     'sub_code' => $value['sub_code']
-                ];                    
+                ];
             }
         }
         return response()->json([
@@ -87,7 +87,7 @@ class ApiController extends Controller
                 'identify' => $value['identify'],
                 'name_thai' => $value['name_thai'],
                 'province_id' => $value['province_id']
-            ];                    
+            ];
         }
 
         return response()->json([
@@ -99,7 +99,7 @@ class ApiController extends Controller
 
 
     public function fetch_products($id){
-        
+
         $api_token = $this->apiToken();
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/products?productlist_id='.$id);
         $res_api = $response->json();
@@ -109,7 +109,7 @@ class ApiController extends Controller
                 $products[] = [
                     'identify' => $value['identify'],
                     'name' => $value['name'],
-                ];                    
+                ];
             }
         }
         return Datatables::of($products)
@@ -138,7 +138,7 @@ class ApiController extends Controller
                     'identify' => $value['identify'],
                     'name_thai' => $value['name_thai'],
                     'region_id' => $value['region_id']
-                ];                    
+                ];
             }
         }
 
@@ -156,14 +156,14 @@ class ApiController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
         $res_api = $response->json();
         $provinces = array();
-        
+
         if($res_api['code'] == 200){
             foreach($res_api['data'] as $value){
                 $amphures[] = [
                     'identify' => $value['identify'],
                     'name_thai' => $value['name_thai'],
                     'province_id' => $value['province_id']
-                ];                    
+                ];
             }
         }
 
@@ -174,7 +174,7 @@ class ApiController extends Controller
         ]);
     }
 
-    public function fetch_datatable_customer_sellers($pdgid,$pvid,$ampid){    
+    public function fetch_datatable_customer_sellers($pdgid,$pvid,$ampid){
         $api_token = $this->apiToken();
         $path_search = "sellers/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers?province_id=".$pvid."&amphoe_id=".$ampid;
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
@@ -187,7 +187,7 @@ class ApiController extends Controller
                     'identify' => $value['identify'],
                     'title' => $value['title'],
                     'name' => $value['name'],
-                ];                    
+                ];
             }
         }
 
@@ -202,7 +202,7 @@ class ApiController extends Controller
         ->make(true);
     }
 
-    public function fetch_datatable_customer_sellers_pdglist($pdgid){    
+    public function fetch_datatable_customer_sellers_pdglist($pdgid){
         $api_token = $this->apiToken();
         $path_search = "sellers/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers";
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
@@ -215,7 +215,7 @@ class ApiController extends Controller
                     'identify' => $value['identify'],
                     'title' => $value['title'],
                     'name' => $value['name'],
-                ];                    
+                ];
             }
         }
 
@@ -228,23 +228,23 @@ class ApiController extends Controller
             return $row['title']." ".$row['name'];
         })
         ->make(true);
-    
+
     }
 
-    public function fetch_datatable_customer_sellers_pdglist_pvid($pdgid, $pvid){    
+    public function fetch_datatable_customer_sellers_pdglist_pvid($pdgid, $pvid){
         $api_token = $this->apiToken();
         $path_search = "sellers/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers?province_id=".$pvid;
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
         $customer = array();
-        
+
         if($res_api['code'] == 200){
             foreach($res_api['data'] as $value){
                 $customer[] = [
                     'identify' => $value['identify'],
                     'title' => $value['title'],
                     'name' => $value['name'],
-                ];                    
+                ];
             }
         }
 
@@ -262,7 +262,7 @@ class ApiController extends Controller
 
 
     /**
-     * 
+     *
      */
 
     //-- สำหรับ Leader--
@@ -281,7 +281,7 @@ class ApiController extends Controller
                     'identify' => $value['identify'],
                     'name_thai' => $value['name_thai'],
                     'region_id' => $value['region_id']
-                ];                    
+                ];
             }
         }
 
@@ -306,7 +306,7 @@ class ApiController extends Controller
                     'identify' => $value['identify'],
                     'name_thai' => $value['name_thai'],
                     'province_id' => $value['province_id']
-                ];                    
+                ];
             }
         }
 
@@ -317,7 +317,7 @@ class ApiController extends Controller
         ]);
     }
 
-    public function fetch_datatable_customer_leaders($pdgid,$pvid,$ampid){    
+    public function fetch_datatable_customer_leaders($pdgid,$pvid,$ampid){
         $api_token = $this->apiToken();
         $path_search = "saleleaders/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers?province_id=".$pvid."&amphoe_id=".$ampid;
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
@@ -330,7 +330,7 @@ class ApiController extends Controller
                     'identify' => $value['identify'],
                     'title' => $value['title'],
                     'name' => $value['name'],
-                ];                    
+                ];
             }
         }
         return Datatables::of($customer)
@@ -344,7 +344,7 @@ class ApiController extends Controller
         ->make(true);
     }
 
-    public function fetch_datatable_customer_leaders_pdglist($pdgid){    
+    public function fetch_datatable_customer_leaders_pdglist($pdgid){
         $api_token = $this->apiToken();
         $path_search = "saleleaders/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers";
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
@@ -357,7 +357,7 @@ class ApiController extends Controller
                     'identify' => $value['identify'],
                     'title' => $value['title'],
                     'name' => $value['name'],
-                ];                    
+                ];
             }
         }
 
@@ -372,7 +372,7 @@ class ApiController extends Controller
         ->make(true);
     }
 
-    public function fetch_datatable_customer_leaders_pdglist_pvid($pdgid, $pvid){    
+    public function fetch_datatable_customer_leaders_pdglist_pvid($pdgid, $pvid){
         $api_token = $this->apiToken();
         $path_search = "saleleaders/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers?province_id=".$pvid;
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
@@ -385,7 +385,7 @@ class ApiController extends Controller
                     'identify' => $value['identify'],
                     'title' => $value['title'],
                     'name' => $value['name'],
-                ];                    
+                ];
             }
         }
         return Datatables::of($customer)
@@ -402,7 +402,7 @@ class ApiController extends Controller
 
 
     /**
-     * 
+     *
      */
 
     //-- สำหรับ Header--
@@ -421,7 +421,7 @@ class ApiController extends Controller
                     'identify' => $value['identify'],
                     'name_thai' => $value['name_thai'],
                     'region_id' => $value['region_id']
-                ];                    
+                ];
             }
         }
 
@@ -446,7 +446,7 @@ class ApiController extends Controller
                     'identify' => $value['identify'],
                     'name_thai' => $value['name_thai'],
                     'province_id' => $value['province_id']
-                ];                    
+                ];
             }
         }
 
@@ -457,7 +457,7 @@ class ApiController extends Controller
         ]);
     }
 
-    public function fetch_datatable_customer_headers($pdgid,$pvid,$ampid){    
+    public function fetch_datatable_customer_headers($pdgid,$pvid,$ampid){
         $api_token = $this->apiToken();
         $path_search = "saleheaders/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers?province_id=".$pvid."&amphoe_id=".$ampid;
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
@@ -470,7 +470,7 @@ class ApiController extends Controller
                     'identify' => $value['identify'],
                     'title' => $value['title'],
                     'name' => $value['name'],
-                ];                    
+                ];
             }
         }
 
@@ -486,20 +486,20 @@ class ApiController extends Controller
         ->make(true);
     }
 
-    public function fetch_datatable_customer_headers_pdglist($pdgid){    
+    public function fetch_datatable_customer_headers_pdglist($pdgid){
         $api_token = $this->apiToken();
         $path_search = "saleheaders/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers";
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
         $customer = array();
-        
+
         if($res_api['code'] == 200){
             foreach($res_api['data'] as $value){
                 $customer[] = [
                     'identify' => $value['identify'],
                     'title' => $value['title'],
                     'name' => $value['name'],
-                ];                    
+                ];
             }
         }
 
@@ -514,7 +514,7 @@ class ApiController extends Controller
         ->make(true);
     }
 
-    public function fetch_datatable_customer_headers_pdglist_pvid($pdgid, $pvid){    
+    public function fetch_datatable_customer_headers_pdglist_pvid($pdgid, $pvid){
         $api_token = $this->apiToken();
         $path_search = "saleheaders/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers?province_id=".$pvid;
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
@@ -527,7 +527,7 @@ class ApiController extends Controller
                     'identify' => $value['identify'],
                     'title' => $value['title'],
                     'name' => $value['name'],
-                ];                    
+                ];
             }
         }
 
@@ -560,7 +560,7 @@ class ApiController extends Controller
                     'identify' => $value['identify'],
                     'name_thai' => $value['name_thai'],
                     'region_id' => $value['region_id']
-                ];                    
+                ];
             }
         }
 
@@ -585,7 +585,7 @@ class ApiController extends Controller
                     'identify' => $value['identify'],
                     'name_thai' => $value['name_thai'],
                     'province_id' => $value['province_id']
-                ];                    
+                ];
             }
         }
 
@@ -596,7 +596,7 @@ class ApiController extends Controller
         ]);
     }
 
-    public function fetch_datatable_customer_admin($ampid){    
+    public function fetch_datatable_customer_admin($ampid){
         $api_token = $this->apiToken();
         $path_search = "amphures/".$ampid."/customers";
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
@@ -609,7 +609,7 @@ class ApiController extends Controller
                     'identify' => $value['identify'],
                     'title' => $value['title'],
                     'name' => $value['name'],
-                ];                    
+                ];
             }
         }
 
@@ -624,7 +624,7 @@ class ApiController extends Controller
         ->make(true);
     }
 
-    // public function fetch_datatable_customer_headers_pdglist($pdgid){    
+    // public function fetch_datatable_customer_headers_pdglist($pdgid){
     //     $api_token = $this->apiToken();
     //     $path_search = "saleheaders/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers";
     //     $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
@@ -635,7 +635,7 @@ class ApiController extends Controller
     //             'identify' => $value['identify'],
     //             'title' => $value['title'],
     //             'name' => $value['name'],
-    //         ];                    
+    //         ];
     //     }
     //     return Datatables::of($customer)
     //     ->addIndexColumn()
@@ -648,7 +648,7 @@ class ApiController extends Controller
     //     ->make(true);
     // }
 
-    public function fetch_datatable_customer_admin_pdglist_pvid($pvid){    
+    public function fetch_datatable_customer_admin_pdglist_pvid($pvid){
         $api_token = $this->apiToken();
         $path_search = "provinces/".$pvid."/customers";
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
@@ -661,7 +661,7 @@ class ApiController extends Controller
                     'identify' => $value['identify'],
                     'title' => $value['title'],
                     'name' => $value['name'],
-                ];                    
+                ];
             }
         }
         return Datatables::of($customer)
@@ -678,8 +678,8 @@ class ApiController extends Controller
     //-- จบ สำหรับ Header--
 
 
-    
 
-   
+
+
 
 }

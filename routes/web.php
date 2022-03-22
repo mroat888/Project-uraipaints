@@ -94,10 +94,13 @@ Route::get('approval', 'SaleMan\RequestApprovalController@index');
 Route::post('create_approval', 'SaleMan\RequestApprovalController@store');
 Route::get('edit_approval/{id}', 'SaleMan\RequestApprovalController@edit');
 Route::post('update_approval', 'SaleMan\RequestApprovalController@update');
-// Route::get('delete_approval/{id}', 'SaleMan\RequestApprovalController@destroy');
 Route::post('delete_approval', 'SaleMan\RequestApprovalController@destroy');
 Route::get('view_comment/{id}', 'SaleMan\RequestApprovalController@view_comment');
 Route::post('search_month_requestApprove', 'SaleMan\RequestApprovalController@search_month_requestApprove');
+
+// TEST REQUEST
+Route::get('approval', 'SaleMan\RequestApprovalController@index');
+Route::get('approval2', 'SaleMan\RequestApprovalController@index2');
 
 // NOTE
 Route::get('note', 'NoteController@note_sale');

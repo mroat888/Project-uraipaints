@@ -63,10 +63,178 @@
                                         <!-- ------ -->
                                     </div>
                                 </div>
-                                {{-- <div class="table-responsive col-md-12"> --}}
+                                <div class="table-responsive col-md-12">
+                                    <table id="datable_1" class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>เรื่อง</th>
+                                                <th>วันที่</th>
+                                                <th>การอนุมัติ</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($list_approval as $key => $value)
+                                            @if ($value->assign_status_actoin == 0)
+                                            <tr style="background-color: #EEE8AA;">
+                                                <td>{{$key + 1}}</td>
+                                                <td>{{$value->assign_title}}</td>
+                                                <td>{{$value->assign_work_date}}</td>
+                                                <td>
+                                                    @if ($value->assign_status == 0)
+                                                    <span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>
+                                                    @elseif ($value->assign_status == 1)
+                                                    <span class="badge badge-soft-success" style="font-size: 12px;">Approval</span>
+                                                    @else
+                                                    <span class="badge badge-soft-secondary" style="font-size: 12px;">Reject</span>
+                                                    @endif
 
-                                    <div class="" id="table_product">
-                                {{-- </div> --}}
+                                                    {{-- เรื่องด่วน --}}
+                                                    @if ($value->assign_is_hot == 1)
+                                                    <span class="badge badge-soft-danger" style="font-size: 12px;">HOT</span>
+                                                    @endif
+
+                                                    @if ($value->assign_id)
+                                                            <span class="badge badge-soft-indigo" style="font-size: 12px;">Comment</span>
+                                                    @endif
+                                                </td>
+                                                    <td>
+                                                        <div class="button-list">
+                                                        @if ($value->assign_status == 0)
+
+                                                            <button onclick="edit_modal({{ $value->id }})"
+                                                                class="btn btn-icon btn-warning mr-10" data-toggle="modal"
+                                                                data-target="#editApproval">
+                                                                <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
+
+                                                                <button id="btn_request_delete" class="btn btn-icon btn-danger mr-10"
+                                                                    value="{{ $value->id }}">
+                                                                    <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-trash"></i></h4>
+                                                                </button>
+
+                                                        @elseif ($value->assign_status == 1)
+                                                            @if ($value->assign_id)
+
+                                                            <button onclick="approval_comment({{ $value->id }})"
+                                                                class="btn btn-icon btn-violet mr-10" data-toggle="modal"
+                                                                data-target="#ApprovalComment">
+                                                                <span class="btn-icon-wrap"><i
+                                                                        data-feather="message-square"></i></span></button>
+
+                                                                        <button onclick="edit_modal({{ $value->id }})"
+                                                                            class="btn btn-icon btn-info mr-10" data-toggle="modal"
+                                                                            data-target="#editApproval">
+                                                                            <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
+                                                            @endif
+                                                            <button onclick="approval_detail({{ $value->id }})"
+                                                                class="btn btn-icon btn-primary mr-10" data-toggle="modal"
+                                                                data-target="#Approvaldetail">
+                                                                <span class="btn-icon-wrap">
+                                                                    <i data-feather="file-text"></i></span>
+                                                                </button>
+
+                                                        @elseif ($value->assign_status == 2)
+
+                                                            @if ($value->assign_id)
+                                                            <button onclick="approval_comment({{ $value->id }})"
+                                                                class="btn btn-icon btn-violet mr-10" data-toggle="modal"
+                                                                data-target="#ApprovalComment">
+                                                                <span class="btn-icon-wrap"><i
+                                                                        data-feather="message-square"></i></span></button>
+
+                                                                        <button onclick="edit_modal({{ $value->id }})"
+                                                                            class="btn btn-icon btn-info mr-10" data-toggle="modal"
+                                                                            data-target="#editApproval">
+                                                                            <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
+                                                            @endif
+
+                                                        @endif
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @else
+                                            <tr>
+                                                <td>{{$key + 1}}</td>
+                                                <td>{{$value->assign_title}}</td>
+                                                <td>{{$value->assign_work_date}}</td>
+                                                <td>
+                                                    @if ($value->assign_status == 0)
+                                                    <span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>
+                                                    @elseif ($value->assign_status == 1)
+                                                    <span class="badge badge-soft-success" style="font-size: 12px;">Approval</span>
+                                                    @else
+                                                    <span class="badge badge-soft-secondary" style="font-size: 12px;">Reject</span>
+                                                    @endif
+
+                                                    {{-- เรื่องด่วน --}}
+                                                    @if ($value->assign_is_hot == 1)
+                                                    <span class="badge badge-soft-danger" style="font-size: 12px;">HOT</span>
+                                                    @endif
+
+                                                    @if ($value->assign_id)
+                                                            <span class="badge badge-soft-indigo" style="font-size: 12px;">Comment</span>
+                                                    @endif
+                                                </td>
+                                                    <td>
+                                                        <div class="button-list">
+                                                        @if ($value->assign_status == 0)
+
+                                                            <button onclick="edit_modal({{ $value->id }})"
+                                                                class="btn btn-icon btn-warning mr-10" data-toggle="modal"
+                                                                data-target="#editApproval">
+                                                                <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
+
+                                                                <button id="btn_request_delete" class="btn btn-icon btn-danger mr-10"
+                                                                    value="{{ $value->id }}">
+                                                                    <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-trash"></i></h4>
+                                                                </button>
+
+                                                        @elseif ($value->assign_status == 1)
+                                                            @if ($value->assign_id)
+
+                                                            <button onclick="approval_comment({{ $value->id }})"
+                                                                class="btn btn-icon btn-violet mr-10" data-toggle="modal"
+                                                                data-target="#ApprovalComment">
+                                                                <span class="btn-icon-wrap"><i
+                                                                        data-feather="message-square"></i></span></button>
+
+                                                                        <button onclick="edit_modal({{ $value->id }})"
+                                                                            class="btn btn-icon btn-info mr-10" data-toggle="modal"
+                                                                            data-target="#editApproval">
+                                                                            <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
+                                                            @endif
+                                                            <button onclick="approval_detail({{ $value->id }})"
+                                                                class="btn btn-icon btn-primary mr-10" data-toggle="modal"
+                                                                data-target="#Approvaldetail">
+                                                                <span class="btn-icon-wrap">
+                                                                    <i data-feather="file-text"></i></span>
+                                                                </button>
+
+                                                        @elseif ($value->assign_status == 2)
+
+                                                            @if ($value->assign_id)
+                                                            <button onclick="approval_comment({{ $value->id }})"
+                                                                class="btn btn-icon btn-violet mr-10" data-toggle="modal"
+                                                                data-target="#ApprovalComment">
+                                                                <span class="btn-icon-wrap"><i
+                                                                        data-feather="message-square"></i></span></button>
+
+                                                                        <button onclick="edit_modal({{ $value->id }})"
+                                                                            class="btn btn-icon btn-info mr-10" data-toggle="modal"
+                                                                            data-target="#editApproval">
+                                                                            <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
+                                                            @endif
+
+                                                        @endif
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @endif
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                 </section>
@@ -303,48 +471,6 @@
 
     {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script> --}}
     <script>
-        $(document).ready(function(){
-            var content = "<div class='table-responsive col-md-12'>";
-                content += "<table id='datable_request' class='table table-hover'>";
-                    content += "<thead>";
-                        content += "<tr>";
-                            content += "<th>#</th>";
-                            content += "<th>เรื่อง</th>";
-                            content += "<th>วันที่</th>";
-                            content += "<th>การอนุมัติ</th>";
-                            content += "<th>สถานะ</th>";
-                            content += "<th>Action</th>";
-                        content += "</tr>";
-                    content += "</thead>";
-                    content += "<tbody>";
-                    content += "<tbody>";
-                    content += "<tbody>";
-                content += "</table>";
-            content += "</div>";
-
-        $("#table_product").html(content);
-
-        $('#datable_request').DataTable({
-            processing: false,
-            serverSide: false,
-            ajax: {
-                method:"GET",
-                url:"{{url('approval2')}}",
-                dataType: 'json',
-                // data:{
-                //         "_token": "{{ csrf_token() }}",
-                //     },
-                },
-                columns: [
-                    {data: 'key', name: 'key'},
-                    {data: 'assign_title', name: 'assign_title'},
-                    {data: 'assign_work_date', name: 'assign_work_date'},
-                    {data: 'assign_status', name: 'assign_status'},
-                    {data: 'assign_status_actoin', name: 'assign_status_actoin'},
-                    {data: 'action', name: 'action'},
-                ]
-        });
-    });
 
     $(document).on('click', '#btn_request_delete', function() { // ปุ่มลบ Slaplan
         let request_id_delete = $(this).val();
@@ -444,47 +570,6 @@
                 $('#editApproval').modal('toggle');
             }
         });
-
-        var content = "<div class='table-responsive col-md-12'>";
-                content += "<table id='datable_request' class='table table-hover'>";
-                    content += "<thead>";
-                        content += "<tr>";
-                            content += "<th>#</th>";
-                            content += "<th>เรื่อง</th>";
-                            content += "<th>วันที่</th>";
-                            content += "<th>การอนุมัติ</th>";
-                            content += "<th>สถานะ</th>";
-                            content += "<th>Action</th>";
-                        content += "</tr>";
-                    content += "</thead>";
-                    content += "<tbody>";
-                    content += "<tbody>";
-                    content += "<tbody>";
-                content += "</table>";
-            content += "</div>";
-
-        $("#table_product").html(content);
-
-        $('#datable_request').DataTable({
-            processing: false,
-            serverSide: false,
-            ajax: {
-                method:"GET",
-                url:"{{url('approval2')}}",
-                dataType: 'json',
-                // data:{
-                //         "_token": "{{ csrf_token() }}",
-                //     },
-                },
-                columns: [
-                    {data: 'key', name: 'key'},
-                    {data: 'assign_title', name: 'assign_title'},
-                    {data: 'assign_work_date', name: 'assign_work_date'},
-                    {data: 'assign_status', name: 'assign_status'},
-                    {data: 'assign_status_actoin', name: 'assign_status_actoin'},
-                    {data: 'action', name: 'action'},
-                ]
-        });
     }
 
     function approval_detail(id){
@@ -502,7 +587,6 @@
                 $('#ApprovalDetail').modal('toggle');
             }
         });
-
     }
 
 </script>
@@ -531,47 +615,6 @@
 
                 $('#ApprovalComment').modal('toggle');
             }
-        });
-
-        var content = "<div class='table-responsive col-md-12'>";
-                content += "<table id='datable_request' class='table table-hover'>";
-                    content += "<thead>";
-                        content += "<tr>";
-                            content += "<th>#</th>";
-                            content += "<th>เรื่อง</th>";
-                            content += "<th>วันที่</th>";
-                            content += "<th>การอนุมัติ</th>";
-                            content += "<th>สถานะ</th>";
-                            content += "<th>Action</th>";
-                        content += "</tr>";
-                    content += "</thead>";
-                    content += "<tbody>";
-                    content += "<tbody>";
-                    content += "<tbody>";
-                content += "</table>";
-            content += "</div>";
-
-        $("#table_product").html(content);
-
-        $('#datable_request').DataTable({
-            processing: false,
-            serverSide: false,
-            ajax: {
-                method:"GET",
-                url:"{{url('approval2')}}",
-                dataType: 'json',
-                // data:{
-                //         "_token": "{{ csrf_token() }}",
-                //     },
-                },
-                columns: [
-                    {data: 'key', name: 'key'},
-                    {data: 'assign_title', name: 'assign_title'},
-                    {data: 'assign_work_date', name: 'assign_work_date'},
-                    {data: 'assign_status', name: 'assign_status'},
-                    {data: 'assign_status_actoin', name: 'assign_status_actoin'},
-                    {data: 'action', name: 'action'},
-                ]
         });
     }
 </script>

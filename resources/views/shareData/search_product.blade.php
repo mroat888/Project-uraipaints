@@ -6,7 +6,7 @@
     $action_search = "data_search_product/search";
 @endphp
 
-@include('shareData_union.search_product')  
+@include('shareData_union.search_product')
 
 @section('footer')
     @include('layouts.footer')
@@ -17,7 +17,7 @@
 
 $(document).ready(function(){
     // $(document).on('change','#sel_pdglists', function(e){
-    $('#sel_pdglists').on("change", function(e) { 
+    $('#sel_pdglists').on("change", function(e) {
         e.preventDefault();
         var pdglist = $(this).val();
         console.log(pdglist);
@@ -134,10 +134,10 @@ $(document).on('change','.province', function(e){
         content += "</div>";
 
     $("#table_customer").html(content);
-    
+
     $.fn.dataTable.ext.errMode = () => alert('Error while loading the table data. Please refresh');
     $('#datable_2').DataTable({
-        
+
         processing: false,
         serverSide: false,
         ajax: {
