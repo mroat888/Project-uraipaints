@@ -563,6 +563,7 @@ Route::get('calendar', 'FullCalendarController@index');
 Route::post('calendar/create','FullCalendarController@create');
 Route::post('calendar/update','FullCalendarController@update');
 Route::post('calendar/delete','FullCalendarController@destroy');
+Route::get('calendar/show/{id}','FullCalendarController@show');
 
 
 // Route::get('/clear-cache', function() {

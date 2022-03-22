@@ -80,14 +80,14 @@ License: You must have a valid license purchased only from themeforest to legall
                     <a class="nav-link dropdown-toggle no-caret" href="#" role="button" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
                         <div class="media">
+                            <div class="media-body mr-3">
+                                <span>{{ Auth::user()->name }}<i class="zmdi zmdi-chevron-down"></i></span>
+                            </div>
                             <div class="media-img-wrap">
                                 <div class="avatar">
                                     <img src="{{ asset('/public/template/dist/img/avatar12.jpg') }}" alt="user" class="avatar-img rounded-circle">
                                 </div>
                                 <span class="badge badge-success badge-indicator"></span>
-                            </div>
-                            <div class="media-body">
-                                <span>{{ Auth::user()->name }}<i class="zmdi zmdi-chevron-down"></i></span>
                             </div>
                         </div>
                     </a>
