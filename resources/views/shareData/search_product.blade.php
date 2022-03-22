@@ -104,9 +104,6 @@ $(document).on('change','#sel_pdglists', function(e){
                     "_token": "{{ csrf_token() }}",
                 },
             },
-            error: function(jqXHR, textStatus, errorThrown) {
-            console.log(textStatus, errorThrown);
-            },
             columns: [
                 {data: 'identify', name: 'identify'},
                 {data: 'name', name: 'name'},
