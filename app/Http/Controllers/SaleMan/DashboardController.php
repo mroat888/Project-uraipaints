@@ -62,7 +62,7 @@ class DashboardController extends Controller
             }
         // -- จบ  ตรวจสอบเพิ่ม sale plan เดือนปัจจุบัน
 
-        //-- ตรวจสอบและเพิ่มเดือน monthly_plan 
+        //-- ตรวจสอบและเพิ่มเดือน monthly_plan
         $monthly_plan = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->first();
         if ($monthly_plan) {
             $date = Carbon::parse($monthly_plan->month_date)->format('Y-m');
@@ -107,10 +107,12 @@ class DashboardController extends Controller
         $data['count_shops_saleplan_amount'] = 0;
         $data['count_isit_amount']  =0 ;
 
+        // dd($data['monthly_plan']);
+
         if(!is_null($data['monthly_plan'])){ // ตรวจสอบไม่เป็นค่าว่าง
             // -- นับจำนวน slaeplans
             $sale_plans = DB::table('sale_plans')->where('monthly_plan_id', $data['monthly_plan']->id)->where('sale_plans_status', 2)->get();
-            
+
             if(!is_null($sale_plans)){
                 $data['count_sale_plans_amount'] = $sale_plans->count();
                 foreach($sale_plans as $sp_value){
@@ -123,7 +125,7 @@ class DashboardController extends Controller
 
             // -- นับจำนวน ลูกค้าใหม่
             $customer_shops_saleplan = DB::table('customer_shops_saleplan')->where('monthly_plan_id', $data['monthly_plan']->id)->get();
-            
+
             if(!is_null($customer_shops_saleplan)){
                 $data['count_shops_saleplan_amount'] = $customer_shops_saleplan->count();
                 foreach($customer_shops_saleplan as $sp_value){
@@ -136,6 +138,7 @@ class DashboardController extends Controller
 
             // -- นับจำนวน ลูกค้าเยี่ยม
             $customer_visits = DB::table('customer_visits')->where('monthly_plan_id', $data['monthly_plan']->id)->get();
+            // dd($customer_visits);
             if(!is_null($customer_visits)){
                 $data['count_isit_amount'] = $customer_visits->count();
                 foreach($customer_visits as $sp_value){
@@ -154,7 +157,7 @@ class DashboardController extends Controller
         $data['amtsale_previous'] = "";
         $noc=0;
         $nop=0;
-        
+
         for($i=1; $i <= $dayinmonth; $i++){
             if($i < $dayinmonth){
                 $data['day_month'] .= $i.",";
@@ -164,7 +167,7 @@ class DashboardController extends Controller
 
             if(isset($data['res_api']['data'][4]['DaysSalesCurrent'][$noc]['DayNo'])){ // ปีปัจจุบัน
 
-                if($data['res_api']['data'][4]['DaysSalesCurrent'][$noc]['DayNo'] == $i){ 
+                if($data['res_api']['data'][4]['DaysSalesCurrent'][$noc]['DayNo'] == $i){
                     $data['amtsale_current'] .= $data['res_api']['data'][4]['DaysSalesCurrent'][$noc]['totalAmtSale'].",";
                 }else{
                     $noc--;
@@ -184,8 +187,8 @@ class DashboardController extends Controller
             }
 
             if(isset($data['res_api']['data'][5]['DaysSalesPrevious'][$nop]['DayNo'])){ // ปีที่แล้ว
-               
-                if($data['res_api']['data'][5]['DaysSalesPrevious'][$nop]['DayNo'] == $i){ 
+
+                if($data['res_api']['data'][5]['DaysSalesPrevious'][$nop]['DayNo'] == $i){
                     $data['amtsale_previous'] .= $data['res_api']['data'][5]['DaysSalesPrevious'][$nop]['totalAmtSale'].",";
                 }else{
                     $nop--;
@@ -203,14 +206,13 @@ class DashboardController extends Controller
                     $data['amtsale_previous'] .= "0";
                 }
             }
-            
+
             $noc++;
             $nop++;
             // -- จบ Chat
         }
 
         // dd($data['res_api']['data'][5]['DaysSalesPrevious'], $data['amtsale_previous'], $data['day_month']);
-        
 
         return view('saleman.dashboard', $data);
     }

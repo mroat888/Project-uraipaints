@@ -166,13 +166,13 @@
                         <div class="form-group">
                             <label for="username">รายละเอียด</label>
                             <textarea class="form-control" id="address" cols="30" rows="5" placeholder=""
-                                name="note_detail" type="text"> </textarea>
+                                name="note_detail" type="text" required></textarea>
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ป้ายกำกับ</label>
                                 <select class="select2 select2-multiple form-control" multiple="multiple"
-                                    data-placeholder="Choose" name="note_tags[]">
+                                    data-placeholder="Choose" name="note_tags[]" required>
                                     <optgroup label="เลือกข้อมูล">
                                         <?php $master = App\NoteTag::orderBy('id', 'desc')->get(); ?>
 
@@ -184,7 +184,7 @@
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="firstName">วันที่แจ้งเตือน</label>
-                                <input type="date" class="form-control" placeholder="" name="note_date" min="<?= date('Y-m-d') ?>">
+                                <input type="date" class="form-control" placeholder="" name="note_date" min="<?= date('Y-m-d') ?>" required>
                             </div>
                         </div>
                     </div>
