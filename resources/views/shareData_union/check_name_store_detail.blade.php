@@ -80,10 +80,8 @@
                                                 <th style="font-weight: bold; text-align:center;">ปี</th>
                                                 <th style="font-weight: bold; text-align:left;">รหัสโปรโมชั่น</th>
                                                 <th style="font-weight: bold; text-align:left;">ชื่อโปรโมชั่น</th>
-                                                <th style="font-weight: bold; text-align:right;">ยอดซื้อเป้า ข้อความ</th>
-                                                <th style="font-weight: bold; text-align:right;">ยอดซื้อเป้า</th>                                           
-                                                <!-- <th style="font-weight: bold; text-align:center;">ยอดซื้อเกิดจริง</th>
-                                                <th style="font-weight: bold; text-align:center;">ยอดซื้อเกิดจริง ข้อความ</th> -->
+                                                <th style="font-weight: bold; text-align:right;">ยอดซื้อเป้า</th>
+                                                <th style="font-weight: bold; text-align:right;">ยอดเบิกเป้า</th>                                           
                                                 <th style="font-weight: bold; text-align:right;">ยอดผลต่าง</th>
                                             </tr>
                                         </thead>
@@ -97,11 +95,7 @@
                                                 <td style="text-align:left;">{{ $cust_campaigns_api[$key]['description'] }}</td>
                                                 <td style="text-align:right;">{{ number_format($cust_campaigns_api[$key]['amount_limit'],2) }}</td>
                                                 <td style="text-align:right;">{{ number_format($cust_campaigns_api[$key]['saleamount'],2) }}</td>
-                                                {{-- 
-                                                <td style="text-align:center;">{{ number_format($cust_campaigns_api[$key]['amount_diff'],2) }}</td>
-                                                <td style="text-align:center;">{{ $cust_campaigns_api[$key]['amount_limit_th'] }}</td>
-                                                --}}
-                                                <td style="text-align:right;">{{ $cust_campaigns_api[$key]['amount_net_th'] }}</td>
+                                                <td style="text-align:right;">{{ number_format($cust_campaigns_api[$key]['amount_diff'],2) }}</td>
                                             </tr>
                                             @endforeach
                                         @endif
@@ -135,7 +129,7 @@
                                                 <th style="font-weight: bold; text-align:left;">#</th>
                                                 <th style="font-weight: bold; text-align:center;">ปี</th>
                                                 <th style="font-weight: bold; text-align:right;">ยอดซื้อเป้า</th>
-                                                <th style="font-weight: bold; text-align:right;">ยอดซื้อเกิดจริง</th>
+                                                <th style="font-weight: bold; text-align:right;">ยอดเบิกเป้า</th>
                                             </tr>
                                         </thead>
                                         <tbody id="table_body">
@@ -144,8 +138,8 @@
                                             <tr>
                                                 <td style="text-align:left;">{{ $key+1 }}</td>
                                                 <td style="text-align:center;">{{ $year_sum[$key]['year']}}</td>
-                                                <td style="text-align:right;">{{ number_format($year_sum[$key]['saleamount'],2) }}</td>
                                                 <td style="text-align:right;">{{ number_format($year_sum[$key]['amount_limit'],2) }}</td>
+                                                <td style="text-align:right;">{{ number_format($year_sum[$key]['saleamount'],2) }}</td>
                                             </tr>
                                             @endforeach
                                         @endif
