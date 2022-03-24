@@ -136,16 +136,17 @@ $(document).on('change','.province', function(e){
     let pvid = $(this).val();
     $.ajax({
         method: 'GET',
-        url: '{{ url("/fetch_amphur_api") }}/'+pvid,
+        url: '{{ url("/fetch_amphur_api") }}/{{ $position_province }}/'+pvid,
         datatype: 'json',
         success: function(response){
+            console.log(response);
             if(response.status == 200){
-                console.log(response.amphures['data']);
+                console.log(response.amphures);
                 $('.amphur').children().remove().end();
                 $('.amphur').append('<option selected value="">เลือกอำเภอ</option>');
-                let rows = response.amphures['data'].length;
+                let rows = response.amphures.length;
                 for(let i=0 ;i<rows; i++){
-                    $('.amphur').append('<option value="'+response.amphures['data'][i]['identify']+'">'+response.amphures['data'][i]['name_thai']+'</option>');
+                    $('.amphur').append('<option value="'+response.amphures[i]['identify']+'">'+response.amphures[i]['name_thai']+'</option>');
                 }
             }
         }

@@ -37,7 +37,8 @@ class CheckStoreController extends Controller
         }
 
         // ดึงจังหวัด -- API
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/provinces');
+        $path_search = "/sellers/".Auth::user()->api_identify."/provinces";
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
         $res_api = $response->json();
         $provinces = $res_api;
         
@@ -71,7 +72,8 @@ class CheckStoreController extends Controller
         }
 
         // ดึงจังหวัด -- API
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/provinces');
+        $path_search = "/sellers/".Auth::user()->api_identify."/provinces";
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
         $res_api = $response->json();
         $data['provinces'] = $res_api;
         

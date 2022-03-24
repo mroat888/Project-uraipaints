@@ -76,24 +76,33 @@ class ApiController extends Controller
 
     }
 
-    public function fetch_amphur_api($id){
-
+    public function fetch_amphur_api($path,$id){
+        if($path != "admin"){
+            $path_search = "/".$path."/".Auth::user()->api_identify."/amphures?province_id=".$id;
+        }else{
+            $path_search = "/provinces/".$id."/amphures/";
+        }
         $api_token = $this->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/provinces/'.$id.'/amphures/');
+        //$response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/provinces/'.$id.'/amphures/');   
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);   
         $res_api = $response->json();
         $amphures = array();
         foreach($res_api['data'] as $value){
-            $amphures[] = [
-                'identify' => $value['identify'],
-                'name_thai' => $value['name_thai'],
-                'province_id' => $value['province_id']
-            ];
+            if($value['province_id'] == $id){
+                $amphures[] = [
+                    'identify' => $value['identify'],
+                    'name_thai' => $value['name_thai'],
+                    'province_id' => $value['province_id']
+                ];
+            }
         }
+
+        // dd($amphures);
 
         return response()->json([
             'status' => 200,
             'id' => $id,
-            'amphures' => $res_api
+            'amphures' => $amphures
         ]);
     }
 

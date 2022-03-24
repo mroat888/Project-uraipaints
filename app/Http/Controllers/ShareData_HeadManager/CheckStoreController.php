@@ -125,7 +125,9 @@ class CheckStoreController extends Controller
         // dd($customer_api);
         
         // ดึงจังหวัด -- API
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/provinces');
+        $path_search = "/saleheaders/".Auth::user()->api_identify."/provinces";
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
+        // $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/provinces');
         $res_api = $response->json();
         $data['provinces'] = $res_api;
         
