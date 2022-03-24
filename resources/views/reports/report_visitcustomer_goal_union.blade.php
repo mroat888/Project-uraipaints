@@ -28,7 +28,7 @@
                     <div class="row mb-2">
                         <div class="col-sm-12 col-md-7">
                             <!-- <h5 class="hk-sec-title">ตารางรายงานเข้าพบลูกค้าเป้าหมาย<span style="color: rgb(128, 19, 0);">(ประจำปี <?php echo thaidate('Y', date('Y-m-d')); ?>)</span></h5> -->
-                            <h5 class="hk-sec-title">ตารางรายงานเข้าพบลูกค้าเป้าหมาย<span style="color: rgb(128, 19, 0);">(ประจำปี <?php echo $year+543; ?>)</span></h5>
+                            <h5 class="hk-sec-title">ตารางรายงานเข้าพบลูกค้าใหม่<span style="color: rgb(128, 19, 0);">(ประจำปี <?php echo $year+543; ?>)</span></h5>
                         </div>
                         <div class="col-sm-12 col-md-4">
                             <!-- ------ -->
@@ -115,7 +115,7 @@
                                                     <td>{{ $value['cus_result_success']}}</td>
                                                     <td>{{ $value['count_shop_updatestatus']}}</td>
                                                     <td>{{ $value['percent_success']}}%</td>
-                                                    <td>{{ $value['percent_failed']}}%</td>  
+                                                    <td>{{ $value['percent_failed']}}%</td>
                                                 </tr>
                                                 @endforeach
                                             @endif

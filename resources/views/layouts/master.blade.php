@@ -71,6 +71,11 @@ License: You must have a valid license purchased only from themeforest to legall
     <!-- HK Wrapper -->
     <div class="hk-wrapper hk-vertical-nav">
 
+        <?php
+                $count_note = App\Note::where('note_date','>=', Carbon\Carbon::now()->format('Y-m-d'))
+                    ->where('employee_id', Auth::user()->id)->get();
+        ?>
+
         <!-- Top Navbar -->
         <nav class="navbar navbar-expand-xl navbar-light fixed-top hk-navbar">
             <a class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -84,14 +89,48 @@ License: You must have a valid license purchased only from themeforest to legall
                 {{-- URAI PAINTS --}}
             </a>
             <ul class="navbar-nav hk-navbar-content order-xl-2">
-                <!-- <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a id="settings_toggle_btn" class="nav-link nav-link-hover" href="javascript:void(0);"><span
                             class="feather-icon"><i data-feather="settings"></i></span></a>
-                </li> -->
+                </li> --}}
+                <li class="nav-item dropdown dropdown-notifications">
+                    <a class="nav-link dropdown-toggle no-caret" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{-- <span class="feather-icon bell"> --}}
+                            <i data-feather="bell"></i><span class="badge badge-danger badge-pill mb-3">{{$count_note->count()}}</span>
+                        {{-- </span> --}}
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                        <h6 class="dropdown-header">Notifications</h6>
+                        <div class="notifications-nicescroll-bar">
+                            @foreach ($count_note as $value)
+                            <a href="{{url('note')}}" class="dropdown-item">
+                                <div class="media">
+                                    <div class="media-img-wrap">
+                                        <div class="avatar avatar-sm">
+                                            <span class="avatar-text avatar-text-primary rounded-circle">
+													<span class="initial-wrap"><span><i class="zmdi zmdi-file font-18"></i></span></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="media-body">
+                                        <div>
+                                            <div class="notifications-text">{{$value->note_title}} <br>
+                                                <span class="text-dark text-capitalize"> {!! Str::limit($value->note_detail, 20) !!}<br></span>
+                                                แจ้งเตือนวันที่ <span class="text-dark text-capitalize">{{$value->note_date}}</span></div>
+                                            <div class="notifications-time">2d</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            @endforeach
+                        </div>
+                    </div>
+                </li>
                 <li class="nav-item dropdown dropdown-authentication">
                     <a class="nav-link dropdown-toggle no-caret" href="#" role="button" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
-                        <div class="media"> 
+                        <div class="media">
                             <div class="media-body mr-3">
                                 <span>{{ Auth::user()->name }}<i class="zmdi zmdi-chevron-down"></i></span>
                             </div>
@@ -226,11 +265,7 @@ License: You must have a valid license purchased only from themeforest to legall
                             <a class="nav-link link-with-badge" href="{{ url('note') }}">
                                 <i class="ion ion-md-document" style="color: #044067;"></i>
                                 <span class="nav-link-text">บันทึกโน้ต</span>
-                                <?php
-                                $count_note = App\Note::where('note_date','>=', Carbon\Carbon::now()->format('Y-m-d'))
-                                ->where('employee_id', Auth::user()->id)->count();
-                                 ?>
-                                <span class="badge badge-danger badge-pill">{{$count_note}}</span>
+                                <span class="badge badge-danger badge-pill">{{$count_note->count()}}</span>
                             </a>
                         </li>
                         <li class="nav-item">

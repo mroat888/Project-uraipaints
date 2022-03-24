@@ -30,7 +30,7 @@
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
                         <div class="col-sm-12 col-md-7">
-                            @php 
+                            @php
                                 if(isset($sel_year)){
                                     $year = $sel_year;
                                 }else{
@@ -39,7 +39,11 @@
                                 $action = '/reportSale/reportVisitCustomer/search';
                             @endphp
                             <!-- <h5 class="hk-sec-title">ตารางรายงานเข้าเยี่ยมลูกค้า<span style="color: rgb(128, 19, 0);">(ประจำปี <?php echo thaidate('Y', date('Y-m-d')); ?>)</span></h5> -->
+<<<<<<< HEAD
                             <h5 class="hk-sec-title">ตารางรายงานเข้าเยี่ยมลูกค้า<span style="color: rgb(128, 19, 0);">(ประจำปี <?php echo $year+543; ?>)</span></h5>
+=======
+                            <h5 class="hk-sec-title">ตารางรายงานเข้าเยี่ยมลูกค้า <span style="color: rgb(128, 19, 0);">(ประจำปี <?php echo $year+543; ?>)</span></h5>
+>>>>>>> c75f179db066327633eae01ef0a685f939f62298
                         </div>
                         <div class="col-sm-12 col-md-5">
                             <!-- ------ -->

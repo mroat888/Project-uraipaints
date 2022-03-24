@@ -43,25 +43,6 @@
         <div class="row">
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
-                    {{-- <div class="row">
-                        <div class="col-sm">
-                            <a href="{{ url('/approvalgeneral') }}" type="button" class="btn btn-violet btn-wth-icon icon-wthot-bg btn-sm text-white">
-                                <span class="icon-label">
-                                    <i class="fa fa-file"></i>
-                                </span>
-                                <span class="btn-text">รออนุมัติ</span>
-                            </a>
-
-                            <a href="{{ url('approvalgeneral/history') }}" type="button" class="btn btn-secondary btn-wth-icon icon-wthot-bg btn-sm text-white">
-                                <span class="icon-label">
-                                    <i class="fa fa-list"></i>
-                                </span>
-                                <span class="btn-text">ประวัติ</span>
-                            </a>
-                            <hr>
-                            <div id="calendar"></div>
-                        </div>
-                    </div> --}}
                     <div class="row mb-2">
                             <div class="col-md-12">
                                 <h5 class="hk-sec-title">ตารางรายการข้อมูลการอนุมัติลูกค้าใหม่ (นอกแผน)</h5>
@@ -99,11 +80,20 @@
                                                 @endif
                                             </td>
                                             <td>
+                                                @if ($value->shop_aprove_status == 1)
                                                 <a href="{{ url('head/comment_customer_new', [$value->custid, $value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
                                                     <h4 class="btn-icon-wrap" style="color: white;">
                                                         <i data-feather="message-square"></i>
                                                     </h4>
                                                 </a>
+                                                @else
+                                                    <button class="btn btn-icon btn-info mr-10" disabled>
+                                                        <h4 class="btn-icon-wrap" style="color: white;">
+                                                            <i data-feather="message-square"></i>
+                                                        </h4>
+                                                    </button>
+                                                @endif
+
                                             </td>
                                         </tr>
                                         @else
@@ -116,11 +106,19 @@
                                                         style="font-size: 12px;">Pending</span>
                                                 </td>
                                                 <td>
+                                                    @if ($value->shop_aprove_status == 1)
                                                     <a href="{{ url('head/comment_customer_except', [$value->custid, $value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
                                                         <h4 class="btn-icon-wrap" style="color: white;">
                                                             <i data-feather="message-square"></i>
                                                         </h4>
                                                     </a>
+                                                @else
+                                                    <button class="btn btn-icon btn-info mr-10" disabled>
+                                                        <h4 class="btn-icon-wrap" style="color: white;">
+                                                            <i data-feather="message-square"></i>
+                                                        </h4>
+                                                    </button>
+                                                @endif
                                                 </td>
                                             </tr>
                                             @endif

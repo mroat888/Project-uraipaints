@@ -61,7 +61,8 @@ Route::post('delete_customer', 'Customer\CustomerController@destroy');
 Route::get('/edit_shopsaleplan/{id}', 'Customer\CustomerShopSaleplanController@edit_shopsaleplan');
 Route::post('/update_shopsaleplan', 'Customer\CustomerShopSaleplanController@update_shopsaleplan');
 
-Route::get('/customer/detail/{id}', 'Customer\CustomerController@show');
+Route::get('/customer_lead/detail/{id}', 'Customer\CustomerController@show_lead');
+Route::get('/customer/detail/{id}', 'Customer\CustomerController@show_customer');
 Route::get('/customer','Customer\CustomerController@index');
 Route::get('/fetch_customer_shops','Customer\CustomerController@fetch_customer_shops');
 Route::get('/customer-api','Customer\ApiCustomerController@index');

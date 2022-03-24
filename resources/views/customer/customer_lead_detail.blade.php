@@ -18,7 +18,7 @@
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-people"></i></span>รายละเอียดลูกค้า</h4>
             </div>
             <div class="d-flex">
-                <a href="{{ url('customer')}}" type="button" class="btn btn-secondary btn-sm btn-rounded px-3 mr-10"> ย้อนกลับ </a>
+                <a href="{{ url('lead')}}" type="button" class="btn btn-secondary btn-sm btn-rounded px-3 mr-10"> ย้อนกลับ </a>
             </div>
         </div>
         <!-- /Title -->

@@ -392,7 +392,7 @@ class CustomerController extends Controller
         ]);
     }
 
-    public function show($id)
+    public function show_customer($id)
     {
         // dd($id);
 
@@ -416,6 +416,32 @@ class CustomerController extends Controller
             ->get();
 
         return view('customer.customer_detail', $data);
+    }
+
+    public function show_lead($id)
+    {
+        // dd($id);
+
+        $data['customer_shops'] = DB::table('customer_shops')
+            ->where('id', $id)
+            ->first();
+
+        $data['customer_contacts'] = DB::table('customer_contacts')
+            ->where('customer_shop_id', $data['customer_shops']->id)
+            ->orderBy('id', 'desc')
+            ->first();
+
+        $data['customer_history_contacts'] = DB::table('customer_history_contacts')
+            ->where('customer_shop_id', $data['customer_shops']->id)
+            ->orderBy('id', 'desc')
+            ->get();
+
+        $data['customer_shops_saleplan'] = DB::table('customer_shops_saleplan')
+            ->where('customer_shop_id', $data['customer_shops']->id)
+            ->orderBy('monthly_plan_id', 'desc')
+            ->get();
+
+        return view('customer.customer_lead_detail', $data);
     }
 
     public function lead_to_customer(Request $request)
