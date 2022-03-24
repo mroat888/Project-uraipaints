@@ -253,7 +253,7 @@ License: You must have a valid license purchased only from themeforest to legall
                                         <li class="nav-item {{ (request()->is('lead')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('/lead') }}">
                                                 <i class="ion ion-md-person-add" style="color: #044067;"></i>
-                                                <span class="nav-link-text">ลูกค้าเป้าหมาย</span>
+                                                <span class="nav-link-text">ลูกค้าใหม่</span>
                                             </a>
                                         </li>
                                     </ul>

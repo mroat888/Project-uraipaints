@@ -5,7 +5,7 @@
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
             <li class="breadcrumb-item"><a href="#">หน้าแรก</a></li>
-            <li class="breadcrumb-item active" aria-current="page">ลูกค้าเป้าหมาย</li>
+            <li class="breadcrumb-item active" aria-current="page">ลูกค้าใหม่</li>
         </ol>
     </nav>
     <!-- /Breadcrumb -->
@@ -15,7 +15,7 @@
         <!-- Title -->
         <div class="hk-pg-header mb-10">
             <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-person"></i></span>ลูกค้าเป้าหมาย</h4>
+                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-person"></i></span>ลูกค้าใหม่</h4>
             </div>
             <div class="d-flex">
                 <button class="btn btn-teal btn-sm btn-rounded px-3" data-toggle="modal" data-target="#addCustomer"> + เพิ่มใหม่ </button>
@@ -27,7 +27,7 @@
         <div class="row">
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
-                    <h5 class="hk-sec-title">ตารางข้อมูลลูกค้าเป้าหมาย</h5>
+                    <h5 class="hk-sec-title">ตารางข้อมูลลูกค้าใหม่</h5>
                     <div class="row">
                         <div class="col-sm">
                             <div class="table-wrap">
