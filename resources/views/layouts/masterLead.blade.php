@@ -99,10 +99,10 @@ License: You must have a valid license purchased only from themeforest to legall
                         {{-- </span> --}}
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
-                        <h6 class="dropdown-header">Notifications</h6>
+                        <h6 class="dropdown-header">การแจ้งเตือน</h6>
                         <div class="notifications-nicescroll-bar">
                             @foreach ($count_note as $value)
-                            <a href="{{url('note')}}" class="dropdown-item">
+                            <a href="{{url('leadManage/note')}}" class="dropdown-item">
                                 <div class="media">
                                     <div class="media-img-wrap">
                                         <div class="avatar avatar-sm">
@@ -115,8 +115,9 @@ License: You must have a valid license purchased only from themeforest to legall
                                         <div>
                                             <div class="notifications-text">{{$value->note_title}} <br>
                                                 <span class="text-dark text-capitalize"> {!! Str::limit($value->note_detail, 20) !!}<br></span>
-                                                แจ้งเตือนวันที่ <span class="text-dark text-capitalize">{{$value->note_date}}</span></div>
-                                            <div class="notifications-time">2d</div>
+                                                {{-- แจ้งเตือนวันที่ <span class="text-dark text-capitalize">{{$value->note_date}}</span> --}}
+                                            </div>
+                                            <div class="notifications-time">{{$value->note_date}}</div>
                                         </div>
                                     </div>
                                 </div>
