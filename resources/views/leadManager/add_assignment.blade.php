@@ -67,6 +67,7 @@
                                             <th>เรื่อง</th>
                                             <th>วันที่</th>
                                             <th>พนักงาน</th>
+                                            <th>ไฟล์เอกสาร</th>
                                             <th>สถานะ</th>
                                             <th>Action</th>
                                         </tr>
@@ -78,6 +79,13 @@
                                             <td>{{$value->assign_title}}</td>
                                             <td>{{$value->assign_work_date}}</td>
                                             <td>{{$value->name}}</td>
+                                            <td>
+                                                @if ($value->assign_fileupload)
+                                                    <span class="badge badge-soft-primary" style="font-size: 12px;">มีไฟล์เอกสาร</span>
+                                                @else
+                                                    -
+                                                @endif
+                                            </td>
                                             <td>
                                                 @if ($value->assign_result_status == 0)
                                                     <span class="badge badge-soft-secondary" style="font-size: 12px;">รอดำเนินการ</span>

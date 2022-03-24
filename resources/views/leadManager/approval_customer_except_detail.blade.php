@@ -95,13 +95,13 @@
                                             <td>{{ $value->PROVINCE_NAME }}</td>
                                             <td>
                                                 @if ($value->shop_aprove_status == 2)
-                                                <span class="badge badge-soft-success" style="font-size: 12px;">Approve</span></td>
+                                                <span class="badge badge-soft-success" style="font-size: 12px;">Approve</span>
 
                                                 @elseif ($value->shop_aprove_status == 3)
-                                                <span class="badge badge-soft-danger" style="font-size: 12px;">Reject</span></td>
+                                                <span class="badge badge-soft-danger" style="font-size: 12px;">Reject</span>
                                                 @endif
                                             </td>
-                                            <td align="center">
+                                            <td>
                                                 <?php $comment = App\CustomerShopComment::where('customer_shops_saleplan_id', $value->id)->count(); ?>
                                                 @if ($comment > 0)
                                                 <span class="badge badge-soft-indigo" style="font-size: 12px;">มี</span>
@@ -110,11 +110,19 @@
                                                 @endif
                                             </td>
                                             <td>
+                                                @if ($value->shop_aprove_status == 1)
                                                 <a href="{{ url('comment_customer_new', [$value->custid, $value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
                                                     <h4 class="btn-icon-wrap" style="color: white;">
                                                         <i data-feather="message-square"></i>
                                                     </h4>
                                                 </a>
+                                                @else
+                                                    <button class="btn btn-icon btn-info mr-10" disabled>
+                                                        <h4 class="btn-icon-wrap" style="color: white;">
+                                                            <i data-feather="message-square"></i>
+                                                        </h4>
+                                                    </button>
+                                                @endif
                                             </td>
                                         </tr>
                                         @else
@@ -124,10 +132,9 @@
                                                 <td>{{ $value->shop_name }}</td>
                                                 <td>{{ $value->PROVINCE_NAME }}</td>
                                                 <td>
-                                                    <span class="badge badge-soft-warning mt-15 mr-10"
-                                                        style="font-size: 12px;">Pending</span>
+                                                    <span class="badge badge-soft-warning mt-15 mr-10" style="font-size: 12px;">Pending</span>
                                                 </td>
-                                                <td align="center">
+                                                <td>
                                                     <?php $comment = App\CustomerShopComment::where('customer_shops_saleplan_id', $value->id)->count(); ?>
                                                     @if ($comment > 0)
                                                     <span class="badge badge-soft-indigo" style="font-size: 12px;">มี</span>
@@ -136,11 +143,19 @@
                                                     @endif
                                                 </td>
                                                 <td>
+                                                    @if ($value->shop_aprove_status == 1)
                                                     <a href="{{ url('lead/comment_customer_except', [$value->custid, $value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
                                                         <h4 class="btn-icon-wrap" style="color: white;">
                                                             <i data-feather="message-square"></i>
                                                         </h4>
                                                     </a>
+                                                    @else
+                                                    <button class="btn btn-icon btn-info mr-10" disabled>
+                                                        <h4 class="btn-icon-wrap" style="color: white;">
+                                                            <i data-feather="message-square"></i>
+                                                        </h4>
+                                                    </button>
+                                                    @endif
                                                 </td>
                                             </tr>
                                             @endif

@@ -49,7 +49,7 @@
                                     </div>
                             </div>
                             <div class="modal-footer">
-                                <a href="{{ url('head/approvalsaleplan_detail', $createID) }}" type="button" class="btn btn-secondary">ย้อนกลับ</a>
+                                <a href="{{ url('head/approval_customer_except_detail', 1) }}" type="button" class="btn btn-secondary">ย้อนกลับ</a>
                                 <button type="submit" class="btn btn-primary float-right">บันทึก</button>
                             </div>
                             </form>
@@ -83,7 +83,7 @@
                                     </div>
                             </div>
                             <div class="modal-footer">
-                                <a href="{{ url('head/approvalsaleplan_detail', $createID) }}" type="button" class="btn btn-secondary">ย้อนกลับ</a>
+                                <a href="{{ url('head/approval_customer_except_detail', 1) }}" type="button" class="btn btn-secondary">ย้อนกลับ</a>
                                 <button type="submit" class="btn btn-primary float-right">บันทึก</button>
                             </div>
                             </form>

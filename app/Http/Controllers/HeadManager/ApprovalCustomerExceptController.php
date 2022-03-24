@@ -169,7 +169,7 @@ class ApprovalCustomerExceptController extends Controller
         ->where('id', $request->cust_shops_saleplan_id)
         ->first();
 
-        return redirect(url('lead/approval_customer_except_detail', $data2->created_by));
+        return redirect(url('head/approval_customer_except_detail', $data2->created_by));
 
     }
 

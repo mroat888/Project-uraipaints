@@ -34,25 +34,6 @@
         <div class="row">
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
-                    {{-- <div class="row">
-                        <div class="col-sm">
-                            <a href="{{ url('/approvalgeneral') }}" type="button" class="btn btn-violet btn-wth-icon icon-wthot-bg btn-sm text-white">
-                                <span class="icon-label">
-                                    <i class="fa fa-file"></i>
-                                </span>
-                                <span class="btn-text">รออนุมัติ</span>
-                            </a>
-
-                            <a href="{{ url('approvalgeneral/history') }}" type="button" class="btn btn-secondary btn-wth-icon icon-wthot-bg btn-sm text-white">
-                                <span class="icon-label">
-                                    <i class="fa fa-list"></i>
-                                </span>
-                                <span class="btn-text">ประวัติ</span>
-                            </a>
-                            <hr>
-                            <div id="calendar"></div>
-                        </div>
-                    </div> --}}
                     <div class="row mb-2">
                             <div class="col-md-6">
                                 <h5 class="hk-sec-title">ตารางข้อมูลการอนุมัติลูกค้าใหม่ (นอกแผน)</h5>
