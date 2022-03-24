@@ -24,7 +24,7 @@
                     <div class="row mb-2">
                         <div class="col-sm-12 col-md-7">
                             <!-- <h5 class="hk-sec-title">ตารางรายงานเข้าพบลูกค้า<span style="color: rgb(128, 19, 0);">(ประจำปี <?php echo thaidate('Y', date('Y-m-d')); ?>)</span></h5> -->
-                            <h5 class="hk-sec-title">ตารางรายงานเข้าพบลูกค้า<span style="color: rgb(128, 19, 0);">(ประจำปี <?php echo $year+543; ?>)</span></h5>
+                            <h5 class="hk-sec-title">ตารางรายงานเข้าเยี่ยมลูกค้า<span style="color: rgb(128, 19, 0);">(ประจำปี <?php echo $year+543; ?>)</span></h5>
                         </div>
                         <div class="col-sm-12 col-md-5">
                             <!-- ------ -->
