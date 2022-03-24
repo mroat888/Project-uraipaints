@@ -238,12 +238,12 @@ License: You must have a valid license purchased only from themeforest to legall
                             <ul id="customer" class="nav flex-column collapse collapse-level-1">
                                 <li class="nav-item">
                                     <ul class="nav flex-column">
-                                        <li class="nav-item {{ (request()->is('customer-api')) ? 'btn2' : '' }}">
-                                            <a class="nav-link" href="{{ url('customer-api') }}">
+                                        <!-- <li class="nav-item {{-- (request()->is('customer-api')) ? 'btn2' : '' --}}">
+                                            <a class="nav-link" href="{{-- url('customer-api') --}}">
                                                 <i class="ion ion-md-people" style="color: #044067;"></i>
                                                 <span class="nav-link-text">ทะเบียนลูกค้า API</span>
                                             </a>
-                                        </li>
+                                        </li> -->
                                         <li class="nav-item {{ (request()->is('customer')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('customer') }}">
                                                 <i class="ion ion-md-people" style="color: #044067;"></i>
@@ -253,7 +253,7 @@ License: You must have a valid license purchased only from themeforest to legall
                                         <li class="nav-item {{ (request()->is('lead')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('/lead') }}">
                                                 <i class="ion ion-md-person-add" style="color: #044067;"></i>
-                                                <span class="nav-link-text">ลูกค้าใหม่</span>
+                                                <span class="nav-link-text">ลูกค้าเป้าหมาย</span>
                                             </a>
                                         </li>
                                     </ul>
