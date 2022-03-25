@@ -141,19 +141,48 @@
                                         <tbody>
                                         @if($grouptop_api['code'] == 200)
                                             @foreach($grouptop_api['data'] as $key => $value)
-                                            <tr>
-                                                <td>{{ ++$key }}</td>
-                                                <td>{{ $value['pdgroup_id'] }}</td>
-                                                <td>{{ $value['pdgroup_name'] }}</td>
-                                                <td style="text-align:center;">{{ number_format($value['customers']) }}</td>
-                                                <td style="text-align:right;">{{ number_format($value['sales'],2) }}</td>
-                                                <td style="text-align:right;">{{ number_format($value['credits'],2) }}</td>
-                                                <td style="text-align:right;">{{ number_format($value['netSales'],2) }}</td>
-                                                <td style="text-align:right;">{{ number_format($value['%Credit'],2) }}%</td>
-                                            </tr>
+                                                @if($key < 10)
+                                                    <tr>
+                                                        <td>{{ ++$key }}</td>
+                                                        <td style="text-align:center;">{{ $value['pdgroup_id'] }}</td>
+                                                        <td>{{ $value['pdgroup_name'] }}</td>
+                                                        <td style="text-align:center;">{{ number_format($value['customers']) }}</td>
+                                                        <td style="text-align:right;">{{ number_format($value['sales'],2) }}</td>
+                                                        <td style="text-align:right;">{{ number_format($value['credits'],2) }}</td>
+                                                        <td style="text-align:right;">{{ number_format($value['netSales'],2) }}</td>
+                                                        <td style="text-align:right;">{{ number_format($value['%Credit'],2) }}%</td>
+                                                    </tr>
+                                                @else
+                                                    @if($key == 10)
+                                                    <tr class="btn_underten" rel="1">
+                                                        <td colspan="8" class="bg-primary text-white" style="text-align:center;">
+                                                            ดูรายการอื่นเพิ่มเติม
+                                                        </td>
+                                                    </tr>
+                                                    @endif
+                                                
+                                                    <tr class="underten" rel="1">
+                                                        <td>{{ ++$key }}</td>
+                                                        <td style="text-align:center;">{{ $value['pdgroup_id'] }}</td>
+                                                        <td>{{ $value['pdgroup_name'] }}</td>
+                                                        <td style="text-align:center;">{{ number_format($value['customers']) }}</td>
+                                                        <td style="text-align:right;">{{ number_format($value['sales'],2) }}</td>
+                                                        <td style="text-align:right;">{{ number_format($value['credits'],2) }}</td>
+                                                        <td style="text-align:right;">{{ number_format($value['netSales'],2) }}</td>
+                                                        <td style="text-align:right;">{{ number_format($value['%Credit'],2) }}%</td>
+                                                    </tr>
+                                                @endif
                                             @endforeach
                                         @endif
                                         </tbody>
+                                        <tfoot style="font-weight: bold; text-align:center">
+                                            <td colspan="3" align="center">ทั้งหมด</td>
+                                            <td class="text-success">{{ number_format($summary_group_api['sum_group_customers'],0) }}</td>
+                                            <td class="text-success" style="text-align:right;">{{ number_format($summary_group_api['sum_group_sales'],2) }}</td>
+                                            <td class="text-danger" style="text-align:right;">{{ number_format($summary_group_api['sum_group_credits'],2) }}</td>
+                                            <td class="text-success" style="text-align:right;">{{ number_format($summary_group_api['sum_group_netSales'],2) }}</td>
+                                            <td class="text-danger" style="text-align:right;">{{ number_format($summary_group_api['sum_group_persentcredit'],2) }}%</td>
+                                        </tfoot>
                                     </table>
                                 </div>
 
@@ -177,19 +206,48 @@
                                         <tbody>
                                         @if($subgrouptop_api['code'] == 200)
                                             @foreach($subgrouptop_api['data'] as $key => $value)
-                                            <tr>
-                                                <td>{{ ++$key }}</td>
-                                                <td>{{ $value['subgroup_id'] }}</td>
-                                                <td>{{ $value['subgroup_name'] }}</td>
-                                                <td style="text-align:center;">{{ number_format($value['customers']) }}</td>
-                                                <td style="text-align:right;">{{ number_format($value['sales'],2) }}</td>
-                                                <td style="text-align:right;">{{ number_format($value['credits'],2) }}</td>
-                                                <td style="text-align:right;">{{ number_format($value['netSales'],2) }}</td>
-                                                <td style="text-align:right;">{{ number_format($value['%Credit'],2) }}%</td>
-                                            </tr>
+                                                @if($key < 10)
+                                                    <tr>
+                                                        <td>{{ ++$key }}</td>
+                                                        <td style="text-align:center;">{{ $value['subgroup_id'] }}</td>
+                                                        <td>{{ $value['subgroup_name'] }}</td>
+                                                        <td style="text-align:center;">{{ number_format($value['customers']) }}</td>
+                                                        <td style="text-align:right;">{{ number_format($value['sales'],2) }}</td>
+                                                        <td style="text-align:right;">{{ number_format($value['credits'],2) }}</td>
+                                                        <td style="text-align:right;">{{ number_format($value['netSales'],2) }}</td>
+                                                        <td style="text-align:right;">{{ number_format($value['%Credit'],2) }}%</td>
+                                                    </tr>
+                                                @else
+                                                    @if($key == 10)
+                                                    <tr class="btn_underten" rel="2">
+                                                        <td colspan="8" class="bg-warning text-white" style="text-align:center;">
+                                                            ดูรายการอื่นเพิ่มเติม
+                                                        </td>
+                                                    </tr>
+                                                    @endif
+
+                                                    <tr class="underten" rel="2">
+                                                        <td>{{ ++$key }}</td>
+                                                        <td style="text-align:center;">{{ $value['subgroup_id'] }}</td>
+                                                        <td>{{ $value['subgroup_name'] }}</td>
+                                                        <td style="text-align:center;">{{ number_format($value['customers']) }}</td>
+                                                        <td style="text-align:right;">{{ number_format($value['sales'],2) }}</td>
+                                                        <td style="text-align:right;">{{ number_format($value['credits'],2) }}</td>
+                                                        <td style="text-align:right;">{{ number_format($value['netSales'],2) }}</td>
+                                                        <td style="text-align:right;">{{ number_format($value['%Credit'],2) }}%</td>
+                                                    </tr>
+                                                @endif
                                             @endforeach
                                         @endif
                                         </tbody>
+                                        <tfoot style="font-weight: bold; text-align:center">
+                                            <td colspan="3" align="center">ทั้งหมด</td>
+                                            <td class="text-success">{{ number_format($summary_subgroup_api['sum_subgroup_customers'],0) }}</td>
+                                            <td class="text-success" style="text-align:right;">{{ number_format($summary_subgroup_api['sum_subgroup_sales'],2) }}</td>
+                                            <td class="text-danger" style="text-align:right;">{{ number_format($summary_subgroup_api['sum_subgroup_credits'],2) }}</td>
+                                            <td class="text-success" style="text-align:right;">{{ number_format($summary_subgroup_api['sum_subgroup_netSales'],2) }}</td>
+                                            <td class="text-danger" style="text-align:right;">{{ number_format($summary_subgroup_api['sum_subgroup_persentcredit'],2) }}%</td>
+                                        </tfoot>
                                     </table>
                                 </div>
 
@@ -213,19 +271,48 @@
                                         <tbody>
                                         @if($pdlisttop_api['code'] == 200)
                                             @foreach($pdlisttop_api['data'] as $key => $value)
-                                            <tr>
-                                                <td>{{ ++$key }}</td>
-                                                <td>{{ $value['pdlist_id'] }}</td>
-                                                <td>{{ $value['pdlist_name'] }}</td>
-                                                <td style="text-align:center;">{{ number_format($value['customers']) }}</td>
-                                                <td style="text-align:right;">{{ number_format($value['sales'],2) }}</td>
-                                                <td style="text-align:right;">{{ number_format($value['credits'],2) }}</td>
-                                                <td style="text-align:right;">{{ number_format($value['netSales'],2) }}</td>
-                                                <td style="text-align:right;">{{ number_format($value['%Credit'],2) }}%</td>
-                                            </tr>
+                                                @if($key < 10)
+                                                    <tr>
+                                                        <td>{{ ++$key }}</td>
+                                                        <td style="text-align:center;">{{ $value['pdlist_id'] }}</td>
+                                                        <td>{{ $value['pdlist_name'] }}</td>
+                                                        <td style="text-align:center;">{{ number_format($value['customers']) }}</td>
+                                                        <td style="text-align:right;">{{ number_format($value['sales'],2) }}</td>
+                                                        <td style="text-align:right;">{{ number_format($value['credits'],2) }}</td>
+                                                        <td style="text-align:right;">{{ number_format($value['netSales'],2) }}</td>
+                                                        <td style="text-align:right;">{{ number_format($value['%Credit'],2) }}%</td>
+                                                    </tr>
+                                                @else
+                                                    @if($key == 10)
+                                                    <tr class="btn_underten" rel="3">
+                                                        <td colspan="8" class="bg-success text-white" style="text-align:center;">
+                                                            ดูรายการอื่นเพิ่มเติม
+                                                        </td>
+                                                    </tr>
+                                                    @endif
+
+                                                    <tr class="underten" rel="3">
+                                                    <td>{{ ++$key }}</td>
+                                                        <td style="text-align:center;">{{ $value['pdlist_id'] }}</td>
+                                                        <td>{{ $value['pdlist_name'] }}</td>
+                                                        <td style="text-align:center;">{{ number_format($value['customers']) }}</td>
+                                                        <td style="text-align:right;">{{ number_format($value['sales'],2) }}</td>
+                                                        <td style="text-align:right;">{{ number_format($value['credits'],2) }}</td>
+                                                        <td style="text-align:right;">{{ number_format($value['netSales'],2) }}</td>
+                                                        <td style="text-align:right;">{{ number_format($value['%Credit'],2) }}%</td>
+                                                    </tr>
+                                                @endif
                                             @endforeach
                                         @endif
                                         </tbody>
+                                        <tfoot style="font-weight: bold; text-align:center">
+                                            <td colspan="3" align="center">ทั้งหมด</td>
+                                            <td class="text-success">{{ number_format($summary_pdlist_api['sum_pdlist_customers'],0) }}</td>
+                                            <td class="text-success" style="text-align:right;">{{ number_format($summary_pdlist_api['sum_pdlist_sales'],2) }}</td>
+                                            <td class="text-danger" style="text-align:right;">{{ number_format($summary_pdlist_api['sum_pdlist_credits'],2) }}</td>
+                                            <td class="text-success" style="text-align:right;">{{ number_format($summary_pdlist_api['sum_pdlist_netSales'],2) }}</td>
+                                            <td class="text-danger" style="text-align:right;">{{ number_format($summary_pdlist_api['sum_pdlist_persentcredit'],2) }}%</td>
+                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
@@ -243,7 +330,20 @@
     @include('layouts.footer')
 @endsection
 
+<style>
+    .underten{
+        display:none;
+    }
+</style>
+
 <script>
+
+    $(document).on('click','.btn_underten', function(){
+        var rel = $(this).attr("rel");
+        $('.underten[rel=' + rel + ']').toggle();
+        $('.btn_underten[rel=' + rel + ']').toggle();
+    });
+
     function swith_div(rel){
         $("#div_table_group").hide();
         $("#div_table_subgroup").hide();
