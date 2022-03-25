@@ -49,20 +49,20 @@
                                     <thead>
                                         <tr>
                                             <th rowspan="2">#</th>
-                                            <th colspan="2" style="text-align:center;">รายการสินค้า</th>
-                                            <th colspan="3" style="text-align:center;">รายการยอดขายสินค้าใหม่</th>
-                                            <th colspan="2" style="text-align:center;">คิดเป็นเปอร์เซ็น (%)</th>
+                                            <th colspan="2" style="text-align:center;">รายละเอียดเป้าสินค้าใหม่</th>
+                                            <th colspan="5" style="text-align:center;">ทำได้</th>
+                                            <!-- <th colspan="3" style="text-align:center;">รายการยอดขายสินค้าใหม่</th>
+                                            <th colspan="2" style="text-align:center;">คิดเป็นเปอร์เซ็น (%)</th> -->
                                         </tr>
 
-                                        <tr>
-                                            <th>ชื่อสินค้าใหม่</th>
+                                        <tr style="text-align:center">
+                                            <th>ชื่อเป้า</th>
                                             <th>ระยะเวลา</th>
                                             <th>เป้าทั้งหมด</th>
                                             <th>เป้าที่ทำได้</th>
-                                            <th>ผลต่าง</th>
-                                            <!-- <th>จำนวนร้านค้า</th> -->
-                                            <th>เป้าที่ทำได้</th>
-                                            <th>ผลต่าง</th>
+                                            <th>คิดเป็น%</th>
+                                            <th>คงเหลือ</th>
+                                            <th>คิดเป็น%</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -79,16 +79,20 @@
                                                 $rows2 = count($sellers_api[$i]);
                                                 $no=0;
                                                 for($in=0 ; $in< $rows2; $in++){
+                                                    list($fyear,$fmonth,$fday) = explode("-",$sellers_api[$i][$in]['fromdate']);
+                                                    $fromdate = $fday."/".$fmonth."/".$fyear;
+
+                                                    list($tyear,$tmonth,$tday) = explode("-",$sellers_api[$i][$in]['todate']);
+                                                    $todate = $tday."/".$tmonth."/".$tyear;
                                     ?>
-                                                    <tr>
+                                                    <tr style="text-align:center">
                                                         <th scope="row">{{ ++$no }}</th>
-                                                        <td>{{ $sellers_api[$i][$in]['description'] }}</td>
-                                                        <td>{{ $sellers_api[$i][$in]['fromdate'] }} - {{ $sellers_api[$i][$in]['todate'] }}</td>
+                                                        <td style="text-align:left;">{{ $sellers_api[$i][$in]['description'] }}</td>
+                                                        <td>{{ $fromdate }} - {{ $todate }}</td>
                                                         <td>{{ number_format($sellers_api[$i][$in]['Target'],2) }}</td>
                                                         <td>{{ number_format($sellers_api[$i][$in]['Sales'],2) }}</td>
-                                                        <td>{{ number_format($sellers_api[$i][$in]['Diff'],2) }}</td>
-                                                        <!-- <td>-</td> -->
                                                         <td>{{ number_format($sellers_api[$i][$in]['persent_sale'],2) }}%</td>
+                                                        <td>{{ number_format($sellers_api[$i][$in]['Diff'],2) }}</td>
                                                         <td>{{ number_format($sellers_api[$i][$in]['persent_diff'],2) }}%</td>
                                                     </tr>
                                     <?php
@@ -97,13 +101,12 @@
                                         }
                                     ?>
                                     </tbody>
-                                    <tfoot style="font-weight: bold;">
+                                    <tfoot style="font-weight: bold; text-align:center">
                                         <td colspan="3" align="center">ทั้งหมด</td>
                                         <td class="text-success">{{ number_format($summary_sellers_api['sum_target'],2) }}</td>
                                         <td class="text-success">{{ number_format($summary_sellers_api['sum_sales'],2) }}</td>
-                                        <td class="text-danger">{{ number_format($summary_sellers_api['sum_diff'],2) }}</td>
-                                        <!-- <td class="text-secondary">-</td> -->
                                         <td class="text-success">{{ number_format($summary_sellers_api['sum_persent_sale'],2) }}%</td>
+                                        <td class="text-danger">{{ number_format($summary_sellers_api['sum_diff'],2) }}</td>
                                         <td class="text-danger">{{ number_format($summary_sellers_api['sum_persent_diff'],2) }}%</td>
                                     </tfoot>
                                 </table>

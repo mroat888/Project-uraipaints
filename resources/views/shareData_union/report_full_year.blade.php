@@ -1,7 +1,3 @@
-@extends('layouts.master')
-
-@section('content')
-
 <!-- Breadcrumb -->
 <nav class="hk-breadcrumb" aria-label="breadcrumb">
     <ol class="breadcrumb breadcrumb-light bg-transparent">
@@ -31,9 +27,6 @@
                         </div>
                         <div class="col-sm-12 col-md-4">
                             <!-- ------ -->
-                            @php 
-                                $action_search = "data_report_full-year/search";
-                            @endphp
                             <form action="{{ url($action_search) }}" method="post" enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-row">
@@ -118,10 +111,12 @@
                         </div>
                     </div>
 
+                    
+
                     <div class="row">
                         <div class="col-sm">
                             <div class="table-responsive-sm">
-                                <div id="div_table_group">
+                            <div id="div_table_group">
                                     <table class="table table-sm table-hover table-bordered">
                                         <thead>
                                             <tr>
@@ -129,9 +124,9 @@
                                             </tr>
                                             <tr>
                                                 <th>#</th>
-                                                <th>รหัสสินค้า</th>
                                                 <th>ชื่อสินค้า</th>
                                                 <th>จำนวนร้านค้า</th>
+                                                <th>ผู้แทนขาย</th>
                                                 <th>ยอดขายรวม</th>
                                                 <th>ยอดคืนรวม</th>
                                                 <th>ยอดขายสุทธิ</th>
@@ -143,9 +138,9 @@
                                             @foreach($grouptop_api['data'] as $key => $value)
                                             <tr>
                                                 <td>{{ ++$key }}</td>
-                                                <td>{{ $value['pdgroup_id'] }}</td>
-                                                <td>{{ $value['pdgroup_name'] }}</td>
+                                                <td>{{ $value['name'] }}</td>
                                                 <td style="text-align:center;">{{ number_format($value['customers']) }}</td>
+                                                <td style="text-align:center;">{{ number_format($value['Sellers']) }}</td>
                                                 <td style="text-align:right;">{{ number_format($value['sales'],2) }}</td>
                                                 <td style="text-align:right;">{{ number_format($value['credits'],2) }}</td>
                                                 <td style="text-align:right;">{{ number_format($value['netSales'],2) }}</td>
@@ -165,9 +160,9 @@
                                             </tr>
                                             <tr>
                                                 <th>#</th>
-                                                <th>รหัสสินค้า</th>
                                                 <th>ชื่อสินค้า</th>
                                                 <th>จำนวนร้านค้า</th>
+                                                <th>ผู้แทนขาย</th>
                                                 <th>ยอดขายรวม</th>
                                                 <th>ยอดคืนรวม</th>
                                                 <th>ยอดขายสุทธิ</th>
@@ -179,9 +174,9 @@
                                             @foreach($subgrouptop_api['data'] as $key => $value)
                                             <tr>
                                                 <td>{{ ++$key }}</td>
-                                                <td>{{ $value['subgroup_id'] }}</td>
-                                                <td>{{ $value['subgroup_name'] }}</td>
+                                                <td>{{ $value['name'] }}</td>
                                                 <td style="text-align:center;">{{ number_format($value['customers']) }}</td>
+                                                <td style="text-align:center;">{{ number_format($value['Sellers']) }}</td>
                                                 <td style="text-align:right;">{{ number_format($value['sales'],2) }}</td>
                                                 <td style="text-align:right;">{{ number_format($value['credits'],2) }}</td>
                                                 <td style="text-align:right;">{{ number_format($value['netSales'],2) }}</td>
@@ -201,9 +196,9 @@
                                             </tr>
                                             <tr>
                                                 <th>#</th>
-                                                <th>รหัสสินค้า</th>
                                                 <th>ชื่อสินค้า</th>
                                                 <th>จำนวนร้านค้า</th>
+                                                <th>ผู้แทนขาย</th>
                                                 <th>ยอดขายรวม</th>
                                                 <th>ยอดคืนรวม</th>
                                                 <th>ยอดขายสุทธิ</th>
@@ -215,9 +210,9 @@
                                             @foreach($pdlisttop_api['data'] as $key => $value)
                                             <tr>
                                                 <td>{{ ++$key }}</td>
-                                                <td>{{ $value['pdlist_id'] }}</td>
-                                                <td>{{ $value['pdlist_name'] }}</td>
+                                                <td>{{ $value['name'] }}</td>
                                                 <td style="text-align:center;">{{ number_format($value['customers']) }}</td>
+                                                <td style="text-align:center;">{{ number_format($value['Sellers']) }}</td>
                                                 <td style="text-align:right;">{{ number_format($value['sales'],2) }}</td>
                                                 <td style="text-align:right;">{{ number_format($value['credits'],2) }}</td>
                                                 <td style="text-align:right;">{{ number_format($value['netSales'],2) }}</td>
@@ -228,20 +223,17 @@
                                         </tbody>
                                     </table>
                                 </div>
+
                             </div>
                         </div>
                     </div>
+                    
                 </section>
             </div>
 
         </div>
         <!-- /Row -->
     </div>
-
-
-@section('footer')
-    @include('layouts.footer')
-@endsection
 
 <script>
     function swith_div(rel){
@@ -252,9 +244,8 @@
         $(rel).fadeIn();
     }
 </script>
-
  <!-- EChartJS JavaScript -->
  <script src="{{asset('public/template/vendors/echarts/dist/echarts-en.min.js')}}"></script>
  <script src="{{asset('public/template/barcharts/barcharts-data.js')}}"></script>
-@endsection
+
 
