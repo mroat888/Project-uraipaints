@@ -38,7 +38,7 @@ class PromotionController extends Controller
 
     public function index()
     {
-        $list_promotion = News::where('status', "P")->orderBy('id', 'desc')->get();
+        $list_promotion = News::where('status', "P")->orderBy('status_promotion', 'desc')->orderBy('news_date_last', 'asc')->get();
         return view('admin.pomotions', compact('list_promotion'));
     }
 
@@ -190,5 +190,18 @@ class PromotionController extends Controller
 
         return view('admin.promotions_detail', compact('data'));
     }
+
+    public function search_promotion_status_promotion(Request $request)
+    {
+        if ($request->status_promotion != '') {
+            $list_promotion = News::where('status', "P")->where('status_promotion', $request->status_promotion)
+            ->orderBy('status_usage', 'desc')->orderBy('id', 'desc')->get();
+            return view('admin.pomotions', compact('list_promotion'));
+        }else{
+            $list_promotion = News::where('status', "P")->orderBy('status_usage', 'desc')->orderBy('id', 'desc')->get();
+            return view('admin.pomotions', compact('list_promotion'));
+        }
+    }
+
 
 }

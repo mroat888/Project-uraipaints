@@ -90,8 +90,20 @@ class NewsController extends Controller
 
     public function index()
     {
-        $list_news = News::where('status', "N")->orderBy('id', 'desc')->get();
+        $list_news = News::where('status', "N")->orderBy('status_usage', 'desc')->orderBy('id', 'desc')->get();
         return view('admin.news', compact('list_news'));
+    }
+
+    public function search_news_status_usage(Request $request)
+    {
+        if ($request->status_usage != '') {
+            $list_news = News::where('status_usage', $request->status_usage)->where('status', "N")
+            ->orderBy('status_usage', 'desc')->orderBy('id', 'desc')->get();
+            return view('admin.news', compact('list_news'));
+        }else{
+            $list_news = News::where('status', "N")->orderBy('status_usage', 'desc')->orderBy('id', 'desc')->get();
+            return view('admin.news', compact('list_news'));
+        }
     }
 
     public function index_banner()
@@ -205,17 +217,28 @@ class NewsController extends Controller
         return back();
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $data = News::where('id', $id)->get();
+        DB::beginTransaction();
+        try {
+
+            $data = News::where('id', $request->news_id_delete)->get();
         foreach ($data as $value) {
             if (!empty($value->news_image)) {
                 $path1 = 'public/upload/NewsImage/';
                 unlink($path1 . $value->news_image);
             }
         }
-        News::where('id', $id)->delete();
-        return back();
+        News::where('id', $request->news_id_delete)->delete();
+        DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+        }
+
+        return response()->json([
+            'status' => 200,
+        ]);
     }
 
     public function banner_store(Request $request)
@@ -305,6 +328,27 @@ class NewsController extends Controller
             }
         }
         NewsBanner::where('id', $id)->delete();
+        return back();
+    }
+
+    public function update_status_use($id){
+        $chk = DB::table('news_promotions')->where('id', $id)->first();
+
+        if ($chk->status_usage == 1) {
+            DB::table('news_promotions')->where('id', $chk->id)
+            ->update([
+                'status_usage' => 0,
+                'updated_at' => date('Y-m-d H:i:s'),
+                'updated_by' =>  Auth::user()->id,
+            ]);
+        }else {
+            DB::table('news_promotions')->where('id', $chk->id)
+            ->update([
+                'status_usage' => 1,
+                'updated_at' => date('Y-m-d H:i:s'),
+                'updated_by' =>  Auth::user()->id,
+            ]);
+        }
         return back();
     }
 }

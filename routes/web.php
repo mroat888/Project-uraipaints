@@ -418,8 +418,10 @@ Route::get('admin/news', 'NewsController@index');
 Route::post('admin/create_news', 'NewsController@store');
 Route::get('admin/edit_news/{id}', 'NewsController@edit');
 Route::post('admin/update_news', 'NewsController@update');
-Route::get('admin/delete_news/{id}', 'NewsController@destroy');
+Route::post('admin/delete_news', 'NewsController@destroy');
 Route::get('admin/news_detail/{id}', 'NewsController@admin_news_detail');
+Route::post('admin/search-news-status-usage', 'NewsController@search_news_status_usage');
+Route::get('admin/update-news-status-use/{id}', 'NewsController@update_status_use');
 
 // News Banner
 Route::get('admin/newsBanner', 'NewsController@index_banner');
@@ -428,6 +430,7 @@ Route::get('admin/edit_banner/{id}', 'NewsController@banner_edit');
 Route::post('admin/update_banner', 'NewsController@banner_update');
 Route::get('admin/delete_banner/{id}', 'NewsController@banner_destroy');
 
+
 Route::get('admin/fontendPromotions', 'PromotionController@admin_frontend_promotion');
 Route::get('admin/pomotion', 'PromotionController@index');
 Route::post('admin/create_promotion', 'PromotionController@store');
@@ -435,6 +438,8 @@ Route::get('admin/edit_promotion/{id}', 'PromotionController@edit');
 Route::post('admin/update_promotion', 'PromotionController@update');
 Route::get('admin/delete_promotion/{id}', 'PromotionController@destroy');
 Route::get('admin/promotion_detail/{id}', 'PromotionController@admin_promotion_detail');
+Route::post('admin/search-promotion-status-usage', 'PromotionController@search_promotion_status_promotion');
+// Route::get('admin/update-promotion-status-use/{id}', 'PromotionController@update_status_use');
 
 
 // Product New
@@ -444,9 +449,11 @@ Route::post('admin/create_product_new', 'ProductNewController@store');
 Route::get('admin/edit_product_new/{id}', 'ProductNewController@edit');
 Route::post('admin/update_product_new', 'ProductNewController@update');
 Route::get('admin/delete_product_new/{id}', 'ProductNewController@destroy');
+Route::post('admin/search-productNew-status-usage', 'ProductNewController@search_news_status_usage');
+Route::get('admin/update-productNew-status-use/{id}', 'ProductNewController@update_status_use');
 
 
-// Product New
+// Product Property
 Route::get('admin/product_property', 'Admin\ProductPropertyController@index');
 Route::post('admin/create_product_property', 'Admin\ProductPropertyController@store');
 Route::get('admin/edit_product_property/{id}', 'Admin\ProductPropertyController@edit');

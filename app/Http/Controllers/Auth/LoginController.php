@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\News;
 use App\Providers\RouteServiceProvider;
 use App\UsageHistory;
 use Carbon\Carbon;
@@ -66,6 +67,18 @@ class LoginController extends Controller
 
             //     DB::rollback();
             // }
+            $list_promotion = News::where('status', "P")->get();
+            foreach ($list_promotion as $key => $value) {
+                if ($value->news_date <= Carbon::today()->format('Y-m-d') && $value->news_date_last < Carbon::today()->format('Y-m-d'))
+                {
+                    $data2 = News::find($value->id);
+                    $data2->status_promotion  = 0;
+                    $data2->updated_at        = Carbon::now();
+                    $data2->update();
+
+                }
+            }
+
             UsageHistory::create([
                 'date' => Carbon::now(),
                 'emp_id' => Auth::user()->id,

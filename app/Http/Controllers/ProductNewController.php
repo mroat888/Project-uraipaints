@@ -15,8 +15,20 @@ class ProductNewController extends Controller
 
     public function index()
     {
-        $product_new = ProductNew::orderBy('id', 'desc')->get();
+        $product_new = ProductNew::orderBy('status_usage', 'desc')->orderBy('id', 'desc')->get();
         return view('admin.product_new', compact('product_new'));
+    }
+
+    public function search_news_status_usage(Request $request)
+    {
+        if ($request->status_usage != '') {
+            $product_new = ProductNew::where('status_usage', $request->status_usage)
+            ->orderBy('status_usage', 'desc')->orderBy('id', 'desc')->get();
+            return view('admin.product_new', compact('product_new'));
+        }else{
+            $product_new = ProductNew::orderBy('status_usage', 'desc')->orderBy('id', 'desc')->get();
+            return view('admin.product_new', compact('product_new'));
+        }
     }
 
     public function frontend_product_new()
@@ -110,6 +122,7 @@ class ProductNewController extends Controller
 
     public function update(Request $request)
     {
+        // dd($request);
         DB::beginTransaction();
         try {
             $path = 'upload/ProductNewImage';
@@ -178,6 +191,27 @@ class ProductNewController extends Controller
             }
 
             ProductNew::where('id', $id)->delete();
+        return back();
+    }
+
+    public function update_status_use($id){
+        $chk = DB::table('product_new')->where('id', $id)->first();
+
+        if ($chk->status_usage == 1) {
+            DB::table('product_new')->where('id', $chk->id)
+            ->update([
+                'status_usage' => 0,
+                'updated_at' => date('Y-m-d H:i:s'),
+                'updated_by' =>  Auth::user()->id,
+            ]);
+        }else {
+            DB::table('product_new')->where('id', $chk->id)
+            ->update([
+                'status_usage' => 1,
+                'updated_at' => date('Y-m-d H:i:s'),
+                'updated_by' =>  Auth::user()->id,
+            ]);
+        }
         return back();
     }
 }

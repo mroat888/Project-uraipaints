@@ -5,7 +5,6 @@
  <nav class="hk-breadcrumb" aria-label="breadcrumb">
     <ol class="breadcrumb breadcrumb-light bg-transparent">
         <li class="breadcrumb-item active">ข่าวสาร</li>
-        {{-- <li class="breadcrumb-item active" aria-current="page">ปฎิทินกิจกรรม</li> --}}
     </ol>
 </nav>
 <!-- /Breadcrumb -->
@@ -30,9 +29,21 @@
                 <div class="row">
                     <div class="col-sm">
                         <div class="table-wrap">
-                            <div class="hk-pg-header mb-10">
+                            <div class="hk-pg-header mb-15">
                                 <div>
                                 </div>
+                                <form action="{{url('admin/search-news-status-usage')}}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                <div class="d-flex">
+                                    <select name="status_usage" class="form-control custom-select">
+                                        <option selected disabled>เลือกข้อมูล</option>
+                                            <option value="">ทั้งหมด</option>
+                                            <option value="1">ใช้งาน</option>
+                                            <option value="0">ไม่ใช้งาน</option>
+                                    </select>
+                                    <button type="submit" class="btn btn-info btn-sm mr-15 ml-2">ค้นหา</button>
+                                </div>
+                            </form>
                             </div>
                             <div class="table-responsive col-md-12">
                                 <table id="datable_1" class="table table-hover">
@@ -40,8 +51,10 @@
                                     <tr>
                                         <th>#</th>
                                         <th>เรื่อง</th>
-                                        {{-- <th>ป้ายกำกับ</th> --}}
                                         <th>วันที่แจ้งเตือน</th>
+                                        <th>รูปภาพ</th>
+                                        <th>สถานะ</th>
+                                        <th>Link URL</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -50,17 +63,34 @@
                                     <tr>
                                         <td>{{$key + 1}}</td>
                                         <td>{{$value->news_title}}</td>
-                                        {{-- <td>เพิ่มเติม</td> --}}
                                         <td>{{$value->news_date}}</td>
+                                        <td><img src="{{ isset($value->news_image) ? asset('public/upload/NewsImage/' . $value->news_image) : '' }}" width="100"></td>
+                                        <td>
+                                            @switch($value->status_usage)
+                                                @case(0)
+                                                <span class='badge badge-soft-danger mx-1' style='font-size: 14px;'>ไม่ใช้งาน</span>
+                                                    @break
+                                                    @case(1)
+                                                    <span class='badge badge-soft-success mx-1' style='font-size: 14px;'>ใช้งานอยู่</span>
+                                                        @break
+                                            @endswitch
+                                        </td>
+                                        <td><a href="{{$value->url}}" style="color: rgb(11, 8, 141);">{!! Str::limit($value->url,20) !!}</a></td>
                                         <td>
                                             <div class="button-list">
-                                                {{-- <button class="btn btn-icon btn-primary mr-10">
-                                                    <span class="btn-icon-wrap"><i data-feather="feather"></i></span></button> --}}
+                                                <a href="{{ url('admin/update-news-status-use', $value->id)}}" class="btn btn-icon btn-teal mr-10">
+                                                    <span class="btn-icon-wrap"><i data-feather="power"></i></span></a>
                                                     <button onclick="edit_modal({{ $value->id }})"
                                                         class="btn btn-icon btn-warning mr-10" data-toggle="modal" data-target="#editNews">
                                                         <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
-                                                        <a href="{{url('admin/delete_news', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
-                                                            <span class="btn-icon-wrap"><i data-feather="trash-2"></i></span></a>
+                                                        @if ($value->status_usage == 0)
+                                                        <button id="btn_news_delete" class="btn btn-icon btn-danger mr-10"
+                                                             value="{{ $value->id }}">
+                                                                <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-trash"></i></h4>
+                                                                </button>
+                                                        {{-- <a href="{{url('admin/delete_news', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
+                                                            <span class="btn-icon-wrap"><i data-feather="trash-2"></i></span></a> --}}
+                                                        @endif
                                             </div>
                                         </td>
                                     </tr>
@@ -191,7 +221,71 @@
         </div>
     </div>
 
+    <!-- Modal Delete Saleplan -->
+    <div class="modal fade" id="ModalNewsDelete" tabindex="-1" role="dialog" aria-labelledby="ModalNewsDelete"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form id="from_news_delete" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">คุณต้องการลบข้อมูลข่าวสารใช่หรือไม่</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="text-align:center;">
+                        <h3>คุณต้องการลบข้อมูลข่าวสารใช่หรือไม่ ?</h3>
+                        <input class="form-control" id="news_id_delete" name="news_id_delete" type="hidden" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                        <button type="submit" class="btn btn-primary" id="btn_save_edit">ยืนยัน</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
+        $(document).on('click', '#btn_news_delete', function() { // ปุ่มลบ Slaplan
+        let news_id_delete = $(this).val();
+        $('#news_id_delete').val(news_id_delete);
+        $('#ModalNewsDelete').modal('show');
+    });
+
+    $("#from_news_delete").on("submit", function(e) {
+            e.preventDefault();
+            //var formData = $(this).serialize();
+            var formData = new FormData(this);
+            console.log(formData);
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('admin/delete_news') }}',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    console.log(response);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Deleted!',
+                        text: "ลบข้อมูลข่าวสารเรียบร้อยแล้ว",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    $('#ModalNewsDelete').modal('hide');
+                    $('#btn_news_delete').prop('disabled', true);
+                    location.reload();
+                },
+                error: function(response) {
+                    console.log("error");
+                    console.log(response);
+                }
+            });
+        });
+
         $("#form_insert_news").on("submit", function (e) {
             e.preventDefault();
             // var formData = $(this).serialize();

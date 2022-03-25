@@ -5,7 +5,6 @@
  <nav class="hk-breadcrumb" aria-label="breadcrumb">
     <ol class="breadcrumb breadcrumb-light bg-transparent">
         <li class="breadcrumb-item active">สินค้าใหม่</li>
-        {{-- <li class="breadcrumb-item active" aria-current="page">ปฎิทินกิจกรรม</li> --}}
     </ol>
 </nav>
 <!-- /Breadcrumb -->
@@ -32,35 +31,65 @@
                             <div class="hk-pg-header mb-10">
                                 <div>
                                 </div>
+                                <form action="{{url('admin/search-productNew-status-usage')}}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                <div class="d-flex">
+                                    <select name="status_usage" class="form-control custom-select">
+                                        <option selected disabled>เลือกข้อมูล</option>
+                                            <option value="">ทั้งหมด</option>
+                                            <option value="1">ใช้งาน</option>
+                                            <option value="0">ไม่ใช้งาน</option>
+                                    </select>
+                                    <button type="submit" class="btn btn-info btn-sm mr-15 ml-2">ค้นหา</button>
+                                </div>
+                            </form>
                             </div>
                             <div class="table-responsive col-md-12">
                                 <table id="datable_1" class="table table-hover">
                                 <thead>
-                                    <tr align="center">
+                                    <tr>
                                         <th>#</th>
                                         <th>เรื่อง</th>
+                                        <th>รูปภาพ</th>
+                                        <th>สถานะ</th>
                                         <th>URL</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($product_new as $key => $value)
-                                    <tr align="center">
+                                    <tr>
                                         <td>{{$key + 1}}</td>
                                         <td>{{$value->product_title}}</td>
-                                        <td>{{$value->product_url}}</td>
-                                        <td style="width: 10px;">
-                                            {{-- <div class="button-list"> --}}
-                                                    <button onclick="edit_modal({{ $value->id }})"
-                                                        class="btn btn-icon btn-warning mr-10" data-toggle="modal" data-target="#editProductNew">
-                                                        <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
-                                            {{-- </div> --}}
+                                        <td><img src="{{ isset($value->product_image) ? asset('public/upload/ProductNewImage/' . $value->product_image) : '' }}" width="100"></td>
+                                        <td>
+                                            @switch($value->status_usage)
+                                                @case(0)
+                                                <span class='badge badge-soft-danger mx-1' style='font-size: 14px;'>ไม่ใช้งาน</span>
+                                                    @break
+                                                    @case(1)
+                                                    <span class='badge badge-soft-success mx-1' style='font-size: 14px;'>ใช้งานอยู่</span>
+                                                        @break
+                                            @endswitch
                                         </td>
-                                        <td align="left">
+                                        <td><a href="{{$value->product_url	}}" style="color: rgb(11, 8, 141);">{!! Str::limit($value->product_url,20) !!}</a></td>
+                                        {{-- <td>
+                                                    <button onclick="edit_modal({{ $value->id }})"
+                                                        class="btn btn-icon btn-warning" data-toggle="modal" data-target="#editProductNew">
+                                                        <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
+                                        </td> --}}
+                                        <td>
                                             <form action="{{url('admin/delete_product_new', $value->id)}}" method="get">
                                                 @csrf
-                                            <button type="button" class="btn btn-icon btn-danger delete_product_new">
-                                                <span class="btn-icon-wrap"><i data-feather="trash-2"></i></span></button>
+                                                <a href="{{ url('admin/update-productNew-status-use', $value->id)}}" class="btn btn-icon btn-teal">
+                                                    <span class="btn-icon-wrap"><i data-feather="power"></i></span></a>
+                                                <div onclick="edit_modal({{ $value->id }})"
+                                                    class="btn btn-icon btn-warning" data-toggle="modal" data-target="#editProductNew">
+                                                    <span class="btn-icon-wrap"><i data-feather="edit"></i></span></div>
+                                                    @if ($value->status_usage == 0)
+                                                    <button type="button" class="btn btn-icon btn-danger delete_product_new">
+                                                        <span class="btn-icon-wrap"><i data-feather="trash-2"></i></span></button>
+                                                    @endif
                                             </form>
                                         </td>
                                     </tr>
@@ -108,10 +137,6 @@
                                 <label for="firstName">รูปภาพ</label>
                                 <input type="file" name="image" class="form-control">
                             </div>
-                            {{-- <div class="col-md-6 form-group">
-                                <label for="firstName">วันที่แจ้งเตือน</label>
-                                <input class="form-control" name="news_date" type="date">
-                            </div> --}}
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -149,7 +174,6 @@
                         </div>
                         <div class="form-group">
                             <label for="username">Link URL</label>
-                            {{-- <input type="text" name="" id="get_create"> --}}
                             <input class="form-control" id="get_url" name="product_url_edit" type="text">
                         </div>
                         <div class="row">
@@ -157,10 +181,6 @@
                                 <label for="firstName">รูปภาพ</label>
                                 <input type="file" name="image_edit" id="get_image" class="form-control">
                             </div>
-                            {{-- <div class="col-md-6 form-group">
-                                <label for="firstName">วันที่แจ้งเตือน</label>
-                                <input class="form-control" name="news_date_edit" id="get_date" type="date" required>
-                            </div> --}}
                         </div>
                         <input type="hidden" name="id" id="get_id">
                 </div>
@@ -230,6 +250,7 @@
                     $('#get_detail').val(data.dataEdit.product_detail);
                     // $('#get_image').val(data.dataEdit.product_image);
                     $('#get_url').val(data.dataEdit.product_url);
+                    // $('#get_image').val(data.dataEdit.product_image);
 
                     $('#editProductNew').modal('toggle');
                 }
