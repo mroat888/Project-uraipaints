@@ -101,11 +101,23 @@
                                     <span style="font-size: 18px; color:#6b73bd;">สถานะลูกค้า <span style="font-size: 14px; color:black;"> เปลี่ยนสถานะลูกค้าเป็นลูกค้าใหม่ หรือลบออก</span></span>
                                     <p class="mt-10">
                                     @php
-                                        if($customer_shops->shop_status == "1"){
-                                            $is_disabled = "disabled";
+                                        if($customer_shops->shop_status == "0"){
+                                            foreach($customer_shops_saleplan as $shop_saleplan){
+                                                $saleplan_result = DB::table('customer_shops_saleplan_result')
+                                                    ->where('customer_shops_saleplan_id', $shop_saleplan->id)
+                                                    ->where('cust_result_status', '2')
+                                                    ->orderBy('id', 'desc')
+                                                    ->get();
+                                                if($saleplan_result->isNotEmpty()){
+                                                    $is_disabled = "";
+                                                }else{
+                                                    $is_disabled = "disabled";
+                                                }
+                                            }  
                                         }else{
-                                            $is_disabled = "";
+                                            $is_disabled = "disabled";
                                         }
+                                        
                                     @endphp
 
                                         <button type="button" id="btn_update" class="btn btn_default btn_green btn-teal btn-sm btn-rounded" value="{{ $customer_shops->id }}" style="font-size: 14px;" {{ $is_disabled }}>อัพเดตเป็นลูกค้าใหม่</button>
@@ -138,7 +150,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="row">
-                                    <div class="col-md-6 col-lg-3">
+                                    <div class="col-md-4 col-lg-4">
                                         <p class="detail_listcus">
                                             <i class="ion ion-md-calendar"></i>
                                             <span> เดือน</span> :
@@ -150,7 +162,7 @@
                                             {{ thaidate('F Y', $monthly_plans->month_date) }}
                                         </p>
                                     </div>
-                                    <div class="col-md-6 col-lg-9">
+                                    <div class="col-md-4 col-lg-4">
                                         <p class="detail_listcus"><i class="ion ion-md-person"></i>
                                             <span> พนักงาน</span> :
                                             @php
@@ -160,6 +172,16 @@
                                                     ->first();
                                             @endphp
                                                 {{ $user->name }}
+                                        </p>
+                                    </div>
+                                    <div class="col-md-4 col-lg-4">
+                                        <p class="detail_listcus"><i class="ion ion-md-person"></i>
+                                            <span> สถานะลูกค้า</span> :
+                                            @if($cust_shops_saleplan->is_monthly_plan == "N")
+                                                <span class="badge badge-soft-danger" style="font-size: 12px;">นอกแผน</span>
+                                            @else
+                                                <span class="badge badge-soft-success" style="font-size: 12px;">ในแผน</span>
+                                            @endif
                                         </p>
                                     </div>
                                     <div class="col-md-12">

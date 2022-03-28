@@ -70,6 +70,7 @@
                                             <th style="font-weight: bold;">ที่อยู่</th>
                                             <th style="font-weight: bold;">ชื่อผู้ติดต่อ</th>
                                             <th style="font-weight: bold;">เบอร์โทรศัพท์</th>
+                                            <th style="font-weight: bold;">สถานะลูกค้า</th>
                                             <th style="font-weight: bold;" class="text-center">Action</th>
                                         </tr>
                                     </thead>
@@ -110,6 +111,20 @@
                                             <td>{{ $customer_contact_name }}</td>
                                             <td>{{ $customer_contact_phone }}</td>
                                             <td>
+                                                @php 
+                                                    $customer_shops_saleplan = DB::table('customer_shops_saleplan')
+                                                        ->where('customer_shop_id', $shop->id)
+                                                        ->where('is_monthly_plan', 'N')
+                                                        ->get();
+                                                @endphp
+
+                                                @if($customer_shops_saleplan->isNotEmpty())
+                                                     <span class="badge badge-soft-danger" style="font-size: 12px;">นอกแผน</span>
+                                                @else
+                                                    <span class="badge badge-soft-success" style="font-size: 12px;">ในแผน</span>
+                                                @endif
+                                            </td>
+                                            <td>
                                                 <div class="button-list">
                                                     <!-- <button class="btn btn-icon btn-warning mr-10" onclick="edit_modal({{ $shop->id }})" data-toggle="modal" data-target="#editCustomer">
                                                         <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-create"></i></h4></button> -->
@@ -136,9 +151,72 @@
         <!-- /Row -->
     </div>
     <!-- /Container -->
+
+     <!-- Modal Edit -->
+     <div class="modal fade" id="editCustomer" tabindex="-1" role="dialog" aria-labelledby="editCustomer" aria-hidden="true">
+        @include('customer.lead_edit')
+    </div>
+
+    <script>
+$(document).on('click','.btn_editshop', function(e){
+        e.preventDefault();
+		let shop_id = $(this).val();
+
+        $.ajax({
+            method: 'GET',
+            url: '{{ url("/edit_customerLead") }}/'+shop_id,
+            datatype: 'json',
+            success: function(response){
+                //console.log(response);
+                if(response.status == 200){
+                    $("#editCustomer").modal('show');
+                    $("#edit_shop_id").val(shop_id);
+                    $("#edit_shop_name").val(response.dataEdit.shop_name);
+                    if(response.customer_contacts != null){
+                        $("#edit_cus_contacts_id").val(response.customer_contacts.id);
+                        $("#edit_contact_name").val(response.customer_contacts.customer_contact_name);
+                        $("#edit_customer_contact_phone").val(response.customer_contacts.customer_contact_phone);
+                    }
+                    $("#edit_shop_address").val(response.dataEdit.shop_address);
+
+                    $.each(response.shop_province, function(key, value){
+                        if(value.PROVINCE_ID == response.dataEdit.shop_province_id){
+                            $('#edit_province').append('<option value='+value.PROVINCE_ID+' selected>'+value.PROVINCE_NAME+'</option>')	;
+                        }else{
+                            $('#edit_province').append('<option value='+value.PROVINCE_ID+'>'+value.PROVINCE_NAME+'</option>')	;
+                        }
+                    });
+
+                    $.each(response.shop_amphur, function(key, value){
+                        if(value.AMPHUR_ID == response.dataEdit.shop_amphur_id){
+                            $('#edit_amphur').append('<option value='+value.AMPHUR_ID+' selected>'+value.AMPHUR_NAME+'</option>')	;
+                        }else{
+                            $('#edit_amphur').append('<option value='+value.AMPHUR_ID+'>'+value.AMPHUR_NAME+'</option>')	;
+                        }
+                    });
+
+                    $.each(response.shop_district, function(key, value){
+                        if(value.DISTRICT_ID == response.dataEdit.shop_district_id){
+                            $('#edit_district').append('<option value='+value.DISTRICT_ID+' selected>'+value.DISTRICT_NAME+'</option>')	;
+                        }else{
+                            $('#edit_district').append('<option value='+value.DISTRICT_ID+'>'+value.DISTRICT_NAME+'</option>')	;
+                        }
+                    });
+
+                    $("#edit_shop_zipcode").val(response.dataEdit.shop_zipcode);
+
+
+                }
+            }
+        });
+
+    })
+</script>
 @endsection
 
 @section('footer')
     @include('layouts.footer')
 @endsection
+
+
 

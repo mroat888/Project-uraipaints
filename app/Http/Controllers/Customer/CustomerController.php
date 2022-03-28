@@ -440,7 +440,7 @@ class CustomerController extends Controller
             ->where('customer_shop_id', $data['customer_shops']->id)
             ->orderBy('monthly_plan_id', 'desc')
             ->get();
-
+        
         return view('customer.customer_lead_detail', $data);
     }
 

@@ -66,6 +66,7 @@
                                             <th style="font-weight: bold;">ที่อยู่</th>
                                             <th style="font-weight: bold;">ชื่อผู้ติดต่อ</th>
                                             <th style="font-weight: bold;">เบอร์โทรศัพท์</th>
+                                            <th style="font-weight: bold;">สถานะลูกค้า</th>
                                             <th style="font-weight: bold;" class="text-center">Action</th>
                                         </tr>
                                     </thead>
@@ -106,6 +107,20 @@
                                                 @endphp
                                             <td>{{ $customer_contact_name }}</td>
                                             <td>{{ $customer_contact_phone }}</td>
+                                            <td>
+                                                @php 
+                                                    $customer_shops_saleplan = DB::table('customer_shops_saleplan')
+                                                        ->where('customer_shop_id', $shop->id)
+                                                        ->where('is_monthly_plan', 'N')
+                                                        ->get();
+                                                @endphp
+
+                                                @if($customer_shops_saleplan->isNotEmpty())
+                                                     <span class="badge badge-soft-danger" style="font-size: 12px;">นอกแผน</span>
+                                                @else
+                                                    <span class="badge badge-soft-success" style="font-size: 12px;">ในแผน</span>
+                                                @endif
+                                            </td>
                                             <td>
                                                 <div class="button-list">
                                                     <button class="btn btn-icon btn-warning mr-10 btn_editshop" value="{{ $shop->id }}">
