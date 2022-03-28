@@ -32,6 +32,18 @@
                             <div class="hk-pg-header mb-10">
                                 <div>
                                 </div>
+                                <form action="{{url('admin/search-promotion-status-usage')}}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                <div class="d-flex">
+                                    <select name="status_promotion" class="form-control custom-select">
+                                        <option selected disabled>เลือกข้อมูล</option>
+                                            <option value="">ทั้งหมด</option>
+                                            <option value="1">Active</option>
+                                            <option value="0">Expired</option>
+                                    </select>
+                                    <button type="submit" class="btn btn-info btn-sm mr-15 ml-2">ค้นหา</button>
+                                </div>
+                            </form>
                             </div>
                             <div class="table-responsive col-md-12">
                                 <table id="datable_1" class="table table-hover">
@@ -42,6 +54,7 @@
                                         <th>รูปภาพ</th>
                                         <th>วันที่เริ่ม</th>
                                         <th>วันที่สิ้นสุด</th>
+                                        <th>สถานะ</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -53,6 +66,14 @@
                                         <td><img src="{{ isset($value->news_image) ? asset('public/upload/PromotionImage/' . $value->news_image) : '' }}" width="100"></td>
                                         <td>{{$value->news_date}}</td>
                                         <td>{{$value->news_date_last}}</td>
+                                        <td>
+                                            @if ($value->status_promotion != "NULL")
+                                            <span class='badge badge-soft-success mx-1' style='font-size: 14px;'>Active</span>
+                                            @else
+                                            <span class='badge badge-soft-danger mx-1' style='font-size: 14px;'>Expired</span>
+
+                                            @endif
+                                        </td>
                                         <td>
                                             <div class="button-list">
                                                 {{-- <button class="btn btn-icon btn-primary mr-10">

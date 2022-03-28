@@ -17,6 +17,7 @@ class News extends Model
         'status_promotion',
         'status',
         'status_share',
+        'status_usage',
         'created_by',
         'updated_by',
     ];
