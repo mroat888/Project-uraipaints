@@ -45,9 +45,9 @@
                                 @if($customer_shops->shop_status == "0")
                                     <span id="shop_status_name_lead" class="btn_purple badge badge-info pa-10 float-right" style="font-size: 14px;">ลูกค้าใหม่</span>
                                 @elseif($customer_shops->shop_status == "1")
-                                    <span id="shop_status_name_cus" class="btn_purple badge badge-violet pa-10 float-right" style="font-size: 14px;">ลูกค้าเป้าหมาย</span>
-                                @elseif($customer_shops->shop_status == "2")
                                     <span id="shop_status_name_cus" class="btn_purple badge badge-green pa-10 float-right" style="font-size: 14px;">ทะเบียนลูกค้า</span>
+                                @elseif($customer_shops->shop_status == "2")
+                                    <span id="shop_status_name_cus" class="btn_purple badge badge-danger pa-10 float-right" style="font-size: 14px;">ลูกค้าที่ถูกลบ</span>
                                 @endif
                                 </div>
                             </div>
