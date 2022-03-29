@@ -1,7 +1,3 @@
-@extends('layouts.master')
-
-@section('content')
-
 <!-- Breadcrumb -->
 <nav class="hk-breadcrumb" aria-label="breadcrumb">
     <ol class="breadcrumb breadcrumb-light bg-transparent">
@@ -31,7 +27,7 @@
                         </div>
                         <div class="col-sm-12 col-md-4">
                             <!-- ------ -->
-                                <form action="{{ url('data_report_historical-year/search') }}" method="post" enctype="multipart/form-data">
+                                <form action="{{ url($action_search) }}" method="post" enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-row">
                                         <div class="form-group col-md-4">
@@ -77,7 +73,7 @@
                                     <thead>
                                         <tr style="text-align:center">
                                             <th rowspan="2">ปี</th>
-                                            <th colspan="2" style="text-align:center;">จำนวน</th>
+                                            <th colspan="3" style="text-align:center;">จำนวน</th>
                                             <th rowspan="2">มูลค่าการขาย</th>
                                             <th colspan="2" style="text-align:center;">รับคืน</th>
                                             <th rowspan="2">มูลค่าขายสุทธิ</th>
@@ -86,6 +82,7 @@
 
                                         <tr style="text-align:center">
                                             <th>ลูกค้า</th>
+                                            <th>ผู้แทนขาย</th>
                                             <th>เดือน</th>
                                             <th>มูลค่า</th>
                                             <th>%</th>
@@ -95,11 +92,12 @@
                                     @php
                                         $sum_present_sale = 0;
                                     @endphp
-                                    @if(!empty($yearadmin_api))
+                                    @if(!is_null($yearadmin_api))
                                         @foreach($yearadmin_api as $key => $value)
                                         <tr style="text-align:center">
                                             <td>{{ $value['year'] }}</td>
                                             <td>{{ number_format($value['customers']) }}</td>
+                                            <td>{{ number_format($value['Sellers']) }}</td>
                                             <td>{{ number_format($value['months']) }}</td>
                                             <td style="text-align:right">{{ number_format($value['sales']) }}</td>
                                             <td style="text-align:right">{{ number_format($value['credits']) }}</td>
@@ -115,7 +113,7 @@
                                     </tbody>
                                     <tfoot style="font-weight: bold; text-align:center">
                                         <td style="text-align:center">รวม</td>
-                                        <td colspan="2" style="text-align:center"></td>
+                                        <td colspan="3" style="text-align:center"></td>
                                         <td style="text-align:right">{{ number_format($summary_yearadmin_api['sum_sales']) }}</td>
                                         <td style="text-align:right">{{ number_format($summary_yearadmin_api['sum_credits']) }}</td>
                                         <td>{{ number_format($summary_yearadmin_api['sum_persent_credits'],2) }}%</td>
@@ -137,10 +135,15 @@
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
                         <div class="col-md-6">
-                            <canvas id="myChart" style="height: 294px"></canvas>
+                            <canvas id="myChart_2" style="height: 294px"></canvas>
                         </div>
                         <div class="col-md-6">
-                            <canvas id="myChart_2" style="height: 294px"></canvas>
+                            <canvas id="myChart_3" style="height: 294px"></canvas>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <canvas id="myChart" style="height: 294px"></canvas>
                         </div>
                     </div>
                 </section>
@@ -150,11 +153,30 @@
 
     </div>
 
-@section('footer')
-    @include('layouts.footer')
-@endsection
+
 
 <script src="{{ asset('public/template/graph/Chart.bundle.js') }}"></script>
+<script>
+    var ctx = document.getElementById("myChart_3").getContext('2d');
+        const data = {
+            labels: [
+                'Red',
+                'Blue',
+                'Yellow'
+            ],
+            datasets: [{
+                label: 'My First Dataset',
+                data: [300, 50, 100],
+                backgroundColor: [
+                'rgb(255, 99, 132)',
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)'
+                ],
+                hoverOffset: 4
+            }]
+        };
+    );
+</script>
 
 <script>
     var ctx = document.getElementById("myChart").getContext('2d');
@@ -244,14 +266,10 @@
     );
 </script>
 
-@section('footer')
-    @include('layouts.footer')
-@endsection
+
 
  <!-- EChartJS JavaScript -->
  <script src="{{asset('public/template/vendors/echarts/dist/echarts-en.min.js')}}"></script>
  <script src="{{asset('public/template/barcharts/barcharts-data.js')}}"></script>
-
-@endsection
 
 
