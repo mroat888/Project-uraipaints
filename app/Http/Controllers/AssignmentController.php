@@ -251,7 +251,30 @@ class AssignmentController extends Controller
     {
         DB::beginTransaction();
         try {
-            DB::table('assignments')->where('id',$request->id)
+
+            $pathFle = 'upload/AssignmentFile';
+            $uploadfile = '';
+            if (!empty($request->file('assignment_fileupload_update'))) {
+                $uploadF = $request->file('assignment_fileupload_update');
+                $file_name = 'file-' . time() . '.' . $uploadF->getClientOriginalExtension();
+                $uploadF->move(public_path($pathFle), $file_name);
+                $uploadfile = $file_name;
+            }
+
+            if ($uploadfile != '') {
+                DB::table('assignments')->where('id',$request->id)
+            ->update([
+                'assign_work_date' => $request->date,
+                'assign_title' => $request->assign_title,
+                'assign_detail' => $request->assign_detail,
+                'assign_emp_id' => $request->assign_emp_id_edit,
+                'assign_fileupload' => $uploadfile,
+                'assign_status' => 3,
+                'assign_approve_id' => Auth::user()->id,
+                'updated_by' => Auth::user()->id,
+            ]);
+            }else{
+                DB::table('assignments')->where('id',$request->id)
             ->update([
                 'assign_work_date' => $request->date,
                 'assign_title' => $request->assign_title,
@@ -261,6 +284,7 @@ class AssignmentController extends Controller
                 'assign_approve_id' => Auth::user()->id,
                 'updated_by' => Auth::user()->id,
             ]);
+            }
 
             DB::commit();
 

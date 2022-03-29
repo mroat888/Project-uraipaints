@@ -5,7 +5,7 @@
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
             <li class="breadcrumb-item"><a href="#">Page</a></li>
-            <li class="breadcrumb-item active" aria-current="page">งานที่ได้รับมอบหมาย</li>
+            <li class="breadcrumb-item active" aria-current="page">รายการสั่งงาน</li>
         </ol>
     </nav>
     <!-- /Breadcrumb -->
@@ -15,7 +15,7 @@
          <!-- Title -->
         <div class="hk-pg-header mb-10">
             <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-clipboard"></i></span>ตารางงานที่ได้รับมอบหมาย</h4>
+                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-clipboard"></i></span>รายการสั่งงาน</h4>
             </div>
             <div class="d-flex">
                 {{-- <button type="button" class="btn btn-primary btn-sm btn-rounded px-3" data-toggle="modal" data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button> --}}
@@ -30,7 +30,7 @@
 
                         <div class="row mb-2">
                             <div class="col-sm-12 col-md-3">
-                                <h5 class="hk-sec-title">ตารางงานที่ได้รับมอบหมาย</h5>
+                                <h5 class="hk-sec-title">ตารางรายการสั่งงาน</h5>
                             </div>
                         </div>
 
@@ -68,9 +68,9 @@
                                         <thead style="text-align:center;">
                                             <tr>
                                                 <th>#</th>
+                                                <th>ไฟล์แนบ</th>
                                                 <th>เรื่อง</th>
                                                 <th>วันที่</th>
-                                                {{-- <th>ลูกค้า</th> --}}
                                                 <th>สถานะ</th>
                                                 <th>Action</th>
                                             </tr>
@@ -79,9 +79,15 @@
                                             @foreach ($assignments as $key => $value)
                                         <tr>
                                             <td>{{$key + 1}}</td>
+                                            <td>
+                                                @if ($value->assign_fileupload)
+                                                <span class="badge badge-soft-primary" style="font-size: 12px;">มี</span>
+                                                @else
+                                                <span class="badge badge-soft-secondary" style="font-size: 12px;">ไม่มี</span>
+                                                @endif
+                                            </td>
                                             <td>{{$value->assign_title}}</td>
                                             <td>{{$value->assign_work_date}}</td>
-                                            {{-- <td>{{$value->name}}</td> --}}
                                             <td>
                                                 @if ($value->assign_result_status == 0)
                                                     <span class="badge badge-soft-secondary" style="font-size: 12px;">รอดำเนินการ</span>
@@ -141,7 +147,12 @@
                                 <p>รายละเอียด : </p>
                                 <p  id="get_detail" class="card-text"></p>
                             </div>
-                            <div class="my-3" id="img_show"></div>
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label for="firstName">ไฟล์เอกสาร : </label>
+                                    <div id="img_show_text" class="mt-5"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -179,7 +190,7 @@
                 async: false,
                 success: function(data) {
                     // console.log(data);
-                    $('#img_show').children().remove().end();
+                    $('#img_show_text').children().remove().end();
 
                     $('#get_assign_id').val(data.dataResult.id);
                     $('#get_detail').text(data.dataResult.assign_detail);
@@ -192,9 +203,9 @@
                         ext = data.dataResult.assign_fileupload.split('.').pop().toLowerCase();
                         console.log(img_name);
                         if(ext == "pdf"){
-                            $('#img_show').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');
+                            $('#img_show_text').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');
                         }else{
-                            $('#img_show').append('<img src = "'+img_name+'" style="max-width:100%;">');
+                            $('#img_show_text').append('<img src = "'+img_name+'" style="max-width:100%;">');
                         }
                     }
 
