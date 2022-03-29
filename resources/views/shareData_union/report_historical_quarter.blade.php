@@ -71,16 +71,17 @@
                             <div id="table_list" class="table-responsive col-md-12">
                                 <table id="datable_1" class="table table-hover table-bordered" style="width:100%;">
                                     <thead>
-                                        <tr>
+                                        <tr style="text-align:center">
                                             <th rowspan = "3" style="width:200px;"><strong>#</strong></th>
                                             <th colspan="12" style="text-align:center;"><strong>รายงานเทียบย้อนหลัง (ไตรมาส)</strong></th>
                                         </tr>
-                                        <tr>
+                                        <tr style="text-align:center">
                                             <th><strong>มกราคม - มีนาคม</strong></th>
                                             <th><strong>เมษายน - มิถุนายน</strong></th>
                                             <th><strong>กรกฎาคม - กันยายน</strong></th>
                                             <th><strong>ตุลาคม - ธันวาคม</strong></th>
                                             <th><strong>รวมทั้งปี</strong></th>
+                                            <th><strong>%ยอดขาย</strong></th>
                                         </tr>
                                     </thead>
                                     </tbody>
@@ -92,8 +93,8 @@
                                             @php
                                                 $data_label[] = $year_value;
                                             @endphp
-                                        <tr>
-                                            <td>{{ $year_value }}</td>
+                                        <tr style="text-align:right">
+                                            <td style="text-align:center">{{ $year_value }}</td>
                                             <td>
                                                 @if(isset($quarter_api_year[$key]['q1'][4]))
                                                     {{ number_format($quarter_api_year[$key]['q1'][4],2) }}
@@ -135,12 +136,25 @@
                                                     @endif
                                                 @endif
                                             </td>
+                                            <td style="text-align:center;">
+                                                @php 
+                                                    $sum_all = $sum_netSales_q1+$sum_netSales_q2+$sum_netSales_q3+$sum_netSales_q4;
+                                                    if(isset($total_year[$key]['total_year'])){
+                                                        if($total_year[$key]['total_year'] != 0){
+                                                            $persent_sale = ($total_year[$key]['total_year']*100)/$sum_all;
+                                                        }else{
+                                                            $persent_sale = 0;
+                                                        }
+                                                    }
+                                                @endphp
+                                                {{ number_format($persent_sale,2) }}
+                                            </td>
                                         </tr>
                                         @endforeach
                                     </tbody>
                                     <tfoot>
-                                        <tr style="font-weight: bold;">
-                                            <td style=" text-align:center; font-weight: bold;">ทั้งหมด</td>
+                                        <tr style="font-weight: bold; text-align:right;">
+                                            <td style=" text-align:center; font-weight: bold; text-align:center;">ทั้งหมด</td>
                                             <td style="font-weight: bold;">{{ number_format($sum_netSales_q1,2) }}</td>
                                             <td style="font-weight: bold;">{{ number_format($sum_netSales_q2,2) }}</td>
                                             <td style="font-weight: bold;">{{ number_format($sum_netSales_q3,2) }}</td>
@@ -149,6 +163,7 @@
                                                 $sum_all = $sum_netSales_q1+$sum_netSales_q2+$sum_netSales_q3+$sum_netSales_q4;
                                             @endphp
                                             <td style="font-weight: bold;">{{ number_format($sum_all,2) }}</td>
+                                            <td style="font-weight: bold; text-align:center;">{{ number_format(100,2) }}</td>
                                         </tr>
                                     </tfoot>
                                 </table>

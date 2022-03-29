@@ -137,10 +137,17 @@
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
                         <div class="col-md-6">
+                            <canvas id="myChart_2" style="height: 294px"></canvas>
+                        </div>
+                        <div class="col-md-6">
+                            <canvas id="myChart_3" style="height: 294px"></canvas>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-6">
                             <canvas id="myChart" style="height: 294px"></canvas>
                         </div>
                         <div class="col-md-6">
-                            <canvas id="myChart_2" style="height: 294px"></canvas>
                         </div>
                     </div>
                 </section>
@@ -155,6 +162,55 @@
 @endsection
 
 <script src="{{ asset('public/template/graph/Chart.bundle.js') }}"></script>
+
+
+</div>
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <canvas id="myChart" style="height: 294px"></canvas>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <!-- /Row -->
+
+    </div>
+
+
+
+<script src="{{ asset('public/template/graph/Chart.bundle.js') }}"></script>
+
+
+
+<script>
+  var data = {
+  labels: [{{ $chat_year }}],
+  datasets: [{
+    label: 'ยอดขาย',
+    data: [{{ $chat_persent_sale }}],
+    backgroundColor: [
+      'rgb(255, 99, 132)',
+      'rgb(54, 162, 235)',
+      'rgb(255, 205, 86)'
+    ],
+    hoverOffset: 4
+  }]
+};
+
+var config = {
+    type: 'pie',
+    data: data,
+    options: {}
+  };
+
+  var myChart = new Chart(
+    document.getElementById('myChart_3'),
+    config
+  );
+
+</script>
+
 
 <script>
     var ctx = document.getElementById("myChart").getContext('2d');

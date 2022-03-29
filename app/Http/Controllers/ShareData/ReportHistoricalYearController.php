@@ -38,6 +38,8 @@ class ReportHistoricalYearController extends Controller
             $chat_customer = "";
             $chat_netsales = "";
             $chat_year = "";
+            $chat_persent_sale = "";
+
             foreach($year_api['data'] as $value){
                 $sum_sales += $value['sales'];
                 $sum_credits += $value['credits'];
@@ -47,7 +49,7 @@ class ReportHistoricalYearController extends Controller
             $count_row = count($year_api['data']); // นับจำนวน array
             $crow = 1;
             foreach($year_api['data'] as $value){
-                $persent_sale =  ($value['netSales'] * 100 ) / $sum_netSales;
+                $persent_sale =  round(($value['netSales'] * 100 ) / $sum_netSales);
                 $yearadmin_api[] = [
                     'year' => $value['year'],
                     'customers' => $value['customers'],
@@ -64,17 +66,21 @@ class ReportHistoricalYearController extends Controller
                     if(!is_null($value['customers'])){
                         $chat_customer .= $value['customers'].",";
                         $chat_netsales .= $value['netSales'].",";
+                        $chat_persent_sale .= $persent_sale.",";
                     }else{
                         $chat_customer .= "0,";
                         $chat_netsales .= "0,";
+                        $chat_persent_sale .= "0,";
                     }
                 }else{
                     if(!is_null($value['customers'])){
                         $chat_customer .= $value['customers'];
                         $chat_netsales .= $value['netSales'];
+                        $chat_persent_sale .= $persent_sale.",";
                     }else{
                         $chat_customer .= "0";
                         $chat_netsales .= "0";
+                        $chat_persent_sale .= "0";
                     }
                 }
                 // -- Caht data
@@ -95,7 +101,7 @@ class ReportHistoricalYearController extends Controller
 
         }
 
-        return view('shareData.report_historical_year', compact('yearadmin_api', 'summary_yearadmin_api', 'chat_year', 'chat_customer', 'chat_netsales'));
+        return view('shareData.report_historical_year', compact('yearadmin_api', 'summary_yearadmin_api', 'chat_year', 'chat_customer', 'chat_netsales', 'chat_persent_sale'));
     }
 
     public function search(Request $request){
@@ -137,6 +143,8 @@ class ReportHistoricalYearController extends Controller
             $chat_customer = "";
             $chat_netsales = "";
             $chat_year = "";
+            $chat_persent_sale = "";
+
             foreach($year_api['data'] as $value){
                 $sum_sales += $value['sales'];
                 $sum_credits += $value['credits'];
@@ -146,7 +154,7 @@ class ReportHistoricalYearController extends Controller
             $count_row = count($year_api['data']); // นับจำนวน array
             $crow = 1;
             foreach($year_api['data'] as $value){
-                $persent_sale =  ($value['netSales'] * 100 ) / $sum_netSales;
+                $persent_sale =  round(($value['netSales'] * 100 ) / $sum_netSales);
                 $yearadmin_api[] = [
                     'year' => $value['year'],
                     'customers' => $value['customers'],
@@ -163,17 +171,21 @@ class ReportHistoricalYearController extends Controller
                     if(!is_null($value['customers'])){
                         $chat_customer .= $value['customers'].",";
                         $chat_netsales .= $value['netSales'].",";
+                        $chat_persent_sale .= $persent_sale.",";
                     }else{
                         $chat_customer .= "0,";
                         $chat_netsales .= "0,";
+                        $chat_persent_sale .= "0,";
                     }
                 }else{
                     if(!is_null($value['customers'])){
                         $chat_customer .= $value['customers'];
                         $chat_netsales .= $value['netSales'];
+                        $chat_persent_sale .= $persent_sale.",";
                     }else{
                         $chat_customer .= "0";
                         $chat_netsales .= "0";
+                        $chat_persent_sale .= "0";
                     }
                 }
                 // -- Caht data
@@ -191,10 +203,9 @@ class ReportHistoricalYearController extends Controller
 
             // -- Chat
             $chat_year = $search_year;
-
         }
 
-        return view('shareData.report_historical_year', compact('yearadmin_api', 'summary_yearadmin_api', 'chat_year', 'chat_customer', 'chat_netsales'));
+        return view('shareData.report_historical_year', compact('yearadmin_api', 'summary_yearadmin_api', 'chat_year', 'chat_customer', 'chat_netsales', 'chat_persent_sale'));
     }
 
     /**

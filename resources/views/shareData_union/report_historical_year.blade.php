@@ -156,27 +156,37 @@
 
 
 <script src="{{ asset('public/template/graph/Chart.bundle.js') }}"></script>
+
+
+
 <script>
-    var ctx = document.getElementById("myChart_3").getContext('2d');
-        const data = {
-            labels: [
-                'Red',
-                'Blue',
-                'Yellow'
-            ],
-            datasets: [{
-                label: 'My First Dataset',
-                data: [300, 50, 100],
-                backgroundColor: [
-                'rgb(255, 99, 132)',
-                'rgb(54, 162, 235)',
-                'rgb(255, 205, 86)'
-                ],
-                hoverOffset: 4
-            }]
-        };
-    );
+  var data = {
+  labels: [{{ $chat_year }}],
+  datasets: [{
+    label: 'ยอดขาย',
+    data: [{{ $chat_persent_sale }}],
+    backgroundColor: [
+      'rgb(255, 99, 132)',
+      'rgb(54, 162, 235)',
+      'rgb(255, 205, 86)'
+    ],
+    hoverOffset: 4
+  }]
+};
+
+var config = {
+    type: 'pie',
+    data: data,
+    options: {}
+  };
+
+  var myChart = new Chart(
+    document.getElementById('myChart_3'),
+    config
+  );
+
 </script>
+
 
 <script>
     var ctx = document.getElementById("myChart").getContext('2d');
