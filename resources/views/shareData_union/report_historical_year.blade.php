@@ -138,7 +138,8 @@
                             <canvas id="myChart_2" style="height: 294px"></canvas>
                         </div>
                         <div class="col-md-6">
-                            <canvas id="myChart_3" style="height: 294px"></canvas>
+                            {{-- <canvas id="myChart_3" style="height: 294px"></canvas> --}}
+                            <canvas id="myChart_3" width="400" height="400"></canvas>
                         </div>
                     </div>
                     <div class="row mb-2">
@@ -157,25 +158,26 @@
 
 <script src="{{ asset('public/template/graph/Chart.bundle.js') }}"></script>
 <script>
-    var ctx = document.getElementById("myChart_3").getContext('2d');
-        const data = {
-            labels: [
-                'Red',
-                'Blue',
-                'Yellow'
-            ],
-            datasets: [{
-                label: 'My First Dataset',
-                data: [300, 50, 100],
-                backgroundColor: [
-                'rgb(255, 99, 132)',
-                'rgb(54, 162, 235)',
-                'rgb(255, 205, 86)'
-                ],
-                hoverOffset: 4
-            }]
-        };
-    );
+    const ctx = document.getElementById('myChart_3').getContext('2d');
+const myChart_3 = new Chart(ctx, {
+    type: 'doughnut'
+    data = {
+  labels: [
+    'Red',
+    'Blue',
+    'Yellow'
+  ],
+  datasets: [{
+    label: 'My First Dataset',
+    data: [300, 50, 100],
+    backgroundColor: [
+      'rgb(255, 99, 132)',
+      'rgb(54, 162, 235)',
+      'rgb(255, 205, 86)'
+    ],
+    hoverOffset: 4
+  }]
+};
 </script>
 
 <script>

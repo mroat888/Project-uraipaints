@@ -16,7 +16,7 @@
         <div class="hk-pg-header mb-10">
             <div>
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                    data-feather="gift"></i></span></span>รายละเอียดกลุ่มและทีม</h4>
+                    data-feather="users"></i></span></span>รายละเอียดกลุ่มและทีม</h4>
             </div>
             <div class="d-flex">
                 <a href="{{ url('admin/teamSales')}}" type="button" class="btn btn-secondary btn-sm btn-rounded px-3"> ย้อนกลับ </a>

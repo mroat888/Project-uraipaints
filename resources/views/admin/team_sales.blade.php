@@ -17,6 +17,10 @@
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
                     data-feather="users"></i></span></span>บันทึกรายการกลุ่มและทีม</h4>
             </div>
+            <div class="d-flex">
+                <button type="button" class="btn btn-teal btn-sm btn-rounded px-3" data-toggle="modal"
+                    data-target="#modalInsert"> + เพิ่มใหม่ </button>
+            </div>
         </div>
         <!-- /Title -->
 
@@ -47,6 +51,8 @@
                                             <div class="button-list">
                                                 <a href="{{ url('admin/teamSales_detail', $value->id)}}" class="btn btn-icon btn-info mr-10">
                                                     <span class="btn-icon-wrap"><i data-feather="book"></i></span></a>
+                                                    <button class="btn btn-icon btn-warning mr-10 btn_edit" value="{{ $value->id }}">
+                                                        <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
                                                 <!-- <button class="btn btn-icon btn-danger mr-10">
                                                     <span class="btn-icon-wrap"><i data-feather="trash-2"></i></span></button> -->
                                             </div>
@@ -63,6 +69,69 @@
 
     </div>
     <!-- /Container -->
+
+     <!-- Modal -->
+     <div class="modal fade" id="modalInsert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLarge01"
+     aria-hidden="true">
+     <div class="modal-dialog modal-lg" role="document">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h5 class="modal-title">ฟอร์มบันทึกข้อมูลทีม</h5>
+                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                 </button>
+             </div>
+             <form id="form_insert" enctype="multipart/form-data">
+                 @csrf
+                 <div class="modal-body">
+                     <div class="row">
+                         <div class="col-md-12 form-group">
+                             <label for="team_name">ชื่อทีม</label>
+                             <input type="text" name="team_name" id="team_name" class="form-control">
+                         </div>
+                     </div>
+                 </div>
+                 <div class="modal-footer">
+                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                     <button type="submit" class="btn btn-primary">บันทึก</button>
+                 </div>
+             </form>
+
+         </div>
+     </div>
+ </div>
+
+ <!-- Modal Edit -->
+ <div class="modal fade" id="Modaleditteam" tabindex="-1" role="dialog" aria-labelledby="Modaleditteam"
+ aria-hidden="true">
+ <div class="modal-dialog modal-lg" role="document">
+     <div class="modal-content">
+         <div class="modal-header">
+             <h5 class="modal-title">ฟอร์มแก้ไขข้อมูลทีม</h5>
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                 <span aria-hidden="true">&times;</span>
+             </button>
+         </div>
+         <form id="form_edit" enctype="multipart/form-data">
+             @csrf
+             <div class="modal-body">
+                 <div class="row">
+                     <div class="col-md-12 form-group">
+                         <label for="team_name">ชื่อทีม</label>
+                         <input type="text" name="team_name_edit" id="team_name_edit" class="form-control">
+                     </div>
+                 </div>
+                 <input type="hidden" id="team_id_edit" name="team_id_edit">
+             </div>
+             <div class="modal-footer">
+                 <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                 <button type="submit" class="btn btn-primary">บันทึก</button>
+             </div>
+         </form>
+
+     </div>
+ </div>
+</div>
 
 
 
