@@ -23,18 +23,46 @@
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
-                        <div class="col-sm-12 col-md-6">
+                        <div class="col-sm-12 col-md-7">
                             <h5 class="hk-sec-title">รายงานเทียบย้อนหลัง (รายเดือน)</h5>
                         </div>
-                        <div class="col-sm-12 col-md-6">
+                        <div class="col-sm-12 col-md-5">
                             <!-- ------ -->
-                            <span class="form-inline pull-right">
-                                <!-- <span class="mr-5">เลือก</span> -->
-                                <!-- <input type="month" name="" id="" class="form-control"> -->
-                                {{-- <button class="btn btn-primary btn-sm ml-10 mr-15"><i data-feather="printer"></i> พิมพ์</button> --}}
-                                </span>
-
-                            </span>
+                            <form action="{{ url($action_search) }}" method="post" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4">
+                                            <select name="sel_year_form" id="sel_year_form" class="form-control" required>
+                                                <option value="">--ค้นหาปี--</option>
+                                                <?php
+                                                    list($year,$month,$day) = explode("-", date("Y-m-d"));
+                                                    for($i = 0; $i<3; $i++){
+                                                ?>
+                                                        <option value="{{ $year-$i }}">{{ $year-$i }}</option>
+                                                <?php
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-1" style="text-align:center; margin-top:10px;"> ถึง </div>
+                                        <div class="form-group col-md-4">
+                                            <select name="sel_year_to" id="sel_year_to" class="form-control" required>
+                                                <option value="">--ค้นหาปี--</option>
+                                                <?php
+                                                    list($year,$month,$day) = explode("-", date("Y-m-d"));
+                                                    for($i = 0; $i<3; $i++){
+                                                ?>
+                                                        <option value="{{ $year-$i }}">{{ $year-$i }}</option>
+                                                <?php
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <button type="submit" class="btn btn-teal btn-sm px-3 ml-2">ค้นหา</button>
+                                        </div>
+                                    </div>
+                                </form>
                             <!-- ------ -->
                         </div>
                     </div>
@@ -42,35 +70,21 @@
                     <div class="row">
                         <div class="col-sm">
                             <div id="table_list" class="table-responsive col-md-12">
-                                <table class="table table-hover">
+                                <table id="" class="table table-hover table-bordered" style="width:100%;">
                                     <thead>
-                                    <tr>
-                                        <th>เดือน</th>
-                                        <th class="bg-success text-white">ปี</th>
-                                        <th class="bg-success text-white">พนักงานขาย</th>
-                                        <th class="bg-success text-white"> จำนวนร้านค้า</th>
-                                        <th class="bg-success text-white">ยอดขายรวม</th>
-                                        <th class="bg-success text-white">ยอดคืนรวม</th>
-                                        <th class="bg-success text-white">ยอดขายสุทธิ</th>
-                                        <th class="bg-success text-white">เปอร์เซ็นต์คืน</th>
-
-                                        <th class="bg-info text-white">ปี</th>
-                                        <th class="bg-info text-white">พนักงานขาย</th>
-                                        <th class="bg-info text-white"> จำนวนร้านค้า</th>
-                                        <th class="bg-info text-white">ยอดขายรวม</th>
-                                        <th class="bg-info text-white">ยอดคืนรวม</th>
-                                        <th class="bg-info text-white">ยอดขายสุทธิ</th>
-                                        <th class="bg-info text-white">เปอร์เซ็นต์คืน</th>
-
-                                        <th class="bg-warning text-dark">ปี</th>
-                                        <th class="bg-warning text-dark">พนักงานขาย</th>
-                                        <th class="bg-warning text-dark"> จำนวนร้านค้า</th>
-                                        <th class="bg-warning text-dark">ยอดขายรวม</th>
-                                        <th class="bg-warning text-dark">ยอดคืนรวม</th>
-                                        <th class="bg-warning text-dark">ยอดขายสุทธิ</th>
-                                        <th class="bg-warning text-dark">เปอร์เซ็นต์คืน</th>
-                                
-                                
+                                    <tr style="text-align:center">
+                                        <th rowspan="2"><strong>#</strong></th>
+                                        <th rowspan="2"><strong>เดือน</strong></th>
+                                        <th colspan = "{{ count($search_year) }}"><strong>ยอดขายสุทธิ</strong></th>
+                                        <th colspan = "{{ count($search_year) }}"><strong>ร้านค้า</strong></th>
+                                    </tr>
+                                    <tr style="text-align:center;">
+                                        @foreach($search_year as $key => $value)
+                                            <th class="bg-success text-white">{{ $value }}</th>
+                                        @endforeach
+                                        @foreach($search_year as $key => $value)
+                                            <th class="bg-info text-white">{{ $value }}</th>
+                                        @endforeach
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -80,135 +94,72 @@
                                             'กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'
                                             ];
                                     ?>
+                                    @php 
+                                        $no = 0;
+                                        $chat_data= array();
+                                        $chat_data_label = array();
+                                    @endphp
                                     @if(!empty($month_api))
                                         @for($i=0 ;$i<12; $i++)
-                                            <tr>
+                                            <tr style="text-align:center;">
+                                                <td>{{ ++$no }}</td>
                                                 <td><?php echo $month_array[$i]; ?></td>
-                                                @php 
-                                                    $key_year = 0;
-                                                @endphp
-                                                <td class="bg-success text-white">
-                                                    @if(!empty($month_api[$key_year][$i]['year']))
-                                                        {{ $month_api[$key_year][$i]['year'] }}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty($month_api[$key_year][$i]['Sellers']))
-                                                        {{ number_format($month_api[$key_year][$i]['Sellers']) }}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty($month_api[$key_year][$i]['customers']))
-                                                        {{ number_format($month_api[$key_year][$i]['customers']) }}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty($month_api[$key_year][$i]['sales']))
-                                                        {{ number_format($month_api[$key_year][$i]['sales'],2) }}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty($month_api[$key_year][$i]['credits']))
-                                                        {{ number_format($month_api[$key_year][$i]['credits'],2) }}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty($month_api[$key_year][$i]['netSales']))
-                                                        {{ number_format($month_api[$key_year][$i]['netSales'],) }}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty($month_api[$key_year][$i]['%Credit']))
-                                                        {{ number_format($month_api[$key_year][$i]['%Credit'],2) }}%
-                                                    @endif
-                                                </td>
 
+                                                @foreach($search_year as $key => $value)
+                                                    <td style="text-align:right;">
+                                                        @if(!empty($month_api[$key][$i]['netSales']))
+                                                            {{ number_format($month_api[$key][$i]['netSales'],) }}
+                                                            @php 
+                                                                $chat_data[$key][$i][] = $month_api[$key][$i]['netSales'];
+                                                                $chat_data_label[] = $value;
+                                                            @endphp
+                                                        @endif
+                                                    </td>
+                                                @endforeach
+                                                @foreach($search_year as $key => $value)
+                                                    <td>
+                                                        @if(!empty($month_api[$key][$i]['customers']))
+                                                            {{ number_format($month_api[$key][$i]['customers']) }}
+                                                        @endif
+                                                    </td>
+                                                @endforeach
 
-                                                @php 
-                                                    $key_year = 1;
-                                                @endphp
-                                                <td class="bg-info text-white">
-                                                    @if(!empty($month_api[$key_year][$i]['year']))
-                                                        {{ $month_api[$key_year][$i]['year'] }}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty($month_api[$key_year][$i]['Sellers']))
-                                                        {{ number_format($month_api[$key_year][$i]['Sellers']) }}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty($month_api[$key_year][$i]['customers']))
-                                                        {{ number_format($month_api[$key_year][$i]['customers']) }}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty($month_api[$key_year][$i]['sales']))
-                                                        {{ number_format($month_api[$key_year][$i]['sales'],2) }}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty($month_api[$key_year][$i]['credits']))
-                                                        {{ number_format($month_api[$key_year][$i]['credits'],2) }}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty($month_api[$key_year][$i]['netSales']))
-                                                        {{ number_format($month_api[$key_year][$i]['netSales'],) }}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty($month_api[$key_year][$i]['%Credit']))
-                                                        {{ number_format($month_api[$key_year][$i]['%Credit'],2) }}%
-                                                    @endif
-                                                </td>
-
-
-                                                @php 
-                                                    $key_year = 2;
-                                                @endphp
-                                                <td class="bg-warning text-dark">
-                                                    @if(!empty($month_api[$key_year][$i]['year']))
-                                                        {{ $month_api[$key_year][$i]['year'] }}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty($month_api[$key_year][$i]['Sellers']))
-                                                        {{ number_format($month_api[$key_year][$i]['Sellers']) }}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty($month_api[$key_year][$i]['customers']))
-                                                        {{ number_format($month_api[$key_year][$i]['customers']) }}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty($month_api[$key_year][$i]['sales']))
-                                                        {{ number_format($month_api[$key_year][$i]['sales'],2) }}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty($month_api[$key_year][$i]['credits']))
-                                                        {{ number_format($month_api[$key_year][$i]['credits'],2) }}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty($month_api[$key_year][$i]['netSales']))
-                                                        {{ number_format($month_api[$key_year][$i]['netSales'],) }}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty($month_api[$key_year][$i]['%Credit']))
-                                                        {{ number_format($month_api[$key_year][$i]['%Credit'],2) }}%
-                                                    @endif
-                                                </td>
-                                                
                                             </tr>
                                         @endfor
                                     @endif
-                                    
                                     </tbody>
-
+                                    <tfoot>
+                                        <tr style="text-align:center;">
+                                            <td colspan="2"><strong>รวม</strong></td>
+                                            @foreach($search_year as $key => $value)
+                                                <td style="text-align:right;">
+                                                    @if(!empty($summary[$key]['sum_netSales']))
+                                                        <strong>{{ number_format($summary[$key]['sum_netSales']) }}</strong>
+                                                    @endif
+                                                </td>
+                                            @endforeach
+                                            @foreach($search_year as $key => $value)
+                                                <td>
+                                                    @if(!empty($summary[$key]['sum_customers']))
+                                                        <strong>{{ number_format($summary[$key]['sum_customers']) }}</strong>
+                                                    @endif
+                                                </td>
+                                            @endforeach
+                                        </tr>
+                                        <tr style="text-align:center;">
+                                            <td colspan="2"><strong>% ยอดรวม</strong></td>
+                                            @foreach($search_year as $key => $value)
+                                                <td style="text-align:right;">
+                                                    @if(!empty($summary_present[$key]))
+                                                        <strong>{{ number_format($summary_present[$key],2) }}</strong>
+                                                    @endif
+                                                </td>
+                                            @endforeach
+                                            @foreach($search_year as $key => $value)
+                                                <td> </td>
+                                            @endforeach
+                                        </tr>
+                                    </tfoot>
                                 </table>
                             </div>
                         </div>
@@ -218,10 +169,117 @@
 
         </div>
         <!-- /Row -->
+        <!-- Row -->
+        <div class="row">
+            <div class="col-xl-12">
+                <section class="hk-sec-wrapper">
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <canvas id="myChart" style="height: 294px"></canvas>
+                        </div>
+                        <div class="col-md-6">
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <!-- /Row -->
     </div>
 
- <!-- EChartJS JavaScript -->
- <script src="{{asset('public/template/vendors/echarts/dist/echarts-en.min.js')}}"></script>
- <script src="{{asset('public/template/barcharts/barcharts-data.js')}}"></script>
+
+<script src="{{ asset('public/template/graph/Chart.bundle.js') }}"></script>
+
+<?php
+
+    $count = count($chat_data);
+    $data_text = array();
+
+    for($i=0;$i<3;$i++){
+        $data_text[$i] = "";
+        if(isset($chat_data_label[$i])){
+            $chat_data_label[$i] = $chat_data_label[$i];
+        }else{
+            $chat_data_label[$i] = "";
+        }
+        for($m=0;$m<12;$m++){
+            if(isset($chat_data[$i][$m])){
+                $value = $chat_data[$i][$m][0];
+            }else{
+                $value = "0";
+            }
+
+            if($m == 11){
+                $data_text[$i] .= $value;
+            }else{
+                $data_text[$i] .= $value.",";
+            } 
+        }
+    }
+
+    // dd($data_text);
+?>
+ <script>
+    var ctx = document.getElementById("myChart").getContext('2d');
+
+    var datset =[];
+    var newDataset =[];
+    newDataset[0] = {
+        label: '{{ $chat_data_label[0] }}',
+        backgroundColor: [
+            'rgba(255, 99, 132, 0)',
+        ],
+        borderColor: [
+            'rgba(255, 99, 132, 1)'
+        ],
+        fill: false,
+        borderWidth: 1,
+        data: [{{ $data_text[0] }}],
+    };
+    newDataset[1] = {
+        label: '{{ $chat_data_label[1] }}',
+        backgroundColor: [
+            'rgba(255, 99, 132, 0)',
+        ],
+        borderColor: [
+            'rgba(255, 153, 51, 1)'
+        ],
+        fill: false,
+        borderWidth: 1,
+        data: [{{ $data_text[1]  }}],
+    };
+    newDataset[2] = {
+        label: '{{ $chat_data_label[2] }}',
+        backgroundColor: [
+            'rgba(255, 99, 132, 0)',
+        ],
+        borderColor: [
+            'rgba(0, 204, 0, 1)'
+        ],
+        fill: false,
+        borderWidth: 1,
+        data: [{{ $data_text[2]  }}],
+    };
+
+    for(let i=0; i<newDataset.length ; i++){
+        datset.push(newDataset[i]);
+    }
+
+    const myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ["มกราคม", "กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน",
+            "กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"],
+            datasets: datset
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+ </script>
 
 
