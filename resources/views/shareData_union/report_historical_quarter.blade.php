@@ -185,7 +185,7 @@
                             <canvas id="myChart" style="height: 294px"></canvas>
                         </div>
                         <div class="col-md-6">
-                            
+                            <canvas id="myChart_2" style="height: 294px"></canvas>
                         </div>
                     </div>
                 </section>
@@ -196,12 +196,53 @@
 
 <script src="{{ asset('public/template/graph/Chart.bundle.js') }}"></script>
 <?php
-    //$data_chat1 = "200,250,380,350";
-    //$data_chat2 = "250,180,280,200";
-    // $data_chat3 = "180,200,250,220";
-    //$data_chat3 = "";
-    $count = count($data);
+    $chat_persent_sale = "";
+    $count_year = count($year_search);
+    foreach($year_search as $key => $year_value){
+        if(isset($total_year[$key]['total_year'])){
+            if($total_year[$key]['total_year'] != 0){
+                $present = number_format(($total_year[$key]['total_year']*100)/$sum_all,2) ;
+            }else{
+                $present = number_format(0,2);
+            }
+        }
+        if($key < $count_year-1){
+            $chat_persent_sale .= $present.",";
+        }else{
+            $chat_persent_sale .= $present;
+        }
+    }
     
+?>
+
+<script>
+    var data = {
+    labels: [{{ $search_year }}],
+    datasets: [{
+        data: [{{ $chat_persent_sale }}],
+        backgroundColor: [
+            'rgb(255, 99, 132)',
+            'rgb(255, 153, 51)',
+            'rgb(192, 192, 192)'
+        ],
+        hoverOffset: 4
+    }]
+    };
+
+    var config = {
+        type: 'pie',
+        data: data,
+        options: {}
+    };
+
+    var myChart = new Chart(
+        document.getElementById('myChart_2'),
+        config
+    );
+
+</script>
+<?php
+    $count = count($data);
     $data_text = array();
 
     for($i=0;$i<3;$i++){
@@ -236,25 +277,36 @@
     var ctx = document.getElementById("myChart").getContext('2d');
     var datset =[];
     var newDataset =[];
-   
     newDataset[0] = {
         label: '{{ $data_label[0] }}',
-        backgroundColor: ['rgba(255, 99, 132, 0)',],
-        borderColor: ['rgba(255,99,132,1)',],
+        backgroundColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(255, 99, 132, 1)',
+            'rgba(255, 99, 132, 1)',
+            'rgba(255, 99, 132, 1)',
+        ],
         borderWidth: 1,
         data: [{{ $data_text[0] }}],
     };
     newDataset[1] = {
         label: '{{ $data_label[1] }}',
-        backgroundColor: ['rgba(255, 99, 132, 0)',],
-        borderColor: ['rgba(0,0,255,1)',],
+        backgroundColor: [
+            'rgba(255, 153, 51, 1)',
+            'rgba(255, 153, 51, 1)',
+            'rgba(255, 153, 51, 1)',
+            'rgba(255, 153, 51, 1)',
+        ],
         borderWidth: 1,
         data: [{{ $data_text[1]  }}],
     };
     newDataset[2] = {
         label: '{{ $data_label[2] }}',
-        backgroundColor: ['rgba(200, 150, 100, 0)',],
-        borderColor: ['rgba(255,128,0,1)',],
+        backgroundColor: [
+            'rgba(192, 192, 192, 1)',
+            'rgba(192, 192, 192, 1)',
+            'rgba(192, 192, 192, 1)',
+            'rgba(192, 192, 192, 1)',
+        ],
         borderWidth: 1,
         data: [{{ $data_text[2]  }}],
     };
@@ -263,9 +315,9 @@
         datset.push(newDataset[i]);
     }
        myChart = new Chart(ctx, {
-        type: 'line',
+        type: 'bar',
         data: {
-            labels: [1,2,3,4],
+            labels: ["มกราคม-มีนาคม","เมษายน-มิถุนายน","กรกฎาคม-กันยายน","ตุลาคม-ธันวาคม"],
             datasets: datset
         },
             options: {

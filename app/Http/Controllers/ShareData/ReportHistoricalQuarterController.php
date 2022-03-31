@@ -122,6 +122,8 @@ class ReportHistoricalQuarterController extends Controller
         }
 
         // dd($data['total_year']);
+        // Chat
+        $data['search_year'] = $search_year;
 
         return view('shareData.report_historical_quarter', $data);
     }
