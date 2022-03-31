@@ -23,6 +23,7 @@ class ReportHistoricalMonthController extends Controller
 
         $data['search_year'] = array($year, $year_old1, $year_old2);
         $month_api = array();
+        $search_year = $year.",".$year_old1.",".$year_old2;
 
         $path_search = "reports/years/".$year.",".$year_old1.",".$year_old2."/months/1,2,3,4,5,6,7,8,9,10,11,12/leaders/".Auth::user()->api_identify;
         $api_token = $this->api_token->apiToken();
@@ -73,6 +74,7 @@ class ReportHistoricalMonthController extends Controller
 
 
        // dd($month_api);
+       $data['chat_search_year'] = $search_year;
 
         return view('shareData_leadManager.report_historical_month', $data);
     }
@@ -166,6 +168,7 @@ class ReportHistoricalMonthController extends Controller
 
 
        // dd($month_api);
+       $data['chat_search_year'] = $search_year;
 
         return view('shareData_leadManager.report_historical_month', $data);
     }

@@ -178,7 +178,7 @@
                             <canvas id="myChart" style="height: 294px"></canvas>
                         </div>
                         <div class="col-md-6">
-
+                            <canvas id="myChart_2" style="height: 294px"></canvas>
                         </div>
                     </div>
                 </section>
@@ -216,10 +216,9 @@
             } 
         }
     }
-
-    // dd($data_text);
 ?>
  <script>
+
     var ctx = document.getElementById("myChart").getContext('2d');
 
     var datset =[];
@@ -227,38 +226,38 @@
     newDataset[0] = {
         label: '{{ $chat_data_label[0] }}',
         backgroundColor: [
-            'rgba(255, 99, 132, 0)',
+            'rgba(255, 99, 132, 0)'
         ],
         borderColor: [
             'rgba(255, 99, 132, 1)'
         ],
         fill: false,
         borderWidth: 1,
-        data: [{{ $data_text[0] }}],
+        data: [<?=$data_text[0]?>],
     };
     newDataset[1] = {
         label: '{{ $chat_data_label[1] }}',
         backgroundColor: [
-            'rgba(255, 99, 132, 0)',
+            'rgba(255, 99, 132, 0)'
         ],
         borderColor: [
             'rgba(255, 153, 51, 1)'
         ],
         fill: false,
         borderWidth: 1,
-        data: [{{ $data_text[1]  }}],
+        data: [<?=$data_text[1]?>],
     };
     newDataset[2] = {
         label: '{{ $chat_data_label[2] }}',
         backgroundColor: [
-            'rgba(255, 99, 132, 0)',
+            'rgba(255, 99, 132, 0)'
         ],
         borderColor: [
             'rgba(0, 204, 0, 1)'
         ],
         fill: false,
         borderWidth: 1,
-        data: [{{ $data_text[2]  }}],
+        data: [<?=$data_text[2]?>],
     };
 
     for(let i=0; i<newDataset.length ; i++){
@@ -280,6 +279,57 @@
             }
         }
     });
- </script>
+    
+</script>
+
+<?php
+
+    $chat_persent_sale = "";
+    $count_year = count($search_year);
+    foreach($search_year as $key => $year_value){
+        if(!empty($summary_present[$key])){
+            if($summary_present[$key] != 0){
+                $present = number_format($summary_present[$key],2) ;
+            }else{
+                $present = number_format(0,2);
+            }
+        }
+        if($key < $count_year-1){
+            $chat_persent_sale .= $present.",";
+        }else{
+            $chat_persent_sale .= $present;
+        }
+    }
+
+?>
+
+
+<script>
+
+    var data = {
+    labels: [{{ $chat_search_year }}],
+        datasets: [{
+            data: [ {{ $chat_persent_sale}} ],
+            backgroundColor: [
+                'rgb(255, 99, 132)',
+                'rgb(255, 153, 51)',
+                'rgb(192, 192, 192)'
+            ],
+            hoverOffset: 4
+        }]
+    };
+
+    var config = {
+        type: 'pie',
+        data: data,
+        options: {}
+    };
+
+    var myChart = new Chart(
+        document.getElementById('myChart_2'),
+        config
+    );
+
+</script>
 
 
