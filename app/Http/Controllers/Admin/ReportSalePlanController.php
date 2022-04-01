@@ -297,4 +297,348 @@ class ReportSalePlanController extends Controller
 
         return view('reports.report_saleplan_admin', $data);
     }
+
+
+    public function reportsalepaln(){
+        list($year,$month,$day) = explode("-",date("Y-m-d"));
+        
+        $data['search_year'] = $year;
+        $data['search_month'] = $month;
+
+        $data['users_saleman'] = DB::table('users')
+            ->whereIn('status', [1]) //-- เฉพาะ sale
+            ->get();
+    
+        $data['monthly_plans_status'] = array();
+        $data['monthly_plans_total'] = array();
+        $data['monthly_plans_success'] = array();
+        $data['monthly_plans_balance'] = array();
+        $data['monthly_plans_present'] = array();
+
+        $data['count_saleplan'] = array();
+        $data['count_sale_success'] = array();
+        $data['count_customer_new'] = array();
+        $data['count_customer_new_success'] = array();
+        $data['count_customer_visits'] = array();
+        $data['count_customer_visits_success'] = array();
+
+        $sum_monthly_plans_total = 0;
+        $sum_monthly_plans_success = 0;
+        $sum_monthly_plans_balance = 0;
+        $sum_count_saleplan = 0;
+        $sum_count_sale_success = 0;
+        $sum_count_customer_new = 0;
+        $sum_count_customer_new_success = 0;
+        $sum_count_customer_visits = 0;
+        $sum_count_customer_visits_success = 0;
+
+        foreach($data['users_saleman'] as $key_saleman => $saleman){
+            $monthly_plans = DB::table('monthly_plans')
+                ->whereYear('month_date', $year)
+                ->whereMonth('month_date', $month)
+                ->where('created_by', $saleman->id)
+                ->first();
+
+            $data['count_saleplan'][$key_saleman] = 0;
+            $data['count_sale_success'][$key_saleman] = 0;
+            $data['count_customer_new'][$key_saleman] = 0;
+            $data['count_customer_new_success'][$key_saleman] = 0;
+            $data['count_customer_visits'][$key_saleman] = 0;
+            $data['count_customer_visits_success'][$key_saleman] = 0;
+            
+            if(!empty($monthly_plans)){
+
+                // -- Sale plan
+                $sale_plans = DB::table('sale_plans')
+                    ->where('monthly_plan_id', $monthly_plans->id)
+                    ->where('sale_plans_status', 2) //อนุมัติแล้ว สถานะอนุมัติ (0=ฉบับร่าง ,1 = ส่งอนุมัติ , 2 = อนุมัติ , 3= ปฎิเสธ))
+                    ->get();
+
+                $data['count_saleplan'][$key_saleman] = $sale_plans->count();
+                $data['count_sale_success'][$key_saleman] = 0;
+
+                if(!empty($sale_plans)){
+                    foreach($sale_plans as $key => $value){
+                        $count_sale= DB::table('sale_plan_results')
+                            ->where('sale_plan_id', $value->id)
+                            ->whereNotNull('sale_plan_checkin_date')
+                            ->whereNotNull('sale_plan_checkout_date')
+                            ->count();
+                        $data['count_sale_success'][$key_saleman] += $count_sale;
+                    }
+                }
+                // -- จบ Sale plan
+
+                // -- ลูกค้าใหม่
+                $customer_shops_saleplan = DB::table('customer_shops_saleplan')
+                    ->where('monthly_plan_id', $monthly_plans->id)
+                    ->where('shop_aprove_status', 2) //อนุมัติแล้ว สถานะอนุมัติ (0=ฉบับร่าง ,1 = ส่งอนุมัติ , 2 = อนุมัติ , 3= ปฎิเสธ))
+                    ->get();
+
+                $data['count_customer_new'][$key_saleman] = $customer_shops_saleplan->count();
+                $data['count_customer_new_success'][$key_saleman] = 0;
+
+                if(!empty($customer_shops_saleplan)){
+                    foreach($customer_shops_saleplan as $key => $value){
+                        $count_customer_new= DB::table('customer_shops_saleplan_result')
+                            ->where('customer_shops_saleplan_id', $value->id)
+                            ->whereNotNull('cust_result_checkin_date')
+                            ->whereNotNull('cust_result_checkout_date')
+                            ->count();
+                        $data['count_customer_new_success'][$key_saleman] += $count_customer_new;
+                    }
+                }
+                // -- จบ ลูกค้าใหม่
+
+                // -- ลูกค้าเยี่ยม           
+                $customer_visits = DB::table('customer_visits')
+                    ->where('monthly_plan_id', $monthly_plans->id)
+                    ->get();
+
+                $data['count_customer_visits'][$key_saleman] = $customer_visits->count();
+                $data['count_customer_visits_success'][$key_saleman] = 0;
+
+                if(!empty($customer_visits)){
+                    foreach($customer_visits as $key => $value){
+                        $count_customer_new= DB::table('customer_visit_results')
+                            ->where('customer_visit_id', $value->id)
+                            ->whereNotNull('cust_visit_checkin_date')
+                            ->whereNotNull('cust_visit_checkout_date')
+                            ->count();
+                        $data['count_customer_visits_success'][$key_saleman] += $count_customer_new;
+                    }
+                }
+                // -- จบ ลูกค้าเยี่ยม
+
+                //-- monthly_plans
+                $data['monthly_plans_status'][$key_saleman] = $monthly_plans->status_approve;
+                $data['monthly_plans_total'][$key_saleman] = $data['count_saleplan'][$key_saleman] + 
+                                                                $data['count_customer_new'][$key_saleman] + 
+                                                                $data['count_customer_visits'][$key_saleman];
+                $data['monthly_plans_success'][$key_saleman] = $data['count_sale_success'][$key_saleman] +
+                                                                $data['count_customer_new_success'][$key_saleman] + 
+                                                                $data['count_customer_visits_success'][$key_saleman];
+                $data['monthly_plans_balance'][$key_saleman] = $data['monthly_plans_total'][$key_saleman] - $data['monthly_plans_success'][$key_saleman];
+                
+                if($data['monthly_plans_success'][$key_saleman] != 0 && $data['monthly_plans_total'][$key_saleman] != 0){
+                    $data['monthly_plans_present'][$key_saleman] = ($data['monthly_plans_success'][$key_saleman]*100)/$data['monthly_plans_total'][$key_saleman];
+                }else{
+                    $data['monthly_plans_present'][$key_saleman] = 0;
+                }
+                
+                //-- จบ monthly_plans
+            }else{
+                $data['monthly_plans_status'][$key_saleman] = "";
+                $data['monthly_plans_total'][$key_saleman] = 0;
+                $data['monthly_plans_success'][$key_saleman] = 0;
+                $data['monthly_plans_balance'][$key_saleman] = 0;
+                $data['monthly_plans_present'][$key_saleman] = 0;
+            }
+
+            $sum_monthly_plans_total += $data['monthly_plans_total'][$key_saleman];
+            $sum_monthly_plans_success += $data['monthly_plans_success'][$key_saleman];
+            $sum_monthly_plans_balance += $data['monthly_plans_balance'][$key_saleman];
+            $sum_count_saleplan += $data['count_saleplan'][$key_saleman];
+            $sum_count_sale_success += $data['count_sale_success'][$key_saleman];
+            $sum_count_customer_new += $data['count_customer_new'][$key_saleman];
+            $sum_count_customer_new_success += $data['count_customer_new_success'][$key_saleman];
+            $sum_count_customer_visits += $data['count_customer_visits'][$key_saleman];
+            $sum_count_customer_visits_success += $data['count_customer_visits_success'][$key_saleman];
+        }
+
+        if($sum_monthly_plans_success != 0 && $sum_monthly_plans_total != 0){
+            $sum_monthly_plans_present = ($sum_monthly_plans_success*100)/$sum_monthly_plans_total;
+        }else{
+            $sum_monthly_plans_present = 0;
+        }
+
+        $data['summary'] = [
+            'sum_monthly_plans_total' => $sum_monthly_plans_total,
+            'sum_monthly_plans_success' => $sum_monthly_plans_success,
+            'sum_monthly_plans_balance' => $sum_monthly_plans_balance,
+            'sum_monthly_plans_present' => $sum_monthly_plans_present,
+            'sum_count_saleplan' => $sum_count_saleplan,
+            'sum_count_sale_success' => $sum_count_sale_success,
+            'sum_count_customer_new' => $sum_count_customer_new,
+            'sum_count_customer_new_success' => $sum_count_customer_new_success,
+            'sum_count_customer_visits' => $sum_count_customer_visits,
+            'sum_count_customer_visits_success' => $sum_count_customer_visits_success,
+        ];
+
+        // dd($data['summary']);
+        return view('reports.report_saleplan_admin', $data);
+    }
+
+    public function reportsalepaln_search(Request $request){
+        // dd($request);
+        list($year,$month,$day) = explode("-",date("Y-m-d"));
+        $month = $request->sel_month;
+
+        $data['search_year'] = $year;
+        $data['search_month'] = $month;
+        
+        $data['users_saleman'] = DB::table('users')
+            ->whereIn('status', [1]) //-- เฉพาะ sale
+            ->get();
+
+        $data['monthly_plans_status'] = array();
+        $data['monthly_plans_total'] = array();
+        $data['monthly_plans_success'] = array();
+        $data['monthly_plans_balance'] = array();
+        $data['monthly_plans_present'] = array();
+
+        $data['count_saleplan'] = array();
+        $data['count_sale_success'] = array();
+        $data['count_customer_new'] = array();
+        $data['count_customer_new_success'] = array();
+        $data['count_customer_visits'] = array();
+        $data['count_customer_visits_success'] = array();
+
+        $sum_monthly_plans_total = 0;
+        $sum_monthly_plans_success = 0;
+        $sum_monthly_plans_balance = 0;
+        $sum_count_saleplan = 0;
+        $sum_count_sale_success = 0;
+        $sum_count_customer_new = 0;
+        $sum_count_customer_new_success = 0;
+        $sum_count_customer_visits = 0;
+        $sum_count_customer_visits_success = 0;
+
+        foreach($data['users_saleman'] as $key_saleman => $saleman){
+            $monthly_plans = DB::table('monthly_plans')
+                ->whereYear('month_date', $year)
+                ->whereMonth('month_date', $month)
+                ->where('created_by', $saleman->id)
+                ->first();
+
+            $data['count_saleplan'][$key_saleman] = 0;
+            $data['count_sale_success'][$key_saleman] = 0;
+            $data['count_customer_new'][$key_saleman] = 0;
+            $data['count_customer_new_success'][$key_saleman] = 0;
+            $data['count_customer_visits'][$key_saleman] = 0;
+            $data['count_customer_visits_success'][$key_saleman] = 0;
+            
+            if(!empty($monthly_plans)){
+
+                // -- Sale plan
+                $sale_plans = DB::table('sale_plans')
+                    ->where('monthly_plan_id', $monthly_plans->id)
+                    ->where('sale_plans_status', 2) //อนุมัติแล้ว สถานะอนุมัติ (0=ฉบับร่าง ,1 = ส่งอนุมัติ , 2 = อนุมัติ , 3= ปฎิเสธ))
+                    ->get();
+
+                $data['count_saleplan'][$key_saleman] = $sale_plans->count();
+                $data['count_sale_success'][$key_saleman] = 0;
+
+                if(!empty($sale_plans)){
+                    foreach($sale_plans as $key => $value){
+                        $count_sale= DB::table('sale_plan_results')
+                            ->where('sale_plan_id', $value->id)
+                            ->whereNotNull('sale_plan_checkin_date')
+                            ->whereNotNull('sale_plan_checkout_date')
+                            ->count();
+                        $data['count_sale_success'][$key_saleman] += $count_sale;
+                    }
+                }
+                // -- จบ Sale plan
+
+                // -- ลูกค้าใหม่
+                $customer_shops_saleplan = DB::table('customer_shops_saleplan')
+                    ->where('monthly_plan_id', $monthly_plans->id)
+                    ->where('shop_aprove_status', 2) //อนุมัติแล้ว สถานะอนุมัติ (0=ฉบับร่าง ,1 = ส่งอนุมัติ , 2 = อนุมัติ , 3= ปฎิเสธ))
+                    ->get();
+
+                $data['count_customer_new'][$key_saleman] = $customer_shops_saleplan->count();
+                $data['count_customer_new_success'][$key_saleman] = 0;
+
+                if(!empty($customer_shops_saleplan)){
+                    foreach($customer_shops_saleplan as $key => $value){
+                        $count_customer_new= DB::table('customer_shops_saleplan_result')
+                            ->where('customer_shops_saleplan_id', $value->id)
+                            ->whereNotNull('cust_result_checkin_date')
+                            ->whereNotNull('cust_result_checkout_date')
+                            ->count();
+                        $data['count_customer_new_success'][$key_saleman] += $count_customer_new;
+                    }
+                }
+                // -- จบ ลูกค้าใหม่
+
+                // -- ลูกค้าเยี่ยม           
+                $customer_visits = DB::table('customer_visits')
+                    ->where('monthly_plan_id', $monthly_plans->id)
+                    ->get();
+
+                $data['count_customer_visits'][$key_saleman] = $customer_visits->count();
+                $data['count_customer_visits_success'][$key_saleman] = 0;
+
+                if(!empty($customer_visits)){
+                    foreach($customer_visits as $key => $value){
+                        $count_customer_new= DB::table('customer_visit_results')
+                            ->where('customer_visit_id', $value->id)
+                            ->whereNotNull('cust_visit_checkin_date')
+                            ->whereNotNull('cust_visit_checkout_date')
+                            ->count();
+                        $data['count_customer_visits_success'][$key_saleman] += $count_customer_new;
+                    }
+                }
+                // -- จบ ลูกค้าเยี่ยม
+
+                //-- monthly_plans
+                $data['monthly_plans_status'][$key_saleman] = $monthly_plans->status_approve;
+                $data['monthly_plans_total'][$key_saleman] = $data['count_saleplan'][$key_saleman] + 
+                                                                $data['count_customer_new'][$key_saleman] + 
+                                                                $data['count_customer_visits'][$key_saleman];
+                $data['monthly_plans_success'][$key_saleman] = $data['count_sale_success'][$key_saleman] +
+                                                                $data['count_customer_new_success'][$key_saleman] + 
+                                                                $data['count_customer_visits_success'][$key_saleman];
+                $data['monthly_plans_balance'][$key_saleman] = $data['monthly_plans_total'][$key_saleman] - $data['monthly_plans_success'][$key_saleman];
+                
+                if($data['monthly_plans_success'][$key_saleman] != 0 && $data['monthly_plans_total'][$key_saleman] != 0){
+                    $data['monthly_plans_present'][$key_saleman] = ($data['monthly_plans_success'][$key_saleman]*100)/$data['monthly_plans_total'][$key_saleman];
+                }else{
+                    $data['monthly_plans_present'][$key_saleman] = 0;
+                }
+                
+                //-- จบ monthly_plans
+            }else{
+                $data['monthly_plans_status'][$key_saleman] = "";
+                $data['monthly_plans_total'][$key_saleman] = 0;
+                $data['monthly_plans_success'][$key_saleman] = 0;
+                $data['monthly_plans_balance'][$key_saleman] = 0;
+                $data['monthly_plans_present'][$key_saleman] = 0;
+            }
+
+            $sum_monthly_plans_total += $data['monthly_plans_total'][$key_saleman];
+            $sum_monthly_plans_success += $data['monthly_plans_success'][$key_saleman];
+            $sum_monthly_plans_balance += $data['monthly_plans_balance'][$key_saleman];
+            $sum_count_saleplan += $data['count_saleplan'][$key_saleman];
+            $sum_count_sale_success += $data['count_sale_success'][$key_saleman];
+            $sum_count_customer_new += $data['count_customer_new'][$key_saleman];
+            $sum_count_customer_new_success += $data['count_customer_new_success'][$key_saleman];
+            $sum_count_customer_visits += $data['count_customer_visits'][$key_saleman];
+            $sum_count_customer_visits_success += $data['count_customer_visits_success'][$key_saleman];
+        }
+
+        if($sum_monthly_plans_success != 0 && $sum_monthly_plans_total != 0){
+            $sum_monthly_plans_present = ($sum_monthly_plans_success*100)/$sum_monthly_plans_total;
+        }else{
+            $sum_monthly_plans_present = 0;
+        }
+
+        $data['summary'] = [
+            'sum_monthly_plans_total' => $sum_monthly_plans_total,
+            'sum_monthly_plans_success' => $sum_monthly_plans_success,
+            'sum_monthly_plans_balance' => $sum_monthly_plans_balance,
+            'sum_monthly_plans_present' => $sum_monthly_plans_present,
+            'sum_count_saleplan' => $sum_count_saleplan,
+            'sum_count_sale_success' => $sum_count_sale_success,
+            'sum_count_customer_new' => $sum_count_customer_new,
+            'sum_count_customer_new_success' => $sum_count_customer_new_success,
+            'sum_count_customer_visits' => $sum_count_customer_visits,
+            'sum_count_customer_visits_success' => $sum_count_customer_visits_success,
+        ];
+
+        // dd($data['summary']);
+        return view('reports.report_saleplan_admin', $data);
+    }
+    
 }

@@ -252,7 +252,7 @@
                                         </li>
                                         <li class="nav-item {{ (request()->is('admin/reportSaleplan')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('/admin/reportSaleplan') }}">
-                                                <i class="ion ion-md-stats" style="color: #044067;"></i>รายงานสรุป sale plan</a>
+                                                <i class="ion ion-md-stats" style="color: #044067;"></i>รายงานสรุปแผนประจำเดือน</a>
                                         </li>
                                         <li class="nav-item {{ (request()->is('admin/report_visitcustomer_goal')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('/admin/report_visitcustomer_goal') }}">

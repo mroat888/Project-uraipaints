@@ -241,8 +241,10 @@ Route::get('/leadManage/reportStore','LeadManager\ApiCustomerController@index');
 Route::get('/leadManage/reportStore/detail/{id}','LeadManager\ApiCustomerController@show');
 // Route::get('/leadManage/reportTeam', 'LeadManager\ReportTeamController@index'); // -- ลูกค้าให้เปลี่ยนใช้ api อันล่าง
 Route::get('/leadManage/reportTeam', 'LeadManager\ReportTeamController@reportTeamApi'); // เปลี่ยนมาอันนี้ <----|
-Route::get('/leadManage/reportSaleplan', 'LeadManager\ReportSalePlanController@index');
-Route::post('/leadManage/reportSaleplan/search', 'LeadManager\ReportSalePlanController@search');
+// Route::get('/leadManage/reportSaleplan', 'LeadManager\ReportSalePlanController@index'); //-- เปลี่ยนรูปแบบรายงานใหม่ ใช้อันล่าง
+// Route::post('/leadManage/reportSaleplan/search', 'LeadManager\ReportSalePlanController@search'); //-- เปลี่ยนรูปแบบรายงานใหม่ ใช้อันล่าง
+Route::get('/leadManage/reportSaleplan', 'LeadManager\ReportSalePlanController@reportsalepaln');
+Route::post('/leadManage/reportSaleplan/search', 'LeadManager\ReportSalePlanController@reportsalepaln_search');
 Route::get('/leadManage/reportYear', 'LeadManager\ReportYearController@index');
 Route::post('/leadManage/reportYear/search', 'LeadManager\ReportYearController@search');
 
@@ -337,8 +339,11 @@ Route::get('/headManage/reportStore','HeadManager\ApiCustomerController@index');
 Route::get('/headManage/reportStore/detail/{id}','HeadManager\ApiCustomerController@show');
 // Route::get('/headManage/reportTeam', 'HeadManager\ReportTeamController@index'); //-- ลูกค้าเปลี่ยนให้ดึง API ใช้อันล่าง
 Route::get('/headManage/reportTeam', 'HeadManager\ReportTeamController@reportTeamApi');
-Route::get('/headManage/reportSaleplan', 'HeadManager\ReportSalePlanController@index');
-Route::post('/headManage/reportSaleplan/search', 'HeadManager\ReportSalePlanController@search');
+// Route::get('/headManage/reportSaleplan', 'HeadManager\ReportSalePlanController@index');
+// Route::post('/headManage/reportSaleplan/search', 'HeadManager\ReportSalePlanController@search');
+Route::get('/headManage/reportSaleplan', 'HeadManager\ReportSalePlanController@reportsalepaln');
+Route::post('/headManage/reportSaleplan/search', 'HeadManager\ReportSalePlanController@reportsalepaln_search');
+
 Route::get('/headManage/report_visitcustomer_goal_head', 'HeadManager\ReportVisitCustomerGoalController@index');
 Route::post('/headManage/report_visitcustomer_goal_head/search', 'HeadManager\ReportVisitCustomerGoalController@search');
 Route::get('/headManage/reportVisitCustomer', 'HeadManager\ReportVisitCustomerController@index');
@@ -480,8 +485,10 @@ Route::get('/admin/reportcustomer', function () { return view('reports.report_cu
 Route::get('/admin/reportStore','Admin\ApiCustomerController@index');
 Route::get('/admin/reportStore/detail/{id}','Admin\ApiCustomerController@show');
 Route::get('/admin/reportTeam', 'Admin\ReportTeamController@index');
-Route::get('/admin/reportSaleplan', 'Admin\ReportSalePlanController@index');
-Route::post('/admin/reportSaleplan/search', 'Admin\ReportSalePlanController@search');
+// Route::get('/admin/reportSaleplan', 'Admin\ReportSalePlanController@index'); //-- เปลี่ยนใช้อันล่าง
+// Route::post('/admin/reportSaleplan/search', 'Admin\ReportSalePlanController@search');
+Route::get('/admin/reportSaleplan', 'Admin\ReportSalePlanController@reportsalepaln');
+Route::post('/admin/reportSaleplan/search', 'Admin\ReportSalePlanController@reportsalepaln_search');
 Route::get('/admin/report_visitcustomer_goal', 'Admin\ReportVisitCustomerGoalController@index');
 Route::post('/admin/report_visitcustomer_goal/search', 'Admin\ReportVisitCustomerGoalController@search');
 Route::get('/admin/reportVisitCustomer', 'Admin\ReportVisitCustomerController@index');

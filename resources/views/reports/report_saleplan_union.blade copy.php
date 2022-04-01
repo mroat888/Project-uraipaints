@@ -2,7 +2,7 @@
 <nav class="hk-breadcrumb" aria-label="breadcrumb">
     <ol class="breadcrumb breadcrumb-light bg-transparent">
         <li class="breadcrumb-item"><a href="#">Page</a></li>
-        <li class="breadcrumb-item active" aria-current="page">รายงาน Sale plan</li>
+        <li class="breadcrumb-item active" aria-current="page">รายงานสรุปแผนประจำเดือน</li>
     </ol>
 </nav>
 <!-- /Breadcrumb -->
@@ -12,7 +12,7 @@
         <!-- Title -->
         <div class="hk-pg-header mb-10">
             <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-document"></i></span>รายงาน Sale plan</h4>
+                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-document"></i></span>รายงานสรุปแผนประจำเดือน</h4>
             </div>
         </div>
         <!-- /Title -->
@@ -26,7 +26,7 @@
                         <div class="col-sm-12 col-md-7">
                             
                             <!-- <h5 class="hk-sec-title">ตารางสรุป Sale plan <span style="color: rgb(128, 19, 0);">(ประจำปี <?php echo thaidate('Y', $year); ?>)</span></h5> -->
-                            <h5 class="hk-sec-title">ตารางสรุป Sale plan <span style="color: rgb(128, 19, 0);">(ประจำปี <?php echo $year+543; ?>)</span></h5>
+                            <h5 class="hk-sec-title">ตารางสรุป แผนประจำเดือน <span style="color: rgb(128, 19, 0);">(ประจำปี <?php echo $year+543; ?>)</span></h5>
                         </div>
                         <div class="col-sm-12 col-md-5">
                             <!-- ------ -->

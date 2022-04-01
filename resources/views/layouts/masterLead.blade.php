@@ -333,7 +333,7 @@ License: You must have a valid license purchased only from themeforest to legall
                                         <li class="nav-item {{ (request()->is('leadManage/reportSaleplan')) ? 'btn2' : '' }}">
                                             <a class="nav-link"
                                                 href="{{ url('/leadManage/reportSaleplan') }}">
-                                                <i class="ion ion-md-stats"></i>รายงานสรุป sale plan</a>
+                                                <i class="ion ion-md-stats"></i>รายงานสรุปแผนประจำเดือน</a>
                                         </li>
                                         <li class="nav-item {{ (request()->is('leadManage/reportYear')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('/leadManage/reportYear') }}">

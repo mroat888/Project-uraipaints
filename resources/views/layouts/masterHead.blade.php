@@ -266,7 +266,7 @@ License: You must have a valid license purchased only from themeforest to legall
                                         </li>
                                         <li class="nav-item {{ (request()->is('headManage/reportSaleplan')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('/headManage/reportSaleplan') }}">
-                                                <i class="ion ion-md-stats" style="color: #044067;"></i>รายงานสรุป sale plan</a>
+                                                <i class="ion ion-md-stats" style="color: #044067;"></i>รายงานสรุปแผนประจำเดือน</a>
                                         </li>
                                         <li class="nav-item {{ (request()->is('headManage/report_visitcustomer_goal_head')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('/headManage/report_visitcustomer_goal_head') }}">
