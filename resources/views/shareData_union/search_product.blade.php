@@ -33,20 +33,9 @@
                             <!-- ------ -->
                         </div>
                     </div>
+                    
                     <div class="row mb-2">
-                        <div class="col-sm-6 col-md-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    ข้อมูลรายการสินค้า
-                                </div>
-                                <div class="card-body">
-                                    <div class="col-sm" id="table_product">
-                                    
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-6">
+                        <div class="col-sm-12 col-md-12">
                             <div class="card">
                                 <div class="card-header">
                                     <span class="form-inline pull-right pull-sm-center">
@@ -66,6 +55,19 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-sm-12 col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    ข้อมูลรายการสินค้า
+                                </div>
+                                <div class="card-body">
+                                    <div class="col-sm" id="table_product">
+                                    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                     </div>
                     
                     

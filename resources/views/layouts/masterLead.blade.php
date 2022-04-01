@@ -320,10 +320,12 @@ License: You must have a valid license purchased only from themeforest to legall
                             <ul id="charts_drp" class="nav flex-column collapse collapse-level-1">
                                 <li class="nav-item">
                                     <ul class="nav flex-column">
-                                        <li class="nav-item {{ (request()->is('leadManage/reportStore')) ? 'btn2' : '' }}">
+                                        {{-- 
+                                        <!-- <li class="nav-item {{ (request()->is('leadManage/reportStore')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('/leadManage/reportStore') }}">
                                                 <i class="ion ion-md-stats"></i>รายงานสรุปยอดร้านค้า</a>
-                                        </li>
+                                        </li> -->
+                                        --}}
                                         <li class="nav-item {{ (request()->is('leadManage/reportTeam')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('/leadManage/reportTeam') }}">
                                                 <i class="ion ion-md-stats"></i>รายงานลูกทีมที่รับผิดชอบ</a>

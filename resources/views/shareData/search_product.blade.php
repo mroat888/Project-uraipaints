@@ -30,8 +30,11 @@ $(document).ready(function(){
                 content += "<table id='datable_1' class='table table-hover data-table'>";
                     content += "<thead>";
                         content += "<tr>";
+                            content += "<th style='font-weight: bold;'>#</th>";
                             content += "<th style='font-weight: bold;'>รหัสสินค้า</th>";
                             content += "<th style='font-weight: bold;'>ชื่อสินค้า</th>";
+                            content += "<th style='font-weight: bold;'>หน่วยแพ็ค</th>";
+                            content += "<th style='font-weight: bold;'>ขนาดแพ็ค</th>";
                         content += "</tr>";
                     content += "</thead>";
                     content += "<tbody>";
@@ -53,8 +56,11 @@ $(document).ready(function(){
                     },
                 },
                 columns: [
+                    {data: 'url_image', name: 'url_image'},
                     {data: 'identify', name: 'identify'},
                     {data: 'name', name: 'name'},
+                    {data: 'pack_unit', name: 'pack_unit'},
+                    {data: 'pack_ratio', name: 'pack_ratio'},
                 ]
         });
 

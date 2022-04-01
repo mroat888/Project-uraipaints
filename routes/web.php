@@ -239,7 +239,8 @@ Route::get('lead/promotion_detail/{id}', 'PromotionController@lead_promotion_det
 Route::get('/leadManage/reportcustomer', function () { return view('reports.report_customer'); });
 Route::get('/leadManage/reportStore','LeadManager\ApiCustomerController@index');
 Route::get('/leadManage/reportStore/detail/{id}','LeadManager\ApiCustomerController@show');
-Route::get('/leadManage/reportTeam', 'LeadManager\ReportTeamController@index');
+// Route::get('/leadManage/reportTeam', 'LeadManager\ReportTeamController@index'); // -- ลูกค้าให้เปลี่ยนใช้ api อันล่าง
+Route::get('/leadManage/reportTeam', 'LeadManager\ReportTeamController@reportTeamApi'); // เปลี่ยนมาอันนี้ <----|
 Route::get('/leadManage/reportSaleplan', 'LeadManager\ReportSalePlanController@index');
 Route::post('/leadManage/reportSaleplan/search', 'LeadManager\ReportSalePlanController@search');
 Route::get('/leadManage/reportYear', 'LeadManager\ReportYearController@index');
@@ -334,7 +335,8 @@ Route::get('head/promotion_detail/{id}', 'PromotionController@head_promotion_det
 Route::get('/headManage/reportcustomer', function () { return view('reports.report_customer'); });
 Route::get('/headManage/reportStore','HeadManager\ApiCustomerController@index');
 Route::get('/headManage/reportStore/detail/{id}','HeadManager\ApiCustomerController@show');
-Route::get('/headManage/reportTeam', 'HeadManager\ReportTeamController@index');
+// Route::get('/headManage/reportTeam', 'HeadManager\ReportTeamController@index'); //-- ลูกค้าเปลี่ยนให้ดึง API ใช้อันล่าง
+Route::get('/headManage/reportTeam', 'HeadManager\ReportTeamController@reportTeamApi');
 Route::get('/headManage/reportSaleplan', 'HeadManager\ReportSalePlanController@index');
 Route::post('/headManage/reportSaleplan/search', 'HeadManager\ReportSalePlanController@search');
 Route::get('/headManage/report_visitcustomer_goal_head', 'HeadManager\ReportVisitCustomerGoalController@index');
