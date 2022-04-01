@@ -141,14 +141,14 @@ $(document).on('change','.province', function(e){
 
     $("#table_customer").html(content);
 
-    $.fn.dataTable.ext.errMode = () => alert('Error while loading the table data. Please refresh');
+    // $.fn.dataTable.ext.errMode = () => alert('Error while loading the table data. Please refresh');
     $('#datable_2').DataTable({
 
         processing: false,
         serverSide: false,
         ajax: {
             method:"GET",
-            url:"{{url('fetch_datatable_customer_sellers_pdglist')}}/"+pdglist+'/'+pvid,
+            url:"{{url('fetch_datatable_customer_sellers_pdglist_pvid')}}/"+pdglist+'/'+pvid,
             dataType: 'json',
             data:{
                     "_token": "{{ csrf_token() }}",
