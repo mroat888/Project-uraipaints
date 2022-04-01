@@ -111,7 +111,7 @@
                                             <td class="bg-danger text-white">{{ $monthly_plans_total[$key_saleman] }}</td>
                                             <td>{{ $monthly_plans_success[$key_saleman] }}</td>
                                             <td>{{ $monthly_plans_balance[$key_saleman] }}</td>
-                                            <td>{{ number_format($monthly_plans_present[$key_saleman]) }}</td>
+                                            <td>{{ number_format($monthly_plans_present[$key_saleman]) }}%</td>
 
                                             <td class="bg-success text-white">{{ $count_saleplan[$key_saleman] }}</td>
                                             <td>{{ $count_sale_success[$key_saleman] }}</td>
@@ -130,7 +130,7 @@
                                             <td class="bg-danger text-white"><strong>{{ $summary['sum_monthly_plans_total'] }}</strong></td>
                                             <td><strong>{{ $summary['sum_monthly_plans_success'] }}</strong></td>
                                             <td><strong>{{ $summary['sum_monthly_plans_balance'] }}</strong></td>
-                                            <td><strong>{{ number_format($summary['sum_monthly_plans_present']) }}</strong></td>
+                                            <td><strong>{{ number_format($summary['sum_monthly_plans_present']) }}%</strong></td>
                                             <td class="bg-success text-white"><strong>{{ $summary['sum_count_saleplan'] }}</strong></td>
                                             <td><strong>{{ $summary['sum_count_sale_success'] }}</strong></td>
                                             <td class="bg-info text-white"><strong>{{ $summary['sum_count_customer_new'] }}</strong></td>
