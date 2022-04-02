@@ -251,7 +251,7 @@ License: You must have a valid license purchased only from themeforest to legall
                                         <li class="nav-item {{ (request()->is('approvalsaleplan')) ? 'btn2' : '' }}">
                                             <a class="nav-link link-with-badge" href="{{ url('/approvalsaleplan') }}">
                                                 <i class="ion ion-md-today" style="color: #044067;"></i>
-                                                <span class="nav-link-text">อนุมัติ sale plan</span>
+                                                <span class="nav-link-text">อนุมัติแผนประจำเดือน</span>
                                                 <span class="badge badge-danger badge-pill">{{$monthly_plan}}</span>
                                             </a>
                                         </li>
