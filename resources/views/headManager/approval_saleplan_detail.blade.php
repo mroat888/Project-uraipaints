@@ -19,8 +19,8 @@
         <!-- Title -->
         <div class="hk-pg-header mb-10">
             <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><i
-                            class="ion ion-md-analytics"></i></span>รายละเอียดแผนประจำเดือน<?php echo thaidate('F Y', date('Y-m', strtotime("+1 month"))); ?> ({{ $sale_name->name }})</h4>
+                <h4 class="hk-pg-title"><span class="pg-title-icon">
+                    <i class="ion ion-md-analytics"></i></span>รายละเอียดแผนประจำเดือน <?php echo thaidate('F Y', $monthly_plans->month_date); ?> ({{ $sale_name->name }})</h4>
             </div>
             <div class="d-flex">
                 <a href="{{ url('head/approvalsaleplan')}}" type="button" class="btn btn-secondary btn-sm btn-rounded px-3 mr-10"> ย้อนกลับ </a>
@@ -33,8 +33,8 @@
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
-                        <div class="col-sm-12 col-md-3">
-                            <h5 class="hk-sec-title mb-10">ตารางแผนประจำเดือน<?php echo thaidate('F Y', date('Y-m', strtotime("+1 month"))); ?></h5>
+                        <div class="col-sm-12 col-md-12">
+                            <h5 class="hk-sec-title mb-10">ตารางแผนประจำเดือน <?php echo thaidate('F Y', $monthly_plans->month_date); ?></h5>
                         </div>
                     </div>
 
@@ -50,39 +50,58 @@
                                             <th>ลูกค้า</th>
                                             <th>อำเภอ,จังหวัด</th>
                                             <th>การอนุมัติ</th>
+                                            <th>ความคิดเห็น</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($list_saleplan as $key => $value)
-
-                                        @if ($value->sale_plans_status != 1)
-                                        <tr style="background-color: rgb(219, 219, 219);">
+                                    @foreach ($list_saleplan as $key => $value)
+                                        @php 
+                                            if($value->sale_plans_status != 1){
+                                                $bg_approve = "background-color: rgb(219, 219, 219);";
+                                            }else{
+                                                $bg_approve = "";
+                                            }
+                                        @endphp
+                                        <tr style="{{ $bg_approve }}">
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ $value->sale_plans_title }}</td>
-                                            {{-- <td>{{$value->customer_shop_id}}</td> --}}
                                             <td>
                                                 @foreach($customer_api as $key_api => $value_api)
-                                                            @if($customer_api[$key_api]['id'] == $value->customer_shop_id)
-                                                                {{ $customer_api[$key_api]['shop_name'] }}
-                                                            @endif
-                                                        @endforeach
+                                                    @if($customer_api[$key_api]['id'] == $value->customer_shop_id)
+                                                        {{ $customer_api[$key_api]['shop_name'] }}
+                                                    @endif
+                                                @endforeach
                                             </td>
                                             <td>
                                                 @foreach($customer_api as $key_api => $value_api)
-                                                @if($customer_api[$key_api]['id'] == $value->customer_shop_id)
-                                                    {{ $customer_api[$key_api]['shop_address'] }}
-                                                @endif
-                                            @endforeach
+                                                    @if($customer_api[$key_api]['id'] == $value->customer_shop_id)
+                                                        {{ $customer_api[$key_api]['shop_address'] }}
+                                                    @endif
+                                                @endforeach
                                             </td>
                                             <td>
-                                                @if ($value->sale_plans_status == 2)
-                                                <span class="badge badge-soft-success" style="font-size: 12px;">Approve</span></td>
+                                                @if ($value->sale_plans_status == 1)
+                                                <span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>
+                                                
+                                                @elseif ($value->sale_plans_status == 2)
+                                                <span class="badge badge-soft-success" style="font-size: 12px;">Approve</span>
 
                                                 @elseif ($value->sale_plans_status == 3)
-                                                <span class="badge badge-soft-danger" style="font-size: 12px;">Reject</span></td>
+                                                <span class="badge badge-soft-danger" style="font-size: 12px;">Reject</span>
                                                 @endif
-
+                                            </td>
+                                            <td>
+                                                @php 
+                                                    $sale_plan_comments = DB::table('sale_plan_comments')
+                                                        ->where('saleplan_id',$value->id)
+                                                        ->where('created_by', Auth::user()->id)
+                                                        ->first();
+                                                @endphp
+                                                @if(!is_null($sale_plan_comments))
+                                                    <span class="badge badge-soft-purple" style="font-size: 12px;">Comment</span>
+                                                @endif
+                                            </td>
                                             <td>
                                                 <a href="{{ url('head/comment_saleplan', [$value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
                                                     <h4 class="btn-icon-wrap" style="color: white;">
@@ -91,39 +110,8 @@
                                                 </a>
                                             </td>
                                         </tr>
-
-                                        @else
-                                        <tr>
-                                            <td>{{ $key + 1 }}</td>
-                                            <td>{{ $value->sale_plans_title }}</td>
-                                            {{-- <td>{{$value->customer_shop_id}}</td> --}}
-                                            <td>
-                                                @foreach($customer_api as $key_api => $value_api)
-                                                            @if($customer_api[$key_api]['id'] == $value->customer_shop_id)
-                                                                {{ $customer_api[$key_api]['shop_name'] }}
-                                                            @endif
-                                                        @endforeach
-                                            </td>
-                                            <td>
-                                                @foreach($customer_api as $key_api => $value_api)
-                                                @if($customer_api[$key_api]['id'] == $value->customer_shop_id)
-                                                    {{ $customer_api[$key_api]['shop_address'] }}
-                                                @endif
-                                            @endforeach
-                                            </td>
-                                            <td><span class="badge badge-soft-warning"
-                                                    style="font-size: 12px;">Pending</span></td>
-                                            <td>
-                                                <a href="{{ url('head/comment_saleplan', [$value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
-                                                    <h4 class="btn-icon-wrap" style="color: white;">
-                                                        <i data-feather="message-square"></i>
-                                                    </h4>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        @endif
-
-                                        @endforeach
+                                        
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -155,24 +143,44 @@
                                                 <th>อำเภอ,จังหวัด</th>
                                                 <th>วัตถุประสงค์</th>
                                                 <th>การอนุมัติ</th>
+                                                <th>ความคิดเห็น</th>
                                                 <th class="text-center">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($customer_new as $key => $value)
-                                            @if ($value->shop_aprove_status != 1)
-                                            <tr style="background-color: rgb(219, 219, 219);">
+                                            @php 
+                                                if($value->shop_aprove_status != 1){
+                                                    $bg_approve = "background-color: rgb(219, 219, 219);";
+                                                }else{
+                                                    $bg_approve = "";
+                                                }
+                                            @endphp
+                                            <tr style="{{ $bg_approve }}">
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $value->shop_name }}</td>
                                                 <td>{{ $value->PROVINCE_NAME }}</td>
                                                 <td>{{ $value->cust_name }}</td>
-
                                                 <td>
-                                                    @if ($value->shop_aprove_status == 2)
+                                                    @if ($value->shop_aprove_status == 1)
+                                                    <span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>
+
+                                                    @elseif ($value->shop_aprove_status == 2)
                                                     <span class="badge badge-soft-success" style="font-size: 12px;">Approve</span></td>
 
                                                     @elseif ($value->shop_aprove_status == 3)
                                                     <span class="badge badge-soft-danger" style="font-size: 12px;">Reject</span></td>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @php 
+                                                        $customer_shop_comments = DB::table('customer_shop_comments')
+                                                            ->where('customer_shops_saleplan_id',$value->id)
+                                                            ->where('created_by', Auth::user()->id)
+                                                            ->first();
+                                                    @endphp
+                                                    @if(!is_null($customer_shop_comments))
+                                                        <span class="badge badge-soft-purple" style="font-size: 12px;">Comment</span>
                                                     @endif
                                                 </td>
                                                 <td style="text-align:center">
@@ -183,25 +191,7 @@
                                                     </a>
                                                 </td>
                                             </tr>
-                                            @else
-                                                <tr>
-                                                    <td>{{ $key + 1 }}</td>
-                                                    <td>{{ $value->shop_name }}</td>
-                                                    <td>{{ $value->PROVINCE_NAME }}</td>
-                                                    <td>{{ $value->cust_name }}</td>
-                                                    <td>
-                                                        <span class="badge badge-soft-warning mt-15 mr-10"
-                                                            style="font-size: 12px;">Pending</span>
-                                                    </td>
-                                                    <td style="text-align:center">
-                                                        <a href="{{ url('head/comment_customer_new', [$value->custid, $value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
-                                                            <h4 class="btn-icon-wrap" style="color: white;">
-                                                                <i data-feather="message-square"></i>
-                                                            </h4>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                @endif
+                                           
                                             @endforeach
                                         </tbody>
                                     </table>

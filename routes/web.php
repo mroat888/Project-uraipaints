@@ -603,6 +603,8 @@ Route::get('/fetch_amphur/{id}',[ProvinceController::class, 'amphur']);
 Route::get('/fetch_district/{id}',[ProvinceController::class, 'district']);
 Route::get('/fetch_postcode/{id}',[ProvinceController::class, 'postcode']);
 Route::get('/customer/autocomplete',[CustomerController::class, 'fetch_autocomplete']);
+Route::get('/fetch_customer_shops_byid/{id}','Customer\CustomerController@fetch_customer_shops_byid');
+
 
 
 Route::get('fetch_subgroups/{id}', 'Api\ApiController@fetch_subgroups');

@@ -25,7 +25,7 @@
         <div class="hk-pg-header mb-10">
             <div>
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                    data-feather="file-text"></i></span></span>บันทึกข้อมูลการอนุมัติลูกค้าใหม่ (นอกแผน)</h4>
+                    data-feather="file-text"></i></span></span>ตรวจสอบขออนุมัติลูกค้าใหม่ (นอกแผน)</h4>
             </div>
         </div>
         <!-- /Title -->

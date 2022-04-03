@@ -35,6 +35,8 @@ class ApprovalController extends Controller
             })
             ->select('assignments.created_by')
             ->distinct()->get();
+        
+        // dd($data['request_approval']);
 
         return view('headManager.approval_general', $data);
     }

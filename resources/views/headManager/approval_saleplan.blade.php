@@ -43,7 +43,10 @@
                     <section class="hk-sec-wrapper">
                         <div class="row mb-2">
                             <div class="col-sm-12 col-md-6">
-                                <h5 class="hk-sec-title">ตารางอนุมัติแผนประจำเดือน<?php echo thaidate('F Y', date('Y-m', strtotime("+1 month"))); ?></h5>
+                                <?php
+                                    $ym = $year."-".$month;
+                                ?>
+                                <h5 class="hk-sec-title">ตารางอนุมัติแผนประจำเดือน <?php echo thaidate('F Y', $ym); ?></h5>
                             </div>
                             <div class="col-sm-12 col-md-6">
                                 <!-- ------ -->
