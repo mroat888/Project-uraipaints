@@ -172,14 +172,12 @@ License: You must have a valid license purchased only from themeforest to legall
                                 <span class="nav-link-text">หน้าแรก</span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ (request()->is('head/approvalsaleplan')) ? 'btn2' : '' }} {{ (request()->is('head/approvalgeneral')) ? 'btn2' : '' }}
-                                {{ (request()->is('head/approval-customer-except')) ? 'btn2' : '' }} {{ (request()->is('head/assignment/add')) ? 'btn2' : '' }}" href="javascript:void(0);" data-toggle="collapse"
-                                data-target="#charts_drp2">
-                                <i class="ion ion-md-create" style="color: #044067;"></i>
-                                <span class="nav-link-text">อนุมัติ และ สั่งงาน</span>
+                        <li class="nav-item {{ (request()->is('head/approvalsaleplan')) ? 'btn2' : '' }}">
+                            <a class="nav-link" href="javascript:void(0)" data-toggle="collapse" data-target="#planMonth_dropdwon">
+                                <i class="ion ion-md-time" style="color: #044067;"></i>
+                                <span class="nav-link-text">แผนประจำเดือน</span>
                             </a>
-                            <ul id="charts_drp2" class="nav flex-column collapse collapse-level-1">
+                            <ul id="planMonth_dropdwon" class="nav flex-column collapse collapse-level-1">
                                 <li class="nav-item">
                                     <ul class="nav flex-column">
                                         <li class="nav-item {{ (request()->is('head/approvalsaleplan')) ? 'btn2' : '' }}">
@@ -187,40 +185,59 @@ License: You must have a valid license purchased only from themeforest to legall
                                                 <i class="ion ion-md-today" style="color: #044067;"></i>
                                                 ตรวจสอบแผนประจำเดือน</a>
                                         </li>
-                                        <li class="nav-item {{ (request()->is('head/approvalgeneral')) ? 'btn2' : '' }}">
-                                            <a class="nav-link" href="{{ url('head/approvalgeneral') }}">
-                                                <i class="ion ion-md-checkbox"></i>
-                                                <span class="nav-link-text">ตรวจสอบคำขออนุมัติ</span>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link {{ (request()->is('customer-api')) ? 'btn2' : '' }} {{ (request()->is('customer')) ? 'btn2' : '' }} {{ (request()->is('lead')) ? 'btn2' : '' }}"
+                                href="javascript:void(0);" data-toggle="collapse" data-target="#customer">
+                                <i class="ion ion-md-person" style="color: #044067;"></i>
+                                <span class="nav-link-text">ลูกค้า</span>
+                            </a>
+                            <ul id="customer" class="nav flex-column collapse collapse-level-1">
+                                <li class="nav-item">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="javascript:void(0)">
+                                                <i class="ion ion-md-people" style="color: #044067;"></i>
+                                                <span class="nav-link-text">ทะเบียนลูกค้า</span>
                                             </a>
                                         </li>
                                         <li class="nav-item {{ (request()->is('head/approval-customer-except')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('head/approval-customer-except') }}">
                                                 <i class="ion ion-md-checkbox"></i>
-                                                <span class="nav-link-text">ลูกค้าใหม่ นอกแผน</span>
+                                                <span class="nav-link-text">ลูกค้าใหม่</span>
                                             </a>
                                         </li>
-                                        <li class="nav-item {{ (request()->is('head/assignment/add')) ? 'btn2' : '' }}">
-                                            <a class="nav-link" href="{{ url('head/assignment/add') }}">
-                                                <i class="ion ion-md-folder-open" style="color: #044067;"></i>
-                                                บันทึกสั่งงาน</a>
+                                        <li class="nav-item {{ (request()->is('headManage/data_name_store')) ? 'btn2' : '' }}">
+                                            <a class="nav-link"
+                                                href="{{ url('headManage/data_name_store') }}">
+                                                <i class="ion ion-md-home" style="color: #044067;"></i>ข้อมูลลูกค้า (ทำเป้า)</a>
+                                        </li>
+                                        <li class="nav-item {{ (request()->is('headManage/data_search_product')) ? 'btn2' : '' }}">
+                                            <a class="nav-link"
+                                                href="{{ url('headManage/data_search_product') }}">
+                                                <i class="ion ion-md-search"
+                                                    style="color: #044067;"></i>ค้นหาร้านค้า-สินค้า</a>
                                         </li>
                                     </ul>
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item {{ (request()->is('head/note')) ? 'btn2' : '' }}">
-                            <a class="nav-link link-with-badge" href="{{ url('head/note') }}">
-                                <i class="ion ion-md-document" style="color: #044067;"></i>
-                                <span class="nav-link-text">บันทึกโน้ต</span>
-                                <span class="badge badge-danger badge-pill">{{$count_note->count()}}</span>
-                            </a>
+
+                        <li class="nav-item {{ (request()->is('headManage/reportTeam')) ? 'btn2' : '' }}">
+                            <a class="nav-link" href="{{ url('/headManage/reportTeam') }}">
+                                <i class="ion ion-md-stats" style="color: #044067;"></i>ทีมผู้แทนขาย</a>
                         </li>
+
                         <li class="nav-item">
                             <a class="nav-link {{ (request()->is('head/news')) ? 'btn2' : '' }} {{ (request()->is('head/promotions')) ? 'btn2' : '' }} {{ (request()->is('head/product_new')) ? 'btn2' : '' }}"
                             href="javascript:void(0);" data-toggle="collapse"
                                 data-target="#charts_drp3">
                                 <i class="ion ion-md-globe" style="color: #044067;"></i>
-                                <span class="nav-link-text">ข่าวสาร และ โปรโมชั่น</span>
+                                <span class="nav-link-text">ประกาศ</span>
                             </a>
                             <ul id="charts_drp3" class="nav flex-column collapse collapse-level-1">
                                 <li class="nav-item">
@@ -235,35 +252,179 @@ License: You must have a valid license purchased only from themeforest to legall
                                                 href="{{ url('head/promotions') }}">
                                                 <i class="ion ion-md-gift" style="color: #044067;"></i>โปรโมชั่น</a>
                                         </li>
-                                        <li class="nav-item {{ (request()->is('head/product_new')) ? 'btn2' : '' }}">
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link {{ (request()->is('head/product_new')) ? 'btn2' : '' }}"
+                                href="javascript:void(0);" data-toggle="collapse" data-target="#products_dropdwon">
+                                <i class="ion ion-md-globe" style="color: #044067;"></i>
+                                <span class="nav-link-text">สินค้า</span>
+                            </a>
+                            <ul id="products_dropdwon" class="nav flex-column collapse collapse-level-1">
+                                <li class="nav-item {{ (request()->is('head/product_new')) ? 'btn2' : '' }}">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item ">
                                             <a class="nav-link" href="{{ url('head/product_new') }}">
                                                 <i class="ion ion-md-cube" style="color: #044067;"></i>สินค้าใหม่</a>
                                         </li>
                                     </ul>
                                 </li>
+                                <li class="nav-item">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item ">
+                                            <a class="nav-link" href="javascript:void(0)">
+                                                <i class="ion ion-md-cube" style="color: #044067;"></i>แคตตาล๊อคสินค้า</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item ">
+                                            <a class="nav-link" href="javascript:void(0)">
+                                                <i class="ion ion-md-cube" style="color: #044067;"></i>อายุจัดเก็บ</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item ">
+                                            <a class="nav-link" href="javascript:void(0)">
+                                                <i class="ion ion-md-cube" style="color: #044067;"></i>รายการสั่งผลิต (MTO)</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item ">
+                                            <a class="nav-link" href="javascript:void(0)">
+                                                <i class="ion ion-md-cube" style="color: #044067;"></i>รายการสินค้ายกเลิก</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item ">
+                                            <a class="nav-link" href="javascript:void(0)">
+                                                <i class="ion ion-md-cube" style="color: #044067;"></i>ใบราคา</a>
+                                        </li>
+                                    </ul>
+                                </li>
                             </ul>
                         </li>
+
                         <li class="nav-item">
+                            <a class="nav-link {{ (request()->is('head/approvalgeneral')) ? 'btn2' : '' }}
+                                {{ (request()->is('head/assignment/add')) ? 'btn2' : '' }}" href="javascript:void(0);" data-toggle="collapse"
+                                data-target="#charts_drp2">
+                                <i class="ion ion-md-create" style="color: #044067;"></i>
+                                <span class="nav-link-text">ขออนุมัติ และ สั่งงาน</span>
+                            </a>
+                            <ul id="charts_drp2" class="nav flex-column collapse collapse-level-1">
+                                <li class="nav-item">
+                                    <ul class="nav flex-column">
+                                        
+                                        <li class="nav-item {{ (request()->is('head/approvalgeneral')) ? 'btn2' : '' }}">
+                                            <a class="nav-link" href="{{ url('head/approvalgeneral') }}">
+                                                <i class="ion ion-md-checkbox"></i>
+                                                <span class="nav-link-text">ให้ความเห็นขออนุมัติ</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item {{ (request()->is('head/assignment/add')) ? 'btn2' : '' }}">
+                                            <a class="nav-link" href="{{ url('head/assignment/add') }}">
+                                                <i class="ion ion-md-folder-open" style="color: #044067;"></i>
+                                                สั่งงานผู้แทนขาย</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item {{ (request()->is('head/note')) ? 'btn2' : '' }}">
+                            <a class="nav-link link-with-badge" href="{{ url('head/note') }}">
+                                <i class="ion ion-md-document" style="color: #044067;"></i>
+                                <span class="nav-link-text">บันทึกโน้ต</span>
+                                <span class="badge badge-danger badge-pill">{{$count_note->count()}}</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link {{ (request()->is('headManage/data_name_store')) ? 'btn2' : '' }} {{ (request()->is('headManage/data_search_product')) ? 'btn2' : '' }}
+                                {{ (request()->is('headManage/data_report_product-new')) ? 'btn2' : '' }} {{ (request()->is('headManage/data_report_full-year')) ? 'btn2' : '' }}
+                                {{ (request()->is('headManage/data_report_historical-year')) ? 'btn2' : '' }} {{ (request()->is('headManage/data_report_historical-quarter')) ? 'btn2' : '' }}
+                                {{ (request()->is('headManage/data_report_historical-month')) ? 'btn2' : '' }} {{ (request()->is('headManage/data_report_sale_compare-year')) ? 'btn2' : '' }}"
+                            href="javascript:void(0);" data-toggle="collapse"
+                                data-target="#charts_drp_data">
+                                <i class="ion ion-md-book" style="color: #044067;"></i>
+                                <span class="nav-link-text">รายงานยอดขาย</span>
+                            </a>
+                            <ul id="charts_drp_data" class="nav flex-column collapse collapse-level-1">
+                                <li class="nav-item">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item {{ (request()->is('headManage/data_report_product-new')) ? 'btn2' : '' }}">
+                                            <a class="nav-link"
+                                                href="{{ url('headManage/data_report_product-new') }}">
+                                                <i class="ion ion-md-stats"
+                                                    style="color: #044067;"></i>รายงานยอดขายสินค้าใหม่</a>
+                                        </li>
+ 
+                                        <li class="nav-item {{ (request()->is('headManage/data_report_full-year')) ? 'btn2' : '' }}">
+                                            <a class="nav-link"
+                                                href="{{ url('headManage/data_report_full-year') }}">
+                                                <i class="ion ion-md-stats"
+                                                    style="color: #044067;"></i>รายงานขายตามหมวดสินค้า</a>
+                                        </li>
+                                        <li class="nav-item {{ (request()->is('headManage/data_report_historical-year')) ? 'btn2' : '' }}">
+                                            <a class="nav-link"
+                                                href="{{ url('headManage/data_report_historical-year') }}">
+                                                <i class="ion ion-md-stats"
+                                                    style="color: #044067;"></i>สรุปยอดขาย (รายปี)</a>
+                                        </li>
+                                        <!-- <li class="nav-item {{ (request()->is('headManage/data_report_historical-quarter')) ? 'btn2' : '' }}">
+                                            <a class="nav-link"
+                                                href="{{ url('headManage/data_report_historical-quarter') }}">
+                                                <i class="ion ion-md-stats"
+                                                    style="color: #044067;"></i>รายงานเทียบย้อนหลัง (Quarter)</a>
+                                        </li>
+                                        <li class="nav-item {{ (request()->is('headManage/data_report_historical-month')) ? 'btn2' : '' }}">
+                                            <a class="nav-link"
+                                                href="{{ url('headManage/data_report_historical-month') }}">
+                                                <i class="ion ion-md-stats"
+                                                    style="color: #044067;"></i>รายงานเทียบย้อนหลัง (รายเดือน)</a>
+                                        </li>
+                                        <li class="nav-item {{ (request()->is('headManage/data_report_sale_compare-year')) ? 'btn2' : '' }}">
+                                            <a class="nav-link"
+                                                href="{{ url('headManage/data_report_sale_compare-year') }}">
+                                                <i class="ion ion-md-stats"
+                                                    style="color: #044067;"></i>รายงานสรุปยอดทำเป้า เทียบปี</a>
+                                        </li> -->
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="javascript:void(0)">
+                                                <i class="ion ion-md-stats" style="color: #044067;"></i>ยอดขายร้านค้า เทียบปีต่อปี
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="javascript:void(0)">
+                                                <i class="ion ion-md-stats" style="color: #044067;"></i>รายงานรับคืนสินค้า
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        
+                        <!-- <li class="nav-item">
                         <a class="nav-link {{ (request()->is('headManage/reportYear')) ? 'btn2' : '' }} {{ (request()->is('headManage/reportVisitCustomer')) ? 'btn2' : '' }}
                             {{ (request()->is('headManage/report_visitcustomer_goal_head')) ? 'btn2' : '' }} {{ (request()->is('headManage/reportSaleplan')) ? 'btn2' : '' }}
                             {{ (request()->is('headManage/reportTeam')) ? 'btn2' : '' }} {{ (request()->is('headManage/reportStore')) ? 'btn2' : '' }}"
                         href="javascript:void(0);" data-toggle="collapse" data-target="#charts_drp">
                                 <i class="ion ion-md-stats" style="color: #044067;"></i>
-                                <span class="nav-link-text">รายงาน</span>
+                                <span class="nav-link-text">รายงานยอดขาย</span>
                             </a>
                             <ul id="charts_drp" class="nav flex-column collapse collapse-level-1">
                                 <li class="nav-item">
                                     <ul class="nav flex-column">
-                                        {{-- 
-                                        <!-- <li class="nav-item {{ (request()->is('headManage/reportStore')) ? 'btn2' : '' }}">
-                                            <a class="nav-link" href="{{ url('/headManage/reportStore') }}">
-                                                <i class="ion ion-md-stats" style="color: #044067;"></i>รายงานสรุปยอดร้านค้า</a>
-                                        </li> -->
-                                        --}}
-                                        <li class="nav-item {{ (request()->is('headManage/reportTeam')) ? 'btn2' : '' }}">
-                                            <a class="nav-link" href="{{ url('/headManage/reportTeam') }}">
-                                                <i class="ion ion-md-stats" style="color: #044067;"></i>รายงานลูกทีมที่รับผิดชอบ</a>
-                                        </li>
                                         <li class="nav-item {{ (request()->is('headManage/reportSaleplan')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('/headManage/reportSaleplan') }}">
                                                 <i class="ion ion-md-stats" style="color: #044067;"></i>รายงานสรุปแผนประจำเดือน</a>
@@ -283,9 +444,9 @@ License: You must have a valid license purchased only from themeforest to legall
                                     </ul>
                                 </li>
                             </ul>
-                        </li>
+                        </li> -->
                     </ul>
-                    <hr class="nav-separator">
+                    <!-- <hr class="nav-separator">
                     <div class="nav-header">
                         <span>ข้อมูลที่ใช้ร่วมกัน</span>
                         <span>DATA</span>
@@ -299,39 +460,29 @@ License: You must have a valid license purchased only from themeforest to legall
                             href="javascript:void(0);" data-toggle="collapse"
                                 data-target="#charts_drp_data">
                                 <i class="ion ion-md-book" style="color: #044067;"></i>
-                                <span class="nav-link-text">การดูข้อมูล (ใช้ร่วมกัน)</span>
+                                <span class="nav-link-text">รายงานยอดขาย</span>
                             </a>
                             <ul id="charts_drp_data" class="nav flex-column collapse collapse-level-1">
                                 <li class="nav-item">
                                     <ul class="nav flex-column">
-                                        <li class="nav-item {{ (request()->is('headManage/data_name_store')) ? 'btn2' : '' }}">
-                                            <a class="nav-link"
-                                                href="{{ url('headManage/data_name_store') }}">
-                                                <i class="ion ion-md-home" style="color: #044067;"></i>ตรวจสอบรายชื่อร้านค้า</a>
-                                        </li>
-                                        <li class="nav-item {{ (request()->is('headManage/data_search_product')) ? 'btn2' : '' }}">
-                                            <a class="nav-link"
-                                                href="{{ url('headManage/data_search_product') }}">
-                                                <i class="ion ion-md-search"
-                                                    style="color: #044067;"></i>ค้นหารายการสินค้า</a>
-                                        </li>
                                         <li class="nav-item {{ (request()->is('headManage/data_report_product-new')) ? 'btn2' : '' }}">
                                             <a class="nav-link"
                                                 href="{{ url('headManage/data_report_product-new') }}">
                                                 <i class="ion ion-md-stats"
                                                     style="color: #044067;"></i>รายงานยอดขายสินค้าใหม่</a>
                                         </li>
+ 
                                         <li class="nav-item {{ (request()->is('headManage/data_report_full-year')) ? 'btn2' : '' }}">
                                             <a class="nav-link"
                                                 href="{{ url('headManage/data_report_full-year') }}">
                                                 <i class="ion ion-md-stats"
-                                                    style="color: #044067;"></i>รายงานสรุปยอด (ทั้งปี)</a>
+                                                    style="color: #044067;"></i>รายงานขายตามหมวดสินค้า</a>
                                         </li>
                                         <li class="nav-item {{ (request()->is('headManage/data_report_historical-year')) ? 'btn2' : '' }}">
                                             <a class="nav-link"
                                                 href="{{ url('headManage/data_report_historical-year') }}">
                                                 <i class="ion ion-md-stats"
-                                                    style="color: #044067;"></i>รายงานเทียบย้อนหลัง (ทั้งปี)</a>
+                                                    style="color: #044067;"></i>สรุปยอดขาย (รายปี)</a>
                                         </li>
                                         <li class="nav-item {{ (request()->is('headManage/data_report_historical-quarter')) ? 'btn2' : '' }}">
                                             <a class="nav-link"
@@ -355,7 +506,7 @@ License: You must have a valid license purchased only from themeforest to legall
                                 </li>
                             </ul>
                         </li>
-                    </ul>
+                    </ul> -->
                     {{-- <hr class="nav-separator">
                     <div class="nav-header">
                         <span>Getting Started</span>
