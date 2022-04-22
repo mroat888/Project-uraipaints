@@ -6,7 +6,6 @@
  <nav class="hk-breadcrumb" aria-label="breadcrumb">
     <ol class="breadcrumb breadcrumb-light bg-transparent">
         <li class="breadcrumb-item active">หน้าแรก</li>
-        {{-- <li class="breadcrumb-item active" aria-current="page">ปฎิทินกิจกรรม</li> --}}
     </ol>
 </nav>
 <!-- /Breadcrumb -->
@@ -17,7 +16,6 @@
         <div class="row">
             <div class="col-md-12">
                 <section class="hk-sec-wrapper">
-                    <!-- <h6 class="topic-page hk-sec-title topic-bgblue" style="font-weight: bold;">แผนทำงานประจำเดือน <?php echo thaidate('F Y', date("Y-m-d")); ?></h6> -->
                     <h6 class="topic-page hk-sec-title topic-bgblue" style="font-weight: bold;">แผนทำงานประจำเดือน <span><?php echo thaidate('F Y', date("Y-m-d")); ?></span> </h6>
                     <div class="row">
                         <div class="col-md-4">
@@ -335,7 +333,7 @@
                                                     <a href="{{url('customer')}}" class="txt-cusall">ลูกค้าทั้งหมด (ราย)</a>
                                                 </div>
                                                 <div class="col-5">
-                                                    <span class="txt-custotal">{{ number_format($res_api["data"][0]["Customers"][0]["ActiveTotal"]) }}</span>
+                                                    <span class="txt-custotal text-dark">{{ number_format($res_api["data"][0]["Customers"][0]["ActiveTotal"]) }}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -343,7 +341,7 @@
                                             <div class="bggrey-cus">
                                                 <div class="row">
                                                     <div class="col-8">
-                                                        <a href="{{url('important-day-detail')}}" class="txt-specialday">วันสำคัญในเดือน</a>
+                                                        <a href="{{url('important-day-detail')}}" class="txt-specialday text-dark">วันสำคัญในเดือน</a>
                                                     </div>
                                                     <div class="col-4">
                                                         <div>
