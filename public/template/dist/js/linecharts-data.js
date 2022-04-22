@@ -1,6 +1,6 @@
 /*Dashboard Init*/
-
-"use strict";
+ 
+"use strict"; 
 
 /*****Ready function start*****/
 $(document).ready(function(){
@@ -46,7 +46,7 @@ $(document).ready(function(){
 		smooth:false,
 		gridTextColor:'#5e7d8a',
 		gridTextFamily:"Inherit"
-
+        
     });
 	if( $('#m_chart_4').length > 0 ){
 		// Line Chart
@@ -55,7 +55,7 @@ $(document).ready(function(){
 				  { y: '300', a: 20, b: 40, c: 50},
 				  { y: '400', a: 50, b: 70, c: 90},
 				  { y: '500', a: 10, b: 40, c: 100},
-
+				  
 				];
 		var lineChart = Morris.Line({
 				element: 'm_chart_4',
@@ -75,6 +75,6 @@ $(document).ready(function(){
 				pointFillColors:['#fff','#fff','#fff'],
 				pointStrokeColors: ['#22af47','#69c982','#90d7a3'],
 				lineColors: ['#22af47','#69c982','#90d7a3'],
-			});
+			});	
 	}
 });

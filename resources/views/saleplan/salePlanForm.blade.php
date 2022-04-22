@@ -5,7 +5,7 @@ $master_present = App\MasterPresentSaleplan::orderBy('id', 'desc')->get();
 <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title">สร้าง Sale Plan</h5>
+            <h5 class="modal-title">สร้าง Sale Plan (นำเสนอสินค้า)</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -16,10 +16,6 @@ $master_present = App\MasterPresentSaleplan::orderBy('id', 'desc')->get();
         <div class="modal-body">
             <div class="row">
                 <div class="form-group col-md-6">
-                    <label for="firstName">เรื่อง</label>
-                    <input class="form-control" placeholder="กรุณาใส่ชื่อเรื่อง" type="text" name="sale_plans_title" required>
-                </div>
-                <div class="form-group col-md-6">
                     <label for="username">วัตถุประสงค์</label>
                     <select class="form-control custom-select" name="sale_plans_objective" required>
                         <option value="" selected>กรุณาเลือก</option>
@@ -28,18 +24,16 @@ $master_present = App\MasterPresentSaleplan::orderBy('id', 'desc')->get();
                         @endforeach
                     </select>
                 </div>
-            </div>
-                <div class="row">
-                    <div class="col-md-6 form-group">
-                        <label for="firstName">ค้นหาชื่อร้าน</label>
-                        <select name="sel_searchShop2" id="sel_searchShop2" class="form-control custom-select select2" required>
-                            <option value="" selected disabled>กรุณาเลือกชื่อร้านค้า</option>
-                            @foreach ($customer_api as $key => $value)
-                                <option value="{{$customer_api[$key]['id']}}">{{$customer_api[$key]['shop_name']}}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                <div class="col-md-6 form-group">
+                    <label for="firstName">ค้นหาชื่อร้าน</label>
+                    <select name="sel_searchShop2" id="sel_searchShop2" class="form-control custom-select select2" required>
+                        <option value="" selected disabled>กรุณาเลือกชื่อร้านค้า</option>
+                        @foreach ($customer_api as $key => $value)
+                            <option value="{{$customer_api[$key]['id']}}">{{$customer_api[$key]['shop_name']}}</option>
+                        @endforeach
+                    </select>
                 </div>
+            </div>
                 <input type="hidden" name="shop_id" id="saleplan_id">
                 <div class="row">
                     <div class="col-md-6 form-group">

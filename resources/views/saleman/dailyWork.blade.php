@@ -6,59 +6,12 @@
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
             <li class="breadcrumb-item active">งานประจำวัน</li>
-            {{-- <li class="breadcrumb-item active" aria-current="page">ปฎิทินกิจกรรม</li> --}}
         </ol>
     </nav>
     <!-- /Breadcrumb -->
 
     <!-- Container -->
     <div class="container-fluid px-xxl-65 px-xl-20">
-        <div class="mt-30 mb-30">
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="row">
-                        <div class="col-sm">
-                            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                                <ol class="carousel-indicators">
-                                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active">
-                                    </li>
-                                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                                </ol>
-                                <div class="carousel-inner">
-                                    @if ($list_news_a)
-                                    <div class="carousel-item active">
-                                        <img class="d-block w-100" src="{{ isset($list_news_a->banner) ? asset('public/upload/NewsBanner/' . $list_news_a->banner) : '' }}">
-                                    </div>
-                                    @endif
-
-                                    @foreach ($list_banner as $value)
-                                    @if ($value->banner != $list_news_a->banner)
-                                    <div class="carousel-item">
-                                        <img class="d-block w-100" src="{{ isset($value->banner) ? asset('public/upload/NewsBanner/' . $value->banner) : '' }}">
-                                    </div>
-                                    @endif
-                                    @endforeach
-                                </div>
-                                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button"
-                                    data-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Previous</span>
-                                </a>
-                                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button"
-                                    data-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Next</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-            {{-- <div class="mt-30 mb-30"> --}}
             <div class="row">
                 <div class="col-sm-12 col-md-8">
                     <section class="hk-sec-wrapper">
@@ -303,11 +256,11 @@
                                         <div class="d-flex align-items-end justify-content-between mt-5">
                                             <div>
                                                 <span class="d-block">
-                                                    <span>ลูกค้าทั้งหมด</span>
+                                                    <a href="{{url('customer')}}" class="text-dark">ลูกค้าทั้งหมด</a>
                                                 </span>
                                             </div>
                                             <div>
-                                                <span>มีวันสำคัญในเดือน</span>
+                                                <a href="{{url('important-day-detail')}}" class="text-dark">มีวันสำคัญในเดือน</a>
                                             </div>
                                         </div>
                                         <div class="d-flex align-items-end justify-content-between">
@@ -336,7 +289,7 @@
                     <section class="hk-sec-wrapper">
                         <div class="hk-pg-header mb-10">
                             <div>
-                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">แผนงานประจำเดือน <?php echo thaidate('F Y', date("Y-m-d")); ?></h6>
+                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">Sale Plan (นำเสนอสินค้า) ประจำเดือน <?php echo thaidate('F Y', date("Y-m-d")); ?></h6>
                             </div>
                         </div>
                         <div class="row">
@@ -351,8 +304,9 @@
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
-                                                    <th>เรื่อง</th>
+                                                    <th>วัตถุประสงค์</th>
                                                     <th>ลูกค้า</th>
+                                                    <th>จำนวนรายการนำเสนอ</th>
                                                     <th>อำเภอ,จังหวัด</th>
                                                     <th>ความเห็น ผจก.</th>
                                                     <th class="text-center">Action</th>
@@ -370,17 +324,20 @@
                                                                 $shop_address = $customer_api[$key_api]['shop_address'];
                                                             }
                                                         }
+
+                                                        $pieces = explode(",", $value->sale_plans_tags);
                                                     @endphp
 
                                                     <tr>
                                                         <td>{{ $key + 1}}</td>
                                                         <!-- <td>{{$value->id}}</td> -->
-                                                        <td><span class="topic_purple">{!! Str::limit($value->sale_plans_title, 20) !!}</span></td>
+                                                        <td><span class="topic_purple">{!! Str::limit($value->masobj_title, 30) !!}</span></td>
                                                         <td>
                                                             @if($shop_name != "")
                                                                 {!! Str::limit($shop_name,20) !!}
                                                             @endif
                                                         </td>
+                                                        <td align="center">{{ count($pieces) }}</td>
                                                         <td>
                                                             @if($shop_address != "")
                                                                 {{ $shop_address }}
@@ -398,7 +355,7 @@
                                                         </td>
                                                         <td style="text-align:center">
                                                             <div class="button-list">
-                                                                @php
+                                                                {{-- @php
                                                                 $text_notify = "";
                                                                 if ($value->status_result == 1){
 
@@ -439,19 +396,19 @@
                                                                     $btn_pumpkin_disabled = "disabled";
                                                                     $btn_neon_disabled = "disabled";
                                                                 }
-                                                                @endphp
+                                                                @endphp --}}
 
-                                                                <button class="btn btn-icon btn-primary"
+                                                                {{-- <button class="btn btn-icon btn-primary"
                                                                     data-toggle="modal" data-target="#Modalcheckin" onclick="getLocation({{ $value->id }})" {{ $btn_primary_disabled }}>
                                                                     <span class="btn-icon-wrap"><i data-feather="log-in"></i></span></button>
                                                                 <button class="btn btn-icon btn-pumpkin"
                                                                     data-toggle="modal" data-target="#Modalcheckin" onclick="getLocation({{ $value->id }})" {{ $btn_pumpkin_disabled }}>
-                                                                    <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
-                                                                <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalResult" onclick="saleplan_result({{ $value->id }})" {{ $btn_neon_disabled }}>
+                                                                    <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button> --}}
+                                                                <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalResult" onclick="saleplan_result({{ $value->id }})">
                                                                     <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
 
                                                             </div>
-                                                            <span class="text-danger" style="font-size:11px;">{{ $text_notify }}</span>
+                                                            {{-- <span class="text-danger" style="font-size:11px;">{{ $text_notify }}</span> --}}
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -469,7 +426,7 @@
                     <section class="hk-sec-wrapper">
                         <div class="hk-pg-header mb-10">
                             <div>
-                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">พบลูกค้าใหม่</h6>
+                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">Sale Plan (เปิดลูกค้าใหม่) ประจำเดือน <?php echo thaidate('F Y', date("Y-m-d")); ?></h6>
                             </div>
                         </div>
                         <div class="row">
@@ -519,7 +476,7 @@
                                                     </td>
                                                     <td style="text-align:right;">
                                                         <div class="button-list">
-                                                            @php
+                                                            {{-- @php
                                                                 $text_notify = "";
                                                                 if ($value->cust_result_checkin_date != "" && $value->cust_result_checkout_date == ""){
 
@@ -557,17 +514,17 @@
                                                                     $btn_pumpkin_cusnew = "disabled";
                                                                     $btn_neon_cusnew = "disabled";
                                                                 }
-                                                            @endphp
+                                                            @endphp --}}
                                                             <button class="btn btn-icon btn-primary"
-                                                                data-toggle="modal" data-target="#ModalcheckinCust" onclick="getLocation({{ $value->id }})" {{ $btn_primary_cusnew }}>
+                                                                data-toggle="modal" data-target="#ModalcheckinCust" onclick="getLocation({{ $value->id }})">
                                                                 <span class="btn-icon-wrap"><i data-feather="log-in"></i></span></button>
                                                             <button class="btn btn-icon btn-pumpkin"
-                                                            data-toggle="modal" data-target="#ModalcheckinCust" onclick="getLocation({{ $value->id }})" {{ $btn_pumpkin_cusnew }}>
+                                                            data-toggle="modal" data-target="#ModalcheckinCust" onclick="getLocation({{ $value->id }})">
                                                             <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
-                                                            <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalCustResult" onclick="customer_new_result({{ $value->id }})" {{ $btn_neon_cusnew }}>
+                                                            <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalCustResult" onclick="customer_new_result({{ $value->id }})">
                                                             <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
                                                         </div>
-                                                        <span class="text-danger mr-3" style="font-size:11px;">{{ $text_notify }}</span>
+                                                        {{-- <span class="text-danger mr-3" style="font-size:11px;">{{ $text_notify }}</span> --}}
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -805,7 +762,7 @@
     <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">สรุปผล Sale plan</h5>
+                    <h5 class="modal-title">สรุปผล Sale plan (นำเสนอสินค้า)</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -814,7 +771,7 @@
                     <form id="from_saleplan_result">
                         @csrf
                         <input type="hidden" name="saleplan_id" id="get_saleplan_id">
-                        <div class="my-3"><span>เรื่อง : </span><span id="get_title"></span></div>
+                        {{-- <div class="my-3"><span>เรื่อง : </span><span id="get_title"></span></div> --}}
                             <div class="my-3"><span>ลูกค้า : </span><span id="get_shop"></span></div>
                             <div class="my-3"><span>อำเภอ, จังหวัด : </span><span id="get_shop_address"></span></div>
                             <div class="my-3"><span>วัตถุประสงค์ : </span><span id="get_objective"></span></div>
@@ -850,7 +807,7 @@
     <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">สรุปผลพบลูกค้าใหม่</h5>
+                    <h5 class="modal-title">สรุปผล Sale Plan (เปิดลูกค้าใหม่)</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -875,7 +832,6 @@
                                 <select class="form-control custom-select" id="get_cust_result" name="shop_result_status">
                                     <option selected>-- กรุณาเลือก --</option>
                                     <option value="0">ไม่สนใจ</option>
-                                    <option value="1">รอตัดสินใจ</option>
                                     <option value="2">สนใจ/ตกลง</option>
                                 </select>
                             </div>

@@ -138,8 +138,7 @@
                             <canvas id="myChart_2" style="height: 294px"></canvas>
                         </div>
                         <div class="col-md-6">
-                            {{-- <canvas id="myChart_3" style="height: 294px"></canvas> --}}
-                            <canvas id="myChart_3" width="400" height="400"></canvas>
+                            <canvas id="myChart_3" style="height: 294px"></canvas>
                         </div>
                     </div>
                     <div class="row mb-2">
@@ -161,26 +160,11 @@
 
 
 <script>
-<<<<<<< HEAD
-    const ctx = document.getElementById('myChart_3').getContext('2d');
-const myChart_3 = new Chart(ctx, {
-    type: 'doughnut'
-    data = {
-  labels: [
-    'Red',
-    'Blue',
-    'Yellow'
-  ],
-  datasets: [{
-    label: 'My First Dataset',
-    data: [300, 50, 100],
-=======
   var data = {
   labels: [{{ $chat_year }}],
   datasets: [{
     label: 'ยอดขาย',
     data: [{{ $chat_persent_sale }}],
->>>>>>> 8f145372eb7daec230a0f400a5061da9e437a4cb
     backgroundColor: [
       'rgb(255, 99, 132)',
       'rgb(54, 162, 235)',
@@ -189,8 +173,6 @@ const myChart_3 = new Chart(ctx, {
     hoverOffset: 4
   }]
 };
-<<<<<<< HEAD
-=======
 
 var config = {
     type: 'pie',
@@ -203,7 +185,6 @@ var config = {
     config
   );
 
->>>>>>> 8f145372eb7daec230a0f400a5061da9e437a4cb
 </script>
 
 

@@ -8,6 +8,7 @@
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
             <li class="breadcrumb-item active">แผนประจำเดือน</li>
+            {{-- <li class="breadcrumb-item active" aria-current="page">ปฎิทินกิจกรรม</li> --}}
         </ol>
     </nav>
     <!-- /Breadcrumb -->
@@ -20,10 +21,11 @@
                     <section class="hk-sec-wrapper">
                         <div class="hk-pg-header mb-10">
                             <div>
-                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">สรุปรายเดือน ปี <?php echo thaidate('Y', date('Y')); ?></h6>
+                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">สรุปแผนรายเดือน ปี <?php echo thaidate('Y', date('Y')); ?></h6>
                             </div>
                             <div class="col-sm-12 col-md-9">
                                 <!-- ------ -->
+
                                 <span class="form-inline pull-right pull-sm-center">
                                     <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</button>
                                     <form action="{{ url('search_month_planMonth') }}" method="post" enctype="multipart/form-data">
@@ -54,7 +56,7 @@
                                                     <th>Sale Plan (นำเสนอสินค้า)</th>
                                                     <th>Sale Plan (ลูกค้าใหม่)</th>
                                                     <th>รวมงาน</th>
-                                                    <th>ปิดการขาย</th>
+                                                    <th>ปิดการขายได้</th>
                                                     <th>มูลค่า</th>
                                                     <th>ปิดการขายไม่ได้</th>
                                                     <th>จำนวนลูกค้าใหม่</th>
@@ -87,8 +89,8 @@
                                                         <td>{{ $sale_plan_amount }}</td>
                                                         <td>{{ $cust_new_amount }}</td>
                                                         <td>{{ $total_plan }}</td>
-                                                        <td></td>
                                                         <td>{{ $cust_visits_amount }}</td>
+                                                        <td></td>
                                                         <td></td>
                                                         <td></td>
                                                         <td>
@@ -192,107 +194,6 @@
                     </section>
                 </div>
 
-                {{-- <div class="col-md-12">
-                    <section class="hk-sec-wrapper">
-                        <h5 class="hk-sec-title">แผนงานประจำเดือน <?php echo thaidate('F Y', $monthly_plan_next->month_date); ?></h5>
-                        <div class="row mt-30">
-                            <div class="col-md-4">
-                                <div class="card card-sm text-white bg-violet">
-                                    <div class="card-body">
-                                        <span class="d-block font-11 font-weight-500 text-uppercase"></span>
-                                        <div class="d-flex align-items-end justify-content-between">
-                                            <div>
-                                                <span class="d-block">
-                                                    <button class="btn btn-icon btn-light btn-lg">
-                                                        <span class="btn-icon-wrap"><i data-feather="briefcase"></i></span>
-                                                    </button>
-                                                </span>
-                                            </div>
-                                            <div class="mb-10 text-white">
-                                                <span style="font-weight: bold; font-size: 18px;">แผนทำงาน</span>
-                                            </div>
-                                            <div class="mb-10">
-                                                <span style="font-weight: bold; font-size: 18px;">
-                                                    @php
-                                                        $sale_plan_amount_next = DB::table('sale_plans')
-                                                            ->where('monthly_plan_id', $monthly_plan_next->id)
-                                                            ->whereIn('sale_plans_status', [0,1,2])
-                                                            ->count();
-                                                    @endphp
-                                                    {{ $sale_plan_amount_next }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="card card-sm text-white bg-teal">
-                                    <div class="card-body">
-                                        <span class="d-block font-11 font-weight-500 text-uppercase"></span>
-                                        <div class="d-flex align-items-end justify-content-between">
-                                            <div>
-                                                <span class="d-block">
-                                                    <button class="btn btn-icon btn-light btn-lg">
-                                                        <span class="btn-icon-wrap"><i data-feather="user-plus"></i>
-                                                        </span>
-                                                    </button>
-                                                </span>
-                                            </div>
-                                            <div class="mb-10">
-                                                <span style="font-weight: bold; font-size: 18px;">พบลูกค้าใหม่</span>
-                                            </div>
-                                            <div class="mb-10">
-                                                <span style="font-weight: bold; font-size: 18px;">
-                                                    @php
-                                                        $cust_new_amount_next = DB::table('customer_shops_saleplan')
-                                                            ->where('monthly_plan_id', $monthly_plan_next->id)
-                                                            ->whereIn('shop_aprove_status', [0,1,2])
-                                                            ->count();
-                                                    @endphp
-                                                    {{ $cust_new_amount_next }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="card card-sm text-white bg-warning">
-                                    <div class="card-body">
-                                        <span class="d-block font-11 font-weight-500 text-uppercase"></span>
-                                        <div class="d-flex align-items-end justify-content-between">
-                                            <div>
-                                                <span class="d-block">
-                                                    <button class="btn btn-icon btn-light btn-lg">
-                                                        <span class="btn-icon-wrap"><i data-feather="log-in"></i>
-                                                        </span>
-                                                    </button>
-                                                </span>
-                                            </div>
-                                            <div class="mb-10">
-                                                <span style="font-weight: bold; font-size: 18px;">เยี่ยมลูกค้า</span>
-                                            </div>
-                                            <div class="mb-10">
-                                                <span style="font-weight: bold; font-size: 18px;">
-                                                    @php
-                                                        $cust_visits_amount_next = DB::table('customer_visits')
-                                                            ->where('monthly_plan_id', $monthly_plan_next->id)
-                                                            ->count();
-                                                    @endphp
-                                                    {{ $cust_visits_amount_next }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div> --}}
-
                 <div class="col-md-12">
                     <section class="hk-sec-wrapper">
                         <div class="hk-pg-header mb-10">
@@ -340,21 +241,18 @@
                                                                 $shop_address = $customer_api[$key_api]['shop_address'];
                                                             }
                                                         }
+
                                                         $pieces = explode(",", $value->sale_plans_tags);
-                                                        $num = 0;
-                                                        foreach ($pieces as $key => $value) {
-                                                            # code...
-                                                        }
                                                     @endphp
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
-                                                        {{-- <td>{!! Str::limit($value->masobj_title, 30) !!}</td> --}}
+                                                        <td>{!! Str::limit($value->masobj_title, 30) !!}</td>
                                                         <td>
                                                             @if($shop_name != "")
                                                                 {!! Str::limit($shop_name,20) !!}
                                                             @endif
                                                         </td>
-                                                        {{-- <td>{{$pieces->count()}}</td> --}}
+                                                        <td align="center">{{ count($pieces) }}</td>
                                                         <td>
                                                             @if($shop_address != "")
                                                                 {{ $shop_address }}
@@ -419,7 +317,7 @@
                     <section class="hk-sec-wrapper">
                         <div class="hk-pg-header mb-10">
                             <div>
-                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">พบลูกค้าใหม่</h6>
+                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">Sale Plan (เปิดลูกค้าใหม่)</h6>
                             </div>
                             <div class="d-flex">
                                 @if($monthly_plan_next->status_approve == 1 || $monthly_plan_next->status_approve == 2)
@@ -512,84 +410,6 @@
                     </section>
                 </div>
 
-                <div class="col-md-12">
-                    <section class="hk-sec-wrapper">
-                        <div class="hk-pg-header mb-10">
-                            <div>
-                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">เยี่ยมลูกค้า</h6>
-                            </div>
-                            <div class="d-flex">
-                                <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10"
-                                    data-toggle="modal" data-target="#addCustomerVisit"> + เพิ่มใหม่ </button>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm">
-                                <div class="table-wrap">
-                                    <div class="hk-pg-header mb-10 mt-10">
-                                        <div>
-                                        </div>
-                                    </div>
-                                    <div class="table-responsive col-md-12">
-                                        <table id="datable_1_3" class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>ชื่อร้าน</th>
-                                                    <th>อำเภอ,จังหวัด</th>
-                                                    <th>วันสำคัญ</th>
-                                                    <th class="text-center">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                                <?php $no = 1; ?>
-
-                                                @foreach ($customer_visit_api as $key => $value)
-                                                <tr>
-                                                    <td>{{ $no++ }}</td>
-                                                    <td>{{ $customer_visit_api[$key]['shop_name'] }}</td>
-                                                    <td>{{ $customer_visit_api[$key]['shop_address'] }}</td>
-                                                    <td>{{ $customer_visit_api[$key]['focusdate'] }}</td>
-                                                    @php
-                                                     $month = DB::table('monthly_plans')
-                                                                    ->where('id', $customer_visit_api[$key]['monthly_plan_id'])
-                                                                    ->select('status_approve')->first();
-
-                                                            switch($month->status_approve){
-                                                            case 0 :  $btn_disabled = "";
-                                                                break;
-                                                            case 1 :  $btn_disabled = "disabled";
-                                                                break;
-                                                            case 2 :  $btn_disabled = "disabled";
-                                                                break;
-                                                            default :  $btn_disabled = "disabled";
-                                                                break;
-                                                            }
-
-                                                    @endphp
-                                                    <td>
-                                                        <button class="btn btn-icon btn-danger mr-10 btn_cust_new_delete2"
-                                                                    value="{{ $customer_visit_api[$key]['id'] }}" {{ $btn_disabled }}>
-                                                                    <h4 class="btn-icon-wrap" style="color: white;"><i
-                                                                            class="ion ion-md-trash"></i></h4>
-                                                                </button>
-                                                        {{-- <div class="button-list">
-                                                            <a href="{{url('delete_visit', $customer_visit_api[$key]['id'])}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
-                                                                <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-trash"></i></h4></a>
-                                                        </div> --}}
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                    </section>
-                </div>
-
             </div>
         </div>
         <!-- /Row -->
@@ -620,12 +440,6 @@
         @include('customer.lead_edit_saleplan')
     </div>
 
-    <!-- Modal VisitCustomer -->
-    <div class="modal fade" id="addCustomerVisit" tabindex="-1" role="dialog" aria-labelledby="addCustomerVisit"
-        aria-hidden="true">
-        @include('saleman.visitCustomers_add')
-    </div>
-
     <!-- Modal Delete Customer Approve -->
     <div class="modal fade" id="ModalapproveDelete" tabindex="-1" role="dialog" aria-labelledby="Modalapprove"
         aria-hidden="true">
@@ -652,31 +466,6 @@
         </div>
     </div>
 
-    <!-- Modal Delete Customer Visit Approve -->
-    <div class="modal fade" id="ModalapproveDelete2" tabindex="-1" role="dialog" aria-labelledby="ModalapproveDelete2"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <form id="from_cus_delete2" enctype="multipart/form-data">
-                @csrf
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">คุณต้องการลบข้อมูลเยี่ยมลูกค้าใช่หรือไม่</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body" style="text-align:center;">
-                        <h3>คุณต้องการลบข้อมูลเยี่ยมลูกค้า ใช่หรือไม่ ?</h3>
-                        <input class="form-control" id="cust_visit_id_delete" name="cust_visit_id_delete" type="hidden" />
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-                        <button type="submit" class="btn btn-primary" id="btn_save_edit">ยืนยัน</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <!-- Modal Delete Saleplan -->
     <div class="modal fade" id="ModalSaleplanDelete" tabindex="-1" role="dialog" aria-labelledby="ModalSaleplanDelete"
@@ -763,12 +552,6 @@
                 success: function(data) {
                     $('#div_comment').children().remove().end();
                     console.log(data);
-                    // $('#get_comment_id').val(data.comment.id);
-                    // $('#get_comment').val(data.comment.saleplan_comment_detail);
-
-                    // $.each(data.comment, function(key, value){
-                    //     $('#div_comment').append('<div class="alert alert-primary py-20" role="alert">'+value.saleplan_comment_detail+'</div>');
-                    // });
                     $.each(data, function(key, value){
                         $('#div_comment').append('<div>Comment by: '+data[key].user_comment+' Date: '+data[key].created_at+'</div>');
                         $('#div_comment').append('<div class="alert alert-primary py-20" role="alert">'+data[key].saleplan_comment_detail+'</div>');
@@ -910,14 +693,6 @@
                                 }
                             });
                         });
-                    //     $.each(response.master_present, function(key, value){
-                    //         if(value.id == rows_tags[tkey]){
-                    //             $('#get_tags').append('<option value='+value.id+' selected>'+value.present_title+'</option>');
-                    //         }else{
-                    //             $('#get_tags').append('<option value='+value.id+'>'+value.present_title+'</option>');
-                    //         }
-                    //     });
-                    // });
                 }
             }
         });
@@ -962,12 +737,6 @@
             });
         });
 
-    // $(document).on('click', '#btn_update', function() {
-    //     let shop_id = $(this).val();
-    //     $('#shop_id').val(shop_id);
-    //     $('#Modalapprove').modal('show');
-    // });
-
 </script>
 
 
@@ -977,13 +746,6 @@
         let shop_id_delete = $(this).val();
         $('#shop_id_delete').val(shop_id_delete);
         $('#ModalapproveDelete').modal('show');
-    });
-
-    //-- ส่วนเยี่ยมลูกค้า
-    $(document).on('click', '.btn_cust_new_delete2', function() { // ปุ่มลบเยี่ยมลูกค้า
-        let cust_visit_id_delete = $(this).val();
-        $('#cust_visit_id_delete').val(cust_visit_id_delete);
-        $('#ModalapproveDelete2').modal('show');
     });
 
     $(document).on('click','.btn_editshop', function(e){ // แก้ไขลูกค้าใหม่
@@ -1085,43 +847,6 @@
             }
         });
     });
-</script>
-
-<script>
-$("#from_cus_delete2").on("submit", function(e) {
-    e.preventDefault();
-    //var formData = $(this).serialize();
-    var formData = new FormData(this);
-    console.log(formData);
-    $.ajax({
-        type: 'POST',
-        url: '{{ url('/delete_visit') }}',
-        data: formData,
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: function(response) {
-            console.log(response);
-            Swal.fire({
-                icon: 'success',
-                title: 'Deleted!',
-                text: "ลบข้อมูลเยี่ยมลูกค้าเรียบร้อยแล้วค่ะ",
-                showConfirmButton: false,
-                timer: 1500,
-            });
-            $('#ModalapproveDelete2').modal('hide');
-            $('#status_visit').text('ลบข้อมูลเยี่ยมลูกค้าเรียบร้อย')
-            $('#btn_update').prop('disabled', true);
-            $('#btn_delete').prop('disabled', true);
-
-            location.reload();
-        },
-        error: function(response) {
-            console.log("error");
-            console.log(response);
-        }
-    });
-});
 </script>
 
 <script>

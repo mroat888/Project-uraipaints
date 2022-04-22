@@ -2,7 +2,7 @@
 <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title">แก้ไข Sale Plan</h5>
+            <h5 class="modal-title">แก้ไข Sale Plan (นำเสนอสินค้า)</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -13,10 +13,6 @@
         <div class="modal-body">
             <div class="row">
                 <div class="form-group col-md-6">
-                    <label for="firstName">เรื่อง</label>
-                    <input class="form-control" id="get_title" type="text" name="sale_plans_title">
-                </div>
-                <div class="form-group col-md-6">
                     <label for="username">วัตถุประสงค์</label>
                     <select class="form-control custom-select" name="sale_plans_objective" id="get_objective">
                         <option selected disabled>กรุณาเลือก</option>
@@ -25,15 +21,13 @@
                         @endforeach
                     </select>
                 </div>
-            </div>
-                <div class="row">
-                    <div class="col-md-6 form-group">
-                        <label for="firstName">ค้นหาชื่อร้าน</label>
-                        <select name="sel_searchShopEdit" id="sel_searchShopEdit" class="form-control custom-select select2">
-                            <option value="" selected disabled>เลือกข้อมูล</option>
-                        </select>
-                    </div>
+                <div class="col-md-6 form-group">
+                    <label for="firstName">ค้นหาชื่อร้าน</label>
+                    <select name="sel_searchShopEdit" id="sel_searchShopEdit" class="form-control custom-select select2">
+                        <option value="" selected disabled>เลือกข้อมูล</option>
+                    </select>
                 </div>
+            </div>
                 <input type="hidden" name="shop_id" id="saleplan_id_edit">
                 <div class="row">
                     <div class="col-md-6 form-group">

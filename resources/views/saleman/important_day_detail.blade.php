@@ -16,8 +16,8 @@
         <!-- Title -->
         <div class="hk-pg-header mb-10">
             <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                                data-feather="file-text"></i></span></span>รายละเอียดวันสำคัญ</h4>
+                <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon">
+                    <i data-feather="file-text"></i></span></span>รายละเอียดวันสำคัญ</h4>
             </div>
         </div>
         <!-- /Title -->
@@ -26,7 +26,7 @@
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
-                        <div class="col-sm-12 col-md-3">
+                        <div class="col-sm-12 col-md-6">
                             <h5 class="hk-sec-title">รายละเอียดวันสำคัญร้านค้า เดือน <?php echo thaidate('F', date("M")); ?></h5>
                         </div>
                     </div>

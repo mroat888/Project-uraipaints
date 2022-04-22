@@ -27,8 +27,8 @@ var echartsConfig = function() {
 				{
 					name:'',
 					type:'pie',
-					radius : '55%',
-					color: ['#69c982', '#22af47','#eff9f2','#3fb95f'],
+					radius : '70%',
+					color: ['#9290e7', '#403da8','#d7d6f7','#423ed7'],
 					data:[
 						{value:435, name:''},
 						{value:679, name:''},
@@ -112,8 +112,8 @@ var echartsConfig = function() {
 				{
 					name:'',
 					type:'pie',
-					radius: ['30%', '50%'],
-					color: ['#69c982', '#22af47','#eff9f2','#3fb95f'],
+					radius: ['35%', '70%'],
+					color: ['#ffc09a', '#a4511e','#ffe8e3','#da9f4a'],
 					data:[
 						{value:435, name:''},
 						{value:679, name:''},
@@ -197,8 +197,8 @@ var echartsConfig = function() {
 				{
 					name:'',
 					type:'pie',
-					radius: ['30%', '50%'],
-					color: ['#69c982', '#22af47','#eff9f2','#3fb95f'],
+					radius: ['35%', '70%'],
+					color: ['#a6bff3', '#0a3fad','#eff9f2','#2e68df'],
 					data:[
 						{value:435, name:''},
 						{value:679, name:''},

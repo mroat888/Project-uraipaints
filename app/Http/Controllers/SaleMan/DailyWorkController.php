@@ -56,10 +56,11 @@ class DailyWorkController extends Controller
         // -- ข้อมูล แผนงานงาน Saleplan
         $data['list_saleplan'] = DB::table('sale_plans')
         ->leftjoin('sale_plan_comments', 'sale_plans.id', 'sale_plan_comments.saleplan_id')
+        ->join('master_objective_saleplans', 'sale_plans.sale_plans_objective', 'master_objective_saleplans.id')
         ->where('sale_plans.monthly_plan_id', $data['monthly_plan']->id)
         ->where('sale_plans.created_by', Auth::user()->id)
         ->where('sale_plans.sale_plans_status', 2)
-        ->select('sale_plans.*', 'sale_plan_comments.saleplan_id')->distinct()
+        ->select('sale_plans.*', 'sale_plan_comments.saleplan_id', 'master_objective_saleplans.masobj_title')->distinct()
         ->orderBy('sale_plans.id', 'desc')->get();
 
         // -- ข้อมูลลูกค้าใหม่ // ลูกค้าใหม่เปลี่ยนมาใช้อันนี้
