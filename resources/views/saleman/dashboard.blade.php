@@ -375,7 +375,7 @@
             <div class="col-md-12">
                 <section class="hk-sec-wrapper">
                     <!-- <h6 class="topic-page hk-sec-title mb-10" style="font-weight: bold;">สรุปยอดขาย</h6> -->
-                    <h6 class="topic-page hk-sec-title topic-bgorange" style="font-weight: bold;">สรุปยอดขาย</h6>
+                    <h6 class="topic-page hk-sec-title topic-bgorange" style="font-weight: bold;">เทียบยอดขายรายเดือน</h6>
                     <div class="row">
                         <div class="col-md-8">
                             <canvas id="myChart" style="height: 294px"></canvas>
@@ -450,31 +450,41 @@
                                             <div class="col-12">
                                                 <div class="row box-txttotalsum">
                                                     <div class="col-md-8">
-                                                        <span style="font-weight: bold; font-size: 14px;">ร้านค้า (Total)</span>
+                                                        <span style="font-weight: bold; font-size: 14px;">ร้านค้า (Active) ทั้งหมด</span>
                                                     </div>
                                                     <div class="col-md-4" style="text-align:right;">
                                                         <span style="font-weight: bold; font-size: 18px;">
-                                                            {{ number_format($res_api["data"][0]["Customers"][0]["CustTotal"]) }}
+                                                            {{ number_format($res_api["data"][0]["Customers"][0]["CustTotal"]) }} ราย
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <div class="row box-txttotalsum">
                                                     <div class="col-md-8">
-                                                        <span style="font-weight: bold; font-size: 14px;">ร้านค้า (Active)</span>
+                                                        <span style="font-weight: bold; font-size: 14px;">ร้านค้า เปิดบิล ณ เดือนปัจจุบัน</span>
                                                     </div>
                                                     <div class="col-md-4" style="text-align:right;">
                                                         <span style="font-weight: bold; font-size: 18px;">
-                                                            {{ number_format($res_api["data"][0]["Customers"][0]["ActiveTotal"]) }}
+                                                            {{ number_format($res_api["data"][0]["Customers"][0]["ActiveTotal"]) }} ราย
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <div class="row box-txttotalsum">
                                                     <div class="col-md-8">
-                                                        <span style="font-weight: bold; font-size: 14px;">ร้านค้า (Inactive)</span>
+                                                        <span style="font-weight: bold; font-size: 14px;">ร้านค้า เปิดบิล คิดเป็น ณ วันที่ 22/04/2022</span>
                                                     </div>
                                                     <div class="col-md-4" style="text-align:right;">
                                                         <span style="font-weight: bold; font-size: 18px;">
-                                                            {{ number_format($res_api["data"][0]["Customers"][0]["InactiveTotal"]) }}
+                                                            {{ number_format($res_api["data"][0]["Customers"][0]["InactiveTotal"]) }} % จากทั้งหมด
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row box-txttotalsum">
+                                                    <div class="col-md-8">
+                                                        <span style="font-weight: bold; font-size: 14px;" class="num-specialday">ร้านค้า ยังไม่ซื้อ คิดเป็น</span>
+                                                    </div>
+                                                    <div class="col-md-4" style="text-align:right;">
+                                                        <span style="font-weight: bold; font-size: 18px;" class="num-specialday">
+                                                            99.99 % จากทั้งหมด
                                                         </span>
                                                     </div>
                                                 </div>
