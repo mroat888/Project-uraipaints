@@ -261,7 +261,7 @@ License: You must have a valid license purchased only from themeforest to legall
                                 <span class="nav-link-text">ปฎิทินกิจกรรม</span>
                             </a>
                         </li>
-
+                        
                         <li class="nav-item">
                             <a class="nav-link {{ (request()->is('news')) ? 'btn2' : '' }} {{ (request()->is('promotions')) ? 'btn2' : '' }}"
                                 href="javascript:void(0);" data-toggle="collapse" data-target="#information_dropdwon">
@@ -371,7 +371,7 @@ License: You must have a valid license purchased only from themeforest to legall
                                 </li>
                             </ul>
                         </li>
-
+                        
                         <li class="nav-item {{ (request()->is('note')) ? 'btn2' : '' }}">
                             <a class="nav-link link-with-badge" href="{{ url('note') }}">
                                 <i class="ion ion-md-document" style="color: #044067;"></i>
@@ -438,7 +438,7 @@ License: You must have a valid license purchased only from themeforest to legall
                                 <span class="nav-link-text">สถานะจัดส่ง</span>
                             </a>
                         </li> -->
-
+                        
                         <!-- <li class="nav-item">
                             <a class="nav-link {{ (request()->is('reportSale/reportMonthlyPlans')) ? 'btn2' : '' }} {{ (request()->is('reportSale/reportSaleplan')) ? 'btn2' : '' }}
                                 {{ (request()->is('reportSale/reportVisitCustomerGoal')) ? 'btn2' : '' }} {{ (request()->is('reportSale/reportVisitCustomer')) ? 'btn2' : '' }}"

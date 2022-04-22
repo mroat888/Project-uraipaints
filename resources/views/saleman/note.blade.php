@@ -237,11 +237,7 @@
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ป้ายกำกับ</label>
                                 <select class="select2 select2-multiple form-control" multiple="multiple" name="note_tags[]"  id="get_tags">
-                                    {{-- <optgroup id="get_tags">
-                                        <option value="1">เพิ่มเติม</option>
-                                        <option value="2">เข้าพบลูกค้า</option>
-                                        <option value="3">งานใหม่</option>
-                                    </optgroup> --}}
+
                                 </select>
                             </div>
                             <div class="col-md-6 form-group">
@@ -275,14 +271,6 @@
                     $('#get_title').val(data.dataEdit.note_title);
                     $('#get_detail').val(data.dataEdit.note_detail);
                     $('#get_tags').children().remove().end();
-                    // $('#get_tags').val(data.dataEdit.note_tags);
-                    // $('#get_tags').html(
-                    //                 "<optgroup label='กรุณาเลือก'>"+
-                    //                     "<option value='"+data.dataEdit.note_tags+"' selected>"+ data.dataEdit.name_tag +"</option>"+
-                    //                     "@foreach ($master as $value)"+
-                    //                     "<option value='"+{{$value->id}}+"'>{{$value->name_tag}}</option>"+
-                    //                     "@endforeach"+
-                    //                 "</optgroup>");
 
                     let rows_tags = data.dataEdit.note_tags.split(",");
                     let count_tags = rows_tags.length;
