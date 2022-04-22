@@ -330,10 +330,10 @@
                                         <div class="col-12">
                                             <div class="row">
                                                 <div class="col-7">
-                                                    <a href="{{url('customer')}}" class="txt-cusall">ลูกค้าทั้งหมด (ราย)</a>
+                                                    <a href="{{url('customer')}}" class="txt-cusall text-dark">ลูกค้าทั้งหมด (ราย)</a>
                                                 </div>
                                                 <div class="col-5">
-                                                    <span class="txt-custotal text-dark">{{ number_format($res_api["data"][0]["Customers"][0]["ActiveTotal"]) }}</span>
+                                                    <span class="txt-custotal">{{ number_format($res_api["data"][0]["Customers"][0]["ActiveTotal"]) }}</span>
                                                 </div>
                                             </div>
                                         </div>
