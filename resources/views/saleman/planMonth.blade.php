@@ -8,7 +8,6 @@
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
             <li class="breadcrumb-item active">แผนประจำเดือน</li>
-            {{-- <li class="breadcrumb-item active" aria-current="page">ปฎิทินกิจกรรม</li> --}}
         </ol>
     </nav>
     <!-- /Breadcrumb -->
@@ -21,11 +20,10 @@
                     <section class="hk-sec-wrapper">
                         <div class="hk-pg-header mb-10">
                             <div>
-                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">แผนสรุปรายเดือน ปี <?php echo thaidate('Y', date('Y')); ?></h6>
+                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">สรุปแผนประจำเดือน ปี <?php echo thaidate('Y', date('Y')); ?></h6>
                             </div>
                             <div class="col-sm-12 col-md-9">
                                 <!-- ------ -->
-
                                 <span class="form-inline pull-right pull-sm-center">
                                     <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</button>
                                     <form action="{{ url('search_month_planMonth') }}" method="post" enctype="multipart/form-data">

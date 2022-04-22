@@ -587,16 +587,6 @@ Route::post('calendar/delete','FullCalendarController@destroy');
 Route::get('calendar/show/{id}','FullCalendarController@show');
 
 
-// Route::get('/clear-cache', function() {
-Route::get('/clc', function() {
-    Artisan::call('cache:clear');
-    Artisan::call('route:clear');
-    Artisan::call('config:clear');
-    Artisan::call('view:clear');
-    return "Cache is cleared";
-});
-
-
 // utility
 
 Route::get('/fetch_amphur/{id}',[ProvinceController::class, 'amphur']);
@@ -646,3 +636,13 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/', 'HomeController@index')->name('home');
+
+
+// Route::get('/clear-cache', function() {
+    Route::get('/clc', function() {
+        Artisan::call('cache:clear');
+        Artisan::call('route:clear');
+        Artisan::call('config:clear');
+        Artisan::call('view:clear');
+        return "Cache is cleared";
+    });
