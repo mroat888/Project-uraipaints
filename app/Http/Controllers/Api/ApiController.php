@@ -118,11 +118,22 @@ class ApiController extends Controller
                 $products[] = [
                     'identify' => $value['identify'],
                     'name' => $value['name'],
+                    'url_image' => $value['url_image'],
+                    'pack_unit' => $value['pack_unit'],
+                    'pack_ratio' => $value['pack_ratio'],
                 ];
             }
         }
         return Datatables::of($products)
         ->addIndexColumn()
+        ->editColumn('url_image',function($row){
+            if($row['url_image'] != ""){
+                $img = "<img src='".$row['url_image']."' style='width:100%'>";
+            }else{
+                $img = "";
+            }
+            return $img;
+        })
         ->editColumn('identify',function($row){
             return $row['identify'];
         })
@@ -663,16 +674,22 @@ class ApiController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
         $customer = array();
-
+        
         if($res_api['code'] == 200){
-            foreach($res_api['data'] as $value){
+            foreach($res_api['data'] as $key => $value){
                 $customer[] = [
                     'identify' => $value['identify'],
                     'title' => $value['title'],
                     'name' => $value['name'],
+                    'address1' => $value['address1'],
+                    'address2' => $value['adrress2'],
+                    'telephone' => $value['telephone'],
+                    'mobile' => $value['mobile'],
                 ];
             }
         }
+
+
         return Datatables::of($customer)
         ->addIndexColumn()
         ->editColumn('identify',function($row){
@@ -680,6 +697,12 @@ class ApiController extends Controller
         })
         ->editColumn('name',function($row){
             return $row['title']." ".$row['name'];
+        })
+        ->editColumn('address',function($row){
+            return $row['address1']." ".$row['address2'];
+        })
+        ->editColumn('telephone',function($row){
+            return $row['telephone'].", ".$row['mobile'];
         })
         ->make(true);
     }

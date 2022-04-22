@@ -11,7 +11,7 @@
     $action = 'admin/reportSaleplan/search';
 @endphp
 
-@include('reports.report_saleplan_union');
+@include('reports.report_saleplan_union_v2');
 
 @section('footer')
     @include('layouts.footer')

@@ -71,16 +71,17 @@
                             <div id="table_list" class="table-responsive col-md-12">
                                 <table id="datable_1" class="table table-hover table-bordered" style="width:100%;">
                                     <thead>
-                                        <tr>
+                                        <tr style="text-align:center">
                                             <th rowspan = "3" style="width:200px;"><strong>#</strong></th>
                                             <th colspan="12" style="text-align:center;"><strong>รายงานเทียบย้อนหลัง (ไตรมาส)</strong></th>
                                         </tr>
-                                        <tr>
+                                        <tr style="text-align:center">
                                             <th><strong>มกราคม - มีนาคม</strong></th>
                                             <th><strong>เมษายน - มิถุนายน</strong></th>
                                             <th><strong>กรกฎาคม - กันยายน</strong></th>
                                             <th><strong>ตุลาคม - ธันวาคม</strong></th>
                                             <th><strong>รวมทั้งปี</strong></th>
+                                            <th><strong>%ยอดขาย</strong></th>
                                         </tr>
                                     </thead>
                                     </tbody>
@@ -92,8 +93,8 @@
                                             @php
                                                 $data_label[] = $year_value;
                                             @endphp
-                                        <tr>
-                                            <td>{{ $year_value }}</td>
+                                        <tr style="text-align:right">
+                                            <td style="text-align:center">{{ $year_value }}</td>
                                             <td>
                                                 @if(isset($quarter_api_year[$key]['q1'][4]))
                                                     {{ number_format($quarter_api_year[$key]['q1'][4],2) }}
@@ -135,12 +136,25 @@
                                                     @endif
                                                 @endif
                                             </td>
+                                            <td style="text-align:center;">
+                                                @php 
+                                                    $sum_all = $sum_netSales_q1+$sum_netSales_q2+$sum_netSales_q3+$sum_netSales_q4;
+                                                    if(isset($total_year[$key]['total_year'])){
+                                                        if($total_year[$key]['total_year'] != 0){
+                                                            $persent_sale = ($total_year[$key]['total_year']*100)/$sum_all;
+                                                        }else{
+                                                            $persent_sale = 0;
+                                                        }
+                                                    }
+                                                @endphp
+                                                {{ number_format($persent_sale,2) }}
+                                            </td>
                                         </tr>
                                         @endforeach
                                     </tbody>
                                     <tfoot>
-                                        <tr style="font-weight: bold;">
-                                            <td style=" text-align:center; font-weight: bold;">ทั้งหมด</td>
+                                        <tr style="font-weight: bold; text-align:right;">
+                                            <td style=" text-align:center; font-weight: bold; text-align:center;">ทั้งหมด</td>
                                             <td style="font-weight: bold;">{{ number_format($sum_netSales_q1,2) }}</td>
                                             <td style="font-weight: bold;">{{ number_format($sum_netSales_q2,2) }}</td>
                                             <td style="font-weight: bold;">{{ number_format($sum_netSales_q3,2) }}</td>
@@ -149,6 +163,7 @@
                                                 $sum_all = $sum_netSales_q1+$sum_netSales_q2+$sum_netSales_q3+$sum_netSales_q4;
                                             @endphp
                                             <td style="font-weight: bold;">{{ number_format($sum_all,2) }}</td>
+                                            <td style="font-weight: bold; text-align:center;">{{ number_format(100,2) }}</td>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -170,7 +185,7 @@
                             <canvas id="myChart" style="height: 294px"></canvas>
                         </div>
                         <div class="col-md-6">
-                            
+                            <canvas id="myChart_2" style="height: 294px"></canvas>
                         </div>
                     </div>
                 </section>
@@ -181,12 +196,53 @@
 
 <script src="{{ asset('public/template/graph/Chart.bundle.js') }}"></script>
 <?php
-    //$data_chat1 = "200,250,380,350";
-    //$data_chat2 = "250,180,280,200";
-    // $data_chat3 = "180,200,250,220";
-    //$data_chat3 = "";
-    $count = count($data);
+    $chat_persent_sale = "";
+    $count_year = count($year_search);
+    foreach($year_search as $key => $year_value){
+        if(isset($total_year[$key]['total_year'])){
+            if($total_year[$key]['total_year'] != 0){
+                $present = number_format(($total_year[$key]['total_year']*100)/$sum_all,2) ;
+            }else{
+                $present = number_format(0,2);
+            }
+        }
+        if($key < $count_year-1){
+            $chat_persent_sale .= $present.",";
+        }else{
+            $chat_persent_sale .= $present;
+        }
+    }
     
+?>
+
+<script>
+    var data = {
+    labels: [{{ $search_year }}],
+    datasets: [{
+        data: [{{ $chat_persent_sale }}],
+        backgroundColor: [
+            'rgb(255, 99, 132)',
+            'rgb(255, 153, 51)',
+            'rgb(192, 192, 192)'
+        ],
+        hoverOffset: 4
+    }]
+    };
+
+    var config = {
+        type: 'pie',
+        data: data,
+        options: {}
+    };
+
+    var myChart = new Chart(
+        document.getElementById('myChart_2'),
+        config
+    );
+
+</script>
+<?php
+    $count = count($data);
     $data_text = array();
 
     for($i=0;$i<3;$i++){
@@ -221,25 +277,36 @@
     var ctx = document.getElementById("myChart").getContext('2d');
     var datset =[];
     var newDataset =[];
-   
     newDataset[0] = {
         label: '{{ $data_label[0] }}',
-        backgroundColor: ['rgba(255, 99, 132, 0)',],
-        borderColor: ['rgba(255,99,132,1)',],
+        backgroundColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(255, 99, 132, 1)',
+            'rgba(255, 99, 132, 1)',
+            'rgba(255, 99, 132, 1)',
+        ],
         borderWidth: 1,
         data: [{{ $data_text[0] }}],
     };
     newDataset[1] = {
         label: '{{ $data_label[1] }}',
-        backgroundColor: ['rgba(255, 99, 132, 0)',],
-        borderColor: ['rgba(0,0,255,1)',],
+        backgroundColor: [
+            'rgba(255, 153, 51, 1)',
+            'rgba(255, 153, 51, 1)',
+            'rgba(255, 153, 51, 1)',
+            'rgba(255, 153, 51, 1)',
+        ],
         borderWidth: 1,
         data: [{{ $data_text[1]  }}],
     };
     newDataset[2] = {
         label: '{{ $data_label[2] }}',
-        backgroundColor: ['rgba(200, 150, 100, 0)',],
-        borderColor: ['rgba(255,128,0,1)',],
+        backgroundColor: [
+            'rgba(192, 192, 192, 1)',
+            'rgba(192, 192, 192, 1)',
+            'rgba(192, 192, 192, 1)',
+            'rgba(192, 192, 192, 1)',
+        ],
         borderWidth: 1,
         data: [{{ $data_text[2]  }}],
     };
@@ -248,9 +315,9 @@
         datset.push(newDataset[i]);
     }
        myChart = new Chart(ctx, {
-        type: 'line',
+        type: 'bar',
         data: {
-            labels: [1,2,3,4],
+            labels: ["มกราคม-มีนาคม","เมษายน-มิถุนายน","กรกฎาคม-กันยายน","ตุลาคม-ธันวาคม"],
             datasets: datset
         },
             options: {

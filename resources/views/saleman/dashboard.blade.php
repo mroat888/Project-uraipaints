@@ -121,7 +121,7 @@
                             </div>
                             </a>
                         </div>
-                        
+
 
                         <div class="col-md-6">
                             <a href="{{ url('assignment') }}">
@@ -306,11 +306,11 @@
                                     <div class="d-flex align-items-end justify-content-between mt-5">
                                         <div>
                                             <span class="d-block">
-                                                <span>ลูกค้าทั้งหมด</span>
+                                                <span>ลูกค้าทั้งหมด (ราย)</span>
                                             </span>
                                         </div>
                                         <div>
-                                            <span>มีวันสำคัญในเดือน</span>
+                                            <a href="{{url('important-day-detail')}}">วันสำคัญในเดือน</a>
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-end justify-content-between">
@@ -460,7 +460,7 @@
         </div>
     </div>
         <!-- /Row -->
-        
+
     </div>
     <!-- /Container -->
 

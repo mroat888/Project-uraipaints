@@ -49,6 +49,9 @@
                                         <td>{{ $value->team_name }}</td>
                                         <td>
                                             <div class="button-list">
+                                                <button class="btn btn-icon btn-warning mr-10 btn_edit" value="{{ $value->id }}">
+                                                    <span class="btn-icon-wrap"><i data-feather="edit"></i></span>
+                                                </button>
                                                 <a href="{{ url('admin/teamSales_detail', $value->id)}}" class="btn btn-icon btn-info mr-10">
                                                     <span class="btn-icon-wrap"><i data-feather="book"></i></span></a>
                                                     <button class="btn btn-icon btn-warning mr-10 btn_edit" value="{{ $value->id }}">
@@ -70,6 +73,7 @@
     </div>
     <!-- /Container -->
 
+<<<<<<< HEAD
      <!-- Modal -->
      <div class="modal fade" id="modalInsert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLarge01"
      aria-hidden="true">
@@ -132,6 +136,68 @@
      </div>
  </div>
 </div>
+=======
+    <!-- Modal Add -->
+    <div class="modal fade" id="modalInsert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLarge01"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">ฟอร์มบันทึกกลุ่มและทีม</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="form_insert" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <label for="firstName">ชื่อกลุ่มและทีม</label>
+                                <input type="text" name="team_name" id="team_name" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit -->
+    <div class="modal fade" id="Modaleditteam" tabindex="-1" role="dialog" aria-labelledby="exampleModalLarge01"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">ฟอร์มแก้ไขกลุ่มและทีม</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="form_edit" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <input type="hidden" name="team_id_edit" id="team_id_edit" class="form-control">
+                            <div class="col-md-12 form-group">
+                                <label for="firstName">ชื่อกลุ่มและทีม</label>
+                                <input type="text" name="team_name_edit" id="team_name_edit" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+>>>>>>> 8f145372eb7daec230a0f400a5061da9e437a4cb
 
 
 
@@ -157,7 +223,7 @@
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    $("#Modaladdteam").modal('hide');
+                    $("#modalInsert").modal('hide');
                     location.reload();
                 }else{
                     Swal.fire({
@@ -218,7 +284,7 @@
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    $("#Modaladdteam").modal('hide');
+                    $("#modalInsert").modal('hide');
                     location.reload();
                 }else{
                     Swal.fire({

@@ -30,8 +30,11 @@ $(document).ready(function(){
                 content += "<table id='datable_1' class='table table-hover data-table'>";
                     content += "<thead>";
                         content += "<tr>";
+                            content += "<th style='font-weight: bold;'>#</th>";
                             content += "<th style='font-weight: bold;'>รหัสสินค้า</th>";
                             content += "<th style='font-weight: bold;'>ชื่อสินค้า</th>";
+                            content += "<th style='font-weight: bold;'>หน่วยแพ็ค</th>";
+                            content += "<th style='font-weight: bold;'>ขนาดแพ็ค</th>";
                         content += "</tr>";
                     content += "</thead>";
                     content += "<tbody>";
@@ -53,8 +56,11 @@ $(document).ready(function(){
                     },
                 },
                 columns: [
+                    {data: 'url_image', name: 'url_image'},
                     {data: 'identify', name: 'identify'},
                     {data: 'name', name: 'name'},
+                    {data: 'pack_unit', name: 'pack_unit'},
+                    {data: 'pack_ratio', name: 'pack_ratio'},
                 ]
         });
 
@@ -135,14 +141,14 @@ $(document).on('change','.province', function(e){
 
     $("#table_customer").html(content);
 
-    $.fn.dataTable.ext.errMode = () => alert('Error while loading the table data. Please refresh');
+    // $.fn.dataTable.ext.errMode = () => alert('Error while loading the table data. Please refresh');
     $('#datable_2').DataTable({
 
         processing: false,
         serverSide: false,
         ajax: {
             method:"GET",
-            url:"{{url('fetch_datatable_customer_sellers_pdglist')}}/"+pdglist+'/'+pvid,
+            url:"{{url('fetch_datatable_customer_sellers_pdglist_pvid')}}/"+pdglist+'/'+pvid,
             dataType: 'json',
             data:{
                     "_token": "{{ csrf_token() }}",

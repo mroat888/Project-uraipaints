@@ -251,7 +251,7 @@ License: You must have a valid license purchased only from themeforest to legall
                                         <li class="nav-item {{ (request()->is('approvalsaleplan')) ? 'btn2' : '' }}">
                                             <a class="nav-link link-with-badge" href="{{ url('/approvalsaleplan') }}">
                                                 <i class="ion ion-md-today" style="color: #044067;"></i>
-                                                <span class="nav-link-text">อนุมัติ sale plan</span>
+                                                <span class="nav-link-text">อนุมัติแผนประจำเดือน</span>
                                                 <span class="badge badge-danger badge-pill">{{$monthly_plan}}</span>
                                             </a>
                                         </li>
@@ -320,10 +320,12 @@ License: You must have a valid license purchased only from themeforest to legall
                             <ul id="charts_drp" class="nav flex-column collapse collapse-level-1">
                                 <li class="nav-item">
                                     <ul class="nav flex-column">
-                                        <li class="nav-item {{ (request()->is('leadManage/reportStore')) ? 'btn2' : '' }}">
+                                        {{-- 
+                                        <!-- <li class="nav-item {{ (request()->is('leadManage/reportStore')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('/leadManage/reportStore') }}">
                                                 <i class="ion ion-md-stats"></i>รายงานสรุปยอดร้านค้า</a>
-                                        </li>
+                                        </li> -->
+                                        --}}
                                         <li class="nav-item {{ (request()->is('leadManage/reportTeam')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('/leadManage/reportTeam') }}">
                                                 <i class="ion ion-md-stats"></i>รายงานลูกทีมที่รับผิดชอบ</a>
@@ -331,7 +333,7 @@ License: You must have a valid license purchased only from themeforest to legall
                                         <li class="nav-item {{ (request()->is('leadManage/reportSaleplan')) ? 'btn2' : '' }}">
                                             <a class="nav-link"
                                                 href="{{ url('/leadManage/reportSaleplan') }}">
-                                                <i class="ion ion-md-stats"></i>รายงานสรุป sale plan</a>
+                                                <i class="ion ion-md-stats"></i>รายงานสรุปแผนประจำเดือน</a>
                                         </li>
                                         <li class="nav-item {{ (request()->is('leadManage/reportYear')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('/leadManage/reportYear') }}">

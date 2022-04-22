@@ -21,6 +21,7 @@ Route::get('/index.html', 'Saleman\DashboardController@index');
 
 // Sale
 Route::get('dashboard',  'SaleMan\DashboardController@index');
+Route::get('important-day-detail',  'SaleMan\ImportantDayController@index');
 Route::get('/planMonth', 'PlanMonthController@index');
 Route::get('planMonth_history/{id}', 'PlanMonthController@history');
 Route::post('search_month_planMonth', 'PlanMonthController@search_month_planMonth');
@@ -146,6 +147,7 @@ Route::post('data_report_historical-year/search', 'ShareData\ReportHistoricalYea
 Route::get('data_report_historical-quarter', 'ShareData\ReportHistoricalQuarterController@index');
 Route::post('data_report_historical-quarter/search', 'ShareData\ReportHistoricalQuarterController@search');
 Route::get('data_report_historical-month', 'ShareData\ReportHistoricalMonthController@index');
+Route::post('data_report_historical-month/search', 'ShareData\ReportHistoricalMonthController@search');
 Route::get('data_report_sale_compare-year','ShareData\ReportSaleCompareYearController@index');
 });
 
@@ -238,9 +240,12 @@ Route::get('lead/promotion_detail/{id}', 'PromotionController@lead_promotion_det
 Route::get('/leadManage/reportcustomer', function () { return view('reports.report_customer'); });
 Route::get('/leadManage/reportStore','LeadManager\ApiCustomerController@index');
 Route::get('/leadManage/reportStore/detail/{id}','LeadManager\ApiCustomerController@show');
-Route::get('/leadManage/reportTeam', 'LeadManager\ReportTeamController@index');
-Route::get('/leadManage/reportSaleplan', 'LeadManager\ReportSalePlanController@index');
-Route::post('/leadManage/reportSaleplan/search', 'LeadManager\ReportSalePlanController@search');
+// Route::get('/leadManage/reportTeam', 'LeadManager\ReportTeamController@index'); // -- ลูกค้าให้เปลี่ยนใช้ api อันล่าง
+Route::get('/leadManage/reportTeam', 'LeadManager\ReportTeamController@reportTeamApi'); // เปลี่ยนมาอันนี้ <----|
+// Route::get('/leadManage/reportSaleplan', 'LeadManager\ReportSalePlanController@index'); //-- เปลี่ยนรูปแบบรายงานใหม่ ใช้อันล่าง
+// Route::post('/leadManage/reportSaleplan/search', 'LeadManager\ReportSalePlanController@search'); //-- เปลี่ยนรูปแบบรายงานใหม่ ใช้อันล่าง
+Route::get('/leadManage/reportSaleplan', 'LeadManager\ReportSalePlanController@reportsalepaln');
+Route::post('/leadManage/reportSaleplan/search', 'LeadManager\ReportSalePlanController@reportsalepaln_search');
 Route::get('/leadManage/reportYear', 'LeadManager\ReportYearController@index');
 Route::post('/leadManage/reportYear/search', 'LeadManager\ReportYearController@search');
 
@@ -259,6 +264,7 @@ Route::post('leadManage/data_report_historical-year/search', 'ShareData_LeadMana
 Route::get('leadManage/data_report_historical-quarter', 'ShareData_LeadManager\ReportHistoricalQuarterController@index');
 Route::post('leadManage/data_report_historical-quarter/search', 'ShareData_LeadManager\ReportHistoricalQuarterController@search');
 Route::get('leadManage/data_report_historical-month', 'ShareData_LeadManager\ReportHistoricalMonthController@index');
+Route::post('leadManage/data_report_historical-month/search', 'ShareData_LeadManager\ReportHistoricalMonthController@search');
 Route::get('leadManage/data_report_sale_compare-year','ShareData_LeadManager\ReportSaleCompareYearController@index');
 
 Route::get('lead/edit-profile', 'ProfileController@lead_index');
@@ -332,9 +338,13 @@ Route::get('head/promotion_detail/{id}', 'PromotionController@head_promotion_det
 Route::get('/headManage/reportcustomer', function () { return view('reports.report_customer'); });
 Route::get('/headManage/reportStore','HeadManager\ApiCustomerController@index');
 Route::get('/headManage/reportStore/detail/{id}','HeadManager\ApiCustomerController@show');
-Route::get('/headManage/reportTeam', 'HeadManager\ReportTeamController@index');
-Route::get('/headManage/reportSaleplan', 'HeadManager\ReportSalePlanController@index');
-Route::post('/headManage/reportSaleplan/search', 'HeadManager\ReportSalePlanController@search');
+// Route::get('/headManage/reportTeam', 'HeadManager\ReportTeamController@index'); //-- ลูกค้าเปลี่ยนให้ดึง API ใช้อันล่าง
+Route::get('/headManage/reportTeam', 'HeadManager\ReportTeamController@reportTeamApi');
+// Route::get('/headManage/reportSaleplan', 'HeadManager\ReportSalePlanController@index');
+// Route::post('/headManage/reportSaleplan/search', 'HeadManager\ReportSalePlanController@search');
+Route::get('/headManage/reportSaleplan', 'HeadManager\ReportSalePlanController@reportsalepaln');
+Route::post('/headManage/reportSaleplan/search', 'HeadManager\ReportSalePlanController@reportsalepaln_search');
+
 Route::get('/headManage/report_visitcustomer_goal_head', 'HeadManager\ReportVisitCustomerGoalController@index');
 Route::post('/headManage/report_visitcustomer_goal_head/search', 'HeadManager\ReportVisitCustomerGoalController@search');
 Route::get('/headManage/reportVisitCustomer', 'HeadManager\ReportVisitCustomerController@index');
@@ -360,6 +370,7 @@ Route::post('headManage/data_report_historical-year/search', 'ShareData_HeadMana
 Route::get('headManage/data_report_historical-quarter', 'ShareData_HeadManager\ReportHistoricalQuarterController@index');
 Route::post('headManage/data_report_historical-quarter/search', 'ShareData_HeadManager\ReportHistoricalQuarterController@search');
 Route::get('headManage/data_report_historical-month', 'ShareData_HeadManager\ReportHistoricalMonthController@index');
+Route::post('headManage/data_report_historical-month/search', 'ShareData_HeadManager\ReportHistoricalMonthController@search');
 Route::get('headManage/data_report_sale_compare-year','ShareData_HeadManager\ReportSaleCompareYearController@index');
 });
 
@@ -475,8 +486,10 @@ Route::get('/admin/reportcustomer', function () { return view('reports.report_cu
 Route::get('/admin/reportStore','Admin\ApiCustomerController@index');
 Route::get('/admin/reportStore/detail/{id}','Admin\ApiCustomerController@show');
 Route::get('/admin/reportTeam', 'Admin\ReportTeamController@index');
-Route::get('/admin/reportSaleplan', 'Admin\ReportSalePlanController@index');
-Route::post('/admin/reportSaleplan/search', 'Admin\ReportSalePlanController@search');
+// Route::get('/admin/reportSaleplan', 'Admin\ReportSalePlanController@index'); //-- เปลี่ยนใช้อันล่าง
+// Route::post('/admin/reportSaleplan/search', 'Admin\ReportSalePlanController@search');
+Route::get('/admin/reportSaleplan', 'Admin\ReportSalePlanController@reportsalepaln');
+Route::post('/admin/reportSaleplan/search', 'Admin\ReportSalePlanController@reportsalepaln_search');
 Route::get('/admin/report_visitcustomer_goal', 'Admin\ReportVisitCustomerGoalController@index');
 Route::post('/admin/report_visitcustomer_goal/search', 'Admin\ReportVisitCustomerGoalController@search');
 Route::get('/admin/reportVisitCustomer', 'Admin\ReportVisitCustomerController@index');
@@ -553,6 +566,7 @@ Route::post('admin/data_report_historical-year/search', 'ShareData_Admin\ReportH
 Route::get('admin/data_report_historical-quarter', 'ShareData_Admin\ReportHistoricalQuarterController@index');
 Route::post('admin/data_report_historical-quarter/search', 'ShareData_Admin\ReportHistoricalQuarterController@search');
 Route::get('admin/data_report_historical-month', 'ShareData_Admin\ReportHistoricalMonthController@index');
+Route::post('admin/data_report_historical-month/search', 'ShareData_Admin\ReportHistoricalMonthController@search');
 Route::get('admin/data_report_sale_compare-year','ShareData_Admin\ReportSaleCompareYearController@index');
 
 });
@@ -590,6 +604,8 @@ Route::get('/fetch_amphur/{id}',[ProvinceController::class, 'amphur']);
 Route::get('/fetch_district/{id}',[ProvinceController::class, 'district']);
 Route::get('/fetch_postcode/{id}',[ProvinceController::class, 'postcode']);
 Route::get('/customer/autocomplete',[CustomerController::class, 'fetch_autocomplete']);
+Route::get('/fetch_customer_shops_byid/{id}','Customer\CustomerController@fetch_customer_shops_byid');
+
 
 
 Route::get('fetch_subgroups/{id}', 'Api\ApiController@fetch_subgroups');

@@ -5,7 +5,8 @@
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
             <li class="breadcrumb-item"><a href="#">Page</a></li>
-            <li class="breadcrumb-item active" aria-current="page">บันทึกโน๊ตส่วนตัว</li>
+            <li class="breadcrumb-item">หน้าแรก</li>
+            <li class="breadcrumb-item active" aria-current="page">รายละเอียดวันสำคัญ</li>
         </ol>
     </nav>
     <!-- /Breadcrumb -->
@@ -16,11 +17,7 @@
         <div class="hk-pg-header mb-10">
             <div>
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                                data-feather="file-text"></i></span></span>บันทึกโน๊ตส่วนตัว</h4>
-            </div>
-            <div class="d-flex">
-                <button type="button" class="btn btn-teal btn-sm btn-rounded px-3" data-toggle="modal"
-                    data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button>
+                                data-feather="file-text"></i></span></span>รายละเอียดวันสำคัญ</h4>
             </div>
         </div>
         <!-- /Title -->
@@ -30,7 +27,7 @@
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
                         <div class="col-sm-12 col-md-3">
-                            <h5 class="hk-sec-title">ตารางข้อมูลโน๊ตส่วนตัว</h5>
+                            <h5 class="hk-sec-title">รายละเอียดวันสำคัญร้านค้า เดือน <?php echo thaidate('F', date("M")); ?></h5>
                         </div>
                     </div>
 
@@ -40,46 +37,25 @@
                                 <div class="hk-pg-header mb-10">
                                     <div>
                                     </div>
-                                    <div class="col-sm-12 col-md-9">
-                                        <!-- ------ -->
-
-                                        <span class="form-inline pull-right pull-sm-center">
-                                            <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</button>
-                                            <form action="{{ url('search_month_note') }}" method="post" enctype="multipart/form-data">
-                                                @csrf
-                                            <span id="selectdate" style="display:none;">
-
-                                                เดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateFrom" name="fromMonth"/>
-
-                                                ถึงเดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name="toMonth"/>
-
-                                            <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm">ค้นหา</button>
-
-                                            {{-- <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button> --}}
-                                            </span>
-                                        </form>
-                                        </span>
-                                        <!-- ------ -->
-                                    </div>
                                 </div>
                                 <div class="table-responsive col-md-12">
                                     <table id="datable_1" class="table table-hover">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>เรื่อง</th>
-                                                <th>ป้ายกำกับ</th>
-                                                <th>วันที่แจ้งเตือน</th>
-                                                <th>Action</th>
+                                                <th>ชื่อร้าน</th>
+                                                <th>อำเภอ,จังหวัด</th>
+                                                <th>เบอร์โทร</th>
+                                                <th>วันสำคัญ</th>
+                                                <th>ชื่อวัน</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($data as $key => $value)
+                                            {{-- @foreach ($data as $key => $value)
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
                                                     <td>{{ $value->note_title }}
                                                         @if ($value->status_pin == 1)
-                                                        {{-- <span class="badge badge-danger badge-indicator" style="width: 10px; height: 10px;"></span> --}}
                                                         <i data-feather="feather" style="color: tomato;"></i>
                                                         @endif
                                                     </td>
@@ -137,7 +113,7 @@
                                                         </div>
                                                     </td>
                                                 </tr>
-                                            @endforeach
+                                            @endforeach --}}
                                         </tbody>
                                     </table>
                                 </div>

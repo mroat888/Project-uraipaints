@@ -15,7 +15,7 @@
         <div class="hk-pg-header mb-10">
             <div>
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                    data-feather="star"></i></span></span>บันทึกสินค้าใหม่</h4>
+                    data-feather="star"></i></span></span>บันทึกแจ้งสินค้าใหม่</h4>
             </div>
             <div class="d-flex">
                 <button type="button" class="btn btn-teal btn-sm btn-rounded px-3 mr-10" data-toggle="modal" data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button>
@@ -24,7 +24,7 @@
         <!-- /Title -->
 
             <section class="hk-sec-wrapper">
-                <h5 class="hk-sec-title">ตารางสินค้าใหม่</h5>
+                <h5 class="hk-sec-title">รายการแจ้งสินค้าใหม่</h5>
                 <div class="row">
                     <div class="col-sm">
                         <div class="table-wrap">
@@ -50,6 +50,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>เรื่อง</th>
+                                        <th>วันที่อัพเดตล่าสุด</th>
                                         <th>รูปภาพ</th>
                                         <th>สถานะ</th>
                                         <th>URL</th>
@@ -58,9 +59,11 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($product_new as $key => $value)
+                                    <?php $createdAt = Carbon\Carbon::parse($value->created_at); ?>
                                     <tr>
                                         <td>{{$key + 1}}</td>
                                         <td>{{$value->product_title}}</td>
+                                        <td>{{$createdAt->format('Y-m-d')}}</td>
                                         <td><img src="{{ isset($value->product_image) ? asset('public/upload/ProductNewImage/' . $value->product_image) : '' }}" width="100"></td>
                                         <td>
                                             @switch($value->status_usage)
@@ -109,7 +112,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">ฟอร์มบันทึกสินค้าใหม่</h5>
+                    <h5 class="modal-title">เพิ่มแจ้งสินค้าใหม่</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -123,6 +126,10 @@
                                 <label for="firstName">ชื่อสินค้า</label>
                                 <input class="form-control" placeholder="กรุณาใส่ชื่อเรื่อง" type="text" name="product_title" required>
                             </div>
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">วันที่อัพเดตล่าสุด</label>
+                                <input class="form-control" type="text" name="date" value="{{ date('Y-m-d') }}" readonly>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="username">รายละเอียด</label>
@@ -134,10 +141,16 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
-                                <label for="firstName">รูปภาพ</label>
+                                <label for="firstName">รูปภาพ (หน้าปก)</label>
                                 <input type="file" name="image" class="form-control">
                             </div>
                         </div>
+                        {{-- <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">รูปภาพ (อัลบั้ม)</label>
+                                <input type="file" name="alabum[]" class="form-control">
+                            </div>
+                        </div> --}}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>

@@ -47,44 +47,44 @@
 
                     <div class="row">
                         <div class="col-sm">
-                        <div id="table_list" class="table-responsive col-md-12">
-                                    <table id="datable_1" class="table table-hover">
-                                        <thead>
+                            <div id="table_list" class="table-responsive col-md-12">
+                                <table id="datable_1" class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th style="font-weight: bold;">#</th>
+                                            <th style="font-weight: bold;">ชื่อร้าน</th>
+                                            <th style="font-weight: bold;">ที่อยู่</th>
+                                            <th style="font-weight: bold;">โทรศัพท์</th>
+                                            <th style="font-weight: bold;">จำนวนเป้าที่ซื้อในปี</th>
+                                            <th style="font-weight: bold;">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table_body">
+                                    @php 
+                                            @$row = count($customer_api)
+                                    @endphp
+                                    @if(isset($customer_api))
+                                        @foreach ($customer_api as $key => $value)
                                             <tr>
-                                                <th style="font-weight: bold;">#</th>
-                                                <th style="font-weight: bold;">ชื่อร้าน</th>
-                                                <th style="font-weight: bold;">ที่อยู่</th>
-                                                <th style="font-weight: bold;">โทรศัพท์</th>
-                                                <th style="font-weight: bold;">จำนวนเป้าที่ซื้อในปี</th>
-                                                <th style="font-weight: bold;">Action</th>
+                                                <td>{{ $customer_api[$key]['identify'] }}</td>
+                                                <td>{{ $customer_api[$key]['shopname'] }}</td>
+                                                <td>{{ $customer_api[$key]['address'] }}</td>
+                                                <td>{{ $customer_api[$key]['telephone'] }}</td>
+                                                <td>{{ $customer_api[$key]['TotalCampaign'] }}</td>
+                                                <td>
+                                                    @php
+                                                        $pathurl = url('/admin/reportStore/detail').'/'.$customer_api[$key]['identify'];
+                                                    @endphp
+                                                    <a href="{{ $pathurl }}" class="btn btn-icon btn-success mr-10">
+                                                    <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></a>
+                                                </td>
+                                            
                                             </tr>
-                                        </thead>
-                                        <tbody id="table_body">
-                                        @php 
-                                             @$row = count($customer_api)
-                                        @endphp
-                                        @if(isset($customer_api))
-                                            @foreach ($customer_api as $key => $value)
-                                                <tr>
-                                                    <td>{{ $customer_api[$key]['identify'] }}</td>
-                                                    <td>{{ $customer_api[$key]['shopname'] }}</td>
-                                                    <td>{{ $customer_api[$key]['address'] }}</td>
-                                                    <td>{{ $customer_api[$key]['telephone'] }}</td>
-                                                    <td>{{ $customer_api[$key]['TotalCampaign'] }}</td>
-                                                    <td>
-                                                        @php
-                                                            $pathurl = url('/admin/reportStore/detail').'/'.$customer_api[$key]['identify'];
-                                                        @endphp
-                                                        <a href="{{ $pathurl }}" class="btn btn-icon btn-success mr-10">
-                                                        <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></a>
-                                                    </td>
-                                                
-                                                </tr>
-                                            @endforeach
-                                        @endif
-                                        </tbody>
-                                    </table>
-                                </div>
+                                        @endforeach
+                                    @endif
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </section>

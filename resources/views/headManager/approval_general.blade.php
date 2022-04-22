@@ -73,7 +73,6 @@
                                         <tr>
                                             <th>#</th>
                                             <th>วันที่ขออนุมัติ</th>
-                                            {{-- <th>เรื่อง</th> --}}
                                             <th>พนักงาน</th>
                                             <th>การอนุมัติ</th>
                                             <th>Action</th>
@@ -82,9 +81,12 @@
                                     <tbody>
                                         <?php $count = 1; ?>
                                         @foreach ($request_approval as $key => $value)
-                                        <?php $chk =  App\Assignment::join('users', 'assignments.created_by', '=', 'users.id')
-                                        ->whereNotNull('assignments.assign_request_date')
-                                        ->where('assignments.created_by', $value->created_by)->select('users.name', 'assignments.*')->first() ?>
+                                        <?php 
+                                            $chk =  App\Assignment::join('users', 'assignments.created_by', '=', 'users.id')
+                                            ->whereNotNull('assignments.assign_request_date')
+                                            ->where('assignments.created_by', $value->created_by)
+                                            ->select('users.name', 'assignments.*')->first() 
+                                        ?>
                                         @if ($chk)
                                         <tr>
                                             <td>{{$count++}}</td>

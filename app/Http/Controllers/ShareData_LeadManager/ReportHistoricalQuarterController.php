@@ -28,8 +28,8 @@ class ReportHistoricalQuarterController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search);
         $quarter_api = $response->json();
 
-        $data['year_search'] = array($year, $year_old1, $year_old2);
-        $search_year = $year.",".$year_old1.",".$year_old2;
+        $data['year_search'] = array($year_old2, $year_old1, $year);
+        $search_year = $year_old2.",".$year_old1.",".$year;
 
         $data['sum_present'] = array();
         $data['total_year'] = array();

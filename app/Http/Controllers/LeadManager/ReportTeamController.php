@@ -51,4 +51,19 @@ class ReportTeamController extends Controller
         // dd($data['users_api']);
         return view('reports.report_team', $data);
     }
+
+    public function reportTeamApi(){
+        $data['resteam_api'] = array();
+        $api_token = $this->apicontroller->apiToken(); 
+        $path_search = "teamsaleleaders/".Auth::user()->api_identify;
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+        $res_api = $response->json();
+
+        if($res_api['code'] == 200){
+            $data['resteam_api'] = $res_api['data'];
+        }
+        // dd($data['res_api']);
+
+        return view('reports.report_team_api', $data);
+    }
 }

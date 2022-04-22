@@ -20,4 +20,5 @@ class SalePlan extends Model
         'created_by',
         'updated_by',
     ];
+
 }

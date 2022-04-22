@@ -726,8 +726,60 @@ class CustomerController extends Controller
         }
 
     }
-
     public function fetch_customer_shops(){
+
+    }
+
+    public function fetch_customer_shops_byid($id){
+
+        DB::beginTransaction();
+        try {
+            $customer_shops = DB::table('customer_shops')->where('id', $id)->first();
+            $province_name = "";
+            $amphur_name = "";
+            $district_name = "";
+
+            if(!is_null($customer_shops->shop_province_id)){
+                $province = DB::table('province')->where('PROVINCE_ID',$customer_shops->shop_province_id)->first();
+                $province_name = $province->PROVINCE_NAME;
+            }
+
+            if(!is_null($customer_shops->shop_amphur_id)){
+                $amphur = DB::table('amphur')->where('AMPHUR_ID',$customer_shops->shop_amphur_id)->first();
+                $amphur_name = $amphur->AMPHUR_NAME;
+            }
+
+            if(!is_null($customer_shops->shop_district_id)){
+                $district = DB::table('district')->where('DISTRICT_ID',$customer_shops->shop_district_id)->first();
+                $district_name = $district->DISTRICT_NAME;
+            }
+
+            $customer_contacts = DB::table('customer_contacts')
+                ->where('customer_shop_id', $customer_shops->id)
+                ->where('is_active', 'Y')
+                ->orderBy('id', 'desc')
+                ->first();
+
+            if(!is_null($customer_shops)){
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'บันทึกข้อมูลสำเร็จ',
+                    'customer_shops' => $customer_shops,
+                    'province_name' => $province_name,
+                    'amphur_name' => $amphur_name,
+                    'district_name' => $district_name,
+                    'customer_contacts' => $customer_contacts,
+                ]);
+            }
+        } catch (\Exception $e) {
+
+            DB::rollback();
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกได้',
+            ]);
+
+        }
 
     }
 

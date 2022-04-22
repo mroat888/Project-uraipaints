@@ -157,7 +157,11 @@
 
 
 <script src="{{ asset('public/template/graph/Chart.bundle.js') }}"></script>
+
+
+
 <script>
+<<<<<<< HEAD
     const ctx = document.getElementById('myChart_3').getContext('2d');
 const myChart_3 = new Chart(ctx, {
     type: 'doughnut'
@@ -170,6 +174,13 @@ const myChart_3 = new Chart(ctx, {
   datasets: [{
     label: 'My First Dataset',
     data: [300, 50, 100],
+=======
+  var data = {
+  labels: [{{ $chat_year }}],
+  datasets: [{
+    label: 'ยอดขาย',
+    data: [{{ $chat_persent_sale }}],
+>>>>>>> 8f145372eb7daec230a0f400a5061da9e437a4cb
     backgroundColor: [
       'rgb(255, 99, 132)',
       'rgb(54, 162, 235)',
@@ -178,7 +189,23 @@ const myChart_3 = new Chart(ctx, {
     hoverOffset: 4
   }]
 };
+<<<<<<< HEAD
+=======
+
+var config = {
+    type: 'pie',
+    data: data,
+    options: {}
+  };
+
+  var myChart = new Chart(
+    document.getElementById('myChart_3'),
+    config
+  );
+
+>>>>>>> 8f145372eb7daec230a0f400a5061da9e437a4cb
 </script>
+
 
 <script>
     var ctx = document.getElementById("myChart").getContext('2d');

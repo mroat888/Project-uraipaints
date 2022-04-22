@@ -20,6 +20,9 @@
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
                     data-feather="file-text"></i></span></span>รายการข้อมูลการขออนุมัติ</h4>
             </div>
+            <div class="d-flex">
+                <a href="{{ url('head/approvalgeneral')}}" type="button" class="btn btn-secondary btn-sm btn-rounded px-3 mr-10"> ย้อนกลับ </a>
+            </div>
         </div>
         <!-- /Title -->
 
@@ -65,6 +68,7 @@
                                             <th>เรื่อง</th>
                                             <th>พนักงาน</th>
                                             <th>การอนุมัติ</th>
+                                            <th>ความคิดเห็น</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -89,6 +93,17 @@
                                                 <span class="badge badge-soft-success" style="font-size: 12px;">Approve</span>
                                                 @else
                                                 <span class="badge badge-soft-danger" style="font-size: 12px;">Reject</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @php 
+                                                    $assignments_comments = DB::table('assignments_comments')
+                                                        ->where('assign_id',$value->id)
+                                                        ->where('created_by', Auth::user()->id)
+                                                        ->first();
+                                                @endphp
+                                                @if(!is_null($assignments_comments))
+                                                    <span class="badge badge-soft-purple" style="font-size: 12px;">Comment</span>
                                                 @endif
                                             </td>
                                             <td>
