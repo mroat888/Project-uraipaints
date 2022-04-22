@@ -1,0 +1,51 @@
+<div class="row">
+    <div class="col-md-12">
+        <section class="hk-sec-wrapper">
+            <h5 class="hk-sec-title">ข้อมูลข่าวสาร</h5>
+            <p class="mb-40">ข้อมูลข่าวสารประจำวัน</p>
+            @foreach ($list_news as $value)
+            <div class="row">
+                <div class="col-md-2">
+                    <img class="card-img"
+                    src="{{ isset($value->news_image) ? asset('public/upload/NewsImage/' . $value->news_image) : '' }}"
+                    alt="{{ $value->news_title }}"
+                    style="max-width:100%;">
+                </div>
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-12"><h5><strong>{{$value->news_title}}</strong></h5></div>
+                        <div class="col-md-12"><span style="font-size:12px;">วันที่ : {{$value->news_date}}</span></div>
+                        <div class="col-md-12"><p>
+                            @if(strlen($value->news_detail) > 679)
+                                {{ substr($value->news_detail,0,680) }} ...
+                            @else
+                                {{ $value->news_detail }}
+                            @endif
+                        </p></div>
+                        @if (Auth::user()->status == 1)
+                        <div class="col-md-12 mt-2"><a href="{{ url('news_detail', $value->id) }}" style="font-size:14px; font-weight: bold; color:brown;">ดูรายละเอียดเพิ่มเติม</a></div>
+
+                        @elseif (Auth::user()->status == 2)
+                        <div class="col-md-12 mt-2"><a href="{{ url('lead/news_detail', $value->id) }}" style="font-size:14px; font-weight: bold; color:brown;">ดูรายละเอียดเพิ่มเติม</a></div>
+
+                        @elseif (Auth::user()->status == 3)
+                        <div class="col-md-12 mt-2"><a href="{{ url('head/news_detail', $value->id) }}" style="font-size:14px; font-weight: bold; color:brown;">ดูรายละเอียดเพิ่มเติม</a></div>
+
+                        @elseif (Auth::user()->status == 4)
+                        <div class="col-md-12 mt-2"><a href="{{ url('admin/news_detail', $value->id) }}" style="font-size:14px; font-weight: bold; color:brown;">ดูรายละเอียดเพิ่มเติม</a></div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            @endforeach
+        </section>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div style="float:right;">
+            {{ $list_news->appends(Request::all())->links() }}
+        </div>
+    </div>
+</div>
