@@ -21,7 +21,7 @@
                     <section class="hk-sec-wrapper">
                         <div class="hk-pg-header mb-10">
                             <div>
-                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">สรุปรายเดือน ปี <?php echo thaidate('Y', date('Y')); ?></h6>
+                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">แผนสรุปรายเดือน ปี <?php echo thaidate('Y', date('Y')); ?></h6>
                             </div>
                             <div class="col-sm-12 col-md-9">
                                 <!-- ------ -->
@@ -53,13 +53,13 @@
                                                 <tr>
                                                     <th>#</th>
                                                     <th>เดือน</th>
-                                                    <th>Sale Plan (นำเสนอสินค้า)</th>
-                                                    <th>Sale Plan (ลูกค้าใหม่)</th>
+                                                    <th>แผนทำงาน</th>
+                                                    <th>ลูกค้าใหม่</th>
                                                     <th>รวมงาน</th>
-                                                    <th>ปิดการขาย</th>
-                                                    <th>มูลค่า</th>
-                                                    <th>ปิดการขายไม่ได้</th>
-                                                    <th>จำนวนลูกค้าใหม่</th>
+                                                    {{-- <th>ดำเนินการแล้ว</th> --}}
+                                                    <!-- <th>คงเหลือ</th>
+                                                    <th>สำเร็จ %</th> -->
+                                                    <th>เยี่ยมลูกค้า</th>
                                                     <th>สถานะ</th>
                                                     <th class="text-center">Action</th>
                                                 </tr>
@@ -89,10 +89,7 @@
                                                         <td>{{ $sale_plan_amount }}</td>
                                                         <td>{{ $cust_new_amount }}</td>
                                                         <td>{{ $total_plan }}</td>
-                                                        <td></td>
                                                         <td>{{ $cust_visits_amount }}</td>
-                                                        <td></td>
-                                                        <td></td>
                                                         <td>
 
                                                             @if ($value->status_approve == 0)
@@ -194,7 +191,7 @@
                     </section>
                 </div>
 
-                {{-- <div class="col-md-12">
+                <div class="col-md-12">
                     <section class="hk-sec-wrapper">
                         <h5 class="hk-sec-title">แผนงานประจำเดือน <?php echo thaidate('F Y', $monthly_plan_next->month_date); ?></h5>
                         <div class="row mt-30">
@@ -293,13 +290,13 @@
                             </div>
                         </div>
                     </section>
-                </div> --}}
+                </div>
 
                 <div class="col-md-12">
                     <section class="hk-sec-wrapper">
                         <div class="hk-pg-header mb-10">
                             <div>
-                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">Sale Plan (นำเสนอสินค้า) ประจำเดือน <?php echo thaidate('F Y', $monthly_plan_next->month_date); ?></h6>
+                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">แผนงานประจำเดือน <?php echo thaidate('F Y', $monthly_plan_next->month_date); ?></h6>
                             </div>
                             <div class="d-flex">
                                 @if($monthly_plan_next->status_approve == 1 || $monthly_plan_next->status_approve == 2)
@@ -323,9 +320,8 @@
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
-                                                    <th>วัตถุประสงค์</th>
+                                                    <th>เรื่อง</th>
                                                     <th>ลูกค้า</th>
-                                                    <th>รายการนำเสนอ</th>
                                                     <th>อำเภอ,จังหวัด</th>
                                                     <th class="text-center">Action</th>
                                                 </tr>
@@ -342,21 +338,15 @@
                                                                 $shop_address = $customer_api[$key_api]['shop_address'];
                                                             }
                                                         }
-                                                        $pieces = explode(",", $value->sale_plans_tags);
-                                                        $num = 0;
-                                                        foreach ($pieces as $key => $value) {
-                                                            # code...
-                                                        }
                                                     @endphp
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
-                                                        {{-- <td>{!! Str::limit($value->masobj_title, 30) !!}</td> --}}
+                                                        <td>{!! Str::limit($value->sale_plans_title, 20) !!}</td>
                                                         <td>
                                                             @if($shop_name != "")
                                                                 {!! Str::limit($shop_name,20) !!}
                                                             @endif
                                                         </td>
-                                                        {{-- <td>{{$pieces->count()}}</td> --}}
                                                         <td>
                                                             @if($shop_address != "")
                                                                 {{ $shop_address }}
