@@ -227,30 +227,60 @@ class ApprovalSalePlanController extends Controller
 
         // ข้อมูล Sale plan
         $data['list_saleplan'] = DB::table('sale_plans')
-        ->where('monthly_plan_id', $id)
-        // ->where('sale_plans.created_by', Auth::user()->id)
-        ->whereIn('sale_plans_status', [2, 3])
-        ->orderBy('id', 'desc')->get();
+            ->where('monthly_plan_id', $id)
+            ->whereIn('sale_plans_status', [2, 3, 4])
+            ->orderBy('id', 'desc')->get();
 
         // -----  API  //
         $api_token = $this->apicontroller->apiToken(); // API Login
         // -----  API ลูกค้าที่ sale ดูแล ----------- //
         $mon_plan = DB::table('monthly_plans')->where('id', $id)->first(); // ค้นหา id ผู้ขออนุมัติ
         $user_api = DB::table('users')->where('id',$mon_plan->created_by)->first(); // ค้นหา user api เพื่อใช้ดึง api
-        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/sellers/'.$user_api->api_identify.'/customers');
+
+        list($year,$month,$day) = explode('-', $mon_plan->month_date);
+        $month = $month + 0; //-- ทำให้เป็นตัวเลข เพื่อตัดเลข 0 ด้านหน้าออก
+
+        $path_search = "reports/sellers/B2/closesaleplans?years=".$year."&months=".$month;
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
+        
+        $data['saleplan_api'] = $res_api['data'];
 
-        $data['customer_api'] = array();
-        foreach ($res_api['data'] as $key => $value) {
-            $data['customer_api'][$key] =
-            [
-                'id' => $value['identify'],
-                'shop_name' => $value['title']." ".$value['name'],
-                'shop_address' => $value['amphoe_name']." ".$value['province_name'],
-            ];
-        }
-
+        $data['mon_plan'] = $mon_plan;
         $data['sale_name'] = DB::table('users')->where('id',$mon_plan->created_by)->select('name')->first(); // ชื่อเซลล์
+
+        // $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/sellers/'.$user_api->api_identify.'/customers');
+        // $res_api = $response->json();
+
+        // $data['customer_api'] = array();
+        // foreach ($res_api['data'] as $key => $value) {
+        //     $data['customer_api'][$key] =
+        //     [
+        //         'id' => $value['identify'],
+        //         'shop_name' => $value['title']." ".$value['name'],
+        //         'shop_address' => $value['amphoe_name']." ".$value['province_name'],
+        //     ];
+        // }
+
+        // // -----  API สินค้านำเสนอ----------- //
+        // $path_search = "pdglists?sortorder=DESC";
+        // $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+        // $res_api = $response->json();
+
+        // $data['pdglists_api'] = array();
+        // foreach ($res_api['data'] as $key => $value) {
+        //     $data['pdglists_api'][$key] =
+        //     [
+        //         'identify' => $value['identify'],
+        //         'name' => $value['name'],
+        //         'sub_code' => $value['sub_code'],
+        //     ];
+        // }
+
+        // dd($data['pdglists_api']);
+
+        
+
 
         // ลูกค้าใหม่
         $data['customer_new'] = DB::table('customer_shops_saleplan')
@@ -270,37 +300,6 @@ class ApprovalSalePlanController extends Controller
         )
         ->orderBy('customer_shops.id', 'desc')
         ->get();
-
-        // เยี่ยมลูกค้า
-        $customer_visits = DB::table('customer_visits')
-            ->where('monthly_plan_id', $id)
-            ->select('customer_visits.*')
-            ->orderBy('id', 'desc')->get();
-
-        $data['customer_visit_api'] = array();
-
-        foreach($customer_visits as $key => $cus_visit){
-
-            $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/customers/'.$cus_visit->customer_shop_id);
-            $res_visit_api = $response->json();
-            // dd($res_visit_api);
-            if($res_visit_api['code'] == 200){
-                foreach ($res_visit_api['data'] as $key_api => $value_api) {
-                    $res_visit_api = $res_visit_api['data'][$key_api];
-                    $data['customer_visit_api'][] =
-                    [
-                        'id' => $cus_visit->id,
-                        'identify' => $res_visit_api['identify'],
-                        'shop_name' => $res_visit_api['title']." ".$res_visit_api['name'],
-                        'shop_address' => $res_visit_api['amphoe_name']." , ".$res_visit_api['province_name'],
-                        'shop_phone' => $res_visit_api['telephone'],
-                        'shop_mobile' => $res_visit_api['mobile'],
-                        'focusdate' => $res_visit_api['focusdate'],
-                        'monthly_plan_id' => $cus_visit->monthly_plan_id,
-                    ];
-                }
-            }
-        }
 
         return view('leadManager.approval_saleplan_history-detail', $data);
     }

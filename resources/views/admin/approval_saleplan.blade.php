@@ -21,7 +21,7 @@
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
             <li class="breadcrumb-item"><a href="#">Page</a></li>
-            <li class="breadcrumb-item active" aria-current="page">อนุมัติ Sale Plan</li>
+            <li class="breadcrumb-item active" aria-current="page">ปิด Sale Plan</li>
         </ol>
     </nav>
     <!-- /Breadcrumb -->
@@ -32,7 +32,7 @@
          <!-- Title -->
         <div class="hk-pg-header mb-10">
             <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-analytics"></i></span>อนุมัติ Sale Plan</h4>
+                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-analytics"></i></span>ปิด Sale Plan</h4>
             </div>
         </div>
         <!-- /Title -->
@@ -42,17 +42,31 @@
                 <div class="col-xl-12">
                     <section class="hk-sec-wrapper">
                         <div class="row mb-2">
-                            <div class="col-sm-12 col-md-3">
-                                <h5 class="hk-sec-title">ตารางอนุมัติ Sale Plan</h5>
+                            <div class="col-sm-12 col-md-6">
+                                @php 
+                                    if(isset($search_month) && isset($search_year)){
+                                        $search_date = $search_year.'-'.$search_month;
+                                        $search_date = thaidate('F Y', $search_date);
+                                    }else{
+                                        $search_date = "";
+                                    }
+                                @endphp
+                                <h5 class="hk-sec-title">รายการแผนประจำเดือน {{ $search_date }}</h5>
                             </div>
-                            <div class="col-sm-12 col-md-9">
+                            <div class="col-sm-12 col-md-6">
                                 <!-- ------ -->
                                 <span class="form-inline pull-right">
-                                    <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</button>
+                                    <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เงื่อนไขค้นหา</button>
                                     <form action="{{ url('admin/approvalsaleplan/search') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <span id="selectdate" style="display:none;">
-                                             <input type="month" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name ="selectdateTo" value="<?= date('Y-m-d'); ?>" required/>
+                                            <select name="sel_team" class="form-select form-control form-control-sm" aria-label="Default select example">
+                                                <option value="0" selected>---เลือกทีม--</option>
+                                                @foreach($teams as $team)
+                                                    <option value="{{ $team->id }}">{{ $team->team_name }}</option>
+                                                @endforeach
+                                            </select>
+                                            <input type="month" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name ="selectdateTo" value="<?= date('Y-m-d'); ?>"/>
 
                                             <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-success btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button>
                                         </span>
@@ -69,52 +83,76 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>วันที่</th>
-                                                <th>พนักงานขาย</th>
+                                                <th style="text-align:left;">ผู้แทนขาย</th>
+                                                <th>Sale Plan<br>(นำเสนอสินค้า)</th>
+                                                <th>Sale Plan<br>(ลูกค้าใหม่)</th>
+                                                <th>รวมงาน</th>
+                                                <th>ปิดการขายได้</th>
+                                                <th>มูลค่า</th>
+                                                <th>ปิดกาาขาย<br>ไม่ได้</th>
+                                                <th>จำนวนลูกค้าใหม่</th>
                                                 <th>การอนุมัติ</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($monthly_plan as $key => $value)
-                                                    <tr>
-                                                        <td>{{$key + 1}}</td>
-                                                        <td>{{$value->month_date}}</td>
-                                                        <td>{{$value->name}}</td>
-                                                        {{-- <td>{{$value->id}}</td> --}}
-                                                        <td>
-                                                            @if ($value->status_approve == 0)
-                                                                <span class="badge badge-soft-secondary"
-                                                                    style="font-size: 12px;">
-                                                                    Draf
-                                                                </span>
+                                                @php 
+                                                    $sale_plans = DB::table('sale_plans')
+                                                        ->where('monthly_plan_id',$value->id)
+                                                        ->get();
+                                                    $sale_plan_amount = $sale_plans->count();
 
-                                                            @elseif ($value->status_approve == 1)
-                                                                <span class="badge badge-soft-warning"
-                                                                    style="font-size: 12px;">
-                                                                    Pending
-                                                                </span>
-                                                            @else
-                                                                <span class="badge badge-soft-success"
-                                                                    style="font-size: 12px;">
-                                                                    Approve
-                                                                </span>
-                                                            @endif
-                                                            {{-- <span class="badge badge-soft-warning" style="font-size: 12px;">{{$value->status_approve}}</span> --}}
-                                                        </td>
-                                                        <td>
-                                                            <a href="{{ url('admin/approvalsaleplan_detail', $value->id) }}" type="button" class="btn btn-icon btn-primary pt-5">
-                                                                <i data-feather="file-text"></i>
-                                                            </a>
-                                                            {{-- <a href="{{ url('admin/retrospective', $value->id) }}" type="button" class="btn btn-icon btn-warning pt-5 ml-2">
-                                                                <i data-feather="refresh-ccw"></i>
-                                                            </a> --}}
-                                                            <button id="btn_saleplan_restrospective" type="button" class="btn btn-icon btn-warning ml-2" value="{{ $value->id }}">
-                                                                <i data-feather="refresh-ccw"></i>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
+                                                    $customer_shops_saleplan = DB::table('customer_shops_saleplan')
+                                                        ->where('monthly_plan_id', $value->id)
+                                                        ->get();
+                                                    $cust_new_amount = $customer_shops_saleplan->count();
+
+                                                    $total_plan = $sale_plan_amount + $cust_new_amount;
+                                                @endphp
+                                                <tr style="text-align:center;">
+                                                    <td>{{ $key + 1 }}</td>
+                                                    <td style="text-align:left;">{{ $value->name }}</td>
+                                                    <td>{{ $sale_plan_amount }}</td>
+                                                    <td>{{ $cust_new_amount }}</td>
+                                                    <td>{{ $total_plan }}</td>
+                                                    <td> ดึงจาก Admin</td>
+                                                    <td> ดึงจาก Admin</td>
+                                                    <td> ดึงจาก Admin</td>
+                                                    <td> ดึงจาก Admin</td>
+                                                    <td>
+                                                        @if($value->status_approve == 1)
+                                                            <span class="badge badge-soft-warning" style="font-size: 12px;">
+                                                                Pending
+                                                            </span>
+                                                        @elseif($value->status_approve == 2)
+                                                            <span class="badge badge-soft-success"style="font-size: 12px;">
+                                                                Approve
+                                                            </span>
+                                                        @elseif($value->status_approve == 3)
+                                                            <span class="badge badge-soft-purple" style="font-size: 12px;">
+                                                                Reject
+                                                            </span>
+                                                        @elseif($value->status_approve == 4)
+                                                            <span class="badge badge-soft-info"style="font-size: 12px;">
+                                                                Close
+                                                            </span>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        <a href="{{ url('admin/approvalsaleplan_close', $value->id) }}" type="button" class="btn btn-icon btn-primary pt-5">
+                                                            <i data-feather="file-text"></i>
+                                                        </a>
+                                                        <a href="{{ url('admin/approvalsaleplan_detail', $value->id) }}" type="button" class="btn btn-icon btn-primary pt-5">
+                                                            <i data-feather="file-text"></i>
+                                                        </a>
+                                                        <button id="btn_saleplan_restrospective" type="button" class="btn btn-icon btn-warning ml-2" value="{{ $value->id }}">
+                                                            <i data-feather="refresh-ccw"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                            
                                         </tbody>
                                     </table>
                                 </form>

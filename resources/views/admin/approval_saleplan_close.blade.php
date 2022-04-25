@@ -1,4 +1,4 @@
-@extends('layouts.masterLead')
+@extends('layouts.masterAdmin')
 
 @section('content')
 
@@ -8,23 +8,22 @@
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
             <li class="breadcrumb-item"><a href="#">Page</a></li>
-            <li class="breadcrumb-item">ประวัติการอนุมัติ Sale Plan</li>
-            <li class="breadcrumb-item active" aria-current="page">รายงานสรุป Sale Plan</li>
+            <li class="breadcrumb-item">อนุมัติ Sale Plan</li>
+            <li class="breadcrumb-item active" aria-current="page">รายละเอียด Sale Plan</li>
         </ol>
     </nav>
     <!-- /Breadcrumb -->
 
     <!-- Container -->
     <div class="container-fluid px-xxl-65 px-xl-20">
-
         <!-- Title -->
         <div class="hk-pg-header mb-10">
             <div>
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><i
-                            class="ion ion-md-analytics"></i></span>รายงานสรุป Sale Plan</h4>
+                            class="ion ion-md-analytics"></i></span>รายละเอียด Sale Plan</h4>
             </div>
             <div class="d-flex">
-                <a href="{{ url('lead/approvalsaleplan-history')}}" type="button" class="btn btn-secondary btn-sm btn-rounded px-3 mr-10"> ย้อนกลับ </a>
+                <a href="{{ url('admin/approvalsaleplan')}}" type="button" class="btn btn-secondary btn-sm btn-rounded px-3 mr-10"> ย้อนกลับ </a>
             </div>
         </div>
         <!-- /Title -->
@@ -51,8 +50,8 @@
                                             <th>#</th>
                                             <th>ร้านค้า</th>
                                             <th style="width:15%;">อำเภอ,จังหวัด</th>
-                                            <th style="width:10%;">วัตถุประสงค์</th>
-                                            <th style="width:30%;">รายการนำเสนอ</th>
+                                            <th>วัตถุประสงค์</th>
+                                            <th style="width:33%;">รายการนำเสนอ</th>
                                             <th style="width:9%;">จำนวนบิล</th>
                                             <th style="width:10%;">มูลค่าบิล</th>
                                         </tr>
@@ -115,7 +114,7 @@
                                                             $pdlist_name = "";
                                                             $bills = 0;
                                                             foreach($saleplan_api as $key_api => $value_api){
-                                                                if($saleplan_api[$key_api]['customer_id'] == $value->customer_shop_id){
+                                                                if($saleplan_api[$key_api]['pdlist_id'] == $value_list){
                                                                     if($saleplan_api[$key_api]['pdlist_id'] == $value_list){
                                                                         $pdlist_name = $saleplan_api[$key_api]['pdlist_name'];
                                                                         if($pdlist_name != ""){
@@ -137,7 +136,7 @@
                                                             $pdlist_name = "";
                                                             $sales = 0;
                                                             foreach($saleplan_api as $key_api => $value_api){
-                                                                if($saleplan_api[$key_api]['customer_id'] == $value->customer_shop_id){
+                                                                if($saleplan_api[$key_api]['pdlist_id'] == $value_list){
                                                                     if($saleplan_api[$key_api]['pdlist_id'] == $value_list){
                                                                         $pdlist_name = $saleplan_api[$key_api]['pdlist_name'];
                                                                         if($pdlist_name != ""){
@@ -176,58 +175,64 @@
                     </div>
                 </section>
             </div>
+        </div>
+        <!-- /Row -->
 
-            <div class="col-md-12">
+        <div class="row">
+            <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
-                    <div class="hk-pg-header mb-10">
-                        <div>
-                            <h5 class="hk-sec-title">รายงานสรุป Sale Plan (ลูกค้าใหม่) ของ {{ $sale_name->name }}
-                                ประจำเดือน <?php echo thaidate('F Y', $mon_plan->month_date); ?></h5>
+                    <div class="row mb-2">
+                        <div class="col-sm-12 col-md-6">
+                            <h5 class="hk-sec-title mb-10">สรุปปิดแผน</h5>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm">
-                            <div class="table-wrap">
-                                <div class="hk-pg-header mb-10 mt-10">
-                                    <div>
-                                    </div>
-                                </div>
-                                <div class="table-responsive col-md-12">
-                                    <table id="datable_1_2" class="table table-hover table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>รหัสลูกค้า</th>
-                                                <th>ชื่อร้าน</th>
-                                                <th>อำเภอ,จังหวัด</th>
-                                                <th>จำนวนบิล</th>
-                                                <th>ยอดขายรวม</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($customer_new as $key => $value)
-                                                @if ($value->shop_aprove_status != 1)
-                                                    <tr>
-                                                        <td>{{ $key + 1 }}</td>
-                                                        <td>ดึง API</td>
-                                                        <td>{{ $value->shop_name }}</td>
-                                                        <td>{{ $value->PROVINCE_NAME }}</td>
-                                                        <td>ดึง API</td>
-                                                        <td>ดึง API</td>
-                                                    </tr>
-                                                @endif
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
+                        <div class="col-md-3" style="text-align:center;">
+                            <div class="col-12">
+                                จำนวนแผน (นำเสนอสินค้า )ทั้งสิ้น 
+                            </div>
+                            <div class="col-12 bg-indigo text-white py-5">
+                                {{ $total_pglist }}
                             </div>
                         </div>
+                        <div class="col-md-3" style="text-align:center;">
+                            <div class="col-12">
+                                ปิดการขายได้ (แผน)
+                            </div>
+                            <div class="col-12 bg-success text-white py-5">
+                                &nbsp;
+                            </div>
+                        </div>
+                        <div class="col-md-3" style="text-align:center;">
+                            <div class="col-12">
+                                จำนวนบิลรวม
+                            </div>
+                            <div class="col-12 bg-indigo text-white py-5">
+                                {{ number_format($total_bills) }}
+                            </div>
+                        </div>
+                        <div class="col-md-3" style="text-align:center;">
+                            <div class="col-12">
+                                มูลค่ายอดขายรวม
+                            </div>
+                            <div class="col-12 bg-success text-white py-5">
+                                {{ number_format($total_sales,2) }}
+                            </div>
+                        </div>
+                    </div>
                 </section>
             </div>
-
         </div>
-        <!-- /Row -->
     </div>
+    <div class="">
+        <div class="col-xl-12">
+            <div style="float:right;">
+                <a href="{{ url('admin/approvalsaleplan')}}" type="button" 
+                class="btn btn-danger btn-sm px-3 mr-10"> ปิดแผน </a>
+            </div>
+        </div>
+    </div>
+        
 
        <script type="text/javascript">
         function chkAll(checkbox) {
@@ -264,6 +269,38 @@
         }
     }
 </script>
+
+    <script>
+        $("#form_approval_saleplan").on("submit", function(e) {
+            e.preventDefault();
+            // var formData = $(this).serialize();
+            var formData = new FormData(this);
+            //console.log(formData);
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('lead/approval_saleplan_confirm') }}',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    console.log(response);
+                    // Swal.fire({
+                    //     icon: 'success',
+                    //     title: 'Your work has been saved',
+                    //     showConfirmButton: false,
+                    //     timer: 1500
+                    // })
+                    $("#exampleModalLarge02").modal('hide');
+                    location.reload();
+                },
+                error: function(response) {
+                    console.log("error");
+                    console.log(response);
+                }
+            });
+        });
+    </script>
 
 @section('scripts')
 

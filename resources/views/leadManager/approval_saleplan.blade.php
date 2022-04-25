@@ -29,18 +29,18 @@
      <!-- Container -->
     <div class="container-fluid px-xxl-65 px-xl-20">
         @if (session('error'))
-        <div class="alert alert-inv alert-inv-warning alert-wth-icon alert-dismissible fade show" role="alert">
-            <span class="alert-icon-wrap"><i class="zmdi zmdi-help"></i>
-            </span> {{ session('error') }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    @endif
+            <div class="alert alert-inv alert-inv-warning alert-wth-icon alert-dismissible fade show" role="alert">
+                <span class="alert-icon-wrap"><i class="zmdi zmdi-help"></i>
+                </span> {{ session('error') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
          <!-- Title -->
         <div class="hk-pg-header mb-10">
             <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-analytics"></i></span>อนุมัติแผนประจำเดือน<?php echo thaidate('F Y', date('Y-m', strtotime("+1 month"))); ?></h4>
+                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-analytics"></i></span>อนุมัติแผนประจำเดือน</h4>
             </div>
             <div class="d-flex">
 
@@ -73,7 +73,7 @@
                         </div>
                         <div class="row mb-2">
                             <div class="col-sm-12 col-md-6">
-                                <h5 class="hk-sec-title">ตารางอนุมัติแผนประจำเดือน<?php echo thaidate('F Y', date('Y-m', strtotime("+1 month"))); ?></h5>
+                                <h5 class="hk-sec-title">รายการ Sale Plan ประจำเดือน</h5>
                             </div>
                             <div class="col-sm-12 col-md-6">
                                 <!-- ------ -->
@@ -107,7 +107,7 @@
                                     <div class="table-responsive-sm">
                                     <table class="table table-sm table-hover">
                                         <thead>
-                                            <tr>
+                                            <tr style="text-align:center;">
                                                 <th>
                                                     <div class="custom-control custom-checkbox checkbox-info">
                                                         <input type="checkbox" class="custom-control-input"
@@ -117,18 +117,34 @@
                                                     </div>
                                                 </th>
                                                 <th>#</th>
-                                                {{-- <th>วันที่</th> --}}
-                                                <th>พนักงานขาย</th>
-                                                <th>แผนงาน</th>
-                                                <th>ลูกค้าใหม่</th>
-                                                <th>เยียมลูกค้า</th>
+                                                <th style="text-align:left;">ผู้แทนขาย</th>
+                                                <th>Sale Plan<br>(นำเสนอสินค้า)</th>
+                                                <th>Sale Plan<br>(ลูกค้าใหม่)</th>
+                                                <th>รวมงาน</th>
+                                                <th>ปิดการขายได้</th>
+                                                <th>มูลค่า</th>
+                                                <th>ปิดกาาขาย<br>ไม่ได้</th>
+                                                <th>จำนวนลูกค้าใหม่</th>
                                                 <th>การอนุมัติ</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($monthly_plan as $key => $value)
-                                                    <tr>
+                                                @php 
+                                                    $sale_plans = DB::table('sale_plans')
+                                                        ->where('monthly_plan_id',$value->id)
+                                                        ->get();
+                                                    $sale_plan_amount = $sale_plans->count();
+
+                                                    $customer_shops_saleplan = DB::table('customer_shops_saleplan')
+                                                        ->where('monthly_plan_id', $value->id)
+                                                        ->get();
+                                                    $cust_new_amount = $customer_shops_saleplan->count();
+
+                                                    $total_plan = $sale_plan_amount + $cust_new_amount;
+                                                @endphp
+                                                    <tr style="text-align:center;">
                                                         <td>
                                                             <div class="custom-control custom-checkbox checkbox-info">
                                                                 <input type="checkbox" class="custom-control-input checkapprove"
@@ -136,34 +152,59 @@
                                                                 <label class="custom-control-label" for="customCheck{{$key + 1}}"></label>
                                                             </div>
                                                         </td>
-                                                        <td>{{$key + 1}}</td>
-                                                        {{-- <td>{{$value->month_date}}</td> --}}
-                                                        <td>{{$value->name}}</td>
-                                                        <td>{{$value->sale_plan_amount}}</td>
-                                                        <td>{{$value->cust_new_amount}}</td>
-                                                        <td>{{$value->cust_visits_amount}}</td>
-                                                        <td><span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span></td>
+                                                        <td>{{ $key + 1 }}</td>
+                                                        <td style="text-align:left;">{{ $value->name }}</td>
+                                                        <td>{{ $sale_plan_amount }}</td>
+                                                        <td>{{ $cust_new_amount }}</td>
+                                                        <td>{{ $total_plan }}</td>
+                                                        <td> ดึงจาก Admin</td>
+                                                        <td> ดึงจาก Admin</td>
+                                                        <td> ดึงจาก Admin</td>
+                                                        <td> ดึงจาก Admin</td>
+                                                        <td>
+                                                            @if($value->status_approve == 1)
+                                                                <span class="badge badge-soft-warning" style="font-size: 12px;">
+                                                                    Pending
+                                                                </span>
+                                                            @elseif($value->status_approve == 2)
+                                                                <span class="badge badge-soft-success"style="font-size: 12px;">
+                                                                    Approve
+                                                                </span>
+                                                            @elseif($value->status_approve == 3)
+                                                                <span class="badge badge-soft-purple" style="font-size: 12px;">
+                                                                    Reject
+                                                                </span>
+                                                            @elseif($value->status_approve == 4)
+                                                                <span class="badge badge-soft-info"style="font-size: 12px;">
+                                                                    Close
+                                                                </span>
+                                                            @endif
+                                                        </td>
                                                         <td>
                                                             <a href="{{ url('/approvalsaleplan_detail', $value->id) }}" type="button" class="btn btn-icon btn-primary pt-5">
                                                                 <i data-feather="file-text"></i>
                                                             </a>
                                                             <?php
-                                                            $status_saleplan = App\SalePlan::where('monthly_plan_id', $value->id)
-                                                            ->whereIn('sale_plans_status', [2,3])->count();
+                                                                $status_saleplan = App\SalePlan::where('monthly_plan_id', $value->id)
+                                                                ->whereIn('sale_plans_status', [2,3])->count();
 
-                                                            $status_customer = App\Customer::where('monthly_plan_id', $value->id)
-                                                            ->whereIn('shop_aprove_status', [2,3])->count();
-
+                                                                $status_customer = App\Customer::where('monthly_plan_id', $value->id)
+                                                                ->whereIn('shop_aprove_status', [2,3])->count();
                                                             ?>
 
                                                             @if ($status_customer == 0 && $status_saleplan == 0)
                                                             <button id="btn_saleplan_restrospective" type="button" class="btn btn-icon btn-warning ml-2" value="{{ $value->id }}">
                                                                 <i data-feather="refresh-ccw"></i>
                                                             </button>
+
+                                                            <!-- <a href="{{ url('/lead/approvalsaleplan-history-detail', $value->id) }}" type="button" class="btn btn-icon btn-success pt-5">
+                                                                <i data-feather="alert-circle"></i>
+                                                            </a> -->
+
                                                           @endif
                                                         </td>
                                                     </tr>
-                                                @endforeach
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
