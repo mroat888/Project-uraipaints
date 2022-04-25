@@ -112,13 +112,11 @@
                                                     @php 
                                                         $listpresent = explode(',',$value->sale_plans_tags);
                                                         foreach($listpresent as $key_list => $value_list ){
-                                                            $pdlist_name = "";
                                                             $bills = 0;
                                                             foreach($saleplan_api as $key_api => $value_api){
-                                                                if($saleplan_api[$key_api]['customer_id'] == $value->customer_shop_id){
-                                                                    if($saleplan_api[$key_api]['pdlist_id'] == $value_list){
-                                                                        $pdlist_name = $saleplan_api[$key_api]['pdlist_name'];
-                                                                        if($pdlist_name != ""){
+                                                                if($saleplan_api[$key_api]['pdlist_id'] == $value_list){
+                                                                    if($saleplan_api[$key_api]['customer_id'] == $value->customer_shop_id){
+                                                                        if($saleplan_api[$key_api]['pdlist_name'] != ""){
                                                                             $bills= $saleplan_api[$key_api]['bills'];
                                                                         }
                                                                     }
@@ -134,13 +132,11 @@
                                                     @php 
                                                         $listpresent = explode(',',$value->sale_plans_tags);
                                                         foreach($listpresent as $key_list => $value_list ){
-                                                            $pdlist_name = "";
                                                             $sales = 0;
                                                             foreach($saleplan_api as $key_api => $value_api){
-                                                                if($saleplan_api[$key_api]['customer_id'] == $value->customer_shop_id){
-                                                                    if($saleplan_api[$key_api]['pdlist_id'] == $value_list){
-                                                                        $pdlist_name = $saleplan_api[$key_api]['pdlist_name'];
-                                                                        if($pdlist_name != ""){
+                                                                if($saleplan_api[$key_api]['pdlist_id'] == $value_list){
+                                                                    if($saleplan_api[$key_api]['customer_id'] == $value->customer_shop_id){
+                                                                        if($saleplan_api[$key_api]['pdlist_name'] != ""){
                                                                             $sales= $saleplan_api[$key_api]['sales'];
                                                                         }
                                                                     }
