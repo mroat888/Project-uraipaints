@@ -591,7 +591,7 @@
                                                         </td>
                                                         <td style="text-align:center;">
                                                             <div class="button-list">
-                                                                @php
+                                                                {{-- @php
                                                                     $text_notify = "";
                                                                     if($customer_visit_api[$key]['visit_checkin_date'] != "" && $customer_visit_api[$key]['visit_checkout_date'] == ""){
 
@@ -629,17 +629,17 @@
                                                                         $btn_pumpkin_cusvisit_disabled = "disabled";
                                                                         $btn_neon_cusvisit_disabled = "disabled";
                                                                     }
-                                                                @endphp
+                                                                @endphp --}}
                                                                 <button class="btn btn-icon btn-primary"
-                                                                    data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $customer_visit_api[$key]['id'] }})" {{ $btn_primary_cusvisit_disabled }}>
+                                                                    data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $customer_visit_api[$key]['id'] }})">
                                                                     <span class="btn-icon-wrap"><i data-feather="log-in"></i></span></button>
                                                                 <button class="btn btn-icon btn-pumpkin"
-                                                                    data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $customer_visit_api[$key]['id'] }})" {{ $btn_pumpkin_cusvisit_disabled }}>
+                                                                    data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $customer_visit_api[$key]['id'] }})">
                                                                     <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
-                                                                <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalVisitResult" onclick="customer_visit_result({{ $customer_visit_api[$key]['id'] }})" {{ $btn_neon_cusvisit_disabled }}>
+                                                                <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalVisitResult" onclick="customer_visit_result({{ $customer_visit_api[$key]['id'] }})">
                                                                     <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
                                                             </div>
-                                                            <span class="text-danger mr-3" style="font-size:11px;">{{ $text_notify }}</span>
+                                                            {{-- <span class="text-danger mr-3" style="font-size:11px;">{{ $text_notify }}</span> --}}
                                                         </td>
                                                     </tr>
 
@@ -770,7 +770,7 @@
                 <div class="modal-body">
                     <form id="from_saleplan_result">
                         @csrf
-                        <input type="hidden" name="saleplan_id" id="get_saleplan_id">
+                        <input type="text" name="saleplan_id" id="get_saleplan_id">
                         {{-- <div class="my-3"><span>เรื่อง : </span><span id="get_title"></span></div> --}}
                             <div class="my-3"><span>ลูกค้า : </span><span id="get_shop"></span></div>
                             <div class="my-3"><span>อำเภอ, จังหวัด : </span><span id="get_shop_address"></span></div>
