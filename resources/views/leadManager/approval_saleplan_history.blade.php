@@ -103,41 +103,53 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                {{-- <th>วันที่</th> --}}
-                                                <th>พนักงานขาย</th>
-                                                <th>แผนงาน</th>
-                                                <th>ลูกค้าใหม่</th>
-                                                <th>เยียมลูกค้า</th>
+                                                <th style="text-align:left;">พนักงานขาย</th>
+                                                <th>Sale Plan<br>(นำเสนอสินค้า)</th>
+                                                <th>Sale Plan<br>(ลูกค้าใหม่)</th>
+                                                <th>รวมงาน</th>
+                                                <th>ปิดการขายได้</th>
+                                                <th>มูลค่า</th>
+                                                <th>ปิดกาาขาย<br>ไม่ได้</th>
+                                                <th>จำนวนลูกค้าใหม่</th>
                                                 <th>การอนุมัติ</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($monthly_plan as $key => $value)
-                                                    <tr>
-                                                        <td>{{$key + 1}}</td>
-                                                        {{-- <td>{{$value->month_date}}</td> --}}
-                                                        <td>{{$value->name}}</td>
-                                                        <td>{{$value->sale_plan_amount}}</td>
-                                                        <td>{{$value->cust_new_amount}}</td>
-                                                        <td>{{$value->cust_visits_amount}}</td>
+                                        @foreach ($monthly_plan as $key => $value)
+                                                @php 
+                                                    $sale_plans = DB::table('sale_plans')
+                                                        ->where('monthly_plan_id',$value->id)
+                                                        ->get();
+                                                    $sale_plan_amount = $sale_plans->count();
+
+                                                    $customer_shops_saleplan = DB::table('customer_shops_saleplan')
+                                                        ->where('monthly_plan_id', $value->id)
+                                                        ->get();
+                                                    $cust_new_amount = $customer_shops_saleplan->count();
+
+                                                    $total_plan = $sale_plan_amount + $cust_new_amount;
+                                                @endphp
+                                                    <tr style="text-align:center;">
+                                                        <td>{{ $key + 1 }}</td>
+                                                        <td style="text-align:left;">{{ $value->name }}</td>
+                                                        <td>{{ $sale_plan_amount }}</td>
+                                                        <td>{{ $cust_new_amount }}</td>
+                                                        <td>{{ $total_plan }}</td>
+                                                        <td> ดึงจาก Admin</td>
+                                                        <td> ดึงจาก Admin</td>
+                                                        <td> ดึงจาก Admin</td>
+                                                        <td> ดึงจาก Admin</td>
                                                         <td>
-                                                            <span class="badge badge-soft-success" style="font-size: 12px;">Approval</span></td>
+                                                            <span class="badge badge-soft-success" style="font-size: 12px;">Approval</span>
+                                                        </td>
                                                         <td>
-                                                            <a href="{{url('lead/approvalsaleplan-history-detail', $value->id)}}" class="btn btn-icon btn-primary btn-link btn_showplan pt-5">
-                                                                <i data-feather="file-text"></i>
+                                                            <a href="{{ url('/lead/approvalsaleplan-history-detail', $value->id) }}" type="button" class="btn btn-icon btn-success pt-5">
+                                                                <i data-feather="alert-circle"></i>
                                                             </a>
-                                                            <?php
-                                                            $status_saleplan = App\SalePlan::where('monthly_plan_id', $value->id)
-                                                            ->whereIn('sale_plans_status', [2,3])->count();
-
-                                                            $status_customer = App\Customer::where('monthly_plan_id', $value->id)
-                                                            ->whereIn('shop_aprove_status', [2,3])->count();
-
-                                                            ?>
                                                         </td>
                                                     </tr>
-                                                @endforeach
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>

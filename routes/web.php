@@ -389,6 +389,7 @@ Route::get('admin/viewAssignmentDetail', function () { return view('admin.view_a
 
 Route::get('admin/approvalsaleplan', 'Admin\ApprovalSalePlanController@index');
 Route::get('admin/approvalsaleplan_detail/{id}', 'Admin\ApprovalSalePlanController@approvalsaleplan_detail');
+Route::get('admin/approvalsaleplan_close/{id}', 'Admin\ApprovalSalePlanController@approvalsaleplan_close');
 Route::get('admin/comment_saleplan/{id}/{createID}', 'Admin\ApprovalSalePlanController@comment_saleplan');
 Route::post('admin/create_comment_saleplan', 'Admin\ApprovalSalePlanController@create_comment_saleplan');
 Route::get('admin/comment_customer_new/{id}/{custsaleplanID}/{createID}', 'Admin\ApprovalSalePlanController@comment_customer_new');
