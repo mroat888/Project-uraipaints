@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\SaleMan;
+namespace App\Http\Controllers\LeadManager;
 
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\Controller;
@@ -33,72 +33,36 @@ class ImportantDayController extends Controller
         //     'year' => $year,
         //     'month' => $month
         // ]);
-        ->get(env("API_LINK").env("API_PATH_VER").'/bdates/sellers/'.Auth::user()->api_identify.'/customers');
+        ->get(env("API_LINK").env("API_PATH_VER").'/bdates/saleleaders/'.Auth::user()->api_identify.'/customers');
         $data['res_api'] = $response->json();
-        return view('saleman.important_day_detail', $data);
+        return view('leadManager.important_day_detail', $data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //

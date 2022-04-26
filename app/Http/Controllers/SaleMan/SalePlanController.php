@@ -362,8 +362,8 @@ class SalePlanController extends Controller
 
     public function saleplan_result_get($id)
     {
-        $dataResult = SalePlanResult::join('sale_plans', 'sale_plan_results.sale_plan_id', 'sale_plans.id')
-        ->join('master_objective_saleplans', 'sale_plans.sale_plans_objective', 'master_objective_saleplans.id')
+        $dataResult = SalePlan::leftjoin('sale_plan_results', 'sale_plans.id', 'sale_plan_results.sale_plan_id')
+        ->leftjoin('master_objective_saleplans', 'sale_plans.sale_plans_objective', 'master_objective_saleplans.id')
         ->where('sale_plans.id', $id)
         ->select('sale_plan_results.*',
         'sale_plans.sale_plans_title',
@@ -417,17 +417,28 @@ class SalePlanController extends Controller
         DB::beginTransaction();
         try {
 
-            if($request->saleplan_id !="" && $request->saleplan_result != ""){
+            if($request->saleplan_result != ""){
 
                 SalePlan::find($request->saleplan_id)->update([
                     'status_result' => 3,
                 ]);
                 $data2 = SalePlanResult::where('sale_plan_id', $request->saleplan_id)->first();
-                $data2->sale_plan_detail   = $request->saleplan_detail;
-                $data2->sale_plan_status   = $request->saleplan_result;
-                $data2->updated_by   = Auth::user()->id;
-                $data2->updated_at   = Carbon::now();
-                $data2->update();
+                if ($data2) {
+                    $data2->sale_plan_detail   = $request->saleplan_detail;
+                    $data2->sale_plan_status   = $request->saleplan_result;
+                    $data2->updated_by   = Auth::user()->id;
+                    $data2->updated_at   = Carbon::now();
+                    $data2->update();
+                }else{
+                    $data_create = new SalePlanResult;
+                    $data_create->sale_plan_id  = $request->saleplan_id;
+                    $data_create->sale_plan_detail   = $request->saleplan_detail;
+                    $data_create->sale_plan_status   = $request->saleplan_result;
+                    $data_create->updated_by   = Auth::user()->id;
+                    $data_create->updated_at   = Carbon::now();
+                    $data_create->save();
+                }
+
                 // return back();
 
                 $saleplan_month = SalePlan::find($request->saleplan_id);

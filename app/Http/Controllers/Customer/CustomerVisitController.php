@@ -299,9 +299,9 @@ class CustomerVisitController extends Controller
     public function customer_visit_result_get($id)
     {
         $dataResult = CustomerVisit::leftjoin('customer_shops', 'customer_visits.customer_shop_id', 'customer_shops.id')
-            ->join('customer_visit_results', 'customer_visits.id', 'customer_visit_results.customer_visit_id')
+            ->leftjoin('customer_visit_results', 'customer_visits.id', 'customer_visit_results.customer_visit_id')
             ->leftjoin('customer_contacts', 'customer_shops.id', 'customer_contacts.customer_shop_id')
-            ->join('master_objective_visit', 'customer_visits.customer_visit_objective', 'master_objective_visit.id')
+            ->leftjoin('master_objective_visit', 'customer_visits.customer_visit_objective', 'master_objective_visit.id')
             ->where('customer_visits.id', $id)
             ->select('customer_shops.shop_name', 'customer_visits.*',
             'customer_visit_results.cust_visit_detail',
@@ -353,21 +353,30 @@ class CustomerVisitController extends Controller
 
         DB::beginTransaction();
         try {
-            if ($request->visit_id != "" && $request->visit_result_status != "") {
+            if ($request->visit_result_status != "") {
 
                 $data2 = CustomerVisitResult::where('customer_visit_id', $request->visit_id)->first();
-                $data2->cust_visit_detail   = $request->visit_result_detail;
-                $data2->cust_visit_status   = $request->visit_result_status;
-                $data2->updated_by   = Auth::user()->id;
-                $data2->updated_at   = Carbon::now();
-                $data2->update();
-                //return back();
+                if ($data2 != '') {
+                    $data2->cust_visit_detail   = $request->visit_result_detail;
+                    $data2->cust_visit_status   = $request->visit_result_status;
+                    $data2->updated_by   = Auth::user()->id;
+                    $data2->updated_at   = Carbon::now();
+                    $data2->update();
+                }else{
+                    $data_create = new CustomerVisitResult;
+                    $data_create->customer_visit_id   = $request->visit_id;
+                    $data_create->cust_visit_detail   = $request->visit_result_detail;
+                    $data_create->cust_visit_status   = $request->visit_result_status;
+                    $data_create->updated_by   = Auth::user()->id;
+                    $data_create->updated_at   = Carbon::now();
+                    $data_create->save();
+                }
+
 
                 $cust_visit = DB::table('customer_visits')->where('id', $request->visit_id)->first();
 
                 $events = DB::table('events')->where('customer_visits_id', $request->visit_id)->first();
 
-                // dd($events);
 
                 if (is_null($events)) {
                     DB::table('events')

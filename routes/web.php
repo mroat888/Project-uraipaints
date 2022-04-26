@@ -161,6 +161,7 @@ Route::middleware(['auth', 'lead'])->group(function () {
 // lead
 // Route::get('leadManager', 'LeadManager\DashboardController@index');
 Route::get('lead/dashboard', 'LeadManager\DashboardController@index');
+Route::get('lead/important-day-detail',  'LeadManager\ImportantDayController@index');
 Route::get('lead/planMonth', function () { return view('leadManager.planMonth'); });
 Route::get('lead/dailyWork', function () { return view('leadManager.dailyWork'); });
 Route::get('lead/palncalendar', function () { return view('leadManager.salePalnCalendar'); });
@@ -278,8 +279,7 @@ Route::post('lead/userProfileUpdate', 'ProfileController@update');
 Route::middleware(['auth', 'head'])->group(function () {
 // head
 Route::get('headManage', 'HeadManager\DashboardController@index');
-// Route::get('head/planMonth', function () { return view('headManager.planMonth'); });
-// Route::get('head/dailyWork', function () { return view('headManager.dailyWork'); });
+Route::get('head/important-day-detail',  'HeadManager\ImportantDayController@index');
 Route::get('head/palncalendar', function () { return view('headManager.salePalnCalendar'); });
 Route::get('head/saleWork', function () { return view('headManager.sale_work'); });
 Route::get('head/viewSaleDetail', function () { return view('headManager.view_saleplan'); });
