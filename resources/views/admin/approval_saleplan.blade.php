@@ -109,6 +109,34 @@
                                                     $cust_new_amount = $customer_shops_saleplan->count();
 
                                                     $total_plan = $sale_plan_amount + $cust_new_amount;
+
+                                                    //--  API ------//
+                                                    $user_api = DB::table('users')->where('id',$value->created_by)->first();
+                                                    list($year,$month,$day) = explode('-', $value->month_date);
+                                                    $month = $month + 0;
+
+                                                    $path_search = "reports/sellers/".$user_api->api_identify."/closesaleplans?years=".$year."&months=".$month;
+                                                    $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+                                                    $res_api = $response->json();
+                                                    $saleplan_api = $res_api['data'];
+
+                                                    $bills = 0;
+                                                    $sales = 0;
+                                                    foreach($saleplan_api as $key_api => $value_api){
+                                                        $bills += $saleplan_api[$key_api]['bills'];
+                                                        $sales += $saleplan_api[$key_api]['sales'];
+                                                    }
+
+                                                    $total_pglistpresent = 0; // เก็บจำนวนสินค้าค้านำเสนอ
+                                                    foreach($sale_plans as $pglist_value){
+                                                        $listpresent = explode(',',$pglist_value->sale_plans_tags);
+                                                        foreach($listpresent as $value_list ){
+                                                            $total_pglistpresent += 1;
+                                                        }
+                                                    }
+
+                                                    $not_bills = $total_pglistpresent - $bills;
+
                                                 @endphp
                                                 <tr style="text-align:center;">
                                                     <td>{{ $key + 1 }}</td>
@@ -116,9 +144,9 @@
                                                     <td>{{ $sale_plan_amount }}</td>
                                                     <td>{{ $cust_new_amount }}</td>
                                                     <td>{{ $total_plan }}</td>
-                                                    <td> ดึงจาก Admin</td>
-                                                    <td> ดึงจาก Admin</td>
-                                                    <td> ดึงจาก Admin</td>
+                                                    <td>{{ $bills }}</td>
+                                                    <td>{{ number_format($sales,2) }}</td>
+                                                    <td>{{ number_format($not_bills) }}</td>
                                                     <td> ดึงจาก Admin</td>
                                                     <td>
                                                         @if($value->status_approve == 1)
