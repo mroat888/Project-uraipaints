@@ -94,7 +94,7 @@ class DashboardController extends Controller
         $api_token = $this->api_token->apiToken();
         $data['api_token'] = $api_token;
         $response = Http::withToken($api_token)
-        ->get(env("API_LINK").'api/v1/sellers/'.Auth::user()->api_identify.'/dashboards', [
+        ->get(env("API_LINK").env('API_PATH_VER').'/sellers/'.Auth::user()->api_identify.'/dashboards', [
             'year' => $year,
             'month' => $month
         ]);
