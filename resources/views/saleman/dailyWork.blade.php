@@ -785,10 +785,9 @@
                             <div class="form-group col-md-6">
                                 <label for="username">สรุปผลลัพธ์</label>
                                 <select class="form-control custom-select" id="get_result" name="saleplan_result">
-                                    <option selected>-- กรุณาเลือก --</option>
+                                    <option>-- กรุณาเลือก --</option>
                                     <option value="0">ไม่สนใจ</option>
-                                    <option value="1">รอตัดสินใจ</option>
-                                    <option value="2">สนใจ/ตกลง</option>
+                                    <option value="1">สนใจ/ตกลง</option>
                                 </select>
                             </div>
                         </div>
@@ -815,7 +814,7 @@
                 <div class="modal-body">
                     <form id="from_customer_new_result">
                         @csrf
-                        <input type="hidden" name="cust_id" id="get_cust_new_id">
+                        <input type="text" name="cust_id" id="get_cust_new_id">
                         {{-- <div class="my-3"><span>ID : </span><span id="get_cust_id2"></span></div> --}}
                             <div class="my-3"><span>ชื่อร้าน : </span><span id="get_cust_name"></span></div>
                             <div class="my-3"><span>ชื่อผู้ติดต่อ : </span><span id="get_cust_contact_name"></span></div>
@@ -860,7 +859,7 @@
                     <!-- <form action="{{ url('customer_visit_Result') }}" method="post" enctype="multipart/form-data"> -->
                     <form id="from_customer_visit_result">
                         @csrf
-                        <input type="hidden" name="visit_id" id="get_visit_id">
+                        <input type="text" name="visit_id" id="get_visit_id">
                         <div class="my-3"><span>ชื่อร้าน : </span><span id="get_visit_name"></span></div>
                         <div class="my-3"><span>ชื่อผู้ติดต่อ : </span><span id="get_visit_contact_name"></span></div>
                         <div class="my-3"><span>อำเภอ, จังหวัด : </span><span id="get_visit_address"></span></div>
@@ -902,9 +901,7 @@
                 </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <!-- <label for="username">รายละเอียดความคิดเห็น</label> -->
-                            <!-- <textarea class="form-control" cols="30" rows="5" id="get_comment" name="assign_comment"
-                                type="text" readonly></textarea> -->
+
                             <div id="div_comment">
 
                             </div>
@@ -1047,6 +1044,12 @@
     //Edit
     function saleplan_result(id) {
         $("#get_saleplan_id").val(id);
+        $('#get_title').text("");
+        $('#get_objective').text("");
+        $('#get_shop_address').text("");
+        $('#get_shop').text("");
+        $('#get_name').text("");
+
         $.ajax({
             type: "GET",
             url: "{!! url('saleplan_result_get/"+id+"') !!}",
@@ -1083,7 +1086,7 @@
 <script>
     //Edit
     function customer_new_result(id) {
-        $('#get_cust_new_id').val(id);
+        // $('#get_cust_new_id').val(id);
         $('#get_cust_name').text('');
         // $('#get_cust_result').val('');
         $.ajax({
@@ -1095,18 +1098,18 @@
                 // console.log(data.dataResult);
 
                 $('#get_cust_new_id').val(data.dataResult.id);
-                $('#get_cust_contact_name').text(data.dataResult.customer_contact_name);
-                $('#get_cust_address').text(data.cust_new_address);
+                $('#get_cust_contact_name').text(data.dataResult.shop_name);
+                // $('#get_cust_address').text(data.cust_new_address);
                 $('#get_cust_objective').text(data.dataResult.cust_name);
-                $('#get_cust_id2').text(data.id);
+                // $('#get_cust_id2').text(data.id);
                 $('#get_cust_detail').val(data.dataResult.cust_result_detail);
                 $('#get_cust_result').val(data.dataResult.cust_result_status);
 
-                if (data.dataResult.shop_name == '') {
-                    $('#get_cust_name').text(data.cust_new_name);
-                }else{
-                    $('#get_cust_name').text(data.dataResult.shop_name);
-                }
+                // if (data.dataResult.shop_name == '') {
+                //     $('#get_cust_name').text(data.cust_new_name);
+                // }else{
+                //     $('#get_cust_name').text(data.dataResult.shop_name);
+                // }
 
                 $('#ModalCustResult').modal('toggle');
             }
@@ -1118,6 +1121,7 @@
     //Edit
     function customer_visit_result(id) {
         // $("#get_cust_new_id").val(id);
+        // console.log(id);
         $.ajax({
             type: "GET",
             url: "{!! url('customer_visit_result_get/"+id+"') !!}",

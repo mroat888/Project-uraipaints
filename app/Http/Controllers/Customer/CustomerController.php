@@ -440,7 +440,7 @@ class CustomerController extends Controller
             ->where('customer_shop_id', $data['customer_shops']->id)
             ->orderBy('monthly_plan_id', 'desc')
             ->get();
-        
+
         return view('customer.customer_lead_detail', $data);
     }
 
@@ -620,45 +620,49 @@ class CustomerController extends Controller
     public function customer_new_result_get($id)
     {
 
-        $cus_result = DB::table('customer_shops_saleplan_result')
-        ->join('customer_shops_saleplan', 'customer_shops_saleplan_result.customer_shops_saleplan_id', 'customer_shops_saleplan.customer_shop_id')
-        ->join('master_customer_new', 'customer_shops_saleplan.customer_shop_objective', 'master_customer_new.id')
-        ->join('customer_shops', 'customer_shops_saleplan_result.customer_shops_saleplan_id', 'customer_shops.id')
-        ->join('customer_contacts', 'customer_shops.id', 'customer_contacts.customer_shop_id')
-        ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
-        ->leftjoin('amphur', 'amphur.AMPHUR_ID', 'customer_shops.shop_amphur_id')
-        // ->where('customer_shops_saleplan_result.customer_shops_saleplan_id', $id)
-        ->where('customer_shops_saleplan.id', $id)
-        ->select('customer_shops_saleplan_result.*',
-        'customer_shops.shop_name',
-        'customer_contacts.customer_contact_name',
-        'amphur.AMPHUR_NAME',
-        'province.PROVINCE_NAME',
-        'master_customer_new.cust_name'
+        // $cus_result = DB::table('customer_shops_saleplan_result')
+        // ->join('customer_shops_saleplan', 'customer_shops_saleplan_result.customer_shops_saleplan_id', 'customer_shops_saleplan.customer_shop_id')
+        // ->join('master_customer_new', 'customer_shops_saleplan.customer_shop_objective', 'master_customer_new.id')
+        // ->join('customer_shops', 'customer_shops_saleplan_result.customer_shops_saleplan_id', 'customer_shops.id')
+        // ->join('customer_contacts', 'customer_shops.id', 'customer_contacts.customer_shop_id')
+        // ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
+        // ->leftjoin('amphur', 'amphur.AMPHUR_ID', 'customer_shops.shop_amphur_id')
+        // // ->where('customer_shops_saleplan_result.customer_shops_saleplan_id', $id)
+        // ->where('customer_shops_saleplan.id', $id)
+        // ->select('customer_shops_saleplan_result.*',
+        // 'customer_shops.shop_name',
+        // 'customer_contacts.customer_contact_name',
+        // 'amphur.AMPHUR_NAME',
+        // 'province.PROVINCE_NAME',
+        // 'master_customer_new.cust_name'
+        // )->first();
+
+        $cus_result = DB::table('customer_shops_saleplan_result'
         )->first();
 
-         $api_token = $this->api_token->apiToken();
-         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/sellers/'.Auth::user()->api_identify.'/customers');
-         $res_api = $response->json();
 
-        // $customer_api = array();
-        foreach ($res_api['data'] as $key => $value) {
-            if ($id == $value['identify']) {
-                $cust_new_address = $value['amphoe_name']." , ".$value['province_name'];
-                $cust_new_name = $value['title']." ".$value['name'];
-            }else{
-                $cust_new_name = '';
-                $cust_new_address = $cus_result->AMPHUR_NAME.", ".$cus_result->PROVINCE_NAME;
-            }
+        //  $api_token = $this->api_token->apiToken();
+        //  $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/sellers/'.Auth::user()->api_identify.'/customers');
+        //  $res_api = $response->json();
 
-        }
+        // // $customer_api = array();
+        // foreach ($res_api['data'] as $key => $value) {
+        //     if ($id == $value['identify']) {
+        //         $cust_new_address = $value['amphoe_name']." , ".$value['province_name'];
+        //         $cust_new_name = $value['title']." ".$value['name'];
+        //     }else{
+        //         $cust_new_name = '';
+        //         $cust_new_address = $cus_result->AMPHUR_NAME.", ".$cus_result->PROVINCE_NAME;
+        //     }
+
+        // }
 
         if(!is_null($cus_result)){
             return response()->json([
                 'status' => 200,
                 'dataResult' => $cus_result,
-                'cust_new_name' => $cust_new_name,
-                'cust_new_address' => $cust_new_address,
+                // 'cust_new_name' => $cust_new_name,
+                // 'cust_new_address' => $cust_new_address,
                 'id' => $id
             ]);
         }
@@ -670,15 +674,27 @@ class CustomerController extends Controller
         // dd($request);
         DB::beginTransaction();
         try {
-            if($request->cust_id !="" && $request->shop_result_status != ""){
+            if($request->shop_result_status != ""){
 
-                DB::table('customer_shops_saleplan_result')->where('id', $request->cust_id)
+                $data = DB::table('customer_shops_saleplan_result')->where('id', $request->cust_id)->first();
+                if ($data != '') {
+                    DB::table('customer_shops_saleplan_result')->where('id', $request->cust_id)
                 ->update([
                     'cust_result_detail' => $request->shop_result_detail,
                     'cust_result_status' => $request->shop_result_status,
                     'updated_by' => Auth::user()->id,
                     'updated_at' => Carbon::now()
                 ]);
+                }else{
+                    DB::table('customer_shops_saleplan_result')->insert([
+                    'customer_shops_saleplan_id' => $request->cust_id,
+                    'cust_result_detail' => $request->shop_result_detail,
+                    'cust_result_status' => $request->shop_result_status,
+                    'created_by' => Auth::user()->id,
+                    'created_at' => Carbon::now()
+                ]);
+                }
+
 
                 $cust_shops_saleplan_result = DB::table('customer_shops_saleplan_result')->where('id', $request->cust_id)->first();
                 $cust_shops_saleplan = DB::table('customer_shops_saleplan')->where('id', $cust_shops_saleplan_result->customer_shops_saleplan_id)->first();

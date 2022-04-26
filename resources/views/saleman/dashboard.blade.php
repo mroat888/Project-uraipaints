@@ -374,13 +374,13 @@
         <div class="row">
             <div class="col-md-12">
                 <section class="hk-sec-wrapper">
-                    <!-- <h6 class="topic-page hk-sec-title mb-10" style="font-weight: bold;">สรุปยอดขาย</h6> -->
-                    <h6 class="topic-page hk-sec-title topic-bgorange" style="font-weight: bold;">เทียบยอดขายรายเดือน</h6>
+                    <h6 class="topic-page hk-sec-title topic-bgorange" style="font-weight: bold;">เทียบยอดขายรายเดือน
+                        <?php echo thaidate('F', date("M")); ?> ระหว่างปี {{$res_api["data"][2]["SalesCurrent"][0]["yearEN"]}} กับปี
+                        {{$res_api["data"][3]["SalesPrevious"][0]["yearEN"]}}</h6>
                     <div class="row">
                         <div class="col-md-8">
                             <canvas id="myChart" style="height: 294px"></canvas>
-                            {{-- <div id="myChart" style="height: 294px"></div> --}}
-                            {{-- <div id="e_chart_6" class="echart" style="height:294px;"></div> --}}
+                            <span class="mt-8 ml-40 text-danger">ข้อมูล ณ วันที่ {{$res_api["times"]}}</span>
                         </div>
                         <div class="col-md-4">
                             <div class="card card-sm">
@@ -406,6 +406,8 @@
                                     @endphp
 
                                     <span class="d-block font-11 font-weight-500 text-dark text-uppercase mb-10"></span>
+                                    <h6 class="topic-page hk-sec-title text-center text-white" style="font-weight: bold;">เทียบยอดขายทั้งเดือน
+                                        <?php echo thaidate('F', date("M")); ?></h6>
                                             <span class="d-block text-center">
                                                 <span id="pie_chart_2" class="easy-pie-chart" data-percent="{{ $percentAmtCrn }}">
                                                     <span class="percent head-font mt-25">{{ $percentAmtCrn }}</span>
@@ -414,11 +416,11 @@
                                     <div class="d-flex align-items-end justify-content-between mt-10">
                                         <div>
                                             <span class="d-block">
-                                                <span>เป้ายอดขาย</span>
+                                                <span><?php echo thaidate('F', date("M")); ?></h6>/{{$res_api["data"][2]["SalesCurrent"][0]["yearEN"]}}</span>
                                             </span>
                                         </div>
                                         <div>
-                                            <span>ยอดที่ทำได้</span>
+                                            <span><?php echo thaidate('F', date("M")); ?></h6>/{{$res_api["data"][2]["SalesCurrent"][0]["yearEN"]}}</span>
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-end justify-content-between">
@@ -428,7 +430,12 @@
                                             </span>
                                         </div>
                                         <div>
-                                            <span class="bg-sumsale">{{ $totalAmtSale_th }}</span>
+                                            @if ($totalAmtSale_th < $totalAmtSale_th_Previous)
+                                            <span class="bg-sumsale text-red">{{ $totalAmtSale_th }}</span>
+                                            @else
+                                            <span class="bg-sumsale text-green">{{ $totalAmtSale_th }}</span>
+                                            @endif
+
                                         </div>
                                     </div>
 
@@ -454,7 +461,7 @@
                                                     </div>
                                                     <div class="col-md-4" style="text-align:right;">
                                                         <span style="font-weight: bold; font-size: 18px;">
-                                                            {{ number_format($res_api["data"][0]["Customers"][0]["CustTotal"]) }} ราย
+                                                            {{ number_format($res_api["data"][0]["Customers"][0]["ActiveTotal"]) }} ราย
                                                         </span>
                                                     </div>
                                                 </div>
@@ -464,17 +471,17 @@
                                                     </div>
                                                     <div class="col-md-4" style="text-align:right;">
                                                         <span style="font-weight: bold; font-size: 18px;">
-                                                            {{ number_format($res_api["data"][0]["Customers"][0]["ActiveTotal"]) }} ราย
+                                                            {{ number_format($res_api["data"][1]["FocusDates"][0]["TotalCustomers"]) }} ราย
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <div class="row box-txttotalsum">
                                                     <div class="col-md-8">
-                                                        <span style="font-weight: bold; font-size: 14px;">ร้านค้า เปิดบิล คิดเป็น ณ วันที่ 22/04/2022</span>
+                                                        <span style="font-weight: bold; font-size: 14px;">ร้านค้า เปิดบิล คิดเป็น ณ วันที่ <?php echo date("d/m/Y"); ?></span>
                                                     </div>
                                                     <div class="col-md-4" style="text-align:right;">
                                                         <span style="font-weight: bold; font-size: 18px;">
-                                                            {{ number_format($res_api["data"][0]["Customers"][0]["InactiveTotal"]) }} % จากทั้งหมด
+                                                            {{ number_format($res_api["data"][1]["FocusDates"][0]["TotalDays"]) }} % จากทั้งหมด
                                                         </span>
                                                     </div>
                                                 </div>
@@ -484,7 +491,7 @@
                                                     </div>
                                                     <div class="col-md-4" style="text-align:right;">
                                                         <span style="font-weight: bold; font-size: 18px;" class="num-specialday">
-                                                            99.99 % จากทั้งหมด
+                                                            {{ number_format($res_api["data"][0]["Customers"][0]["InactiveTotal"]) }} จากทั้งหมด
                                                         </span>
                                                     </div>
                                                 </div>
@@ -518,7 +525,7 @@
         data: {
             labels: [{{ $day_month }}],
             datasets: [{
-                label: 'ยอดขายปีปัจจุบัน',
+                label: 'ยอดขายปี {{$res_api["data"][2]["SalesCurrent"][0]["yearEN"]}}',
                 data: [{{ $amtsale_current }}],
                 backgroundColor: [
                     // 'rgba(255, 99, 132, 0.3)',
@@ -540,7 +547,7 @@
                 borderWidth: 1
             },
             {
-                label: 'ยอดขายปีที่แล้ว',
+                label: 'ยอดขายปี {{$res_api["data"][3]["SalesPrevious"][0]["yearEN"]}}',
                 data: [{{ $amtsale_previous }}],
                 backgroundColor: [
                     // 'rgba(255, 99, 132, 0.2)',

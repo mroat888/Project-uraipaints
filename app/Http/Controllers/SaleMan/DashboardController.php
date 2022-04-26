@@ -94,10 +94,15 @@ class DashboardController extends Controller
         $api_token = $this->api_token->apiToken();
         $data['api_token'] = $api_token;
         $response = Http::withToken($api_token)
+<<<<<<< HEAD
+        ->get(env("API_LINK").env("API_PATH_VER").'/sellers/'.Auth::user()->api_identify.'/dashboards', [
+=======
         ->get(env("API_LINK").env('API_PATH_VER').'/sellers/'.Auth::user()->api_identify.'/dashboards', [
+>>>>>>> 8d94e2ed202c072a5fd0d6093a71079666514110
             'year' => $year,
             'month' => $month
         ]);
+
         $data['res_api'] = $response->json();
 
         $data['count_sale_plans_result'] = 0;      // -- นับจำนวน slaeplans

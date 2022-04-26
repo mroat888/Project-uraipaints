@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\SaleMan;
+namespace App\Http\Controllers\HeadManager;
 
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\Controller;
@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Http;
 
 class ImportantDayController extends Controller
 {
-
     public function __construct(){
         $this->api_token = new ApiController();
     }
@@ -33,16 +32,11 @@ class ImportantDayController extends Controller
         //     'year' => $year,
         //     'month' => $month
         // ]);
-        ->get(env("API_LINK").env("API_PATH_VER").'/bdates/sellers/'.Auth::user()->api_identify.'/customers');
+        ->get(env("API_LINK").env("API_PATH_VER").'/bdates/saleheaders/'.Auth::user()->api_identify.'/customers');
         $data['res_api'] = $response->json();
-        return view('saleman.important_day_detail', $data);
+        return view('headManager.important_day_detail', $data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
