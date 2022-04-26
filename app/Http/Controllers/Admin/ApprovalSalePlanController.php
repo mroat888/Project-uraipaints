@@ -27,7 +27,9 @@ class ApprovalSalePlanController extends Controller
     {
         $data['monthly_plan'] = MonthlyPlan::join('users', 'monthly_plans.created_by', '=', 'users.id')
             ->whereIn('monthly_plans.status_approve', [2,4]) //-- สถานะ อนุมัติ, ปิดแผน
-            ->select('users.name', 'monthly_plans.*')->get();
+            ->select('users.name', 'monthly_plans.*')
+            ->orderBy('monthly_plans.id', 'desc')
+            ->get();
 
         $data['teams'] = DB::table('master_team_sales')->get();
 
@@ -188,7 +190,9 @@ class ApprovalSalePlanController extends Controller
                 ->whereYear('monthly_plans.month_date', $year)
                 ->whereMonth('monthly_plans.month_date', $month)
                 ->where('users.team_id', $request->sel_team)
-                ->select('users.name', 'monthly_plans.*')->get();
+                ->select('users.name', 'monthly_plans.*')
+                ->orderBy('monthly_plans.id', 'desc')
+                ->get();
 
                 $data['search_year'] = $year;
                 $data['search_month'] = $month;
@@ -200,7 +204,9 @@ class ApprovalSalePlanController extends Controller
                 ->whereNotIn('monthly_plans.status_approve', [0])
                 ->whereYear('monthly_plans.month_date', $year)
                 ->whereMonth('monthly_plans.month_date', $month)
-                ->select('users.name', 'monthly_plans.*')->get();
+                ->select('users.name', 'monthly_plans.*')
+                ->orderBy('monthly_plans.id', 'desc')
+                ->get();
 
                 $data['search_year'] = $year;
                 $data['search_month'] = $month;
@@ -209,11 +215,15 @@ class ApprovalSalePlanController extends Controller
             $data['monthly_plan'] = MonthlyPlan::join('users', 'monthly_plans.created_by', '=', 'users.id')
                 ->whereIn('monthly_plans.status_approve', [2,4])
                 ->where('users.team_id', $request->sel_team)
-                ->select('users.name', 'monthly_plans.*')->get();
+                ->select('users.name', 'monthly_plans.*')
+                ->orderBy('monthly_plans.id', 'desc')
+                ->get();
         }else{
             $data['monthly_plan'] = MonthlyPlan::join('users', 'monthly_plans.created_by', '=', 'users.id')
                 ->whereIn('monthly_plans.status_approve', [2,4])
-                ->select('users.name', 'monthly_plans.*')->get();
+                ->select('users.name', 'monthly_plans.*')
+                ->orderBy('monthly_plans.id', 'desc')
+                ->get();
         }
         
         $data['teams'] = DB::table('master_team_sales')->get();
