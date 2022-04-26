@@ -90,7 +90,7 @@ class ApprovalSalePlanController extends Controller
 
         foreach($customer_visits as $key => $cus_visit){
 
-            $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/customers/'.$cus_visit->customer_shop_id);
+            $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/customers/'.$cus_visit->customer_shop_id);
             $res_visit_api = $response->json();
             // dd($res_visit_api);
             if($res_visit_api['code'] == 200){
