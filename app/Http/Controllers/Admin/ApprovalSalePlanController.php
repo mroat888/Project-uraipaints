@@ -182,7 +182,6 @@ class ApprovalSalePlanController extends Controller
 
         if(!is_null($request->selectdateTo) && $request->sel_team != 0){
             list($year,$month) = explode('-', $request->selectdateTo);
-            
 
             $data['monthly_plan'] = MonthlyPlan::join('users', 'monthly_plans.created_by', '=', 'users.id')
                 ->whereNotIn('monthly_plans.status_approve', [0])
@@ -218,6 +217,8 @@ class ApprovalSalePlanController extends Controller
         }
         
         $data['teams'] = DB::table('master_team_sales')->get();
+
+        $data['api_token'] = $this->apicontroller->apiToken();
 
         return view('admin.approval_saleplan', $data);
     }
