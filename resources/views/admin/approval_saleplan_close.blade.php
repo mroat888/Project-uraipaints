@@ -57,7 +57,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @php 
+                                    @php 
                                             $sum_bills = 0;
                                             $sum_sales = 0;
                                             $total_bills = 0;
