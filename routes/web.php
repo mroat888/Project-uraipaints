@@ -414,6 +414,9 @@ Route::post('admin/update_assignment', 'Admin\AssignmentController@update');
 Route::get('admin/delete_assignment/{id}', 'Admin\AssignmentController@destroy');
 Route::post('admin/search_month_add-assignment', 'Admin\AssignmentController@search');
 
+// Customer 
+
+
 
 // Note
 Route::get('admin/note', 'NoteController@note_admin');
@@ -589,15 +592,13 @@ Route::post('calendar/delete','FullCalendarController@destroy');
 Route::get('calendar/show/{id}','FullCalendarController@show');
 
 
-// utility
+// utility ---ใช้งานร่วมกัน
 
 Route::get('/fetch_amphur/{id}',[ProvinceController::class, 'amphur']);
 Route::get('/fetch_district/{id}',[ProvinceController::class, 'district']);
 Route::get('/fetch_postcode/{id}',[ProvinceController::class, 'postcode']);
 Route::get('/customer/autocomplete',[CustomerController::class, 'fetch_autocomplete']);
 Route::get('/fetch_customer_shops_byid/{id}','Customer\CustomerController@fetch_customer_shops_byid');
-
-
 
 Route::get('fetch_subgroups/{id}', 'Api\ApiController@fetch_subgroups');
 Route::get('fetch_pdglists/{id}', 'Api\ApiController@fetch_pdglists');

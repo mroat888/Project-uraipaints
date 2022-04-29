@@ -17,57 +17,16 @@ class CheckStoreController extends Controller
 
     public function index()
     {
-        $api_token = $this->api_token->apiToken();     
-        $patch_search = "/sellers/".Auth::user()->api_identify."/customers?sortorder=DESC&region_id=&province_id=&amphoe_id=&campaign_count=";
+        $api_token = $this->api_token->apiToken();    
+
+        $patch_search = "/sellers/".Auth::user()->api_identify."/customers";
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$patch_search);
         $res_api = $response->json();
 
-        $customer_api = array();
-        foreach ($res_api['data'] as $key => $value) {
-            $customer_api[$key] = 
-            [
-                'identify' => $value['identify'],
-                'shopname' => $value['title']." ".$value['name'],
-                'address' => $value['amphoe_name']." , ".$value['province_name'],
-                'InMonthDays' => $value['InMonthDays'],
-                'TotalDays' => $value['TotalDays'],
-                'TotalCampaign' => $value['TotalCampaign'],
-                'TotalLimit' => $value['TotalLimit'],
-            ];
-        }
 
-        // ดึงจังหวัด -- API
-        $path_search = "/sellers/".Auth::user()->api_identify."/provinces";
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
-        $res_api = $response->json();
-        $provinces = $res_api;
-        
-        return view('shareData.check_name_store', compact('customer_api', 'provinces'));
-    }
-
-    public function search(request $request)
-    {   
-        
-        $api_token = $this->api_token->apiToken();
-        $patch_search = "/sellers/".Auth::user()->api_identify."/customers/search?sort_by=cust_title&province_id=".$request->province."&amphoe_id=".$request->amphur."&campaign_count=".$request->campaign_count;
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$patch_search);
-        $res_api = $response->json();
-
-        $data['customer_api'] = array();
-        if($res_api['code'] == 200){
-            foreach ($res_api['data'] as $key => $value) {
-                $data['customer_api'][$key] = 
-                [
-                    'identify' => $value['identify'],
-                    'shopname' => $value['title']." ".$value['name'],
-                    'address' => $value['amphoe_name']." , ".$value['province_name'],
-                    'province_id' => $value['province_id'], 
-                    'amphoe_id' => $value['amphoe_id'],
-                    'InMonthDays' => $value['InMonthDays'],
-                    'TotalDays' => $value['TotalDays'],
-                    'TotalCampaign' => $value['TotalCampaign'],
-                    'TotalLimit' => $value['TotalLimit'],
-                ];
+        if(!empty($res_api)){
+            if($res_api['code'] == 200){
+                $data['customer_api'] = $res_api['data'];
             }
         }
 
@@ -75,47 +34,56 @@ class CheckStoreController extends Controller
         $path_search = "/sellers/".Auth::user()->api_identify."/provinces";
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
         $res_api = $response->json();
-        $data['provinces'] = $res_api;
+        if(!empty($res_api)){
+            if($res_api['code'] == 200){
+                $data['provinces'] = $res_api['data'];
+            }
+        }
+        
+        return view('shareData.check_name_store', $data);
+
+    }
+
+    public function search(request $request)
+    {   
+        
+        $api_token = $this->api_token->apiToken();
+
+        if(!is_null($request->amphur)){ 
+            $patch_search = '/sellers/'.Auth::user()->api_identify.'/customers?sortorder=DESC&amphoe_id='.$request->amphur;
+        }elseif(!is_null($request->province)){
+            $patch_search = '/sellers/'.Auth::user()->api_identify.'/customers?sortorder=DESC&province_id='.$request->province;
+        }else{
+            $patch_search = "/sellers/".Auth::user()->api_identify."/customers";
+        }
+        
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$patch_search);
+        $res_api = $response->json();
+
+        if($res_api['code'] == 200){
+            $data['customer_api'] = $res_api['data'];
+        }
+
+        // ดึงจังหวัด -- API
+        $path_search = "/sellers/".Auth::user()->api_identify."/provinces";
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
+        $res_provinces_api = $response->json();
+        $data['provinces'] = $res_provinces_api['data'];
         
         return view('shareData.check_name_store', $data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function show($id)
     {
         $api_token = $this->api_token->apiToken();
+        $data['api_token'] = $api_token;
 
         //- ดึงชื่อร้านค้า ตาม ID
         $response_cust = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/customers/'.$id);
         $res_custapi = $response_cust->json();
-        $data['customer_shop'] = $res_custapi['data'][0];
-        
+        $data['customer_shop'] = $res_custapi;
+
         //- ดึงแคมเปญของร้านค้า
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/customers/'.$id.'/campaigns');
         $res_api = $response->json();
@@ -180,37 +148,5 @@ class CheckStoreController extends Controller
 
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+    
 }

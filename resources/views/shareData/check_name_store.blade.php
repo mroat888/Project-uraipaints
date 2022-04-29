@@ -11,9 +11,8 @@
 @include('shareData_union.check_name_store')  
 
 
-@section('footer')
-    @include('layouts.footer')
 @endsection
 
-
+@section('footer')
+    @include('layouts.footer')
 @endsection

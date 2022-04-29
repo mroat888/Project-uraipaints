@@ -226,9 +226,15 @@ License: You must have a valid license purchased only from themeforest to legall
                             <ul id="customer" class="nav flex-column collapse collapse-level-1">
                                 <li class="nav-item">
                                     <ul class="nav flex-column">
-                                        <li class="nav-item {{ (request()->is('customer')) ? 'btn2' : '' }}">
+                                        <!-- <li class="nav-item {{ (request()->is('customer')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('customer') }}">
                                                 <i class="ion ion-md-people" style="color: #044067;"></i>
+                                                <span class="nav-link-text">ทะเบียนลูกค้า</span>
+                                            </a>
+                                        </li> -->
+                                        <li class="nav-item {{ (request()->is('data_name_store')) ? 'btn2' : '' }}">
+                                            <a class="nav-link" href="{{ url('data_name_store') }}">
+                                                <i class="ion ion-md-home" style="color: #044067;"></i>
                                                 <span class="nav-link-text">ทะเบียนลูกค้า</span>
                                             </a>
                                         </li>
@@ -238,11 +244,9 @@ License: You must have a valid license purchased only from themeforest to legall
                                                 <span class="nav-link-text">เพิ่มลูกค้าใหม่</span>
                                             </a>
                                         </li>
-                                        <li class="nav-item {{ (request()->is('data_name_store')) ? 'btn2' : '' }}">
-                                            <a class="nav-link" href="{{ url('data_name_store') }}">
-                                                <i class="ion ion-md-home" style="color: #044067;"></i>
-                                                <span class="nav-link-text">ข้อมูลลูกค้า (ทำเป้า)</span>
-                                            </a>
+                                        <li class="nav-item {{ (request()->is('data_report_sale_compare-year')) ? 'btn2' : '' }}">
+                                            <a class="nav-link" href="{{ url('data_report_sale_compare-year') }}">
+                                                <i class="ion ion-md-stats" style="color: #044067;"></i>ข้อมูลลูกค้า (ทำเป้า)</a>
                                         </li>
                                         <li class="nav-item {{ (request()->is('data_search_product')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('data_search_product') }}">

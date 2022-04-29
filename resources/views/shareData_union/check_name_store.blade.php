@@ -38,26 +38,26 @@
                                     </div>
                                     <div class="col-sm-12 col-md-12">
                                         <!-- ------ -->
-                                        <form action="{{ url($action_search) }}" method="post" enctype="multipart/form-data">
+                                        <form action="{{ url($action_search) }}" method="post">
                                             @csrf
                                             <span class="form-inline pull-right pull-sm-center">
                                                 <select name="province" id="province" class="form-control province" style="margin-left:5px; margin-right:5px;">
                                                     <option value="" selected>เลือกจังหวัด</option>
-                                                    @if($provinces['code'] == 200)
-                                                        @foreach($provinces['data'] as $key => $value)
+                                                    @if(isset($provinces) && !is_null($provinces))
+                                                        @foreach($provinces as $key => $value)
                                                             <option value="{{ $value['identify'] }}">{{ $value['name_thai'] }}</option>
                                                         @endforeach
                                                     @endif
+                                                   
                                                 </select>
 
                                                 <select name="amphur" id="amphur" class="form-control amphur" style="margin-left:5px; margin-right:5px;">
                                                     <option value="" selected>เลือกอำเภอ</option>
                                                 </select>
-                                                จำนวนเป้า
-                                                <input type="number" name="campaign_count" style="width:80px;" class="form-control amphur">
+                                                <!-- จำนวนเป้า
+                                                <input type="number" name="campaign_count" style="width:80px;" class="form-control amphur"> -->
 
-                                                <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm">ค้นหา</button>
-
+                                                <button id="btn_search" style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm">ค้นหา</button>
                                             </span>
                                         </form>
                                         <!-- ------ -->
@@ -68,38 +68,43 @@
                                         <thead>
                                             <tr>
                                                 <th style="font-weight: bold;">#</th>
+                                                <th style="font-weight: bold;">รูปภาพ</th>
+                                                <th style="font-weight: bold;">รหัสร้าน</th>
                                                 <th style="font-weight: bold;">ชื่อร้าน</th>
                                                 <th style="font-weight: bold;">ที่อยู่</th>
-                                                <th style="font-weight: bold;">จำนวนวันสำคัญ<br />ในเดือน (วัน)</th>
-                                                <th style="font-weight: bold;">จำนวนวันสำคัญ<br />รวม (วัน)</th>
-                                                <!-- <th style="font-weight: bold;">จำนวนเป้าที่ซื้อในปี</th> -->
-                                                <th style="font-weight: bold;">ยอดเป้ารวม {{ date("Y") }}</th>
+                                                <th style="font-weight: bold;">เบอร์โทรศัพท์</th>
                                                 <th style="font-weight: bold;">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody id="table_body">
                                             @php 
-                                                @$row = count($customer_api)
+                                                $number = 0;
                                             @endphp
 
-                                            @foreach ($customer_api as $key => $value)
-                                                <tr>
-                                                    <td>{{ $customer_api[$key]['identify'] }}</td>
-                                                    <td>{{ $customer_api[$key]['shopname'] }}</td>
-                                                    <td>{{ $customer_api[$key]['address'] }}</td>
-                                                    <td style="text-align:center;">{{ $customer_api[$key]['InMonthDays'] }}</td>
-                                                    <td style="text-align:center;">{{ $customer_api[$key]['TotalDays'] }}</td>
-                                                    {{-- <td>{{ $customer_api[$key]['TotalCampaign'] }}</td> --}}
-                                                    <td style="text-align:right;">{{ number_format($customer_api[$key]['TotalLimit'],2) }}</td>
-                                                    <td>
-                                                        @php
-                                                            $pathurl = url($path_detail).'/'.$customer_api[$key]['identify'];
-                                                        @endphp
-                                                        <a href="{{ $pathurl }}" class="btn btn-icon btn-success mr-10">
-                                                        <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></a>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
+                                            @if(isset($customer_api) && !is_null($customer_api))
+                                                @foreach ($customer_api as $key => $customer)
+                                                    <tr>
+                                                        <td>{{ ++$number }}</td>
+                                                        <td>
+                                                            @if(isset($customer['image_url']) && !is_null($customer['image_url']))
+                                                                <img src="{{ $customer['image_url'] }}" style="max-height:20px;">
+                                                            @endif
+                                                        </td>
+                                                        <td>{{ $customer['identify'] }}</td>
+                                                        <td>{{ $customer['title'] }} {{ $customer['name'] }}</td>
+                                                        <td>{{ $customer['amphoe_name'] }}, {{ $customer['province_name'] }}</td>
+                                                        <td>{{ $customer['telephone'] }}, {{ $customer['mobile'] }}</td>
+                                                        <td>
+                                                            @php
+                                                                $pathurl = url($path_detail).'/'.$customer['identify'];
+                                                            @endphp
+                                                            <a href="{{ $pathurl }}" class="btn btn-icon btn-success mr-10">
+                                                            <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></a>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            @endif
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -134,12 +139,14 @@ function hidetdate(){
 $(document).on('change','.province', function(e){
     e.preventDefault();
     let pvid = $(this).val();
+    $('#btn_search').prop('disabled', true);
     $.ajax({
         method: 'GET',
         url: '{{ url("/fetch_amphur_api") }}/{{ $position_province }}/'+pvid,
         datatype: 'json',
         success: function(response){
             console.log(response);
+            $('#btn_search').prop('disabled', false);
             if(response.status == 200){
                 console.log(response.amphures);
                 $('.amphur').children().remove().end();
