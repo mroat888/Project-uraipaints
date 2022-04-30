@@ -45,7 +45,9 @@
                                                     <option value="" selected>เลือกจังหวัด</option>
                                                     @if(isset($provinces) && !is_null($provinces))
                                                         @foreach($provinces as $key => $value)
-                                                            <option value="{{ $value['identify'] }}">{{ $value['name_thai'] }}</option>
+                                                            @if(!empty($value['identify']))
+                                                                <option value="{{ $value['identify'] }}">{{ $value['name_thai'] }}</option>
+                                                            @endif
                                                         @endforeach
                                                     @endif
                                                    
