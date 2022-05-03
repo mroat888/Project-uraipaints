@@ -97,20 +97,20 @@
 
                                                             @if ($value->status_approve == 0)
                                                                 <span class="badge badge-soft-secondary"
-                                                                    style="font-size: 12px;">
-                                                                    Draf
-                                                                </span>
+                                                                    style="font-size: 12px;">Draft</span>
 
                                                             @elseif ($value->status_approve == 1)
                                                                 <span class="badge badge-soft-warning"
-                                                                    style="font-size: 12px;">
-                                                                    Pending
-                                                                </span>
-                                                            @else
+                                                                    style="font-size: 12px;">Pending</span>
+                                                            @elseif ($value->status_approve == 2)
                                                                 <span class="badge badge-soft-success"
-                                                                    style="font-size: 12px;">
-                                                                    Approve
-                                                                </span>
+                                                                    style="font-size: 12px;">Approved</span>
+                                                            @elseif ($value->status_approve == 3)
+                                                                <span class="badge badge-soft-danger"
+                                                                    style="font-size: 12px;">Reject</span>
+                                                            @elseif ($value->status_approve == 4)
+                                                                <span class="badge badge-soft-primary"
+                                                                    style="font-size: 12px;">Final</span>
                                                             @endif
 
 
@@ -135,7 +135,6 @@
                                                                                     $setting_day = $master_setting->stipulate;
                                                                                 }
                                                                                 $OverSaleplan = $myear."-".$mmonth."-".$setting_day;
-                                                                                // dd($OverSaleplan, date('Y-m-d'));
                                                                             @endphp
                                                                             @if($OverSaleplan >= date('Y-m-d'))
                                                                                 <button type="button" class="btn btn-icon btn-teal requestApproval">
@@ -156,7 +155,6 @@
                                                                                         $setting_day = $master_setting->stipulate;
                                                                                     }
                                                                                     $OverSaleplan = $myear."-".$mmonth."-".$setting_day;
-                                                                                    // dd($OverSaleplan, date('Y-m-d'));
                                                                                 @endphp
                                                                                 @if($OverSaleplan >= date('Y-m-d'))
                                                                                     <button type="button" class="btn btn-icon btn-teal requestApproval">
@@ -201,12 +199,12 @@
                                 <h6 class="hk-sec-title mb-10" style="font-weight: bold;">Sale Plan (นำเสนอสินค้า) ประจำเดือน <?php echo thaidate('F Y', $monthly_plan_next->month_date); ?></h6>
                             </div>
                             <div class="d-flex">
-                                @if($monthly_plan_next->status_approve == 1 || $monthly_plan_next->status_approve == 2)
-                                    <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10"
-                                        data-toggle="modal" data-target="#saleplanAdd" disabled> + เพิ่มใหม่ </button>
-                                @else
+                                @if($monthly_plan_next->status_approve == 0)
                                     <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10"
                                         data-toggle="modal" data-target="#saleplanAdd"> + เพิ่มใหม่ </button>
+                                @else
+                                    <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10"
+                                        data-toggle="modal" data-target="#saleplanAdd" disabled> + เพิ่มใหม่ </button>
                                 @endif
                             </div>
                         </div>
@@ -320,12 +318,12 @@
                                 <h6 class="hk-sec-title mb-10" style="font-weight: bold;">Sale Plan (เปิดลูกค้าใหม่)</h6>
                             </div>
                             <div class="d-flex">
-                                @if($monthly_plan_next->status_approve == 1 || $monthly_plan_next->status_approve == 2)
-                                    <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10"
-                                    data-toggle="modal" data-target="#addCustomer" disabled> + เพิ่มใหม่ </button>
-                                @else
+                                @if($monthly_plan_next->status_approve == 0)
                                     <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10"
                                     data-toggle="modal" data-target="#addCustomer"> + เพิ่มใหม่ </button>
+                                @else
+                                    <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10"
+                                    data-toggle="modal" data-target="#addCustomer" disabled> + เพิ่มใหม่ </button>
                                 @endif
                             </div>
                         </div>

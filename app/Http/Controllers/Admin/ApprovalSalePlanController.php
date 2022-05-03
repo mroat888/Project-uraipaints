@@ -122,7 +122,7 @@ class ApprovalSalePlanController extends Controller
             ->where('monthly_plan_id', $id)
             ->whereIn('sale_plans_status', [2, 4])
             ->orderBy('id', 'desc')->get();
-        
+
        // dd($data['list_saleplan']);
 
         // -----  API Login ----------- //
@@ -169,12 +169,14 @@ class ApprovalSalePlanController extends Controller
         $path_search = "reports/sellers/".$user_api->api_identify."/closesaleplans?years=".$year."&months=".$month;
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
-        
-        $data['saleplan_api'] = $res_api['data'];
-  
+
+        if($res_api['code'] == 200){
+            $data['saleplan_api'] = $res_api['data'];
+        }
+
         $data['mon_plan'] = $mon_plan;
         $data['sale_name'] = DB::table('users')->where('id',$mon_plan->created_by)->select('name')->first(); // ชื่อเซลล์
-        
+
         return view('admin.approval_saleplan_close', $data);
     }
 
@@ -225,7 +227,7 @@ class ApprovalSalePlanController extends Controller
                 ->orderBy('monthly_plans.id', 'desc')
                 ->get();
         }
-        
+
         $data['teams'] = DB::table('master_team_sales')->get();
 
         $data['api_token'] = $this->apicontroller->apiToken();
