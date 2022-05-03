@@ -180,6 +180,34 @@ class ApprovalSalePlanController extends Controller
         return view('admin.approval_saleplan_close', $data);
     }
 
+    public function approvalsaleplan_close_update(Request $request){
+        DB::beginTransaction();
+        try {
+
+            DB::table('monthly_plans')
+            ->where('id', $request->monthly_plans_id)
+            ->update([
+                'status_approve' => 4,
+                'updated_by' => Auth::user()->id,
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+
+            DB::commit();
+            
+            return redirect('admin/approvalsaleplan');
+
+        } catch (\Exception $e) {
+
+            DB::rollback();
+
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกข้อมูลได้',
+            ]);
+        }
+
+    }
+
     public function search(Request $request){
 
         //dd($request);

@@ -227,8 +227,12 @@
     <div class="">
         <div class="col-xl-12">
             <div style="float:right;">
-                <a href="{{ url('admin/approvalsaleplan')}}" type="button"
-                class="btn btn-danger btn-sm px-3 mr-10"> ปิดแผน </a>
+                <form action="{{ url('admin/approvalsaleplan_close') }}" method="post">
+                    @csrf
+                    <input name="monthly_plans_id" id="monthly_plans_id" value="{{ $mon_plan->id }}" type="hidden" class="form-control">
+                    <button type="submit" class="btn btn-danger btn-sm px-3 mr-10">ปิดแผน</button>
+                </form>
+                
             </div>
         </div>
     </div>
