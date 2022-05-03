@@ -57,31 +57,31 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    @php 
-                                            $sum_bills = 0;
-                                            $sum_sales = 0;
+                                        @php 
                                             $total_bills = 0;
                                             $total_sales = 0; 
                                             $total_pglist = 0;
                                         @endphp
                                         @foreach ($list_saleplan as $key => $value)
                                             @php 
+                                                $sum_bills = 0;
+                                                $sum_sales = 0;
+
                                                 $customer_name = "";
                                                 $customer_address = "";
-                                                // dd($saleplan_api);
-                                                foreach($saleplan_api as $key_api => $value_api){
-                                                    if($saleplan_api[$key_api]['customer_id'] == $value->customer_shop_id){
-                                                        if($customer_name != $saleplan_api[$key_api]['customer_name']){
-                                                            $customer_name = $saleplan_api[$key_api]['customer_name'];
-                                                            $customer_address = $saleplan_api[$key_api]['amphoe_name'].", ".$saleplan_api[$key_api]['province_name'];
+                                                foreach($customer_api as $key_api => $value_api){
+                                                    if($customer_api[$key_api]['identify'] == $value->customer_shop_id){
+                                                        if($customer_name != $customer_api[$key_api]['shop_name']){
+                                                            $customer_name = $customer_api[$key_api]['shop_name'];
+                                                            $customer_address = $customer_api[$key_api]['shop_address'];
                                                         }
                                                     }
                                                 }
                                             @endphp
 
                                             <tr>
-                                                <td >{{ $key + 1 }}</td>
-                                                <td> {{ $value->customer_shop_id }} {{ $customer_name }}</td>
+                                                <td>{{ $key + 1 }}</td>
+                                                <td>{{ $customer_name }}</td>
                                                 <td>{{ $customer_address }}</td>                                                      
                                                 <td>
                                                     @php 
@@ -96,13 +96,12 @@
                                                         $listpresent = explode(',',$value->sale_plans_tags);
                                                         foreach($listpresent as $key_list => $value_list ){
                                                             $pdlist_name = "";
-                                                            foreach($saleplan_api as $key_api => $value_api){
-                                                                if($saleplan_api[$key_api]['pdlist_id'] == $value_list){
-                                                                    $pdlist_name = $saleplan_api[$key_api]['pdlist_name'];
+                                                            foreach($pdglists_api as $key_api => $value_api){
+                                                                if($value_api['identify'] == $value_list){
+                                                                    $pdlist_name = $pdglists_api[$key_api]['name'];
                                                                 }
                                                             }
-                                                            echo "[".$value_list."] ".$pdlist_name."<br>";
-
+                                                            echo $pdlist_name."<br>";
                                                             $total_pglist += 1;
                                                         }
                                                     @endphp
@@ -150,7 +149,7 @@
                                                 </td>
                                             </tr>
                                             <tr class="bg-teal text-white">
-                                                <td colspan="5">รวมร้านค้า {{ $customer_name }}</td>
+                                                <td colspan="5">รวมร้านค้า [{{ $value->customer_shop_id }}] {{ $customer_name }}</td>
                                                 <td style="text-align:center;">{{ $sum_bills }}</td>
                                                 <td style="text-align:right;">{{ number_format($sum_sales,2) }}</td>
                                             </tr>
@@ -185,7 +184,7 @@
                     <div class="row">
                         <div class="col-md-3" style="text-align:center;">
                             <div class="col-12">
-                                จำนวนแผน (นำเสนอสินค้า )ทั้งสิ้น 
+                                จำนวนแผน (นำเสนอสินค้า ) ทั้งสิ้น 
                             </div>
                             <div class="col-12 bg-indigo text-white py-5">
                                 {{ $total_pglist }}
@@ -196,7 +195,7 @@
                                 ปิดการขายได้ (แผน)
                             </div>
                             <div class="col-12 bg-success text-white py-5">
-                                &nbsp;
+                                {{ number_format($total_bills) }}
                             </div>
                         </div>
                         <div class="col-md-3" style="text-align:center;">

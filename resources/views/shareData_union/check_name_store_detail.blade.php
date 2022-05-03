@@ -2,7 +2,7 @@
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
             <li class="breadcrumb-item"><a href="#">ข้อมูลลูกค้า</a></li>
-            <li class="breadcrumb-item active" aria-current="page">รายละเอียดลูกค้า</li>
+            <li class="breadcrumb-item active" aria-current="page">รายละเอียดร้านค้า</li>
         </ol>
     </nav>
     <!-- /Breadcrumb -->
@@ -12,10 +12,10 @@
         <!-- Title -->
         <div class="hk-pg-header mb-10">
             <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-people"></i></span>รายละเอียดลูกค้า</h4>
+                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-people"></i></span>รายละเอียดร้านค้า</h4>
             </div>
             <div class="d-flex">
-
+                <a href="javascript:history.back();" type="button" class="btn btn-secondary btn-sm btn-rounded px-3 mr-10"> ย้อนกลับ </a>
             </div>
         </div>
         <!-- /Title -->
@@ -28,133 +28,68 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="row">
-                                <div class="col-md-6">
 
-                                </div>
-                                <div class="col-md-6">
+                            @if($customer_shop['code'] == 200)
+                                @php 
+                                    $customer_shop = $customer_shop['data'][0];
 
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12 col-lg-12">
-                                    <h2>{{ $customer_shop['title'] }} {{ $customer_shop['name'] }}</h2>
-                                    <span style="font-size: 18px;">
-                                        <p class="my-3">{{ $customer_shop['address1'] }} 
-                                            {{ $customer_shop['adrress2'] }} 
-                                            {{ $customer_shop['postal_id'] }}
-                                        </p>
-                                        <p class="my-3">Tel. {{ $customer_shop['telephone'] }} </p>
-                                    </span>
-                                </div>
+                                    /* ดึงรายชื่อผู้แทนขาย */
+                                    $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/sellers/'.$customer_shop['SellerCode']);
+                                    $res_api = $response->json();
 
-                            </div>
+                                    if($res_api['code'] == "200"){
+                                        $SellerCode = $res_api['data'][0];
+                                        $salename = $SellerCode['name'];
+                                    }else{
+
+                                        if(!is_null($customer_shop['SellerCode'])){
+                                            $salename = $customer_shop['SellerCode'];
+                                        }else{
+                                            $salename = "-";
+                                        }
+                                    }
+
+                                @endphp
+                                <div class="col-md-5">
+                                    @if(isset($customer_shop['image_url']) && !is_null($customer_shop['image_url']))
+                                        <img src="{{ $customer_shop['image_url'] }}" style="max-width:100%">
+                                    @endif
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h5>ข้อมูลร้านค้า</h5>
+                                            <div class="col-12 my-3">
+                                                <p>ชื่อร้าน : {{ $customer_shop['title'] }} {{ $customer_shop['name'] }}</p>
+                                                <p>{{ $customer_shop['address1'] }} 
+                                                    {{ $customer_shop['adrress2'] }} 
+                                                    {{ $customer_shop['postal_id'] }}
+                                                </p>
+                                            </div>
+                                            <h5>การติดต่อ</h5>
+                                            <div class="col-12 my-3">
+                                                <p>ชื่อผู้ติดต่อ : {{ $customer_shop['contact'] }} </p>
+                                                <p>เบอร์โทร : {{ $customer_shop['telephone'] }} </p>
+                                            </div>
+                                            <h5>ผู้แทนขาย</h5>
+                                            <div class="col-12 my-3">
+                                                <p>{{ $salename }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @else
+                                    <div class="col-12 my-5" style="text-align:center;">
+                                        <h4>{{ $customer_shop['data'] }}</h4>
+                                    </div>
+                                @endif
+                            </div> 
                         </div>
                     </div>
                 </section>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="row mt-2">
-                    <div class="col-md-12 mb-10">
-                        <h5>ประวัติการแคมเปญ</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class="col-xl-12">
-                
-                <section class="hk-sec-wrapper">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="row">
-
-                                <div id="table_list" class="table-responsive col-md-12">
-                                    <table id="datable_1" class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th style="font-weight: bold; text-align:left;">#</th>
-                                                <th style="font-weight: bold; text-align:center;">ปี</th>
-                                                <th style="font-weight: bold; text-align:left;">รหัสโปรโมชั่น</th>
-                                                <th style="font-weight: bold; text-align:left;">ชื่อโปรโมชั่น</th>
-                                                <th style="font-weight: bold; text-align:right;">ยอดซื้อเป้า</th>
-                                                <th style="font-weight: bold; text-align:right;">ยอดเบิกเป้า</th>                                           
-                                                <th style="font-weight: bold; text-align:right;">ยอดผลต่าง</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="table_body">
-                                        @if(isset($cust_campaigns_api))
-                                            @foreach($cust_campaigns_api as $key => $value)
-                                            <tr>
-                                                <td style="text-align:left;">{{ $key+1 }}</td>
-                                                <td style="text-align:center;">{{ $cust_campaigns_api[$key]['year'] }}</td>
-                                                <td style="text-align:left;">{{ $cust_campaigns_api[$key]['campaign_id'] }}</td>
-                                                <td style="text-align:left;">{{ $cust_campaigns_api[$key]['description'] }}</td>
-                                                <td style="text-align:right;">{{ number_format($cust_campaigns_api[$key]['amount_limit'],2) }}</td>
-                                                <td style="text-align:right;">{{ number_format($cust_campaigns_api[$key]['saleamount'],2) }}</td>
-                                                <td style="text-align:right;">{{ number_format($cust_campaigns_api[$key]['amount_diff'],2) }}</td>
-                                            </tr>
-                                            @endforeach
-                                        @endif
-                                            
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                            </div>
-                        </div>
-                        <hr>
-                    </div>
-                </section>
-
-            </div>
-        </div>
-
-        <!-- Row -->
-        <div class="row">
-            <div class="col-xl-12">
-                
-                <section class="hk-sec-wrapper">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="row">
-
-                                <div id="table_list" class="table-responsive col-md-12">
-                                    <table id="datable_1" class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th style="font-weight: bold; text-align:left;">#</th>
-                                                <th style="font-weight: bold; text-align:center;">ปี</th>
-                                                <th style="font-weight: bold; text-align:right;">ยอดซื้อเป้า</th>
-                                                <th style="font-weight: bold; text-align:right;">ยอดเบิกเป้า</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="table_body">
-                                        @if(isset($year_sum))
-                                            @foreach($year_sum as $key => $value)
-                                            <tr>
-                                                <td style="text-align:left;">{{ $key+1 }}</td>
-                                                <td style="text-align:center;">{{ $year_sum[$key]['year']}}</td>
-                                                <td style="text-align:right;">{{ number_format($year_sum[$key]['amount_limit'],2) }}</td>
-                                                <td style="text-align:right;">{{ number_format($year_sum[$key]['saleamount'],2) }}</td>
-                                            </tr>
-                                            @endforeach
-                                        @endif
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                            </div>
-                        </div>
-                        <hr>
-                    </div>
-                </section>
-
-            </div>
-        </div>
         <!-- Row -->
 
     </div>

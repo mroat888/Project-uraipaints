@@ -187,37 +187,37 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link {{ (request()->is('customer-api')) ? 'btn2' : '' }} {{ (request()->is('customer')) ? 'btn2' : '' }} {{ (request()->is('lead')) ? 'btn2' : '' }}"
-                                href="javascript:void(0);" data-toggle="collapse" data-target="#customer">
-                                <i class="ion ion-md-person" style="color: #044067;"></i>
+                            <a class="nav-link {{ (request()->is('admin/data_name_store')) ? 'btn2' : '' }} {{ (request()->is('lead')) ? 'btn2' : '' }}" href="javascript:void(0);" 
+                                data-toggle="collapse" data-target="#customer_dropdwon">
+                                <i class="ion ion-md-create" style="color: #044067;"></i>
                                 <span class="nav-link-text">ลูกค้า</span>
                             </a>
-                            <ul id="customer" class="nav flex-column collapse collapse-level-1">
+                            <ul id="customer_dropdwon" class="nav flex-column collapse collapse-level-1">
                                 <li class="nav-item">
                                     <ul class="nav flex-column">
-                                        <li class="nav-item {{ (request()->is('customer')) ? 'btn2' : '' }}">
-                                            <a class="nav-link" href="{{ url('customer') }}">
-                                                <i class="ion ion-md-people" style="color: #044067;"></i>
-                                                <span class="nav-link-text">ทะเบียนลูกค้า</span>
+                                        <li class="nav-item {{ (request()->is('admin/data_name_store')) ? 'btn2' : '' }}">
+                                            <a class="nav-link"
+                                                href="{{ url('admin/data_name_store') }}">
+                                                <i class="ion ion-md-home" style="color: #044067;"></i>ทะเบียนลูกค้า
                                             </a>
                                         </li>
                                         <li class="nav-item {{ (request()->is('lead')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('/lead') }}">
-                                                <i class="ion ion-md-person-add" style="color: #044067;"></i>
-                                                <span class="nav-link-text">เปลี่ยนสถานะลูกค้าใหม่</span>
+                                                <i class="ion ion-md-person-add" style="color: #044067;"></i>เปลี่ยนสถานะลูกค้าใหม่
                                             </a>
                                         </li>
-                                        <li class="nav-item {{ (request()->is('admin/data_name_store')) ? 'btn2' : '' }}">
+                                        <li class="nav-item {{ (request()->is('admin/data_report_sale_compare-year')) ? 'btn2' : '' }}">
                                             <a class="nav-link"
-                                                href="{{ url('admin/data_name_store') }}">
-                                                <i class="ion ion-md-home" style="color: #044067;"></i>ข้อมูลลูกค้า (ทำเป้า)</a>
+                                                href="{{ url('admin/data_report_sale_compare-year') }}">
+                                                <i class="ion ion-md-stats"style="color: #044067;"></i>ข้อมูลลูกค้า (ทำเป้า)
+                                            </a>
                                         </li>
                                         <li class="nav-item {{ (request()->is('admin/data_search_product')) ? 'btn2' : '' }}">
                                             <a class="nav-link"
                                                 href="{{ url('admin/data_search_product') }}">
-                                                <i class="ion ion-md-search"
-                                                    style="color: #044067;"></i>ค้นหาร้านค้า-สินค้า</a>
-                                        </li>                                       
+                                                <i class="ion ion-md-search" style="color: #044067;"></i>ค้นหาร้านค้า-สินค้า
+                                            </a>
+                                        </li> 
                                     </ul>
                                 </li>
                             </ul>

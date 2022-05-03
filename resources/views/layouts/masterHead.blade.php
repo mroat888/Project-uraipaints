@@ -199,11 +199,10 @@ License: You must have a valid license purchased only from themeforest to legall
                             <ul id="customer" class="nav flex-column collapse collapse-level-1">
                                 <li class="nav-item">
                                     <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="javascript:void(0)">
-                                                <i class="ion ion-md-people" style="color: #044067;"></i>
-                                                <span class="nav-link-text">ทะเบียนลูกค้า</span>
-                                            </a>
+                                        <li class="nav-item {{ (request()->is('headManage/data_name_store')) ? 'btn2' : '' }}">
+                                            <a class="nav-link"
+                                                href="{{ url('headManage/data_name_store') }}">
+                                                <i class="ion ion-md-home" style="color: #044067;"></i>ทะเบียนลูกค้า</a>
                                         </li>
                                         <li class="nav-item {{ (request()->is('head/approval-customer-except')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('head/approval-customer-except') }}">
@@ -211,10 +210,11 @@ License: You must have a valid license purchased only from themeforest to legall
                                                 <span class="nav-link-text">ลูกค้าใหม่</span>
                                             </a>
                                         </li>
-                                        <li class="nav-item {{ (request()->is('headManage/data_name_store')) ? 'btn2' : '' }}">
+                                        <li class="nav-item {{ (request()->is('headManage/data_report_sale_compare-year')) ? 'btn2' : '' }}">
                                             <a class="nav-link"
-                                                href="{{ url('headManage/data_name_store') }}">
-                                                <i class="ion ion-md-home" style="color: #044067;"></i>ข้อมูลลูกค้า (ทำเป้า)</a>
+                                                href="{{ url('headManage/data_report_sale_compare-year') }}">
+                                                <i class="ion ion-md-stats"
+                                                    style="color: #044067;"></i>ข้อมูลลูกค้า (ทำเป้า)</a>
                                         </li>
                                         <li class="nav-item {{ (request()->is('headManage/data_search_product')) ? 'btn2' : '' }}">
                                             <a class="nav-link"

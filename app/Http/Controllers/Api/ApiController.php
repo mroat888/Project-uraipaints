@@ -106,7 +106,6 @@ class ApiController extends Controller
         ]);
     }
 
-
     public function fetch_products($id){
 
         $api_token = $this->apiToken();
