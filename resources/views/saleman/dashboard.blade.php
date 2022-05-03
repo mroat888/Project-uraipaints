@@ -352,8 +352,8 @@
                                                                 <div class="num-specialday">{{ $res_api["data"][1]["FocusDates"][0]["TotalCustomers"] }} ร้าน </div>
                                                                 <div class="num-specialday">{{ $res_api["data"][1]["FocusDates"][0]["TotalDays"] }} วัน</div>
                                                             @else
-                                                                <span>- ร้าน </span>
-                                                                <span class="ml-40">- วัน</span>
+                                                                <div class="num-specialday">0 ร้าน </div>
+                                                                <div class="num-specialday">0 วัน</div>
                                                             @endif
                                                         </div>
                                                     </div>
@@ -387,7 +387,7 @@
                     <div class="row">
                         <div class="col-12 col-lg-8">
                             <canvas id="myChart" style="height: 294px"></canvas>
-                            <span class="mt-8 ml-40 text-danger">ข้อมูล ณ วันที่ {{$res_api["times"]}}
+                            <span class="mt-8 ml-40 text-danger">ข้อมูล ณ วันที่ {{$res_api["trans_last_date"]}}
                             </span>
                         </div>
                         <div class="col-12 col-lg-4">
@@ -520,7 +520,7 @@
                                                     <div class="col-6 col-md-5 pdr-0" style="text-align:right;">
                                                         <span style="font-weight: bold; font-size: 16px;" class="num-specialday">
                                                             @if (!is_null($res_api["data"][0]["Customers"]))
-                                                                {{ number_format($res_api["data"][0]["Customers"][0]["InactiveTotal"]) }} % จากทั้งหมด
+                                                                {{ number_format($res_api["data"][0]["Customers"][0]["InactiveTotal"]/100) }} % จากทั้งหมด
                                                             @else
                                                                 - จากทั้งหมด
                                                             @endif
