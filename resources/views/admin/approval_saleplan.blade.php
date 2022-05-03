@@ -43,7 +43,7 @@
                     <section class="hk-sec-wrapper">
                         <div class="row mb-2">
                             <div class="col-sm-12 col-md-6">
-                                @php 
+                                @php
                                     if(isset($search_month) && isset($search_year)){
                                         $search_date = $search_year.'-'.$search_month;
                                         $search_date = thaidate('F Y', $search_date);
@@ -97,7 +97,7 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($monthly_plan as $key => $value)
-                                                @php 
+                                                @php
                                                     $sale_plans = DB::table('sale_plans')
                                                         ->where('monthly_plan_id',$value->id)
                                                         ->get();
@@ -118,6 +118,7 @@
                                                     $path_search = "reports/sellers/".$user_api->api_identify."/closesaleplans?years=".$year."&months=".$month;
                                                     $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
                                                     $res_api = $response->json();
+
                                                     $bills = 0;
                                                     $sales = 0;
                                                     if($res_api['code'] == 200){
@@ -182,7 +183,7 @@
                                                     </td>
                                                 </tr>
                                             @endforeach
-                                            
+
                                         </tbody>
                                     </table>
                                 </form>

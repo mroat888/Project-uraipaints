@@ -243,7 +243,6 @@
                                                 <th>ชื่อร้าน</th>
                                                 <th>อำเภอ,จังหวัด</th>
                                                 <th>วันสำคัญ</th>
-                                                {{-- <th class="text-center">Action</th> --}}
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -255,12 +254,6 @@
                                                 <td>{{$customer_visit_api[$key]['shop_name']}}</td>
                                                 <td>{{$customer_visit_api[$key]['shop_address']}}</td>
                                                 <td>-</td>
-                                                {{-- <td>
-                                                    <div class="button-list">
-                                                        <a href="{{url('delete_visit')}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
-                                                            <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-trash"></i></h4></a>
-                                                    </div>
-                                                </td> --}}
                                             </tr>
 
                                             @endforeach

@@ -330,7 +330,6 @@
 
                                                     <tr>
                                                         <td>{{ $key + 1}}</td>
-                                                        <!-- <td>{{$value->id}}</td> -->
                                                         <td><span class="topic_purple">{!! Str::limit($value->masobj_title, 30) !!}</span></td>
                                                         <td>
                                                             @if($shop_name != "")
@@ -344,7 +343,6 @@
                                                             @endif
                                                         </td>
                                                         <td style="text-align:center;">
-                                                            <!-- <span class="badge badge-soft-indigo" style="font-size: 12px;">Comment</span> -->
                                                             @if ($value->saleplan_id)
                                                             <button onclick="approval_comment({{ $value->id }})"
                                                                 class="btn btn-icon btn-violet" data-toggle="modal"
@@ -404,6 +402,9 @@
                                                                 <button class="btn btn-icon btn-pumpkin"
                                                                     data-toggle="modal" data-target="#Modalcheckin" onclick="getLocation({{ $value->id }})" {{ $btn_pumpkin_disabled }}>
                                                                     <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button> --}}
+                                                                    <button class="btn btn-icon btn-info">
+                                                                        <span class="btn-icon-wrap"><i data-feather="file"></i></span></button>
+
                                                                 <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalResult" onclick="saleplan_result({{ $value->id }})">
                                                                     <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
 
@@ -770,7 +771,7 @@
                 <div class="modal-body">
                     <form id="from_saleplan_result">
                         @csrf
-                        <input type="text" name="saleplan_id" id="get_saleplan_id">
+                        <input type="hidden" name="saleplan_id" id="get_saleplan_id">
                         {{-- <div class="my-3"><span>เรื่อง : </span><span id="get_title"></span></div> --}}
                             <div class="my-3"><span>ลูกค้า : </span><span id="get_shop"></span></div>
                             <div class="my-3"><span>อำเภอ, จังหวัด : </span><span id="get_shop_address"></span></div>
@@ -814,7 +815,7 @@
                 <div class="modal-body">
                     <form id="from_customer_new_result">
                         @csrf
-                        <input type="text" name="cust_id" id="get_cust_new_id">
+                        <input type="hidden" name="cust_id" id="get_cust_new_id">
                         {{-- <div class="my-3"><span>ID : </span><span id="get_cust_id2"></span></div> --}}
                             <div class="my-3"><span>ชื่อร้าน : </span><span id="get_cust_name"></span></div>
                             <div class="my-3"><span>ชื่อผู้ติดต่อ : </span><span id="get_cust_contact_name"></span></div>

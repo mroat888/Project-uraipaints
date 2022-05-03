@@ -243,7 +243,7 @@ class ApprovalSalePlanController extends Controller
         $path_search = "reports/sellers/B2/closesaleplans?years=".$year."&months=".$month;
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
-        
+
         $data['saleplan_api'] = $res_api['data'];
 
         $data['mon_plan'] = $mon_plan;
@@ -279,7 +279,7 @@ class ApprovalSalePlanController extends Controller
 
         // dd($data['pdglists_api']);
 
-        
+
 
 
         // ลูกค้าใหม่

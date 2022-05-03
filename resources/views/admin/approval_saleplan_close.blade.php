@@ -57,13 +57,13 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @php 
+                                        @php
                                             $total_bills = 0;
-                                            $total_sales = 0; 
+                                            $total_sales = 0;
                                             $total_pglist = 0;
                                         @endphp
                                         @foreach ($list_saleplan as $key => $value)
-                                            @php 
+                                            @php
                                                 $sum_bills = 0;
                                                 $sum_sales = 0;
 
@@ -82,9 +82,9 @@
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $customer_name }}</td>
-                                                <td>{{ $customer_address }}</td>                                                      
+                                                <td>{{ $customer_address }}</td>
                                                 <td>
-                                                    @php 
+                                                    @php
                                                         $sale_plans_objective = DB::table('master_objective_saleplans')
                                                             ->where('id', $value->sale_plans_objective)
                                                             ->first();
@@ -92,7 +92,7 @@
                                                     {{  $sale_plans_objective->masobj_title }}
                                                 </td>
                                                 <td>
-                                                    @php 
+                                                    @php
                                                         $listpresent = explode(',',$value->sale_plans_tags);
                                                         foreach($listpresent as $key_list => $value_list ){
                                                             $pdlist_name = "";
@@ -107,7 +107,7 @@
                                                     @endphp
                                                 </td>
                                                 <td style="text-align:center;">
-                                                    @php 
+                                                    @php
                                                         $listpresent = explode(',',$value->sale_plans_tags);
                                                         foreach($listpresent as $key_list => $value_list ){
                                                             $bills = 0;
@@ -123,13 +123,14 @@
                                                                 }
                                                             }
 
+
                                                             echo $bills."<br>";
                                                             $sum_bills += $bills;
                                                         }
                                                     @endphp
                                                 </td>
                                                 <td style="text-align:right;">
-                                                    @php 
+                                                    @php
                                                         $listpresent = explode(',',$value->sale_plans_tags);
                                                         foreach($listpresent as $key_list => $value_list ){
                                                             $sales = 0;
@@ -144,11 +145,11 @@
                                                                     }
                                                                 }
                                                             }
+                                                        }
 
                                                             echo number_format($sales,2)."<br>";
                                                             $sum_sales += $sales;
-                                                            
-                                                        }
+
                                                     @endphp
                                                 </td>
                                             </tr>
@@ -160,7 +161,7 @@
                                             @php
                                                 $total_bills += $sum_bills;
                                                 $total_sales += $sum_sales;
-                                            @endphp  
+                                            @endphp
                                         @endforeach
                                             <tr>
                                                 <td colspan="5"><strong>รวมทั้งสิ้น</strong></td>
@@ -188,7 +189,7 @@
                     <div class="row">
                         <div class="col-md-3" style="text-align:center;">
                             <div class="col-12">
-                                จำนวนแผน (นำเสนอสินค้า ) ทั้งสิ้น 
+                                จำนวนแผน (นำเสนอสินค้า ) ทั้งสิ้น
                             </div>
                             <div class="col-12 bg-indigo text-white py-5">
                                 {{ $total_pglist }}
@@ -226,12 +227,12 @@
     <div class="">
         <div class="col-xl-12">
             <div style="float:right;">
-                <a href="{{ url('admin/approvalsaleplan')}}" type="button" 
+                <a href="{{ url('admin/approvalsaleplan')}}" type="button"
                 class="btn btn-danger btn-sm px-3 mr-10"> ปิดแผน </a>
             </div>
         </div>
     </div>
-        
+
 
        <script type="text/javascript">
         function chkAll(checkbox) {
