@@ -27,10 +27,10 @@
                                     <div class="col-12 mb-topic" style="color: #fff;">
                                         <p class="mb-10"><div class="topic-numchart">แผนทำงาน</div> <div class="red-numchart"><div class="wrap_txt-numchart txt-numchart">{{ $count_sale_plans_amount }}</div></div>  </p>
                                     </div>
-                                    <div class="col-6" style="color: #fff;">
+                                    <div class="col-12 col-lg-6" style="color: #fff;">
                                         <p class="mb-10">อนุมัติ  <span class="txt-numchart">{{ $count_sale_plans_result }}</span></p>
                                     </div>
-                                    <div class="col-6 text-right" style="color: #fff;">
+                                    <div class="col-12 col-lg-6 text-right" style="color: #fff;">
                                         <p class="mb-10">รอดำเนินการ  <span class="txt-numchart">{{ $count_sale_plans_amount - $count_sale_plans_result }}</span></p>
                                     </div>
                                 </div>
@@ -45,10 +45,10 @@
                                     <div class="col-12 mb-topic" style="color: #fff;">
                                         <p class="mb-10"><div class="topic-numchart2">ลูกค้าใหม่</div> <div class="green-numchart"><span class="wrap_txt-numchart txt-numchart">{{ $count_shops_saleplan_amount }}</span></div></p>
                                     </div>
-                                    <div class="col-6" style="color: #fff;">
+                                    <div class="col-12 col-lg-6" style="color: #fff;">
                                         <p class="mb-10">อนุมัติ <span class="txt-numchart">{{ $count_shops_saleplan_result }}</span></p>
                                     </div>
-                                    <div class="col-6 text-right" style="color: #fff;">
+                                    <div class="col-12 col-lg-6 text-right" style="color: #fff;">
                                         <p class="mb-10">รอดำเนินการ <span class="txt-numchart">{{ $count_shops_saleplan_amount - $count_shops_saleplan_result }}</span></p>
                                     </div>
                                 </div>
@@ -63,10 +63,10 @@
                                     <div class="col-12 mb-topic" style="color: #fff;">
                                         <p class="mb-10"><div class="topic-numchart3">เยี่ยมลูกค้า</div> <div class="orange-numchart"><span class="wrap_txt-numchart txt-numchart">{{ $count_isit_amount }}</span></div></p>
                                     </div>
-                                    <div class="col-6" style="color: #fff;">
+                                    <div class="col-12 col-lg-6" style="color: #fff;">
                                         <p class="mb-10">อนุมัติ <span class="txt-numchart">{{ $count_isit_results_result }}</span></p>
                                     </div>
-                                    <div class="col-6 text-right" style="color: #fff;">
+                                    <div class="col-12 col-lg-6 text-right" style="color: #fff;">
                                         <p class="mb-10">รอดำเนินการ <span class="txt-numchart">{{ $count_isit_amount - $count_isit_results_result }}</span></p>
                                     </div>
                                 </div>
@@ -329,10 +329,10 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="row">
-                                                <div class="col-7">
+                                                <div class="col-8">
                                                     <a href="{{url('customer')}}" class="txt-cusall text-dark">ลูกค้าทั้งหมด (ราย)</a>
                                                 </div>
-                                                <div class="col-5">
+                                                <div class="col-4">
                                                     <span class="txt-custotal">{{ number_format($res_api["data"][0]["Customers"][0]["ActiveTotal"]) }}</span>
                                                 </div>
                                             </div>
@@ -340,10 +340,10 @@
                                         <div class="col-12">
                                             <div class="bggrey-cus">
                                                 <div class="row">
-                                                    <div class="col-8">
+                                                    <div class="col-12 col-xl-8">
                                                         <a href="{{url('important-day-detail')}}" class="txt-specialday text-dark">วันสำคัญในเดือน</a>
                                                     </div>
-                                                    <div class="col-4">
+                                                    <div class="col-12 col-xl-4">
                                                         <div>
                                                             @php
                                                                 $FocusDates_count = count($res_api["data"][1]["FocusDates"]);
@@ -375,15 +375,23 @@
             <div class="col-md-12">
                 <section class="hk-sec-wrapper">
                     <h6 class="topic-page hk-sec-title topic-bgorange" style="font-weight: bold;">เทียบยอดขายรายเดือน
-                        <?php echo thaidate('F', date("M")); ?> ระหว่างปี {{$res_api["data"][2]["SalesCurrent"][0]["yearEN"]}} กับปี
-                        {{$res_api["data"][3]["SalesPrevious"][0]["yearEN"]}}</h6>
+                        <?php echo thaidate('F', date("M")); ?> ระหว่างปี
+                        @if (!isset($res_api["data"][2]["SalesCurrent"]))
+                            {{$res_api["data"][2]["SalesCurrent"][0]["yearEN"]}} กับปี  {{$res_api["data"][3]["SalesPrevious"][0]["yearEN"]}}
+                        @else
+                            - กับปี -
+                        @endif
+
+
+                    </h6>
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-12 col-lg-8">
                             <canvas id="myChart" style="height: 294px"></canvas>
-                            <span class="mt-8 ml-40 text-danger">ข้อมูล ณ วันที่ {{$res_api["times"]}}</span>
+                            <span class="mt-8 ml-40 text-danger">ข้อมูล ณ วันที่ {{$res_api["times"]}}
+                            </span>
                         </div>
-                        <div class="col-md-4">
-                            <div class="card card-sm">
+                        <div class="col-12 col-lg-4">
+                            <div class="mt-sumsales card card-sm">
                                 <div class="card-sumsales card-body" style="color: #fff;">
                                     @php
                                         $SalesPrevious = $res_api["data"][3]["SalesPrevious"];
@@ -416,11 +424,19 @@
                                     <div class="d-flex align-items-end justify-content-between mt-10">
                                         <div>
                                             <span class="d-block">
-                                                <span><?php echo thaidate('F', date("M")); ?></h6>/{{$res_api["data"][2]["SalesCurrent"][0]["yearEN"]}}</span>
+                                                <span><?php echo thaidate('F', date("M")); ?></h6>
+                                                        @if (!isset($res_api["data"][2]["SalesCurrent"]))
+                                                            /{{$res_api["data"][2]["SalesCurrent"][0]["yearEN"]}}
+                                                        @endif
+                                                </span>
                                             </span>
                                         </div>
                                         <div>
-                                            <span><?php echo thaidate('F', date("M")); ?></h6>/{{$res_api["data"][2]["SalesCurrent"][0]["yearEN"]}}</span>
+                                            <span><?php echo thaidate('F', date("M")); ?></h6>
+                                                @if (!isset($res_api["data"][2]["SalesCurrent"]))
+                                                            /{{$res_api["data"][2]["SalesCurrent"][0]["yearEN"]}}
+                                                @endif
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-end justify-content-between">
@@ -446,9 +462,9 @@
                                     <span class="d-block font-11 font-weight-500 text-dark text-uppercase"></span>
                                     <div class="col-md-12">
                                         <div class="row">
-                                            <div class="col-md-3">
+                                            <div class="col-md-3 pdl-0">
                                                 <span class="d-block">
-                                                    <button class="btn btn-icon btn-info">
+                                                    <button class="home-icongreen btn btn-icon btn-info">
                                                         <span class="btn-icon-wrap"><i data-feather="home"></i>
                                                         </span>
                                                     </button>
@@ -456,42 +472,58 @@
                                             </div>
                                             <div class="col-12">
                                                 <div class="row box-txttotalsum">
-                                                    <div class="col-md-8">
+                                                    <div class="col-6 col-md-7 pdl-0">
                                                         <span style="font-weight: bold; font-size: 14px;">ร้านค้า (Active) ทั้งหมด</span>
                                                     </div>
-                                                    <div class="col-md-4" style="text-align:right;">
-                                                        <span style="font-weight: bold; font-size: 18px;">
-                                                            {{ number_format($res_api["data"][0]["Customers"][0]["ActiveTotal"]) }} ราย
+                                                    <div class="col-6 col-md-5 pdr-0" style="text-align:right;">
+                                                        <span style="font-weight: bold; font-size: 16px;">
+                                                            @if (!is_null($res_api["data"][0]["Customers"]))
+                                                                {{ number_format($res_api["data"][0]["Customers"][0]["ActiveTotal"]) }} ราย
+                                                            @else
+                                                                - ราย
+                                                            @endif
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <div class="row box-txttotalsum">
-                                                    <div class="col-md-8">
+                                                    <div class="col-6 col-md-7 pdl-0">
                                                         <span style="font-weight: bold; font-size: 14px;">ร้านค้า เปิดบิล ณ เดือนปัจจุบัน</span>
                                                     </div>
-                                                    <div class="col-md-4" style="text-align:right;">
-                                                        <span style="font-weight: bold; font-size: 18px;">
-                                                            {{ number_format($res_api["data"][1]["FocusDates"][0]["TotalCustomers"]) }} ราย
+                                                    <div class="col-6 col-md-5 pdr-0" style="text-align:right;">
+                                                        <span style="font-weight: bold; font-size: 16px;">
+                                                            @if (!is_null($res_api["data"][0]["Customers"]))
+                                                                {{ number_format($res_api["data"][0]["Customers"][0]["BillOrderTotal"]) }} ราย
+                                                            @else
+                                                                - ราย
+                                                            @endif
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <div class="row box-txttotalsum">
-                                                    <div class="col-md-8">
-                                                        <span style="font-weight: bold; font-size: 14px;">ร้านค้า เปิดบิล คิดเป็น ณ วันที่ <?php echo date("d/m/Y"); ?></span>
+                                                    <div class="col-6 col-md-7 pdl-0">
+                                                        <span style="font-weight: bold; font-size: 14px;">ร้านค้า เปิดบิล คิดเป็น <br> ณ วันที่ <?php echo date("d/m/Y"); ?></span>
                                                     </div>
-                                                    <div class="col-md-4" style="text-align:right;">
-                                                        <span style="font-weight: bold; font-size: 18px;">
+                                                    <div class="col-6 col-md-5 pdr-0" style="text-align:right;">
+                                                        <span style="font-weight: bold; font-size: 16px;">
+                                                            @if (!isset($res_api["data"][1]["FocusDates"]))
                                                             {{ number_format($res_api["data"][1]["FocusDates"][0]["TotalDays"]) }} % จากทั้งหมด
+                                                            @else
+                                                                - % จากทั้งหมด
+                                                            @endif
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <div class="row box-txttotalsum">
-                                                    <div class="col-md-8">
+                                                    <div class="col-6 col-md-7 pdl-0">
                                                         <span style="font-weight: bold; font-size: 14px;" class="num-specialday">ร้านค้า ยังไม่ซื้อ คิดเป็น</span>
                                                     </div>
-                                                    <div class="col-md-4" style="text-align:right;">
-                                                        <span style="font-weight: bold; font-size: 18px;" class="num-specialday">
-                                                            {{ number_format($res_api["data"][0]["Customers"][0]["InactiveTotal"]) }} จากทั้งหมด
+                                                    <div class="col-6 col-md-5 pdr-0" style="text-align:right;">
+                                                        <span style="font-weight: bold; font-size: 16px;" class="num-specialday">
+                                                            @if (!is_null($res_api["data"][0]["Customers"]))
+                                                                {{ number_format($res_api["data"][0]["Customers"][0]["InactiveTotal"]) }} % จากทั้งหมด
+                                                            @else
+                                                                - จากทั้งหมด
+                                                            @endif
                                                         </span>
                                                     </div>
                                                 </div>
@@ -525,7 +557,7 @@
         data: {
             labels: [{{ $day_month }}],
             datasets: [{
-                label: 'ยอดขายปี {{$res_api["data"][2]["SalesCurrent"][0]["yearEN"]}}',
+                label: 'ยอดขายปี',
                 data: [{{ $amtsale_current }}],
                 backgroundColor: [
                     // 'rgba(255, 99, 132, 0.3)',
