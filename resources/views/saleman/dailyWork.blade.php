@@ -859,7 +859,7 @@
                     <!-- <form action="{{ url('customer_visit_Result') }}" method="post" enctype="multipart/form-data"> -->
                     <form id="from_customer_visit_result">
                         @csrf
-                        <input type="text" name="visit_id" id="get_visit_id">
+                        <input type="hidden" name="visit_id" id="get_visit_id">
                         <div class="my-3"><span>ชื่อร้าน : </span><span id="get_visit_name"></span></div>
                         <div class="my-3"><span>ชื่อผู้ติดต่อ : </span><span id="get_visit_contact_name"></span></div>
                         <div class="my-3"><span>อำเภอ, จังหวัด : </span><span id="get_visit_address"></span></div>
