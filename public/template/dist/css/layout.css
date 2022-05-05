@@ -153,15 +153,34 @@ border-top-right-radius: 10px;
 .bg-purple{
 border: 3px solid #ce1e28;
 }
+.bg-purple {
+    background-color: #ce1e28 !important;
+    border-radius: 15px;
+}
 .bg-purple.hk-sec-wrapper{
     background-color: #ce1e28 !important;
 }
 .bg-blue.hk-sec-wrapper{
     background-color: #055a61 !important;
 }
+.bg-blue {
+    background-color: #055a61 !important;
+    border-radius: 15px;
+}
 .bg-orange.hk-sec-wrapper{
     background-color: #004f9e !important;
 }
+.bg-orange {
+    background-color: #004f9e !important;
+    border-radius: 15px;
+}
+.bg-orange2 {
+    background-color: #ea6912 !important;
+    border-radius: 15px;
+}
+.bg-orange2{
+    border: 3px solid #ea6912;
+    }
 .red-numchart{
     display: inline-block;
     width: 50px;
@@ -442,6 +461,179 @@ background: linear-gradient(90deg, rgba(121,218,97,1) 0%, rgba(37,140,20,1) 100%
 .box-txttotalsum:last-child{
     border-bottom: 0;
 }
+.hk-breadcrumb .breadcrumb.breadcrumb-light .breadcrumb-item.active{
+    color: #19407c; 
+}
+.topichead-bgred{
+    color: #fff;
+    background-color: #c61246;
+    padding: 13px 20px;
+    -webkit-border-top-left-radius: 10px;
+    -webkit-border-top-right-radius: 10px;
+    -moz-border-radius-topleft: 10px;
+    -moz-border-radius-topright: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    width: 100%;
+    font-size: 1.3rem;
+}
+.topichead-bggreen{
+    color: #fff;
+    background-color: #055a61;
+    padding: 13px 20px;
+    -webkit-border-top-left-radius: 10px;
+    -webkit-border-top-right-radius: 10px;
+    -moz-border-radius-topleft: 10px;
+    -moz-border-radius-topright: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    width: 100%;
+    font-size: 1.3rem;
+}
+.topichead-yellow{
+    color: #fff;
+    background-color: #ee9100;
+    padding: 13px 20px;
+    -webkit-border-top-left-radius: 10px;
+    -webkit-border-top-right-radius: 10px;
+    -moz-border-radius-topleft: 10px;
+    -moz-border-radius-topright: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    width: 100%;
+    font-size: 1.3rem;
+}
+.topichead-blue{
+    color: #fff;
+    background-color: #004f9e;
+    padding: 13px 20px;
+    -webkit-border-top-left-radius: 10px;
+    -webkit-border-top-right-radius: 10px;
+    -moz-border-radius-topleft: 10px;
+    -moz-border-radius-topright: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    width: 100%;
+    font-size: 1.3rem;
+}
+.btn-green{
+    background: #027790;
+    border-radius: 50px;
+    color: #fff;
+    padding: 10px 30px;
+    border: 0;
+    transition: 0.5s;
+}
+.btn-green:hover{
+    background-color: #055a61;
+}
+.table-bggrey{
+    background-color: #666;
+}
+.table-color .table th{
+    color: #fff;
+    font-size: 0.9rem;
+}
+.table-color .table{
+    color: #666;
+}
+.table-color .table thead tr,
+.wrap-table .table thead tr{
+    background-color: #666;
+}
+.wrap-table .table thead tr th{
+    color: #fff;
+}
+.btn-approve{
+    color: #027790;
+    background: rgba(2,119,144,0.2);
+    padding: 5px 20px;
+    border-radius: 5px;
+}
+.btn-draf,
+.btn-draf:hover{
+    color: #333;
+    background: #eee;
+    padding: 5px 20px;
+    border-radius: 5px;
+}
+.btn-pending,
+.btn-pending:hover{
+    color: #ea6912;
+    background: rgba(234,105,18,0.2);
+    padding: 5px 20px;
+    border-radius: 5px;
+}
+.btn-edit,
+.btn-edit:hover{
+    background-color: #ea6912;
+    color: #fff;
+}
+.btn-view,
+.btn-view:hover{
+    background-color: #004f9e;
+    color: #fff;
+}
+
+.content-right{
+    width: 100%;
+    justify-content: flex-end;
+}
+table.dataTable thead td.sorting::before, table.dataTable thead td.sorting_asc::before, table.dataTable thead td.sorting_desc::before, table.dataTable thead td.sorting::after, table.dataTable thead td.sorting_asc::after, table.dataTable thead td.sorting_desc::after, table.dataTable thead th.sorting::before, table.dataTable thead th.sorting_asc::before, table.dataTable thead th.sorting_desc::before, table.dataTable thead th.sorting::after, table.dataTable thead th.sorting_asc::after, table.dataTable thead th.sorting_desc::after{
+    color: #fff;
+}
+.font_lg{
+    font-size: 1.2rem;
+}
+.icon-red{
+    color: #c61246;
+}
+.icon-green{
+    color: #055a61;
+}
+.icon-blue{
+    color: #004f9e;
+}
+.icon-orange{
+    color: #ea6912;
+}
+.pagination .page-item.active .page-link{
+    background: #19407c;
+    border: 1px solid #19407c;
+}
+.btn-purple,
+.btn-purple:hover{
+    background-color: #492771 !important;
+    border-color: #492771;
+    color: #fff;
+}
+.shopname-txt{
+    font-size: 1rem;
+    font-weight: bold;
+    color: #000;
+}
+.select2-container--default.select2-container--open .select2-selection--single{
+    border-color: #666;
+}
+.select2-container--default .select2-results__option--highlighted[aria-selected]{
+    background: #19407c;
+    color: #fff;
+}
+.fc-left h2{
+    color: #ce1e28;
+}
+.fc-state-disabled{
+    opacity: 1;
+    box-shadow: none;
+}
+.fc-state-active, .fc-state-disabled, .fc-state-down{
+    color: #fff;
+    background-color: #19407c;
+}
+.fc-state-default{
+    text-shadow: none;
+}
+
 
 @media (max-width: 1600px){
     .card-body{
@@ -511,6 +703,9 @@ background: linear-gradient(90deg, rgba(121,218,97,1) 0%, rgba(37,140,20,1) 100%
     .num-specialday:last-child{
         margin-right: 0;
     }
+    .box-dailywork.d-flex{
+        display: block !important;
+    }
 }
 @media (max-width: 991px){
     .topic-numchart,
@@ -550,6 +745,12 @@ background: linear-gradient(90deg, rgba(121,218,97,1) 0%, rgba(37,140,20,1) 100%
     .mt-sumsales{
         margin-top: 30px;
     }
+    .topichead-bgred,
+    .topichead-bggreen,
+    .topichead-blue{
+        font-size: 1.2rem;
+        padding: 10px 20px;
+    }
 }
 @media (max-width: 767px){
     .box_search{
@@ -564,5 +765,10 @@ background: linear-gradient(90deg, rgba(121,218,97,1) 0%, rgba(37,140,20,1) 100%
     }
     .bg-purple.hk-sec-wrapper, .bg-blue.hk-sec-wrapper{
         margin-bottom: 15px;
+    }
+    .topichead-bgred,
+    .topichead-bggreen,
+    .topichead-blue{
+        font-size: 1.1rem;
     }
 }

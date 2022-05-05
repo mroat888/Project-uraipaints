@@ -8,7 +8,6 @@
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
             <li class="breadcrumb-item active">แผนประจำเดือน</li>
-            {{-- <li class="breadcrumb-item active" aria-current="page">ปฎิทินกิจกรรม</li> --}}
         </ol>
     </nav>
     <!-- /Breadcrumb -->
@@ -20,14 +19,14 @@
                 <div class="col-md-12">
                     <section class="hk-sec-wrapper">
                         <div class="hk-pg-header mb-10">
-                            <div>
-                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">สรุปแผนรายเดือน ปี <?php echo thaidate('Y', date('Y')); ?></h6>
+                            <div class="topichead-bgred">
+                                สรุปแผนรายเดือน ปี <?php echo thaidate('Y', date('Y')); ?>
                             </div>
-                            <div class="col-sm-12 col-md-9">
+                            <div class="col-12">
                                 <!-- ------ -->
 
                                 <span class="form-inline pull-right pull-sm-center">
-                                    <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</button>
+                                    <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn-green" onclick="showselectdate()">เลือกเดือน</button>
                                     <form action="{{ url('search_month_planMonth') }}" method="post" enctype="multipart/form-data">
                                         @csrf
                                         <span id="selectdate" style="display:none;">
@@ -36,21 +35,20 @@
 
                                             ถึงเดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name="toMonth"/>
 
-                                            <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm">ค้นหา</button>
+                                            <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn-green">ค้นหา</button>
                                         </span>
                                     </form>
                                 </span>
                                 <!-- ------ -->
                             </div>
                         </div>
-                        {{-- <h5 class="hk-sec-title">แผนสรุปรายเดือน ปี 2565</h5> --}}
                         <div class="row">
                             <div class="col-sm">
                                 <div class="table-wrap">
-                                    <div class="table-responsive">
+                                    <div class="table-responsive table-color">
                                         <table class="table table-hover mb-0">
                                             <thead>
-                                                <tr>
+                                                <tr class="table-bggrey">
                                                     <th>#</th>
                                                     <th>เดือน</th>
                                                     <th>Sale Plan (นำเสนอสินค้า)</th>
@@ -96,21 +94,21 @@
                                                         <td>
 
                                                             @if ($value->status_approve == 0)
-                                                                <span class="badge badge-soft-secondary"
-                                                                    style="font-size: 12px;">Draft</span>
+                                                                <span class="btn-draf"
+                                                                    style="font-size: 12px;">
+                                                                    Draft
+                                                                </span>
 
                                                             @elseif ($value->status_approve == 1)
-                                                                <span class="badge badge-soft-warning"
-                                                                    style="font-size: 12px;">Pending</span>
-                                                            @elseif ($value->status_approve == 2)
-                                                                <span class="badge badge-soft-success"
-                                                                    style="font-size: 12px;">Approved</span>
-                                                            @elseif ($value->status_approve == 3)
-                                                                <span class="badge badge-soft-danger"
-                                                                    style="font-size: 12px;">Reject</span>
-                                                            @elseif ($value->status_approve == 4)
-                                                                <span class="badge badge-soft-primary"
-                                                                    style="font-size: 12px;">Final</span>
+                                                                <span class="btn-pending"
+                                                                    style="font-size: 12px;">
+                                                                    Pending
+                                                                </span>
+                                                            @else
+                                                                <span class="btn-approve"
+                                                                    style="font-size: 12px;">
+                                                                    Approve
+                                                                </span>
                                                             @endif
 
 
@@ -135,12 +133,13 @@
                                                                                     $setting_day = $master_setting->stipulate;
                                                                                 }
                                                                                 $OverSaleplan = $myear."-".$mmonth."-".$setting_day;
+                                                                                // dd($OverSaleplan, date('Y-m-d'));
                                                                             @endphp
                                                                             @if($OverSaleplan >= date('Y-m-d'))
-                                                                                <button type="button" class="btn btn-icon btn-teal requestApproval">
+                                                                                <button type="button" class="btn btn-icon btn-edit requestApproval">
                                                                                     <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
                                                                             @else
-                                                                                <button type="button" class="btn btn-icon btn-teal requestApproval" disabled>
+                                                                                <button type="button" class="btn btn-icon btn-edit requestApproval" disabled>
                                                                                     <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
                                                                             @endif
                                                                     @else
@@ -155,16 +154,17 @@
                                                                                         $setting_day = $master_setting->stipulate;
                                                                                     }
                                                                                     $OverSaleplan = $myear."-".$mmonth."-".$setting_day;
+                                                                                    // dd($OverSaleplan, date('Y-m-d'));
                                                                                 @endphp
                                                                                 @if($OverSaleplan >= date('Y-m-d'))
-                                                                                    <button type="button" class="btn btn-icon btn-teal requestApproval">
+                                                                                    <button type="button" class="btn btn-icon btn-edit requestApproval">
                                                                                     <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
                                                                                 @else
-                                                                                    <button type="button" class="btn btn-icon btn-teal requestApproval" disabled>
+                                                                                    <button type="button" class="btn btn-icon btn-edit requestApproval" disabled>
                                                                                     <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
                                                                                 @endif
                                                                             @else
-                                                                            <button type="button" class="btn btn-icon btn-teal requestApproval" disabled>
+                                                                            <button type="button" class="btn btn-icon btn-edit requestApproval" disabled>
                                                                                 <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
                                                                             @endif
 
@@ -173,7 +173,7 @@
                                                                     @endif
 
                                                                     @if ($value->status_approve != 0 && $value->status_approve != 1)
-                                                                    <a href="{{url('planMonth_history', $value->id)}}" class="btn btn-icon btn-info ml-2">
+                                                                    <a href="{{url('planMonth_history', $value->id)}}" class="btn btn-icon btn-view ml-2">
                                                                         <span class="btn-icon-wrap"><i data-feather="file"></i></span></a>
                                                                     @endif
 
@@ -195,30 +195,25 @@
                 <div class="col-md-12">
                     <section class="hk-sec-wrapper">
                         <div class="hk-pg-header mb-10">
-                            <div>
-                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">Sale Plan (นำเสนอสินค้า) ประจำเดือน <?php echo thaidate('F Y', $monthly_plan_next->month_date); ?></h6>
+                            <div class="topichead-bggreen">
+                                Sale Plan (นำเสนอสินค้า) ประจำเดือน <?php echo thaidate('F Y', $monthly_plan_next->month_date); ?>
                             </div>
-                            <div class="d-flex">
-                                @if($monthly_plan_next->status_approve == 0)
-                                    <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10"
-                                        data-toggle="modal" data-target="#saleplanAdd"> + เพิ่มใหม่ </button>
-                                @else
-                                    <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10"
+                            <div class="content-right d-flex">
+                                @if($monthly_plan_next->status_approve == 1 || $monthly_plan_next->status_approve == 2)
+                                    <button type="button" class="btn-green"
                                         data-toggle="modal" data-target="#saleplanAdd" disabled> + เพิ่มใหม่ </button>
+                                @else
+                                    <button type="button" class="btn-green" data-toggle="modal" data-target="#saleplanAdd"> + เพิ่มใหม่ </button>
                                 @endif
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm">
                                 <div class="table-wrap">
-                                    <div class="hk-pg-header mb-10 mt-10">
-                                        <div>
-                                        </div>
-                                    </div>
-                                    <div class="table-responsive col-md-12">
+                                    <div class="table-responsive table-color col-md-12">
                                         <table id="datable_1" class="table table-hover">
                                             <thead>
-                                                <tr>
+                                                <tr class="table-bggrey">
                                                     <th>#</th>
                                                     <th>วัตถุประสงค์</th>
                                                     <th>ลูกค้า</th>
@@ -314,30 +309,26 @@
                 <div class="col-md-12">
                     <section class="hk-sec-wrapper">
                         <div class="hk-pg-header mb-10">
-                            <div>
-                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">Sale Plan (เปิดลูกค้าใหม่)</h6>
+                            <div class="topichead-blue">
+                                Sale Plan (เปิดลูกค้าใหม่)
                             </div>
-                            <div class="d-flex">
-                                @if($monthly_plan_next->status_approve == 0)
-                                    <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10"
-                                    data-toggle="modal" data-target="#addCustomer"> + เพิ่มใหม่ </button>
-                                @else
-                                    <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10"
+                            <div class="content-right d-flex">
+                                @if($monthly_plan_next->status_approve == 1 || $monthly_plan_next->status_approve == 2)
+                                    <button type="button" class="btn-green"
                                     data-toggle="modal" data-target="#addCustomer" disabled> + เพิ่มใหม่ </button>
+                                @else
+                                    <button type="button" class="btn-green"
+                                    data-toggle="modal" data-target="#addCustomer"> + เพิ่มใหม่ </button>
                                 @endif
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm">
                                 <div class="table-wrap">
-                                    <div class="hk-pg-header mb-10 mt-10">
-                                        <div>
-                                        </div>
-                                    </div>
-                                    <div class="table-responsive col-md-12">
+                                    <div class="table-responsive table-color col-md-12">
                                         <table id="datable_1_2" class="table table-hover">
                                             <thead>
-                                                <tr>
+                                                <tr class="table-bggrey">
                                                     <th>#</th>
                                                     <th>ชื่อร้าน</th>
                                                     <th>อำเภอ,จังหวัด</th>

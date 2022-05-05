@@ -13,155 +13,152 @@
     <!-- Container -->
     <div class="container-fluid px-xxl-65 px-xl-20">
             <div class="row">
-                <div class="col-sm-12 col-md-8">
+                <div class="col-sm-12 col-lg-8">
                     <section class="hk-sec-wrapper">
                         {{-- <h6 class="hk-sec-title mb-10" style="font-weight: bold;">สรุปยอดขาย</h6> --}}
+                        <h6 class="topic-page hk-sec-title topic-bgblue" style="font-weight: bold;">งานประจำวัน </h6>
                         <div class="row mt-30">
-                        <div class="col-md-6">
+                        <div class="col-12 col-md-6">
                             <a href="{{ url('approval') }}">
-                            <div class="card card-sm text-white bg-danger">
-                                <div class="card-body">
-                                    <span class="d-block font-16 font-weight-500 text-uppercase mb-10">
-                                        <button class="btn btn-icon btn-icon-circle btn-light btn-lg mr-25"><span class="btn-icon-wrap"><i
-                                            data-feather="edit-2"></i></span></button>
-                                        <span class="float-right">ขออนุมัติ {{$list_approval->count()}}</span>
-                                    </span>
-                                    <div class="d-flex align-items-end justify-content-between mt-10 font-16">
-                                        <div>
-                                            <span class="d-block">
-                                                <span>อนุมัติ</span>
-                                            </span>
-                                        </div>
-                                        <div>
-                                            <span>ด่วน</span>
-                                        </div>
+                            <div class="card card-sm text-white bg-purple">
+                                <div class="row card-body">
+                                    <div class="col-3">
+                                        <span class="d-block font-16 font-weight-500 text-uppercase mb-10">
+                                            <button class="btn btn-icon btn-icon-circle btn-light btn-lg mr-25 icon-red"><span class="btn-icon-wrap"><i
+                                                data-feather="edit-2"></i></span></button>
+                                        </span>
                                     </div>
-                                    <div class="d-flex align-items-end justify-content-between font-16">
-                                        <div>
-                                            <span class="d-block">
-                                                <?php $approve = 0; ?>
-                                                <span>
+                                    <div class="col-9">
+                                        <div class="font_lg">ขออนุมัติ <span class="txt-numchart"> {{$list_approval->count()}}</span></div>
+                                        <div class="box-dailywork box-inlineflex d-flex align-items-end justify-content-between mt-10 font-16">
+                                            <div>
+                                                <span class="d-block">
+                                                    <span>อนุมัติ</span>
+                                                    <span class="txt-numchart">
+                                                        <?php $approve = 0; ?>
+                                                        <span>
+                                                            @foreach ($list_approval as $value)
+                                                                @if ($value->assign_status == 1)
+                                                                    <?php $approve += 1 ?>
+
+                                                                @endif
+                                                            @endforeach
+                                                            {{$approve}}
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span>ด่วน</span>
+                                                <?php $assign_is_hot = 0; ?>
+                                                <span class="txt-numchart">
                                                     @foreach ($list_approval as $value)
-                                                        @if ($value->assign_status == 1)
-                                                            <?php $approve += 1 ?>
+                                                        @if ($value->assign_status == 1 && $value->assign_is_hot == 1)
+                                                            <?php $assign_is_hot += 1 ?>
 
                                                         @endif
                                                     @endforeach
-                                                    {{$approve}}
+                                                    {{$assign_is_hot}}
                                                 </span>
-                                            </span>
-                                        </div>
-                                        <div>
-                                            <?php $assign_is_hot = 0; ?>
-                                            <span>
-                                                @foreach ($list_approval as $value)
-                                                    @if ($value->assign_status == 1 && $value->assign_is_hot == 1)
-                                                        <?php $assign_is_hot += 1 ?>
-
-                                                    @endif
-                                                @endforeach
-                                                {{$assign_is_hot}}
-                                            </span>
+                                            </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                             </a>
                         </div>
 
 
-                        <div class="col-md-6">
+                        <div class="col-12 col-md-6">
                             <a href="{{ url('assignment') }}">
-                            <div class="card card-sm text-white bg-success">
-                                <div class="card-body">
-                                    <span class="d-block font-16 font-weight-500 text-uppercase mb-10">
-                                            <button class="btn btn-icon btn-icon-circle btn-light btn-lg mr-25"><span class="btn-icon-wrap"><i
-                                                data-feather="clipboard"></i></span></button>
-                                        <span class="float-right">คำสั่งงาน {{ $assignments->count() }}</span>
-                                    </span>
-                                    <div class="d-flex align-items-end justify-content-between mt-10 font-16">
-                                        <div>
-                                            <span class="d-block">
-                                                <span>ทำแล้ว</span>
-                                            </span>
-                                        </div>
-                                        <div>
-                                            <span>รอดำเนินการ</span>
-                                        </div>
+                            <div class="card card-sm text-white bg-blue">
+                                <div class="row card-body">
+                                    <div class="col-3">
+                                        <span class="d-block font-16 font-weight-500 text-uppercase mb-10">
+                                                <button class="btn btn-icon btn-icon-circle btn-light btn-lg mr-25 icon-green"><span class="btn-icon-wrap"><i
+                                                    data-feather="clipboard"></i></span></button>
+
+                                        </span>
                                     </div>
-                                    <div class="d-flex align-items-end justify-content-between font-16">
-                                        <div>
-                                            <span class="d-block">
-                                                <?php $success = 0; ?>
-                                                <span>
+                                    <div class="col-9">
+                                        <div class="font_lg">คำสั่งงาน <span class="txt-numchart"> {{ $assignments->count() }}</span></div>
+                                        <div class="box-dailywork d-flex align-items-end justify-content-between mt-10 font-16">
+                                            <div>
+                                                <span class="d-block">
+                                                    <span>ทำแล้ว</span>
+                                                    <span class="txt-numchart">
+                                                        <?php $success = 0; ?>
+                                                        <span>
+                                                            @foreach ($assignments as $value)
+                                                                @if ($value->assign_result_status != 0)
+                                                                    <?php $success += 1 ?>
+                                                                @endif
+                                                            @endforeach
+                                                            {{$success}}
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span>รอดำเนินการ</span>
+                                                <?php $unfinished = 0; ?>
+                                                <span class="txt-numchart">
                                                     @foreach ($assignments as $value)
-                                                        @if ($value->assign_result_status != 0)
-                                                            <?php $success += 1 ?>
+                                                        @if ($value->assign_result_status == 0)
+                                                            <?php $unfinished += 1 ?>
                                                         @endif
                                                     @endforeach
-                                                    {{$success}}
+                                                    {{$unfinished}}
                                                 </span>
-                                            </span>
-                                        </div>
-                                        <div>
-                                            <?php $unfinished = 0; ?>
-                                            <span>
-                                                @foreach ($assignments as $value)
-                                                    @if ($value->assign_result_status == 0)
-                                                        <?php $unfinished += 1 ?>
-                                                    @endif
-                                                @endforeach
-                                                {{$unfinished}}
-                                            </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             </a>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-12 col-md-6">
                             <a href="{{ url('note') }}">
-                            <div class="card card-sm text-white bg-warning">
-                                <div class="card-body">
-                                    <span class="d-block font-16 font-weight-500 text-uppercase mb-10">
-                                        <button class="btn btn-icon btn-icon-circle btn-light btn-lg mr-25"><span class="btn-icon-wrap"><i
-                                            data-feather="file"></i></span></button>
-                                        <span class="float-right">บันทึกโน๊ต {{ $notes->count() }}</span></span>
-                                    <div class="d-flex align-items-end justify-content-between mt-10">
-                                        <div>
-                                            <span class="d-block">
-                                                <span>ไม่ปัก</span>
-                                            </span>
-                                        </div>
-                                        <div>
-                                            <span>ปักหมุด</span>
-                                        </div>
+                            <div class="card card-sm text-white bg-orange">
+                                <div class="row card-body">
+                                    <div class="col-3">
+                                        <span class="d-block font-16 font-weight-500 text-uppercase mb-10">
+                                            <button class="btn btn-icon btn-icon-circle btn-light btn-lg mr-25 icon-blue"><span class="btn-icon-wrap"><i
+                                                data-feather="file"></i></span></button>
+
+                                        </span>
                                     </div>
-                                    <div class="d-flex align-items-end justify-content-between font-16">
-                                        <div>
-                                            <span class="d-block">
-                                                <?php $disuse = 0; ?>
-                                                <span>
+                                    <div class="col-9">
+                                        <div class="font_lg">บันทึกโน๊ต <span class="txt-numchart"> {{ $notes->count() }}</span></div>
+                                        <div class="box-dailywork d-flex align-items-end justify-content-between mt-10">
+                                            <div>
+                                                <span class="d-block">
+                                                    <span>ไม่ปัก</span>
+                                                    <span class="txt-numchart">
+                                                        <?php $disuse = 0; ?>
+                                                        <span>
+                                                            @foreach ($notes as $value)
+                                                                @if ($value->status_pin == "")
+                                                                    <?php $disuse += 1 ?>
+                                                                @endif
+                                                            @endforeach
+                                                            {{$disuse}}
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span>ปักหมุด</span>
+                                                <?php $pin = 0; ?>
+                                                <span class="txt-numchart">
                                                     @foreach ($notes as $value)
-                                                        @if ($value->status_pin == "")
-                                                            <?php $disuse += 1 ?>
+                                                        @if ($value->status_pin == 1)
+                                                            <?php $pin += 1 ?>
                                                         @endif
                                                     @endforeach
-                                                    {{$disuse}}
+                                                    {{$pin}}
                                                 </span>
-                                            </span>
-                                        </div>
-                                        <div>
-                                            <?php $pin = 0; ?>
-                                            <span>
-                                                @foreach ($notes as $value)
-                                                    @if ($value->status_pin == 1)
-                                                        <?php $pin += 1 ?>
-                                                    @endif
-                                                @endforeach
-                                                {{$pin}}
-                                            </span>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -170,48 +167,47 @@
                             </a>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-12 col-md-6">
                             <a href="{{ url('lead') }}">
-                            <div class="card card-sm text-white bg-info">
-                                <div class="card-body">
-                                    <span class="d-block font-16 font-weight-500 text-uppercase mb-10">
-                                        <button class="btn btn-icon btn-icon-circle btn-light btn-lg mr-25"><span class="btn-icon-wrap"><i
+                            <div class="card card-sm text-white bg-orange2">
+                                <div class="row card-body">
+                                    <div class="col-3">
+                                        <span class="d-block font-16 font-weight-500 text-uppercase mb-10">
+                                        <button class="btn btn-icon btn-icon-circle btn-light btn-lg mr-25 icon-orange"><span class="btn-icon-wrap"><i
                                             data-feather="users"></i></span></button>
-                                        <span class="float-right">ลูกค้าใหม่ {{ $customer_shop->count() }}</span></span>
-                                    <div class="d-flex align-items-end justify-content-between mt-10">
-                                        <div>
-                                            <span class="d-block">
-                                                <span>ระหว่างดำเนินการ</span>
-                                            </span>
-                                        </div>
-                                        <div>
-                                            <span>เปลี่ยนเป็นลูกค้า</span>
-                                        </div>
+                                        </span>
                                     </div>
-                                    <div class="d-flex align-items-end justify-content-between font-16">
-                                        <div>
-                                            <span class="d-block">
-                                                <?php $fail = 0; ?>
-                                                <span>
+                                    <div class="col-9">
+                                        <div class="font_lg">ลูกค้าใหม่ <span class="txt-numchart"> {{ $customer_shop->count() }}</span></div>
+                                        <div class="box-dailywork d-flex align-items-end justify-content-between mt-10">
+                                            <div>
+                                                <span class="d-block">
+                                                    <span>ระหว่างดำเนินการ</span>
+                                                    <span class="txt-numchart">
+                                                        <?php $fail = 0; ?>
+                                                        <span>
+                                                            @foreach ($customer_shop as $value)
+                                                                @if ($value->shop_result_status == 0)
+                                                                    <?php $fail += 1 ?>
+                                                                @endif
+                                                            @endforeach
+                                                            {{$fail}}
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span>เปลี่ยนเป็นลูกค้า</span>
+                                                <?php $wait = 0; ?>
+                                                <span class="txt-numchart">
                                                     @foreach ($customer_shop as $value)
-                                                        @if ($value->shop_result_status == 0)
-                                                            <?php $fail += 1 ?>
+                                                        @if ($value->shop_result_status == 2)
+                                                            <?php $wait += 1 ?>
                                                         @endif
                                                     @endforeach
-                                                    {{$fail}}
+                                                    {{$wait}}
                                                 </span>
-                                            </span>
-                                        </div>
-                                        <div>
-                                            <?php $wait = 0; ?>
-                                            <span>
-                                                @foreach ($customer_shop as $value)
-                                                    @if ($value->shop_result_status == 2)
-                                                        <?php $wait += 1 ?>
-                                                    @endif
-                                                @endforeach
-                                                {{$wait}}
-                                            </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -224,53 +220,34 @@
                     </section>
                 {{-- </div> --}}
 
-                <div class="col-md-4">
+                <div class="col-12 col-lg-4">
                     <section class="hk-sec-wrapper">
-                        <div class="row mt-30">
+                        <div class="row">
                             <div class="col-md-12">
+                                <h6 class="topic-page hk-sec-title topic-bggreen" style="font-weight: bold;">ลูกค้า </h6>
                                 <div class="card card-sm">
                                     <div class="card-body" style="color: black;">
                                         <span class="d-block font-11 font-weight-500 text-dark text-uppercase mb-10"></span>
-                                        <div class="mt-15">
-                                                <span class="d-block">
-                                                    <div class="media-img-wrap text-center">
-                                                        <div class="avatar avatar-sm">
-                                                            <img src="" alt="user"
-                                                            class="avatar-text avatar-text-inv-success rounded-circle">
-                                                        </div>
-                                                        <div class="avatar avatar-sm">
-                                                            <img src="" alt="user"
-                                                            class="avatar-text avatar-text-inv-pink rounded-circle">
-                                                        </div>
-                                                        <div class="avatar avatar-sm">
-                                                            <img src="" alt="user"
-                                                            class="avatar-text avatar-text-inv-info rounded-circle">
-                                                        </div>
-                                                        <div class="avatar avatar-sm">
-                                                            <img src="" alt="user"
-                                                            class="avatar-text avatar-text-inv-warning rounded-circle">
-                                                        </div>
+                                        <div>
+                                            <div class="row">
+                                                <div class="col-8">
+                                                    <a href="{{url('customer')}}" class="txt-cusall text-dark">ลูกค้าทั้งหมด</a>
+                                                </div>
+                                                <div class="col-4">
+                                                    <span class="txt-custotal">{{ $total_shop }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="bggrey-cus">
+                                                <div class="row">
+                                                    <div class="col-12 col-xl-8">
+                                                        <a href="{{url('important-day-detail')}}" class="txt-specialday text-dark">มีวันสำคัญในเดือน</a>
                                                     </div>
-                                                </span>
-                                        </div>
-                                        <div class="d-flex align-items-end justify-content-between mt-5">
-                                            <div>
-                                                <span class="d-block">
-                                                    <a href="{{url('customer')}}" class="text-dark">ลูกค้าทั้งหมด</a>
-                                                </span>
-                                            </div>
-                                            <div>
-                                                <a href="{{url('important-day-detail')}}" class="text-dark">มีวันสำคัญในเดือน</a>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-end justify-content-between">
-                                            <div>
-                                                <span class="d-block">
-                                                    <span>{{ $total_shop }}</span>
-                                                </span>
-                                            </div>
-                                            <div>
-                                                <span>{{ $ShopInMonthDays }} ร้าน <span class="ml-40">{{ $InMonthDays }} วัน</span></span>
+                                                    <div class="col-12 col-xl-4">
+                                                        <div class="num-specialday"><span>{{ $ShopInMonthDays }} ร้าน</span></div>
+                                                        <div class="num-specialday"><span>{{ $InMonthDays }} วัน</span></div>
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -288,9 +265,7 @@
                 <div class="col-md-12">
                     <section class="hk-sec-wrapper">
                         <div class="hk-pg-header mb-10">
-                            <div>
-                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">Sale Plan (นำเสนอสินค้า) ประจำเดือน <?php echo thaidate('F Y', date("Y-m-d")); ?></h6>
-                            </div>
+                            <div class="topichead-bgred">Sale Plan (นำเสนอสินค้า) ประจำเดือน <?php echo thaidate('F Y', date("Y-m-d")); ?></div>
                         </div>
                         <div class="row">
                             <div class="col-sm">
@@ -299,7 +274,7 @@
                                         <div>
                                         </div>
                                     </div>
-                                    <div class="table-responsive col-md-12">
+                                    <div class="table-responsive table-color col-md-12">
                                         <table  id="datable_1" class="table table-hover">
                                             <thead>
                                                 <tr>
@@ -426,8 +401,8 @@
                 <div class="col-md-12">
                     <section class="hk-sec-wrapper">
                         <div class="hk-pg-header mb-10">
-                            <div>
-                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">Sale Plan (เปิดลูกค้าใหม่) ประจำเดือน <?php echo thaidate('F Y', date("Y-m-d")); ?></h6>
+                            <div class="topichead-bggreen">
+                                Sale Plan (เปิดลูกค้าใหม่) ประจำเดือน <?php echo thaidate('F Y', date("Y-m-d")); ?>
                             </div>
                         </div>
                         <div class="row">
@@ -437,7 +412,7 @@
                                         <div>
                                         </div>
                                     </div>
-                                    <div class="table-responsive col-md-12">
+                                    <div class="table-responsive table-color col-md-12">
                                         <table id="datable_1_2" class="table table-hover">
                                             <thead>
                                                 <tr>
@@ -542,11 +517,11 @@
                 <div class="col-md-12">
                     <section class="hk-sec-wrapper">
                         <div class="hk-pg-header mb-10">
-                            <div>
-                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">เยี่ยมลูกค้า</h6>
-                            </div>
-                            <div class="d-flex">
-                                <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10"
+                            <div class="topichead-blue">
+                                เยี่ยมลูกค้า
+                             </div>
+                             <div class="d-flex content-right">
+                                <button type="button" class="btn-green"
                                     data-toggle="modal" data-target="#addCustomerVisit"> + เพิ่มใหม่ </button>
                             </div>
                         </div>
@@ -557,7 +532,7 @@
                                         <div>
                                         </div>
                                     </div>
-                                    <div class="table-responsive col-md-12">
+                                    <div class="table-responsive table-color col-md-12">
                                         <table id="datable_1_3" class="table table-hover">
                                             <thead>
                                                 <tr>
@@ -772,7 +747,6 @@
                     <form id="from_saleplan_result">
                         @csrf
                         <input type="hidden" name="saleplan_id" id="get_saleplan_id">
-                        {{-- <div class="my-3"><span>เรื่อง : </span><span id="get_title"></span></div> --}}
                             <div class="my-3"><span>ลูกค้า : </span><span id="get_shop"></span></div>
                             <div class="my-3"><span>อำเภอ, จังหวัด : </span><span id="get_shop_address"></span></div>
                             <div class="my-3"><span>วัตถุประสงค์ : </span><span id="get_objective"></span></div>
@@ -786,7 +760,7 @@
                             <div class="form-group col-md-6">
                                 <label for="username">สรุปผลลัพธ์</label>
                                 <select class="form-control custom-select" id="get_result" name="saleplan_result">
-                                    <option>-- กรุณาเลือก --</option>
+                                    <option selected>-- กรุณาเลือก --</option>
                                     <option value="0">ไม่สนใจ</option>
                                     <option value="1">สนใจ/ตกลง</option>
                                 </select>
@@ -816,7 +790,8 @@
                     <form id="from_customer_new_result">
                         @csrf
                         <input type="hidden" name="cust_id" id="get_cust_new_id">
-                        {{-- <div class="my-3"><span>ID : </span><span id="get_cust_id2"></span></div> --}}
+                        <input type="hidden" name="saleplan_id" id="get_cust_saleplan_id">
+                        <input type="hidden" name="cust_result_id" id="get_cust_result_id">
                             <div class="my-3"><span>ชื่อร้าน : </span><span id="get_cust_name"></span></div>
                             <div class="my-3"><span>ชื่อผู้ติดต่อ : </span><span id="get_cust_contact_name"></span></div>
                             <div class="my-3"><span>อำเภอ, จังหวัด : </span><span id="get_cust_address"></span></div>
@@ -1050,6 +1025,7 @@
         $('#get_shop_address').text("");
         $('#get_shop').text("");
         $('#get_name').text("");
+        // $('#get_result').val("");
 
         $.ajax({
             type: "GET",
@@ -1058,7 +1034,7 @@
             async: false,
             success: function(data) {
 
-                $('#get_saleplan_id').val(data.dataResult.sale_plan_id);
+                $('#get_saleplan_id').val(data.dataResult.saleplan_id);
                 $('#get_title').text(data.dataResult.sale_plans_title);
                 $('#get_objective').text(data.dataResult.masobj_title);
                 $('#get_shop_address').text(data.customer_api);
@@ -1098,13 +1074,15 @@
             success: function(data) {
                 // console.log(data.dataResult);
 
-                $('#get_cust_new_id').val(data.dataResult.id);
-                $('#get_cust_contact_name').text(data.dataResult.shop_name);
-                // $('#get_cust_address').text(data.cust_new_address);
+                $('#get_cust_new_id').val(data.dataResult.shop_id);
+                $('#get_cust_name').text(data.dataResult.shop_name);
+                $('#get_cust_contact_name').text(data.dataResult.customer_contact_name);
+                $('#get_cust_address').text(data.cust_new_address);
                 $('#get_cust_objective').text(data.dataResult.cust_name);
-                // $('#get_cust_id2').text(data.id);
+                $('#get_cust_result_id').val(data.dataResult.resultID);
                 $('#get_cust_detail').val(data.dataResult.cust_result_detail);
                 $('#get_cust_result').val(data.dataResult.cust_result_status);
+                $('#get_cust_saleplan_id').val(data.dataResult.id);
 
                 // if (data.dataResult.shop_name == '') {
                 //     $('#get_cust_name').text(data.cust_new_name);
