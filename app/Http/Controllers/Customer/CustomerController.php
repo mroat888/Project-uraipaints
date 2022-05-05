@@ -486,14 +486,6 @@ class CustomerController extends Controller
             ->where('customer_shop_id', $data['customer_shops']->id)
             ->orderBy('monthly_plan_id', 'asc')
             ->get();
-        
-        // $data['customer_shops_saleplan'] = DB::table('customer_shops_saleplan')
-        //     ->leftJoin('customer_shop_comments' ,'customer_shop_comments.customer_shops_saleplan_id', 'customer_shops_saleplan.id')
-        //     ->leftJoin('customer_shops_saleplan_result', 'customer_shops_saleplan_result.customer_shops_saleplan_id', 'customer_shops_saleplan.id')
-        //     ->where('customer_shops_saleplan.customer_shop_id', $data['customer_shops']->id)
-        //     ->orderBy('customer_shops_saleplan.monthly_plan_id', 'desc')
-        //     ->get();
-        // dd($data['customer_shops_saleplan']);
 
         return view('customer.customer_lead_detail', $data);
     }

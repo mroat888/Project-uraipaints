@@ -97,100 +97,105 @@
             $even_number = 0;
         @endphp
         @foreach($customer_shops_saleplan as $key => $cust_shops_saleplan)
+            <!-- ส่วนของแผน Saleman ---- -->
             @if(($even_number % 2) == 0) <!-- หารเอาเศษ เช็คเลขคู่ -->
-            <div class="row">
-                <div class="col-2">
-                    @php
-                        $user = DB::table('users')
-                            ->where('id', $cust_shops_saleplan->created_by)
-                            ->orderBy('id', 'desc')
-                            ->first();
-                    @endphp
-                        {{ $user->name }}
-                </div>
-                <div class="col-10">
+                <div class="row">
+                    <div class="col-2" style="text-align:center;">
+                        @php
+                            $user = DB::table('users')
+                                ->where('id', $cust_shops_saleplan->created_by)
+                                ->orderBy('id', 'desc')
+                                ->first();
+                        @endphp
+                        <img src="{{ asset('/public/images/people-33.png')}}" alt="{{ $user->name }}" class="avatar-img">
+                        <div>{{ $user->name }}</div>
+                    </div>
+                    <div class="col-10">
 
-                    <section class="hk-sec-wrapper">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col-md-4 col-lg-4">
-                                        <p class="detail_listcus">
-                                            <i class="ion ion-md-calendar"></i>
-                                            <span> เดือน</span> :
-                                            @php
-                                                $monthly_plans = DB::table('monthly_plans')
-                                                ->where('id', $cust_shops_saleplan->monthly_plan_id)
-                                                ->first();
-                                            @endphp
-                                            {{ thaidate('F Y', $monthly_plans->month_date) }}
-                                        </p>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <hr>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="desc_cusnote">
-                                            <blockquote class="blockquote mb-0">
-                                                <p>	วัตถุประสงค์ : {{ $cust_shops_saleplan->customer_shop_objective }}</p>
-                                            </blockquote>
+                        <section class="hk-sec-wrapper">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-4 col-lg-4">
+                                            <p class="detail_listcus">
+                                                <i class="ion ion-md-calendar"></i>
+                                                <span> เดือน</span> :
+                                                @php
+                                                    $monthly_plans = DB::table('monthly_plans')
+                                                    ->where('id', $cust_shops_saleplan->monthly_plan_id)
+                                                    ->first();
+                                                @endphp
+                                                {{ thaidate('F Y', $monthly_plans->month_date) }}
+                                            </p>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <hr>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="desc_cusnote">
+                                                <blockquote class="blockquote mb-0">
+                                                    <p>	วัตถุประสงค์ : {{ $cust_shops_saleplan->customer_shop_objective }}</p>
+                                                </blockquote>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                                <hr>
                             </div>
-                            <hr>
-                        </div>
-                    </section>
+                        </section>
+                    </div>
                 </div>
-            </div>
             @else
-            <div class="row">
-                <div class="col-10">
+                <div class="row">
+                    <div class="col-10">
 
-                    <section class="hk-sec-wrapper">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col-md-4 col-lg-4">
-                                        <p class="detail_listcus">
-                                            <i class="ion ion-md-calendar"></i>
-                                            <span> เดือน</span> :
-                                            @php
-                                                $monthly_plans = DB::table('monthly_plans')
-                                                ->where('id', $cust_shops_saleplan->monthly_plan_id)
-                                                ->first();
-                                            @endphp
-                                            {{ thaidate('F Y', $monthly_plans->month_date) }}
-                                        </p>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <hr>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="desc_cusnote">
-                                            <blockquote class="blockquote mb-0">
-                                                <p>วัตถุประสงค์ : {{ $cust_shops_saleplan->customer_shop_objective }}</p>
-                                            </blockquote>
+                        <section class="hk-sec-wrapper">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-4 col-lg-4">
+                                            <p class="detail_listcus">
+                                                <i class="ion ion-md-calendar"></i>
+                                                <span> เดือน</span> :
+                                                @php
+                                                    $monthly_plans = DB::table('monthly_plans')
+                                                    ->where('id', $cust_shops_saleplan->monthly_plan_id)
+                                                    ->first();
+                                                @endphp
+                                                {{ thaidate('F Y', $monthly_plans->month_date) }}
+                                            </p>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <hr>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="desc_cusnote">
+                                                <blockquote class="blockquote mb-0">
+                                                    <p>วัตถุประสงค์ : {{ $cust_shops_saleplan->customer_shop_objective }}</p>
+                                                </blockquote>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                                <hr>
                             </div>
-                            <hr>
-                        </div>
-                    </section>
+                        </section>
+                    </div>
+                    <div class="col-2" style="text-align:center;">
+                        @php
+                            $user = DB::table('users')
+                                ->where('id', $cust_shops_saleplan->created_by)
+                                ->orderBy('id', 'desc')
+                                ->first();
+                        @endphp
+                        <img src="{{ asset('/public/images/people-33.png')}}" alt="{{ $user->name }}" class="avatar-img">
+                        <div>{{ $user->name }}</div>
+                    </div>
                 </div>
-                <div class="col-2">
-                    @php
-                        $user = DB::table('users')
-                            ->where('id', $cust_shops_saleplan->created_by)
-                            ->orderBy('id', 'desc')
-                            ->first();
-                    @endphp
-                        {{ $user->name }}
-                </div>
-            </div>
             @endif
+            <!-- จบ ส่วนของแผน Saleman ---- -->
 
+            <!-- ส่วนของ คอมเม้นต์ ผู้จัดการเขต ผู้จัดการฝ่าย admin  ---- -->
             @php 
                 $customer_shop_comments = DB::table('customer_shop_comments')
                     ->leftJoin('users', 'users.id', 'customer_shop_comments.created_by')
@@ -201,140 +206,197 @@
 
             @foreach($customer_shop_comments as $comment)
                 @if(($even_number % 2) == 0) <!-- หารเอาเศษ เช็คเลขคู่ -->
-                <div class="row">
-                    <div class="col-10">
-                        <section class="hk-sec-wrapper">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="row">
-                                        <div class="col-md-4 col-lg-4">
-                                            <p class="detail_listcus">
-                                                <i class="ion ion-md-calendar"></i>
-                                                <span> เดือน</span> :
-                                                @php
-                                                    $monthly_plans = DB::table('monthly_plans')
-                                                    ->where('id', $cust_shops_saleplan->monthly_plan_id)
-                                                    ->first();
-                                                @endphp
-                                                {{ thaidate('F Y', $monthly_plans->month_date) }}
-                                            </p>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <hr>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="desc_cusnote">
-                                                    <blockquote class="blockquote mb-0">
-                                                        <p>{{ $comment->customer_comment_detail }}</p>
-                                                    </blockquote>
+                    <div class="row">
+                        <div class="col-10">
+                            <section class="hk-sec-wrapper">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-4 col-lg-4">
+                                                <p class="detail_listcus">
+                                                    <i class="ion ion-md-calendar"></i>
+                                                    <span> เดือน</span> :
+                                                    @php
+                                                        $monthly_plans = DB::table('monthly_plans')
+                                                        ->where('id', $cust_shops_saleplan->monthly_plan_id)
+                                                        ->first();
+                                                    @endphp
+                                                    {{ thaidate('F Y', $monthly_plans->month_date) }}
+                                                </p>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <hr>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="desc_cusnote">
+                                                        <blockquote class="blockquote mb-0">
+                                                            <p>{{ $comment->customer_comment_detail }}</p>
+                                                        </blockquote>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <hr>
                                 </div>
-                                <hr>
-                            </div>
-                        </section>
+                            </section>
+                        </div>
+                        <div class="col-2" style="text-align:center;">
+                            <img src="{{ asset('/public/images/people-33.png')}}" alt="{{ $comment->name }}" class="avatar-img">
+                            <div>{{ $comment->name }}</div>
+                        </div>
                     </div>
-                    <div class="col-2">{{ $comment->name }}</div>
-                </div>
                 @else
-                <div class="row">
-                    <div class="col-2">{{ $comment->name }}</div>
-                    <div class="col-10">
-                        <section class="hk-sec-wrapper">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="row">
-                                        <div class="col-md-4 col-lg-4">
-                                            <p class="detail_listcus">
-                                                <i class="ion ion-md-calendar"></i>
-                                                <span> เดือน</span> :
-                                                @php
-                                                    $monthly_plans = DB::table('monthly_plans')
-                                                    ->where('id', $cust_shops_saleplan->monthly_plan_id)
-                                                    ->first();
-                                                @endphp
-                                                {{ thaidate('F Y', $monthly_plans->month_date) }}
-                                            </p>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <hr>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="desc_cusnote">
-                                                    <blockquote class="blockquote mb-0">
-                                                        <p>{{ $comment->customer_comment_detail }}</p>
-                                                    </blockquote>
+                    <div class="row">
+                        <div class="col-2" style="text-align:center;">
+                            <img src="{{ asset('/public/images/people-33.png')}}" alt="{{ $comment->name }}" class="avatar-img">
+                            <div>{{ $comment->name }}</div>
+                        </div>
+                        <div class="col-10">
+                            <section class="hk-sec-wrapper">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-4 col-lg-4">
+                                                <p class="detail_listcus">
+                                                    <i class="ion ion-md-calendar"></i>
+                                                    <span> เดือน</span> :
+                                                    @php
+                                                        $monthly_plans = DB::table('monthly_plans')
+                                                        ->where('id', $cust_shops_saleplan->monthly_plan_id)
+                                                        ->first();
+                                                    @endphp
+                                                    {{ thaidate('F Y', $monthly_plans->month_date) }}
+                                                </p>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <hr>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="desc_cusnote">
+                                                        <blockquote class="blockquote mb-0">
+                                                            <p>{{ $comment->customer_comment_detail }}</p>
+                                                        </blockquote>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <hr>
                                 </div>
-                                <hr>
-                            </div>
-                        </section>
-                    </div>   
-                </div>
+                            </section>
+                        </div>   
+                    </div>
                 @endif
 
                 @php 
                     $even_number++;
                 @endphp
-            @endforeach   
+            @endforeach            
+            <!-- ส่วนของ คอมเม้นต์ ผู้จัดการเขต ผู้จัดการฝ่าย admin  ---- -->
 
+            <!-- ส่วนของสรุปแผน result  ---- -->
             @php 
                 $customer_shops_saleplan_result = DB::table('customer_shops_saleplan_result')
                     ->leftJoin('users', 'users.id', 'customer_shops_saleplan_result.created_by')
-                    ->where('customer_shops_saleplan_id', $cust_shops_saleplan->id)
-                    ->orderBy('customer_shops_saleplan_result.id', 'desc')
-                    ->get();
+                    ->where('customer_shops_saleplan_result.customer_shops_saleplan_id', $cust_shops_saleplan->id)
+                    ->orderBy('customer_shops_saleplan_result.id', 'asc')
+                    ->first();
             @endphp
-            @foreach($customer_shops_saleplan_result as $saleplan_result)
-
-            <div class="row">
-                    <div class="col-10">
-                        <section class="hk-sec-wrapper">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="row">
-                                        <div class="col-md-4 col-lg-4">
-                                            <p class="detail_listcus">
-                                                <i class="ion ion-md-calendar"></i>
-                                                <span> เดือน</span> :
-                                                @php
-                                                    $monthly_plans = DB::table('monthly_plans')
-                                                    ->where('id', $cust_shops_saleplan->monthly_plan_id)
-                                                    ->first();
-                                                @endphp
-                                                {{ thaidate('F Y', $monthly_plans->month_date) }}
-                                            </p>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <hr>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="desc_cusnote">
+            @if(!is_null($customer_shops_saleplan_result)) <!-- is_null -->
+                @if(($even_number % 2) == 0) <!-- หารเอาเศษ เช็คเลขคู่ -->
+                    <div class="row">
+                        <div class="col-2" style="text-align:center;">
+                            <img src="{{ asset('/public/images/people-33.png')}}" alt="{{ $customer_shops_saleplan_result->name }}" class="avatar-img">
+                            <div>{{ $customer_shops_saleplan_result->name }}</div>
+                        </div>
+                        <div class="col-10">
+                            <section class="hk-sec-wrapper">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-4 col-lg-4">
+                                                <p class="detail_listcus">
+                                                    <i class="ion ion-md-calendar"></i>
+                                                    <span> เดือน</span> :
+                                                    @php
+                                                        $monthly_plans = DB::table('monthly_plans')
+                                                        ->where('id', $cust_shops_saleplan->monthly_plan_id)
+                                                        ->first();
+                                                    @endphp
+                                                    {{ thaidate('F Y', $monthly_plans->month_date) }}
+                                                </p>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <hr>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="desc_cusnote">
                                                     <blockquote class="blockquote mb-0">
-                                                        <p>{{ $saleplan_result->cust_result_detail }}</p>
-                                                        <p>{{ $saleplan_result->cust_result_status }}</p>
-                                                        <p>{{ $cust_shops_saleplan->id }}ssd</p>
+                                                        <p>{{ $customer_shops_saleplan_result->cust_result_detail }}</p>
+                                                        @php 
+                                                            switch($customer_shops_saleplan_result->cust_result_status){
+                                                                case 0: $result_status = "สนใจ";
+                                                                    break;
+                                                                case 1: $result_status = "รอตัดสินใจ";
+                                                                     break;
+                                                                case 2: $result_status = "ไม่สนใจ";
+                                                                    break;
+                                                            }
+                                                        @endphp
+                                                        <p>สถานะ : {{ $result_status }}</p>
                                                     </blockquote>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <hr>
                                 </div>
-                                <hr>
-                            </div>
-                        </section>
+                            </section>
+                        </div>
                     </div>
-                    <div class="col-2">{{ $saleplan_result->name }}</div>
-                </div>
-
-
-
-            @php 
-                    $even_number++;
-                @endphp
-            @endforeach  
+                @else
+                    <div class="row">
+                        <div class="col-10">
+                            <section class="hk-sec-wrapper">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-4 col-lg-4">
+                                                <p class="detail_listcus">
+                                                    <i class="ion ion-md-calendar"></i>
+                                                    <span> เดือน</span> :
+                                                    @php
+                                                        $monthly_plans = DB::table('monthly_plans')
+                                                        ->where('id', $cust_shops_saleplan->monthly_plan_id)
+                                                        ->first();
+                                                    @endphp
+                                                    {{ thaidate('F Y', $monthly_plans->month_date) }}
+                                                </p>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <hr>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="desc_cusnote">
+                                                    <blockquote class="blockquote mb-0">
+                                                        <p>{{ $customer_shops_saleplan_result->cust_result_detail }}</p>
+                                                        <p>{{ $customer_shops_saleplan_result->cust_result_status }}</p>
+                                                        <p>{{ $customer_shops_saleplan_result->id }}ssd</p>
+                                                    </blockquote>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                </div>
+                            </section>
+                        </div>
+                        <div class="col-2" style="text-align:center;">
+                            <img src="{{ asset('/public/images/people-33.png')}}" alt="{{ $customer_shops_saleplan_result->name }}" class="avatar-img">
+                            <div>{{ $customer_shops_saleplan_result->name }}</div>
+                        </div>
+                    </div>
+                @endif
+            @endif <!-- is_null -->
 
             @php 
                 $even_number++;
@@ -397,6 +459,12 @@
             </form>
         </div>
     </div>
+
+<style>
+    .avatar-img{
+        max-width:80%;
+    }
+</style>
 
  <script>
 
