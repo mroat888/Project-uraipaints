@@ -5,7 +5,7 @@
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
             <li class="breadcrumb-item"><a href="#">Page</a></li>
-            <li class="breadcrumb-item active" aria-current="page">การอนุมัติลูกค้าใหม่ (นอกแผน)</li>
+            <li class="breadcrumb-item active" aria-current="page">ตรวจสอบลูกค้าใหม</li>
         </ol>
     </nav>
     <!-- /Breadcrumb -->
@@ -25,7 +25,7 @@
         <div class="hk-pg-header mb-10">
             <div>
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                    data-feather="file-text"></i></span></span>ตรวจสอบขออนุมัติลูกค้าใหม่ (นอกแผน)</h4>
+                    data-feather="file-text"></i></span></span>ตรวจสอบลูกค้าใหม่</h4>
             </div>
         </div>
         <!-- /Title -->
@@ -34,7 +34,7 @@
         <div class="row">
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
-                    <h5 class="hk-sec-title">ตารางข้อมูลการอนุมัติลูกค้าใหม่ (นอกแผน)</h5>
+                    <h5 class="hk-sec-title">รายชื่อลูกค้าใหม่</h5>
                     <div class="row mb-2">
                         <div class="col-sm">
                             <div class="table-wrap">

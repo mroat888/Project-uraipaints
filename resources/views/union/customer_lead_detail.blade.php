@@ -337,11 +337,11 @@
                                                         <p>{{ $customer_shops_saleplan_result->cust_result_detail }}</p>
                                                         @php 
                                                             switch($customer_shops_saleplan_result->cust_result_status){
-                                                                case 0: $result_status = "สนใจ";
+                                                                case 0: $result_status = "ไม่สนใจ";
                                                                     break;
                                                                 case 1: $result_status = "รอตัดสินใจ";
                                                                      break;
-                                                                case 2: $result_status = "ไม่สนใจ";
+                                                                case 2: $result_status = "สนใจ";
                                                                     break;
                                                             }
                                                         @endphp
@@ -382,8 +382,17 @@
                                                 <div class="desc_cusnote">
                                                     <blockquote class="blockquote mb-0">
                                                         <p>{{ $customer_shops_saleplan_result->cust_result_detail }}</p>
-                                                        <p>{{ $customer_shops_saleplan_result->cust_result_status }}</p>
-                                                        <p>{{ $customer_shops_saleplan_result->id }}ssd</p>
+                                                        @php 
+                                                            switch($customer_shops_saleplan_result->cust_result_status){
+                                                                case 0: $result_status = "ไม่สนใจ";
+                                                                    break;
+                                                                case 1: $result_status = "รอตัดสินใจ";
+                                                                     break;
+                                                                case 2: $result_status = "สนใจ";
+                                                                    break;
+                                                            }
+                                                        @endphp
+                                                        <p>สถานะ : {{ $result_status }}</p>
                                                     </blockquote>
                                                 </div>
                                             </div>

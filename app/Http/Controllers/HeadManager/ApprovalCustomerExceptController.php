@@ -144,12 +144,21 @@ class ApprovalCustomerExceptController extends Controller
                             ->orWhere('users.team_id', 'like', '%,'.$team);
                     });
                 $data['selectteam_sales'] = $request->selectteam_sales;
+            }else{
+                $customer_shops = $customer_shops
+                ->where(function($query) use ($auth_team) {
+                    for ($i = 0; $i < count($auth_team); $i++){
+                        $query->orWhere('users.team_id', $auth_team[$i])
+                            ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                            ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+                    }
+                });
             }
 
             if(!is_null($request->selectusers)){ //-- ผู้แทนขาย
                 $customer_shops = $customer_shops
                     ->where('customer_shops_saleplan.created_by', $request->selectusers);
-                $data['selectusers'] = $request->selectusers;
+                $data['selectteam_sales'] = $request->selectteam_sales;
             }
 
             $customer_shops = $customer_shops->select(
@@ -176,7 +185,6 @@ class ApprovalCustomerExceptController extends Controller
                 }
             })
             ->get();
-
         $data['team_sales'] = DB::table('master_team_sales')
             ->where(function($query) use ($auth_team) {
                 for ($i = 0; $i < count($auth_team); $i++){
