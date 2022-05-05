@@ -78,7 +78,7 @@
                                        </span>
                                    </form>
                                    </span>
-                                   <!-- ------ -->
+                                <!-- ------ -->
                            </div>
                         </div>
                     <div class="row">
