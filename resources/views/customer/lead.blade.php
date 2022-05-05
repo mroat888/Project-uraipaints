@@ -110,7 +110,7 @@
                                     $url_customer_detail = "customer_lead/detail";
                                 @endphp
                                 
-                                @include('union.lead_table');
+                                @include('union.lead_table')
 
                             </div>
                         </div>
