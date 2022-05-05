@@ -149,7 +149,7 @@
                                     $btn_edit_hide = "display:none;";
                                     $url_customer_detail = "head/approval_customer_except_detail";
                                 @endphp
-                                @include('union.lead_table');
+                                @include('union.lead_table')
 
                             </div>
                         </div>
