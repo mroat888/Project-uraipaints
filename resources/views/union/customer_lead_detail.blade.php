@@ -143,6 +143,7 @@
                         </section>
                     </div>
                 </div>
+                @php $even_number++; @endphp
             @else
                 <div class="row">
                     <div class="col-10">
@@ -190,7 +191,10 @@
                         <div>{{ $user->name }}</div>
                     </div>
                 </div>
+                @php $even_number++; @endphp
             @endif
+
+            
             <!-- จบ ส่วนของแผน Saleman ---- -->
 
             <!-- ส่วนของ คอมเม้นต์ ผู้จัดการเขต ผู้จัดการฝ่าย admin  ---- -->
@@ -203,7 +207,7 @@
             @endphp
 
             @foreach($customer_shop_comments as $comment)
-                @if(($even_number % 2) == 0) <!-- หารเอาเศษ เช็คเลขคู่ -->
+                @if(($even_number % 2) != 0) <!-- หารเอาเศษ เช็คเลขคี่ -->
                     <div class="row">
                         <div class="col-10">
                             <section class="hk-sec-wrapper">
@@ -243,6 +247,7 @@
                             <div>{{ $comment->name }}</div>
                         </div>
                     </div>
+         
                 @else
                     <div class="row">
                         <div class="col-2" style="text-align:center;">
@@ -283,11 +288,11 @@
                             </section>
                         </div>   
                     </div>
+
                 @endif
 
-                @php 
-                    $even_number++;
-                @endphp
+                @php $even_number++; @endphp
+
             @endforeach            
             <!-- ส่วนของ คอมเม้นต์ ผู้จัดการเขต ผู้จัดการฝ่าย admin  ---- -->
 
@@ -394,11 +399,9 @@
                         </div>
                     </div>
                 @endif
+                
+                @php $even_number++; @endphp
             @endif <!-- is_null -->
-
-            @php 
-                $even_number++;
-            @endphp
         @endforeach
 
 

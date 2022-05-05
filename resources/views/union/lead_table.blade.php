@@ -71,10 +71,10 @@
                 <td>
                     <div class="button-list">
                     @if($shop->shop_status != 1)
-                        <button class="btn btn-icon btn-warning mr-10 btn_editshop" value="{{ $shop->id }}">
+                        <button class="btn btn-icon btn-warning mr-10 btn_editshop" style="{{ $btn_edit_hide }}" value="{{ $shop->id }}">
                             <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-create"></i></h4></button>
                     @endif
-                        <a href="{{ url('/customer_lead/detail', $shop->id) }}" class="btn btn-icon btn-success mr-10">
+                        <a href="{{ url($url_customer_detail, $shop->id) }}" class="btn btn-icon btn-success mr-10">
                             <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></a>
                     </div>
                 </td>
