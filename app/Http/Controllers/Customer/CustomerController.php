@@ -73,6 +73,7 @@ class CustomerController extends Controller
 
     public function customerLeadSearch(Request $request){
 
+
         $customer_shops = DB::table('customer_shops_saleplan')
             ->leftJoin('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
             ->leftJoin('customer_shops_saleplan_result', 'customer_shops_saleplan_result.customer_shops_saleplan_id', 'customer_shops_saleplan.id')
@@ -85,7 +86,22 @@ class CustomerController extends Controller
             list($year,$month) = explode('-', $request->selectdateFrom);
             $customer_shops = $customer_shops->whereYear('monthly_plans.month_date',$year)
             ->whereMonth('monthly_plans.month_date', $month);
+            $data['date_filter'] = $request->selectdateFrom;
         }
+
+        if(!is_null($request->slugradio)){
+            if($request->slugradio == "สำเร็จ"){
+                $customer_shops = $customer_shops->where('customer_shops.shop_status', 1);
+            }elseif($request->slugradio  == "สนใจ"){
+                $customer_shops = $customer_shops->where('customer_shops_saleplan_result.cust_result_status', 2);
+            }elseif($request->slugradio  == "รอตัดสินใจ"){
+                $customer_shops = $customer_shops->where('customer_shops_saleplan_result.cust_result_status', 1);
+            }elseif($request->slugradio  == "ไม่สนใจ"){
+                $customer_shops = $customer_shops->where('customer_shops_saleplan_result.cust_result_status', 0);
+            }
+            $data['slugradio_filter'] = $request->slugradio;
+        }
+
 
         $customer_shops = $customer_shops->select(
             'monthly_plans.*',
@@ -486,6 +502,7 @@ class CustomerController extends Controller
             ->where('customer_shop_id', $data['customer_shops']->id)
             ->orderBy('monthly_plan_id', 'asc')
             ->get();
+<<<<<<< HEAD
 
         // $data['customer_shops_saleplan'] = DB::table('customer_shops_saleplan')
         //     ->leftJoin('customer_shop_comments' ,'customer_shop_comments.customer_shops_saleplan_id', 'customer_shops_saleplan.id')
@@ -494,6 +511,8 @@ class CustomerController extends Controller
         //     ->orderBy('customer_shops_saleplan.monthly_plan_id', 'desc')
         //     ->get();
         // dd($data['customer_shops_saleplan']);
+=======
+>>>>>>> eb64ba3a068f95c2ce51ef3e30da5a265bfeab7b
 
         return view('customer.customer_lead_detail', $data);
     }
