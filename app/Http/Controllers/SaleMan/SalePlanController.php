@@ -367,6 +367,7 @@ class SalePlanController extends Controller
         ->where('sale_plans.id', $id)
         ->select('sale_plan_results.*',
         'sale_plans.sale_plans_title',
+        'sale_plans.id as saleplan_id',
         'master_objective_saleplans.masobj_title',
         'sale_plans.sale_plans_tags',
         'sale_plans.customer_shop_id')->first();
