@@ -53,7 +53,40 @@
                                     <div class="col-sm-12 col-md-12">
                                         <span class="form-inline pull-right pull-sm-center">
                                             <span id="selectdate">
-                                                ปี/เดือน : <input type="month" id="selectdateFrom" name="selectdateFrom" 
+                                                <select name="selectteam_sales" class="form-control form-control-sm" aria-label=".form-select-lg example">
+                                                    <option value="" selected>เลือกทีม</option>
+                                                    @php 
+                                                        $checkteam_sales = "";
+                                                        $checkusers = "";
+
+                                                        if(isset($selectteam_sales)){
+                                                            $checkteam_sales = $selectteam_sales;
+                                                        }
+                                                        if(isset($selectusers)){
+                                                            $checkusers = $selectusers;
+                                                        }
+                                                    @endphp
+                                                    @foreach($team_sales as $team)
+                                                        @if($checkteam_sales == $team->id)
+                                                            <option value="{{ $team->id }}" selected>{{ $team->team_name }}</option>
+                                                        @else
+                                                            <option value="{{ $team->id }}">{{ $team->team_name }}</option>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                                <select name="selectusers" class="form-control form-control-sm" aria-label=".form-select-lg example">
+                                                    <option value="" selected>ผู้แทนขาย</option>
+                                                    @foreach($users as $user)
+                                                        @if($checkusers == $user->id)
+                                                            <option value="{{ $user->id }}" selected>{{ $user->name }}</option>
+                                                        @else
+                                                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                                
+                                                <!-- ปี/เดือน :  -->
+                                                <input type="month" id="selectdateFrom" name="selectdateFrom" 
                                                 value="{{ $date_search }}" class="form-control form-control-sm" 
                                                 style="margin-left:10px; margin-right:10px;"/>
                                                 <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm" id="submit_request">ค้นหา</button>
