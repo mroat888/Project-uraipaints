@@ -169,7 +169,8 @@ class DashboardController extends Controller
             if(isset($data['res_api']['data'][4]['DaysSalesCurrent'][$noc]['DayNo'])){ // ปีปัจจุบัน
 
                 if($data['res_api']['data'][4]['DaysSalesCurrent'][$noc]['DayNo'] == $i){
-                    $data['amtsale_current'] .= $data['res_api']['data'][4]['DaysSalesCurrent'][$noc]['totalAmtSale'].",";
+                    // $data['amtsale_current'] .= $data['res_api']['data'][4]['DaysSalesCurrent'][$noc]['totalAmtSale'].",";
+                    $data['amtsale_current'] .= $data['res_api']['data'][4]['DaysSalesCurrent'][$noc]['sales'].",";
                 }else{
                     $noc--;
                     if($i < $dayinmonth){
@@ -190,7 +191,8 @@ class DashboardController extends Controller
             if(isset($data['res_api']['data'][5]['DaysSalesPrevious'][$nop]['DayNo'])){ // ปีที่แล้ว
 
                 if($data['res_api']['data'][5]['DaysSalesPrevious'][$nop]['DayNo'] == $i){
-                    $data['amtsale_previous'] .= $data['res_api']['data'][5]['DaysSalesPrevious'][$nop]['totalAmtSale'].",";
+                    // $data['amtsale_previous'] .= $data['res_api']['data'][5]['DaysSalesPrevious'][$nop]['totalAmtSale'].",";
+                    $data['amtsale_previous'] .= $data['res_api']['data'][5]['DaysSalesPrevious'][$nop]['sales'].",";
                 }else{
                     $nop--;
                     if($i < $dayinmonth){

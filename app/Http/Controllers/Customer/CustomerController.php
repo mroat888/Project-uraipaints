@@ -45,16 +45,62 @@ class CustomerController extends Controller
 
     public function customerLead()
     {
-        $data['customer_shops'] = DB::table('customer_shops')
-            ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
-            ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ทะเบียนลูกค้า , 2 = ลบ
+        $data['customer_shops'] = DB::table('customer_shops_saleplan')
+            ->leftJoin('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
+            ->leftJoin('customer_shops_saleplan_result', 'customer_shops_saleplan_result.customer_shops_saleplan_id', 'customer_shops_saleplan.id')
+            ->leftJoin('monthly_plans', 'monthly_plans.id', 'customer_shops_saleplan.monthly_plan_id')
+            ->leftJoin('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
+            ->where('customer_shops.shop_status', '!=' ,2) // 0 = ลูกค้าใหม่ , 1 = ทะเบียนลูกค้า , 2 = ลบ
             ->where('customer_shops.created_by', Auth::user()->id)
             ->select(
+                'monthly_plans.*',
                 'province.PROVINCE_NAME',
+                'customer_shops_saleplan_result.*',
+                'customer_shops_saleplan.*',
+                'customer_shops_saleplan.shop_aprove_status as saleplan_shop_aprove_status',
                 'customer_shops.*'
             )
-            ->orderBy('customer_shops.id', 'desc')
+            ->orderBy('customer_shops_saleplan.id', 'desc')
             ->get();
+
+        $data['province'] = DB::table('province')->get();
+        $data['customer_contacts'] = DB::table('customer_contacts')->orderBy('id', 'desc')->get();
+
+        // dd($data['customer_shops']);
+
+        return view('customer.lead', $data);
+    }
+
+    public function customerLeadSearch(Request $request){
+
+        $customer_shops = DB::table('customer_shops_saleplan')
+            ->leftJoin('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
+            ->leftJoin('customer_shops_saleplan_result', 'customer_shops_saleplan_result.customer_shops_saleplan_id', 'customer_shops_saleplan.id')
+            ->leftJoin('monthly_plans', 'monthly_plans.id', 'customer_shops_saleplan.monthly_plan_id')
+            ->leftJoin('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
+            ->where('customer_shops.shop_status', '!=' ,2) // 0 = ลูกค้าใหม่ , 1 = ทะเบียนลูกค้า , 2 = ลบ
+            ->where('customer_shops.created_by', Auth::user()->id);
+
+        if(!is_null($request->selectdateFrom)){
+            list($year,$month) = explode('-', $request->selectdateFrom);
+            $customer_shops = $customer_shops->whereYear('monthly_plans.month_date',$year)
+            ->whereMonth('monthly_plans.month_date', $month);
+        }
+
+        $customer_shops = $customer_shops->select(
+            'monthly_plans.*',
+            'province.PROVINCE_NAME',
+            'customer_shops_saleplan_result.*',
+            'customer_shops_saleplan.*',
+            'customer_shops_saleplan.shop_aprove_status as saleplan_shop_aprove_status',
+            'customer_shops.*'
+        )
+        ->orderBy('customer_shops_saleplan.id', 'desc')
+        ->get();
+
+        $data['customer_shops'] = $customer_shops;
+
+        // dd($request->selectdateFrom, $data['customer_shops']);
 
         $data['province'] = DB::table('province')->get();
         $data['customer_contacts'] = DB::table('customer_contacts')->orderBy('id', 'desc')->get();
@@ -438,8 +484,16 @@ class CustomerController extends Controller
 
         $data['customer_shops_saleplan'] = DB::table('customer_shops_saleplan')
             ->where('customer_shop_id', $data['customer_shops']->id)
-            ->orderBy('monthly_plan_id', 'desc')
+            ->orderBy('monthly_plan_id', 'asc')
             ->get();
+        
+        // $data['customer_shops_saleplan'] = DB::table('customer_shops_saleplan')
+        //     ->leftJoin('customer_shop_comments' ,'customer_shop_comments.customer_shops_saleplan_id', 'customer_shops_saleplan.id')
+        //     ->leftJoin('customer_shops_saleplan_result', 'customer_shops_saleplan_result.customer_shops_saleplan_id', 'customer_shops_saleplan.id')
+        //     ->where('customer_shops_saleplan.customer_shop_id', $data['customer_shops']->id)
+        //     ->orderBy('customer_shops_saleplan.monthly_plan_id', 'desc')
+        //     ->get();
+        // dd($data['customer_shops_saleplan']);
 
         return view('customer.customer_lead_detail', $data);
     }

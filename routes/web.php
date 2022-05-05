@@ -53,6 +53,7 @@ Route::post('customer_visit_Result', 'Customer\CustomerVisitController@customer_
 
 // Customer
 Route::get('/lead','Customer\CustomerController@customerLead');
+Route::post('/lead/search','Customer\CustomerController@customerLeadSearch');
 Route::post('create_customer', 'Customer\CustomerController@store');
 Route::get('edit_customerLead/{id}', 'Customer\CustomerController@edit');
 Route::post('update_customerLead', 'Customer\CustomerController@update');

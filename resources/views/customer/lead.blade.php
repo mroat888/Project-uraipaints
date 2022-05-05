@@ -27,34 +27,29 @@
         <div class="row">
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
-                    <h5 class="hk-sec-title">ตารางข้อมูลลูกค้าใหม่</h5>
+                    <h5 class="hk-sec-title">รายชื่อลูกค้าใหม่</h5>
                     <div class="row">
                         <div class="col-sm">
                             <div class="table-wrap">
                                 <div class="hk-pg-header mb-10">
                                     <div>
                                     </div>
-                                    {{-- <div class="col-sm-12 col-md-9">
+                                    <div class="col-sm-12 col-md-9">
                                         <!-- ------ -->
-                                        <span class="form-inline pull-right pull-sm-center">
-                                            <div class="box_search d-flex">
-                                                <span class="txt_search">Search:</span>
-                                                    <input type="text" name="" id="" class="form-control form-control-sm" placeholder="ค้นหา">
-                                                </div>
-
-                                            <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกวันที่</button>
-                                            <span id="selectdate" style="display:none;">
-
-                                            Date : <input type="month" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateFrom" value="<?= date('Y-m-d'); ?>" />
-
-                                                to <input type="month" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" value="<?= date('Y-m-d'); ?>" />
-
-                                                <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button>
+                                        @php 
+                                            $action_search = "/lead/search";
+                                        @endphp
+                                        <form action="{{ url($action_search) }}" method="post">
+                                            @csrf
+                                            <span class="form-inline pull-right pull-sm-center">
+                                                <span id="selectdate">
+                                                ปี/เดือน : <input type="month" id="selectdateFrom" name="selectdateFrom" value="<?// date('Y-m'); ?>" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;"/>
+                                                    <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm" id="submit_request">ค้นหา</button>
+                                                </span>
                                             </span>
-
-                                        </span>
+                                        </form>
                                         <!-- ------ -->
-                                    </div> --}}
+                                    </div>
                                 </div>
                                 <div class="table-responsive col-md-12">
                                     <table id="datable_1" class="table table-hover">
@@ -108,25 +103,30 @@
                                             <td>{{ $customer_contact_name }}</td>
                                             <td>{{ $customer_contact_phone }}</td>
                                             <td>
-                                                @php 
-                                                    $customer_shops_saleplan = DB::table('customer_shops_saleplan')
-                                                        ->where('customer_shop_id', $shop->id)
-                                                        ->where('is_monthly_plan', 'N')
-                                                        ->get();
-                                                @endphp
-
-                                                @if($customer_shops_saleplan->isNotEmpty())
-                                                     <span class="badge badge-soft-danger" style="font-size: 12px;">นอกแผน</span>
+                                                @if($shop->shop_status == 1)
+                                                    <span class="badge badge-soft-success" style="font-size: 12px;">สำเร็จ</span>
+                                                @elseif($shop->saleplan_shop_aprove_status == 3)
+                                                    <span class="badge badge-soft-purple" style="font-size: 12px;">ไม่ผ่านอนุมัติ</span>
                                                 @else
-                                                    <span class="badge badge-soft-success" style="font-size: 12px;">ในแผน</span>
+                                                    @if(!is_null($shop->cust_result_status))
+                                                        @if($shop->cust_result_status == 2) <!-- สนใจ	 -->
+                                                            <span class="badge badge-soft-orange" style="font-size: 12px;">สนใจ</span>
+                                                        @elseif($shop->cust_result_status == 1) <!-- รอตัดสินใจ -->
+                                                            <span class="badge badge-soft-primary" style="font-size: 12px;">รอตัดสินใจ</span>
+                                                        @elseif($shop->cust_result_status == 0) <!-- ไม่สนใจ  -->
+                                                            <span class="badge badge-soft-danger" style="font-size: 12px;">ไม่สนใจ</span>
+                                                        @endif
+                                                    @else
+                                                        -
+                                                    @endif
                                                 @endif
                                             </td>
                                             <td>
                                                 <div class="button-list">
+                                                @if($shop->shop_status != 1)
                                                     <button class="btn btn-icon btn-warning mr-10 btn_editshop" value="{{ $shop->id }}">
                                                         <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-create"></i></h4></button>
-                                                    <!-- <button class="btn btn-icon btn-info mr-10">
-                                                        <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-calendar"></i></h4></button> -->
+                                                @endif
                                                     <a href="{{ url('/customer_lead/detail', $shop->id) }}" class="btn btn-icon btn-success mr-10">
                                                         <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></a>
                                                 </div>
@@ -360,15 +360,15 @@
             }, 1000);
         }
 
-        function showselectdate(){
-            $("#selectdate").css("display", "block");
-            $("#bt_showdate").hide();
-        }
+        // function showselectdate(){
+        //     $("#selectdate").css("display", "block");
+        //     $("#bt_showdate").hide();
+        // }
 
-        function hidetdate(){
-            $("#selectdate").css("display", "none");
-            $("#bt_showdate").show();
-        }
+        // function hidetdate(){
+        //     $("#selectdate").css("display", "none");
+        //     $("#bt_showdate").show();
+        // }
 
     </script>
 

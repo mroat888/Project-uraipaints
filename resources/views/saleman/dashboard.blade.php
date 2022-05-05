@@ -349,8 +349,8 @@
                                                                 $FocusDates_count = count($res_api["data"][1]["FocusDates"]);
                                                             @endphp
                                                             @if($FocusDates_count > 0)
-                                                                <div class="num-specialday">{{ $res_api["data"][1]["FocusDates"][0]["TotalCustomers"] }} ร้าน </div>
-                                                                <div class="num-specialday">{{ $res_api["data"][1]["FocusDates"][0]["TotalDays"] }} วัน</div>
+                                                                <div class="num-specialday">{{ $res_api["data"][1]["FocusDates"]["TotalCustomers"] }} ร้าน </div>
+                                                                <div class="num-specialday">{{ $res_api["data"][1]["FocusDates"]["TotalDays"] }} วัน</div>
                                                             @else
                                                                 <div class="num-specialday">0 ร้าน </div>
                                                                 <div class="num-specialday">0 วัน</div>
@@ -376,13 +376,11 @@
                 <section class="hk-sec-wrapper">
                     <h6 class="topic-page hk-sec-title topic-bgorange" style="font-weight: bold;">เทียบยอดขายรายเดือน
                         <?php echo thaidate('F', date("M")); ?> ระหว่างปี
-                        @if (!isset($res_api["data"][2]["SalesCurrent"]))
-                            {{$res_api["data"][2]["SalesCurrent"][0]["yearEN"]}} กับปี  {{$res_api["data"][3]["SalesPrevious"][0]["yearEN"]}}
+                        @if (isset($res_api["data"][2]["SalesCurrent"]))
+                            {{$res_api["data"][2]["SalesCurrent"][0]["year"]}} กับปี  {{$res_api["data"][3]["SalesPrevious"][0]["year"]}}
                         @else
                             - กับปี -
                         @endif
-
-
                     </h6>
                     <div class="row">
                         <div class="col-12 col-lg-8">
@@ -395,15 +393,15 @@
                                 <div class="card-sumsales card-body" style="color: #fff;">
                                     @php
                                         $SalesPrevious = $res_api["data"][3]["SalesPrevious"];
-                                        $totalAmtSale_th_Previous = $SalesPrevious[0]["totalAmtSale_th"]; // เป้ายอดขายปีที่แล้ว
-                                        $totalAmtSale_Previous = $SalesPrevious[0]["totalAmtSale"]; // เป้ายอดขายปีที่แล้ว
+                                        $totalAmtSale_th_Previous = $SalesPrevious[0]["sales_th"]; // เป้ายอดขายปีที่แล้ว
+                                        $totalAmtSale_Previous = $SalesPrevious[0]["sales"]; // เป้ายอดขายปีที่แล้ว
 
                                         $percentAmtCrn =0;
                                         if(!empty($res_api["data"][2]["SalesCurrent"])){
                                             $SalesCurrent = $res_api["data"][2]["SalesCurrent"];
 
-                                            $totalAmtSale_th = $SalesCurrent[0]["totalAmtSale_th"]; // ยอดที่ทำได้ปีนี้
-                                            $totalAmtSale = $SalesCurrent[0]["totalAmtSale"]; // ยอดที่ทำได้ปีนี้
+                                            $totalAmtSale_th = $SalesCurrent[0]["sales_th"]; // ยอดที่ทำได้ปีนี้
+                                            $totalAmtSale = $SalesCurrent[0]["sales"]; // ยอดที่ทำได้ปีนี้
                                             $percentAmtCrn = (($totalAmtSale)*100)/$totalAmtSale_Previous;
                                         }else{
                                             $totalAmtSale_th = "0";
@@ -426,7 +424,7 @@
                                             <span class="d-block">
                                                 <span><?php echo thaidate('F', date("M")); ?></h6>
                                                         @if (!isset($res_api["data"][2]["SalesCurrent"]))
-                                                            /{{$res_api["data"][2]["SalesCurrent"][0]["yearEN"]}}
+                                                            /{{$res_api["data"][2]["SalesCurrent"][0]["year"]}}
                                                         @endif
                                                 </span>
                                             </span>
@@ -434,7 +432,7 @@
                                         <div>
                                             <span><?php echo thaidate('F', date("M")); ?></h6>
                                                 @if (!isset($res_api["data"][2]["SalesCurrent"]))
-                                                            /{{$res_api["data"][2]["SalesCurrent"][0]["yearEN"]}}
+                                                            /{{$res_api["data"][2]["SalesCurrent"][0]["year"]}}
                                                 @endif
                                             </span>
                                         </div>
@@ -579,7 +577,7 @@
                 borderWidth: 1
             },
             {
-                label: 'ยอดขายปี {{$res_api["data"][3]["SalesPrevious"][0]["yearEN"]}}',
+                label: 'ยอดขายปี {{$res_api["data"][3]["SalesPrevious"][0]["year"]}}',
                 data: [{{ $amtsale_previous }}],
                 backgroundColor: [
                     // 'rgba(255, 99, 132, 0.2)',
