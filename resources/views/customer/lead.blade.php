@@ -31,26 +31,81 @@
                     <div class="row">
                         <div class="col-sm">
                             <div class="table-wrap">
+                                <!-- เงื่อนไขการค้นหา -->
+                                 @php 
+                                    $action_search = "/lead/search";
+                                    if(isset($date_filter)){
+                                        $date_search = $date_filter;
+                                    }else{
+                                        $date_search = "";
+                                    }
+                                @endphp
+                                <form action="{{ url($action_search) }}" method="post">
+                                @csrf
                                 <div class="hk-pg-header mb-10">
-                                    <div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-9">
-                                        <!-- ------ -->
-                                        @php 
-                                            $action_search = "/lead/search";
-                                        @endphp
-                                        <form action="{{ url($action_search) }}" method="post">
-                                            @csrf
-                                            <span class="form-inline pull-right pull-sm-center">
-                                                <span id="selectdate">
-                                                ปี/เดือน : <input type="month" id="selectdateFrom" name="selectdateFrom" value="<?// date('Y-m'); ?>" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;"/>
-                                                    <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm" id="submit_request">ค้นหา</button>
-                                                </span>
+                                    <div class="col-sm-12 col-md-12">
+                                        <span class="form-inline pull-right pull-sm-center">
+                                            <span id="selectdate">
+                                                ปี/เดือน : <input type="month" id="selectdateFrom" name="selectdateFrom" 
+                                                value="{{ $date_search }}" class="form-control form-control-sm" 
+                                                style="margin-left:10px; margin-right:10px;"/>
+                                                <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm" id="submit_request">ค้นหา</button>
                                             </span>
-                                        </form>
-                                        <!-- ------ -->
+                                        </span>
                                     </div>
                                 </div>
+                                @php 
+                                    $check_Radio_1 = "";
+                                    $check_Radio_2 = "";
+                                    $check_Radio_3 = "";
+                                    $check_Radio_4 = "";
+                                    $check_Radio_5 = "";
+                                    if(isset($slugradio_filter)){
+                                        switch($slugradio_filter){
+                                            case "สำเร็จ" : $check_Radio_2 = "checked";
+                                                break;
+                                            case "สนใจ" : $check_Radio_3 = "checked";
+                                                break;
+                                            case "ไม่สนใจ" : $check_Radio_4 = "checked";
+                                                break;
+                                            case "รอตัดสินใจ" : $check_Radio_5 = "checked";
+                                                break;
+                                            default : $check_Radio_1 = "checked";
+                                        }
+                                    }else{
+                                        $check_Radio_1 = "checked";
+                                    }
+
+                                @endphp
+                                <div class="hk-pg-header mb-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input checkRadio" type="radio" name="slugradio" id="inlineRadio1" value="ทั้งหมด" {{ $check_Radio_1 }}>
+                                        <label class="form-check-label" for="inlineRadio1">ทั้งหมด</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input checkRadio" type="radio" name="slugradio" id="inlineRadio2" value="สำเร็จ" {{ $check_Radio_2 }}>
+                                        <label class="form-check-label" for="inlineRadio2">สำเร็จ</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input checkRadio" type="radio" name="slugradio" id="inlineRadio3" value="สนใจ" {{ $check_Radio_3 }}>
+                                        <label class="form-check-label" for="inlineRadio3">สนใจ</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input checkRadio" type="radio" name="slugradio" id="inlineRadio4" value="ไม่สนใจ" {{ $check_Radio_4 }}>
+                                        <label class="form-check-label" for="inlineRadio4">ไม่สนใจ</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input checkRadio" type="radio" name="slugradio" id="inlineRadio5" value="รอตัดสินใจ" {{ $check_Radio_5 }}>
+                                        <label class="form-check-label" for="inlineRadio5">รอตัดสินใจ</label>
+                                    </div>
+                                </div>
+                                </form>
+                                <!-- จบเงื่อนไขการค้นหา -->
+
                                 <div class="table-responsive col-md-12">
                                     <table id="datable_1" class="table table-hover">
                                     <thead>
@@ -350,6 +405,11 @@
             }
         });
     });
+
+    $(document).on('click', '.checkRadio', function(){
+        $("#submit_request").trigger("click");
+    });
+
 </script>
 
     <script>
