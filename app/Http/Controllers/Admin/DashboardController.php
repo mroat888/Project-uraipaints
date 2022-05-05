@@ -153,8 +153,8 @@ class DashboardController extends Controller
                 if(!empty($res_api["data"][1]["FocusDates"])){
                     $FocusDates_check_data = count($res_api["data"][1]["FocusDates"]);  
                     if($FocusDates_check_data > 0){
-                        $data['sum_FotalCustomers'] = $data['sum_FotalCustomers'] + $res_api["data"][1]["FocusDates"][0]["TotalCustomers"];
-                        $data['sum_TotalDays'] = $data['sum_TotalDays'] + $res_api["data"][1]["FocusDates"][0]["TotalDays"];
+                        // $data['sum_FotalCustomers'] = $data['sum_FotalCustomers'] + $res_api["data"][1]["FocusDates"][0]["TotalCustomers"];
+                        // $data['sum_TotalDays'] = $data['sum_TotalDays'] + $res_api["data"][1]["FocusDates"][0]["TotalDays"];
                     }
                 }
                                
@@ -163,7 +163,7 @@ class DashboardController extends Controller
                     $SalesPrevious_check_data = count($res_api["data"][3]["SalesPrevious"]);
                     if($SalesPrevious_check_data > 0){
                         $SalesPrevious = $res_api["data"][3]["SalesPrevious"];
-                        $data['sum_totalAmtSale_Previous'] = $data['sum_totalAmtSale_Previous'] + $SalesPrevious[0]["totalAmtSale"]; // เป้ายอดขายปีที่แล้ว
+                        $data['sum_totalAmtSale_Previous'] = $data['sum_totalAmtSale_Previous'] + $SalesPrevious[0]["sales"]; // เป้ายอดขายปีที่แล้ว
                     }
                 }
                 
@@ -171,7 +171,7 @@ class DashboardController extends Controller
                     $SalesCurrent_check_data = count($res_api["data"][2]["SalesCurrent"]);
                     if($SalesCurrent_check_data > 0){
                         $SalesCurrent = $res_api["data"][2]["SalesCurrent"];
-                        $data['sum_totalAmtSale'] = $data['sum_totalAmtSale'] + $SalesCurrent[0]["totalAmtSale"]; // ยอดที่ทำได้ปีนี้
+                        $data['sum_totalAmtSale'] = $data['sum_totalAmtSale'] + $SalesCurrent[0]["sales"]; // ยอดที่ทำได้ปีนี้
                     }
                 }
 
@@ -203,7 +203,7 @@ class DashboardController extends Controller
 
                     if(isset($res_api['data'][4]['DaysSalesCurrent'][$nop]['DayNo'])){ // ปีปัจจุบัน
                         if($res_api['data'][4]['DaysSalesCurrent'][$nop]['DayNo'] == $i){ 
-                            $sum_amtsale_current[$i] +=  $res_api['data'][4]['DaysSalesCurrent'][$nop]['totalAmtSale'];
+                            $sum_amtsale_current[$i] +=  $res_api['data'][4]['DaysSalesCurrent'][$nop]['sales'];
                         }else{
                             $nop--;
                         }
@@ -211,7 +211,7 @@ class DashboardController extends Controller
                     
                     if(isset($res_api['data'][5]['DaysSalesPrevious'][$nop]['DayNo'])){ // ปีที่แล้ว
                         if($res_api['data'][5]['DaysSalesPrevious'][$nop]['DayNo'] == $i){ 
-                            $sum_amtsale_previous[$i] +=  $res_api['data'][5]['DaysSalesPrevious'][$nop]['totalAmtSale'];
+                            $sum_amtsale_previous[$i] +=  $res_api['data'][5]['DaysSalesPrevious'][$nop]['sales'];
                         }else{
                             $nop--;
                         }
