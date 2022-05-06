@@ -456,4 +456,86 @@ class PlanMonthController extends Controller
         // dd($data);
         return view('saleman.planMonth', $data);
     }
+
+    public function approvalsaleplan_close($id)
+    {
+
+        // ข้อมูล Sale plan
+        $data['list_saleplan'] = DB::table('sale_plans')
+            ->where('monthly_plan_id', $id)
+            ->whereIn('sale_plans_status', [2, 3, 4])
+            ->orderBy('id', 'desc')->get();
+
+        // -----  API  //
+        $api_token = $this->apicontroller->apiToken(); // API Login
+        // -----  API ลูกค้าที่ sale ดูแล ----------- //
+        $mon_plan = DB::table('monthly_plans')->where('id', $id)->first(); // ค้นหา id ผู้ขออนุมัติ
+        $user_api = DB::table('users')->where('id',$mon_plan->created_by)->first(); // ค้นหา user api เพื่อใช้ดึง api
+
+        list($year,$month,$day) = explode('-', $mon_plan->month_date);
+        $month = $month + 0; //-- ทำให้เป็นตัวเลข เพื่อตัดเลข 0 ด้านหน้าออก
+
+        $path_search = "reports/sellers/B2/closesaleplans?years=".$year."&months=".$month;
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+        $res_api = $response->json();
+
+        $data['saleplan_api'] = $res_api['data'];
+
+        $data['mon_plan'] = $mon_plan;
+        $data['sale_name'] = DB::table('users')->where('id',$mon_plan->created_by)->select('name')->first(); // ชื่อเซลล์
+
+        // $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/sellers/'.$user_api->api_identify.'/customers');
+        // $res_api = $response->json();
+
+        // $data['customer_api'] = array();
+        // foreach ($res_api['data'] as $key => $value) {
+        //     $data['customer_api'][$key] =
+        //     [
+        //         'id' => $value['identify'],
+        //         'shop_name' => $value['title']." ".$value['name'],
+        //         'shop_address' => $value['amphoe_name']." ".$value['province_name'],
+        //     ];
+        // }
+
+        // // -----  API สินค้านำเสนอ----------- //
+        // $path_search = "pdglists?sortorder=DESC";
+        // $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+        // $res_api = $response->json();
+
+        // $data['pdglists_api'] = array();
+        // foreach ($res_api['data'] as $key => $value) {
+        //     $data['pdglists_api'][$key] =
+        //     [
+        //         'identify' => $value['identify'],
+        //         'name' => $value['name'],
+        //         'sub_code' => $value['sub_code'],
+        //     ];
+        // }
+
+        // dd($data['pdglists_api']);
+
+
+
+
+        // ลูกค้าใหม่
+        $data['customer_new'] = DB::table('customer_shops_saleplan')
+        ->join('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
+        ->join('master_customer_new', 'customer_shops_saleplan.customer_shop_objective', 'master_customer_new.id')
+        ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
+        ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
+        ->whereIn('customer_shops_saleplan.shop_aprove_status', [2, 3])
+        // ->where('customer_shops.created_by', Auth::user()->id)
+        ->where('customer_shops_saleplan.monthly_plan_id', $id)
+        ->select(
+            'province.PROVINCE_NAME',
+            'customer_shops.*',
+            'customer_shops.id as custid',
+            'customer_shops_saleplan.*',
+            'master_customer_new.cust_name'
+        )
+        ->orderBy('customer_shops.id', 'desc')
+        ->get();
+
+        return view('saleman.approval_saleplan_close', $data);
+    }
 }

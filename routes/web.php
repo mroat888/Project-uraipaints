@@ -24,6 +24,7 @@ Route::get('dashboard',  'SaleMan\DashboardController@index');
 Route::get('important-day-detail',  'SaleMan\ImportantDayController@index');
 Route::get('/planMonth', 'PlanMonthController@index');
 Route::get('planMonth_history/{id}', 'PlanMonthController@history');
+Route::get('approvalsaleplan_close/{id}', 'PlanMonthController@approvalsaleplan_close');
 Route::post('search_month_planMonth', 'PlanMonthController@search_month_planMonth');
 Route::get('approve_monthly_plan/{id}', 'PlanMonthController@approve');
 Route::get('dailyWork', 'SaleMan\DailyWorkController@index');

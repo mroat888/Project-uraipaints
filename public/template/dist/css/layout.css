@@ -48,7 +48,7 @@ body{
     border-color: #86aeed;
 }
 .hk-wrapper.hk-vertical-nav .hk-nav .navbar-nav .nav-item .nav-link > i{
-    color: #fff !important; 
+    color: #fff !important;
 }
 .hk-wrapper.hk-vertical-nav .hk-nav.hk-nav-light{
     background: #19407c;
@@ -462,7 +462,7 @@ background: linear-gradient(90deg, rgba(121,218,97,1) 0%, rgba(37,140,20,1) 100%
     border-bottom: 0;
 }
 .hk-breadcrumb .breadcrumb.breadcrumb-light .breadcrumb-item.active{
-    color: #19407c; 
+    color: #19407c;
 }
 .topichead-bgred{
     color: #fff;
@@ -550,6 +550,14 @@ background: linear-gradient(90deg, rgba(121,218,97,1) 0%, rgba(37,140,20,1) 100%
     padding: 5px 20px;
     border-radius: 5px;
 }
+
+.btn-close{
+    color: #e01a1a;
+    background: rgba(198,18,70,0.2);
+    padding: 5px 20px;
+    border-radius: 5px;
+}
+
 .btn-draf,
 .btn-draf:hover{
     color: #333;

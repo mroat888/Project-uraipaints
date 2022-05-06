@@ -104,10 +104,20 @@
                                                                     style="font-size: 12px;">
                                                                     Pending
                                                                 </span>
-                                                            @else
+                                                            @elseif ($value->status_approve == 2)
                                                                 <span class="btn-approve"
                                                                     style="font-size: 12px;">
                                                                     Approve
+                                                                </span>
+                                                            @elseif ($value->status_approve == 3)
+                                                                <span class="btn-draf"
+                                                                    style="font-size: 12px;">
+                                                                    Reject
+                                                                </span>
+                                                            @else
+                                                                <span class="btn-close"
+                                                                    style="font-size: 12px;">
+                                                                    Close
                                                                 </span>
                                                             @endif
 
@@ -118,7 +128,7 @@
 
                                                                 <form action="{{ url('approve_monthly_plan', $value->id) }}" method="GET">
                                                                     @if ($value->status_approve == 1 || $value->status_approve == 2)
-                                                                    <button type="button" class="btn btn-icon btn-secondary requestApproval" disabled>
+                                                                    <button type="button" class="btn btn-icon btn-edit requestApproval mb-2" disabled>
                                                                         <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
                                                                         @else
 
@@ -136,10 +146,10 @@
                                                                                 // dd($OverSaleplan, date('Y-m-d'));
                                                                             @endphp
                                                                             @if($OverSaleplan >= date('Y-m-d'))
-                                                                                <button type="button" class="btn btn-icon btn-edit requestApproval">
+                                                                                <button type="button" class="btn btn-icon btn-edit requestApproval mb-2">
                                                                                     <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
                                                                             @else
-                                                                                <button type="button" class="btn btn-icon btn-edit requestApproval" disabled>
+                                                                                <button type="button" class="btn btn-icon btn-edit requestApproval mb-2" disabled>
                                                                                     <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
                                                                             @endif
                                                                     @else
@@ -156,15 +166,17 @@
                                                                                     $OverSaleplan = $myear."-".$mmonth."-".$setting_day;
                                                                                     // dd($OverSaleplan, date('Y-m-d'));
                                                                                 @endphp
+
+                                                                            {{-- <div class="button-list"> --}}
                                                                                 @if($OverSaleplan >= date('Y-m-d'))
-                                                                                    <button type="button" class="btn btn-icon btn-edit requestApproval">
+                                                                                    <button type="button" class="btn btn-icon btn-edit requestApproval mb-2">
                                                                                     <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
                                                                                 @else
-                                                                                    <button type="button" class="btn btn-icon btn-edit requestApproval" disabled>
+                                                                                    <button type="button" class="btn btn-icon btn-edit requestApproval mb-2" disabled>
                                                                                     <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
                                                                                 @endif
                                                                             @else
-                                                                            <button type="button" class="btn btn-icon btn-edit requestApproval" disabled>
+                                                                            <button type="button" class="btn btn-icon btn-edit requestApproval mb-2" disabled>
                                                                                 <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
                                                                             @endif
 
@@ -173,9 +185,15 @@
                                                                     @endif
 
                                                                     @if ($value->status_approve != 0 && $value->status_approve != 1)
-                                                                    <a href="{{url('planMonth_history', $value->id)}}" class="btn btn-icon btn-view ml-2">
+                                                                    <a href="{{url('planMonth_history', $value->id)}}" type="button" class="btn btn-icon text-white mb-2" style="background-color: rgb(2, 119, 144)">
+                                                                        <span class="btn-icon-wrap"><i data-feather="clock"></i></span></a>
+                                                                    @endif
+
+                                                                    @if ($value->status_approve == 4)
+                                                                    <a href="{{url('approvalsaleplan_close', $value->id)}}" type="button" class="btn btn-icon text-white mb-2" style="background-color: rgb(73, 39, 113)">
                                                                         <span class="btn-icon-wrap"><i data-feather="file"></i></span></a>
                                                                     @endif
+                                                                            {{-- </div> --}}
 
                                                                 </form>
 
