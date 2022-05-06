@@ -77,14 +77,16 @@ class PlanMonthController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/sellers/'.Auth::user()->api_identify.'/customers');
         $res_api = $response->json();
 
-        $data['customer_api'] = array();
-        foreach ($res_api['data'] as $key => $value) {
-            $data['customer_api'][$key] =
-            [
-                'id' => $value['identify'],
-                'shop_name' => $value['title']." ".$value['name'],
-                'shop_address' => $value['amphoe_name']." , ".$value['province_name'],
-            ];
+        if($res_api['code'] == 200){
+            $data['customer_api'] = array();
+            foreach ($res_api['data'] as $key => $value) {
+                $data['customer_api'][$key] =
+                [
+                    'id' => $value['identify'],
+                    'shop_name' => $value['title']." ".$value['name'],
+                    'shop_address' => $value['amphoe_name']." , ".$value['province_name'],
+                ];
+            }
         }
 
         // ---- สร้างข้อมูล เยี่ยมลูกค้า โดย link กับ api ------- //
@@ -264,20 +266,23 @@ class PlanMonthController extends Controller
         ->update([
             'sale_plans_status' => 1,
             'updated_by' => Auth::user()->id,
-            'updated_at' => Carbon::now()
+            'updated_at' => Carbon::now(),
+            'request_approve_at' =>Carbon::now()
         ]);
 
         DB::table('customer_shops_saleplan')->where('monthly_plan_id', $id)
         ->update([
             'shop_aprove_status' => 1,
             'updated_by' => Auth::user()->id,
-            'updated_at' => Carbon::now()
+            'updated_at' => Carbon::now(),
+            'request_approve_at' =>Carbon::now()
         ]);
 
         $request_approval_month = MonthlyPlan::find($id);
         $request_approval_month->status_approve   = 1;
         $request_approval_month->updated_by   = Auth::user()->id;
         $request_approval_month->updated_at   = Carbon::now();
+        $request_approval_month->request_approve_at   = Carbon::now();
         $request_approval_month->update();
 
         return back();

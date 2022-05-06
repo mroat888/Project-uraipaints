@@ -57,13 +57,8 @@
                                                     <option value="" selected>เลือกทีม</option>
                                                     @php 
                                                         $checkteam_sales = "";
-                                                        $checkusers = "";
-
                                                         if(isset($selectteam_sales)){
                                                             $checkteam_sales = $selectteam_sales;
-                                                        }
-                                                        if(isset($selectusers)){
-                                                            $checkusers = $selectusers;
                                                         }
                                                     @endphp
                                                     @foreach($team_sales as $team)
@@ -76,6 +71,12 @@
                                                 </select>
                                                 <select name="selectusers" class="form-control form-control-sm" aria-label=".form-select-lg example">
                                                     <option value="" selected>ผู้แทนขาย</option>
+                                                    @php 
+                                                        $checkusers = "";
+                                                        if(isset($selectusers)){
+                                                            $checkusers = $selectusers;
+                                                        }
+                                                    @endphp
                                                     @foreach($users as $user)
                                                         @if($checkusers == $user->id)
                                                             <option value="{{ $user->id }}" selected>{{ $user->name }}</option>
@@ -157,7 +158,6 @@
                 </section>
             </div>
         </div>
-    </form>
         <!-- /Row -->
     </div>
     <!-- /Container -->

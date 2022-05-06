@@ -45,10 +45,8 @@ class CustomerController extends Controller
 
     public function customerLead()
     {
-        // $data['customer_shops'] = DB::table('customer_shops_saleplan')
-        //     ->leftJoin('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
-        $data['customer_shops'] = DB::table('customer_shops')
-            ->leftJoin('customer_shops_saleplan', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
+        $data['customer_shops'] = DB::table('customer_shops_saleplan')
+            ->leftJoin('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
             ->leftJoin('customer_shops_saleplan_result', 'customer_shops_saleplan_result.customer_shops_saleplan_id', 'customer_shops_saleplan.id')
             ->join('monthly_plans', 'monthly_plans.id', 'customer_shops_saleplan.monthly_plan_id')
             ->leftJoin('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
@@ -166,6 +164,7 @@ class CustomerController extends Controller
                         'monthly_plan_id' => $monthly_plan->id,
                         'created_by' => Auth::user()->id,
                         'created_at' => Carbon::now(),
+                        'request_approve_at' => Carbon::now(),
                     ]);
 
                 DB::commit();
@@ -229,6 +228,7 @@ class CustomerController extends Controller
                         'monthly_plan_id' => $monthly_plan->id,
                         'created_by' => Auth::user()->id,
                         'created_at' => Carbon::now(),
+                        'request_approve_at' => Carbon::now(),
                     ]);
 
                 DB::commit();

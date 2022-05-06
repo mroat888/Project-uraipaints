@@ -132,9 +132,25 @@
                                         <div class="col-md-12">
                                             <div class="desc_cusnote">
                                                 <blockquote class="blockquote mb-0">
-                                                    <p>	วัตถุประสงค์ : {{ $cust_shops_saleplan->customer_shop_objective }}</p>
+                                                    @php 
+                                                        $master_objective = DB::table('master_objective_saleplans')
+                                                            ->where('id', $cust_shops_saleplan->customer_shop_objective)
+                                                            ->first();
+                                                        if(!is_null($master_objective)){
+                                                            $customer_shop_objective = $master_objective->masobj_title;
+                                                        }else{
+                                                            $customer_shop_objective = "ไม่ระบุ";
+                                                        }
+                                                    @endphp
+                                                    <p>	วัตถุประสงค์ : {{ $customer_shop_objective }}</p>
                                                 </blockquote>
                                             </div>
+                                        </div>
+                                        <div class="col-md-12 mt-15">
+                                            @php 
+                                                list($sale_date, $sale_time) = explode(' ',$cust_shops_saleplan->created_at);
+                                            @endphp
+                                            วันที่ : {{ $sale_date }} เวลา : {{ $sale_time }}
                                         </div>
                                     </div>
                                 </div>
@@ -170,9 +186,25 @@
                                         <div class="col-md-12">
                                             <div class="desc_cusnote">
                                                 <blockquote class="blockquote mb-0">
-                                                    <p>วัตถุประสงค์ : {{ $cust_shops_saleplan->customer_shop_objective }}</p>
+                                                    @php 
+                                                        $master_objective = DB::table('master_objective_saleplans')
+                                                            ->where('id', $cust_shops_saleplan->customer_shop_objective)
+                                                            ->first();
+                                                        if(!is_null($master_objective)){
+                                                            $customer_shop_objective = $master_objective->masobj_title;
+                                                        }else{
+                                                            $customer_shop_objective = "ไม่ระบุ";
+                                                        }
+                                                    @endphp
+                                                    <p>	วัตถุประสงค์ : {{ $customer_shop_objective }}</p>
                                                 </blockquote>
                                             </div>
+                                        </div>
+                                        <div class="col-md-12 mt-15">
+                                            @php 
+                                                list($sale_date, $sale_time) = explode(' ',$cust_shops_saleplan->created_at);
+                                            @endphp
+                                            วันที่ : {{ $sale_date }} เวลา : {{ $sale_time }}
                                         </div>
                                     </div>
                                 </div>
@@ -348,6 +380,12 @@
                                                     </blockquote>
                                                 </div>
                                             </div>
+                                            <div class="col-md-12 mt-15">
+                                                @php 
+                                                    list($sale_date, $sale_time) = explode(' ',$customer_shops_saleplan_result->updated_at);
+                                                @endphp
+                                                วันที่ : {{ $sale_date }} เวลา : {{ $sale_time }}
+                                            </div>
                                         </div>
                                     </div>
                                     <hr>
@@ -395,6 +433,12 @@
                                                     </blockquote>
                                                 </div>
                                             </div>
+                                            <div class="col-md-12 mt-15">
+                                            @php 
+                                                list($sale_date, $sale_time) = explode(' ',$customer_shops_saleplan_result->updated_at);
+                                            @endphp
+                                            วันที่ : {{ $sale_date }} เวลา : {{ $sale_time }}
+                                        </div>
                                         </div>
                                     </div>
                                     <hr>

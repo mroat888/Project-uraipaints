@@ -25,7 +25,6 @@ class ApprovalCustomerExceptController extends Controller
         $data['customers'] = DB::table('customer_shops_saleplan')
             ->join('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
             ->join('users', 'customer_shops_saleplan.created_by', '=', 'users.id')
-            ->leftJoin('monthly_plans', 'monthly_plans.id', 'customer_shops_saleplan.monthly_plan_id')
             ->where('customer_shops.shop_status', 0)
             ->where('customer_shops_saleplan.shop_aprove_status', 1) // ส่งขออนุมัติ
             ->where(function($query) use ($auth_team) {
@@ -40,106 +39,39 @@ class ApprovalCustomerExceptController extends Controller
             ->select('customer_shops_saleplan.created_by as shop_created_by')
             ->distinct()->get();
 
-            
-        $data['users'] = DB::table('users')
-            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
-            ->where(function($query) use ($auth_team) {
-                for ($i = 0; $i < count($auth_team); $i++){
-                    $query->orWhere('users.team_id', $auth_team[$i])
-                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
-                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
-                }
-            })
-            ->get();
-
-        $data['team_sales'] = DB::table('master_team_sales')
-            ->where(function($query) use ($auth_team) {
-                for ($i = 0; $i < count($auth_team); $i++){
-                    $query->orWhere('id', $auth_team[$i])
-                        ->orWhere('id', 'like', $auth_team[$i].',%')
-                        ->orWhere('id', 'like', '%,'.$auth_team[$i]);
-                }
-            })
-            ->get();
+        // dd($data['customers']);
 
         return view('leadManager.approval_customer_except', $data);
     }
 
     public function search(Request $request)
     {
+
         $auth_team_id = explode(',',Auth::user()->team_id);
         $auth_team = array();
         foreach($auth_team_id as $value){
             $auth_team[] = $value;
         }
 
-        $customer_shops = DB::table('customer_shops_saleplan')
+        list($year,$month) = explode('-', $request->selectdateTo);
+        $data['customers'] = DB::table('customer_shops_saleplan')
         ->join('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
         ->join('users', 'customer_shops_saleplan.created_by', '=', 'users.id')
-        ->leftJoin('monthly_plans', 'monthly_plans.id', 'customer_shops_saleplan.monthly_plan_id')
         ->where('customer_shops.shop_status', 0)
         ->where('customer_shops_saleplan.shop_aprove_status', 1) // ส่งขออนุมัติ
+        ->where(function($query) use ($auth_team) {
+            for ($i = 0; $i < count($auth_team); $i++){
+                $query->orWhere('users.team_id', $auth_team[$i])
+                    ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                    ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+            }
+        })
         ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
-        ->where('customer_shops_saleplan.is_monthly_plan', 'N');
-
-        if(!is_null($request->selectteam_sales)){ //-- ทีมขาย
-            $team = $request->selectteam_sales;
-            $customer_shops = $customer_shops
-                ->where(function($query) use ($team) {
-                    $query->orWhere('users.team_id', $team)
-                        ->orWhere('users.team_id', 'like', $team.',%')
-                        ->orWhere('users.team_id', 'like', '%,'.$team);
-                });
-            $data['selectteam_sales'] = $request->selectteam_sales;
-        }else{
-            $customer_shops = $customer_shops
-            ->where(function($query) use ($auth_team) {
-                for ($i = 0; $i < count($auth_team); $i++){
-                    $query->orWhere('users.team_id', $auth_team[$i])
-                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
-                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
-                }
-            });
-        }
-
-        if(!is_null($request->selectdateFrom)){ //-- วันที่
-            list($year,$month) = explode('-', $request->selectdateFrom);
-            $customer_shops = $customer_shops->whereYear('monthly_plans.month_date',$year)
-            ->whereMonth('monthly_plans.month_date', $month);
-            $data['date_filter'] = $request->selectdateFrom;
-        }
-
-        if(!is_null($request->selectusers)){ //-- ผู้แทนขาย
-            $customer_shops = $customer_shops
-                ->where('customer_shops_saleplan.created_by', $request->selectusers);
-            $data['selectusers'] = $request->selectusers;
-        }
-
-        $customer_shops = $customer_shops->select('customer_shops_saleplan.created_by as shop_created_by')
+        ->where('customer_shops_saleplan.is_monthly_plan', 'N')
+        ->whereYear('customer_shops_saleplan.created_at', $year)
+        ->whereMonth('customer_shops_saleplan.created_at', $month)
+        ->select('customer_shops_saleplan.created_by as shop_created_by')
         ->distinct()->get();
-
-        $data['customers'] = $customer_shops;
-
-        $data['users'] = DB::table('users')
-            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
-            ->where(function($query) use ($auth_team) {
-                for ($i = 0; $i < count($auth_team); $i++){
-                    $query->orWhere('users.team_id', $auth_team[$i])
-                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
-                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
-                }
-            })
-            ->get();
-
-        $data['team_sales'] = DB::table('master_team_sales')
-            ->where(function($query) use ($auth_team) {
-                for ($i = 0; $i < count($auth_team); $i++){
-                    $query->orWhere('id', $auth_team[$i])
-                        ->orWhere('id', 'like', $auth_team[$i].',%')
-                        ->orWhere('id', 'like', '%,'.$auth_team[$i]);
-                }
-            })
-            ->get();
 
         return view('leadManager.approval_customer_except', $data);
     }
@@ -178,11 +110,9 @@ class ApprovalCustomerExceptController extends Controller
             ->leftJoin('customer_shops_saleplan_result', 'customer_shops_saleplan_result.customer_shops_saleplan_id', 'customer_shops_saleplan.id')
             ->leftJoin('monthly_plans', 'monthly_plans.id', 'customer_shops_saleplan.monthly_plan_id')
             ->leftJoin('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
-            ->leftJoin('amphur', 'amphur.AMPHUR_ID', 'customer_shops.shop_amphur_id')
             ->leftJoin('users', 'customer_shops_saleplan.created_by', '=', 'users.id')
             ->where('customer_shops.shop_status', '!=' ,2) // 0 = ลูกค้าใหม่ , 1 = ทะเบียนลูกค้า , 2 = ลบ
             ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
-            ->whereIn('customer_shops_saleplan.shop_aprove_status', [2,3]) // 0=ฉบับร่าง ,1 = ส่งอนุมัติ , 2 = อนุมัติ , 3= ปฎิเสธ
             ->where(function($query) use ($auth_team) {
                 for ($i = 0; $i < count($auth_team); $i++){
                     $query->orWhere('users.team_id', $auth_team[$i])
@@ -193,13 +123,9 @@ class ApprovalCustomerExceptController extends Controller
             ->select(
                 'monthly_plans.*',
                 'province.PROVINCE_NAME',
-                'amphur.AMPHUR_NAME',
                 'customer_shops_saleplan_result.*',
                 'customer_shops_saleplan.*',
                 'customer_shops_saleplan.shop_aprove_status as saleplan_shop_aprove_status',
-                'users.name as saleman_name',
-                'customer_shops.created_at as shop_created_at',
-                'customer_shops_saleplan.approve_at as approve_at',
                 'customer_shops.*'
             )
             ->orderBy('customer_shops_saleplan.id', 'desc')
@@ -244,11 +170,9 @@ class ApprovalCustomerExceptController extends Controller
             ->leftJoin('customer_shops_saleplan_result', 'customer_shops_saleplan_result.customer_shops_saleplan_id', 'customer_shops_saleplan.id')
             ->leftJoin('monthly_plans', 'monthly_plans.id', 'customer_shops_saleplan.monthly_plan_id')
             ->leftJoin('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
-            ->leftJoin('amphur', 'amphur.AMPHUR_ID', 'customer_shops.shop_amphur_id')
             ->leftJoin('users', 'customer_shops_saleplan.created_by', '=', 'users.id')
             ->where('customer_shops.shop_status', '!=' ,2) // 0 = ลูกค้าใหม่ , 1 = ทะเบียนลูกค้า , 2 = ลบ
-            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
-            ->whereIn('customer_shops_saleplan.shop_aprove_status', [2,3]); // 0=ฉบับร่าง ,1 = ส่งอนุมัติ , 2 = อนุมัติ , 3= ปฎิเสธ
+            ->where('users.status', 1); // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
 
             if(!is_null($request->selectdateFrom)){ //-- วันที่
                 list($year,$month) = explode('-', $request->selectdateFrom);
@@ -293,18 +217,15 @@ class ApprovalCustomerExceptController extends Controller
             if(!is_null($request->selectusers)){ //-- ผู้แทนขาย
                 $customer_shops = $customer_shops
                     ->where('customer_shops_saleplan.created_by', $request->selectusers);
-                $data['selectusers'] = $request->selectusers;
+                $data['selectteam_sales'] = $request->selectteam_sales;
             }
 
             $customer_shops = $customer_shops->select(
                 'monthly_plans.*',
                 'province.PROVINCE_NAME',
-                'amphur.AMPHUR_NAME',
                 'customer_shops_saleplan_result.*',
                 'customer_shops_saleplan.*',
                 'customer_shops_saleplan.shop_aprove_status as saleplan_shop_aprove_status',
-                'users.name as saleman_name',
-                'customer_shops.created_at as shop_created_at',
                 'customer_shops.*'
             )
             ->orderBy('customer_shops_saleplan.id', 'desc')
@@ -341,24 +262,21 @@ class ApprovalCustomerExceptController extends Controller
 
     public function approval_customer_except_history_detail($id)
     {
-        $data['customer_shops'] = DB::table('customer_shops')
-            ->where('id', $id)
-            ->first();
-
-        $data['customer_contacts'] = DB::table('customer_contacts')
-            ->where('customer_shop_id', $data['customer_shops']->id)
-            ->orderBy('id', 'desc')
-            ->first();
-
-        $data['customer_history_contacts'] = DB::table('customer_history_contacts')
-            ->where('customer_shop_id', $data['customer_shops']->id)
-            ->orderBy('id', 'desc')
-            ->get();
-
-        $data['customer_shops_saleplan'] = DB::table('customer_shops_saleplan')
-            ->where('customer_shop_id', $data['customer_shops']->id)
-            ->orderBy('monthly_plan_id', 'asc')
-            ->get();
+        $data['customer_except'] = DB::table('customer_shops_saleplan')
+        ->join('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
+        ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
+        ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
+        ->whereIn('customer_shops_saleplan.shop_aprove_status', [1, 2, 3])
+        ->where('customer_shops_saleplan.is_monthly_plan', "N")
+        ->where('customer_shops_saleplan.created_by', $id)
+        ->select(
+            'province.PROVINCE_NAME',
+            'customer_shops.*',
+            'customer_shops.id as custid',
+            'customer_shops_saleplan.*'
+        )
+        ->orderBy('customer_shops.id', 'desc')
+        ->get();
 
         return view('leadManager.approval_customer_except_history_detail', $data);
     }
@@ -466,7 +384,6 @@ class ApprovalCustomerExceptController extends Controller
                                 'customer_shop_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
                                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                                'approve_at' => Carbon::now()->format('Y-m-d H:i:s'),
                             ]);
                             DB::table('customer_shops')->where('shop_status', 0)
                             ->where('monthly_plan_id', $request->monthly_plan_id)
@@ -490,7 +407,6 @@ class ApprovalCustomerExceptController extends Controller
                                 'customer_shop_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
                                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                                'approve_at' => Carbon::now()->format('Y-m-d H:i:s'),
                             ]);
                             DB::table('customer_shops')->where('shop_status', 0)
                             ->where('monthly_plan_id', $request->monthly_plan_id)
@@ -517,7 +433,6 @@ class ApprovalCustomerExceptController extends Controller
                                 'customer_shop_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
                                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                                'approve_at' => Carbon::now()->format('Y-m-d H:i:s'),
                             ]);
                             DB::table('customer_shops')->where('shop_status', 0)
                             ->where('monthly_plan_id', $request->monthly_plan_id)

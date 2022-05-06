@@ -18,7 +18,7 @@
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
             <li class="breadcrumb-item"><a href="#">Page</a></li>
-            <li class="breadcrumb-item active" aria-current="page">การอนุมัติลูกค้าใหม่ (นอกแผน)</li>
+            <li class="breadcrumb-item active" aria-current="page">อนุมัติลูกค้าใหม่</li>
         </ol>
     </nav>
     <!-- /Breadcrumb -->
@@ -39,7 +39,7 @@
         <div class="hk-pg-header mb-10">
             <div>
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                    data-feather="file-text"></i></span></span>บันทึกข้อมูลการอนุมัติลูกค้าใหม่ (นอกแผน)</h4>
+                    data-feather="file-text"></i></span></span>อนุมัติลูกค้าใหม่</h4>
             </div>
             <div class="d-flex">
 
@@ -68,34 +68,83 @@
                                 <span class="icon-label">
                                     <i class="fa fa-list"></i>
                                 </span>
-                                <span class="btn-text">ประวัติ</span>
+                                <span class="btn-text">ประวัติลูกค้าใหม่</span>
                             </a>
                             <hr>
                             <div id="calendar"></div>
                         </div>
                     </div>
+
+                    <h5 class="hk-sec-title">รายการขออนุมัติลูกค้าใหม่ (นอกแผน)</h5>
                     <div class="row mb-2">
-                            <div class="col-md-6">
-                                <h5 class="hk-sec-title">ตารางข้อมูลการอนุมัติลูกค้าใหม่ (นอกแผน)</h5>
-                            </div>
-                            <div class="col-md-6">
-                                 <!-- ------ -->
-                                 <span class="form-inline pull-right">
-                                    <a style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</a>
-                                    <form action="{{ url('lead/approval-customer-except/search') }}" method="POST" enctype="multipart/form-data">
-                                        @csrf
-                                        {{-- <input type="hidden" name="id" value="{{$id_create}}" /> --}}
-
-                                        <span id="selectdate" style="display:none;">
-                                             <input type="month" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" name ="selectdateTo" value="" />
-
-                                            <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-success btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button>
+                        <div class="col-sm">
+                            <div class="table-wrap">
+                                 <!-- เงื่อนไขการค้นหา -->
+                                 @php 
+                                    $action_search = "lead/approval-customer-except/search"; //-- action form
+                                    if(isset($date_filter)){ //-- สำหรับ แสดงวันที่ค้นหา
+                                        $date_search = $date_filter;
+                                    }else{
+                                        $date_search = "";
+                                    }
+                                @endphp
+                                <form action="{{ url($action_search) }}" method="post">
+                                @csrf
+                                <div class="hk-pg-header mb-10">
+                                    <div class="col-sm-12 col-md-12">
+                                        <span class="form-inline pull-right pull-sm-center">
+                                            <span id="selectdate">
+                                                @if(count($team_sales) > 1)
+                                                <select name="selectteam_sales" class="form-control form-control-sm" aria-label=".form-select-lg example">
+                                                    <option value="" selected>เลือกทีม</option>
+                                                    @php 
+                                                        $checkteam_sales = "";
+                                                        if(isset($selectteam_sales)){
+                                                            $checkteam_sales = $selectteam_sales;
+                                                        }
+                                                    @endphp
+                                                    @foreach($team_sales as $team)
+                                                        @if($checkteam_sales == $team->id)
+                                                            <option value="{{ $team->id }}" selected>{{ $team->team_name }}</option>
+                                                        @else
+                                                            <option value="{{ $team->id }}">{{ $team->team_name }}</option>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                                @endif
+                                                <select name="selectusers" class="form-control form-control-sm" aria-label=".form-select-lg example">
+                                                    <option value="" selected>ผู้แทนขาย</option>
+                                                    @php 
+                                                        $checkusers = "";
+                                                        if(isset($selectusers)){
+                                                            $checkusers = $selectusers;
+                                                        }
+                                                    @endphp
+                                                    @foreach($users as $user)
+                                                        @if($checkusers == $user->id)
+                                                            <option value="{{ $user->id }}" selected>{{ $user->name }}</option>
+                                                        @else
+                                                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                                
+                                                <!-- ปี/เดือน :  -->
+                                                <input type="month" id="selectdateFrom" name="selectdateFrom" 
+                                                value="{{ $date_search }}" class="form-control form-control-sm" 
+                                                style="margin-left:10px; margin-right:10px;"/>
+                                                <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm" id="submit_request">ค้นหา</button>
+                                            </span>
                                         </span>
-                                    </form>
-                                    </span>
-                                    <!-- ------ -->
+                                    </div>
+                                </div>
+                                
+                                </form>
+                                <!-- จบเงื่อนไขการค้นหา -->
                             </div>
                         </div>
+                    </div>
+           
                     <div class="row">
                         <div class="col-sm">
                             <div class="mb-20">
@@ -160,9 +209,8 @@
                                     </tbody>
                                 </table>
                             </div>
-                             <!-- ModalSaleplanApprove -->
-        <div class="modal fade" id="ModalSaleplanApprove" tabindex="-1" role="dialog" aria-labelledby="ModalSaleplanApprove"
-        aria-hidden="true">
+    <!-- ModalSaleplanApprove -->
+    <div class="modal fade" id="ModalSaleplanApprove" tabindex="-1" role="dialog" aria-labelledby="ModalSaleplanApprove" aria-hidden="true">
         <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -182,7 +230,7 @@
                 </div>
         </div>
     </div>
-        <!-- End ModalSaleplanApprove -->
+    <!-- End ModalSaleplanApprove -->
     </form>
                         </div>
                     </div>

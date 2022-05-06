@@ -158,7 +158,7 @@ class ApprovalCustomerExceptController extends Controller
             if(!is_null($request->selectusers)){ //-- ผู้แทนขาย
                 $customer_shops = $customer_shops
                     ->where('customer_shops_saleplan.created_by', $request->selectusers);
-                $data['selectteam_sales'] = $request->selectteam_sales;
+                $data['selectusers'] = $request->selectusers;
             }
 
             $customer_shops = $customer_shops->select(

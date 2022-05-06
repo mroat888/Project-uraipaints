@@ -433,6 +433,7 @@ class ApprovalSalePlanController extends Controller
                                 'sale_plans_status' => 2,
                                 'sale_plans_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
+                                'approve_at' => date('Y-m-d H:i:s'),
                             ]);
 
                             DB::table('customer_shops_saleplan')->where('monthly_plan_id', $chk)
@@ -440,11 +441,13 @@ class ApprovalSalePlanController extends Controller
                                 'shop_aprove_status' => 2,
                                 'customer_shop_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
+                                'approve_at' => date('Y-m-d H:i:s'),
                             ]);
                         }
                         MonthlyPlan::where('id', $chk)->update([
                             'status_approve' => 2,
                             'updated_by' => Auth::user()->id,
+                            'approve_at' => date('Y-m-d H:i:s'),
                         ]);
 
                     } else {
@@ -454,6 +457,7 @@ class ApprovalSalePlanController extends Controller
                                 'sale_plans_status' => 2,
                                 'sale_plans_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
+                                'approve_at' => date('Y-m-d H:i:s'),
                             ]);
 
                             DB::table('customer_shops_saleplan')->where('monthly_plan_id', $chk)
@@ -461,6 +465,7 @@ class ApprovalSalePlanController extends Controller
                                 'shop_aprove_status' => 2,
                                 'customer_shop_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
+                                'approve_at' => date('Y-m-d H:i:s'),
                             ]);
                         }
 
@@ -475,6 +480,7 @@ class ApprovalSalePlanController extends Controller
                             MonthlyPlan::where('id', $chk)->update([
                                 'status_approve' => 2,
                                 'updated_by' => Auth::user()->id,
+                                'approve_at' => date('Y-m-d H:i:s'),
                             ]);
                         }
                     }
@@ -487,6 +493,7 @@ class ApprovalSalePlanController extends Controller
                                 'sale_plans_status' => 3,
                                 'sale_plans_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
+                                'approve_at' => date('Y-m-d H:i:s'),
                             ]);
 
                             DB::table('customer_shops_saleplan')->where('monthly_plan_id', $chk)
@@ -494,11 +501,13 @@ class ApprovalSalePlanController extends Controller
                                 'shop_aprove_status' => 3,
                                 'customer_shop_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
+                                'approve_at' => date('Y-m-d H:i:s'),
                             ]);
                         }
                         MonthlyPlan::where('id', $chk)->update([
                             'status_approve' => 3,
                             'updated_by' => Auth::user()->id,
+                            'approve_at' => date('Y-m-d H:i:s'),
                         ]);
 
                         // return back();
@@ -508,6 +517,7 @@ class ApprovalSalePlanController extends Controller
                                 'sale_plans_status' => 3,
                                 'sale_plans_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
+                                'approve_at' => date('Y-m-d H:i:s'),
                             ]);
 
                             DB::table('customer_shops_saleplan')->where('monthly_plan_id', $chk)
@@ -515,6 +525,7 @@ class ApprovalSalePlanController extends Controller
                                 'shop_aprove_status' => 3,
                                 'customer_shop_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
+                                'approve_at' => date('Y-m-d H:i:s'),
                             ]);
                         }
                         $chkSaleplan = SalePlan::where('monthly_plan_id', $chk)
@@ -528,6 +539,7 @@ class ApprovalSalePlanController extends Controller
                             MonthlyPlan::where('id', $chk)->update([
                                 'status_approve' => 3,
                                 'updated_by' => Auth::user()->id,
+                                'approve_at' => date('Y-m-d H:i:s'),
                             ]);
                         }
                     }
@@ -572,6 +584,7 @@ class ApprovalSalePlanController extends Controller
                                 'sale_plans_status' => 2,
                                 'sale_plans_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
+                                'approve_at' => date('Y-m-d H:i:s'),
                             ]);
                         }
 
@@ -590,6 +603,7 @@ class ApprovalSalePlanController extends Controller
                             'status_approve' => 2,
                             'sale_plans_approve_id' => Auth::user()->id,
                             'updated_by' => Auth::user()->id,
+                            'approve_at' => date('Y-m-d H:i:s'),
                         ]);
                     }
 
@@ -599,6 +613,7 @@ class ApprovalSalePlanController extends Controller
                                 'sale_plans_status' => 2,
                                 'sale_plans_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
+                                'approve_at' => date('Y-m-d H:i:s'),
                             ]);
                         }
 
@@ -616,6 +631,7 @@ class ApprovalSalePlanController extends Controller
                         MonthlyPlan::where('id', $chk)->update([
                             'status_approve' => 2,
                             'updated_by' => Auth::user()->id,
+                            'approve_at' => date('Y-m-d H:i:s'),
                         ]);
                     }
                 }
@@ -627,6 +643,7 @@ class ApprovalSalePlanController extends Controller
                             'sale_plans_status' => 3,
                             'sale_plans_approve_id' => Auth::user()->id,
                             'updated_by' => Auth::user()->id,
+                            'approve_at' => date('Y-m-d H:i:s'),
                         ]);
                     }
 
@@ -644,6 +661,7 @@ class ApprovalSalePlanController extends Controller
                         MonthlyPlan::where('id', $chk)->update([
                             'status_approve' => 2,
                             'updated_by' => Auth::user()->id,
+                            'approve_at' => date('Y-m-d H:i:s'),
                         ]);
                     }
                 } else {
@@ -652,6 +670,7 @@ class ApprovalSalePlanController extends Controller
                             'sale_plans_status' => 3,
                             'sale_plans_approve_id' => Auth::user()->id,
                             'updated_by' => Auth::user()->id,
+                            'approve_at' => date('Y-m-d H:i:s'),
                         ]);
                     }
                 }
@@ -668,6 +687,7 @@ class ApprovalSalePlanController extends Controller
                             'shop_aprove_status' => 2,
                             'customer_shop_approve_id' => Auth::user()->id,
                             'updated_by' => Auth::user()->id,
+                            'approve_at' => date('Y-m-d H:i:s'),
                         ]);
                         // Customer::where('id', $chk)->update([
                         //     'shop_aprove_status' => 2,
@@ -689,6 +709,7 @@ class ApprovalSalePlanController extends Controller
                         MonthlyPlan::where('id', $chk)->update([
                             'status_approve' => 2,
                             'updated_by' => Auth::user()->id,
+                            'approve_at' => date('Y-m-d H:i:s'),
                         ]);
                     }
                     }
@@ -700,6 +721,7 @@ class ApprovalSalePlanController extends Controller
                             'shop_aprove_status' => 2,
                             'customer_shop_approve_id' => Auth::user()->id,
                             'updated_by' => Auth::user()->id,
+                            'approve_at' => date('Y-m-d H:i:s'),
                         ]);
                         // Customer::where('id', $chk)->update([
                         //     'shop_aprove_status' => 2,
@@ -721,6 +743,7 @@ class ApprovalSalePlanController extends Controller
                         MonthlyPlan::where('id', $chk)->update([
                             'status_approve' => 2,
                             'updated_by' => Auth::user()->id,
+                            'approve_at' => date('Y-m-d H:i:s'),
                         ]);
                     }
                     }
@@ -734,6 +757,7 @@ class ApprovalSalePlanController extends Controller
                             'shop_aprove_status' => 3,
                             'customer_shop_approve_id' => Auth::user()->id,
                             'updated_by' => Auth::user()->id,
+                            'approve_at' => date('Y-m-d H:i:s'),
                         ]);
                         // Customer::where('id', $chk)->update([
                         //     'shop_aprove_status' => 3,
@@ -755,6 +779,7 @@ class ApprovalSalePlanController extends Controller
                         MonthlyPlan::where('id', $chk)->update([
                             'status_approve' => 2,
                             'updated_by' => Auth::user()->id,
+                            'approve_at' => date('Y-m-d H:i:s'),
                         ]);
                     }
                     }
@@ -765,6 +790,7 @@ class ApprovalSalePlanController extends Controller
                             'shop_aprove_status' => 3,
                             'customer_shop_approve_id' => Auth::user()->id,
                             'updated_by' => Auth::user()->id,
+                            'approve_at' => date('Y-m-d H:i:s'),
                         ]);
                         // Customer::where('id', $chk)->update([
                         //     'shop_aprove_status' => 3,
@@ -785,6 +811,7 @@ class ApprovalSalePlanController extends Controller
                         MonthlyPlan::where('id', $chk)->update([
                             'status_approve' => 2,
                             'updated_by' => Auth::user()->id,
+                            'approve_at' => date('Y-m-d H:i:s'),
                         ]);
                     }
                     }
