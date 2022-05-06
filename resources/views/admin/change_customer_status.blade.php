@@ -125,7 +125,25 @@
                                             @foreach ($data_customer_new as $key => $value)
                                             <tr>
                                                 <td>{{$key + 1}}</td>
-                                                <td>{{ $value->created_at }}</td>
+                                                <td>{{Carbon\Carbon::parse($value->created_at)->format('Y-m-d')}}</td>
+                                                <td></td>
+                                                <td>{{ $value->saleman }}</td>
+                                                <td>{{ $value->shop_name }}</td>
+                                                <td>{{ $value->AMPHUR_NAME }}, {{ $value->PROVINCE_NAME }}</td>
+                                                <td>
+                                                    @if ($value->shop_aprove_status == 2)
+                                                    <span class="btn-approve" style="font-size: 12px;">Approve</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if ($value->shop_status == 0)
+                                                    <span style="font-size: 12px;">ลูกค้าใหม่</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-icon btn-edit mr-10" data-toggle="modal" data-target="#exampleModalLarge02">
+                                                        <span class="btn-icon-wrap"><i data-feather="edit-3"></i></span></button>
+                                                </td>
                                             </tr>
                                             @endforeach
                                         </tbody>
