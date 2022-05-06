@@ -19,7 +19,7 @@
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-person"></i></span>ลูกค้าใหม่</h4>
             </div>
             <div class="d-flex">
-                <button class="btn btn-teal btn-sm btn-rounded px-3" data-toggle="modal" data-target="#addCustomer"> + เพิ่มใหม่ </button>
+                <button class="btn btn-green btn-sm" data-toggle="modal" data-target="#addCustomer"> + เพิ่มใหม่ </button>
             </div>
         </div>
         <!-- /Title -->
@@ -28,12 +28,12 @@
         <div class="row">
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
-                    <h5 class="hk-sec-title">รายชื่อลูกค้าใหม่</h5>
+                    <div class="topichead-bggreen" style="margin-bottom: 30px;">รายชื่อลูกค้าใหม่</div>
                     <div class="row">
                         <div class="col-sm">
                             <div class="table-wrap">
                                 <!-- เงื่อนไขการค้นหา -->
-                                @php 
+                                @php
                                     $action_search = "/lead/search"; //-- action form
                                     if(isset($date_filter)){ //-- สำหรับ แสดงวันที่ค้นหา
                                         $date_search = $date_filter;
@@ -47,15 +47,15 @@
                                     <div class="col-sm-12 col-md-12">
                                         <span class="form-inline pull-right pull-sm-center">
                                             <span id="selectdate">
-                                                ปี/เดือน : <input type="month" id="selectdateFrom" name="selectdateFrom" 
-                                                value="{{ $date_search }}" class="form-control form-control-sm" 
+                                                ปี/เดือน : <input type="month" id="selectdateFrom" name="selectdateFrom"
+                                                value="{{ $date_search }}" class="form-control form-control-sm"
                                                 style="margin-left:10px; margin-right:10px;"/>
-                                                <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm" id="submit_request">ค้นหา</button>
+                                                <button style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm" id="submit_request">ค้นหา</button>
                                             </span>
                                         </span>
                                     </div>
                                 </div>
-                                @php 
+                                @php
                                     $check_Radio_1 = "";
                                     $check_Radio_2 = "";
                                     $check_Radio_3 = "";
@@ -105,11 +105,11 @@
                                 </div>
                                 </form>
                                 <!-- จบเงื่อนไขการค้นหา -->
-                                @php 
+                                @php
                                     $btn_edit_hide = "display:block;";
                                     $url_customer_detail = "customer_lead/detail";
                                 @endphp
-                                
+
                                 @include('union.lead_table')
 
                             </div>

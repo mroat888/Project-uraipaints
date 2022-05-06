@@ -280,13 +280,13 @@
                                                                     <span class="btn-icon-wrap"><i data-feather="message-square"></i></span>
                                                                 </button>
                                                                 @endif
-                                                                <button class="btn btn-icon btn-warning btn_editsalepaln"
+                                                                <button class="btn btn-icon btn-edit btn_editsalepaln"
                                                                     value="{{ $value->id }}" {{ $btn_disabled }}>
                                                                     <h4 class="btn-icon-wrap" style="color: white;"><i
                                                                             class="ion ion-md-create"></i></h4>
                                                                 </button>
                                                                 <button id="btn_saleplan_delete"
-                                                                    class="btn btn-icon btn-danger mr-10"
+                                                                    class="btn btn-icon btn-red mr-10"
                                                                     value="{{ $value->id }}" {{ $btn_disabled }}>
                                                                     <h4 class="btn-icon-wrap" style="color: white;"><i
                                                                             class="ion ion-md-trash"></i></h4>
@@ -309,9 +309,7 @@
                 <div class="col-md-12">
                     <section class="hk-sec-wrapper">
                         <div class="hk-pg-header mb-10">
-                            <div class="topichead-blue">
-                                Sale Plan (เปิดลูกค้าใหม่)
-                            </div>
+                            <div class="topichead-blue"> Sale Plan (เปิดลูกค้าใหม่) </div>
                             <div class="content-right d-flex">
                                 @if($monthly_plan_next->status_approve == 1 || $monthly_plan_next->status_approve == 2)
                                     <button type="button" class="btn-green"
@@ -373,12 +371,12 @@
                                                                     <span class="btn-icon-wrap"><i data-feather="message-square"></i></span>
                                                                 </button>
                                                                 @endif
-                                                                <button class="btn btn-icon btn-warning mr-10 btn_editshop"
+                                                                <button class="btn btn-icon btn-edit mr-10 btn_editshop"
                                                                     value="{{ $value->id }}" {{ $btn_disabled }}>
                                                                     <h4 class="btn-icon-wrap" style="color: white;"><i
                                                                             class="ion ion-md-create"></i></h4>
                                                                 </button>
-                                                                <button class="btn btn-icon btn-danger mr-10 btn_cust_new_delete"
+                                                                <button class="btn btn-icon btn-red mr-10 btn_cust_new_delete"
                                                                     value="{{ $value->id }}" {{ $btn_disabled }}>
                                                                     <h4 class="btn-icon-wrap" style="color: white;"><i
                                                                             class="ion ion-md-trash"></i></h4>

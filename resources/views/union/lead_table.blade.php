@@ -1,4 +1,4 @@
-<div class="table-responsive col-md-12">
+<div class="table-responsive table-color col-md-12">
     <table id="datable_1" class="table table-hover">
         <thead>
             <tr>
@@ -71,11 +71,11 @@
                 </td>
                 <td>
                     <div class="button-list">
-                    @if($shop->shop_status != 1)
-                        <button class="btn btn-icon btn-warning mr-10 btn_editshop" style="{{ $btn_edit_hide }}" value="{{ $shop->id }}">
+                        <button class="btn btn-icon btn-edit mr-10 btn_editshop" value="{{ $shop->id }}">
                             <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-create"></i></h4></button>
-                    @endif
-                        <a href="{{ url($url_customer_detail, $shop->id) }}" class="btn btn-icon btn-success mr-10">
+                        <!-- <button class="btn btn-icon btn-info mr-10">
+                            <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-calendar"></i></h4></button> -->
+                        <a href="{{ url('/customer_lead/detail', $shop->id) }}" class="btn btn-icon btn-purple mr-10">
                             <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></a>
                     </div>
                 </td>

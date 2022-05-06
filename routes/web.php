@@ -120,6 +120,7 @@ Route::get('news_detail/{id}', 'NewsController@news_detail');
 Route::get('promotions', 'PromotionController@frontend_promotion');
 Route::get('promotion_detail/{id}', 'PromotionController@promotion_detail');
 Route::get('product_new', 'ProductNewController@frontend_product_new');
+Route::get('product_new_detail/{id}', 'ProductNewController@product_new_detail');
 
 // Report
 Route::get('/reportSale/reportMonthlyPlans', 'Report\ReportMonthlyPlansController@index');

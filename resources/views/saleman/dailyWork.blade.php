@@ -377,10 +377,10 @@
                                                                 <button class="btn btn-icon btn-pumpkin"
                                                                     data-toggle="modal" data-target="#Modalcheckin" onclick="getLocation({{ $value->id }})" {{ $btn_pumpkin_disabled }}>
                                                                     <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button> --}}
-                                                                    <button class="btn btn-icon btn-info">
-                                                                        <span class="btn-icon-wrap"><i data-feather="file"></i></span></button>
+                                                                    {{-- <button class="btn btn-icon text-white" style="background-color: rgb(73, 39, 113)">
+                                                                        <span class="btn-icon-wrap"><i data-feather="file"></i></span></button> --}}
 
-                                                                <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalResult" onclick="saleplan_result({{ $value->id }})">
+                                                                <button class="btn btn-icon text-white" style="background-color: rgb(2, 119, 144)" data-toggle="modal" data-target="#ModalResult" onclick="saleplan_result({{ $value->id }})">
                                                                     <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
 
                                                             </div>
@@ -491,13 +491,13 @@
                                                                     $btn_neon_cusnew = "disabled";
                                                                 }
                                                             @endphp --}}
-                                                            <button class="btn btn-icon btn-primary"
+                                                            <button class="btn btn-icon text-white" style="background-color: rgb(25, 64, 124)"
                                                                 data-toggle="modal" data-target="#ModalcheckinCust" onclick="getLocation({{ $value->id }})">
                                                                 <span class="btn-icon-wrap"><i data-feather="log-in"></i></span></button>
-                                                            <button class="btn btn-icon btn-pumpkin"
+                                                            <button class="btn btn-icon text-white" style="background-color: rgb(234, 105, 18)"
                                                             data-toggle="modal" data-target="#ModalcheckinCust" onclick="getLocation({{ $value->id }})">
                                                             <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
-                                                            <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalCustResult" onclick="customer_new_result({{ $value->id }})">
+                                                            <button class="btn btn-icon text-white" style="background-color: rgb(2, 119, 144)" data-toggle="modal" data-target="#ModalCustResult" onclick="customer_new_result({{ $value->id }})">
                                                             <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
                                                         </div>
                                                         {{-- <span class="text-danger mr-3" style="font-size:11px;">{{ $text_notify }}</span> --}}
@@ -606,13 +606,13 @@
                                                                         $btn_neon_cusvisit_disabled = "disabled";
                                                                     }
                                                                 @endphp --}}
-                                                                <button class="btn btn-icon btn-primary"
+                                                                <button class="btn btn-icon text-white" style="background-color: rgb(25, 64, 124)"
                                                                     data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $customer_visit_api[$key]['id'] }})">
                                                                     <span class="btn-icon-wrap"><i data-feather="log-in"></i></span></button>
-                                                                <button class="btn btn-icon btn-pumpkin"
+                                                                <button class="btn btn-icon text-white" style="background-color: rgb(234, 105, 18)"
                                                                     data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $customer_visit_api[$key]['id'] }})">
                                                                     <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
-                                                                <button class="btn btn-icon btn-neon" data-toggle="modal" data-target="#ModalVisitResult" onclick="customer_visit_result({{ $customer_visit_api[$key]['id'] }})">
+                                                                <button class="btn btn-icon text-white" style="background-color: rgb(2, 119, 144)" data-toggle="modal" data-target="#ModalVisitResult" onclick="customer_visit_result({{ $customer_visit_api[$key]['id'] }})">
                                                                     <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
                                                             </div>
                                                             {{-- <span class="text-danger mr-3" style="font-size:11px;">{{ $text_notify }}</span> --}}

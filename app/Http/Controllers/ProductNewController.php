@@ -31,6 +31,13 @@ class ProductNewController extends Controller
         }
     }
 
+    public function product_new_detail($id)
+    {
+        $data = ProductNew::where('id', $id)->first();
+
+        return view('saleman.product_new_detail', compact('data'));
+    }
+
     public function frontend_product_new()
     {
         $list_product_new = ProductNew::orderBy('id', 'desc')->paginate(10);

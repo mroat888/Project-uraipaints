@@ -4,7 +4,7 @@ $(document).ready(function() {
 	"use strict";
 	if( $('#pie_chart_2').length > 0 ){
 		$('#pie_chart_2').easyPieChart({
-			barColor : '#4682B4',
+			barColor : 'rgb(238, 145, 0)',
 			lineWidth: 15,
 			animate: 3000,
 			size:	100,
