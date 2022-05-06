@@ -80,6 +80,13 @@
                                                         $cust_visits_amount = DB::table('customer_visits')
                                                             ->where('monthly_plan_id', $value->id)
                                                             ->count();
+
+                                                        $data_close_sales = DB::table('monthly_plan_result')
+                                                        ->where('monthly_plan_id', $value->id)->first();
+
+                                                        $amount_cust_new = DB::table('customer_shops')
+                                                        ->where('monthly_plan_id', $value->id)
+                                                        ->where('shop_status', 2)->count();
                                                     @endphp
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
@@ -87,10 +94,17 @@
                                                         <td>{{ $sale_plan_amount }}</td>
                                                         <td>{{ $cust_new_amount }}</td>
                                                         <td>{{ $total_plan }}</td>
-                                                        <td>{{ $cust_visits_amount }}</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
+                                                        @if ($data_close_sales)
+                                                            <td>{{ $data_close_sales->close_sale }}</td>
+                                                            <td>{{ $data_close_sales->total_sales }}</td>
+                                                            <td>{{ $data_close_sales->close_sales_not }}</td>
+                                                        @else
+                                                            <td>0</td>
+                                                            <td>0</td>
+                                                            <td>0</td>
+                                                        @endif
+
+                                                        <td>{{$amount_cust_new}}</td>
                                                         <td>
 
                                                             @if ($value->status_approve == 0)
