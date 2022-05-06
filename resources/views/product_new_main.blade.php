@@ -22,7 +22,20 @@
                                 {{ $value->product_detail }}
                             @endif
                         </p></div>
-                        <div class="col-md-12"><a href="{{ $value->url }}" style="font-size:14px; font-weight: bold; color:brown;">อ่านต่อ</a></div>
+
+                        @if (Auth::user()->status == 1)
+                        <div class="col-md-12 mt-2"><a href="{{ url('product_new_detail', $value->id) }}" style="font-size:14px; font-weight: bold; color:brown;">ดูรายละเอียดเพิ่มเติม</a></div>
+
+                        @elseif (Auth::user()->status == 2)
+                        <div class="col-md-12 mt-2"><a href="{{ url('lead/product_new_detail', $value->id) }}" style="font-size:14px; font-weight: bold; color:brown;">ดูรายละเอียดเพิ่มเติม</a></div>
+
+                        @elseif (Auth::user()->status == 3)
+                        <div class="col-md-12 mt-2"><a href="{{ url('head/product_new_detail', $value->id) }}" style="font-size:14px; font-weight: bold; color:brown;">ดูรายละเอียดเพิ่มเติม</a></div>
+
+                        @elseif (Auth::user()->status == 4)
+                        <div class="col-md-12 mt-2"><a href="{{ url('admin/product_new_detail', $value->id) }}" style="font-size:14px; font-weight: bold; color:brown;">ดูรายละเอียดเพิ่มเติม</a></div>
+                        @endif
+                        {{-- <div class="col-md-12"><a href="{{ $value->url }}" style="font-size:14px; font-weight: bold; color:brown;">อ่านต่อ</a></div> --}}
 
                     </div>
                 </div>

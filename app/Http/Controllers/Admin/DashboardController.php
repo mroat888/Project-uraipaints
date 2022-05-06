@@ -37,7 +37,7 @@ class DashboardController extends Controller
         $data['count_monthly_plans'] = 0;
         $data['count_cust_new_amount'] = 0;
         $data['count_cust_visits_amount'] = 0;
-        
+
         // -- นับจำนวน slaeplans
         $data['count_sale_plans_result'] = 0;
         $data['count_shops_saleplan_result'] = 0;
@@ -48,19 +48,19 @@ class DashboardController extends Controller
             // $data['count_cust_visits_amount'] = $data['count_cust_visits_amount'] + $monthly_plan->cust_visits_amount ; // จำนวนลูกค้าติดต่อ
 
             // -- นับจำนวน slaeplans
-            $sale_plans = DB::table('sale_plans')->where('monthly_plan_id', $monthly_plan->id)->get();      
+            $sale_plans = DB::table('sale_plans')->where('monthly_plan_id', $monthly_plan->id)->get();
             $sale_plans = DB::table('sale_plans')
                 ->where('monthly_plan_id', $monthly_plan->id)
                 ->where('sale_plans_status', 2)
-                ->get();       
-            $data['count_monthly_plans'] = $data['count_monthly_plans'] + $sale_plans->count() ; // 	จำนวนแผนงาน    
+                ->get();
+            $data['count_monthly_plans'] = $data['count_monthly_plans'] + $sale_plans->count() ; // 	จำนวนแผนงาน
             foreach($sale_plans as $sp_value){
                 $check_result = DB::table('sale_plan_results')->where('sale_plan_id', $sp_value->id)->first();
                 if(!is_null($check_result)){
                     $data['count_sale_plans_result'] = $data['count_sale_plans_result'] +1 ;
                 }
             }
-            
+
             // -- นับจำนวน ลูกค้าใหม่
             $customer_shops_saleplan = DB::table('customer_shops_saleplan')
                 ->where('monthly_plan_id', $monthly_plan->id)
@@ -73,7 +73,7 @@ class DashboardController extends Controller
                     $data['count_shops_saleplan_result'] = $data['count_shops_saleplan_result'] + 1;
                 }
             }
-            
+
             // -- นับจำนวน ลูกค้าเยี่ยม
             $customer_visits = DB::table('customer_visits')->where('monthly_plan_id', $monthly_plan->id)->get();
             $data['count_cust_visits_amount'] = $data['count_cust_visits_amount'] + $customer_visits->count() ;
@@ -83,9 +83,9 @@ class DashboardController extends Controller
                     $data['count_visit_results_result'] = $data['count_visit_results_result'] + 1;
                 }
             }
-            
+
         }
-    
+
         $data['list_approval'] = DB::table('assignments')
             ->join('users', 'assignments.created_by', '=', 'users.id')
             ->whereMonth('assignments.assign_request_date', Carbon::now()->format('m'))
@@ -98,7 +98,7 @@ class DashboardController extends Controller
             ->whereMonth('assign_work_date', Carbon::now()->format('m'))
             ->where('assign_status', 3)
             ->get();
-        
+
         $data['notes'] = Note::whereMonth('note_date', Carbon::now()->format('m'))->get();
         $data['customer_shop'] = Customer::where('shop_status', 0)->whereMonth('created_at', Carbon::now()->format('m'))->get();
 
@@ -130,16 +130,16 @@ class DashboardController extends Controller
         $sum_amtsale_previous = array();
         $data['amtsale_current'] = "";
         $data['amtsale_previous'] = "";
-    
+
         if(!is_null($user_teams)){
             foreach($user_teams as $team){
-                
+
                 $response = Http::withToken($api_token)
                 ->get('http://49.0.64.92:8020/api/v1/sellers/'.$team->api_identify.'/dashboards', [
                     'year' => $year,
                     'month' => $month
                 ]);
-                $res_api = $response->json(); 
+                $res_api = $response->json();
 
                 if(!empty($res_api["data"][0]["Customers"])){
                     $Customers_check_data = count($res_api["data"][0]["Customers"]);
@@ -149,6 +149,33 @@ class DashboardController extends Controller
                         $data['sum_InactiveTotal'] = $data['sum_InactiveTotal'] + $res_api["data"][0]["Customers"][0]["InactiveTotal"]; // ร้านที่ Active
                     }
                 }
+<<<<<<< HEAD
+
+                // if(!empty($res_api["data"][1]["FocusDates"])){
+                //     $FocusDates_check_data = count($res_api["data"][1]["FocusDates"]);
+                //     if($FocusDates_check_data > 0){
+                //         $data['sum_FotalCustomers'] = $data['sum_FotalCustomers'] + $res_api["data"][1]["FocusDates"][0]["TotalCustomers"];
+                //         $data['sum_TotalDays'] = $data['sum_TotalDays'] + $res_api["data"][1]["FocusDates"][0]["TotalDays"];
+                //     }
+                // }
+
+                // //-- เปรียบเทียบยอดขาย ปีที่แล้วกับปีปัจจุบัน ในเดือน
+                // if(!empty($res_api["data"][3]["SalesPrevious"])){
+                //     $SalesPrevious_check_data = count($res_api["data"][3]["SalesPrevious"]);
+                //     if($SalesPrevious_check_data > 0){
+                //         $SalesPrevious = $res_api["data"][3]["SalesPrevious"];
+                //         $data['sum_totalAmtSale_Previous'] = $data['sum_totalAmtSale_Previous'] + $SalesPrevious[0]["totalAmtSale"]; // เป้ายอดขายปีที่แล้ว
+                //     }
+                // }
+
+                // if(!empty($res_api["data"][2]["SalesCurrent"])){
+                //     $SalesCurrent_check_data = count($res_api["data"][2]["SalesCurrent"]);
+                //     if($SalesCurrent_check_data > 0){
+                //         $SalesCurrent = $res_api["data"][2]["SalesCurrent"];
+                //         $data['sum_totalAmtSale'] = $data['sum_totalAmtSale'] + $SalesCurrent[0]["totalAmtSale"]; // ยอดที่ทำได้ปีนี้
+                //     }
+                // }
+=======
                 
                 if(!empty($res_api["data"][1]["FocusDates"])){
                     $FocusDates_check_data = count($res_api["data"][1]["FocusDates"]);  
@@ -174,33 +201,55 @@ class DashboardController extends Controller
                         $data['sum_totalAmtSale'] = $data['sum_totalAmtSale'] + $SalesCurrent[0]["sales"]; // ยอดที่ทำได้ปีนี้
                     }
                 }
+>>>>>>> 7c2e2bb1f57bf4e6ae7c8ce793320c872f2c226f
 
                 //-- Chat
-                if($check_looo_once == 'Y'){
-                    for($i=1; $i <= $dayinmonth; $i++){
-                        if($i < $dayinmonth){
-                            $data['day_month'] .= $i.",";
-                        }else{
-                            $data['day_month'] .= $i;
-                        }
-                    }
-                }
-                $noc=0;
-                $nop=0;
-                for($i=1; $i <= $dayinmonth; $i++){
+                // if($check_looo_once == 'Y'){
+                //     for($i=1; $i <= $dayinmonth; $i++){
+                //         if($i < $dayinmonth){
+                //             $data['day_month'] .= $i.",";
+                //         }else{
+                //             $data['day_month'] .= $i;
+                //         }
+                //     }
+                // }
+                // $noc=0;
+                // $nop=0;
+                // for($i=1; $i <= $dayinmonth; $i++){
 
-                    if(empty($sum_amtsale_current[$i])){
-                        $sum_amtsale_current[$i] = 0;
-                    }else{
-                        $sum_amtsale_current[$i] += 0;
-                    }
+                //     if(empty($sum_amtsale_current[$i])){
+                //         $sum_amtsale_current[$i] = 0;
+                //     }else{
+                //         $sum_amtsale_current[$i] += 0;
+                //     }
 
-                    if(empty($sum_amtsale_previous[$i])){
-                        $sum_amtsale_previous[$i] = 0;
-                    }else{
-                        $sum_amtsale_previous[$i] += 0;
-                    }
+                //     if(empty($sum_amtsale_previous[$i])){
+                //         $sum_amtsale_previous[$i] = 0;
+                //     }else{
+                //         $sum_amtsale_previous[$i] += 0;
+                //     }
 
+<<<<<<< HEAD
+                //     if(isset($res_api['data'][4]['DaysSalesCurrent'][$nop]['DayNo'])){ // ปีปัจจุบัน
+                //         if($res_api['data'][4]['DaysSalesCurrent'][$nop]['DayNo'] == $i){
+                //             $sum_amtsale_current[$i] +=  $res_api['data'][4]['DaysSalesCurrent'][$nop]['totalAmtSale'];
+                //         }else{
+                //             $nop--;
+                //         }
+                //     }
+
+                //     if(isset($res_api['data'][5]['DaysSalesPrevious'][$nop]['DayNo'])){ // ปีที่แล้ว
+                //         if($res_api['data'][5]['DaysSalesPrevious'][$nop]['DayNo'] == $i){
+                //             $sum_amtsale_previous[$i] +=  $res_api['data'][5]['DaysSalesPrevious'][$nop]['totalAmtSale'];
+                //         }else{
+                //             $nop--;
+                //         }
+                //     }
+
+                //     $nop++;
+                // }
+                // $check_looo_once = 'N';
+=======
                     if(isset($res_api['data'][4]['DaysSalesCurrent'][$nop]['DayNo'])){ // ปีปัจจุบัน
                         if($res_api['data'][4]['DaysSalesCurrent'][$nop]['DayNo'] == $i){ 
                             $sum_amtsale_current[$i] +=  $res_api['data'][4]['DaysSalesCurrent'][$nop]['sales'];
@@ -220,22 +269,22 @@ class DashboardController extends Controller
                     $nop++;
                 }
                 $check_looo_once = 'N';
+>>>>>>> 7c2e2bb1f57bf4e6ae7c8ce793320c872f2c226f
 
             }
         }
-     
+
         //-- Chat
-        for($i=1; $i <= $dayinmonth; $i++){
-            if($i < $dayinmonth){
-                $data['amtsale_current'] .= $sum_amtsale_current[$i].",";
-                $data['amtsale_previous'] .= $sum_amtsale_previous[$i].",";
-            }else{
-                $data['amtsale_current'] .= $sum_amtsale_current[$i];
-                $data['amtsale_previous'] .= $sum_amtsale_previous[$i];
-            }
-        }
+        // for($i=1; $i <= $dayinmonth; $i++){
+        //     if($i < $dayinmonth){
+        //         $data['amtsale_current'] .= $sum_amtsale_current[$i].",";
+        //         $data['amtsale_previous'] .= $sum_amtsale_previous[$i].",";
+        //     }else{
+        //         $data['amtsale_current'] .= $sum_amtsale_current[$i];
+        //         $data['amtsale_previous'] .= $sum_amtsale_previous[$i];
+        //     }
+        // }
 
-        // dd($data['amtsale_current'], $data['amtsale_previous']);
 
         return view('admin.dashboard', $data);
 

@@ -192,8 +192,35 @@ class ApprovalSalePlanController extends Controller
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
 
+            if (DB::table('monthly_plan_result')->where('monthly_plan_id', $request->monthly_plans_id)->count() == 0)
+            {
+                DB::table('monthly_plan_result')
+                ->insert([
+                    'monthly_plan_id' => $request->monthly_plans_id,
+                    'sale_plan' => $request->saleplan_amount,
+                    'close_sale' => $request->close_sale,
+                    'bill_amount' => $request->bill_amount,
+                    'total_sales' => $request->total_sale,
+                    'created_by' => Auth::user()->id,
+                    'created_at' => date('Y-m-d H:i:s'),
+                ]);
+            }else {
+                DB::table('monthly_plan_result')->where('monthly_plan_id', $request->monthly_plans_id)
+                    ->update([
+                    'monthly_plan_id' => $request->monthly_plans_id,
+                    'sale_plan' => $request->saleplan_amount,
+                    'close_sale' => $request->close_sale,
+                    'bill_amount' => $request->bill_amount,
+                    'total_sales' => $request->total_sale,
+                    'updated_by' => Auth::user()->id,
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ]);
+            }
+
+
+
             DB::commit();
-            
+
             return redirect('admin/approvalsaleplan');
 
         } catch (\Exception $e) {

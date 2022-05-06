@@ -24,6 +24,7 @@ Route::get('dashboard',  'SaleMan\DashboardController@index');
 Route::get('important-day-detail',  'SaleMan\ImportantDayController@index');
 Route::get('/planMonth', 'PlanMonthController@index');
 Route::get('planMonth_history/{id}', 'PlanMonthController@history');
+Route::get('approvalsaleplan_close/{id}', 'PlanMonthController@approvalsaleplan_close');
 Route::post('search_month_planMonth', 'PlanMonthController@search_month_planMonth');
 Route::get('approve_monthly_plan/{id}', 'PlanMonthController@approve');
 Route::get('dailyWork', 'SaleMan\DailyWorkController@index');
@@ -120,6 +121,7 @@ Route::get('news_detail/{id}', 'NewsController@news_detail');
 Route::get('promotions', 'PromotionController@frontend_promotion');
 Route::get('promotion_detail/{id}', 'PromotionController@promotion_detail');
 Route::get('product_new', 'ProductNewController@frontend_product_new');
+Route::get('product_new_detail/{id}', 'ProductNewController@product_new_detail');
 
 // Report
 Route::get('/reportSale/reportMonthlyPlans', 'Report\ReportMonthlyPlansController@index');
@@ -415,8 +417,8 @@ Route::post('admin/update_assignment', 'Admin\AssignmentController@update');
 Route::get('admin/delete_assignment/{id}', 'Admin\AssignmentController@destroy');
 Route::post('admin/search_month_add-assignment', 'Admin\AssignmentController@search');
 
-// Customer 
-
+// Customer
+Route::get('admin/change_customer_status', 'Admin\ChangeCustomerController@index');
 
 
 // Note

@@ -171,8 +171,8 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <a href="{{ url('admin/approvalsaleplan_close', $value->id) }}" type="button" class="btn btn-icon btn-primary pt-5">
-                                                            <i data-feather="file-text"></i>
+                                                        <a href="{{ url('admin/approvalsaleplan_close', $value->id) }}" type="button" class="btn btn-icon btn-purple pt-5">
+                                                            <i data-feather="check-circle"></i>
                                                         </a>
                                                         <a href="{{ url('admin/approvalsaleplan_detail', $value->id) }}" type="button" class="btn btn-icon btn-primary pt-5">
                                                             <i data-feather="file-text"></i>

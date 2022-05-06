@@ -8,7 +8,7 @@
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
             <li class="breadcrumb-item"><a href="#">Page</a></li>
-            <li class="breadcrumb-item">อนุมัติ Sale Plan</li>
+            <li class="breadcrumb-item">ปิด Sale Plan</li>
             <li class="breadcrumb-item active" aria-current="page">รายละเอียด Sale Plan</li>
         </ol>
     </nav>
@@ -33,7 +33,7 @@
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
-                        <div class="col-sm-12 col-md-6">
+                        <div class="col-sm-12 col-md-12">
                             <h5 class="hk-sec-title mb-10">รายงานสรุป Sale Plan ของ {{ $sale_name->name }}
                                 ประจำเดือน <?php echo thaidate('F Y', $mon_plan->month_date); ?>
                             </h5>
@@ -224,18 +224,27 @@
             </div>
         </div>
     </div>
-    <div class="">
+
+    {{-- <div class=""> --}}
         <div class="col-xl-12">
             <div style="float:right;">
                 <form action="{{ url('admin/approvalsaleplan_close') }}" method="post">
                     @csrf
                     <input name="monthly_plans_id" id="monthly_plans_id" value="{{ $mon_plan->id }}" type="hidden" class="form-control">
+                    <input type="hidden" name="saleplan_amount" value="{{ $total_pglist }}">
+                    <input type="hidden" name="close_sale" value="{{ $total_bills }}">
+                    <input type="hidden" name="bill_amount" value="{{ $total_bills }}">
+                    <input type="hidden" name="total_sale" value="{{ $total_sales }}">
+                    @if ($mon_plan->status_approve != 4)
                     <button type="submit" class="btn btn-danger btn-sm px-3 mr-10">ปิดแผน</button>
+                    @endif
                 </form>
-                
             </div>
+            @if ($mon_plan->status_approve == 4)
+                <div class="alert alert-inv alert-inv-danger" role="alert">ปิดแผนแล้ว</div>
+            @endif
         </div>
-    </div>
+    {{-- </div> --}}
 
 
        <script type="text/javascript">

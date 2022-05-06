@@ -75,7 +75,7 @@
                                 <div class="card-body">
                                     <span class="d-block font-11 font-weight-500 text-white text-uppercase mb-10"><i data-feather="edit-2"></i>
                                         <!-- <button type="button" class="btn btn-xs btn-outline-danger btn-rounded float-right">New</button> -->
-                                    </span> 
+                                    </span>
                                     <div class="d-flex align-items-end justify-content-between">
                                         <div>
                                             <span class="d-block">
@@ -103,7 +103,7 @@
                                                             <?php $approve += 1 ?>
                                                         @endif
                                                     @endforeach
-                                                    {{$approve}} 
+                                                    {{$approve}}
                                                 </span>
                                             </span>
                                         </div>
@@ -115,7 +115,7 @@
                                                             <?php $reject += 1 ?>
                                                         @endif
                                                     @endforeach
-                                                    {{$reject}} 
+                                                    {{$reject}}
                                                 </span>
                                         </div>
                                     </div>
@@ -130,7 +130,7 @@
                                 <div class="card-body">
                                     <span class="d-block font-11 font-weight-500 text-white text-uppercase mb-10"><i data-feather="user"></i>
                                         <!-- <button type="button" class="btn btn-xs btn-outline-success btn-rounded float-right">New</button> -->
-                                    </span> 
+                                    </span>
                                     <div class="d-flex align-items-end justify-content-between">
                                         <div>
                                             <span class="d-block">
@@ -214,7 +214,7 @@
                                                             <?php $disuse += 1 ?>
                                                         @endif
                                                     @endforeach
-                                                    {{$disuse}} 
+                                                    {{$disuse}}
                                                 </span>
                                             </span>
                                         </div>
@@ -226,7 +226,7 @@
                                                         <?php $pin += 1 ?>
                                                     @endif
                                                 @endforeach
-                                                {{$pin}} 
+                                                {{$pin}}
                                             </span>
                                         </div>
                                     </div>
@@ -268,7 +268,7 @@
                                                             <?php $fail += 1 ?>
                                                         @endif
                                                     @endforeach
-                                                    {{$fail}} 
+                                                    {{$fail}}
                                                 </span>
                                             </span>
                                         </div>
@@ -280,7 +280,7 @@
                                                         <?php $wait += 1 ?>
                                                     @endif
                                                 @endforeach
-                                                {{$wait}} 
+                                                {{$wait}}
                                             </span>
                                         </div>
                                     </div>
@@ -363,12 +363,15 @@
                             <div class="card card-sm">
                                 <div class="card-body" style="color: black;">
                                     @php
-                                        $percentAmtCrn = (($sum_totalAmtSale)*100)/$sum_totalAmtSale_Previous;
+                                        // $percentAmtCrn = (($sum_totalAmtSale)*100)/$sum_totalAmtSale_Previous;
                                     @endphp
                                     <span class="d-block font-11 font-weight-500 text-dark text-uppercase mb-10"></span>
                                             <span class="d-block text-center">
-                                                <span id="pie_chart_2" class="easy-pie-chart" data-percent="{{ $percentAmtCrn }}">
-                                                    <span class="percent head-font mt-25">{{ $percentAmtCrn }}</span>
+                                                {{-- <span id="pie_chart_2" class="easy-pie-chart" data-percent="{{ $percentAmtCrn }}"> --}}
+                                                    <span id="pie_chart_2" class="easy-pie-chart" data-percent="33">
+                                                    <span class="percent head-font mt-25">
+                                                        {{-- {{ $percentAmtCrn }} --}}
+                                                    </span>
                                             </span>
                                             </span>
                                     <div class="d-flex align-items-end justify-content-between mt-10">

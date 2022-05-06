@@ -80,6 +80,13 @@
                                                         $cust_visits_amount = DB::table('customer_visits')
                                                             ->where('monthly_plan_id', $value->id)
                                                             ->count();
+
+                                                        $data_close_sales = DB::table('monthly_plan_result')
+                                                        ->where('monthly_plan_id', $value->id)->first();
+
+                                                        $amount_cust_new = DB::table('customer_shops')
+                                                        ->where('monthly_plan_id', $value->id)
+                                                        ->where('shop_status', 2)->count();
                                                     @endphp
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
@@ -87,10 +94,17 @@
                                                         <td>{{ $sale_plan_amount }}</td>
                                                         <td>{{ $cust_new_amount }}</td>
                                                         <td>{{ $total_plan }}</td>
-                                                        <td>{{ $cust_visits_amount }}</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
+                                                        @if ($data_close_sales)
+                                                            <td>{{ $data_close_sales->close_sale }}</td>
+                                                            <td>{{ $data_close_sales->total_sales }}</td>
+                                                            <td>{{ $data_close_sales->close_sales_not }}</td>
+                                                        @else
+                                                            <td>0</td>
+                                                            <td>0</td>
+                                                            <td>0</td>
+                                                        @endif
+
+                                                        <td>{{$amount_cust_new}}</td>
                                                         <td>
 
                                                             @if ($value->status_approve == 0)
@@ -104,10 +118,20 @@
                                                                     style="font-size: 12px;">
                                                                     Pending
                                                                 </span>
-                                                            @else
+                                                            @elseif ($value->status_approve == 2)
                                                                 <span class="btn-approve"
                                                                     style="font-size: 12px;">
                                                                     Approve
+                                                                </span>
+                                                            @elseif ($value->status_approve == 3)
+                                                                <span class="btn-draf"
+                                                                    style="font-size: 12px;">
+                                                                    Reject
+                                                                </span>
+                                                            @else
+                                                                <span class="btn-close"
+                                                                    style="font-size: 12px;">
+                                                                    Close
                                                                 </span>
                                                             @endif
 
@@ -118,7 +142,7 @@
 
                                                                 <form action="{{ url('approve_monthly_plan', $value->id) }}" method="GET">
                                                                     @if ($value->status_approve == 1 || $value->status_approve == 2)
-                                                                    <button type="button" class="btn btn-icon btn-secondary requestApproval" disabled>
+                                                                    <button type="button" class="btn btn-icon btn-edit requestApproval mb-2" disabled>
                                                                         <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
                                                                         @else
 
@@ -136,10 +160,10 @@
                                                                                 // dd($OverSaleplan, date('Y-m-d'));
                                                                             @endphp
                                                                             @if($OverSaleplan >= date('Y-m-d'))
-                                                                                <button type="button" class="btn btn-icon btn-edit requestApproval">
+                                                                                <button type="button" class="btn btn-icon btn-edit requestApproval mb-2">
                                                                                     <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
                                                                             @else
-                                                                                <button type="button" class="btn btn-icon btn-edit requestApproval" disabled>
+                                                                                <button type="button" class="btn btn-icon btn-edit requestApproval mb-2" disabled>
                                                                                     <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
                                                                             @endif
                                                                     @else
@@ -156,15 +180,17 @@
                                                                                     $OverSaleplan = $myear."-".$mmonth."-".$setting_day;
                                                                                     // dd($OverSaleplan, date('Y-m-d'));
                                                                                 @endphp
+
+                                                                            {{-- <div class="button-list"> --}}
                                                                                 @if($OverSaleplan >= date('Y-m-d'))
-                                                                                    <button type="button" class="btn btn-icon btn-edit requestApproval">
+                                                                                    <button type="button" class="btn btn-icon btn-edit requestApproval mb-2">
                                                                                     <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
                                                                                 @else
-                                                                                    <button type="button" class="btn btn-icon btn-edit requestApproval" disabled>
+                                                                                    <button type="button" class="btn btn-icon btn-edit requestApproval mb-2" disabled>
                                                                                     <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
                                                                                 @endif
                                                                             @else
-                                                                            <button type="button" class="btn btn-icon btn-edit requestApproval" disabled>
+                                                                            <button type="button" class="btn btn-icon btn-edit requestApproval mb-2" disabled>
                                                                                 <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
                                                                             @endif
 
@@ -173,9 +199,15 @@
                                                                     @endif
 
                                                                     @if ($value->status_approve != 0 && $value->status_approve != 1)
-                                                                    <a href="{{url('planMonth_history', $value->id)}}" class="btn btn-icon btn-view ml-2">
+                                                                    <a href="{{url('planMonth_history', $value->id)}}" type="button" class="btn btn-icon text-white mb-2" style="background-color: rgb(2, 119, 144)">
+                                                                        <span class="btn-icon-wrap"><i data-feather="clock"></i></span></a>
+                                                                    @endif
+
+                                                                    @if ($value->status_approve == 4)
+                                                                    <a href="{{url('approvalsaleplan_close', $value->id)}}" type="button" class="btn btn-icon text-white mb-2" style="background-color: rgb(73, 39, 113)">
                                                                         <span class="btn-icon-wrap"><i data-feather="file"></i></span></a>
                                                                     @endif
+                                                                            {{-- </div> --}}
 
                                                                 </form>
 
@@ -280,13 +312,13 @@
                                                                     <span class="btn-icon-wrap"><i data-feather="message-square"></i></span>
                                                                 </button>
                                                                 @endif
-                                                                <button class="btn btn-icon btn-warning btn_editsalepaln"
+                                                                <button class="btn btn-icon btn-edit btn_editsalepaln"
                                                                     value="{{ $value->id }}" {{ $btn_disabled }}>
                                                                     <h4 class="btn-icon-wrap" style="color: white;"><i
                                                                             class="ion ion-md-create"></i></h4>
                                                                 </button>
                                                                 <button id="btn_saleplan_delete"
-                                                                    class="btn btn-icon btn-danger mr-10"
+                                                                    class="btn btn-icon btn-red mr-10"
                                                                     value="{{ $value->id }}" {{ $btn_disabled }}>
                                                                     <h4 class="btn-icon-wrap" style="color: white;"><i
                                                                             class="ion ion-md-trash"></i></h4>
@@ -309,9 +341,7 @@
                 <div class="col-md-12">
                     <section class="hk-sec-wrapper">
                         <div class="hk-pg-header mb-10">
-                            <div class="topichead-blue">
-                                Sale Plan (เปิดลูกค้าใหม่)
-                            </div>
+                            <div class="topichead-blue"> Sale Plan (เปิดลูกค้าใหม่) </div>
                             <div class="content-right d-flex">
                                 @if($monthly_plan_next->status_approve == 1 || $monthly_plan_next->status_approve == 2)
                                     <button type="button" class="btn-green"
@@ -373,12 +403,12 @@
                                                                     <span class="btn-icon-wrap"><i data-feather="message-square"></i></span>
                                                                 </button>
                                                                 @endif
-                                                                <button class="btn btn-icon btn-warning mr-10 btn_editshop"
+                                                                <button class="btn btn-icon btn-edit mr-10 btn_editshop"
                                                                     value="{{ $value->id }}" {{ $btn_disabled }}>
                                                                     <h4 class="btn-icon-wrap" style="color: white;"><i
                                                                             class="ion ion-md-create"></i></h4>
                                                                 </button>
-                                                                <button class="btn btn-icon btn-danger mr-10 btn_cust_new_delete"
+                                                                <button class="btn btn-icon btn-red mr-10 btn_cust_new_delete"
                                                                     value="{{ $value->id }}" {{ $btn_disabled }}>
                                                                     <h4 class="btn-icon-wrap" style="color: white;"><i
                                                                             class="ion ion-md-trash"></i></h4>

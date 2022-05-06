@@ -1,12 +1,12 @@
-@extends('layouts.master')
+@extends('layouts.masterAdmin')
 
 @section('content')
 
     <!-- Breadcrumb -->
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
-            <li class="breadcrumb-item"><a href="#">หน้าแรก</a></li>
-            <li class="breadcrumb-item active" aria-current="page">ลูกค้าใหม่</li>
+            <li class="breadcrumb-item"><a href="#">ลูกค้า</a></li>
+            <li class="breadcrumb-item active" aria-current="page">เปลี่ยนสถานะลูกค้าใหม่</li>
         </ol>
     </nav>
     <!-- /Breadcrumb -->
@@ -16,10 +16,10 @@
         <!-- Title -->
         <div class="hk-pg-header mb-10">
             <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-person"></i></span>ลูกค้าใหม่</h4>
+                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-person"></i></span>เปลี่ยนสถานะลูกค้าใหม่</h4>
             </div>
             <div class="d-flex">
-                <button class="btn btn-green btn-sm" data-toggle="modal" data-target="#addCustomer"> + เพิ่มใหม่ </button>
+                {{-- <button class="btn btn-teal btn-sm btn-rounded px-3" data-toggle="modal" data-target="#addCustomer"> + เพิ่มใหม่ </button> --}}
             </div>
         </div>
         <!-- /Title -->
@@ -28,7 +28,7 @@
         <div class="row">
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
-                    <div class="topichead-bggreen" style="margin-bottom: 30px;">รายชื่อลูกค้าใหม่</div>
+                    <h5 class="hk-sec-title">รายชื่อลูกค้าใหม่</h5>
                     <div class="row">
                         <div class="col-sm">
                             <div class="table-wrap">
@@ -50,7 +50,7 @@
                                                 ปี/เดือน : <input type="month" id="selectdateFrom" name="selectdateFrom"
                                                 value="{{ $date_search }}" class="form-control form-control-sm"
                                                 style="margin-left:10px; margin-right:10px;"/>
-                                                <button style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm" id="submit_request">ค้นหา</button>
+                                                <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm" id="submit_request">ค้นหา</button>
                                             </span>
                                         </span>
                                     </div>
@@ -105,12 +105,50 @@
                                 </div>
                                 </form>
                                 <!-- จบเงื่อนไขการค้นหา -->
-                                @php
-                                    $btn_edit_hide = "display:block;";
-                                    $url_customer_detail = "customer_lead/detail";
-                                @endphp
 
-                                @include('union.lead_table')
+                                <div class="table-responsive col-md-12">
+                                    <table id="datable_1" class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th style="font-weight: bold;">#</th>
+                                                <th style="font-weight: bold;">วันที่เพิ่มลูกค้าใหม่</th>
+                                                <th style="font-weight: bold;">วันที่อนุมัติ</th>
+                                                <th style="font-weight: bold;">ผู้แทนขาย</th>
+                                                <th style="font-weight: bold;">ชื่อร้าน</th>
+                                                <th style="font-weight: bold;">อำเภอ, จังหวัด</th>
+                                                <th style="font-weight: bold;">การอนุมัติ</th>
+                                                <th style="font-weight: bold;">สถานะ</th>
+                                                <th style="font-weight: bold;" class="text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($data_customer_new as $key => $value)
+                                            <tr>
+                                                <td>{{$key + 1}}</td>
+                                                <td>{{Carbon\Carbon::parse($value->created_at)->format('Y-m-d')}}</td>
+                                                <td></td>
+                                                <td>{{ $value->saleman }}</td>
+                                                <td>{{ $value->shop_name }}</td>
+                                                <td>{{ $value->AMPHUR_NAME }}, {{ $value->PROVINCE_NAME }}</td>
+                                                <td>
+                                                    @if ($value->shop_aprove_status == 2)
+                                                    <span class="btn-approve" style="font-size: 12px;">Approve</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if ($value->shop_status == 0)
+                                                    <span style="font-size: 12px;">ลูกค้าใหม่</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-icon btn-edit mr-10" data-toggle="modal" data-target="#exampleModalLarge02">
+                                                        <span class="btn-icon-wrap"><i data-feather="edit-3"></i></span></button>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
 
                             </div>
                         </div>
