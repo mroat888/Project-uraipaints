@@ -45,10 +45,12 @@ class CustomerController extends Controller
 
     public function customerLead()
     {
-        $data['customer_shops'] = DB::table('customer_shops_saleplan')
-            ->leftJoin('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
+        // $data['customer_shops'] = DB::table('customer_shops_saleplan')
+        //     ->leftJoin('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
+        $data['customer_shops'] = DB::table('customer_shops')
+            ->leftJoin('customer_shops_saleplan', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
             ->leftJoin('customer_shops_saleplan_result', 'customer_shops_saleplan_result.customer_shops_saleplan_id', 'customer_shops_saleplan.id')
-            ->leftJoin('monthly_plans', 'monthly_plans.id', 'customer_shops_saleplan.monthly_plan_id')
+            ->join('monthly_plans', 'monthly_plans.id', 'customer_shops_saleplan.monthly_plan_id')
             ->leftJoin('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
             ->where('customer_shops.shop_status', '!=' ,2) // 0 = ลูกค้าใหม่ , 1 = ทะเบียนลูกค้า , 2 = ลบ
             ->where('customer_shops.created_by', Auth::user()->id)
@@ -57,10 +59,14 @@ class CustomerController extends Controller
                 'province.PROVINCE_NAME',
                 'customer_shops_saleplan_result.*',
                 'customer_shops_saleplan.*',
+                'customer_shops_saleplan.id as saleplan_id',
                 'customer_shops_saleplan.shop_aprove_status as saleplan_shop_aprove_status',
                 'customer_shops.*'
             )
-            ->orderBy('customer_shops_saleplan.id', 'desc')
+            // ->orderBy('customer_shops_saleplan.id', 'desc')
+            // ->get();
+            ->orderBy('customer_shops_saleplan.monthly_plan_id', 'desc')
+            ->groupBy('customer_shops.id')
             ->get();
 
         $data['province'] = DB::table('province')->get();
@@ -110,8 +116,8 @@ class CustomerController extends Controller
             'customer_shops_saleplan.shop_aprove_status as saleplan_shop_aprove_status',
             'customer_shops.*'
         )
-        ->groupBy('customer_shops.id')
         ->orderBy('customer_shops_saleplan.monthly_plan_id', 'desc')
+        ->groupBy('customer_shops.id')
         ->get();
 
         $data['customer_shops'] = $customer_shops;
