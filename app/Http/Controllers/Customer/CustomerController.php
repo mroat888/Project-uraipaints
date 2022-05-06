@@ -502,7 +502,6 @@ class CustomerController extends Controller
             ->where('customer_shop_id', $data['customer_shops']->id)
             ->orderBy('monthly_plan_id', 'asc')
             ->get();
-<<<<<<< HEAD
 
         // $data['customer_shops_saleplan'] = DB::table('customer_shops_saleplan')
         //     ->leftJoin('customer_shop_comments' ,'customer_shop_comments.customer_shops_saleplan_id', 'customer_shops_saleplan.id')
@@ -511,8 +510,6 @@ class CustomerController extends Controller
         //     ->orderBy('customer_shops_saleplan.monthly_plan_id', 'desc')
         //     ->get();
         // dd($data['customer_shops_saleplan']);
-=======
->>>>>>> eb64ba3a068f95c2ce51ef3e30da5a265bfeab7b
 
         return view('customer.customer_lead_detail', $data);
     }

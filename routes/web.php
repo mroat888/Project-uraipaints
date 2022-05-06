@@ -414,8 +414,8 @@ Route::post('admin/update_assignment', 'Admin\AssignmentController@update');
 Route::get('admin/delete_assignment/{id}', 'Admin\AssignmentController@destroy');
 Route::post('admin/search_month_add-assignment', 'Admin\AssignmentController@search');
 
-// Customer 
-
+// Customer
+Route::get('admin/change_customer_status', 'Admin\ChangeCustomerController@index');
 
 
 // Note

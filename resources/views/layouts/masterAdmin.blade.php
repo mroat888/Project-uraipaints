@@ -187,7 +187,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link {{ (request()->is('admin/data_name_store')) ? 'btn2' : '' }} {{ (request()->is('lead')) ? 'btn2' : '' }}" href="javascript:void(0);" 
+                            <a class="nav-link {{ (request()->is('admin/data_name_store')) ? 'btn2' : '' }} {{ (request()->is('lead')) ? 'btn2' : '' }}" href="javascript:void(0);"
                                 data-toggle="collapse" data-target="#customer_dropdwon">
                                 <i class="ion ion-md-create" style="color: #044067;"></i>
                                 <span class="nav-link-text">ลูกค้า</span>
@@ -201,12 +201,12 @@
                                                 <i class="ion ion-md-home" style="color: #044067;"></i>ทะเบียนลูกค้า
                                             </a>
                                         </li>
-                                        <li class="nav-item {{ (request()->is('lead')) ? 'btn2' : '' }}">
-                                            <a class="nav-link" href="{{ url('/lead') }}">
+                                        <li class="nav-item {{ (request()->is('admin/change_customer_status')) ? 'btn2' : '' }}">
+                                            <a class="nav-link" href="{{ url('admin/change_customer_status') }}">
                                                 <i class="ion ion-md-person-add" style="color: #044067;"></i>เปลี่ยนสถานะลูกค้าใหม่
                                             </a>
                                         </li>
-                                        <li class="nav-item {{ (request()->is('admin/data_report_sale_compare-year')) ? 'btn2' : '' }}">
+                                        <li class="nav-item {{ (request()->is('data_report_sale_compare-year')) ? 'btn2' : '' }}">
                                             <a class="nav-link"
                                                 href="{{ url('admin/data_report_sale_compare-year') }}">
                                                 <i class="ion ion-md-stats"style="color: #044067;"></i>ข้อมูลลูกค้า (ทำเป้า)
@@ -217,7 +217,7 @@
                                                 href="{{ url('admin/data_search_product') }}">
                                                 <i class="ion ion-md-search" style="color: #044067;"></i>ค้นหาร้านค้า-สินค้า
                                             </a>
-                                        </li> 
+                                        </li>
                                     </ul>
                                 </li>
                             </ul>
@@ -274,7 +274,7 @@
                                 <span class="nav-link-text">สินค้า</span>
                             </a>
                             <ul id="products_dropdwon" class="nav flex-column collapse collapse-level-1">
-    
+
                                 <li class="nav-item {{ (request()->is('admin/product_new')) ? 'btn2' : '' }}">
                                     <ul class="nav flex-column">
                                         <li class="nav-item ">
@@ -325,7 +325,7 @@
                                 </li>
                             </ul>
                         </li>
-                        
+
                         <li class="nav-item">
                             <a class="nav-link {{ (request()->is('admin/approvalsaleplan')) ? 'btn2' : '' }} {{ (request()->is('admin/approvalgeneral')) ? 'btn2' : '' }}
                                 {{ (request()->is('admin/approval-customer-except')) ? 'btn2' : '' }} {{ (request()->is('admin/assignment-add')) ? 'btn2' : '' }}" href="javascript:void(0);" data-toggle="collapse"
@@ -383,7 +383,7 @@
                                                 <i class="ion ion-md-stats"
                                                     style="color: #044067;"></i>รายงานยอดขายสินค้าใหม่</a>
                                         </li>
-                                        
+
                                         <li class="nav-item {{ (request()->is('admin/data_report_full-year')) ? 'btn2' : '' }}">
                                             <a class="nav-link"
                                                 href="{{ url('admin/data_report_full-year') }}">
@@ -428,7 +428,7 @@
                                 </li>
                             </ul>
                         </li>
-                        
+
                         <!-- <li class="nav-item">
                         <a class="nav-link {{ (request()->is('admin/reportYear')) ? 'btn2' : '' }} {{ (request()->is('admin/reportVisitCustomer')) ? 'btn2' : '' }}
                             {{ (request()->is('admin/report_visitcustomer_goal_head')) ? 'btn2' : '' }} {{ (request()->is('admin/reportSaleplan')) ? 'btn2' : '' }}
