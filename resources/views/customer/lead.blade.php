@@ -105,8 +105,12 @@
                                 </div>
                                 </form>
                                 <!-- จบเงื่อนไขการค้นหา -->
+                                @php 
+                                    $btn_edit_hide = "display:block;";
+                                    $url_customer_detail = "customer_lead/detail";
+                                @endphp
                                 
-                                @include('union.lead_table');
+                                @include('union.lead_table')
 
                             </div>
                         </div>

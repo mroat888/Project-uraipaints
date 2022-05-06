@@ -5,7 +5,7 @@
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
             <li class="breadcrumb-item"><a href="#">Page</a></li>
-            <li class="breadcrumb-item active" aria-current="page">การอนุมัติลูกค้าใหม่ (นอกแผน)</li>
+            <li class="breadcrumb-item active" aria-current="page">ตรวจสอบลูกค้าใหม</li>
         </ol>
     </nav>
     <!-- /Breadcrumb -->
@@ -25,7 +25,7 @@
         <div class="hk-pg-header mb-10">
             <div>
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                    data-feather="file-text"></i></span></span>ตรวจสอบขออนุมัติลูกค้าใหม่ (นอกแผน)</h4>
+                    data-feather="file-text"></i></span></span>ตรวจสอบลูกค้าใหม่</h4>
             </div>
         </div>
         <!-- /Title -->
@@ -34,74 +34,123 @@
         <div class="row">
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
+                    <h5 class="hk-sec-title">รายชื่อลูกค้าใหม่</h5>
                     <div class="row mb-2">
-                            <div class="col-md-6">
-                                <h5 class="hk-sec-title">ตารางข้อมูลการอนุมัติลูกค้าใหม่ (นอกแผน)</h5>
-                            </div>
-                            <div class="col-sm-12 col-md-6">
-                                <!-- ------ -->
-                                <span class="form-inline pull-right">
-                                    <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</button>
-                                    <form action="{{ url('head/approvalcustomer-except/search') }}" method="POST" enctype="multipart/form-data">
-                                        @csrf
-                                        <span id="selectdate" style="display:none;">
-                                             <input type="month" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name ="selectdateTo" value="<?= date('Y-m-d'); ?>" />
-
-                                            <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-success btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button>
-                                        </span>
-                                    </form>
-                                    </span>
-                                    <!-- ------ -->
-                            </div>
-                        </div>
-                    <div class="row">
                         <div class="col-sm">
-                            <div class="table-responsive-sm">
-                                <table id="datable_1" class="table table-sm table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>วันที่</th>
-                                            {{-- <th>เรื่อง</th> --}}
-                                            <th>พนักงาน</th>
-                                            <th>การอนุมัติ</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($customers as $key => $value)
-                                        <?php $chk =  DB::table('customer_shops_saleplan')->join('users', 'customer_shops_saleplan.created_by', '=', 'users.id')
-                                        ->where('customer_shops_saleplan.is_monthly_plan', '=', "N")
-                                        ->whereIn('customer_shops_saleplan.shop_aprove_status', [1, 2, 3])
-                                        ->where('customer_shops_saleplan.created_by', $value->shop_created_by)->select('users.name', 'customer_shops_saleplan.created_at',
-                                        'customer_shops_saleplan.monthly_plan_id', 'customer_shops_saleplan.shop_aprove_status')->first(); ?>
-                                        @if ($chk)
-                                        <tr>
-                                            <input type="hidden" name="monthly_plan_id" value="{{$chk->monthly_plan_id}}">
-                                            <td>{{$key + 1}}</td>
-                                            <td>{{Carbon\Carbon::parse($chk->created_at)->format('Y-m-d')}}</td>
-                                            <td>{{$chk->name}}</td>
-                                            <td>
-                                                @if ($chk->shop_aprove_status == 2)
-                                                <span class="badge badge-soft-success" style="font-size: 12px;">Approve</span></td>
+                            <div class="table-wrap">
+                                <!-- เงื่อนไขการค้นหา -->
+                                @php 
+                                    $action_search = "/head/approvalcustomer-except/search"; //-- action form
+                                    if(isset($date_filter)){ //-- สำหรับ แสดงวันที่ค้นหา
+                                        $date_search = $date_filter;
+                                    }else{
+                                        $date_search = "";
+                                    }
+                                @endphp
+                                <form action="{{ url($action_search) }}" method="post">
+                                @csrf
+                                <div class="hk-pg-header mb-10">
+                                    <div class="col-sm-12 col-md-12">
+                                        <span class="form-inline pull-right pull-sm-center">
+                                            <span id="selectdate">
+                                                <select name="selectteam_sales" class="form-control form-control-sm" aria-label=".form-select-lg example">
+                                                    <option value="" selected>เลือกทีม</option>
+                                                    @php 
+                                                        $checkteam_sales = "";
+                                                        $checkusers = "";
 
-                                                @elseif ($chk->shop_aprove_status == 3)
-                                                <span class="badge badge-soft-danger" style="font-size: 12px;">Reject</span></td>
+                                                        if(isset($selectteam_sales)){
+                                                            $checkteam_sales = $selectteam_sales;
+                                                        }
+                                                        if(isset($selectusers)){
+                                                            $checkusers = $selectusers;
+                                                        }
+                                                    @endphp
+                                                    @foreach($team_sales as $team)
+                                                        @if($checkteam_sales == $team->id)
+                                                            <option value="{{ $team->id }}" selected>{{ $team->team_name }}</option>
+                                                        @else
+                                                            <option value="{{ $team->id }}">{{ $team->team_name }}</option>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                                <select name="selectusers" class="form-control form-control-sm" aria-label=".form-select-lg example">
+                                                    <option value="" selected>ผู้แทนขาย</option>
+                                                    @foreach($users as $user)
+                                                        @if($checkusers == $user->id)
+                                                            <option value="{{ $user->id }}" selected>{{ $user->name }}</option>
+                                                        @else
+                                                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                                
+                                                <!-- ปี/เดือน :  -->
+                                                <input type="month" id="selectdateFrom" name="selectdateFrom" 
+                                                value="{{ $date_search }}" class="form-control form-control-sm" 
+                                                style="margin-left:10px; margin-right:10px;"/>
+                                                <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm" id="submit_request">ค้นหา</button>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                                @php 
+                                    $check_Radio_1 = "";
+                                    $check_Radio_2 = "";
+                                    $check_Radio_3 = "";
+                                    $check_Radio_4 = "";
+                                    $check_Radio_5 = "";
+                                    if(isset($slugradio_filter)){
+                                        switch($slugradio_filter){
+                                            case "สำเร็จ" : $check_Radio_2 = "checked";
+                                                break;
+                                            case "สนใจ" : $check_Radio_3 = "checked";
+                                                break;
+                                            case "ไม่สนใจ" : $check_Radio_4 = "checked";
+                                                break;
+                                            case "รอตัดสินใจ" : $check_Radio_5 = "checked";
+                                                break;
+                                            default : $check_Radio_1 = "checked";
+                                        }
+                                    }else{
+                                        $check_Radio_1 = "checked";
+                                    }
+                                @endphp
+                                <div class="hk-pg-header mb-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input checkRadio" type="radio" name="slugradio" id="inlineRadio1" value="ทั้งหมด" {{ $check_Radio_1 }}>
+                                        <label class="form-check-label" for="inlineRadio1">ทั้งหมด</label>
+                                    </div>
 
-                                                @else
-                                                <span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span></td>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <a href="{{url('head/approval_customer_except_detail', $value->shop_created_by)}}" class="btn btn-icon btn-primary btn-link btn_showplan pt-5" value="3">
-                                                    <i data-feather="file-text"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        @endif
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input checkRadio" type="radio" name="slugradio" id="inlineRadio2" value="สำเร็จ" {{ $check_Radio_2 }}>
+                                        <label class="form-check-label" for="inlineRadio2">สำเร็จ</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input checkRadio" type="radio" name="slugradio" id="inlineRadio3" value="สนใจ" {{ $check_Radio_3 }}>
+                                        <label class="form-check-label" for="inlineRadio3">สนใจ</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input checkRadio" type="radio" name="slugradio" id="inlineRadio4" value="ไม่สนใจ" {{ $check_Radio_4 }}>
+                                        <label class="form-check-label" for="inlineRadio4">ไม่สนใจ</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input checkRadio" type="radio" name="slugradio" id="inlineRadio5" value="รอตัดสินใจ" {{ $check_Radio_5 }}>
+                                        <label class="form-check-label" for="inlineRadio5">รอตัดสินใจ</label>
+                                    </div>
+                                </div>
+                                </form>
+                                <!-- จบเงื่อนไขการค้นหา -->
+                                
+                                @php 
+                                    $btn_edit_hide = "display:none;";
+                                    $url_customer_detail = "head/approval_customer_except_detail";
+                                @endphp
+                                @include('union.lead_table')
+
                             </div>
                         </div>
                     </div>
@@ -132,6 +181,7 @@
 </script>
 
 @endsection
+
 @section('scripts')
 
 <script>
@@ -140,6 +190,11 @@
         //alert(goo);
         $('#Modalsaleplan').modal("show");
     });
+
+    $(document).on('click', '.checkRadio', function(){
+        $("#submit_request").trigger("click");
+    });
+
 </script>
 
 <script>
@@ -199,8 +254,7 @@
         $("#selectdate").css("display", "none");
         $("#bt_showdate").show();
     }
+
 </script>
-
-
 
 @endsection

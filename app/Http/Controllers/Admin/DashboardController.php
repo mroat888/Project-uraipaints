@@ -149,6 +149,7 @@ class DashboardController extends Controller
                         $data['sum_InactiveTotal'] = $data['sum_InactiveTotal'] + $res_api["data"][0]["Customers"][0]["InactiveTotal"]; // ร้านที่ Active
                     }
                 }
+<<<<<<< HEAD
 
                 // if(!empty($res_api["data"][1]["FocusDates"])){
                 //     $FocusDates_check_data = count($res_api["data"][1]["FocusDates"]);
@@ -174,6 +175,33 @@ class DashboardController extends Controller
                 //         $data['sum_totalAmtSale'] = $data['sum_totalAmtSale'] + $SalesCurrent[0]["totalAmtSale"]; // ยอดที่ทำได้ปีนี้
                 //     }
                 // }
+=======
+                
+                if(!empty($res_api["data"][1]["FocusDates"])){
+                    $FocusDates_check_data = count($res_api["data"][1]["FocusDates"]);  
+                    if($FocusDates_check_data > 0){
+                        // $data['sum_FotalCustomers'] = $data['sum_FotalCustomers'] + $res_api["data"][1]["FocusDates"][0]["TotalCustomers"];
+                        // $data['sum_TotalDays'] = $data['sum_TotalDays'] + $res_api["data"][1]["FocusDates"][0]["TotalDays"];
+                    }
+                }
+                               
+                //-- เปรียบเทียบยอดขาย ปีที่แล้วกับปีปัจจุบัน ในเดือน
+                if(!empty($res_api["data"][3]["SalesPrevious"])){
+                    $SalesPrevious_check_data = count($res_api["data"][3]["SalesPrevious"]);
+                    if($SalesPrevious_check_data > 0){
+                        $SalesPrevious = $res_api["data"][3]["SalesPrevious"];
+                        $data['sum_totalAmtSale_Previous'] = $data['sum_totalAmtSale_Previous'] + $SalesPrevious[0]["sales"]; // เป้ายอดขายปีที่แล้ว
+                    }
+                }
+                
+                if(!empty($res_api["data"][2]["SalesCurrent"])){
+                    $SalesCurrent_check_data = count($res_api["data"][2]["SalesCurrent"]);
+                    if($SalesCurrent_check_data > 0){
+                        $SalesCurrent = $res_api["data"][2]["SalesCurrent"];
+                        $data['sum_totalAmtSale'] = $data['sum_totalAmtSale'] + $SalesCurrent[0]["sales"]; // ยอดที่ทำได้ปีนี้
+                    }
+                }
+>>>>>>> 7c2e2bb1f57bf4e6ae7c8ce793320c872f2c226f
 
                 //-- Chat
                 // if($check_looo_once == 'Y'){
@@ -201,6 +229,7 @@ class DashboardController extends Controller
                 //         $sum_amtsale_previous[$i] += 0;
                 //     }
 
+<<<<<<< HEAD
                 //     if(isset($res_api['data'][4]['DaysSalesCurrent'][$nop]['DayNo'])){ // ปีปัจจุบัน
                 //         if($res_api['data'][4]['DaysSalesCurrent'][$nop]['DayNo'] == $i){
                 //             $sum_amtsale_current[$i] +=  $res_api['data'][4]['DaysSalesCurrent'][$nop]['totalAmtSale'];
@@ -220,6 +249,27 @@ class DashboardController extends Controller
                 //     $nop++;
                 // }
                 // $check_looo_once = 'N';
+=======
+                    if(isset($res_api['data'][4]['DaysSalesCurrent'][$nop]['DayNo'])){ // ปีปัจจุบัน
+                        if($res_api['data'][4]['DaysSalesCurrent'][$nop]['DayNo'] == $i){ 
+                            $sum_amtsale_current[$i] +=  $res_api['data'][4]['DaysSalesCurrent'][$nop]['sales'];
+                        }else{
+                            $nop--;
+                        }
+                    }
+                    
+                    if(isset($res_api['data'][5]['DaysSalesPrevious'][$nop]['DayNo'])){ // ปีที่แล้ว
+                        if($res_api['data'][5]['DaysSalesPrevious'][$nop]['DayNo'] == $i){ 
+                            $sum_amtsale_previous[$i] +=  $res_api['data'][5]['DaysSalesPrevious'][$nop]['sales'];
+                        }else{
+                            $nop--;
+                        }
+                    }
+                    
+                    $nop++;
+                }
+                $check_looo_once = 'N';
+>>>>>>> 7c2e2bb1f57bf4e6ae7c8ce793320c872f2c226f
 
             }
         }

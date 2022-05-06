@@ -50,6 +50,7 @@
                 <td>{{ $customer_contact_name }}</td>
                 <td>{{ $customer_contact_phone }}</td>
                 <td>
+                    {{ $shop->saleplan_id }}
                     @if($shop->shop_status == 1)
                         <span class="badge badge-soft-success" style="font-size: 12px;">สำเร็จ</span>
                     @elseif($shop->saleplan_shop_aprove_status == 3)
@@ -71,10 +72,10 @@
                 <td>
                     <div class="button-list">
                     @if($shop->shop_status != 1)
-                        <button class="btn btn-icon btn-warning mr-10 btn_editshop" value="{{ $shop->id }}">
+                        <button class="btn btn-icon btn-warning mr-10 btn_editshop" style="{{ $btn_edit_hide }}" value="{{ $shop->id }}">
                             <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-create"></i></h4></button>
                     @endif
-                        <a href="{{ url('/customer_lead/detail', $shop->id) }}" class="btn btn-icon btn-success mr-10">
+                        <a href="{{ url($url_customer_detail, $shop->id) }}" class="btn btn-icon btn-success mr-10">
                             <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></a>
                     </div>
                 </td>
