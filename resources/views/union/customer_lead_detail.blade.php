@@ -247,7 +247,6 @@
                             <div>{{ $comment->name }}</div>
                         </div>
                     </div>
-         
                 @else
                     <div class="row">
                         <div class="col-2" style="text-align:center;">

@@ -50,7 +50,6 @@
                 <td>{{ $customer_contact_name }}</td>
                 <td>{{ $customer_contact_phone }}</td>
                 <td>
-                    {{ $shop->saleplan_id }}
                     @if($shop->shop_status == 1)
                         <span class="badge badge-soft-success" style="font-size: 12px;">สำเร็จ</span>
                     @elseif($shop->saleplan_shop_aprove_status == 3)

@@ -59,14 +59,11 @@ class CustomerController extends Controller
                 'province.PROVINCE_NAME',
                 'customer_shops_saleplan_result.*',
                 'customer_shops_saleplan.*',
-                'customer_shops_saleplan.id as saleplan_id',
                 'customer_shops_saleplan.shop_aprove_status as saleplan_shop_aprove_status',
-                'customer_shops.*'
+                'customer_shops.*',
             )
-            // ->orderBy('customer_shops_saleplan.id', 'desc')
-            // ->get();
+            ->orderBy('customer_shops_saleplan.id', 'desc')
             ->orderBy('customer_shops_saleplan.monthly_plan_id', 'desc')
-            ->groupBy('customer_shops.id')
             ->get();
 
         $data['province'] = DB::table('province')->get();
@@ -112,12 +109,10 @@ class CustomerController extends Controller
             'province.PROVINCE_NAME',
             'customer_shops_saleplan_result.*',
             'customer_shops_saleplan.*',
-            'customer_shops_saleplan.id as saleplan_id',
             'customer_shops_saleplan.shop_aprove_status as saleplan_shop_aprove_status',
             'customer_shops.*'
         )
         ->orderBy('customer_shops_saleplan.monthly_plan_id', 'desc')
-        ->groupBy('customer_shops.id')
         ->get();
 
         $data['customer_shops'] = $customer_shops;
