@@ -119,28 +119,78 @@
                                 @endphp
                                 <div class="hk-pg-header mb-10">
                                     <div class="form-check form-check-inline">
+                                    <label>
                                         <input class="form-check-input checkRadio" type="radio" name="slugradio" id="inlineRadio1" value="ทั้งหมด" {{ $check_Radio_1 }}>
-                                        <label class="form-check-label" for="inlineRadio1">ทั้งหมด</label>
+                                        <!-- <label class="form-check-label" for="inlineRadio1">ทั้งหมด</label> -->
+                                        <section class="bg-orange hk-sec-wrapper mt-3">
+                                            <div class="row">
+                                                <div class="col-12 mb-topic" style="color: #fff; width:100%;">
+                                                    <input type="hidden" name="count_customer_all" value="{{ $count_customer_all }}" >
+                                                    <p class="mb-10"><div class="topic-numchart">ทั้งหมด</div> <div class="red-numchart"><div class="wrap_txt-numchart txt-numchart">{{ $count_customer_all }}</div></div>  </p>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </label>
                                     </div>
 
-                                    <div class="form-check form-check-inline">
+                                    <div class="form-check form-check-inline ">
+                                    <label>
                                         <input class="form-check-input checkRadio" type="radio" name="slugradio" id="inlineRadio2" value="สำเร็จ" {{ $check_Radio_2 }}>
-                                        <label class="form-check-label" for="inlineRadio2">สำเร็จ</label>
+                                        <!-- <label class="form-check-label" for="inlineRadio2">สำเร็จ</label> -->
+                                        <section class="bg-blue hk-sec-wrapper">
+                                            <div class="row">
+                                                <div class="col-12 mb-topic" style="color: #fff; width:100%;">
+                                                    <input type="hidden" name="count_customer_success" value="{{ $count_customer_success }}" >
+                                                    <p class="mb-10"><div class="topic-numchart">สำเร็จ</div> <div class="red-numchart"><div class="wrap_txt-numchart txt-numchart">{{ $count_customer_success }}</div></div>  </p>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </label>
                                     </div>
 
                                     <div class="form-check form-check-inline">
+                                    <label>
                                         <input class="form-check-input checkRadio" type="radio" name="slugradio" id="inlineRadio3" value="สนใจ" {{ $check_Radio_3 }}>
-                                        <label class="form-check-label" for="inlineRadio3">สนใจ</label>
+                                        <!-- <label class="form-check-label" for="inlineRadio3">สนใจ</label> -->
+                                        <section class="bg-purple hk-sec-wrapper">
+                                            <div class="row">
+                                                <div class="col-12 mb-topic" style="color: #fff; width:100%;">
+                                                    <input type="hidden" name="count_customer_result_1" value="{{ $count_customer_result_1 }}" >
+                                                    <p class="mb-10"><div class="topic-numchart">สนใจ</div> <div class="red-numchart"><div class="wrap_txt-numchart txt-numchart">{{ $count_customer_result_1 }}</div></div>  </p>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </label>
                                     </div>
 
                                     <div class="form-check form-check-inline">
+                                    <label>
                                         <input class="form-check-input checkRadio" type="radio" name="slugradio" id="inlineRadio4" value="ไม่สนใจ" {{ $check_Radio_4 }}>
-                                        <label class="form-check-label" for="inlineRadio4">ไม่สนใจ</label>
+                                        <!-- <label class="form-check-label" for="inlineRadio4">ไม่สนใจ</label> -->
+                                        <section class="bg-purple hk-sec-wrapper">
+                                            <div class="row">
+                                                <div class="col-12 mb-topic" style="color: #fff; width:100%;">
+                                                    <input type="hidden" name="count_customer_result_3" value="{{ $count_customer_result_3 }}" >
+                                                    <p class="mb-10"><div class="topic-numchart">ไม่สนใจ</div> <div class="red-numchart"><div class="wrap_txt-numchart txt-numchart">{{ $count_customer_result_3 }}</div></div>  </p>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </label>
                                     </div>
 
                                     <div class="form-check form-check-inline">
+                                    <label>
                                         <input class="form-check-input checkRadio" type="radio" name="slugradio" id="inlineRadio5" value="รอตัดสินใจ" {{ $check_Radio_5 }}>
-                                        <label class="form-check-label" for="inlineRadio5">รอตัดสินใจ</label>
+                                        <!-- <label class="form-check-label" for="inlineRadio5">รอตัดสินใจ</label> -->
+                                        <section class="bg-purple hk-sec-wrapper mt-3">
+                                            <div class="row">
+                                                <div class="col-12 mb-topic" style="color: #fff; width:100%;">
+                                                    <input type="hidden" name="count_customer_result_2" value="{{ $count_customer_result_2 }}" >
+                                                    <p class="mb-10"><div class="topic-numchart">รอตัดสินใจ</div> <div class="red-numchart"><div class="wrap_txt-numchart txt-numchart">{{ $count_customer_result_2 }}</div></div>  </p>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </label>
                                     </div>
                                 </div>
                                 </form>
@@ -161,6 +211,22 @@
         <!-- /Row -->
     </div>
     <!-- /Container -->
+
+<style>
+    [type=radio] {
+        position: absolute;
+        opacity: 0;
+    }
+
+    [type=radio]+section {
+        cursor: pointer;
+        margin-right: 0.5rem;
+    }
+
+    /* [type=radio]:checked + section {
+        outline: 5px solid orange;
+    } */
+</style>
 
 <script type="text/javascript">
     function chkAll(checkbox) {

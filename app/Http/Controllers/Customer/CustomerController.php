@@ -38,6 +38,7 @@ class CustomerController extends Controller
             )
             ->orderBy('customer_shops.id', 'desc')
             ->get();
+
         $data['customer_contacts'] = DB::table('customer_contacts')->orderBy('id', 'desc')->get();
 
         return view('customer.customer', $data);
@@ -45,10 +46,10 @@ class CustomerController extends Controller
 
     public function customerLead()
     {
-        $data['customer_shops'] = DB::table('customer_shops_saleplan')
+        $customer_shops = DB::table('customer_shops_saleplan')
             ->leftJoin('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
             ->leftJoin('customer_shops_saleplan_result', 'customer_shops_saleplan_result.customer_shops_saleplan_id', 'customer_shops_saleplan.id')
-            ->join('monthly_plans', 'monthly_plans.id', 'customer_shops_saleplan.monthly_plan_id')
+            ->leftJoin('monthly_plans', 'monthly_plans.id', 'customer_shops_saleplan.monthly_plan_id')
             ->leftJoin('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
             ->where('customer_shops.shop_status', '!=' ,2) // 0 = ลูกค้าใหม่ , 1 = ทะเบียนลูกค้า , 2 = ลบ
             ->where('customer_shops.created_by', Auth::user()->id)
@@ -61,18 +62,117 @@ class CustomerController extends Controller
                 'customer_shops.*',
             )
             ->orderBy('customer_shops_saleplan.id', 'desc')
-            ->orderBy('customer_shops_saleplan.monthly_plan_id', 'desc')
-            ->get();
+            ->orderBy('customer_shops_saleplan.monthly_plan_id', 'desc');
 
+        // $customer_shops_all = $customer_shops;
+        // $customer_shops_success = $customer_shops;
+        // $customer_shops_result_1 = $customer_shops;
+        // $customer_shops_result_2 = $customer_shops;
+        // $customer_shops_result_3 = $customer_shops;
+
+        $data['customer_shops'] = $customer_shops->get();;
         $data['province'] = DB::table('province')->get();
         $data['customer_contacts'] = DB::table('customer_contacts')->orderBy('id', 'desc')->get();
+        
+        // -- นับจำนวนร้านค้า ทั้งหมด
+        $data['count_customer_all'] = $customer_shops->count(); 
 
-        // dd($data['customer_shops']);
+        // -- จำนวนร้านค้า สถานะสำเร็จ
+        $customer_shops_success = DB::table('customer_shops_saleplan')
+        ->leftJoin('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
+        ->leftJoin('customer_shops_saleplan_result', 'customer_shops_saleplan_result.customer_shops_saleplan_id', 'customer_shops_saleplan.id')
+        ->leftJoin('monthly_plans', 'monthly_plans.id', 'customer_shops_saleplan.monthly_plan_id')
+        ->leftJoin('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
+        ->where('customer_shops.shop_status', '!=' ,2) // 0 = ลูกค้าใหม่ , 1 = ทะเบียนลูกค้า , 2 = ลบ
+        ->where('customer_shops.created_by', Auth::user()->id)
+        ->select(
+            'monthly_plans.*',
+            'province.PROVINCE_NAME',
+            'customer_shops_saleplan_result.*',
+            'customer_shops_saleplan.*',
+            'customer_shops_saleplan.shop_aprove_status as saleplan_shop_aprove_status',
+            'customer_shops.*',
+        )
+        ->orderBy('customer_shops_saleplan.id', 'desc')
+        ->orderBy('customer_shops_saleplan.monthly_plan_id', 'desc');
+        $customer_shops_success = $customer_shops_success->where('customer_shops.shop_status', 1);
+        $data['count_customer_success'] = $customer_shops_success->count();
 
+        // -- จำนวนร้านค้า สถานะสนใจ
+        $customer_shops_result_1 = DB::table('customer_shops_saleplan')
+            ->leftJoin('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
+            ->leftJoin('customer_shops_saleplan_result', 'customer_shops_saleplan_result.customer_shops_saleplan_id', 'customer_shops_saleplan.id')
+            ->leftJoin('monthly_plans', 'monthly_plans.id', 'customer_shops_saleplan.monthly_plan_id')
+            ->leftJoin('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
+            ->where('customer_shops.shop_status', '!=' ,2) // 0 = ลูกค้าใหม่ , 1 = ทะเบียนลูกค้า , 2 = ลบ
+            ->where('customer_shops.created_by', Auth::user()->id)
+            ->select(
+                'monthly_plans.*',
+                'province.PROVINCE_NAME',
+                'customer_shops_saleplan_result.*',
+                'customer_shops_saleplan.*',
+                'customer_shops_saleplan.shop_aprove_status as saleplan_shop_aprove_status',
+                'customer_shops.*',
+            )
+            ->orderBy('customer_shops_saleplan.id', 'desc')
+            ->orderBy('customer_shops_saleplan.monthly_plan_id', 'desc');
+        $customer_shops_result_1 = $customer_shops_result_1->where('customer_shops_saleplan_result.cust_result_status', 2);
+        $data['count_customer_result_1'] = $customer_shops_result_1->count();
+
+        // -- จำนวนร้านค้า สถานะรอตัดสินใจ
+        $customer_shops_result_2 = DB::table('customer_shops_saleplan')
+        ->leftJoin('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
+        ->leftJoin('customer_shops_saleplan_result', 'customer_shops_saleplan_result.customer_shops_saleplan_id', 'customer_shops_saleplan.id')
+        ->leftJoin('monthly_plans', 'monthly_plans.id', 'customer_shops_saleplan.monthly_plan_id')
+        ->leftJoin('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
+        ->where('customer_shops.shop_status', '!=' ,2) // 0 = ลูกค้าใหม่ , 1 = ทะเบียนลูกค้า , 2 = ลบ
+        ->where('customer_shops.created_by', Auth::user()->id)
+        ->select(
+            'monthly_plans.*',
+            'province.PROVINCE_NAME',
+            'customer_shops_saleplan_result.*',
+            'customer_shops_saleplan.*',
+            'customer_shops_saleplan.shop_aprove_status as saleplan_shop_aprove_status',
+            'customer_shops.*',
+        )
+        ->orderBy('customer_shops_saleplan.id', 'desc')
+        ->orderBy('customer_shops_saleplan.monthly_plan_id', 'desc');
+        $customer_shops_result_2 = $customer_shops_result_2->where('customer_shops_saleplan_result.cust_result_status', 1);
+        $data['count_customer_result_2'] = $customer_shops_result_2->count();
+
+        // -- จำนวนร้านค้า สถานะไม่สนใจ
+        $customer_shops_result_3 = DB::table('customer_shops_saleplan')
+        ->leftJoin('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
+        ->leftJoin('customer_shops_saleplan_result', 'customer_shops_saleplan_result.customer_shops_saleplan_id', 'customer_shops_saleplan.id')
+        ->leftJoin('monthly_plans', 'monthly_plans.id', 'customer_shops_saleplan.monthly_plan_id')
+        ->leftJoin('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
+        ->where('customer_shops.shop_status', '!=' ,2) // 0 = ลูกค้าใหม่ , 1 = ทะเบียนลูกค้า , 2 = ลบ
+        ->where('customer_shops.created_by', Auth::user()->id)
+        ->select(
+            'monthly_plans.*',
+            'province.PROVINCE_NAME',
+            'customer_shops_saleplan_result.*',
+            'customer_shops_saleplan.*',
+            'customer_shops_saleplan.shop_aprove_status as saleplan_shop_aprove_status',
+            'customer_shops.*',
+        )
+        ->orderBy('customer_shops_saleplan.id', 'desc')
+        ->orderBy('customer_shops_saleplan.monthly_plan_id', 'desc');
+        $customer_shops_result_3 = $customer_shops_result_3->where('customer_shops_saleplan_result.cust_result_status', 0);
+        $data['count_customer_result_3'] = $customer_shops_result_3->count();
+
+        
         return view('customer.lead', $data);
     }
 
     public function customerLeadSearch(Request $request){
+        // dd($request);
+        $data['count_customer_all'] = $request->count_customer_all;
+        $data['count_customer_success'] = $request->count_customer_success;
+        $data['count_customer_result_1'] = $request->count_customer_result_1;
+        $data['count_customer_result_2'] = $request->count_customer_result_2;
+        $data['count_customer_result_3'] = $request->count_customer_result_3;
+
         $customer_shops = DB::table('customer_shops_saleplan')
             ->leftJoin('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
             ->leftJoin('customer_shops_saleplan_result', 'customer_shops_saleplan_result.customer_shops_saleplan_id', 'customer_shops_saleplan.id')
@@ -100,7 +200,6 @@ class CustomerController extends Controller
             }
             $data['slugradio_filter'] = $request->slugradio;
         }
-
 
         $customer_shops = $customer_shops->select(
             'monthly_plans.*',
