@@ -351,8 +351,8 @@
                                                                 $FocusDates_count = count($res_api["data"][1]["FocusDates"]);
                                                             @endphp
                                                             @if($FocusDates_count > 0)
-                                                                <div class="num-specialday">{{ $res_api["data"][1]["FocusDates"]["TotalCustomers"] }} ร้าน </div>
-                                                                <div class="num-specialday">{{ $res_api["data"][1]["FocusDates"]["TotalDays"] }} วัน</div>
+                                                                <div class="num-specialday">{{ $res_api["data"][1]["FocusDates"][0]["TotalCustomers"] }} ร้าน </div>
+                                                                <div class="num-specialday">{{ $res_api["data"][1]["FocusDates"][0]["TotalDays"] }} วัน</div>
                                                             @else
                                                                 <div class="num-specialday">0 ร้าน </div>
                                                                 <div class="num-specialday">0 วัน</div>
