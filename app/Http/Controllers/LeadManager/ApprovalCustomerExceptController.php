@@ -205,7 +205,7 @@ class ApprovalCustomerExceptController extends Controller
             ->orderBy('customer_shops_saleplan.id', 'desc')
             ->orderBy('customer_shops_saleplan.monthly_plan_id', 'desc');
         
-        $data['customer_shops'] = $customer_shops->get();;
+        $data['customer_shops'] = $customer_shops->get();
         $data['province'] = DB::table('province')->get();
         $data['customer_contacts'] = DB::table('customer_contacts')->orderBy('id', 'desc')->get();
 
