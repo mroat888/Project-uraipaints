@@ -552,11 +552,6 @@
     </div>
     <!-- /Container -->
 
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#bdatesModal">
-  Launch demo modal
-</button>
-
 <!-- Modal -->
 @include('union.bdates_modal')
 

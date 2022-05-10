@@ -1,6 +1,6 @@
 <!-- Modal -->
 <div class="modal fade" id="bdatesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header topic-bggreen">
         <h5 class="modal-title" id="exampleModalLabel" style="color:#FFF;">
@@ -10,7 +10,7 @@
         </button>
         </div>
         <div class="modal-body">
-            <!-- <div class="table-responsive col-md-12"> -->
+            <div class="table-responsive col-md-12">
                 <table id="datable_1" class="table table-hover">
                     <thead>
                         <tr>
@@ -51,7 +51,7 @@
                         @endif
                     </tbody>
                 </table>
-            <!-- </div> -->
+            </div>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
