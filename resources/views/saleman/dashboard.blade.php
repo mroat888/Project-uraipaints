@@ -330,7 +330,7 @@
                                         <div class="col-12">
                                             <div class="row">
                                                 <div class="col-8">
-                                                    <a href="{{url('customer')}}" class="txt-cusall text-dark">ลูกค้าทั้งหมด (ราย)</a>
+                                                    <a href="{{url('data_name_store')}}" class="txt-cusall text-dark">ลูกค้าทั้งหมด (ราย)</a>
                                                 </div>
                                                 <div class="col-4">
                                                     <span class="txt-custotal">{{ number_format($res_api["data"][0]["Customers"][0]["ActiveTotal"]) }}</span>
@@ -338,10 +338,12 @@
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <div class="bggrey-cus">
+                                            <div class="bggrey-cus" id="bdate">
                                                 <div class="row">
                                                     <div class="col-12 col-xl-8">
-                                                        <a href="{{url('important-day-detail')}}" class="txt-specialday text-dark">วันสำคัญในเดือน</a>
+                                                        <!-- <a href="{{url('important-day-detail')}}" class="txt-specialday text-dark"> -->
+                                                            วันสำคัญในเดือน
+                                                        <!-- </a> -->
                                                     </div>
                                                     <div class="col-12 col-xl-4">
                                                         <div>
@@ -367,8 +369,8 @@
                         </div>
                     </div>
                 </section>
-
-                </div>
+            </div>
+            
         </div>
 
         <div class="row">
@@ -422,16 +424,16 @@
                                     <div class="d-flex align-items-end justify-content-between mt-10">
                                         <div>
                                             <span class="d-block">
-                                                <span><?php echo thaidate('F', date("M")); ?></h6>
-                                                        @if (!isset($res_api["data"][2]["SalesCurrent"]))
-                                                            /{{$res_api["data"][2]["SalesCurrent"][0]["year"]}}
+                                                <span><?php echo thaidate('F', date("M")); ?></h6><??>
+                                                        @if (isset($res_api["data"][3]["SalesPrevious"]))
+                                                            /{{$res_api["data"][3]["SalesPrevious"][0]["year"]}}
                                                         @endif
                                                 </span>
                                             </span>
                                         </div>
                                         <div>
                                             <span><?php echo thaidate('F', date("M")); ?></h6>
-                                                @if (!isset($res_api["data"][2]["SalesCurrent"]))
+                                                @if (isset($res_api["data"][2]["SalesCurrent"]))
                                                             /{{$res_api["data"][2]["SalesCurrent"][0]["year"]}}
                                                 @endif
                                             </span>
@@ -444,7 +446,7 @@
                                             </span>
                                         </div>
                                         <div>
-                                            @if ($totalAmtSale_th < $totalAmtSale_th_Previous)
+                                            @if ($totalAmtSale < $totalAmtSale_Previous)
                                             <span class="bg-sumsale text-red">{{ $totalAmtSale_th }}</span>
                                             @else
                                             <span class="bg-sumsale text-green">{{ $totalAmtSale_th }}</span>
@@ -503,8 +505,13 @@
                                                     </div>
                                                     <div class="col-6 col-md-5 pdr-0" style="text-align:right;">
                                                         <span style="font-weight: bold; font-size: 16px;">
-                                                            @if (!isset($res_api["data"][1]["FocusDates"]))
-                                                            {{ number_format($res_api["data"][1]["FocusDates"][0]["TotalDays"]) }} % จากทั้งหมด
+                                                            @php 
+                                                                $shop_active = $res_api["data"][0]["Customers"][0]["ActiveTotal"];
+                                                                $BillOrderTotal = $res_api["data"][0]["Customers"][0]["BillOrderTotal"];
+                                                                $persentbill = ($BillOrderTotal*100)/$shop_active;
+                                                            @endphp
+                                                            @if ($persentbill != null)
+                                                                {{ number_format($persentbill) }} % จากทั้งหมด
                                                             @else
                                                                 - % จากทั้งหมด
                                                             @endif
@@ -517,10 +524,13 @@
                                                     </div>
                                                     <div class="col-6 col-md-5 pdr-0" style="text-align:right;">
                                                         <span style="font-weight: bold; font-size: 16px;" class="num-specialday">
-                                                            @if (!is_null($res_api["data"][0]["Customers"]))
-                                                                {{ number_format($res_api["data"][0]["Customers"][0]["InactiveTotal"]/100) }} % จากทั้งหมด
+                                                            @php 
+                                                                $presentbill_no = 100-$persentbill;
+                                                            @endphp
+                                                            @if ($presentbill_no != null)
+                                                                {{ number_format($presentbill_no) }} % จากทั้งหมด
                                                             @else
-                                                                - จากทั้งหมด
+                                                                - % จากทั้งหมด
                                                             @endif
                                                         </span>
                                                     </div>
@@ -542,9 +552,18 @@
     </div>
     <!-- /Container -->
 
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#bdatesModal">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+@include('union.bdates_modal')
+
 @section('footer')
     @include('layouts.footer')
 @endsection
+
 
 <script src="{{ asset('public/template/graph/Chart.bundle.js') }}"></script>
 

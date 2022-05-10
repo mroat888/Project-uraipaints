@@ -98,8 +98,13 @@ class DashboardController extends Controller
             'year' => $year,
             'month' => $month
         ]);
-
         $data['res_api'] = $response->json();
+
+        $response_bdates = Http::withToken($api_token)
+        ->get(env("API_LINK").env('API_PATH_VER').'/bdates/sellers/'.Auth::user()->api_identify.'/customers');
+        $data['res_bdates_api'] = $response_bdates->json();
+
+        
 
         $data['count_sale_plans_result'] = 0;      // -- นับจำนวน slaeplans
         $data['count_shops_saleplan_result'] = 0;  // -- นับจำนวน ลูกค้าใหม่

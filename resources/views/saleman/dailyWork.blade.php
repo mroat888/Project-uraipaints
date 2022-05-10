@@ -231,7 +231,7 @@
                                         <div>
                                             <div class="row">
                                                 <div class="col-8">
-                                                    <a href="{{url('customer')}}" class="txt-cusall text-dark">ลูกค้าทั้งหมด</a>
+                                                    <a href="{{url('data_name_store')}}" class="txt-cusall text-dark">ลูกค้าทั้งหมด</a>
                                                 </div>
                                                 <div class="col-4">
                                                     <span class="txt-custotal">{{ $total_shop }}</span>

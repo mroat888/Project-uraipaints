@@ -6,7 +6,7 @@
 <nav class="hk-breadcrumb" aria-label="breadcrumb">
     <ol class="breadcrumb breadcrumb-light bg-transparent">
         <li class="breadcrumb-item"><a href="#">Page</a></li>
-        <li class="breadcrumb-item active" aria-current="page">รายงานสรุปยอดทำเป้า เทียบปี</li>
+        <li class="breadcrumb-item active" aria-current="page">ข้อมูลร้านค้า (ทำเป้า)</li>
     </ol>
 </nav>
 <!-- /Breadcrumb -->
@@ -16,7 +16,7 @@
         <!-- Title -->
         <div class="hk-pg-header mb-10">
             <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-document"></i></span>รายงานสรุปยอดทำเป้า เทียบปี</h4>
+                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-document"></i></span>ข้อมูลร้านค้า (ทำเป้า)</h4>
             </div>
         </div>
         <!-- /Title -->
@@ -27,7 +27,7 @@
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
                         <div class="col-sm-12 col-md-8">
-                            <h5 class="hk-sec-title">ตารางรายงานสรุปยอดทำเป้า เทียบปี</h5>
+                            <h5 class="hk-sec-title">สรุปยอดทำเป้า เทียบปี</h5>
                         </div>
                         <div class="col-sm-12 col-md-4">
                             <!-- ------ -->

@@ -131,159 +131,187 @@ class DashboardController extends Controller
         $data['amtsale_current'] = "";
         $data['amtsale_previous'] = "";
 
-        if(!is_null($user_teams)){
-            foreach($user_teams as $team){
+        $response = Http::withToken($api_token)
+        ->get(env("API_LINK").env('API_PATH_VER').'/admin-dashboards', [
+            'year' => $year,
+            'month' => $month
+        ]);
+        $data['res_api'] = $response->json();
+        
 
-                $response = Http::withToken($api_token)
-                ->get('http://49.0.64.92:8020/api/v1/sellers/'.$team->api_identify.'/dashboards', [
-                    'year' => $year,
-                    'month' => $month
-                ]);
-                $res_api = $response->json();
+        // $response_bdates = Http::withToken($api_token)
+        // ->get(env("API_LINK").env('API_PATH_VER').'/bdates/saleheaders/'.Auth::user()->api_identify.'/customers');
+        // $data['res_bdates_api'] = $response_bdates->json();
 
-                if(!empty($res_api["data"][0]["Customers"])){
-                    $Customers_check_data = count($res_api["data"][0]["Customers"]);
-                    if($Customers_check_data > 0){
-                        $data['sum_CustTotal'] = $data['sum_CustTotal'] + $res_api["data"][0]["Customers"][0]["CustTotal"]; // ร้านค้าทั้งหมด
-                        $data['sum_ActiveTotal'] = $data['sum_ActiveTotal'] + $res_api["data"][0]["Customers"][0]["ActiveTotal"]; // ร้านที่ Active
-                        $data['sum_InactiveTotal'] = $data['sum_InactiveTotal'] + $res_api["data"][0]["Customers"][0]["InactiveTotal"]; // ร้านที่ Active
-                    }
-                }
-<<<<<<< HEAD
+        // -- Chat
+        $dayinmonth = date("t");
+        $data['day_month'] = "";
+        $data['amtsale_current'] = "";
+        $data['amtsale_previous'] = "";
+        $noc=0;
+        $nop=0;
 
-                // if(!empty($res_api["data"][1]["FocusDates"])){
-                //     $FocusDates_check_data = count($res_api["data"][1]["FocusDates"]);
-                //     if($FocusDates_check_data > 0){
-                //         $data['sum_FotalCustomers'] = $data['sum_FotalCustomers'] + $res_api["data"][1]["FocusDates"][0]["TotalCustomers"];
-                //         $data['sum_TotalDays'] = $data['sum_TotalDays'] + $res_api["data"][1]["FocusDates"][0]["TotalDays"];
-                //     }
-                // }
-
-                // //-- เปรียบเทียบยอดขาย ปีที่แล้วกับปีปัจจุบัน ในเดือน
-                // if(!empty($res_api["data"][3]["SalesPrevious"])){
-                //     $SalesPrevious_check_data = count($res_api["data"][3]["SalesPrevious"]);
-                //     if($SalesPrevious_check_data > 0){
-                //         $SalesPrevious = $res_api["data"][3]["SalesPrevious"];
-                //         $data['sum_totalAmtSale_Previous'] = $data['sum_totalAmtSale_Previous'] + $SalesPrevious[0]["totalAmtSale"]; // เป้ายอดขายปีที่แล้ว
-                //     }
-                // }
-
-                // if(!empty($res_api["data"][2]["SalesCurrent"])){
-                //     $SalesCurrent_check_data = count($res_api["data"][2]["SalesCurrent"]);
-                //     if($SalesCurrent_check_data > 0){
-                //         $SalesCurrent = $res_api["data"][2]["SalesCurrent"];
-                //         $data['sum_totalAmtSale'] = $data['sum_totalAmtSale'] + $SalesCurrent[0]["totalAmtSale"]; // ยอดที่ทำได้ปีนี้
-                //     }
-                // }
-=======
-                
-                if(!empty($res_api["data"][1]["FocusDates"])){
-                    $FocusDates_check_data = count($res_api["data"][1]["FocusDates"]);  
-                    if($FocusDates_check_data > 0){
-                        // $data['sum_FotalCustomers'] = $data['sum_FotalCustomers'] + $res_api["data"][1]["FocusDates"][0]["TotalCustomers"];
-                        // $data['sum_TotalDays'] = $data['sum_TotalDays'] + $res_api["data"][1]["FocusDates"][0]["TotalDays"];
-                    }
-                }
-                               
-                //-- เปรียบเทียบยอดขาย ปีที่แล้วกับปีปัจจุบัน ในเดือน
-                if(!empty($res_api["data"][3]["SalesPrevious"])){
-                    $SalesPrevious_check_data = count($res_api["data"][3]["SalesPrevious"]);
-                    if($SalesPrevious_check_data > 0){
-                        $SalesPrevious = $res_api["data"][3]["SalesPrevious"];
-                        $data['sum_totalAmtSale_Previous'] = $data['sum_totalAmtSale_Previous'] + $SalesPrevious[0]["sales"]; // เป้ายอดขายปีที่แล้ว
-                    }
-                }
-                
-                if(!empty($res_api["data"][2]["SalesCurrent"])){
-                    $SalesCurrent_check_data = count($res_api["data"][2]["SalesCurrent"]);
-                    if($SalesCurrent_check_data > 0){
-                        $SalesCurrent = $res_api["data"][2]["SalesCurrent"];
-                        $data['sum_totalAmtSale'] = $data['sum_totalAmtSale'] + $SalesCurrent[0]["sales"]; // ยอดที่ทำได้ปีนี้
-                    }
-                }
->>>>>>> 7c2e2bb1f57bf4e6ae7c8ce793320c872f2c226f
-
-                //-- Chat
-                // if($check_looo_once == 'Y'){
-                //     for($i=1; $i <= $dayinmonth; $i++){
-                //         if($i < $dayinmonth){
-                //             $data['day_month'] .= $i.",";
-                //         }else{
-                //             $data['day_month'] .= $i;
-                //         }
-                //     }
-                // }
-                // $noc=0;
-                // $nop=0;
-                // for($i=1; $i <= $dayinmonth; $i++){
-
-                //     if(empty($sum_amtsale_current[$i])){
-                //         $sum_amtsale_current[$i] = 0;
-                //     }else{
-                //         $sum_amtsale_current[$i] += 0;
-                //     }
-
-                //     if(empty($sum_amtsale_previous[$i])){
-                //         $sum_amtsale_previous[$i] = 0;
-                //     }else{
-                //         $sum_amtsale_previous[$i] += 0;
-                //     }
-
-<<<<<<< HEAD
-                //     if(isset($res_api['data'][4]['DaysSalesCurrent'][$nop]['DayNo'])){ // ปีปัจจุบัน
-                //         if($res_api['data'][4]['DaysSalesCurrent'][$nop]['DayNo'] == $i){
-                //             $sum_amtsale_current[$i] +=  $res_api['data'][4]['DaysSalesCurrent'][$nop]['totalAmtSale'];
-                //         }else{
-                //             $nop--;
-                //         }
-                //     }
-
-                //     if(isset($res_api['data'][5]['DaysSalesPrevious'][$nop]['DayNo'])){ // ปีที่แล้ว
-                //         if($res_api['data'][5]['DaysSalesPrevious'][$nop]['DayNo'] == $i){
-                //             $sum_amtsale_previous[$i] +=  $res_api['data'][5]['DaysSalesPrevious'][$nop]['totalAmtSale'];
-                //         }else{
-                //             $nop--;
-                //         }
-                //     }
-
-                //     $nop++;
-                // }
-                // $check_looo_once = 'N';
-=======
-                    if(isset($res_api['data'][4]['DaysSalesCurrent'][$nop]['DayNo'])){ // ปีปัจจุบัน
-                        if($res_api['data'][4]['DaysSalesCurrent'][$nop]['DayNo'] == $i){ 
-                            $sum_amtsale_current[$i] +=  $res_api['data'][4]['DaysSalesCurrent'][$nop]['sales'];
-                        }else{
-                            $nop--;
-                        }
-                    }
-                    
-                    if(isset($res_api['data'][5]['DaysSalesPrevious'][$nop]['DayNo'])){ // ปีที่แล้ว
-                        if($res_api['data'][5]['DaysSalesPrevious'][$nop]['DayNo'] == $i){ 
-                            $sum_amtsale_previous[$i] +=  $res_api['data'][5]['DaysSalesPrevious'][$nop]['sales'];
-                        }else{
-                            $nop--;
-                        }
-                    }
-                    
-                    $nop++;
-                }
-                $check_looo_once = 'N';
->>>>>>> 7c2e2bb1f57bf4e6ae7c8ce793320c872f2c226f
-
+        for($i=1; $i <= $dayinmonth; $i++){
+            if($i < $dayinmonth){
+                $data['day_month'] .= $i.",";
+            }else{
+                $data['day_month'] .= $i;
             }
-        }
 
-        //-- Chat
-        // for($i=1; $i <= $dayinmonth; $i++){
-        //     if($i < $dayinmonth){
-        //         $data['amtsale_current'] .= $sum_amtsale_current[$i].",";
-        //         $data['amtsale_previous'] .= $sum_amtsale_previous[$i].",";
-        //     }else{
-        //         $data['amtsale_current'] .= $sum_amtsale_current[$i];
-        //         $data['amtsale_previous'] .= $sum_amtsale_previous[$i];
+            if(isset($data['res_api']['data'][4]['DaysSalesCurrent'][$noc]['DayNo'])){ // ปีปัจจุบัน
+
+                if($data['res_api']['data'][4]['DaysSalesCurrent'][$noc]['DayNo'] == $i){
+                    // $data['amtsale_current'] .= $data['res_api']['data'][4]['DaysSalesCurrent'][$noc]['totalAmtSale'].",";
+                    $data['amtsale_current'] .= $data['res_api']['data'][4]['DaysSalesCurrent'][$noc]['sales'].",";
+                }else{
+                    $noc--;
+                    if($i < $dayinmonth){
+                        $data['amtsale_current'] .= "0,";
+                    }else{
+                        $data['amtsale_current'] .= "0";
+                    }
+                }
+
+            }else{
+                if($i < $dayinmonth){
+                    $data['amtsale_current'] .= "0,";
+                }else{
+                    $data['amtsale_current'] .= "0";
+                }
+            }
+
+            if(isset($data['res_api']['data'][5]['DaysSalesPrevious'][$nop]['DayNo'])){ // ปีที่แล้ว
+
+                if($data['res_api']['data'][5]['DaysSalesPrevious'][$nop]['DayNo'] == $i){
+                    // $data['amtsale_previous'] .= $data['res_api']['data'][5]['DaysSalesPrevious'][$nop]['totalAmtSale'].",";
+                    $data['amtsale_previous'] .= $data['res_api']['data'][5]['DaysSalesPrevious'][$nop]['sales'].",";
+                }else{
+                    $nop--;
+                    if($i < $dayinmonth){
+                        $data['amtsale_previous'] .= "0,";
+                    }else{
+                        $data['amtsale_previous'] .= "0";
+                    }
+                }
+
+            }else{
+                if($i < $dayinmonth){
+                    $data['amtsale_previous'] .= "0,";
+                }else{
+                    $data['amtsale_previous'] .= "0";
+                }
+            }
+
+            $noc++;
+            $nop++;
+           
+        }
+        // -- จบ Chat
+
+
+        // if(!is_null($user_teams)){
+        //     foreach($user_teams as $team){
+
+        //         $response = Http::withToken($api_token)
+        //         ->get('http://49.0.64.92:8020/api/v1/sellers/'.$team->api_identify.'/dashboards', [
+        //             'year' => $year,
+        //             'month' => $month
+        //         ]);
+        //         $res_api = $response->json();
+
+        //         if(!empty($res_api["data"][0]["Customers"])){
+        //             $Customers_check_data = count($res_api["data"][0]["Customers"]);
+        //             if($Customers_check_data > 0){
+        //                 $data['sum_CustTotal'] = $data['sum_CustTotal'] + $res_api["data"][0]["Customers"][0]["CustTotal"]; // ร้านค้าทั้งหมด
+        //                 $data['sum_ActiveTotal'] = $data['sum_ActiveTotal'] + $res_api["data"][0]["Customers"][0]["ActiveTotal"]; // ร้านที่ Active
+        //                 $data['sum_InactiveTotal'] = $data['sum_InactiveTotal'] + $res_api["data"][0]["Customers"][0]["InactiveTotal"]; // ร้านที่ Active
+        //             }
+        //         }
+
+        //         // if(!empty($res_api["data"][1]["FocusDates"])){
+        //         //     $FocusDates_check_data = count($res_api["data"][1]["FocusDates"]);
+        //         //     if($FocusDates_check_data > 0){
+        //         //         $data['sum_FotalCustomers'] = $data['sum_FotalCustomers'] + $res_api["data"][1]["FocusDates"][0]["TotalCustomers"];
+        //         //         $data['sum_TotalDays'] = $data['sum_TotalDays'] + $res_api["data"][1]["FocusDates"][0]["TotalDays"];
+        //         //     }
+        //         // }
+
+        //         // //-- เปรียบเทียบยอดขาย ปีที่แล้วกับปีปัจจุบัน ในเดือน
+        //         // if(!empty($res_api["data"][3]["SalesPrevious"])){
+        //         //     $SalesPrevious_check_data = count($res_api["data"][3]["SalesPrevious"]);
+        //         //     if($SalesPrevious_check_data > 0){
+        //         //         $SalesPrevious = $res_api["data"][3]["SalesPrevious"];
+        //         //         $data['sum_totalAmtSale_Previous'] = $data['sum_totalAmtSale_Previous'] + $SalesPrevious[0]["totalAmtSale"]; // เป้ายอดขายปีที่แล้ว
+        //         //     }
+        //         // }
+
+        //         // if(!empty($res_api["data"][2]["SalesCurrent"])){
+        //         //     $SalesCurrent_check_data = count($res_api["data"][2]["SalesCurrent"]);
+        //         //     if($SalesCurrent_check_data > 0){
+        //         //         $SalesCurrent = $res_api["data"][2]["SalesCurrent"];
+        //         //         $data['sum_totalAmtSale'] = $data['sum_totalAmtSale'] + $SalesCurrent[0]["totalAmtSale"]; // ยอดที่ทำได้ปีนี้
+        //         //     }
+        //         // }
+
+        //         //-- Chat
+        //         // if($check_looo_once == 'Y'){
+        //         //     for($i=1; $i <= $dayinmonth; $i++){
+        //         //         if($i < $dayinmonth){
+        //         //             $data['day_month'] .= $i.",";
+        //         //         }else{
+        //         //             $data['day_month'] .= $i;
+        //         //         }
+        //         //     }
+        //         // }
+        //         // $noc=0;
+        //         // $nop=0;
+        //         // for($i=1; $i <= $dayinmonth; $i++){
+
+        //         //     if(empty($sum_amtsale_current[$i])){
+        //         //         $sum_amtsale_current[$i] = 0;
+        //         //     }else{
+        //         //         $sum_amtsale_current[$i] += 0;
+        //         //     }
+
+        //         //     if(empty($sum_amtsale_previous[$i])){
+        //         //         $sum_amtsale_previous[$i] = 0;
+        //         //     }else{
+        //         //         $sum_amtsale_previous[$i] += 0;
+        //         //     }
+
+        //         //     if(isset($res_api['data'][4]['DaysSalesCurrent'][$nop]['DayNo'])){ // ปีปัจจุบัน
+        //         //         if($res_api['data'][4]['DaysSalesCurrent'][$nop]['DayNo'] == $i){
+        //         //             $sum_amtsale_current[$i] +=  $res_api['data'][4]['DaysSalesCurrent'][$nop]['totalAmtSale'];
+        //         //         }else{
+        //         //             $nop--;
+        //         //         }
+        //         //     }
+
+        //         //     if(isset($res_api['data'][5]['DaysSalesPrevious'][$nop]['DayNo'])){ // ปีที่แล้ว
+        //         //         if($res_api['data'][5]['DaysSalesPrevious'][$nop]['DayNo'] == $i){
+        //         //             $sum_amtsale_previous[$i] +=  $res_api['data'][5]['DaysSalesPrevious'][$nop]['totalAmtSale'];
+        //         //         }else{
+        //         //             $nop--;
+        //         //         }
+        //         //     }
+
+        //         //     $nop++;
+        //         // }
+        //         // $check_looo_once = 'N';
+
         //     }
         // }
+
+        // //-- Chat
+        // // for($i=1; $i <= $dayinmonth; $i++){
+        // //     if($i < $dayinmonth){
+        // //         $data['amtsale_current'] .= $sum_amtsale_current[$i].",";
+        // //         $data['amtsale_previous'] .= $sum_amtsale_previous[$i].",";
+        // //     }else{
+        // //         $data['amtsale_current'] .= $sum_amtsale_current[$i];
+        // //         $data['amtsale_previous'] .= $sum_amtsale_previous[$i];
+        // //     }
+        // // }
 
 
         return view('admin.dashboard', $data);
