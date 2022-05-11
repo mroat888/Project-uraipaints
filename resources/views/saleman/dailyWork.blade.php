@@ -234,17 +234,31 @@
                                                     <a href="{{url('data_name_store')}}" class="txt-cusall text-dark">ลูกค้าทั้งหมด</a>
                                                 </div>
                                                 <div class="col-4">
-                                                    <span class="txt-custotal">{{ $total_shop }}</span>
+                                                    <span class="txt-custotal">{{ number_format($res_api["data"][0]["Customers"][0]["ActiveTotal"]) }}</span>
                                                 </div>
                                             </div>
-                                            <div class="bggrey-cus">
+                                            <div class="bggrey-cus" id="bdate">
                                                 <div class="row">
                                                     <div class="col-12 col-xl-8">
-                                                        <a href="{{url('important-day-detail')}}" class="txt-specialday text-dark">มีวันสำคัญในเดือน</a>
+                                                        <!-- <a href="{{url('important-day-detail')}}" class="txt-specialday text-dark"> -->
+                                                            มีวันสำคัญในเดือน
+                                                        <!-- </a> -->
                                                     </div>
                                                     <div class="col-12 col-xl-4">
-                                                        <div class="num-specialday"><span>{{ $ShopInMonthDays }} ร้าน</span></div>
-                                                        <div class="num-specialday"><span>{{ $InMonthDays }} วัน</span></div>
+                                                        {{-- 
+                                                        <!-- <div class="num-specialday"><span>{{ $ShopInMonthDays }} ร้าน</span></div>
+                                                        <div class="num-specialday"><span>{{ $InMonthDays }} วัน</span></div> -->
+                                                        --}}
+                                                        @php
+                                                            $FocusDates_count = count($res_api["data"][1]["FocusDates"]);
+                                                        @endphp
+                                                        @if($FocusDates_count > 0)
+                                                            <div class="num-specialday">{{ $res_api["data"][1]["FocusDates"][0]["TotalCustomers"] }} ร้าน </div>
+                                                            <div class="num-specialday">{{ $res_api["data"][1]["FocusDates"][0]["TotalDays"] }} วัน</div>
+                                                        @else
+                                                            <div class="num-specialday">0 ร้าน </div>
+                                                            <div class="num-specialday">0 วัน</div>
+                                                        @endif
                                                     </div>
                                                 </div>
 
@@ -913,6 +927,10 @@
             </div>
         </div>
     </div>
+
+
+<!-- Modal -->
+@include('union.bdates_modal')
 
     <script>
 

@@ -45,8 +45,8 @@
                         <div class="row">
                             <div class="col-sm">
                                 <div class="table-wrap">
-                                    <div class="table-responsive table-color">
-                                        <table class="table table-hover mb-0">
+                                    <div class="table-responsive table-color col-md-12">
+                                        <table class="table table-hover">
                                             <thead>
                                                 <tr class="table-bggrey">
                                                     <th>#</th>

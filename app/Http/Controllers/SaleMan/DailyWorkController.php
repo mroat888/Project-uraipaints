@@ -90,10 +90,24 @@ class DailyWorkController extends Controller
         $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/sellers/'.Auth::user()->api_identify.'/customers');
         $res_api = $response->json();
+        
+        $api_token = $this->api_token->apiToken();
+        $data['api_token'] = $api_token;
+        $response = Http::withToken($api_token)
+        ->get(env("API_LINK").env('API_PATH_VER').'/sellers/'.Auth::user()->api_identify.'/dashboards', [
+            'year' => $year,
+            'month' => $month
+        ]);
+        $data['res_api'] = $response->json();
+
+        $response_bdates = Http::withToken($api_token)
+        ->get(env("API_LINK").env('API_PATH_VER').'/bdates/sellers/'.Auth::user()->api_identify.'/customers');
+        $data['res_bdates_api'] = $response_bdates->json();
+        
 
         $data['customer_api'] = array();
-        $data['InMonthDays'] = 0;
-        $data['ShopInMonthDays'] = 0;
+        // $data['InMonthDays'] = 0;
+        // $data['ShopInMonthDays'] = 0;
         foreach ($res_api['data'] as $key => $value) {
             $data['customer_api'][$key] =
             [
@@ -102,14 +116,14 @@ class DailyWorkController extends Controller
                 'shop_address' => $value['amphoe_name']." , ".$value['province_name'],
             ];
 
-            if($value['InMonthDays'] != 0){
-                $data['ShopInMonthDays'] += 1;
-                $data['InMonthDays'] += $value['InMonthDays'];
-            }
+            // if($value['InMonthDays'] != 0){
+            //     $data['ShopInMonthDays'] += 1;
+            //     $data['InMonthDays'] += $value['InMonthDays'];
+            // }
 
         }
 
-        $data['total_shop'] = $res_api['records'];
+        // $data['total_shop'] = $res_api['records'];
 
 
         // ---- สร้างข้อมูล เยี่ยมลูกค้า โดย link กับ api ------- //

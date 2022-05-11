@@ -435,6 +435,8 @@ class SalePlanController extends Controller
                     $data_create->sale_plan_id  = $request->saleplan_id;
                     $data_create->sale_plan_detail   = $request->saleplan_detail;
                     $data_create->sale_plan_status   = $request->saleplan_result;
+                    $data_create->created_by   = Auth::user()->id;
+                    $data_create->created_at   = Carbon::now();
                     $data_create->updated_by   = Auth::user()->id;
                     $data_create->updated_at   = Carbon::now();
                     $data_create->save();
