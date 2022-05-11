@@ -17,6 +17,7 @@ class ChangeCustomerController extends Controller
         ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
         ->join('users', 'customer_shops_saleplan.created_by', 'users.id')
         ->where('customer_shops_saleplan.shop_aprove_status', 2)
+        ->where('customer_shops.shop_status', 0)
         ->select('customer_shops_saleplan.*',
         'users.name as saleman', 'customer_shops.shop_name', 'customer_shops.shop_status',
         'province.PROVINCE_NAME',

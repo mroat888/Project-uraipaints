@@ -21,7 +21,7 @@
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
             <li class="breadcrumb-item"><a href="#">Page</a></li>
-            <li class="breadcrumb-item active" aria-current="page">อนุมัติ Sale Plan</li>
+            <li class="breadcrumb-item active" aria-current="page">อนุมัติแผนประจำเดือน</li>
         </ol>
     </nav>
     <!-- /Breadcrumb -->
@@ -73,7 +73,7 @@
                         </div>
                         <div class="row mb-2">
                             <div class="col-sm-12 col-md-6">
-                                <h5 class="hk-sec-title">รายการ Sale Plan ประจำเดือน</h5>
+                                <h5 class="hk-sec-title">รายการ Sale Plan ประจำเดือน <?php echo thaidate('F Y', date('F Y')); ?></h5>
                             </div>
                             <div class="col-sm-12 col-md-6">
                                 <!-- ------ -->
@@ -131,7 +131,7 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($monthly_plan as $key => $value)
-                                                @php 
+                                                @php
                                                     $sale_plans = DB::table('sale_plans')
                                                         ->where('monthly_plan_id',$value->id)
                                                         ->get();
