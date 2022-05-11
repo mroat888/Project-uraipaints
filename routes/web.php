@@ -212,7 +212,7 @@ Route::get('lead/show_comment_customer_except/{id}/{custsaleplanID}/{createID}',
 Route::post('lead/approval-customer-except/search', 'LeadManager\ApprovalCustomerExceptController@search');
 
 
-Route::get('comment_customer_new/{id}/{custsaleplanID}/{createID}', 'LeadManager\ApprovalSalePlanController@comment_customer_new');
+Route::get('comment_customer_new/{id}/{saleplanID}', 'LeadManager\ApprovalSalePlanController@comment_customer_new');
 Route::post('lead/create_comment_customer_new', 'LeadManager\ApprovalSalePlanController@create_comment_customer_new');
 
 // Assignment

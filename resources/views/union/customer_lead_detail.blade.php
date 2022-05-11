@@ -91,7 +91,7 @@
                 </div>
             </div>
         </div>
-        @php 
+        @php
             $even_number = 0;
         @endphp
         @foreach($customer_shops_saleplan as $key => $cust_shops_saleplan)
@@ -132,7 +132,7 @@
                                         <div class="col-md-12">
                                             <div class="desc_cusnote">
                                                 <blockquote class="blockquote mb-0">
-                                                    @php 
+                                                    @php
                                                         $master_objective = DB::table('master_objective_saleplans')
                                                             ->where('id', $cust_shops_saleplan->customer_shop_objective)
                                                             ->first();
@@ -147,7 +147,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-12 mt-15">
-                                            @php 
+                                            @php
                                                 list($sale_date, $sale_time) = explode(' ',$cust_shops_saleplan->created_at);
                                             @endphp
                                             วันที่ : {{ $sale_date }} เวลา : {{ $sale_time }}
@@ -186,7 +186,7 @@
                                         <div class="col-md-12">
                                             <div class="desc_cusnote">
                                                 <blockquote class="blockquote mb-0">
-                                                    @php 
+                                                    @php
                                                         $master_objective = DB::table('master_objective_saleplans')
                                                             ->where('id', $cust_shops_saleplan->customer_shop_objective)
                                                             ->first();
@@ -201,7 +201,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-12 mt-15">
-                                            @php 
+                                            @php
                                                 list($sale_date, $sale_time) = explode(' ',$cust_shops_saleplan->created_at);
                                             @endphp
                                             วันที่ : {{ $sale_date }} เวลา : {{ $sale_time }}
@@ -226,11 +226,11 @@
                 @php $even_number++; @endphp
             @endif
 
-            
+
             <!-- จบ ส่วนของแผน Saleman ---- -->
 
             <!-- ส่วนของ คอมเม้นต์ ผู้จัดการเขต ผู้จัดการฝ่าย admin  ---- -->
-            @php 
+            @php
                 $customer_shop_comments = DB::table('customer_shop_comments')
                     ->leftJoin('users', 'users.id', 'customer_shop_comments.created_by')
                     ->where('customer_shops_saleplan_id', $cust_shops_saleplan->id)
@@ -268,6 +268,12 @@
                                                     </blockquote>
                                                 </div>
                                             </div>
+                                            <div class="col-md-12 mt-15">
+                                                @php
+                                                    list($sale_date, $sale_time) = explode(' ',$comment->created_at);
+                                                @endphp
+                                                วันที่ : {{ $sale_date }} เวลา : {{ $sale_time }}
+                                            </div>
                                         </div>
                                     </div>
                                     <hr>
@@ -312,23 +318,29 @@
                                                     </blockquote>
                                                 </div>
                                             </div>
+                                            <div class="col-md-12 mt-15">
+                                                @php
+                                                    list($sale_date, $sale_time) = explode(' ',$comment->created_at);
+                                                @endphp
+                                                วันที่ : {{ $sale_date }} เวลา : {{ $sale_time }}
+                                            </div>
                                         </div>
                                     </div>
                                     <hr>
                                 </div>
                             </section>
-                        </div>   
+                        </div>
                     </div>
 
                 @endif
 
                 @php $even_number++; @endphp
 
-            @endforeach            
+            @endforeach
             <!-- ส่วนของ คอมเม้นต์ ผู้จัดการเขต ผู้จัดการฝ่าย admin  ---- -->
 
             <!-- ส่วนของสรุปแผน result  ---- -->
-            @php 
+            @php
                 $customer_shops_saleplan_result = DB::table('customer_shops_saleplan_result')
                     ->leftJoin('users', 'users.id', 'customer_shops_saleplan_result.created_by')
                     ->where('customer_shops_saleplan_result.customer_shops_saleplan_id', $cust_shops_saleplan->id)
@@ -366,7 +378,7 @@
                                                 <div class="desc_cusnote">
                                                     <blockquote class="blockquote mb-0">
                                                         <p>{{ $customer_shops_saleplan_result->cust_result_detail }}</p>
-                                                        @php 
+                                                        @php
                                                             switch($customer_shops_saleplan_result->cust_result_status){
                                                                 case 0: $result_status = "ไม่สนใจ";
                                                                     break;
@@ -381,7 +393,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-12 mt-15">
-                                                @php 
+                                                @php
                                                     list($sale_date, $sale_time) = explode(' ',$customer_shops_saleplan_result->updated_at);
                                                 @endphp
                                                 วันที่ : {{ $sale_date }} เวลา : {{ $sale_time }}
@@ -419,7 +431,7 @@
                                                 <div class="desc_cusnote">
                                                     <blockquote class="blockquote mb-0">
                                                         <p>{{ $customer_shops_saleplan_result->cust_result_detail }}</p>
-                                                        @php 
+                                                        @php
                                                             switch($customer_shops_saleplan_result->cust_result_status){
                                                                 case 0: $result_status = "ไม่สนใจ";
                                                                     break;
@@ -434,7 +446,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-12 mt-15">
-                                            @php 
+                                            @php
                                                 list($sale_date, $sale_time) = explode(' ',$customer_shops_saleplan_result->updated_at);
                                             @endphp
                                             วันที่ : {{ $sale_date }} เวลา : {{ $sale_time }}
@@ -451,7 +463,7 @@
                         </div>
                     </div>
                 @endif
-                
+
                 @php $even_number++; @endphp
             @endif <!-- is_null -->
         @endforeach

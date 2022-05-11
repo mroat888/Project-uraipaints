@@ -137,7 +137,7 @@
                                                 </td>
                                                 <td>
                                                     @if ($value->shop_status == 0)
-                                                    <span style="font-size: 12px;">ลูกค้าใหม่</span>
+                                                    <span>ลูกค้าใหม่</span>
                                                     @endif
                                                 </td>
                                                 <td>
