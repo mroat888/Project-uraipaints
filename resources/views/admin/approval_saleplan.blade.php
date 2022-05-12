@@ -141,6 +141,14 @@
 
                                                     $not_bills = $total_pglistpresent - $bills;
 
+                                                    list($year,$month) = explode('-', $value->month_date);
+                                                    $customer_update_count = DB::table('customer_shops')
+                                                        ->join('customer_shops_saleplan', 'customer_shops_saleplan.customer_shop_id', 'customer_shops.id')
+                                                        ->where('customer_shops_saleplan.monthly_plan_id', $value->id)
+                                                        ->whereYear('customer_shops.shop_status_at', $year)
+                                                        ->whereMonth('customer_shops.shop_status_at', $month)
+                                                        ->count();
+
                                                 @endphp
                                                 <tr style="text-align:center;">
                                                     <td>{{ $key + 1 }}</td>
@@ -151,7 +159,7 @@
                                                     <td>{{ $bills }}</td>
                                                     <td>{{ number_format($sales,2) }}</td>
                                                     <td>{{ number_format($not_bills) }}</td>
-                                                    <td> ดึงจาก Admin</td>
+                                                    <td style="text-aligm:right;">{{ number_format($customer_update_count) }}</td>
                                                     <td>
                                                         @if($value->status_approve == 1)
                                                             <span class="badge badge-soft-warning" style="font-size: 12px;">

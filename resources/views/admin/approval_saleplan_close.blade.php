@@ -225,14 +225,9 @@
         </div>
     </div>
 
-    {{-- <div class=""> --}}
+    <div class="container-fluid px-xxl-65 px-xl-20">
         <div class="col-xl-12">
-<<<<<<< HEAD
             <div style="text-align:center;">
-=======
-            <div class="col-xl-12">
-            <div style="float:right;">
->>>>>>> 4e21fd3a61b47b882c5ccda3223c5e4011a7c523
                 <form action="{{ url('admin/approvalsaleplan_close') }}" method="post">
                     @csrf
                     <input name="monthly_plans_id" id="monthly_plans_id" value="{{ $mon_plan->id }}" type="hidden" class="form-control">
@@ -241,16 +236,15 @@
                     <input type="hidden" name="bill_amount" value="{{ $total_bills }}">
                     <input type="hidden" name="total_sale" value="{{ $total_sales }}">
                     @if ($mon_plan->status_approve != 4)
-                    <button type="submit" class="btn btn-danger btn-sm px-3 mr-10">ปิดแผน</button>
+                    <button type="submit" class="btn btn-danger btn-sm px-3 mr-10" style="width:20%; height:50px;">ปิดแผน</button>
                     @endif
                 </form>
             </div>
             @if ($mon_plan->status_approve == 4)
-                <div class="alert alert-inv alert-inv-danger" role="alert">ปิดแผนแล้ว</div>
+                <div class="alert alert-inv alert-inv-secondary" role="alert" style="text-align:center;">ปิดแผนแล้ว</div>
             @endif
         </div>
-        </div>
-    {{-- </div> --}}
+    </div>
 
 
        <script type="text/javascript">
