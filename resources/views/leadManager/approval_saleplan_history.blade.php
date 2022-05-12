@@ -117,7 +117,7 @@
                                         </thead>
                                         <tbody>
                                         @foreach ($monthly_plan as $key => $value)
-                                                @php 
+                                                @php
                                                     $sale_plans = DB::table('sale_plans')
                                                         ->where('monthly_plan_id',$value->id)
                                                         ->get();
@@ -141,7 +141,12 @@
                                                         <td> ดึงจาก Admin</td>
                                                         <td> ดึงจาก Admin</td>
                                                         <td>
+                                                            @if ($value->status_approve == 4)
+                                                            <span class="badge badge-soft-info" style="font-size: 12px;">Close</span>
+                                                            @elseif ($value->status_approve == 2)
                                                             <span class="badge badge-soft-success" style="font-size: 12px;">Approval</span>
+                                                            @endif
+
                                                         </td>
                                                         <td>
                                                             <a href="{{ url('/lead/approvalsaleplan-history-detail', $value->id) }}" type="button" class="btn btn-icon btn-success pt-5">

@@ -227,6 +227,7 @@
 
     {{-- <div class=""> --}}
         <div class="col-xl-12">
+            <div class="col-xl-12">
             <div style="float:right;">
                 <form action="{{ url('admin/approvalsaleplan_close') }}" method="post">
                     @csrf
@@ -243,6 +244,7 @@
             @if ($mon_plan->status_approve == 4)
                 <div class="alert alert-inv alert-inv-danger" role="alert">ปิดแผนแล้ว</div>
             @endif
+        </div>
         </div>
     {{-- </div> --}}
 

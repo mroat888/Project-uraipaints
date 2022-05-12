@@ -117,8 +117,8 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($customer_new as $key => $value)
-                                            @if ($value->shop_aprove_status != 1)
-                                            <tr style="background-color: rgb(219, 219, 219);">
+                                            {{-- @if ($value->shop_aprove_status != 1)
+                                            <tr>
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $value->shop_name }}</td>
                                                 <td>{{ $value->PROVINCE_NAME }}</td>
@@ -138,7 +138,7 @@
                                                     </a>
                                                 </td>
                                             </tr>
-                                            @else
+                                            @else --}}
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
                                                     <td>{{ $value->shop_name }}</td>
@@ -155,7 +155,7 @@
                                                         </a>
                                                     </td>
                                                 </tr>
-                                                @endif
+                                                {{-- @endif --}}
                                             @endforeach
                                         </tbody>
                                     </table>
