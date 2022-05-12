@@ -419,6 +419,8 @@ Route::post('admin/search_month_add-assignment', 'Admin\AssignmentController@sea
 
 // Customer
 Route::get('admin/change_customer_status', 'Admin\ChangeCustomerController@index');
+Route::get('admin/change_customer_status_edit/{id}', 'Admin\ChangeCustomerController@show');
+Route::post('admin/change_customer_status_update', 'Admin\ChangeCustomerController@update_status');
 
 
 // Note

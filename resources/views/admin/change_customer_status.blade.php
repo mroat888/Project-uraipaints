@@ -128,7 +128,7 @@
                                                 <td>{{Carbon\Carbon::parse($value->created_at)->format('Y-m-d')}}</td>
                                                 <td></td>
                                                 <td>{{ $value->saleman }}</td>
-                                                <td>{{ $value->shop_name }}</td>
+                                                <td>{{ $value->shop_name }} {{ $value->shop_id }}</td>
                                                 <td>{{ $value->AMPHUR_NAME }}, {{ $value->PROVINCE_NAME }}</td>
                                                 <td>
                                                     @if ($value->shop_aprove_status == 2)
@@ -141,7 +141,7 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <button class="btn btn-icon btn-edit mr-10" data-toggle="modal" data-target="#exampleModalLarge02">
+                                                    <button class="btn btn-icon btn-edit mr-10 btn_change_status_shop" value="{{$value->shop_id}}">
                                                         <span class="btn-icon-wrap"><i data-feather="edit-3"></i></span></button>
                                                 </td>
                                             </tr>
@@ -160,234 +160,143 @@
     </div>
     <!-- /Container -->
 
-    <!-- Modal -->
-    <div class="modal fade" id="addCustomer" tabindex="-1" role="dialog" aria-labelledby="addCustomer" aria-hidden="true">
-        @include('customer.lead_insert')
-    </div>
-     <!-- Modal -->
      <!-- Modal Edit -->
-    <div class="modal fade" id="editCustomer" tabindex="-1" role="dialog" aria-labelledby="editCustomer" aria-hidden="true">
-        @include('customer.lead_edit')
+    <div class="modal fade" id="customer_change_status" tabindex="-1" role="dialog" aria-labelledby="customer_change_status" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">บันทึกเปลี่ยนสถานะลูกค้าใหม่</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="form_status_update" enctype="multipart/form-data">
+                    {{-- <form action="{{url('admin/change_customer_status_update')}}" method="POST" enctype="multipart/form-data"> --}}
+                    @csrf
+                <div class="modal-body">
+                        <input class="form-control" id="shop_id" name="shop_id" type="text">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">รหัสลูกค้า (MRP)</label>
+                                <input class="form-control" id="mrp_identify" name="mrp_identify" type="text" required>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">สถานะ</label>
+                                <select name="status" id="status" class="form-control" required>
+                                    <option value="">--โปรดเลือก--</option>
+                                    <option value="1">สำเร็จ</option> <!-- ทะเบียนลูกค้า -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">ชื่อร้าน</label>
+                                <input class="form-control" id="shop_name"  name="shop_name" type="text" readonly>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">ชื่อผู้ติดต่อ</label>
+                                <input class="form-control" id="contact_name" name="contact_name" type="text" readonly>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="shop_address">ที่อยู่</label>
+                                <textarea class="form-control" id="shop_address" name="shop_address" rows="3" readonly></textarea>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">เบอร์โทรศัพท์</label>
+                                <input class="form-control" id="customer_contact_phone" name="customer_contact_phone" type="text" readonly>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">จังหวัด</label>
+                                <input class="form-control" id="province" name="province" type="text" readonly>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">อำเภอ/เขต</label>
+                                <input class="form-control" id="amphur" name="amphur" type="text" readonly>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">ตำบล/แขวง</label>
+                                <input class="form-control" id="district" name="district" type="text" readonly>
+                            </div>
+
+                            <div class="col-md-6 form-group">
+                                <label for="username">รหัสไปรษณีย์</label>
+                                <input class="form-control" id="shop_zipcode" name="shop_zipcode" type="text" readonly>
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                    <button type="submit" class="btn btn-primary" id="btn_save_edit">บันทึก</button>
+                </div>
+            </form>
+            </div>
+        </div>
     </div>
 
 
 <script>
-    $(document).ready(function() {
-
-        $('#is_monthly_plan').val('N'); // กำหนดสถานะ Y = อยู่ในแผน , N = ไม่อยู่ในแผน (เพิ่มระหว่างเดือน)
-
-        $("#customer_shops").on("change", function (e) {
-            e.preventDefault();
-            let shop_id = $(this).val();
-            if(shop_id != ""){
-                $('#customer_shops_id').val(shop_id);
-                $('#shop_name').attr('readonly', true);
-                $('#contact_name').attr('readonly', true);
-                $('#shop_phone').attr('readonly', true);
-                $('#shop_address').attr('readonly', true);
-                $('#province').attr('disabled', 'disabled');
-                $('#amphur').attr('disabled', 'disabled');
-                $('#district').attr('disabled', 'disabled');
-                $('#postcode').attr('readonly', true);
-            }else{
-                $('#customer_shops_id').val('');
-                $('#shop_name').attr('readonly', false);
-                $('#contact_name').attr('readonly', false);
-                $('#shop_phone').attr('readonly', false);
-                $('#shop_address').attr('readonly', false);
-                $('#province').removeAttr("disabled");
-                $('#amphur').removeAttr("disabled");
-                $('#district').removeAttr("disabled");
-                $('#postcode').attr('readonly', false);
-            }
-            $.ajax({
-                method: 'GET',
-                url: '{{ url("/edit_customerLead") }}/'+shop_id,
-                datatype: 'json',
-                success: function(response){
-                    console.log(response);
-                    if(response.status == 200){
-                        $("#customer_shops_id").val(shop_id);
-                        $("#shop_name").val(response.dataEdit.shop_name);
-                        if(response.customer_contacts != null){
-                            $("#contact_name").val(response.customer_contacts.customer_contact_name);
-                            $("#shop_phone").val(response.customer_contacts.customer_contact_phone);
-                        }
-                        $("#shop_address").val(response.dataEdit.shop_address);
-
-                        $.each(response.shop_province, function(key, value){
-                            if(value.PROVINCE_ID == response.dataEdit.shop_province_id){
-                                $('#province').append('<option value='+value.PROVINCE_ID+' selected>'+value.PROVINCE_NAME+'</option>')	;
-                            }else{
-                                $('#province').append('<option value='+value.PROVINCE_ID+'>'+value.PROVINCE_NAME+'</option>')	;
-                            }
-                        });
-
-                        $.each(response.shop_amphur, function(key, value){
-                            if(value.AMPHUR_ID == response.dataEdit.shop_amphur_id){
-                                $('#amphur').append('<option value='+value.AMPHUR_ID+' selected>'+value.AMPHUR_NAME+'</option>')	;
-                            }else{
-                                $('#amphur').append('<option value='+value.AMPHUR_ID+'>'+value.AMPHUR_NAME+'</option>')	;
-                            }
-                        });
-
-                        $.each(response.shop_district, function(key, value){
-                            if(value.DISTRICT_ID == response.dataEdit.shop_district_id){
-                                $('#district').append('<option value='+value.DISTRICT_ID+' selected>'+value.DISTRICT_NAME+'</option>')	;
-                            }else{
-                                $('#district').append('<option value='+value.DISTRICT_ID+'>'+value.DISTRICT_NAME+'</option>')	;
-                            }
-                        });
-
-                        $("#postcode").val(response.dataEdit.shop_zipcode);
-                    }
-                }
-            });
-
-        });
-    });
-
-    $(document).on('click','.btn_editshop', function(e){
+    $(document).on('click','.btn_change_status_shop', function(e){
         e.preventDefault();
-		let shop_id = $(this).val();
+        let shop_id = $(this).val();
+        $("#shop_id").val(shop_id);
 
         $.ajax({
             method: 'GET',
-            url: '{{ url("/edit_customerLead") }}/'+shop_id,
-            datatype: 'json',
-            success: function(response){
-                //console.log(response);
-                if(response.status == 200){
-                    $("#editCustomer").modal('show');
-                    $("#edit_shop_id").val(shop_id);
-                    $("#edit_shop_name").val(response.dataEdit.shop_name);
-                    if(response.customer_contacts != null){
-                        $("#edit_cus_contacts_id").val(response.customer_contacts.id);
-                        $("#edit_contact_name").val(response.customer_contacts.customer_contact_name);
-                        $("#edit_customer_contact_phone").val(response.customer_contacts.customer_contact_phone);
-                    }
-                    $("#edit_shop_address").val(response.dataEdit.shop_address);
+            url: "{!! url('admin/change_customer_status_edit/"+shop_id+"') !!}",
+            dataType: "JSON",
+            async: false,
+            success: function(data){
+                // console.log(response);
 
-                    $.each(response.shop_province, function(key, value){
-                        if(value.PROVINCE_ID == response.dataEdit.shop_province_id){
-                            $('#edit_province').append('<option value='+value.PROVINCE_ID+' selected>'+value.PROVINCE_NAME+'</option>')	;
-                        }else{
-                            $('#edit_province').append('<option value='+value.PROVINCE_ID+'>'+value.PROVINCE_NAME+'</option>')	;
-                        }
-                    });
+                    $("#mrp_identify").val(data.dataCustomer.mrp_identify);
+                    $("#shop_name").val(data.dataCustomer.shop_name);
+                    $("#contact_name").val(data.dataCustomer.customer_contact_name);
+                    $("#shop_address").val(data.dataCustomer.shop_address);
+                    $("#customer_contact_phone").val(data.dataCustomer.customer_contact_phone);
+                    $("#province").val(data.dataCustomer.province);
+                    $("#amphur").val(data.dataCustomer.amphur);
+                    $("#district").val(data.dataCustomer.district);
+                    $("#shop_zipcode").val(data.dataCustomer.shop_zipcode);
 
-                    $.each(response.shop_amphur, function(key, value){
-                        if(value.AMPHUR_ID == response.dataEdit.shop_amphur_id){
-                            $('#edit_amphur').append('<option value='+value.AMPHUR_ID+' selected>'+value.AMPHUR_NAME+'</option>')	;
-                        }else{
-                            $('#edit_amphur').append('<option value='+value.AMPHUR_ID+'>'+value.AMPHUR_NAME+'</option>')	;
-                        }
-                    });
-
-                    $.each(response.shop_district, function(key, value){
-                        if(value.DISTRICT_ID == response.dataEdit.shop_district_id){
-                            $('#edit_district').append('<option value='+value.DISTRICT_ID+' selected>'+value.DISTRICT_NAME+'</option>')	;
-                        }else{
-                            $('#edit_district').append('<option value='+value.DISTRICT_ID+'>'+value.DISTRICT_NAME+'</option>')	;
-                        }
-                    });
-
-                    $("#edit_shop_zipcode").val(response.dataEdit.shop_zipcode);
-
-
-                }
+                    $("#customer_change_status").modal('show');
             }
         });
 
-    })
+    });
 
-    $(document).on('change','.province', function(e){
+    $("#form_status_update").on("submit", function (e) {
         e.preventDefault();
-		let pvid = $(this).val();
+        var formData = new FormData(this);
         $.ajax({
-            method: 'GET',
-            url: '{{ url("/fetch_amphur") }}/'+pvid,
-            datatype: 'json',
-            success: function(response){
-                //alert(response.AMPHUR_NAME);
-                if(response.status == 200){
-                    //console.log(response)
-                    $('.amphur').children().remove().end();
-                    $('.district').children().remove().end();
-                    $('.amphur').append('<option selected value="0">--โปรดเลือก--</option>');
-                    $('.district').append('<option selected value="0">--โปรดเลือก--</option>');
-                    $('.postcode').val('');
-                    $.each(response.amphurs, function(key, value){
-                        $('.amphur').append('<option value='+value.AMPHUR_ID+'>'+value.AMPHUR_NAME+'</option>')	;
-                    });
-                }
+            type:'POST',
+            url: '{{ url("admin/change_customer_status_update") }}',
+            data:formData,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(response){
+                console.log(response);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Your work has been saved',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                $("#editCustomer").modal('hide');
+                location.reload();
+            },
+            error: function(response){
+                console.log("error");
+                console.log(response);
             }
         });
     });
-
-    $(document).on('change','.amphur', function(e){
-        e.preventDefault();
-		let amid = $(this).val();
-        $.ajax({
-            method: 'GET',
-            url: '{{ url("/fetch_district") }}/'+amid,
-            datatype: 'json',
-            success: function(response){
-                //alert(response.AMPHUR_NAME);
-                if(response.status == 200){
-                    //console.log(response)
-                    $('.district').children().remove().end();
-                    $('.district').append('<option selected value="0">--โปรดเลือก--</option>');
-                    $('.postcode').val('');
-                    $.each(response.districts, function(key, value){
-                        $('.district').append('<option value='+value.DISTRICT_ID+'>'+value.DISTRICT_NAME+'</option>')	;
-                    });
-                }
-            }
-        });
-    });
-
-    $(document).on('change','.district', function(e){
-        e.preventDefault();
-		let disid = $(this).val();
-        $.ajax({
-            method: 'GET',
-            url: '{{ url("/fetch_postcode") }}/'+disid,
-            datatype: 'json',
-            success: function(response){
-                if(response.status == 200){
-                    //console.log(response)
-                    let postcode = response.postcode.POSTCODE;
-                    $('.postcode').val(postcode);
-                }
-            }
-        });
-    });
-
-    $(document).on('click', '.checkRadio', function(){
-        $("#submit_request").trigger("click");
-    });
-
-</script>
-
-    <script>
-        function displayMessage(message) {
-            $(".response").html("<div class='success'>" + message + "</div>");
-            setInterval(function() {
-                $(".success").fadeOut();
-            }, 1000);
-        }
-
-        // function showselectdate(){
-        //     $("#selectdate").css("display", "block");
-        //     $("#bt_showdate").hide();
-        // }
-
-        // function hidetdate(){
-        //     $("#selectdate").css("display", "none");
-        //     $("#bt_showdate").show();
-        // }
-
     </script>
 
 @endsection('content')
