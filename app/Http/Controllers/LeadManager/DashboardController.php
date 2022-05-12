@@ -65,7 +65,8 @@ class DashboardController extends Controller
             $sale_plans = DB::table('sale_plans')
                 ->where('monthly_plan_id', $monthly_plan->id)
                 ->where('sale_plans_status', 2)
-                ->get();       
+                ->get(); 
+                  
             $data['count_monthly_plans'] = $data['count_monthly_plans'] + $sale_plans->count() ; // 	จำนวนแผนงาน
             foreach($sale_plans as $sp_value){
                 $check_result = DB::table('sale_plan_results')->where('sale_plan_id', $sp_value->id)->first();

@@ -43,13 +43,6 @@
                     <section class="hk-sec-wrapper">
                         <div class="row mb-2">
                             <div class="col-sm-12 col-md-6">
-                                <?php
-                                    $ym = $year."-".$month;
-                                ?>
-                                <h5 class="hk-sec-title">รายการแผนประจำเดือน <?php echo thaidate('F Y', $ym); ?></h5>
-                            </div>
-                            <div class="col-sm-12 col-md-6">
-                                <!-- ------ -->
                                 @php 
                                     $action_search = "head/approvalsaleplan/search"; //-- action form
                                     if(isset($date_filter)){ //-- สำหรับ แสดงวันที่ค้นหา
@@ -58,6 +51,18 @@
                                         $date_search = "";
                                     }
                                 @endphp
+
+                                <h5 class="hk-sec-title">รายการแผนประจำเดือน 
+                                    <?php 
+                                        if(isset($date_filter)){ //-- สำหรับ แสดงวันที่ค้นหา
+                                            echo thaidate('F Y', $date_search); 
+                                        } 
+                                    ?>
+                                </h5>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <!-- ------ -->
+                                
                                 <span class="form-inline pull-right pull-sm-center">
                                     <form action="{{ url($action_search) }}" method="POST" enctype="multipart/form-data">
                                     @csrf

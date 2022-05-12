@@ -31,6 +31,8 @@ class ApprovalSalePlanController extends Controller
         $data['year'] = $year ;
         $data['month'] = $month ;
 
+        $data['date_filter'] = $data['year']."-".$data['month'];
+
         $auth_team_id = explode(',',Auth::user()->team_id);
         $auth_team = array();
         foreach($auth_team_id as $value){
@@ -79,11 +81,7 @@ class ApprovalSalePlanController extends Controller
         foreach($auth_team_id as $value){
             $auth_team[] = $value;
         }
-
-        list($year,$month) = explode('-', $request->selectdateFrom);
-        $data['year'] = $year ;
-        $data['month'] = $month ;
-
+        
         $monthly_plan = DB::table('monthly_plans')
             ->leftJoin('users', 'users.id', 'monthly_plans.created_by')
             ->leftJoin('monthly_plan_result', 'monthly_plan_result.monthly_plan_id', 'monthly_plans.id')
