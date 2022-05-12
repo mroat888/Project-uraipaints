@@ -682,8 +682,8 @@ class ApprovalCustomerExceptController extends Controller
                         // return "yy";
                         foreach ($request->checkapprove as $key => $chk) {
 
-                            DB::table('customer_shops_saleplan')->where('monthly_plan_id', $request->monthly_plan_id)
-                            ->where('created_by', $chk)->where('is_monthly_plan', "N")
+                            DB::table('customer_shops_saleplan')->where('id', $chk)
+                            ->where('is_monthly_plan', "N")
                             ->update([
                                 'shop_aprove_status' => 3,
                                 'customer_shop_approve_id' => Auth::user()->id,
@@ -692,8 +692,7 @@ class ApprovalCustomerExceptController extends Controller
                                 'approve_at' => Carbon::now()->format('Y-m-d H:i:s'),
                             ]);
                             DB::table('customer_shops')->where('shop_status', 0)
-                            ->where('monthly_plan_id', $request->monthly_plan_id)
-                            ->where('created_by', $chk)
+                            ->where('id', $request->customer_shop_id)
                             ->update([
                                 'shop_aprove_status' => 3,
                                 // 'customer_shop_approve_id' => Auth::user()->id,
@@ -706,17 +705,17 @@ class ApprovalCustomerExceptController extends Controller
                     } else {
                         foreach ($request->checkapprove as $key => $chk) {
 
-                            DB::table('customer_shops_saleplan')->where('monthly_plan_id', $request->monthly_plan_id)
-                            ->where('created_by', $chk)->where('is_monthly_plan', "N")
+                            DB::table('customer_shops_saleplan')->where('id', $chk)
+                            ->where('is_monthly_plan', "N")
                             ->update([
                                 'shop_aprove_status' => 3,
                                 'customer_shop_approve_id' => Auth::user()->id,
                                 'updated_by' => Auth::user()->id,
                                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                                'approve_at' => Carbon::now()->format('Y-m-d H:i:s'),
                             ]);
                             DB::table('customer_shops')->where('shop_status', 0)
-                            ->where('monthly_plan_id', $request->monthly_plan_id)
-                            ->where('created_by', $chk)
+                            ->where('id', $request->customer_shop_id)
                             ->update([
                                 'shop_aprove_status' => 3,
                                 // 'customer_shop_approve_id' => Auth::user()->id,

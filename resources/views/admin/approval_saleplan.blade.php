@@ -105,6 +105,7 @@
 
                                                     $customer_shops_saleplan = DB::table('customer_shops_saleplan')
                                                         ->where('monthly_plan_id', $value->id)
+                                                        ->where('shop_aprove_status', 2)
                                                         ->get();
                                                     $cust_new_amount = $customer_shops_saleplan->count();
 
@@ -177,9 +178,9 @@
                                                         <a href="{{ url('admin/approvalsaleplan_detail', $value->id) }}" type="button" class="btn btn-icon btn-primary pt-5">
                                                             <i data-feather="file-text"></i>
                                                         </a>
-                                                        <button id="btn_saleplan_restrospective" type="button" class="btn btn-icon btn-warning ml-2" value="{{ $value->id }}">
+                                                        {{-- <button id="btn_saleplan_restrospective" type="button" class="btn btn-icon btn-warning ml-2" value="{{ $value->id }}">
                                                             <i data-feather="refresh-ccw"></i>
-                                                        </button>
+                                                        </button> --}}
                                                     </td>
                                                 </tr>
                                             @endforeach

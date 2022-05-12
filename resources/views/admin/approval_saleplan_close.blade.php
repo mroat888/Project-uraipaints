@@ -227,7 +227,12 @@
 
     {{-- <div class=""> --}}
         <div class="col-xl-12">
+<<<<<<< HEAD
             <div style="text-align:center;">
+=======
+            <div class="col-xl-12">
+            <div style="float:right;">
+>>>>>>> 4e21fd3a61b47b882c5ccda3223c5e4011a7c523
                 <form action="{{ url('admin/approvalsaleplan_close') }}" method="post">
                     @csrf
                     <input name="monthly_plans_id" id="monthly_plans_id" value="{{ $mon_plan->id }}" type="hidden" class="form-control">
@@ -243,6 +248,7 @@
             @if ($mon_plan->status_approve == 4)
                 <div class="alert alert-inv alert-inv-danger" role="alert">ปิดแผนแล้ว</div>
             @endif
+        </div>
         </div>
     {{-- </div> --}}
 
