@@ -152,7 +152,7 @@
                                                                 Approve
                                                             </span>
                                                         @elseif ($value->status_approve == 4)
-                                                            <span class="badge badge-soft-danger"
+                                                            <span class="badge badge-soft-info"
                                                                 style="font-size: 12px;">
                                                                 Close
                                                             </span>

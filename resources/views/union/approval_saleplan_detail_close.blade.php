@@ -202,6 +202,7 @@
                                             @foreach ($customer_new as $key => $value)
                                                 @php 
                                                     $sales = "-";
+                                                    $bills = "-";
                                                 @endphp
                                                 @if($value->shop_status == 1 && $value->shop_aprove_status == 2)
                                                     @php
@@ -212,6 +213,7 @@
                                                             $res_customer_api = $response->json();
                                                             if($res_customer_api['code'] == 200){
                                                                 $sales = number_format($res_customer_api['data'][0]['sales'],2);
+                                                                $bills = number_format($res_customer_api['data'][0]['bills']);
                                                             }
                                                         }
                                                     @endphp
@@ -220,7 +222,7 @@
                                                         <td>{{ $value->mrp_identify }}</td>
                                                         <td>{{ $value->shop_name }}</td>
                                                         <td>{{ $value->PROVINCE_NAME }}</td>
-                                                        <td style="text-align:right;">ดึง API</td>
+                                                        <td style="text-align:center;">{{ $bills }}</td>
                                                         <td style="text-align:right;">{{ $sales }}</td>
                                                     </tr>
                                                 @endif
