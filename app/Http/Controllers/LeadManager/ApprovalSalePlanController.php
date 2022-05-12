@@ -240,10 +240,11 @@ class ApprovalSalePlanController extends Controller
         list($year,$month,$day) = explode('-', $mon_plan->month_date);
         $month = $month + 0; //-- ทำให้เป็นตัวเลข เพื่อตัดเลข 0 ด้านหน้าออก
 
-        $path_search = "reports/sellers/B2/closesaleplans?years=".$year."&months=".$month;
+        $path_search = "reports/sellers/".$user_api->api_identify."/closesaleplans?years=".$year."&months=".$month;
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
-
+        
+        $data['api_token'] = $api_token;
         $data['saleplan_api'] = $res_api['data'];
 
         $data['mon_plan'] = $mon_plan;
@@ -254,12 +255,16 @@ class ApprovalSalePlanController extends Controller
         $data['customer_new'] = DB::table('customer_shops_saleplan')
         ->join('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
         ->join('master_customer_new', 'customer_shops_saleplan.customer_shop_objective', 'master_customer_new.id')
+        ->join('monthly_plans', 'monthly_plans.id', 'customer_shops_saleplan.monthly_plan_id')
+        ->join('users', 'users.id', 'customer_shops.created_by')
         ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
-        ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
+        ->whereIn('customer_shops.shop_status', [0,1,2]) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
         ->whereIn('customer_shops_saleplan.shop_aprove_status', [2, 3])
         // ->where('customer_shops.created_by', Auth::user()->id)
         ->where('customer_shops_saleplan.monthly_plan_id', $id)
         ->select(
+            'users.*',
+            'monthly_plans.*',
             'province.PROVINCE_NAME',
             'customer_shops.*',
             'customer_shops.id as custid',

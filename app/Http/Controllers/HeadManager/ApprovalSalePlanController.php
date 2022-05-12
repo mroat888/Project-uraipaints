@@ -38,8 +38,9 @@ class ApprovalSalePlanController extends Controller
         }
 
         $data['monthly_plan'] = DB::table('monthly_plans')
-            ->join('users', 'users.id', 'monthly_plans.created_by')
-            ->whereIn('monthly_plans.status_approve', [1,2])
+            ->leftJoin('users', 'users.id', 'monthly_plans.created_by')
+            ->leftJoin('monthly_plan_result', 'monthly_plan_result.monthly_plan_id', 'monthly_plans.id')
+            ->whereIn('monthly_plans.status_approve', [1,2,4])
             ->where(function($query) use ($auth_team) {
                 for ($i = 0; $i < count($auth_team); $i++){
                     $query->orWhere('users.team_id', $auth_team[$i])
@@ -51,46 +52,144 @@ class ApprovalSalePlanController extends Controller
             ->whereMonth('month_date', $month)
             ->select(
                 'users.*',
+                'monthly_plan_result.*',
                 'monthly_plans.*'
             )
             ->get();
 
-        // dd($data);
+        $data['team_sales'] = DB::table('master_team_sales')
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('id', $auth_team[$i])
+                        ->orWhere('id', 'like', $auth_team[$i].',%')
+                        ->orWhere('id', 'like', '%,'.$auth_team[$i]);
+                }
+            })
+            ->get();
+
         return view('headManager.approval_saleplan', $data);
-        // return $data['monthly_plan'];
     }
 
     public function search(Request $request)
     {
+        // dd($request);
+        
         $auth_team_id = explode(',',Auth::user()->team_id);
         $auth_team = array();
         foreach($auth_team_id as $value){
             $auth_team[] = $value;
         }
 
-        list($year,$month) = explode('-', $request->selectdateTo);
+        list($year,$month) = explode('-', $request->selectdateFrom);
         $data['year'] = $year ;
         $data['month'] = $month ;
 
-        $data['monthly_plan'] = DB::table('monthly_plans')
-            ->join('users', 'users.id', 'monthly_plans.created_by')
-            ->whereIn('monthly_plans.status_approve', [1,2])
-            ->where(function($query) use ($auth_team) {
-                for ($i = 0; $i < count($auth_team); $i++){
-                    $query->orWhere('users.team_id', $auth_team[$i])
-                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
-                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
-                }
-            })
-            ->whereYear('month_date', $year)
-            ->whereMonth('month_date', $month)
+        $monthly_plan = DB::table('monthly_plans')
+            ->leftJoin('users', 'users.id', 'monthly_plans.created_by')
+            ->leftJoin('monthly_plan_result', 'monthly_plan_result.monthly_plan_id', 'monthly_plans.id')
+            ->whereIn('monthly_plans.status_approve', [1,2,4])
             ->select(
                 'users.*',
+                'monthly_plan_result.*',
                 'monthly_plans.*'
-            )
+            );
+            
+            if(!is_null($request->selectdateFrom)){ //-- วันที่
+                list($year,$month) = explode('-', $request->selectdateFrom);
+                $monthly_plan = $monthly_plan->whereYear('monthly_plans.month_date',$year)
+                ->whereMonth('monthly_plans.month_date', $month);
+                $data['date_filter'] = $request->selectdateFrom;
+            }
+
+            if(!is_null($request->selectteam_sales)){ //-- ทีมขาย
+                $team = $request->selectteam_sales;
+                $monthly_plan = $monthly_plan
+                    ->where(function($query) use ($team) {
+                        $query->orWhere('users.team_id', $team)
+                            ->orWhere('users.team_id', 'like', $team.',%')
+                            ->orWhere('users.team_id', 'like', '%,'.$team);
+                    });
+                $data['selectteam_sales'] = $request->selectteam_sales;
+            }else{
+                $monthly_plan = $monthly_plan
+                ->where(function($query) use ($auth_team) {
+                    for ($i = 0; $i < count($auth_team); $i++){
+                        $query->orWhere('users.team_id', $auth_team[$i])
+                            ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                            ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+                    }
+                });
+            }
+
+            $monthly_plan = $monthly_plan->get();       
+            
+            $data['monthly_plan'] = $monthly_plan;
+
+            $data['team_sales'] = DB::table('master_team_sales')
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('id', $auth_team[$i])
+                        ->orWhere('id', 'like', $auth_team[$i].',%')
+                        ->orWhere('id', 'like', '%,'.$auth_team[$i]);
+                }
+            })
             ->get();
+            
 
         return view('headManager.approval_saleplan', $data);
+    }
+
+    public function approvalsaleplan_detail_close($id){
+        // ข้อมูล Sale plan
+        $data['list_saleplan'] = DB::table('sale_plans')
+            ->where('monthly_plan_id', $id)
+            ->whereIn('sale_plans_status', [2, 3, 4])
+            ->orderBy('id', 'desc')->get();
+
+        // -----  API  //
+        $api_token = $this->apicontroller->apiToken(); // API Login
+        $data['api_token'] = $api_token;
+        // -----  API ลูกค้าที่ sale ดูแล ----------- //
+        $mon_plan = DB::table('monthly_plans')->where('id', $id)->first(); // ค้นหา id ผู้ขออนุมัติ
+        $user_api = DB::table('users')->where('id',$mon_plan->created_by)->first(); // ค้นหา user api เพื่อใช้ดึง api
+
+        list($year,$month,$day) = explode('-', $mon_plan->month_date);
+        $month = $month + 0; //-- ทำให้เป็นตัวเลข เพื่อตัดเลข 0 ด้านหน้าออก
+
+        $path_search = "reports/sellers/".$user_api->api_identify."/closesaleplans?years=".$year."&months=".$month;
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+        $res_api = $response->json();
+
+        $data['saleplan_api'] = $res_api['data'];
+
+        $data['mon_plan'] = $mon_plan;
+        $data['sale_name'] = DB::table('users')->where('id',$mon_plan->created_by)->select('name')->first(); // ชื่อเซลล์
+
+
+        // ลูกค้าใหม่
+        $data['customer_new'] = DB::table('customer_shops_saleplan')
+        ->join('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
+        ->join('master_customer_new', 'customer_shops_saleplan.customer_shop_objective', 'master_customer_new.id')
+        ->join('monthly_plans', 'monthly_plans.id', 'customer_shops_saleplan.monthly_plan_id')
+        ->join('users', 'users.id', 'customer_shops.created_by')
+        ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
+        ->whereIn('customer_shops.shop_status', [0,1,2]) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
+        ->whereIn('customer_shops_saleplan.shop_aprove_status', [2, 3])
+        // ->where('customer_shops.created_by', Auth::user()->id)
+        ->where('customer_shops_saleplan.monthly_plan_id', $id)
+        ->select(
+            'users.*',
+            'monthly_plans.*',
+            'province.PROVINCE_NAME',
+            'customer_shops.*',
+            'customer_shops.id as custid',
+            'customer_shops_saleplan.*',
+            'master_customer_new.cust_name'
+        )
+        ->orderBy('customer_shops.id', 'desc')
+        ->get();
+
+        return view('headManager.approval_saleplan_detail_close', $data);
     }
 
     public function approvalsaleplan_detail($id)
@@ -110,7 +209,7 @@ class ApprovalSalePlanController extends Controller
         // -----  API ลูกค้าที่ sale ดูแล ----------- //
         $mon_plan = DB::table('monthly_plans')->where('id', $id)->first(); // ค้นหา id ผู้ขออนุมัติ
         $user_api = DB::table('users')->where('id',$mon_plan->created_by)->first(); // ค้นหา user api เพื่อใช้ดึง api
-        $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/sellers/'.$user_api->api_identify.'/customers');
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/sellers/'.$user_api->api_identify.'/customers');
         $res_api = $response->json();
 
         $data['monthly_plans'] = $mon_plan;
@@ -155,7 +254,7 @@ class ApprovalSalePlanController extends Controller
 
         foreach($customer_visits as $key => $cus_visit){
 
-            $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/customers/'.$cus_visit->customer_shop_id);
+            $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/customers/'.$cus_visit->customer_shop_id);
             $res_visit_api = $response->json();
             // dd($res_visit_api);
             if($res_visit_api['code'] == 200){
