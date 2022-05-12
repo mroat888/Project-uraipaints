@@ -181,6 +181,7 @@ class ApprovalSalePlanController extends Controller
     }
 
     public function approvalsaleplan_close_update(Request $request){
+        // dd($request);
         DB::beginTransaction();
         try {
 

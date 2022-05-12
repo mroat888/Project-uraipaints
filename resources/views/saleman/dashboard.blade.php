@@ -333,7 +333,11 @@
                                                     <a href="{{url('data_name_store')}}" class="txt-cusall text-dark">ลูกค้าทั้งหมด (ราย)</a>
                                                 </div>
                                                 <div class="col-4">
-                                                    <span class="txt-custotal">{{ number_format($res_api["data"][0]["Customers"][0]["ActiveTotal"]) }}</span>
+                                                    <span class="txt-custotal">
+                                                        @if(!is_null($res_api["data"][0]["Customers"][0]["ActiveTotal"]))
+                                                            {{ number_format($res_api["data"][0]["Customers"][0]["ActiveTotal"]) }}
+                                                        @endif
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
