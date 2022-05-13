@@ -92,26 +92,26 @@ class ReportSaleCompareYearController extends Controller
          *  --------- บล๊อกที่ 2 ------------- 
          */
 
-        $patch_search = "/sellers/".Auth::user()->api_identify."/customers";
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$patch_search);
-        $res_api = $response->json();
+        // $patch_search = "/sellers/".Auth::user()->api_identify."/customers";
+        // $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$patch_search);
+        // $res_api = $response->json();
 
 
-        if(!empty($res_api)){
-            if($res_api['code'] == 200){
-                $data['customer_api'] = $res_api['data'];
-            }
-        }
+        // if(!empty($res_api)){
+        //     if($res_api['code'] == 200){
+        //         $data['customer_api'] = $res_api['data'];
+        //     }
+        // }
 
-        // ดึงจังหวัด -- API
-        $path_search = "/sellers/".Auth::user()->api_identify."/provinces";
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
-        $res_api = $response->json();
-        if(!empty($res_api)){
-            if($res_api['code'] == 200){
-                $data['provinces'] = $res_api['data'];
-            }
-        }
+        // // ดึงจังหวัด -- API
+        // $path_search = "/sellers/".Auth::user()->api_identify."/provinces";
+        // $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
+        // $res_api = $response->json();
+        // if(!empty($res_api)){
+        //     if($res_api['code'] == 200){
+        //         $data['provinces'] = $res_api['data'];
+        //     }
+        // }
 
         /**
          *   --------- จบ บล๊อกที่ 2 ------------- 
