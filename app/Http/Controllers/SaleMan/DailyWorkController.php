@@ -108,19 +108,20 @@ class DailyWorkController extends Controller
         $data['customer_api'] = array();
         // $data['InMonthDays'] = 0;
         // $data['ShopInMonthDays'] = 0;
-        foreach ($res_api['data'] as $key => $value) {
-            $data['customer_api'][$key] =
-            [
-                'id' => $value['identify'],
-                'shop_name' => $value['title']." ".$value['name'],
-                'shop_address' => $value['amphoe_name']." , ".$value['province_name'],
-            ];
+        if($res_api['code'] == 200){
+            foreach ($res_api['data'] as $key => $value) {
+                $data['customer_api'][$key] =
+                [
+                    'id' => $value['identify'],
+                    'shop_name' => $value['title']." ".$value['name'],
+                    'shop_address' => $value['amphoe_name']." , ".$value['province_name'],
+                ];
 
-            // if($value['InMonthDays'] != 0){
-            //     $data['ShopInMonthDays'] += 1;
-            //     $data['InMonthDays'] += $value['InMonthDays'];
-            // }
-
+                // if($value['InMonthDays'] != 0){
+                //     $data['ShopInMonthDays'] += 1;
+                //     $data['InMonthDays'] += $value['InMonthDays'];
+                // }
+            }
         }
 
         // $data['total_shop'] = $res_api['records'];
@@ -143,23 +144,25 @@ class DailyWorkController extends Controller
         $data['customer_visit_api'] = array();
         foreach($customer_visits as $key => $cus_visit){
 
-            foreach ($res_api['data'] as $key_api => $value_api) {
-                $res_visit_api = $res_api['data'][$key_api];
-                if($cus_visit->customer_shop_id == $res_visit_api['identify']){
-                    $data['customer_visit_api'][$key_api] =
-                    [
-                        'id' => $cus_visit->id,
-                        'identify' => $res_visit_api['identify'],
-                        'shop_name' => $res_visit_api['title']." ".$res_visit_api['name'],
-                        // 'shop_address' => $res_visit_api['address1']." ".$res_visit_api['adrress2'],
-                        'shop_address' => $res_visit_api['amphoe_name']." , ".$res_visit_api['province_name'],
-                        'shop_phone' => $res_visit_api['telephone'],
-                        'shop_mobile' => $res_visit_api['mobile'],
-                        'focusdate' => $res_visit_api['focusdate'],
-                        'visit_status' => $cus_visit->cust_visit_status,
-                        'visit_checkin_date' => $cus_visit->cust_visit_checkin_date,
-                        'visit_checkout_date' => $cus_visit->cust_visit_checkout_date,
-                    ];
+            if($res_api['code'] == 200){
+                foreach ($res_api['data'] as $key_api => $value_api) {
+                    $res_visit_api = $res_api['data'][$key_api];
+                    if($cus_visit->customer_shop_id == $res_visit_api['identify']){
+                        $data['customer_visit_api'][$key_api] =
+                        [
+                            'id' => $cus_visit->id,
+                            'identify' => $res_visit_api['identify'],
+                            'shop_name' => $res_visit_api['title']." ".$res_visit_api['name'],
+                            // 'shop_address' => $res_visit_api['address1']." ".$res_visit_api['adrress2'],
+                            'shop_address' => $res_visit_api['amphoe_name']." , ".$res_visit_api['province_name'],
+                            'shop_phone' => $res_visit_api['telephone'],
+                            'shop_mobile' => $res_visit_api['mobile'],
+                            'focusdate' => $res_visit_api['focusdate'],
+                            'visit_status' => $cus_visit->cust_visit_status,
+                            'visit_checkin_date' => $cus_visit->cust_visit_checkin_date,
+                            'visit_checkout_date' => $cus_visit->cust_visit_checkout_date,
+                        ];
+                    }
                 }
             }
 
