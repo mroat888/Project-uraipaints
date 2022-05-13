@@ -79,7 +79,7 @@
                                             <td colspan="7">
                                                 <div class="row">
                                                     <div class="col-6"><h5>รายละเอียดร้านค้าทำเป้า</h5></div>
-                                                    <div class="col-6" style="text-align:right;">หน่ายบาท</div>
+                                                    <div class="col-6" style="text-align:right;">หน่วยบาท</div>
                                                 </div>
                                                 <div class="table-responsive-sm">
                                                     <table class="table table-sm table-hover table-bordered">
@@ -209,6 +209,15 @@
 
         </div>
         <!-- /Row -->
+
+        <!-- /Row -->      
+            @php 
+                $action_search = "data_report_sale_compare-year/search";
+                $path_detail = "data_name_store/detail";
+                $position_province = "sellers";
+            @endphp                                                     
+            @include('shareData_union.check_name_store_campaigns_table') 
+        <!-- /Row -->
     </div>
 
 <style>
@@ -223,6 +232,3 @@
         $('.tb_detail[rel=' + rel + ']').toggle();
     });
 </script>
-
-
-

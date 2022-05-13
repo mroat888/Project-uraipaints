@@ -152,6 +152,7 @@ Route::post('data_report_historical-quarter/search', 'ShareData\ReportHistorical
 Route::get('data_report_historical-month', 'ShareData\ReportHistoricalMonthController@index');
 Route::post('data_report_historical-month/search', 'ShareData\ReportHistoricalMonthController@search');
 Route::get('data_report_sale_compare-year','ShareData\ReportSaleCompareYearController@index');
+Route::post('data_report_sale_compare-year/search','ShareData\ReportSaleCompareYearController@search');
 });
 
 
