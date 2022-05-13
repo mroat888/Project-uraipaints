@@ -290,6 +290,7 @@ Route::get('head/viewAssignmentDetail', function () { return view('headManager.v
 
 Route::get('head/approvalsaleplan', 'HeadManager\ApprovalSalePlanController@index');
 Route::get('head/approvalsaleplan_detail/{id}', 'HeadManager\ApprovalSalePlanController@approvalsaleplan_detail');
+Route::get('head/approvalsaleplan_detail_close/{id}', 'HeadManager\ApprovalSalePlanController@approvalsaleplan_detail_close');
 Route::get('head/comment_saleplan/{id}/{createID}', 'HeadManager\ApprovalSalePlanController@comment_saleplan');
 Route::post('head/create_comment_saleplan', 'HeadManager\ApprovalSalePlanController@create_comment_saleplan');
 Route::get('head/comment_customer_new/{id}/{custsaleplanID}/{createID}', 'HeadManager\ApprovalSalePlanController@comment_customer_new');

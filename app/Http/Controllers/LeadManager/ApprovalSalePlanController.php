@@ -34,6 +34,7 @@ class ApprovalSalePlanController extends Controller
         }
         $data['monthly_plan'] = DB::table('monthly_plans')
             ->join('users', 'users.id', 'monthly_plans.created_by')
+            ->leftJoin('monthly_plan_result', 'monthly_plan_result.monthly_plan_id', 'monthly_plans.id')
             ->where('monthly_plans.status_approve', 1)
             ->where(function($query) use ($auth_team) {
                 for ($i = 0; $i < count($auth_team); $i++){
@@ -44,23 +45,35 @@ class ApprovalSalePlanController extends Controller
             })
             ->select(
                 'users.*',
+                'monthly_plan_result.*',
                 'monthly_plans.*'
             )
             ->paginate(10);
+
+        $data['team_sales'] = DB::table('master_team_sales')
+        ->where(function($query) use ($auth_team) {
+            for ($i = 0; $i < count($auth_team); $i++){
+                $query->orWhere('id', $auth_team[$i])
+                    ->orWhere('id', 'like', $auth_team[$i].',%')
+                    ->orWhere('id', 'like', '%,'.$auth_team[$i]);
+            }
+        })
+        ->get();
 
         return view('leadManager.approval_saleplan', $data);
     }
 
     public function saleplan_history()
-    {
+    {  
         $auth_team_id = explode(',',Auth::user()->team_id);
         $auth_team = array();
         foreach($auth_team_id as $value){
             $auth_team[] = $value;
         }
         $data['monthly_plan'] = DB::table('monthly_plans')
-            ->join('users', 'users.id', 'monthly_plans.created_by')
-            ->whereIn('monthly_plans.status_approve', [2, 3])
+            ->leftJoin('users', 'users.id', 'monthly_plans.created_by')
+            ->leftJoin('monthly_plan_result', 'monthly_plan_result.monthly_plan_id', 'monthly_plans.id')
+            ->whereIn('monthly_plans.status_approve', [2,3,4])
             ->where(function($query) use ($auth_team) {
                 for ($i = 0; $i < count($auth_team); $i++){
                     $query->orWhere('users.team_id', $auth_team[$i])
@@ -70,9 +83,21 @@ class ApprovalSalePlanController extends Controller
             })
             ->select(
                 'users.*',
+                'monthly_plan_result.*',
                 'monthly_plans.*'
             )
+            ->orderBy('monthly_plans.id','desc')
             ->paginate(10);
+        
+        $data['team_sales'] = DB::table('master_team_sales')
+        ->where(function($query) use ($auth_team) {
+            for ($i = 0; $i < count($auth_team); $i++){
+                $query->orWhere('id', $auth_team[$i])
+                    ->orWhere('id', 'like', $auth_team[$i].',%')
+                    ->orWhere('id', 'like', '%,'.$auth_team[$i]);
+            }
+        })
+        ->get();
 
         return view('leadManager.approval_saleplan_history', $data);
     }
@@ -85,24 +110,75 @@ class ApprovalSalePlanController extends Controller
             $auth_team[] = $value;
         }
 
-        list($year,$month) = explode('-', $request->selectdateTo);
-        $data['monthly_plan'] = DB::table('monthly_plans')
-            ->join('users', 'users.id', 'monthly_plans.created_by')
+        $monthly_plan = DB::table('monthly_plans')
+            ->leftJoin('users', 'users.id', 'monthly_plans.created_by')
+            ->leftJoin('monthly_plan_result', 'monthly_plan_result.monthly_plan_id', 'monthly_plans.id')
             ->where('monthly_plans.status_approve', 1)
-            ->where(function($query) use ($auth_team) {
-                for ($i = 0; $i < count($auth_team); $i++){
-                    $query->orWhere('users.team_id', $auth_team[$i])
-                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
-                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
-                }
-            })
-            ->whereYear('month_date', $year)
-            ->whereMonth('month_date', $month)
             ->select(
                 'users.*',
+                'monthly_plan_result.*',
                 'monthly_plans.*'
-            )
-            ->paginate(10);
+            );
+            
+            if(!is_null($request->selectdateFrom)){ //-- วันที่
+                list($year,$month) = explode('-', $request->selectdateFrom);
+                $monthly_plan = $monthly_plan->whereYear('monthly_plans.month_date',$year)
+                ->whereMonth('monthly_plans.month_date', $month);
+                $data['date_filter'] = $request->selectdateFrom;
+            }
+
+            if(!is_null($request->selectteam_sales)){ //-- ทีมขาย
+                $team = $request->selectteam_sales;
+                $monthly_plan = $monthly_plan
+                    ->where(function($query) use ($team) {
+                        $query->orWhere('users.team_id', $team)
+                            ->orWhere('users.team_id', 'like', $team.',%')
+                            ->orWhere('users.team_id', 'like', '%,'.$team);
+                    });
+                $data['selectteam_sales'] = $request->selectteam_sales;
+            }else{
+                $monthly_plan = $monthly_plan
+                ->where(function($query) use ($auth_team) {
+                    for ($i = 0; $i < count($auth_team); $i++){
+                        $query->orWhere('users.team_id', $auth_team[$i])
+                            ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                            ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+                    }
+                });
+            }
+
+            $monthly_plan = $monthly_plan->paginate(10);;       
+            
+            $data['monthly_plan'] = $monthly_plan;
+
+            $data['team_sales'] = DB::table('master_team_sales')
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('id', $auth_team[$i])
+                        ->orWhere('id', 'like', $auth_team[$i].',%')
+                        ->orWhere('id', 'like', '%,'.$auth_team[$i]);
+                }
+            })
+            ->get();
+
+        // list($year,$month) = explode('-', $request->selectdateTo);
+        // $data['monthly_plan'] = DB::table('monthly_plans')
+        //     ->join('users', 'users.id', 'monthly_plans.created_by')
+        //     ->where('monthly_plans.status_approve', 1)
+        //     ->where(function($query) use ($auth_team) {
+        //         for ($i = 0; $i < count($auth_team); $i++){
+        //             $query->orWhere('users.team_id', $auth_team[$i])
+        //                 ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+        //                 ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+        //         }
+        //     })
+        //     ->whereYear('month_date', $year)
+        //     ->whereMonth('month_date', $month)
+        //     ->select(
+        //         'users.*',
+        //         'monthly_plans.*'
+        //     )
+        //     ->paginate(10);
 
         return view('leadManager.approval_saleplan', $data);
     }
@@ -115,24 +191,61 @@ class ApprovalSalePlanController extends Controller
             $auth_team[] = $value;
         }
 
-        list($year,$month) = explode('-', $request->selectdateTo);
-        $data['monthly_plan'] = DB::table('monthly_plans')
-            ->join('users', 'users.id', 'monthly_plans.created_by')
-            ->whereIn('monthly_plans.status_approve', [2, 3])
-            ->where(function($query) use ($auth_team) {
-                for ($i = 0; $i < count($auth_team); $i++){
-                    $query->orWhere('users.team_id', $auth_team[$i])
-                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
-                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
-                }
-            })
-            ->whereYear('month_date', $year)
-            ->whereMonth('month_date', $month)
+        // list($year,$month) = explode('-', $request->selectdateFrom);
+        // $data['year'] = $year ;
+        // $data['month'] = $month ;
+
+        $monthly_plan = DB::table('monthly_plans')
+            ->leftJoin('users', 'users.id', 'monthly_plans.created_by')
+            ->leftJoin('monthly_plan_result', 'monthly_plan_result.monthly_plan_id', 'monthly_plans.id')
+            ->whereIn('monthly_plans.status_approve', [2,3,4])
             ->select(
                 'users.*',
+                'monthly_plan_result.*',
                 'monthly_plans.*'
-            )
-            ->paginate(10);
+            );
+            
+            if(!is_null($request->selectdateFrom)){ //-- วันที่
+                list($year,$month) = explode('-', $request->selectdateFrom);
+                $monthly_plan = $monthly_plan->whereYear('monthly_plans.month_date',$year)
+                ->whereMonth('monthly_plans.month_date', $month);
+                $data['date_filter'] = $request->selectdateFrom;
+            }
+
+            if(!is_null($request->selectteam_sales)){ //-- ทีมขาย
+                $team = $request->selectteam_sales;
+                $monthly_plan = $monthly_plan
+                    ->where(function($query) use ($team) {
+                        $query->orWhere('users.team_id', $team)
+                            ->orWhere('users.team_id', 'like', $team.',%')
+                            ->orWhere('users.team_id', 'like', '%,'.$team);
+                    });
+                $data['selectteam_sales'] = $request->selectteam_sales;
+            }else{
+                $monthly_plan = $monthly_plan
+                ->where(function($query) use ($auth_team) {
+                    for ($i = 0; $i < count($auth_team); $i++){
+                        $query->orWhere('users.team_id', $auth_team[$i])
+                            ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                            ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+                    }
+                });
+            }
+
+            $monthly_plan = $monthly_plan->paginate(10);;       
+            
+            $data['monthly_plan'] = $monthly_plan;
+
+            $data['team_sales'] = DB::table('master_team_sales')
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('id', $auth_team[$i])
+                        ->orWhere('id', 'like', $auth_team[$i].',%')
+                        ->orWhere('id', 'like', '%,'.$auth_team[$i]);
+                }
+            })
+            ->get();
+            
 
         return view('leadManager.approval_saleplan_history', $data);
     }
@@ -240,10 +353,11 @@ class ApprovalSalePlanController extends Controller
         list($year,$month,$day) = explode('-', $mon_plan->month_date);
         $month = $month + 0; //-- ทำให้เป็นตัวเลข เพื่อตัดเลข 0 ด้านหน้าออก
 
-        $path_search = "reports/sellers/B2/closesaleplans?years=".$year."&months=".$month;
+        $path_search = "reports/sellers/".$user_api->api_identify."/closesaleplans?years=".$year."&months=".$month;
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
-
+        
+        $data['api_token'] = $api_token;
         $data['saleplan_api'] = $res_api['data'];
 
         $data['mon_plan'] = $mon_plan;
@@ -254,12 +368,16 @@ class ApprovalSalePlanController extends Controller
         $data['customer_new'] = DB::table('customer_shops_saleplan')
         ->join('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
         ->join('master_customer_new', 'customer_shops_saleplan.customer_shop_objective', 'master_customer_new.id')
+        ->join('monthly_plans', 'monthly_plans.id', 'customer_shops_saleplan.monthly_plan_id')
+        ->join('users', 'users.id', 'customer_shops.created_by')
         ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
-        ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
+        ->whereIn('customer_shops.shop_status', [0,1,2]) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
         ->whereIn('customer_shops_saleplan.shop_aprove_status', [2, 3])
         // ->where('customer_shops.created_by', Auth::user()->id)
         ->where('customer_shops_saleplan.monthly_plan_id', $id)
         ->select(
+            'users.*',
+            'monthly_plans.*',
             'province.PROVINCE_NAME',
             'customer_shops.*',
             'customer_shops.id as custid',

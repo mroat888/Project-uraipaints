@@ -73,11 +73,56 @@
                         </div>
                         <div class="row mb-2">
                             <div class="col-sm-12 col-md-6">
-                                <h5 class="hk-sec-title">รายการ Sale Plan ประจำเดือน <?php echo thaidate('F Y', date('F Y')); ?></h5>
+                                <h5 class="hk-sec-title">รายการ Sale Plan ประจำเดือน 
+                                    <?php 
+                                        if(isset($date_filter)){ //-- สำหรับ แสดงวันที่ค้นหา
+                                            echo thaidate('F Y', $date_filter);
+                                        }
+                                    ?>
+                                </h5>
                             </div>
                             <div class="col-sm-12 col-md-6">
+                                @php 
+                                    $action_search = "approvalsaleplan/search"; //-- action form
+                                    if(isset($date_filter)){ //-- สำหรับ แสดงวันที่ค้นหา
+                                        $date_search = $date_filter;
+                                    }else{
+                                        $date_search = "";
+                                    }
+                                @endphp
                                 <!-- ------ -->
-                                <span class="form-inline pull-right">
+                                <span class="form-inline pull-right pull-sm-center">
+                                    <form action="{{ url($action_search) }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <span id="selectdate">
+                                        <select name="selectteam_sales" class="form-control form-control-sm" aria-label=".form-select-lg example">
+                                            <option value="" selected>เลือกทีม</option>
+                                            @php 
+                                                $checkteam_sales = "";
+                                                if(isset($selectteam_sales)){
+                                                    $checkteam_sales = $selectteam_sales;
+                                                }
+                                            @endphp
+                                            @if(count($team_sales) > 1)
+                                                @foreach($team_sales as $team)
+                                                    @if($checkteam_sales == $team->id)
+                                                        <option value="{{ $team->id }}" selected>{{ $team->team_name }}</option>
+                                                    @else
+                                                        <option value="{{ $team->id }}">{{ $team->team_name }}</option>
+                                                    @endif
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                        <!-- ปี/เดือน :  -->
+                                        <input type="month" id="selectdateFrom" name="selectdateFrom" 
+                                        value="{{ $date_search }}" class="form-control form-control-sm" 
+                                        style="margin-left:10px; margin-right:10px;"/>
+                                        <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm" id="submit_request">ค้นหา</button>
+                                    </span>
+                                    </form>
+                                </span>
+                                <!-- ------ -->
+                                <!-- <span class="form-inline pull-right">
                                 <a style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</a>
                                 <form action="{{ url('approvalsaleplan/search') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
@@ -89,7 +134,7 @@
                                         <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-success btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button>
                                     </span>
                                 </form>
-                                </span>
+                                </span> -->
                                 <!-- ------ -->
                             </div>
                         </div>
@@ -143,6 +188,14 @@
                                                     $cust_new_amount = $customer_shops_saleplan->count();
 
                                                     $total_plan = $sale_plan_amount + $cust_new_amount;
+
+                                                    list($year,$month) = explode('-', $value->month_date);
+                                                    $customer_update_count = DB::table('customer_shops')
+                                                        ->join('customer_shops_saleplan', 'customer_shops_saleplan.customer_shop_id', 'customer_shops.id')
+                                                        ->where('customer_shops_saleplan.monthly_plan_id', $value->id)
+                                                        ->whereYear('customer_shops.shop_status_at', $year)
+                                                        ->whereMonth('customer_shops.shop_status_at', $month)
+                                                        ->count();
                                                 @endphp
                                                     <tr style="text-align:center;">
                                                         <td>
@@ -157,10 +210,10 @@
                                                         <td>{{ $sale_plan_amount }}</td>
                                                         <td>{{ $cust_new_amount }}</td>
                                                         <td>{{ $total_plan }}</td>
-                                                        <td> ดึงจาก Admin</td>
-                                                        <td> ดึงจาก Admin</td>
-                                                        <td> ดึงจาก Admin</td>
-                                                        <td> ดึงจาก Admin</td>
+                                                        <td style="text-aligm:right;">{{ number_format($value->close_sale) }}</td>
+                                                        <td style="text-aligm:right;">{{ number_format($value->total_sales) }}</td>
+                                                        <td style="text-aligm:right;">{{ number_format($value->close_sales_not) }}</td>
+                                                        <td style="text-aligm:right;">{{ number_format($customer_update_count) }}</td>
                                                         <td>
                                                             @if($value->status_approve == 1)
                                                                 <span class="badge badge-soft-warning" style="font-size: 12px;">
