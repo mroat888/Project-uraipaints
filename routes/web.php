@@ -418,10 +418,17 @@ Route::post('admin/update_assignment', 'Admin\AssignmentController@update');
 Route::get('admin/delete_assignment/{id}', 'Admin\AssignmentController@destroy');
 Route::post('admin/search_month_add-assignment', 'Admin\AssignmentController@search');
 
-// Customer
+// Customer Change Status
 Route::get('admin/change_customer_status', 'Admin\ChangeCustomerController@index');
 Route::get('admin/change_customer_status_edit/{id}', 'Admin\ChangeCustomerController@show');
 Route::post('admin/change_customer_status_update', 'Admin\ChangeCustomerController@update_status');
+Route::post('admin/change_customer_status/search','Admin\ChangeCustomerController@destroy');
+
+Route::post('admin/search','Admin\ChangeCustomerController@customerLeadSearch');
+// Route::post('create_customer', 'Customer\CustomerController@store');
+Route::get('admin/edit_customerLead/{id}', 'Admin\ChangeCustomerController@edit');
+Route::post('admin/update_customerLead', 'Admin\ChangeCustomerController@update');
+// Route::post('delete_customer', 'Customer\CustomerController@destroy');
 
 
 // Note
