@@ -39,6 +39,8 @@ class CheckStoreController extends Controller
                 $data['provinces'] = $res_api['data'];
             }
         }
+
+        // dd($data['customer_api']);
         
         return view('shareData.check_name_store', $data);
 
