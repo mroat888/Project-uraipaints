@@ -3,7 +3,7 @@
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
             <li class="breadcrumb-item"><a href="#">Page</a></li>
-            <li class="breadcrumb-item active" aria-current="page">ตรวจสอบรายชื่อร้านค้า</li>
+            <li class="breadcrumb-item active" aria-current="page">ทะเบียนลูกค้า</li>
         </ol>
     </nav>
     <!-- /Breadcrumb -->
@@ -11,11 +11,16 @@
     <!-- Container -->
     <div class="container-fluid px-xxl-65 px-xl-20">
         <!-- Title -->
-        <div class="hk-pg-header mb-10">
+        {{-- <div class="hk-pg-header mb-10">
             <div>
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                    data-feather="clipboard"></i></span></span>ตรวจสอบรายชื่อร้านค้า</h4>
+                    data-feather="clipboard"></i></span></span>ทะเบียนลูกค้า</h4>
             </div>
+        </div> --}}
+
+        <div class="hk-pg-header mb-10">
+            <div class="topichead-bgred"><i class="ion ion-md-clipboard"></i> ทะเบียนลูกค้า</div>
+            <div class="content-right d-flex"></div>
         </div>
         <!-- /Title -->
 
@@ -24,8 +29,8 @@
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
-                        <div class="col-sm-12 col-md-3">
-                            <h5 class="hk-sec-title">ตารางข้อมูลรายชื่อร้านค้า</h5>
+                        <div class="col-sm-12 col-md-12">
+                            <div class="topichead-bggrey" style="margin-bottom: 30px;">รายชื่อร้านค้า</div>
                         </div>
 
                     </div>
@@ -50,7 +55,7 @@
                                                             @endif
                                                         @endforeach
                                                     @endif
-                                                   
+
                                                 </select>
 
                                                 <select name="amphur" id="amphur" class="form-control amphur" style="margin-left:5px; margin-right:5px;">
@@ -59,16 +64,16 @@
                                                 <!-- จำนวนเป้า
                                                 <input type="number" name="campaign_count" style="width:80px;" class="form-control amphur"> -->
 
-                                                <button id="btn_search" style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm">ค้นหา</button>
+                                                <button id="btn_search" style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm">ค้นหา</button>
                                             </span>
                                         </form>
                                         <!-- ------ -->
                                     </div>
                                 </div>
-                                <div id="table_list" class="table-responsive col-md-12">
+                                <div id="table_list" class="table-responsive table-color col-md-12">
                                     <table id="datable_1" class="table table-hover">
                                         <thead>
-                                            <tr>
+                                            <tr class="table-bggrey">
                                                 <th style="font-weight: bold;">#</th>
                                                 <th style="font-weight: bold;">รูปภาพ</th>
                                                 <th style="font-weight: bold;">รหัสร้าน</th>
@@ -79,7 +84,7 @@
                                             </tr>
                                         </thead>
                                         <tbody id="table_body">
-                                            @php 
+                                            @php
                                                 $number = 0;
                                             @endphp
 
@@ -100,7 +105,7 @@
                                                             @php
                                                                 $pathurl = url($path_detail).'/'.$customer['identify'];
                                                             @endphp
-                                                            <a href="{{ $pathurl }}" class="btn btn-icon btn-success mr-10">
+                                                            <a href="{{ $pathurl }}" class="btn btn-icon btn-purple mr-10">
                                                             <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></a>
                                                         </td>
                                                     </tr>

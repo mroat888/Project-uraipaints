@@ -212,7 +212,7 @@
                                                             class="btn btn-icon btn-purple btn-link btn_showplan" value="3">
                                                             <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4>
                                                         </a>
-                                                        <a href="{{ url('comment_customer_new', [$value->customer_shop_id, $value->id]) }}" class="btn btn-icon btn-info mr-10">
+                                                        <a href="{{ url('comment_customer_except', [$value->customer_shop_id, $value->id]) }}" class="btn btn-icon btn-info mr-10">
                                                             <h4 class="btn-icon-wrap" style="color: white;">
                                                                 <span class="material-icons">
                                                                     question_answer

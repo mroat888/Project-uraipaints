@@ -22,22 +22,22 @@
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
-                        <div class="col-sm-12 col-md-8">
-                            <h5 class="hk-sec-title">สรุปยอดทำเป้า เทียบปี</h5>
+                        <div class="col-sm-12 col-md-12">
+                            <div class="topichead-bgred" style="margin-bottom: 30px;">สรุปยอดทำเป้า เทียบปี</div>
                         </div>
                         <div class="col-sm-12 col-md-4">
                             <!-- ------ -->
-                               
+
                             <!-- ------ -->
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-sm">
-                            <div class="table-responsive-sm">
+                            <div class="table-responsive-sm table-color">
                                 <table class="table table-sm table-hover table-bordered">
                                     <thead>
-                                        <tr>
+                                        <tr class="table-bggrey">
                                             <th style="text-align:center">#</th>
                                             <th style="text-align:center">ปี</th>
                                             <th style="text-align:center">จำนวนร้านค้า</th>
@@ -58,7 +58,7 @@
                                     @endphp
                                     @if(isset($campaigns_year))
                                         @foreach($campaigns_year as $key => $value)
-                                        @php 
+                                        @php
                                             $sum_TotalLimit += $value['TotalLimit'];
                                             $sum_TotalPromotion += $value['TotalPromotion'];
                                             $sum_TotalCustomer += $value['TotalCustomer'];
@@ -96,7 +96,7 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                        @php 
+                                                        @php
                                                             $province_name_check = "";
                                                             $sum_TotalPromotion = 0;
                                                             $sum_TotalLimit = 0;
@@ -110,13 +110,13 @@
                                                                         <strong>จังหวัด {{ $cust_campaigns_value['province_name'] }}</strong>
                                                                     </td>
                                                                 </tr>
-                                                                @php             
-                                                                    $province_name_check = $cust_campaigns_value['province_name']; 
+                                                                @php
+                                                                    $province_name_check = $cust_campaigns_value['province_name'];
                                                                 @endphp
                                                             @endif
                                                             <tr>
 
-                                                            @php 
+                                                            @php
                                                                 $sum_TotalPromotion += $cust_campaigns_value['TotalPromotion'];
                                                                 $sum_TotalLimit += $cust_campaigns_value['TotalLimit'];
                                                                 $sum_TotalAmountSale += $cust_campaigns_value['TotalAmountSale'];
@@ -139,7 +139,7 @@
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                               
+
                                             </td>
                                             @endif
 
@@ -147,8 +147,8 @@
                                         @endforeach
                                     @endif
                                     </tbody>
-                                    <tfoot>
-                                        @php 
+                                    <tfoot style="font-weight: bold; text-align:center; background: #ddd;">
+                                        @php
                                             $sum_persent_TotalAmountSale =  ($sum_TotalAmountSale / $sum_TotalLimit) * 100;
                                         @endphp
                                         <tr style="font-weight: bold;">

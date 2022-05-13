@@ -188,7 +188,7 @@
                                                     @endif
                                                 </td>
                                                 <td style="text-align:center">
-                                                    <a href="{{ url('comment_customer_new', [$value->custid, $value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
+                                                    <a href="{{ url('comment_customer_new', [$value->custid, $value->id]) }}" class="btn btn-icon btn-info mr-10">
                                                         <h4 class="btn-icon-wrap" style="color: white;">
                                                             <i data-feather="message-square"></i>
                                                         </h4>
@@ -207,7 +207,7 @@
                                                     </td>
 
                                                     <td style="text-align:center">
-                                                        <a href="{{ url('comment_customer_new', [$value->custid, $value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
+                                                        <a href="{{ url('comment_customer_new', [$value->custid, $value->id]) }}" class="btn btn-icon btn-info mr-10">
                                                             <h4 class="btn-icon-wrap" style="color: white;">
                                                                 <i data-feather="message-square"></i>
                                                             </h4>
