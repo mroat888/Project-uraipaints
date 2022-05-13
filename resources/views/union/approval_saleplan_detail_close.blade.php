@@ -153,6 +153,9 @@
                                             @php
                                                 $total_bills += $sum_bills;
                                                 $total_sales += $sum_sales;
+
+                                                $sum_bills = 0;
+                                                $sum_sales = 0;
                                             @endphp  
                                         @endforeach
                                             <tr>

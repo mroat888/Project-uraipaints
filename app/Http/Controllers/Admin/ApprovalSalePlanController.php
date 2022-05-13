@@ -174,6 +174,8 @@ class ApprovalSalePlanController extends Controller
             $data['saleplan_api'] = $res_api['data'];
         }
 
+        // dd($data['saleplan_api']);
+
         $data['mon_plan'] = $mon_plan;
         $data['sale_name'] = DB::table('users')->where('id',$mon_plan->created_by)->select('name')->first(); // ชื่อเซลล์
 

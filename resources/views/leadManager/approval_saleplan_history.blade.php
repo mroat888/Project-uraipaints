@@ -199,6 +199,10 @@
                                                                 <a href="{{ url('/lead/approvalsaleplan-history-detail', $value->id) }}" type="button" class="btn btn-icon btn-success pt-5">
                                                                     <i data-feather="alert-circle"></i>
                                                                 </a>
+                                                            @else
+                                                                <a href="{{ url('/approvalsaleplan_detail', $value->id) }}" type="button" class="btn btn-icon btn-primary pt-5">
+                                                                    <i data-feather="file-text"></i>
+                                                                </a>
                                                             @endif
                                                         </td>
                                                     </tr>
