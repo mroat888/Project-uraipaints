@@ -84,12 +84,16 @@ class ApprovalCustomerExceptController extends Controller
 
         $customer_shops = DB::table('customer_shops_saleplan')
         ->join('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
+        ->leftJoin('customer_contacts', 'customer_shops.id', 'customer_contacts.customer_shop_id')
         ->join('users', 'customer_shops_saleplan.created_by', '=', 'users.id')
+        ->leftJoin('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
+        ->leftJoin('amphur', 'amphur.AMPHUR_ID', 'customer_shops.shop_amphur_id')
         ->leftJoin('monthly_plans', 'monthly_plans.id', 'customer_shops_saleplan.monthly_plan_id')
         ->where('customer_shops.shop_status', 0)
         ->where('customer_shops_saleplan.shop_aprove_status', 1) // ส่งขออนุมัติ
         ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
-        ->where('customer_shops_saleplan.is_monthly_plan', 'N')->select('customer_shops_saleplan.*',
+        ->where('customer_shops_saleplan.is_monthly_plan', 'N')
+        ->select('customer_shops_saleplan.*',
         'users.name',
         'customer_shops.shop_name',
         'province.PROVINCE_NAME',
@@ -129,8 +133,12 @@ class ApprovalCustomerExceptController extends Controller
             $data['selectusers'] = $request->selectusers;
         }
 
-        $customer_shops = $customer_shops->select('customer_shops_saleplan.created_by as shop_created_by')
-        ->distinct()->get();
+        $customer_shops = $customer_shops->select('customer_shops_saleplan.*',
+        'users.name',
+        'customer_shops.shop_name',
+        'province.PROVINCE_NAME',
+        'amphur.AMPHUR_NAME',
+        'customer_contacts.customer_contact_name')->get();
 
         $data['customers'] = $customer_shops;
 

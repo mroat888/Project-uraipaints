@@ -52,7 +52,7 @@
                     </div>
 
                 </div>
-                <div class="col-md-12 text-right" style="font-size: 18px;"><div class="boxnews-date">อัพเดตวันที่ : dd/mm/yyyy</div></div>
+                <div class="col-md-12 text-right" style="font-size: 18px;"><div class="boxnews-date">อัพเดตวันที่ : {{$value->updated_at->format('d/m/Y')}}</div></div>
             </div>
             @endforeach
         </section>
