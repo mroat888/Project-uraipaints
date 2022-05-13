@@ -195,11 +195,15 @@
 
                                                         </td>
                                                         <td>
-                                                            {{-- @if ($value->status_approve == 4) --}}
+                                                            @if ($value->status_approve == 4)
                                                                 <a href="{{ url('/lead/approvalsaleplan-history-detail', $value->id) }}" type="button" class="btn btn-icon btn-success pt-5">
                                                                     <i data-feather="alert-circle"></i>
                                                                 </a>
-                                                            {{-- @endif --}}
+                                                            @else
+                                                                <a href="{{ url('/approvalsaleplan_detail', $value->id) }}" type="button" class="btn btn-icon btn-primary pt-5">
+                                                                    <i data-feather="file-text"></i>
+                                                                </a>
+                                                            @endif
                                                         </td>
                                                     </tr>
                                             @endforeach

@@ -71,7 +71,7 @@
                                             <td style="text-align:right">{{ number_format($value['TotalCustomer']) }}</td>
                                             <td style="text-align:right">{{ number_format($value['TotalPromotion']) }}</td>
                                             <td style="text-align:right">{{ number_format($value['TotalLimit'],2) }}</td>
-                                            <td style="text-align:right">{{ number_format($value['TotalAmountSale']) }}</td>
+                                            <td style="text-align:right">{{ number_format($value['TotalAmountSale'],2) }}</td>
                                             <td style="text-align:right">{{ number_format($persent_TotalAmountSale,2) }}</td>
                                         </tr>
                                         <tr class="tb_detail" rel="{{ $key }}">
@@ -98,18 +98,41 @@
                                                         <tbody>
                                                         @php 
                                                             $province_name_check = "";
-                                                            $sum_TotalPromotion = 0;
-                                                            $sum_TotalLimit = 0;
-                                                            $sum_TotalAmountSale = 0;
+                                                            $sum_sub_TotalPromotion = 0;
+                                                            $sum_sub_TotalLimit = 0;
+                                                            $sum_sub_TotalAmountSale = 0;
                                                         @endphp
 
                                                         @foreach($customer_campaigns[$key] as $key_cam => $cust_campaigns_value)
-                                                            @if($province_name_check != $cust_campaigns_value['province_name'])
+                                                            @if(($province_name_check != $cust_campaigns_value['province_name']))
+
+                                                                @if(($province_name_check != ""))
+                                                                    @php 
+                                                                        $persent_sub_camTotalAmountSale = ($sum_sub_TotalAmountSale / $sum_sub_TotalLimit) * 100;
+                                                                    @endphp
+                                                                    <tr>
+                                                                        <td colspan="4">
+                                                                            <strong>รวมจังหวัด {{ $province_name_check }}</strong>
+                                                                        </td>
+                                                                        <td style="text-align:center"><strong>{{ number_format($sum_sub_TotalPromotion) }}</strong></td>
+                                                                        <td style="text-align:center"><strong>{{ number_format($sum_sub_TotalLimit,2) }}</strong></td>
+                                                                        <td style="text-align:center"><strong>{{ number_format($sum_sub_TotalAmountSale,2) }}</strong></td>
+                                                                        <td style="text-align:center"><strong>{{ number_format($persent_sub_camTotalAmountSale,2) }}</strong></td>
+                                                                    </tr>
+                                                                    @php 
+                                                                        $province_name_check = "";
+                                                                        $sum_sub_TotalPromotion = 0;
+                                                                        $sum_sub_TotalLimit = 0;
+                                                                        $sum_sub_TotalAmountSale = 0;
+                                                                    @endphp
+
+                                                                @endif
                                                                 <tr>
                                                                     <td colspan="8">
                                                                         <strong>จังหวัด {{ $cust_campaigns_value['province_name'] }}</strong>
                                                                     </td>
                                                                 </tr>
+
                                                                 @php             
                                                                     $province_name_check = $cust_campaigns_value['province_name']; 
                                                                 @endphp
@@ -117,9 +140,9 @@
                                                             <tr>
 
                                                             @php 
-                                                                $sum_TotalPromotion += $cust_campaigns_value['TotalPromotion'];
-                                                                $sum_TotalLimit += $cust_campaigns_value['TotalLimit'];
-                                                                $sum_TotalAmountSale += $cust_campaigns_value['TotalAmountSale'];
+                                                                $sum_sub_TotalPromotion += $cust_campaigns_value['TotalPromotion'];
+                                                                $sum_sub_TotalLimit += $cust_campaigns_value['TotalLimit'];
+                                                                $sum_sub_TotalAmountSale += $cust_campaigns_value['TotalAmountSale'];
 
                                                                 $persent_camTotalAmountSale = ($cust_campaigns_value['TotalAmountSale'] / $cust_campaigns_value['TotalLimit']) * 100;
                                                             @endphp
@@ -128,13 +151,25 @@
                                                                 <td>{{ ++$key_cam }}</td>
                                                                 <td>{{ $cust_campaigns_value['identify'] }}</td>
                                                                 <td>{{ $cust_campaigns_value['name'] }}</td>
-                                                                <td>{{ $cust_campaigns_value['amphoe_name'] }}, {{ $cust_campaigns_value['province_name'] }}</td>
+                                                                <td>{{ $cust_campaigns_value['amphoe_name'] }}</td>
                                                                 <td style="text-align:center">{{ number_format($cust_campaigns_value['TotalPromotion']) }}</td>
                                                                 <td style="text-align:right">{{ number_format($cust_campaigns_value['TotalLimit'],2) }}</td>
                                                                 <td style="text-align:right">{{ number_format($cust_campaigns_value['TotalAmountSale'],2) }}</td>
                                                                 <td style="text-align:right">{{ number_format($persent_camTotalAmountSale,2) }}</td>
                                                             </tr>
                                                         @endforeach
+
+                                                       @if(($province_name_check != ""))
+                                                            <tr>
+                                                                <td colspan="4">
+                                                                    <strong>รวมจังหวัด {{ $province_name_check }}</strong>
+                                                                </td>
+                                                                <td style="text-align:center"><strong>{{ number_format($sum_sub_TotalPromotion) }}</strong></td>
+                                                                <td style="text-align:center"><strong>{{ number_format($sum_sub_TotalLimit,2) }}</strong></td>
+                                                                <td style="text-align:center"><strong>{{ number_format($sum_sub_TotalAmountSale,2) }}</strong></td>
+                                                                <td style="text-align:center"><strong>{{ number_format($persent_sub_camTotalAmountSale,2) }}</strong></td>
+                                                            </tr>
+                                                        @endif
 
                                                         </tbody>
                                                     </table>
@@ -156,7 +191,7 @@
                                             <td style="font-weight: bold; text-align:right">{{ number_format($sum_TotalCustomer) }}</td>
                                             <td style="font-weight: bold; text-align:right">{{ number_format($sum_TotalPromotion) }}</td>
                                             <td style="font-weight: bold; text-align:right">{{ number_format($sum_TotalLimit,2) }}</td>
-                                            <td style="font-weight: bold; text-align:right">{{ number_format($sum_TotalAmountSale) }}</td>
+                                            <td style="font-weight: bold; text-align:right">{{ number_format($sum_TotalAmountSale,2) }}</td>
                                             <td style="font-weight: bold; text-align:right">{{ number_format($sum_persent_TotalAmountSale,2) }}</td>
                                         </tr>
                                     </tfoot>
