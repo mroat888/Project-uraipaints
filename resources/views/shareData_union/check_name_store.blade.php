@@ -3,7 +3,7 @@
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
             <li class="breadcrumb-item"><a href="#">Page</a></li>
-            <li class="breadcrumb-item active" aria-current="page">ตรวจสอบรายชื่อร้านค้า</li>
+            <li class="breadcrumb-item active" aria-current="page">ทะเบียนลูกค้า</li>
         </ol>
     </nav>
     <!-- /Breadcrumb -->
@@ -11,11 +11,16 @@
     <!-- Container -->
     <div class="container-fluid px-xxl-65 px-xl-20">
         <!-- Title -->
-        <div class="hk-pg-header mb-10">
+        {{-- <div class="hk-pg-header mb-10">
             <div>
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                    data-feather="clipboard"></i></span></span>ตรวจสอบรายชื่อร้านค้า</h4>
+                    data-feather="clipboard"></i></span></span>ทะเบียนลูกค้า</h4>
             </div>
+        </div> --}}
+
+        <div class="hk-pg-header mb-10">
+            <div class="topichead-bgred"><i class="ion ion-md-clipboard"></i> ทะเบียนลูกค้า</div>
+            <div class="content-right d-flex"></div>
         </div>
         <!-- /Title -->
 

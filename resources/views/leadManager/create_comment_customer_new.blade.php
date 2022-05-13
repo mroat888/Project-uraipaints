@@ -41,14 +41,14 @@
                                 </div>
                                 <input type="hidden" name="cust_shops_saleplan_id" value="{{$data->customer_shops_saleplan_id}}">
                                 <input type="hidden" name="customer_shops_id" value="{{$data->customer_id}}">
-                                {{-- <input type="hidden" name="monthly_plans_id" value="{{$createID}}"> --}}
+                                <input type="hidden" name="monthly_plans_id" value="{{$monthly_id->monthly_plan_id}}">
                                     <div class="card-body">
                                         <textarea class="form-control" name="comment" cols="30" rows="5" placeholder="เพิ่มความคิดเห็น" value=""
                                         type="text">{{$data->customer_comment_detail}}</textarea>
                                     </div>
                             </div>
                             <div class="modal-footer">
-                                <a href="{{ url('approval-customer-except') }}" type="button" class="btn btn-secondary">ย้อนกลับ</a>
+                                <a href="{{ url('approvalsaleplan_detail', $monthly_id->monthly_plan_id) }}" type="button" class="btn btn-secondary">ย้อนกลับ</a>
                                 <button type="submit" class="btn btn-primary float-right">บันทึก</button>
                             </div>
                             </form>
@@ -75,14 +75,14 @@
                                 </div>
                                 <input type="hidden" name="cust_shops_saleplan_id" value="{{$customersaleplanID}}">
                                 <input type="hidden" name="customer_shops_id" value="{{$customerID}}">
-                                {{-- <input type="hidden" name="monthly_plans_id" value="{{$createID}}"> --}}
+                                <input type="hidden" name="monthly_plans_id" value="{{$monthly_id->monthly_plan_id}}">
                                     <div class="card-body">
                                         <textarea class="form-control" name="comment" cols="30" rows="5" placeholder="เพิ่มความคิดเห็น" value=""
                                         type="text"></textarea>
                                     </div>
                             </div>
                             <div class="modal-footer">
-                                <a href="{{ url('approval-customer-except') }}" type="button" class="btn btn-secondary">ย้อนกลับ</a>
+                                <a href="{{ url('approvalsaleplan_detail', $monthly_id->monthly_plan_id) }}" type="button" class="btn btn-secondary">ย้อนกลับ</a>
                                 <button type="submit" class="btn btn-primary float-right">บันทึก</button>
                             </div>
                             </form>

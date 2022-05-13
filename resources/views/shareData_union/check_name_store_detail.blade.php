@@ -1,7 +1,7 @@
 <!-- Breadcrumb -->
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
-            <li class="breadcrumb-item"><a href="#">ข้อมูลลูกค้า</a></li>
+            <li class="breadcrumb-item"><a href="#">ทะเบียนลูกค้า</a></li>
             <li class="breadcrumb-item active" aria-current="page">รายละเอียดร้านค้า</li>
         </ol>
     </nav>
@@ -10,15 +10,25 @@
     <!-- Container -->
     <div class="container-fluid px-xxl-65 px-xl-20">
         <!-- Title -->
-        <div class="hk-pg-header mb-10">
+        {{-- <div class="hk-pg-header mb-10">
             <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-people"></i></span>รายละเอียดร้านค้า</h4>
+                <h4 class="topichead-bgred"><span class="pg-title-icon"><i class="ion ion-md-people"></i></span>รายละเอียดร้านค้า</h4>
             </div>
             <div class="d-flex">
                 <a href="javascript:history.back();" type="button" class="btn btn-secondary btn-sm btn-rounded px-3 mr-10"> ย้อนกลับ </a>
             </div>
+        </div> --}}
+
+        <div class="hk-pg-header mb-10">
+            <div class="topichead-bgred"><i class="ion ion-md-document"></i> รายละเอียดร้านค้า</div>
+            <div class="content-right d-flex">
+                {{-- <button class="btn btn-green btn-sm" data-toggle="modal" data-target="#addCustomer"> + เพิ่มใหม่ </button> --}}
+                <a href="javascript:history.back();" type="button" class="btn btn-secondary btn-sm btn-rounded px-3 mr-10"> ย้อนกลับ </a>
+            </div>
         </div>
         <!-- /Title -->
+
+        {{-- <h4 class="topichead-bgred"><span class="pg-title-icon"><i class="ion ion-md-people"></i></span>รายละเอียดร้านค้า</h4> --}}
 
         <!-- Row -->
         <div class="row">
@@ -30,7 +40,7 @@
                             <div class="row">
 
                             @if($customer_shop['code'] == 200)
-                                @php 
+                                @php
                                     $customer_shop = $customer_shop['data'][0];
 
                                     /* ดึงรายชื่อผู้แทนขาย */
@@ -61,8 +71,8 @@
                                             <h5>ข้อมูลร้านค้า</h5>
                                             <div class="col-12 my-3">
                                                 <p>ชื่อร้าน : {{ $customer_shop['title'] }} {{ $customer_shop['name'] }}</p>
-                                                <p>{{ $customer_shop['address1'] }} 
-                                                    {{ $customer_shop['adrress2'] }} 
+                                                <p>{{ $customer_shop['address1'] }}
+                                                    {{ $customer_shop['adrress2'] }}
                                                     {{ $customer_shop['postal_id'] }}
                                                 </p>
                                             </div>
@@ -83,7 +93,7 @@
                                         <h4>{{ $customer_shop['data'] }}</h4>
                                     </div>
                                 @endif
-                            </div> 
+                            </div>
                         </div>
                     </div>
                 </section>

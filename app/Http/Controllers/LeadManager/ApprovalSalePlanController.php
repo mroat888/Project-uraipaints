@@ -64,7 +64,7 @@ class ApprovalSalePlanController extends Controller
     }
 
     public function saleplan_history()
-    {  
+    {
         $auth_team_id = explode(',',Auth::user()->team_id);
         $auth_team = array();
         foreach($auth_team_id as $value){
@@ -88,7 +88,7 @@ class ApprovalSalePlanController extends Controller
             )
             ->orderBy('monthly_plans.id','desc')
             ->paginate(10);
-        
+
         $data['team_sales'] = DB::table('master_team_sales')
         ->where(function($query) use ($auth_team) {
             for ($i = 0; $i < count($auth_team); $i++){
@@ -119,7 +119,7 @@ class ApprovalSalePlanController extends Controller
                 'monthly_plan_result.*',
                 'monthly_plans.*'
             );
-            
+
             if(!is_null($request->selectdateFrom)){ //-- วันที่
                 list($year,$month) = explode('-', $request->selectdateFrom);
                 $monthly_plan = $monthly_plan->whereYear('monthly_plans.month_date',$year)
@@ -147,8 +147,8 @@ class ApprovalSalePlanController extends Controller
                 });
             }
 
-            $monthly_plan = $monthly_plan->paginate(10);;       
-            
+            $monthly_plan = $monthly_plan->paginate(10);;
+
             $data['monthly_plan'] = $monthly_plan;
 
             $data['team_sales'] = DB::table('master_team_sales')
@@ -204,7 +204,7 @@ class ApprovalSalePlanController extends Controller
                 'monthly_plan_result.*',
                 'monthly_plans.*'
             );
-            
+
             if(!is_null($request->selectdateFrom)){ //-- วันที่
                 list($year,$month) = explode('-', $request->selectdateFrom);
                 $monthly_plan = $monthly_plan->whereYear('monthly_plans.month_date',$year)
@@ -232,8 +232,8 @@ class ApprovalSalePlanController extends Controller
                 });
             }
 
-            $monthly_plan = $monthly_plan->paginate(10);;       
-            
+            $monthly_plan = $monthly_plan->paginate(10);;
+
             $data['monthly_plan'] = $monthly_plan;
 
             $data['team_sales'] = DB::table('master_team_sales')
@@ -245,7 +245,7 @@ class ApprovalSalePlanController extends Controller
                 }
             })
             ->get();
-            
+
 
         return view('leadManager.approval_saleplan_history', $data);
     }
@@ -356,7 +356,7 @@ class ApprovalSalePlanController extends Controller
         $path_search = "reports/sellers/".$user_api->api_identify."/closesaleplans?years=".$year."&months=".$month;
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
-        
+
         $data['api_token'] = $api_token;
         $data['saleplan_api'] = $res_api['data'];
 
@@ -421,6 +421,8 @@ class ApprovalSalePlanController extends Controller
             $data['data'] = CustomerShopComment::where('customer_shops_saleplan_id', $saleplanID)->where('created_by', Auth::user()->id)->first();
             $data['customerID'] = $id;
             $data['customersaleplanID'] = $saleplanID;
+
+            $data['monthly_id'] = DB::table('customer_shops_saleplan')->where('id', $saleplanID)->first();
             // $data['createID'] = $createID;
 
             $data['customer_shop_comments'] = DB::table('customer_shop_comments')
@@ -435,6 +437,33 @@ class ApprovalSalePlanController extends Controller
                 return view('leadManager.create_comment_customer_new', $data);
             }else {
                 return view('leadManager.create_comment_customer_new', $data);
+            }
+    }
+
+
+    public function comment_customer_except($id, $saleplanID)
+    {
+        // return $id;
+
+            $data['data'] = CustomerShopComment::where('customer_shops_saleplan_id', $saleplanID)->where('created_by', Auth::user()->id)->first();
+            $data['customerID'] = $id;
+            $data['customersaleplanID'] = $saleplanID;
+
+            $data['monthly_id'] = DB::table('customer_shops_saleplan')->where('id', $saleplanID)->first();
+            // $data['createID'] = $createID;
+
+            $data['customer_shop_comments'] = DB::table('customer_shop_comments')
+            ->where('customer_shops_saleplan_id', $saleplanID)
+            ->whereNotIn('created_by', [Auth::user()->id])
+            ->orderby('created_at', 'desc')
+            ->get();
+
+            $data['customer'] = Customer::where('id', $id)->first();
+            // return $data;
+            if ($data) {
+                return view('leadManager.create_comment_customer_except', $data);
+            }else {
+                return view('leadManager.create_comment_customer_except', $data);
             }
     }
 
@@ -471,6 +500,39 @@ class ApprovalSalePlanController extends Controller
     }
 
     public function create_comment_customer_new(Request $request)
+    {
+        // dd($request->monthly_plans_id);
+
+        $data = DB::table('customer_shop_comments')
+        ->where('customer_shops_saleplan_id', $request->cust_shops_saleplan_id)
+        ->where('created_by', Auth::user()->id)
+        ->first();
+
+        if ($data) {
+            DB::table('customer_shop_comments')
+            ->where('customer_shops_saleplan_id', $request->cust_shops_saleplan_id)
+            ->where('created_by', Auth::user()->id)
+            ->update([
+                'customer_comment_detail' => $request->comment,
+                'updated_by' => Auth::user()->id,
+                'updated_at'=> date('Y-m-d H:i:s')
+            ]);
+        } else {
+            DB::table('customer_shop_comments')
+            ->insert([
+                'customer_shops_saleplan_id' => $request->cust_shops_saleplan_id,
+                'customer_id' => $request->customer_shops_id,
+                'customer_comment_detail' => $request->comment,
+                'created_by' => Auth::user()->id,
+                'created_at'=> date('Y-m-d H:i:s')
+            ]);
+        }
+
+        return redirect(url('approvalsaleplan_detail', $request->monthly_plans_id));
+
+    }
+
+    public function create_comment_customer_except(Request $request)
     {
         // dd($request);
 

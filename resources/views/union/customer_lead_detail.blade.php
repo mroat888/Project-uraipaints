@@ -110,7 +110,6 @@
                         <div>{{ $user->name }}</div>
                     </div>
                     <div class="col-10">
-
                         <section class="hk-sec-wrapper">
                             <div class="row">
                                 <div class="col-md-12">
