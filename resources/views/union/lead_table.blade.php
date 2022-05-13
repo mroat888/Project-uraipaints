@@ -70,11 +70,13 @@
                 </td>
                 <td>
                     <div class="button-list">
-                        <button class="btn btn-icon btn-edit mr-10 btn_editshop" value="{{ $shop->id }}" style="{{ $btn_edit_hide }}">
+                        @if($shop->shop_status == 1)
+                        <button class="btn btn-icon btn-edit btn_editshop" value="{{ $shop->id }}" style="{{ $btn_edit_hide }}">
                             <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-create"></i></h4></button>
+                            @endif
                         <!-- <button class="btn btn-icon btn-info mr-10">
                             <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-calendar"></i></h4></button> -->
-                        <a href="{{ url($url_customer_detail, $shop->id) }}" class="btn btn-icon btn-purple mr-10">
+                        <a href="{{ url($url_customer_detail, $shop->id) }}" class="btn btn-icon btn-purple">
                             <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></a>
                     </div>
                 </td>
