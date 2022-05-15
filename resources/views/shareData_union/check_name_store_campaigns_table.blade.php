@@ -112,7 +112,11 @@
 </div>
 
 <div class="row">
-    <div class="col-md-6">ข้อมูล ณ วันที่ {{ $customer_api['trans_last_date'] }}</div>
+    <div class="col-md-6">ข้อมูล ณ วันที่ 
+        @if(isset($customer_api)) 
+            {{ $customer_api['trans_last_date'] }}
+        @endif
+    </div>
     <div class="col-md-6" style="text-align:right;">หน่วย : บาท</div>
 </div>
 

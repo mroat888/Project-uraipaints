@@ -153,6 +153,7 @@ Route::get('data_report_historical-month', 'ShareData\ReportHistoricalMonthContr
 Route::post('data_report_historical-month/search', 'ShareData\ReportHistoricalMonthController@search');
 Route::get('data_report_sale_compare-year','ShareData\ReportSaleCompareYearController@index');
 Route::post('data_report_sale_compare-year/search','ShareData\ReportSaleCompareYearController@search');
+
 });
 
 
@@ -273,6 +274,7 @@ Route::post('leadManage/data_report_historical-quarter/search', 'ShareData_LeadM
 Route::get('leadManage/data_report_historical-month', 'ShareData_LeadManager\ReportHistoricalMonthController@index');
 Route::post('leadManage/data_report_historical-month/search', 'ShareData_LeadManager\ReportHistoricalMonthController@search');
 Route::get('leadManage/data_report_sale_compare-year','ShareData_LeadManager\ReportSaleCompareYearController@index');
+Route::post('leadManage/data_report_sale_compare-year/search','ShareData_LeadManager\ReportSaleCompareYearController@search');
 
 Route::get('lead/edit-profile', 'ProfileController@lead_index');
 Route::post('lead/userProfileUpdate', 'ProfileController@update');
@@ -379,6 +381,7 @@ Route::post('headManage/data_report_historical-quarter/search', 'ShareData_HeadM
 Route::get('headManage/data_report_historical-month', 'ShareData_HeadManager\ReportHistoricalMonthController@index');
 Route::post('headManage/data_report_historical-month/search', 'ShareData_HeadManager\ReportHistoricalMonthController@search');
 Route::get('headManage/data_report_sale_compare-year','ShareData_HeadManager\ReportSaleCompareYearController@index');
+Route::post('headManage/data_report_sale_compare-year/search','ShareData_HeadManager\ReportSaleCompareYearController@search');
 });
 
 
@@ -589,6 +592,7 @@ Route::post('admin/data_report_historical-quarter/search', 'ShareData_Admin\Repo
 Route::get('admin/data_report_historical-month', 'ShareData_Admin\ReportHistoricalMonthController@index');
 Route::post('admin/data_report_historical-month/search', 'ShareData_Admin\ReportHistoricalMonthController@search');
 Route::get('admin/data_report_sale_compare-year','ShareData_Admin\ReportSaleCompareYearController@index');
+Route::post('admin/data_report_sale_compare-year/search','ShareData_Admin\ReportSaleCompareYearController@search');
 
 });
 
@@ -616,11 +620,14 @@ Route::get('/fetch_district/{id}',[ProvinceController::class, 'district']);
 Route::get('/fetch_postcode/{id}',[ProvinceController::class, 'postcode']);
 Route::get('/customer/autocomplete',[CustomerController::class, 'fetch_autocomplete']);
 Route::get('/fetch_customer_shops_byid/{id}','Customer\CustomerController@fetch_customer_shops_byid');
+Route::get('checkstore_campaigns/{seller}/detail/{id}','CheckStoreCampaignsController@show');
 
 Route::get('fetch_subgroups/{id}', 'Api\ApiController@fetch_subgroups');
 Route::get('fetch_pdglists/{id}', 'Api\ApiController@fetch_pdglists');
 Route::get('fetch_products/{id}', 'Api\ApiController@fetch_products');
 Route::get('fetch_amphur_api/{position}/{id}', 'Api\ApiController@fetch_amphur_api');
+
+
 
 
 //-- Salller

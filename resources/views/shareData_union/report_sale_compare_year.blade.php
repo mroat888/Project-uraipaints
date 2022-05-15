@@ -210,12 +210,7 @@
         </div>
         <!-- /Row -->
 
-        <!-- /Row -->      
-            @php 
-                $action_search = "data_report_sale_compare-year/search";
-                $path_detail = "data_name_store/detail";
-                $position_province = "sellers";
-            @endphp                                                     
+        <!-- /Row -->                                                        
             @include('shareData_union.check_name_store_campaigns_table') 
         <!-- /Row -->
     </div>

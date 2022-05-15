@@ -16,8 +16,12 @@ class ReportSaleCompareYearController extends Controller
     }
 
     public function index(){
+        /**
+         *   --------- บล๊อกที่ 1 ------------- 
+         */
+        
         list($year,$month,$day) = explode('-',date('Y-m-d'));
-        $path_search = "campaigns/years/".$year."/admins";
+        $path_search = "campaigns/years/".$year."/admins/";
         $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search,[
             'back_years' => 1
@@ -35,8 +39,6 @@ class ReportSaleCompareYearController extends Controller
             foreach($campaigns_year_api['data'] as $key => $value){
                 $campaigns_year[$key] = [
                     'year' => $value['year'],
-                    // 'identify' => $value['identify'],
-                    // 'name' => $value['name'],
                     'TotalPromotion' => $value['TotalPromotion'],
                     'TotalCustomer' => $value['TotalCustomer'],
                     'TotalLimit' => $value['TotalLimit'],
@@ -44,7 +46,7 @@ class ReportSaleCompareYearController extends Controller
                     'DiffAmount' => $value['DiffAmount'],
                     'amount_limit_th' => $value['amount_limit_th'],
                     'amount_net_th' => $value['amount_net_th'],
-                ];
+                ]; 
 
                 $path_search = "campaigns-admin/customers";
                 $response_campaigns = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search,[
@@ -77,57 +79,151 @@ class ReportSaleCompareYearController extends Controller
             $data['campaigns_year'] = $campaigns_year;
         }
 
-        // list($year,$month,$day) = explode('-',date('Y-m-d'));
-        // $year = $year+0;
-        // $year_old = $year-1;
-        // $year_old2 = $year_old -1;
-        
-        // $path_search = "campaigns/years/".$year."/sellers";
-        // $api_token = $this->api_token->apiToken();
-        // $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search);
-        // $res_api = $response->json();
+        /**
+         *   --------- จบ บล๊อกที่ 1 ------------- 
+         */
 
-        // $array_year = array($year, $year_old, $year_old2);
 
-        // if($res_api['code']== 200){
+        /**
+         *  --------- บล๊อกที่ 2 ------------- 
+         */
 
-        //     $user = array();
-        //     $compare_api = array();
-        //     foreach($res_api['data'] as $key => $value){
+        $patch_search = "/campaigns/years/".$year."/customers";
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$patch_search);
+        $res_api = $response->json();
 
-        //         if (in_array($value['identify'], $user)){
-        //             foreach($user as $key_user => $value_user){
-        //                 if($value['identify'] == $value_user ){
-        //                     $key_array = array_search($value['year'], $array_year);
-        //                     $compare_api[$key_user][$key_array] = [
-        //                         'year' => $value['year'],
-        //                         'identify' => $value['identify'],
-        //                         'name' => $value['name'],
-        //                         'TotalLimit' => $value['TotalLimit'],
-        //                     ];
-        //                 }
-        //             }
-        //         }else{
-        //             $user[] = $value['identify'];
-        //             $key_array = array_search($value['year'], $array_year);
-        //             $compare_api[][$key_array] = [
-        //                 'year' => $value['year'],
-        //                 'identify' => $value['identify'],
-        //                 'name' => $value['name'],
-        //                 'TotalLimit' => $value['TotalLimit'],
-        //             ];
-        //         }
-        //     }
+        if(!empty($res_api)){
+            if($res_api['code'] == 200){
+                $data['customer_api'] = $res_api;
+            }
+        }
 
-        //     // dd($user, $compare_api);
-        //     $data['user'] = $user;
-        //     $data['compare_api'] = $compare_api;
-        // }
+        $data['year'] = $year;
 
-        // $data['array_year'] = $array_year;
+        // ดึงจังหวัด -- API
+        $path_search = "/provinces";
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
+        $res_api = $response->json();
+        if(!empty($res_api)){
+            if($res_api['code'] == 200){
+                $data['provinces'] = $res_api;
+            }
+        }
+
+        /**
+         *   --------- จบ บล๊อกที่ 2 ------------- 
+         */
+
 
         return view('shareData_admin.report_sale_compare_year', $data);
 
+    }
+
+
+    public function search(Request $request){
+        /**
+         *   --------- บล๊อกที่ 1 ------------- 
+         */
+        
+        list($year,$month,$day) = explode('-',date('Y-m-d'));
+        $path_search = "campaigns/years/".$year."/admins/";
+        $api_token = $this->api_token->apiToken();
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search,[
+            'back_years' => 1
+        ]);
+
+        $data['api_token'] = $api_token ;
+
+        $campaigns_year = array();
+        $customer_campaigns = array();
+
+        if($response['code'] == 200){
+            // $data['compare_api'] = $response->json();
+            $campaigns_year_api = $response->json();
+
+            foreach($campaigns_year_api['data'] as $key => $value){
+                $campaigns_year[$key] = [
+                    'year' => $value['year'],
+                    'TotalPromotion' => $value['TotalPromotion'],
+                    'TotalCustomer' => $value['TotalCustomer'],
+                    'TotalLimit' => $value['TotalLimit'],
+                    'TotalAmountSale' => $value['TotalAmountSale'],
+                    'DiffAmount' => $value['DiffAmount'],
+                    'amount_limit_th' => $value['amount_limit_th'],
+                    'amount_net_th' => $value['amount_net_th'],
+                ]; 
+
+                $path_search = "campaigns-admin/customers";
+                $response_campaigns = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search,[
+                    'years' => $value['year'],
+                ]);
+
+                if($response_campaigns['code'] == 200){
+                    $cust_campaigns_api = $response_campaigns->json();
+                    foreach($cust_campaigns_api['data'] as $key_cust => $value_cust){
+                        $customer_campaigns[$key][$key_cust] = [
+                            'year' => $value_cust['year'],
+                            'province_name' => $value_cust['province_name'],
+                            'amphoe_name' => $value_cust['amphoe_name'],
+                            'identify' => $value_cust['identify'],
+                            'name' => $value_cust['name'],
+                            'TotalPromotion' => $value_cust['TotalPromotion'],
+                            'TotalLimit' => $value_cust['TotalLimit'],
+                            'TotalAmountSale' => $value_cust['TotalAmountSale'],
+                            'DiffAmount' => $value_cust['DiffAmount'],
+                            'amount_limit_th' => $value_cust['amount_limit_th'],
+                            'amount_net_th' => $value_cust['amount_net_th']
+                        ];
+                    }
+
+                    // $myCollection[] = collect($customer_campaigns[$key]);
+                }
+            }
+           
+            $data['customer_campaigns'] = $customer_campaigns;
+            $data['campaigns_year'] = $campaigns_year;
+        }
+
+        /**
+         *   --------- จบ บล๊อกที่ 1 ------------- 
+         */
+
+
+        /**
+         *  --------- บล๊อกที่ 2 ------------- 
+         */
+
+        $patch_search = "/campaigns/years/".$request->year_form_search."/customers";
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$patch_search,[
+            'province_id' => $request->province, 
+            'amphoe_id' => $request->amphur,
+        ]);
+        $res_api = $response->json();
+
+        if(!empty($res_api)){
+            if($res_api['code'] == 200){
+                $data['customer_api'] = $res_api;
+            }
+        }
+
+        $data['year'] = $year;
+
+        // ดึงจังหวัด -- API
+        $path_search = "/provinces";
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
+        $res_api = $response->json();
+        if(!empty($res_api)){
+            if($res_api['code'] == 200){
+                $data['provinces'] = $res_api;
+            }
+        }
+
+        /**
+         *   --------- จบ บล๊อกที่ 2 ------------- 
+         */
+
+
+        return view('shareData_admin.report_sale_compare_year', $data);
     }
 
 }
