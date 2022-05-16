@@ -19,7 +19,7 @@ $(document).ready(function(){
     $('#sel_pdglists').on("change", function(e) { 
         e.preventDefault();
         var pdglist = $(this).val();
-        console.log(pdglist);
+        // console.log(pdglist);
         $('.province').children().remove().end();
         $('.amphur').children().remove().end();
         $('.province').append('<option selected value="">เลือกจังหวัด</option>');
@@ -69,7 +69,7 @@ $(document).ready(function(){
             datatype: 'json',
             success: function(response){
                 if(response.status == 200){
-                    console.log(response.provinces);
+                    // console.log(response.provinces);
                     $('.province').children().remove().end();
                     $('.amphur').children().remove().end();
                     $('.province').append('<option selected value="">เลือกจังหวัด</option>');
@@ -166,7 +166,7 @@ $(document).on('change','.province', function(e){
         datatype: 'json',
         success: function(response){
             if(response.status == 200){
-                console.log(response.amphures);
+                // console.log(response.amphures);
                 $('.amphur').children().remove().end();
                 $('.amphur').append('<option selected value="">เลือกอำเภอ</option>');
                 let rows = response.amphures.length;
@@ -185,7 +185,7 @@ $(document).on('change','#amphur', function(e){
     var pdglist = $('#sel_pdglists').val();
     var pvid = $('#province').val();
     var ampid = $(this).val();
-    console.log(pdglist);
+    // console.log(pdglist);
 
     var content = "<div id='table_list' class='table-responsive col-md-12'>";
             content += "<table id='datable_2' class='table table-hover data-table'>";
