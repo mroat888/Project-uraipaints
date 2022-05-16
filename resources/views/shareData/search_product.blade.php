@@ -44,6 +44,8 @@ $(document).ready(function(){
 
         $("#table_product").html(content);
 
+        $.fn.dataTable.ext.errMode = 'throw'; //-- ไม่ให้แสดง Erorr จาก Datatable
+
         $('#datable_1').DataTable({
             processing: false,
             serverSide: false,
