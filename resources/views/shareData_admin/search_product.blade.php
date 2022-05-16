@@ -18,7 +18,7 @@ $(document).ready(function(){
     $('#sel_pdglists').on("change", function(e) { 
         e.preventDefault();
         var pdglist = $(this).val();
-        console.log(pdglist);
+        // console.log(pdglist);
         $('.province').children().remove().end();
         $('.amphur').children().remove().end();
         $('.province').append('<option selected value="">เลือกจังหวัด</option>');
@@ -68,7 +68,7 @@ $(document).ready(function(){
             datatype: 'json',
             success: function(response){
                 if(response.status == 200){
-                    console.log(response.provinces);
+                    // console.log(response.provinces);
                     $('.province').children().remove().end();
                     $('.amphur').children().remove().end();
                     $('.province').append('<option selected value="">เลือกจังหวัด</option>');
@@ -82,38 +82,44 @@ $(document).ready(function(){
         });
 
         //-- Table Customer
-        // var pdglist = $(this).val();
-        // var content2 = "<div id='table_list' class='table-responsive col-md-12'>";
-        //         content2 += "<table id='datable_2' class='table table-hover data-table'>";
-        //             content2 += "<thead>";
-        //                 content2 += "<tr>";
-        //                     content2 += "<th style='font-weight: bold;'>รหัสสินค้า</th>";
-        //                     content2 += "<th style='font-weight: bold;'>ชื่อร้าน</th>";
-        //                 content2 += "</tr>";
-        //             content2 += "</thead>";
-        //             content2 += "<tbody>";
-        //             content2 += "<tbody>";
-        //         content2 += "</table>";
-        //     content2 += "</div>";
+        var pdglist = $(this).val();
+        var content2 = "<div id='table_list' class='table-responsive col-md-12'>";
+                content2 += "<table id='datable_2' class='table table-hover data-table'>";
+                    content2 += "<thead>";
+                        content2 += "<tr>";
+                            content2 += "<th style='font-weight: bold;'>รหัสสินค้า</th>";
+                            content2 += "<th style='font-weight: bold;'>ชื่อร้าน</th>";
+                            content2 += "<th style='font-weight: bold;'>ที่อยู่</th>";
+                            content2 += "<th style='font-weight: bold;'>เบอร์ติดต่อ</th>";
+                        content2 += "</tr>";
+                    content2 += "</thead>";
+                    content2 += "<tbody>";
+                    content2 += "<tbody>";
+                content2 += "</table>";
+            content2 += "</div>";
 
-        // $("#table_customer").html(content2);
+        $("#table_customer").html(content2);
+        
+        console.log(pdglist);
 
-        // $('#datable_2').DataTable({
-        //     processing: false,
-        //     serverSide: false,
-        //     ajax: {
-        //         method:"GET",
-        //         url:"{{url('fetch_datatable_customer_headers_pdglist')}}/"+pdglist, //-- เปลี่ยน
-        //         dataType: 'json',
-        //         data:{
-        //                 "_token": "{{ csrf_token() }}",
-        //             },
-        //         },
-        //         columns: [
-        //             {data: 'identify', name: 'identify'},
-        //             {data: 'name', name: 'name'},
-        //         ]
-        // });
+        $('#datable_2').DataTable({
+            processing: false,
+            serverSide: false,
+            ajax: {
+                method:"GET",
+                url:"{{url('fetch_datatable_customer_admin_pdglist')}}/"+pdglist, //-- เปลี่ยน
+                dataType: 'json',
+                data:{
+                        "_token": "{{ csrf_token() }}",
+                    },
+                },
+                columns: [
+                    {data: 'identify', name: 'identify'},
+                    {data: 'name', name: 'name'},
+                    {data: 'province_name', name: 'province_name'},
+                    {data: 'telephone', name: 'telephone'},
+                ]
+        });
         //-- Table Customer
     });
 });
@@ -157,7 +163,7 @@ $(document).on('change','.province', function(e){
             columns: [
                 {data: 'identify', name: 'identify'},
                 {data: 'name', name: 'name'},
-                {data: 'address', name: 'address'},
+                {data: 'province_name', name: 'province_name'},
                 {data: 'telephone', name: 'telephone'},
             ]
     });
@@ -196,6 +202,8 @@ $(document).on('change','#amphur', function(e){
                     content += "<tr>";
                         content += "<th style='font-weight: bold;'>รหัสสินค้า</th>";
                         content += "<th style='font-weight: bold;'>ชื่อร้าน</th>";
+                        content += "<th style='font-weight: bold;'>อำเภอ,จังหวัด</th>";
+                        content += "<th style='font-weight: bold;'>เบอร์โทรฯ</th>";
                     content += "</tr>";
                 content += "</thead>";
                 content += "<tbody>";
@@ -219,6 +227,8 @@ $(document).on('change','#amphur', function(e){
         columns: [
             {data: 'identify', name: 'identify'},
             {data: 'name', name: 'name'},
+            {data: 'province_name', name: 'province_name'},
+            {data: 'telephone', name: 'telephone'},
         ]
     });
 
