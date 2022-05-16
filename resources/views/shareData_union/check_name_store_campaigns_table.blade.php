@@ -1,10 +1,17 @@
+<!-- Title -->
+<div class="hk-pg-header mb-10">
+    <div>
+        <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-document"></i></span>รายชื่อร้านค้า (ทำเป้า) ปี {{ $year }}</h4>
+    </div>
+</div>
+<!-- /Title -->
 <!-- Row -->
 <div class="row">
     <div class="col-xl-12">
         <section class="hk-sec-wrapper">
             <div class="row mb-2">
-                <div class="col-sm-12 col-md-3">
-                    <h5 class="hk-sec-title">รายชื่อร้านค้า (ทำเป้า) ปี {{ $year }}</h5>
+                <div class="col-sm-12 col-md-12">
+                    <div class="topichead-bgred" style="margin-bottom: 30px;">จำนวนเป้า {{ $year }}</div>
                 </div>
 
             </div>
@@ -68,15 +75,17 @@
                                         <th style="font-weight: bold; text-align:right;">มูลค่าเป้า</th>
                                         <th style="font-weight: bold; text-align:right;">ยอดเบิกเป้า</th>
                                         <th style="font-weight: bold; text-align:right;">%</th>
-                                        <th style="font-weight: bold;">Action</th>
+                                        <th style="font-weight: bold; text-align:center;">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody id="table_body">
                                 @if(isset($customer_api))
                                     @foreach ($customer_api['data'] as $key => $value)
                                         @php 
-                                            $persent_TotalLimit = $value['TotalLimit'] - $value['TotalAmountSale'];
-                                            if($persent_TotalLimit < 0){
+                                            $persent_TotalLimit = ($value['TotalAmountSale'] / $value['TotalLimit']) * 100;
+                                            // $persent_TotalLimit = (($value['TotalLimit'] - $value['TotalAmountSale']) * 100) / $value['TotalLimit'] ;
+                                            if($persent_TotalLimit > 100){
+                                                $persent_TotalLimit = $persent_TotalLimit*-1;
                                                 $text_red = "color:#FF0000;";
                                             }else{
                                                 $text_red = "";
@@ -91,7 +100,7 @@
                                             <td style="text-align:right;">
                                                 <span style="{{ $text_red }}">{{ number_format($persent_TotalLimit,2) }}</span>
                                             </td>
-                                            <td>
+                                            <td style="text-align:center;">
                                                 @php
                                                     $pathurl = url($path_detail).'/'.$value['identify'];
                                                 @endphp

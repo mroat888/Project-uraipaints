@@ -2,7 +2,7 @@
 <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
             <li class="breadcrumb-item"><a href="#">ข้อมูลลูกค้า</a></li>
-            <li class="breadcrumb-item active" aria-current="page">รายละเอียดลูกค้า</li>
+            <li class="breadcrumb-item active" aria-current="page">รายละเอียดลูกค้า (ทำเป้า)</li>
         </ol>
     </nav>
     <!-- /Breadcrumb -->
@@ -12,10 +12,10 @@
         <!-- Title -->
         <div class="hk-pg-header mb-10">
             <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-people"></i></span>รายละเอียดลูกค้า</h4>
+                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-people"></i></span>รายละเอียดลูกค้า (ทำเป้า)</h4>
             </div>
             <div class="d-flex">
-
+                <a href="javascript:history.back();" type="button" class="btn btn-secondary btn-sm btn-rounded px-3 mr-10"> ย้อนกลับ </a>
             </div>
         </div>
         <!-- /Title -->
@@ -58,7 +58,7 @@
             <div class="col-xl-12">
                 <div class="row mt-2">
                     <div class="col-md-12 mb-10">
-                        <h5>ประวัติการแคมเปญ</h5>
+                        <h5>ประวัติทำเป้า</h5>
                     </div>
                 </div>
             </div>
@@ -82,7 +82,7 @@
                                                 <th style="font-weight: bold; text-align:left;">ชื่อโปรโมชั่น</th>
                                                 <th style="font-weight: bold; text-align:right;">ยอดซื้อเป้า</th>
                                                 <th style="font-weight: bold; text-align:right;">ยอดเบิกเป้า</th>                                           
-                                                <th style="font-weight: bold; text-align:right;">ยอดผลต่าง</th>
+                                                <th style="font-weight: bold; text-align:right;">คงเหลือ</th>
                                             </tr>
                                         </thead>
                                         <tbody id="table_body">
@@ -95,7 +95,16 @@
                                                 <td style="text-align:left;">{{ $cust_campaigns_api[$key]['description'] }}</td>
                                                 <td style="text-align:right;">{{ number_format($cust_campaigns_api[$key]['amount_limit'],2) }}</td>
                                                 <td style="text-align:right;">{{ number_format($cust_campaigns_api[$key]['saleamount'],2) }}</td>
-                                                <td style="text-align:right;">{{ number_format($cust_campaigns_api[$key]['amount_diff'],2) }}</td>
+                                                <td style="text-align:right;">
+                                                    @php 
+                                                        if($cust_campaigns_api[$key]['amount_diff'] < 0){
+                                                            $text_red = "color:#FF0000";
+                                                        }else{
+                                                            $text_red = "";
+                                                        }
+                                                    @endphp
+                                                    <span style="{{ $text_red }}">{{ number_format($cust_campaigns_api[$key]['amount_diff'],2) }}</span>
+                                                </td>
                                             </tr>
                                             @endforeach
                                         @endif
@@ -110,6 +119,16 @@
                     </div>
                 </section>
 
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="row mt-2">
+                    <div class="col-md-12 mb-10">
+                        <h5>สรุปยอดเป้าปี</h5>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -130,6 +149,7 @@
                                                 <th style="font-weight: bold; text-align:center;">ปี</th>
                                                 <th style="font-weight: bold; text-align:right;">ยอดซื้อเป้า</th>
                                                 <th style="font-weight: bold; text-align:right;">ยอดเบิกเป้า</th>
+                                                <th style="font-weight: bold; text-align:right;">คงเหลือ</th>
                                             </tr>
                                         </thead>
                                         <tbody id="table_body">
@@ -140,6 +160,16 @@
                                                 <td style="text-align:center;">{{ $year_sum[$key]['year']}}</td>
                                                 <td style="text-align:right;">{{ number_format($year_sum[$key]['amount_limit'],2) }}</td>
                                                 <td style="text-align:right;">{{ number_format($year_sum[$key]['saleamount'],2) }}</td>
+                                                <td style="text-align:right;">
+                                                @php 
+                                                        if($year_sum[$key]['amount_diff'] < 0){
+                                                            $text_red = "color:#FF0000";
+                                                        }else{
+                                                            $text_red = "";
+                                                        }
+                                                    @endphp
+                                                <span style="{{ $text_red }}">{{ number_format($year_sum[$key]['amount_diff'],2) }}</span>
+                                            </td>
                                             </tr>
                                             @endforeach
                                         @endif

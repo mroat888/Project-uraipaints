@@ -53,6 +53,7 @@ class CheckStoreCampaignsController extends Controller
                                 if($year_sum[$key_year_sum]['year'] == $value['year']){
                                     $year_sum[$key_year_sum]['saleamount'] = $year_sum[$key_year_sum]['saleamount'] + $value['saleamount'];
                                     $year_sum[$key_year_sum]['amount_limit'] = $year_sum[$key_year_sum]['amount_limit'] + $value['amount_limit'];
+                                    $year_sum[$key_year_sum]['amount_diff'] = $year_sum[$key_year_sum]['amount_diff'] + $value['amount_diff'];
                                 }
                             }
                         }else{
@@ -62,6 +63,7 @@ class CheckStoreCampaignsController extends Controller
                                 'year' => $value['year'],
                                 'saleamount' => $value['saleamount'],
                                 'amount_limit' => $value['amount_limit'],
+                                'amount_diff' => $value['amount_diff'],
                             ];
                         }
                     }else{
@@ -71,6 +73,7 @@ class CheckStoreCampaignsController extends Controller
                                 'year' => $value['year'],
                                 'saleamount' => $value['saleamount'],
                                 'amount_limit' => $value['amount_limit'],
+                                'amount_diff' => $value['amount_diff'],
                             ];
                     }
                     // -- End Sum Year
