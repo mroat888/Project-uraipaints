@@ -42,7 +42,8 @@ $(document).ready(function(){
 
         $("#table_product").html(content);
 
-        $.fn.dataTable.ext.errMode = 'throw'; //-- ไม่ให้แสดง Erorr จาก Datatable
+        // $.fn.dataTable.ext.errMode = 'throw'; //-- ไม่ให้แสดง Erorr จาก Datatable
+        $.fn.dataTable.ext.errMode = () => alert('Error while loading the table data. Please refresh');
 
         $('#datable_1').DataTable({
             processing: false,
@@ -149,6 +150,7 @@ $(document).on('change','.province', function(e){
     $("#table_customer").html(content);
     
     $.fn.dataTable.ext.errMode = () => alert('Error while loading the table data. Please refresh');
+
     $('#datable_2').DataTable({
         
         processing: false,
@@ -213,6 +215,8 @@ $(document).on('change','#amphur', function(e){
         content += "</div>";
 
     $("#table_customer").html(content);
+
+    $.fn.dataTable.ext.errMode = () => alert('Error while loading the table data. Please refresh');
 
     $('#datable_2').DataTable({
         processing: false,
