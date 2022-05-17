@@ -96,11 +96,11 @@ class CustomerController extends Controller
 
     public function customerLeadSearch(Request $request){
 
-        $data['count_customer_all'] = $request->count_customer_all;
-        $data['count_customer_success'] = $request->count_customer_success;
-        $data['count_customer_result_1'] = $request->count_customer_result_1;
-        $data['count_customer_result_2'] = $request->count_customer_result_2;
-        $data['count_customer_result_3'] = $request->count_customer_result_3;
+        // $data['count_customer_all'] = $request->count_customer_all;
+        // $data['count_customer_success'] = $request->count_customer_success;
+        // $data['count_customer_result_1'] = $request->count_customer_result_1;
+        // $data['count_customer_result_2'] = $request->count_customer_result_2;
+        // $data['count_customer_result_3'] = $request->count_customer_result_3;
 
         $sql_query = "select `monthly_plans`.*, `province`.`PROVINCE_NAME`, `customer_shops_saleplan_result`.*, 
         `customer_shops_saleplan`.*, `customer_shops_saleplan`.`shop_aprove_status` as `saleplan_shop_aprove_status`, 
