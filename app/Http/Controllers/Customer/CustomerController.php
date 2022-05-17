@@ -48,6 +48,8 @@ class CustomerController extends Controller
     {
         $sql_query = "select `monthly_plans`.*, `province`.`PROVINCE_NAME`, `customer_shops_saleplan_result`.*, 
         `customer_shops_saleplan`.*, `customer_shops_saleplan`.`shop_aprove_status` as `saleplan_shop_aprove_status`, 
+        `customer_shops_saleplan`.`id` as `customer_shops_saleplan_id`, 
+        `monthly_plans`.`id` as `monthly_plans_id`, 
         `customer_shops`.* from `customer_shops_saleplan` 
         left join `customer_shops` on `customer_shops`.`id` = `customer_shops_saleplan`.`customer_shop_id` 
         left join `customer_shops_saleplan_result` on `customer_shops_saleplan_result`.`customer_shops_saleplan_id` = `customer_shops_saleplan`.`id` 
@@ -66,7 +68,7 @@ class CustomerController extends Controller
         
         // -- นับ จำนวนร้านค้า สถานะสำเร็จ
         $sql_query_success = $sql_query." and `customer_shops`.`shop_status` = ? ".$sql_query_orderby;
-        $customer_shops_success = DB::select( $sql_query_success, [2,Auth::user()->id,1]);
+        $customer_shops_success = DB::select( $sql_query_success, [2,Auth::user()->id, 1]);
         $data['count_customer_success'] = count($customer_shops_success);
 
         // -- นับ จำนวนร้านค้า สถานะสนใจ
@@ -102,6 +104,8 @@ class CustomerController extends Controller
 
         $sql_query = "select `monthly_plans`.*, `province`.`PROVINCE_NAME`, `customer_shops_saleplan_result`.*, 
         `customer_shops_saleplan`.*, `customer_shops_saleplan`.`shop_aprove_status` as `saleplan_shop_aprove_status`, 
+        `customer_shops_saleplan`.`id` as `customer_shops_saleplan_id`, 
+        `monthly_plans`.`id` as `monthly_plans_id`, 
         `customer_shops`.* from `customer_shops_saleplan` 
         left join `customer_shops` on `customer_shops`.`id` = `customer_shops_saleplan`.`customer_shop_id` 
         left join `customer_shops_saleplan_result` on `customer_shops_saleplan_result`.`customer_shops_saleplan_id` = `customer_shops_saleplan`.`id` 

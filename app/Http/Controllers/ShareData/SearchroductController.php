@@ -18,14 +18,14 @@ class SearchroductController extends Controller
     public function index()
     {
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/groups?sortorder=DESC/');
-        $groups_api = $response->json();
-
+        
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/pdglists/');
-        $pdglists = $response->json();
+        $data['pdglists'] = $response->json();
 
+        // $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/groups?sortorder=DESC/');
+        // $data['groups_api'] = $response->json();
 
-        return view('shareData.search_product', compact('groups_api', 'pdglists'));
+        return view('shareData.search_product', $data);
     }
 
     public function search(Request $request){

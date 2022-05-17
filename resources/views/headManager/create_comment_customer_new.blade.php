@@ -81,7 +81,8 @@
                                     </div>
                             </div>
                             <div class="modal-footer">
-                                <a href="{{ url('head/approvalsaleplan_detail', $createID) }}" type="button" class="btn btn-secondary">ย้อนกลับ</a>
+                                <!-- <a href="{{ url('head/approvalsaleplan_detail', $createID) }}" type="button" class="btn btn-secondary">ย้อนกลับ</a> -->
+                                <a href="javascript:history.back();" type="button" class="btn btn-secondary">ย้อนกลับ</a>
                                 <button type="submit" class="btn btn-primary float-right">บันทึก</button>
                             </div>
                             </form>

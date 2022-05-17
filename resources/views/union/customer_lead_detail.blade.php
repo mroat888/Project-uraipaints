@@ -31,21 +31,22 @@
                             <div class="row">
                                 <div class="col-md-5">
                                     <div>
-                                        @if($customer_shops->shop_status == "0")
-                                            <span class="btn_purple badge badge-info pa-10 float-left" style="font-size: 14px;">ลูกค้าใหม่</span>
-                                        @elseif($customer_shops->shop_status == "1")
-                                            <span class="btn_purple badge badge-green pa-10 float-left" style="font-size: 14px;">สำเร็จ</span>
-                                        @endif
-                                    </div>
-                                    <div>
                                         @if ($customer_shops->shop_profile_image)
-                                            <img src="{{ isset($customer_shops->shop_profile_image) ? asset('/public/upload/CustomerImage/' . $customer_shops->shop_profile_image) : '' }}" alt="{{ $customer_shops->shop_name }}" style="max-width:30%;">
+                                            <img src="{{ isset($customer_shops->shop_profile_image) ? asset('/public/upload/CustomerImage/' . $customer_shops->shop_profile_image) : '' }}" 
+                                            alt="{{ $customer_shops->shop_name }}" style="max-width:60%;">
                                         @else
                                             <img src="{{ asset('/public/images/people-33.png')}}" alt="" style="max-width:30%;">
                                         @endif
                                     </div>
                                 </div>
                                 <div class="col-md-7">
+                                    <div style="float:right;">
+                                        @if($customer_shops->shop_status == "0")
+                                            <span class="btn_purple badge badge-info pa-10 float-left" style="font-size: 14px;">ลูกค้าใหม่</span>
+                                        @elseif($customer_shops->shop_status == "1")
+                                            <span class="btn_purple badge badge-green pa-10 float-left" style="font-size: 14px;">สำเร็จ</span>
+                                        @endif
+                                    </div>
                                     <span style="font-size: 18px; color:#6b73bd;">รายละเอียดลูกค้า</span>
                                     <!-- <span class="btn_purple badge badge-violet pa-10 float-right" style="font-size: 14px;">ลูกค้าเป้าหมาย</span> -->
                                     <p class="detail_listcus mt-10" style="font-size: 16px;"><span>ชื่อร้าน</span> : {{ $customer_shops->shop_name }}</p>
@@ -122,7 +123,9 @@
                                                     ->where('id', $cust_shops_saleplan->monthly_plan_id)
                                                     ->first();
                                                 @endphp
-                                                {{ thaidate('F Y', $monthly_plans->month_date) }}
+                                                @if(!empty($monthly_plans))
+                                                    {{ thaidate('F Y', $monthly_plans->month_date) }}
+                                                @endif
                                             </p>
                                         </div>
                                         <div class="col-md-12">
@@ -176,7 +179,9 @@
                                                     ->where('id', $cust_shops_saleplan->monthly_plan_id)
                                                     ->first();
                                                 @endphp
-                                                {{ thaidate('F Y', $monthly_plans->month_date) }}
+                                                @if(!empty($monthly_plans->month_date))
+                                                    {{ thaidate('F Y', $monthly_plans->month_date) }}
+                                                @endif
                                             </p>
                                         </div>
                                         <div class="col-md-12">

@@ -109,10 +109,9 @@
                                                     ->where('id', $cust_shops_saleplan->monthly_plan_id)
                                                     ->first();
                                                 @endphp
-                                                @if (!empty($monthly_plans->month_date))
+                                                @if(!empty($monthly_plans->month_date))
                                                     {{ thaidate('F Y', $monthly_plans->month_date) }}
                                                 @endif
-
                                             </p>
                                         </div>
                                         <div class="col-md-12">

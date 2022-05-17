@@ -79,7 +79,7 @@
                                             <td colspan="7">
                                                 <div class="row">
                                                     <div class="col-6"><h5>รายละเอียดร้านค้าทำเป้า</h5></div>
-                                                    <div class="col-6" style="text-align:right;">หน่ายบาท</div>
+                                                    <div class="col-6" style="text-align:right;">หน่วยบาท</div>
                                                 </div>
                                                 <div class="table-responsive-sm">
                                                     <table class="table table-sm table-hover table-bordered">
@@ -101,6 +101,7 @@
                                                             $sum_sub_TotalPromotion = 0;
                                                             $sum_sub_TotalLimit = 0;
                                                             $sum_sub_TotalAmountSale = 0;
+                                                            // dd($customer_campaigns) ;
                                                         @endphp
 
                                                         @foreach($customer_campaigns[$key] as $key_cam => $cust_campaigns_value)
@@ -108,7 +109,11 @@
 
                                                                 @if(($province_name_check != ""))
                                                                     @php 
-                                                                        $persent_sub_camTotalAmountSale = ($sum_sub_TotalAmountSale / $sum_sub_TotalLimit) * 100;
+                                                                        if($sum_sub_TotalAmountSale > 0 && $sum_sub_TotalLimit > 0){
+                                                                            $persent_sub_camTotalAmountSale = ($sum_sub_TotalAmountSale / $sum_sub_TotalLimit) * 100;
+                                                                        }else{
+                                                                            $persent_sub_camTotalAmountSale = 0;
+                                                                        }
                                                                     @endphp
                                                                     <tr>
                                                                         <td colspan="4">
@@ -132,29 +137,17 @@
                                                                         <strong>จังหวัด {{ $cust_campaigns_value['province_name'] }}</strong>
                                                                     </td>
                                                                 </tr>
-<<<<<<< HEAD
-                                                                @php
-                                                                    $province_name_check = $cust_campaigns_value['province_name'];
-=======
 
                                                                 @php             
                                                                     $province_name_check = $cust_campaigns_value['province_name']; 
->>>>>>> 49df793f5d227dfc27da86c3f30d51d4c3cb3b60
                                                                 @endphp
                                                             @endif
                                                             <tr>
 
-<<<<<<< HEAD
                                                             @php
-                                                                $sum_TotalPromotion += $cust_campaigns_value['TotalPromotion'];
-                                                                $sum_TotalLimit += $cust_campaigns_value['TotalLimit'];
-                                                                $sum_TotalAmountSale += $cust_campaigns_value['TotalAmountSale'];
-=======
-                                                            @php 
                                                                 $sum_sub_TotalPromotion += $cust_campaigns_value['TotalPromotion'];
                                                                 $sum_sub_TotalLimit += $cust_campaigns_value['TotalLimit'];
                                                                 $sum_sub_TotalAmountSale += $cust_campaigns_value['TotalAmountSale'];
->>>>>>> 49df793f5d227dfc27da86c3f30d51d4c3cb3b60
 
                                                                 $persent_camTotalAmountSale = ($cust_campaigns_value['TotalAmountSale'] / $cust_campaigns_value['TotalLimit']) * 100;
                                                             @endphp
@@ -216,6 +209,10 @@
 
         </div>
         <!-- /Row -->
+
+        <!-- /Row -->                                                        
+            @include('shareData_union.check_name_store_campaigns_table') 
+        <!-- /Row -->
     </div>
 
 <style>
@@ -230,6 +227,3 @@
         $('.tb_detail[rel=' + rel + ']').toggle();
     });
 </script>
-
-
-

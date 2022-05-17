@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\ShareData;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -8,84 +8,21 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Api\ApiController;
 
-
-class CheckStoreController extends Controller
+class CheckStoreCampaignsController extends Controller
 {
     public function __construct(){
         $this->api_token = new ApiController();
     }
 
-    public function index()
-    {
-        $api_token = $this->api_token->apiToken();    
+    public function show($position, $id){
 
-        $patch_search = "/sellers/".Auth::user()->api_identify."/customers";
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$patch_search);
-        $res_api = $response->json();
-
-
-        if(!empty($res_api)){
-            if($res_api['code'] == 200){
-                $data['customer_api'] = $res_api['data'];
-            }
-        }
-
-        // ดึงจังหวัด -- API
-        $path_search = "/sellers/".Auth::user()->api_identify."/provinces";
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
-        $res_api = $response->json();
-        if(!empty($res_api)){
-            if($res_api['code'] == 200){
-                $data['provinces'] = $res_api['data'];
-            }
-        }
-
-        // dd($data['customer_api']);
-        
-        return view('shareData.check_name_store', $data);
-
-    }
-
-    public function search(request $request)
-    {   
-        
         $api_token = $this->api_token->apiToken();
-
-        if(!is_null($request->amphur)){ 
-            $patch_search = '/sellers/'.Auth::user()->api_identify.'/customers?sortorder=DESC&amphoe_id='.$request->amphur;
-        }elseif(!is_null($request->province)){
-            $patch_search = '/sellers/'.Auth::user()->api_identify.'/customers?sortorder=DESC&province_id='.$request->province;
-        }else{
-            $patch_search = "/sellers/".Auth::user()->api_identify."/customers";
-        }
-        
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$patch_search);
-        $res_api = $response->json();
-
-        if($res_api['code'] == 200){
-            $data['customer_api'] = $res_api['data'];
-        }
-
-        // ดึงจังหวัด -- API
-        $path_search = "/sellers/".Auth::user()->api_identify."/provinces";
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
-        $res_provinces_api = $response->json();
-        $data['provinces'] = $res_provinces_api['data'];
-        
-        return view('shareData.check_name_store', $data);
-    }
-
-    
-    public function show($id)
-    {
-        $api_token = $this->api_token->apiToken();
-        $data['api_token'] = $api_token;
 
         //- ดึงชื่อร้านค้า ตาม ID
         $response_cust = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/customers/'.$id);
         $res_custapi = $response_cust->json();
-        $data['customer_shop'] = $res_custapi;
-
+        $data['customer_shop'] = $res_custapi['data'][0];
+        
         //- ดึงแคมเปญของร้านค้า
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/customers/'.$id.'/campaigns');
         $res_api = $response->json();
@@ -116,6 +53,7 @@ class CheckStoreController extends Controller
                                 if($year_sum[$key_year_sum]['year'] == $value['year']){
                                     $year_sum[$key_year_sum]['saleamount'] = $year_sum[$key_year_sum]['saleamount'] + $value['saleamount'];
                                     $year_sum[$key_year_sum]['amount_limit'] = $year_sum[$key_year_sum]['amount_limit'] + $value['amount_limit'];
+                                    $year_sum[$key_year_sum]['amount_diff'] = $year_sum[$key_year_sum]['amount_diff'] + $value['amount_diff'];
                                 }
                             }
                         }else{
@@ -125,6 +63,7 @@ class CheckStoreController extends Controller
                                 'year' => $value['year'],
                                 'saleamount' => $value['saleamount'],
                                 'amount_limit' => $value['amount_limit'],
+                                'amount_diff' => $value['amount_diff'],
                             ];
                         }
                     }else{
@@ -134,6 +73,7 @@ class CheckStoreController extends Controller
                                 'year' => $value['year'],
                                 'saleamount' => $value['saleamount'],
                                 'amount_limit' => $value['amount_limit'],
+                                'amount_diff' => $value['amount_diff'],
                             ];
                     }
                     // -- End Sum Year
@@ -146,9 +86,18 @@ class CheckStoreController extends Controller
        // dd($data['year_sum']);
        $data['year_sum'] = $year_sum;
 
-        return view('shareData.check_name_store_detail', $data);
+        switch($position){
+            case "sellers" : $return = "shareData.check_store_campaigns_detail";
+            break;
+            case "leader" : $return = "ShareData_LeadManager.check_store_campaigns_detail";
+            break;
+            case "header" : $return = "ShareData_HeadManager.check_store_campaigns_detail";
+            break;
+            case "admin" : $return = "shareData_admin.check_store_campaigns_detail";
+            break;
+        }
+
+        return view($return, $data);
 
     }
-
-    
 }

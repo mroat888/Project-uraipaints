@@ -19,7 +19,7 @@ $(document).ready(function(){
     $('#sel_pdglists').on("change", function(e) { 
         e.preventDefault();
         var pdglist = $(this).val();
-        console.log(pdglist);
+        // console.log(pdglist);
         $('.province').children().remove().end();
         $('.amphur').children().remove().end();
         $('.province').append('<option selected value="">เลือกจังหวัด</option>');
@@ -42,6 +42,9 @@ $(document).ready(function(){
             content += "</div>";
 
         $("#table_product").html(content);
+
+        // $.fn.dataTable.ext.errMode = 'throw'; //-- ไม่ให้แสดง Erorr จาก Datatable
+        $.fn.dataTable.ext.errMode = () => alert('Error while loading the table data. Please refresh');
 
         $('#datable_1').DataTable({
             processing: false,
@@ -69,7 +72,7 @@ $(document).ready(function(){
             datatype: 'json',
             success: function(response){
                 if(response.status == 200){
-                    console.log(response.provinces);
+                    // console.log(response.provinces);
                     $('.province').children().remove().end();
                     $('.amphur').children().remove().end();
                     $('.province').append('<option selected value="">เลือกจังหวัด</option>');
@@ -90,6 +93,8 @@ $(document).ready(function(){
                         content2 += "<tr>";
                             content2 += "<th style='font-weight: bold;'>รหัสสินค้า</th>";
                             content2 += "<th style='font-weight: bold;'>ชื่อร้าน</th>";
+                            content2 += "<th style='font-weight: bold;'>อำเภอ,จังหวัด</th>";
+                            content2 += "<th style='font-weight: bold;'>เบอร์โทรฯ</th>";
                         content2 += "</tr>";
                     content2 += "</thead>";
                     content2 += "<tbody>";
@@ -113,6 +118,8 @@ $(document).ready(function(){
                 columns: [
                     {data: 'identify', name: 'identify'},
                     {data: 'name', name: 'name'},
+                    {data: 'province_name', name: 'province_name'},
+                    {data: 'telephone', name: 'telephone'},
                 ]
         });
         //-- Table Customer
@@ -124,6 +131,8 @@ $(document).on('change','.province', function(e){
     e.preventDefault();
     let pvid = $(this).val();
     var pdglist = $("#sel_pdglists").val();
+    console.log(pdglist);
+    console.log(pvid);
 
     var content = "<div id='table_list' class='table-responsive col-md-12'>";
             content += "<table id='datable_2' class='table table-hover data-table'>";
@@ -131,6 +140,8 @@ $(document).on('change','.province', function(e){
                     content += "<tr>";
                         content += "<th style='font-weight: bold;'>รหัสสินค้า</th>";
                         content += "<th style='font-weight: bold;'>ชื่อร้าน</th>";
+                        content += "<th style='font-weight: bold;'>อำเภอ,จังหวัด</th>";
+                        content += "<th style='font-weight: bold;'>เบอร์โทรฯ</th>";
                     content += "</tr>";
                 content += "</thead>";
                 content += "<tbody>";
@@ -141,6 +152,7 @@ $(document).on('change','.province', function(e){
     $("#table_customer").html(content);
     
     $.fn.dataTable.ext.errMode = () => alert('Error while loading the table data. Please refresh');
+
     $('#datable_2').DataTable({
         
         processing: false,
@@ -156,6 +168,8 @@ $(document).on('change','.province', function(e){
             columns: [
                 {data: 'identify', name: 'identify'},
                 {data: 'name', name: 'name'},
+                {data: 'province_name', name: 'province_name'},
+                {data: 'telephone', name: 'telephone'},
             ]
     });
 
@@ -166,7 +180,7 @@ $(document).on('change','.province', function(e){
         datatype: 'json',
         success: function(response){
             if(response.status == 200){
-                console.log(response.amphures);
+                // console.log(response.amphures);
                 $('.amphur').children().remove().end();
                 $('.amphur').append('<option selected value="">เลือกอำเภอ</option>');
                 let rows = response.amphures.length;
@@ -185,7 +199,7 @@ $(document).on('change','#amphur', function(e){
     var pdglist = $('#sel_pdglists').val();
     var pvid = $('#province').val();
     var ampid = $(this).val();
-    console.log(pdglist);
+    // console.log(pdglist);
 
     var content = "<div id='table_list' class='table-responsive col-md-12'>";
             content += "<table id='datable_2' class='table table-hover data-table'>";
@@ -193,6 +207,8 @@ $(document).on('change','#amphur', function(e){
                     content += "<tr>";
                         content += "<th style='font-weight: bold;'>รหัสสินค้า</th>";
                         content += "<th style='font-weight: bold;'>ชื่อร้าน</th>";
+                        content += "<th style='font-weight: bold;'>อำเภอ,จังหวัด</th>";
+                        content += "<th style='font-weight: bold;'>เบอร์โทรฯ</th>";
                     content += "</tr>";
                 content += "</thead>";
                 content += "<tbody>";
@@ -201,6 +217,8 @@ $(document).on('change','#amphur', function(e){
         content += "</div>";
 
     $("#table_customer").html(content);
+
+    $.fn.dataTable.ext.errMode = () => alert('Error while loading the table data. Please refresh');
 
     $('#datable_2').DataTable({
         processing: false,
@@ -216,6 +234,8 @@ $(document).on('change','#amphur', function(e){
         columns: [
             {data: 'identify', name: 'identify'},
             {data: 'name', name: 'name'},
+            {data: 'province_name', name: 'province_name'},
+            {data: 'telephone', name: 'telephone'},
         ]
     });
 

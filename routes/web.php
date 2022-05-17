@@ -156,6 +156,8 @@ Route::post('data_report_historical-quarter/search', 'ShareData\ReportHistorical
 Route::get('data_report_historical-month', 'ShareData\ReportHistoricalMonthController@index');
 Route::post('data_report_historical-month/search', 'ShareData\ReportHistoricalMonthController@search');
 Route::get('data_report_sale_compare-year','ShareData\ReportSaleCompareYearController@index');
+Route::post('data_report_sale_compare-year/search','ShareData\ReportSaleCompareYearController@search');
+
 });
 
 
@@ -276,6 +278,7 @@ Route::post('leadManage/data_report_historical-quarter/search', 'ShareData_LeadM
 Route::get('leadManage/data_report_historical-month', 'ShareData_LeadManager\ReportHistoricalMonthController@index');
 Route::post('leadManage/data_report_historical-month/search', 'ShareData_LeadManager\ReportHistoricalMonthController@search');
 Route::get('leadManage/data_report_sale_compare-year','ShareData_LeadManager\ReportSaleCompareYearController@index');
+Route::post('leadManage/data_report_sale_compare-year/search','ShareData_LeadManager\ReportSaleCompareYearController@search');
 
 Route::get('lead/edit-profile', 'ProfileController@lead_index');
 Route::post('lead/userProfileUpdate', 'ProfileController@update');
@@ -304,6 +307,7 @@ Route::get('head/comment_customer_new/{id}/{custsaleplanID}/{createID}', 'HeadMa
 Route::post('head/create_comment_customer_new', 'HeadManager\ApprovalSalePlanController@create_comment_customer_new');
 Route::post('head/approvalsaleplan/search', 'HeadManager\ApprovalSalePlanController@search');
 
+
 Route::get('head/approvalgeneral', 'HeadManager\ApprovalController@index');
 Route::get('head/approvalgeneral/history', function () { return view('headManager.approval_general_history'); });
 Route::get('head/approval_general_detail/{id}', 'HeadManager\ApprovalController@approval_general_detail');
@@ -328,6 +332,8 @@ Route::get('head/approval_customer_except_detail/{id}', 'HeadManager\ApprovalCus
 Route::get('head/comment_customer_except/{id}/{custsaleplanID}/{createID}', 'HeadManager\ApprovalCustomerExceptController@comment_customer_except');
 Route::post('head/create_comment_customer_except', 'HeadManager\ApprovalCustomerExceptController@create_comment_customer_except');
 Route::post('head/approvalcustomer-except/search', 'HeadManager\ApprovalCustomerExceptController@search');
+Route::get('head/comment_customer_new_except/{shop_id}/{shops_saleplan_id}/{monthly_plans_id}', 'HeadManager\ApprovalCustomerExceptController@comment_customer_new_except'); //-- OAT
+Route::post('head/comment_customer_new_except_update', 'HeadManager\ApprovalCustomerExceptController@comment_customer_new_except_update'); //-- OAT
 
 // Note Head Manage
 Route::get('head/note', 'NoteController@note_head');
@@ -382,6 +388,7 @@ Route::post('headManage/data_report_historical-quarter/search', 'ShareData_HeadM
 Route::get('headManage/data_report_historical-month', 'ShareData_HeadManager\ReportHistoricalMonthController@index');
 Route::post('headManage/data_report_historical-month/search', 'ShareData_HeadManager\ReportHistoricalMonthController@search');
 Route::get('headManage/data_report_sale_compare-year','ShareData_HeadManager\ReportSaleCompareYearController@index');
+Route::post('headManage/data_report_sale_compare-year/search','ShareData_HeadManager\ReportSaleCompareYearController@search');
 });
 
 
@@ -429,9 +436,10 @@ Route::post('admin/search_month_add-assignment', 'Admin\AssignmentController@sea
 Route::get('admin/change_customer_status', 'Admin\ChangeCustomerController@index');
 Route::get('admin/change_customer_status_edit/{id}', 'Admin\ChangeCustomerController@show');
 Route::post('admin/change_customer_status_update', 'Admin\ChangeCustomerController@update_status');
-Route::post('admin/change_customer_status/search','Admin\ChangeCustomerController@destroy');
+Route::post('admin/change_customer_status/destroy','Admin\ChangeCustomerController@destroy');
 
-Route::post('admin/search','Admin\ChangeCustomerController@customerLeadSearch');
+Route::post('admin/change_customer_status/search','Admin\ChangeCustomerController@customerLeadSearch');
+Route::get('admin/approval_customer_except_detail/{id}', 'Admin\ChangeCustomerController@approval_customer_except_detail');
 // Route::post('create_customer', 'Customer\CustomerController@store');
 Route::get('admin/edit_customerLead/{id}', 'Admin\ChangeCustomerController@edit');
 Route::post('admin/update_customerLead', 'Admin\ChangeCustomerController@update');
@@ -612,6 +620,7 @@ Route::post('admin/data_report_historical-quarter/search', 'ShareData_Admin\Repo
 Route::get('admin/data_report_historical-month', 'ShareData_Admin\ReportHistoricalMonthController@index');
 Route::post('admin/data_report_historical-month/search', 'ShareData_Admin\ReportHistoricalMonthController@search');
 Route::get('admin/data_report_sale_compare-year','ShareData_Admin\ReportSaleCompareYearController@index');
+Route::post('admin/data_report_sale_compare-year/search','ShareData_Admin\ReportSaleCompareYearController@search');
 
 });
 
@@ -639,11 +648,14 @@ Route::get('/fetch_district/{id}',[ProvinceController::class, 'district']);
 Route::get('/fetch_postcode/{id}',[ProvinceController::class, 'postcode']);
 Route::get('/customer/autocomplete',[CustomerController::class, 'fetch_autocomplete']);
 Route::get('/fetch_customer_shops_byid/{id}','Customer\CustomerController@fetch_customer_shops_byid');
+Route::get('checkstore_campaigns/{seller}/detail/{id}','CheckStoreCampaignsController@show');
 
 Route::get('fetch_subgroups/{id}', 'Api\ApiController@fetch_subgroups');
 Route::get('fetch_pdglists/{id}', 'Api\ApiController@fetch_pdglists');
 Route::get('fetch_products/{id}', 'Api\ApiController@fetch_products');
 Route::get('fetch_amphur_api/{position}/{id}', 'Api\ApiController@fetch_amphur_api');
+
+
 
 
 //-- Salller

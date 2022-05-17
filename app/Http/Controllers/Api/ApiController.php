@@ -109,20 +109,26 @@ class ApiController extends Controller
     public function fetch_products($id){
 
         $api_token = $this->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/products?productlist_id='.$id);
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/products?sort_by=product_code",[
+            'productlist_id' => $id
+        ]);
+
         $res_api = $response->json();
-        $products = array();
-        foreach($res_api['data'] as $value){
-            if($value['list_code'] == $id){
-                $products[] = [
-                    'identify' => $value['identify'],
-                    'name' => $value['name'],
-                    'url_image' => $value['url_image'],
-                    'pack_unit' => $value['pack_unit'],
-                    'pack_ratio' => $value['pack_ratio'],
-                ];
+        if($res_api['code'] == 200){
+            $products = array();
+            foreach($res_api['data'] as $value){
+                if($value['list_code'] == $id){
+                    $products[] = [
+                        'identify' => $value['identify'],
+                        'name' => $value['name'],
+                        'url_image' => $value['url_image'],
+                        'pack_unit' => $value['pack_unit'],
+                        'pack_ratio' => $value['pack_ratio'],
+                    ];
+                }
             }
         }
+
         return Datatables::of($products)
         ->addIndexColumn()
         ->editColumn('url_image',function($row){
@@ -140,6 +146,7 @@ class ApiController extends Controller
             return $row['name'];
         })
         ->make(true);
+
     }
 
     //-- สำหรับ Seller--
@@ -206,6 +213,10 @@ class ApiController extends Controller
                     'identify' => $value['identify'],
                     'title' => $value['title'],
                     'name' => $value['name'],
+                    'amphoe_name' => $value['amphoe_name'],
+                    'province_name' => $value['province_name'],
+                    'telephone' => $value['telephone'],
+                    'mobile' => $value['mobile']
                 ];
             }
         }
@@ -217,6 +228,12 @@ class ApiController extends Controller
         })
         ->editColumn('name',function($row){
             return $row['title']." ".$row['name'];
+        })
+        ->editColumn('province_name',function($row){
+            return $row['amphoe_name'].", ".$row['province_name'];
+        })
+        ->editColumn('telephone',function($row){
+            return $row['telephone'].", ".$row['mobile'];
         })
         ->make(true);
     }
@@ -234,6 +251,10 @@ class ApiController extends Controller
                     'identify' => $value['identify'],
                     'title' => $value['title'],
                     'name' => $value['name'],
+                    'amphoe_name' => $value['amphoe_name'],
+                    'province_name' => $value['province_name'],
+                    'telephone' => $value['telephone'],
+                    'mobile' => $value['mobile']
                 ];
             }
         }
@@ -246,14 +267,22 @@ class ApiController extends Controller
         ->editColumn('name',function($row){
             return $row['title']." ".$row['name'];
         })
+        ->editColumn('province_name',function($row){
+            return $row['amphoe_name'].", ".$row['province_name'];
+        })
+        ->editColumn('telephone',function($row){
+            return $row['telephone'].", ".$row['mobile'];
+        })
         ->make(true);
 
     }
 
     public function fetch_datatable_customer_sellers_pdglist_pvid($pdgid, $pvid){
         $api_token = $this->apiToken();
-        $path_search = "sellers/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers?province_id=".$pvid;
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+        $path_search = "sellers/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers";
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search,[
+            'province_id' => $pvid,
+        ]);
         $res_api = $response->json();
         $customer = array();
 
@@ -263,6 +292,10 @@ class ApiController extends Controller
                     'identify' => $value['identify'],
                     'title' => $value['title'],
                     'name' => $value['name'],
+                    'amphoe_name' => $value['amphoe_name'],
+                    'province_name' => $value['province_name'],
+                    'telephone' => $value['telephone'],
+                    'mobile' => $value['mobile']
                 ];
             }
         }
@@ -274,6 +307,12 @@ class ApiController extends Controller
         })
         ->editColumn('name',function($row){
             return $row['title']." ".$row['name'];
+        })
+        ->editColumn('province_name',function($row){
+            return $row['amphoe_name'].", ".$row['province_name'];
+        })
+        ->editColumn('telephone',function($row){
+            return $row['telephone'].", ".$row['mobile'];
         })
         ->make(true);
     }
@@ -349,6 +388,10 @@ class ApiController extends Controller
                     'identify' => $value['identify'],
                     'title' => $value['title'],
                     'name' => $value['name'],
+                    'amphoe_name' => $value['amphoe_name'],
+                    'province_name' => $value['province_name'],
+                    'telephone' => $value['telephone'],
+                    'mobile' => $value['mobile']
                 ];
             }
         }
@@ -359,6 +402,12 @@ class ApiController extends Controller
         })
         ->editColumn('name',function($row){
             return $row['title']." ".$row['name'];
+        })
+        ->editColumn('province_name',function($row){
+            return $row['amphoe_name'].", ".$row['province_name'];
+        })
+        ->editColumn('telephone',function($row){
+            return $row['telephone'].", ".$row['mobile'];
         })
         ->make(true);
     }
@@ -376,6 +425,10 @@ class ApiController extends Controller
                     'identify' => $value['identify'],
                     'title' => $value['title'],
                     'name' => $value['name'],
+                    'amphoe_name' => $value['amphoe_name'],
+                    'province_name' => $value['province_name'],
+                    'telephone' => $value['telephone'],
+                    'mobile' => $value['mobile']
                 ];
             }
         }
@@ -388,13 +441,21 @@ class ApiController extends Controller
         ->editColumn('name',function($row){
             return $row['title']." ".$row['name'];
         })
+        ->editColumn('province_name',function($row){
+            return $row['amphoe_name'].", ".$row['province_name'];
+        })
+        ->editColumn('telephone',function($row){
+            return $row['telephone'].", ".$row['mobile'];
+        })
         ->make(true);
     }
 
     public function fetch_datatable_customer_leaders_pdglist_pvid($pdgid, $pvid){
         $api_token = $this->apiToken();
-        $path_search = "saleleaders/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers?province_id=".$pvid;
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+        $path_search = "saleleaders/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers";
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search,[
+            'province_id' => $pvid,
+        ]);
         $res_api = $response->json();
         $customer = array();
 
@@ -404,6 +465,10 @@ class ApiController extends Controller
                     'identify' => $value['identify'],
                     'title' => $value['title'],
                     'name' => $value['name'],
+                    'amphoe_name' => $value['amphoe_name'],
+                    'province_name' => $value['province_name'],
+                    'telephone' => $value['telephone'],
+                    'mobile' => $value['mobile']
                 ];
             }
         }
@@ -414,6 +479,12 @@ class ApiController extends Controller
         })
         ->editColumn('name',function($row){
             return $row['title']." ".$row['name'];
+        })
+        ->editColumn('province_name',function($row){
+            return $row['amphoe_name'].", ".$row['province_name'];
+        })
+        ->editColumn('telephone',function($row){
+            return $row['telephone'].", ".$row['mobile'];
         })
         ->make(true);
     }
@@ -489,6 +560,10 @@ class ApiController extends Controller
                     'identify' => $value['identify'],
                     'title' => $value['title'],
                     'name' => $value['name'],
+                    'amphoe_name' => $value['amphoe_name'],
+                    'province_name' => $value['province_name'],
+                    'telephone' => $value['telephone'],
+                    'mobile' => $value['mobile']
                 ];
             }
         }
@@ -501,6 +576,12 @@ class ApiController extends Controller
         })
         ->editColumn('name',function($row){
             return $row['title']." ".$row['name'];
+        })
+        ->editColumn('province_name',function($row){
+            return $row['amphoe_name'].", ".$row['province_name'];
+        })
+        ->editColumn('telephone',function($row){
+            return $row['telephone'].", ".$row['mobile'];
         })
         ->make(true);
     }
@@ -518,6 +599,10 @@ class ApiController extends Controller
                     'identify' => $value['identify'],
                     'title' => $value['title'],
                     'name' => $value['name'],
+                    'amphoe_name' => $value['amphoe_name'],
+                    'province_name' => $value['province_name'],
+                    'telephone' => $value['telephone'],
+                    'mobile' => $value['mobile']
                 ];
             }
         }
@@ -530,13 +615,21 @@ class ApiController extends Controller
         ->editColumn('name',function($row){
             return $row['title']." ".$row['name'];
         })
+        ->editColumn('province_name',function($row){
+            return $row['amphoe_name'].", ".$row['province_name'];
+        })
+        ->editColumn('telephone',function($row){
+            return $row['telephone'].", ".$row['mobile'];
+        })
         ->make(true);
     }
 
     public function fetch_datatable_customer_headers_pdglist_pvid($pdgid, $pvid){
         $api_token = $this->apiToken();
-        $path_search = "saleheaders/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers?province_id=".$pvid;
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+        $path_search = "saleheaders/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers";
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search,[
+            'province_id' => $pvid,
+        ]);
         $res_api = $response->json();
         $customer = array();
 
@@ -546,6 +639,10 @@ class ApiController extends Controller
                     'identify' => $value['identify'],
                     'title' => $value['title'],
                     'name' => $value['name'],
+                    'amphoe_name' => $value['amphoe_name'],
+                    'province_name' => $value['province_name'],
+                    'telephone' => $value['telephone'],
+                    'mobile' => $value['mobile']
                 ];
             }
         }
@@ -559,11 +656,17 @@ class ApiController extends Controller
         ->editColumn('name',function($row){
             return $row['title']." ".$row['name'];
         })
+        ->editColumn('province_name',function($row){
+            return $row['amphoe_name'].", ".$row['province_name'];
+        })
+        ->editColumn('telephone',function($row){
+            return $row['telephone'].", ".$row['mobile'];
+        })
         ->make(true);
     }
     //-- จบ สำหรับ Header--
 
-    //-- สำหรับ Header--
+    //-- สำหรับ Admin--
 
     public function fetch_provinces_products_admin($id){
 
@@ -628,6 +731,10 @@ class ApiController extends Controller
                     'identify' => $value['identify'],
                     'title' => $value['title'],
                     'name' => $value['name'],
+                    'amphoe_name' => $value['amphoe_name'],
+                    'province_name' => $value['province_name'],
+                    'telephone' => $value['telephone'],
+                    'mobile' => $value['mobile']
                 ];
             }
         }
@@ -640,32 +747,53 @@ class ApiController extends Controller
         ->editColumn('name',function($row){
             return $row['title']." ".$row['name'];
         })
+        ->editColumn('province_name',function($row){
+            return $row['amphoe_name'].", ".$row['province_name'];
+        })
+        ->editColumn('telephone',function($row){
+            return $row['telephone'].", ".$row['mobile'];
+        })
         ->make(true);
     }
 
-    // public function fetch_datatable_customer_headers_pdglist($pdgid){
-    //     $api_token = $this->apiToken();
-    //     $path_search = "saleheaders/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers";
-    //     $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
-    //     $res_api = $response->json();
-    //     $customer = array();
-    //     foreach($res_api['data'] as $value){
-    //         $customer[] = [
-    //             'identify' => $value['identify'],
-    //             'title' => $value['title'],
-    //             'name' => $value['name'],
-    //         ];
-    //     }
-    //     return Datatables::of($customer)
-    //     ->addIndexColumn()
-    //     ->editColumn('identify',function($row){
-    //         return $row['identify'];
-    //     })
-    //     ->editColumn('name',function($row){
-    //         return $row['title']." ".$row['name'];
-    //     })
-    //     ->make(true);
-    // }
+    public function fetch_datatable_customer_admin_pdglist($pdgid){
+        $api_token = $this->apiToken();
+        $path_search = "pdglists/".$pdgid."/customers";
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+        $res_api = $response->json();
+        $customer = array();
+
+        if($res_api['code'] == 200){
+            foreach($res_api['data'] as $key => $value){
+                $customer[] = [
+                    'identify' => $value['identify'],
+                    'title' => $value['title'],
+                    'name' => $value['name'],
+                    'amphoe_name' => $value['amphoe_name'],
+                    'province_name' => $value['province_name'],
+                    'telephone' => $value['telephone'],
+                    'mobile' => $value['mobile']
+                ];
+            }
+        }
+
+
+        return Datatables::of($customer)
+        ->addIndexColumn()
+        ->editColumn('identify',function($row){
+            return $row['identify'];
+        })
+        ->editColumn('name',function($row){
+            return $row['title']." ".$row['name'];
+        })
+        ->editColumn('province_name',function($row){
+            return $row['amphoe_name'].", ".$row['province_name'];
+        })
+        ->editColumn('telephone',function($row){
+            return $row['telephone'].", ".$row['mobile'];
+        })
+        ->make(true);
+    }
 
     public function fetch_datatable_customer_admin_pdglist_pvid($pvid){
         $api_token = $this->apiToken();
@@ -680,10 +808,10 @@ class ApiController extends Controller
                     'identify' => $value['identify'],
                     'title' => $value['title'],
                     'name' => $value['name'],
-                    'address1' => $value['address1'],
-                    'address2' => $value['adrress2'],
+                    'amphoe_name' => $value['amphoe_name'],
+                    'province_name' => $value['province_name'],
                     'telephone' => $value['telephone'],
-                    'mobile' => $value['mobile'],
+                    'mobile' => $value['mobile']
                 ];
             }
         }
@@ -697,8 +825,8 @@ class ApiController extends Controller
         ->editColumn('name',function($row){
             return $row['title']." ".$row['name'];
         })
-        ->editColumn('address',function($row){
-            return $row['address1']." ".$row['address2'];
+        ->editColumn('province_name',function($row){
+            return $row['amphoe_name'].", ".$row['province_name'];
         })
         ->editColumn('telephone',function($row){
             return $row['telephone'].", ".$row['mobile'];
@@ -706,7 +834,7 @@ class ApiController extends Controller
         ->make(true);
     }
 
-    //-- จบ สำหรับ Header--
+    //-- จบ สำหรับ Admin--
 
 
 

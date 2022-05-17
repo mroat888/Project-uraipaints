@@ -156,7 +156,7 @@
                                 </form>
                                 <!-- จบเงื่อนไขการค้นหา -->
                                 @php
-                                    $btn_edit_hide = "display:block;";
+                                    $user_level = "seller";
                                     $url_customer_detail = "customer_lead/detail";
                                 @endphp
 
