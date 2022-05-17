@@ -13,19 +13,27 @@
     <div class="container-fluid px-xxl-65 px-xl-20">
         <!-- Title -->
         <div class="hk-pg-header mb-10">
+            <div class="topichead-bgred"><i class="ion ion-md-wifi"></i> แจ้งข่าวสาร</div>
+            <div class="content-right d-flex">
+                <button type="button" class="btn-green" data-toggle="modal" data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button>
+            </div>
+        </div>
+        <!-- /Title -->
+
+        <!-- Title -->
+        {{-- <div class="hk-pg-header mb-10">
             <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                    data-feather="file-text"></i></span></span>บันทึกแจ้งข่าวสาร</h4>
+                <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i data-feather="file-text"></i></span></span>แจ้งข่าวสาร</h4>
             </div>
             <div class="d-flex">
                 <button type="button" class="btn btn-teal btn-sm btn-rounded px-3 mr-10" data-toggle="modal" data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button>
                 <a href="{{url('admin/newsBanner')}}" type="button" class="btn btn-violet btn-sm btn-rounded px-3"> + เพิ่มแบนเนอร์ </a>
             </div>
-        </div>
+        </div> --}}
         <!-- /Title -->
 
             <section class="hk-sec-wrapper">
-                <h5 class="hk-sec-title">ตารางแจ้งข่าวสาร</h5>
+                <h5 class="hk-sec-title">รายการแจ้งข่าวสาร</h5>
                 <div class="row">
                     <div class="col-sm">
                         <div class="table-wrap">
@@ -41,17 +49,19 @@
                                             <option value="1">ใช้งาน</option>
                                             <option value="0">ไม่ใช้งาน</option>
                                     </select>
-                                    <button type="submit" class="btn btn-info btn-sm mr-15 ml-2">ค้นหา</button>
+                                    <button type="submit" class="btn btn-green btn-sm mr-15 ml-2">ค้นหา</button>
                                 </div>
                             </form>
                             </div>
-                            <div class="table-responsive col-md-12">
+                            <div class="table-responsive table-color col-md-12">
                                 <table id="datable_1" class="table table-hover">
                                 <thead>
                                     <tr>
                                         <th>#</th>
                                         <th>เรื่อง</th>
-                                        <th>วันที่แจ้งเตือน</th>
+                                        <th>เลขที่อ้างอิงเอกสาร</th>
+                                        <th>วันที่ออกเอกสาร</th>
+                                        <th>ป้ายกำกับ</th>
                                         <th>รูปภาพ</th>
                                         <th>สถานะ</th>
                                         <th>Link URL</th>
@@ -63,8 +73,14 @@
                                     <tr>
                                         <td>{{$key + 1}}</td>
                                         <td>{{$value->news_title}}</td>
+                                        <td>{{$value->ref_number}}</td>
                                         <td>{{$value->news_date}}</td>
-                                        <td><img src="{{ isset($value->news_image) ? asset('public/upload/NewsImage/' . $value->news_image) : '' }}" width="100"></td>
+                                        <td>{{$value->news_tags}}</td>
+                                        <td>
+                                        <a href="{{url('admin/news-view-detail', $value->id)}}">
+                                            <img src="{{ isset($value->news_image) ? asset('public/upload/NewsImage/' . $value->news_image) : '' }}" width="100">
+                                        </a>
+                                        </td>
                                         <td>
                                             @switch($value->status_usage)
                                                 @case(0)
@@ -78,19 +94,25 @@
                                         <td><a href="{{$value->url}}" style="color: rgb(11, 8, 141);">{!! Str::limit($value->url,20) !!}</a></td>
                                         <td>
                                             <div class="button-list">
-                                                <a href="{{ url('admin/update-news-status-use', $value->id)}}" class="btn btn-icon btn-teal mr-10">
-                                                    <span class="btn-icon-wrap"><i data-feather="power"></i></span></a>
+                                                <a href="{{ url('admin/update-news-status-use', $value->id)}}" class="btn btn-icon btn-teal">
+                                                    <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">settings_power</span></h4>
+                                                </a>
+                                                    <a href="{{ url('admin/news-gallery', $value->id)}}" class="btn btn-icon btn-purple">
+                                                            <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">collections</span></h4>
+                                                        </a>
                                                     <button onclick="edit_modal({{ $value->id }})"
-                                                        class="btn btn-icon btn-warning mr-10" data-toggle="modal" data-target="#editNews">
-                                                        <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
+                                                        class="btn btn-icon btn-edit" data-toggle="modal" data-target="#editNews">
+                                                        <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">
+                                                            drive_file_rename_outline</span></h4>
+                                                    </button>
                                                         @if ($value->status_usage == 0)
-                                                        <button id="btn_news_delete" class="btn btn-icon btn-danger mr-10"
+                                                        <button id="btn_news_delete" class="btn btn-icon btn-danger"
                                                              value="{{ $value->id }}">
-                                                                <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-trash"></i></h4>
-                                                                </button>
-                                                        {{-- <a href="{{url('admin/delete_news', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
-                                                            <span class="btn-icon-wrap"><i data-feather="trash-2"></i></span></a> --}}
+                                                                <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">
+                                                                    delete_outline</span></h4>
+                                                        </button>
                                                         @endif
+
                                             </div>
                                         </td>
                                     </tr>
@@ -110,7 +132,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">ฟอร์มบันทึกข่าวสาร</h5>
+                    <h5 class="modal-title">เพิ่มประกาศ (ข่าวสาร)</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -124,6 +146,25 @@
                                 <label for="firstName">เรื่อง</label>
                                 <input class="form-control" placeholder="กรุณาใส่ชื่อเรื่อง" type="text" name="news_title" required>
                             </div>
+                            <div class="col-md-6 form-group">
+                                <label for="ref_number">เลขที่อ้างอิงเอกสาร</label>
+                                <input class="form-control" placeholder="กรุณาใส่เลขที่อ้างอิงเอกสาร" type="text" name="ref_number" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <label for="firstName">เลือกป้ายกำกับข่าวสาร</label>
+                                <select class="select2 select2-multiple form-control" multiple="multiple"
+                                    data-placeholder="Choose" name="news_tags[]" required>
+                                    <optgroup label="เลือกข้อมูล">
+                                        <?php $master = App\NoteTag::orderBy('id', 'desc')->get(); ?>
+
+                                        @foreach ($master as $value)
+                                        <option value="{{$value->id}}">{{$value->name_tag}}</option>
+                                        @endforeach
+                                    </optgroup>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="username">รายละเอียด</label>
@@ -135,11 +176,11 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
-                                <label for="firstName">รูปภาพ</label>
+                                <label for="firstName">รูปภาพ (หน้าปกข่าวสาร)</label>
                                 <input type="file" name="news_image" class="form-control">
                             </div>
                             <div class="col-md-6 form-group">
-                                <label for="firstName">วันที่แจ้งเตือน</label>
+                                <label for="firstName">วันที่ออกเอกสาร</label>
                                 <input class="form-control" name="news_date" type="date">
                             </div>
                         </div>
@@ -170,7 +211,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">ฟอร์มแก้ไขข่าวสาร</h5>
+                    <h5 class="modal-title">แก้ไขประกาศ (ข่าวสาร)</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -183,6 +224,17 @@
                                 <label for="firstName">เรื่อง</label>
                                 <input class="form-control" id="get_title" type="text" name="news_title_edit" required>
                             </div>
+                            <div class="col-md-6 form-group">
+                                <label for="ref_number">เลขที่อ้างอิงเอกสาร</label>
+                                <input class="form-control" id="get_ref_number" type="text" name="ref_number" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <label for="firstName">เลือกป้ายกำกับข่าวสาร</label>
+                                <select class="select2 select2-multiple form-control" multiple="multiple" name="news_tags[]"  id="get_tags">
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="username">รายละเอียด</label>
@@ -192,13 +244,18 @@
                             <label for="username">Link URL</label>
                             <input class="form-control" id="get_url" name="url_edit" type="text">
                         </div>
+                        <div>
+                            <div class="form-group">
+                            <span id="img_show" class="mt-5"></span>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">รูปภาพ</label>
                                 <input type="file" name="news_image_edit" id="get_image" class="form-control">
                             </div>
                             <div class="col-md-6 form-group">
-                                <label for="firstName">วันที่แจ้งเตือน</label>
+                                <label for="firstName">วันที่ออกเอกสาร</label>
                                 <input class="form-control" name="news_date_edit" id="get_date" type="date" required>
                             </div>
                         </div>
@@ -207,6 +264,12 @@
                                 <label for="firstName">แชร์ข้อมูล</label>
                                 <div class="custom-control custom-checkbox checkbox-info mt-2">
                                     <div id="customCheck6"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="customCheckPin">สถานะการปักหมุด</label>
+                                <div class="custom-control custom-checkbox checkbox-info mt-2">
+                                    <div id="customCheckPin"></div>
                                 </div>
                             </div>
                         </div>
@@ -338,16 +401,49 @@
                 async: false,
                 success: function(data) {
                     $('#customCheck6').children().remove().end();
+                    $('#customCheckPin').children().remove().end();
+                    $('#get_tags').children().remove().end();
+                    $('#img_show').children().remove().end();
+
                     $('#get_id').val(data.dataEdit.id);
                     $('#get_date').val(data.dataEdit.news_date);
                     $('#get_title').val(data.dataEdit.news_title);
+                    $('#get_ref_number').val(data.dataEdit.ref_number);
                     $('#get_detail').val(data.dataEdit.news_detail);
                     // $('#get_image').val(data.dataEdit.news_image);
                     $('#get_url').val(data.dataEdit.url);
+
+                    let rows_tags = data.dataEdit.news_tags.split(",");
+                    let count_tags = rows_tags.length;
+                    $.each(rows_tags, function(tkey, tvalue){
+                        $.each(data.master_note, function(key, value){
+                            if(value.id == rows_tags[tkey]){
+                                $('#get_tags').append('<option value='+value.id+' selected>'+value.name_tag+'</option>');
+                            }else{
+                                $('#get_tags').append('<option value='+value.id+'>'+value.name_tag+'</option>');
+                            }
+                        });
+                    });
+
                     if (data.dataEdit.status_share == 1) {
                     $('#customCheck6').append("<input type='checkbox' class='custom-control-input' id='customCheck7' name='status_share_edit' value='1' checked><label class='custom-control-label' for='customCheck7'>สามารถแชร์ข้อมูลได้</label>");
                 }else{
                     $('#customCheck6').append("<input type='checkbox' class='custom-control-input' id='customCheck8' name='status_share_edit' value='1'><label class='custom-control-label' for='customCheck8'>สามารถแชร์ข้อมูลได้</label>");
+                }
+
+                if (data.dataEdit.status_pin == 1) {
+                    $('#customCheckPin').append("<input type='checkbox' class='custom-control-input' id='customCheck9' name='status_pin' value='1' checked><label class='custom-control-label' for='customCheck9'>ปักหมุด</label>");
+                }else{
+                    $('#customCheckPin').append("<input type='checkbox' class='custom-control-input' id='customCheck10' name='status_pin' value='1'><label class='custom-control-label' for='customCheck10'>ปักหมุด</label>");
+                }
+
+                let img_name = '{{ asset("/public/upload/NewsImage") }}/' + data.dataEdit.news_image;
+                if(data.dataEdit.news_image != ""){
+                    ext = data.dataEdit.news_image.split('.').pop().toLowerCase();
+                    console.log(img_name);
+                    if(img_name){
+                        $('#img_show').append('<img src = "'+img_name+'" style="max-width:20%;">');
+                    }
                 }
 
                     $('#editNews').modal('toggle');

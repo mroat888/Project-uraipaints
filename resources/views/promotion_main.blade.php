@@ -1,10 +1,25 @@
 <div class="row">
     <div class="col-md-12">
         <section class="hk-sec-wrapper">
-            <h5 class="hk-sec-title">ข้อมูลโปรโมชั่น</h5>
-            <p class="mb-40">ข้อมูลโปรโมชั่นประจำวัน</p>
+            <div class="topichead-bgred">รายการโปรโมชั่น</div>
+            <div class="hk-pg-header mb-10" style="margin-top: 30px;">
+                <div class="col-sm-12 col-md-12">
+                    <span class="form-inline pull-right pull-sm-center">
+                        <form action="{{ url('search_promotion') }}" method="post" enctype="multipart/form-data">
+                            @csrf
+                            <span id="selectdate">
+                                ปี/เดือน : <input type="month" id="selectdateFrom" name="selectdateFrom"
+                                value="" class="form-control form-control-sm"
+                                style="margin-left:10px; margin-right:10px;"/>
+                                <button style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm" id="submit_request">ค้นหา</button>
+                            </span>
+                        </form>
+                    </span>
+
+                </div>
+            </div>
             @foreach ($list_promotion as $value)
-            <div class="row">
+            <div class="row items-news">
                 <div class="col-md-2">
                     <img class="card-img"
                     src="{{ isset($value->news_image) ? asset('public/upload/PromotionImage/' . $value->news_image) : '' }}"
@@ -13,7 +28,7 @@
                 </div>
                 <div class="col-md-8">
                     <div class="row">
-                        <div class="col-md-12"><h5><strong>{{$value->news_title}}</strong> <span class="badge badge-danger badge-pill">{{$value->status_promotion}}</span></h5></div>
+                        <div class="col-md-12"><h5><strong>{{$value->news_title}}</strong></h5></div>
                         <div class="col-md-12">
                             <span style="font-size:12px;">วันที่เริ่ม : {{$value->news_date}}</span>
                             <span style="font-size:12px;" class="ml-10">วันที่สิ้นสุด : {{$value->news_date_last}}</span>
@@ -26,16 +41,16 @@
                             @endif
                         </p></div>
                         @if (Auth::user()->status == 1)
-                        <div class="col-md-12 mt-2"><a href="{{ url('promotion_detail', $value->id) }}" style="font-size:14px; font-weight: bold; color:brown;">ดูรายละเอียดเพิ่มเติม</a></div>
+                        <div class="col-md-12 mt-2"><a href="{{ url('promotion_detail', $value->id) }}" class="btn-morenews">ดูรายละเอียดเพิ่มเติม</a></div>
 
                         @elseif (Auth::user()->status == 2)
-                        <div class="col-md-12 mt-2"><a href="{{ url('lead/promotion_detail', $value->id) }}" style="font-size:14px; font-weight: bold; color:brown;">ดูรายละเอียดเพิ่มเติม</a></div>
+                        <div class="col-md-12 mt-2"><a href="{{ url('lead/promotion_detail', $value->id) }}" class="btn-morenews">ดูรายละเอียดเพิ่มเติม</a></div>
 
                         @elseif (Auth::user()->status == 3)
-                        <div class="col-md-12 mt-2"><a href="{{ url('head/promotion_detail', $value->id) }}" style="font-size:14px; font-weight: bold; color:brown;">ดูรายละเอียดเพิ่มเติม</a></div>
+                        <div class="col-md-12 mt-2"><a href="{{ url('head/promotion_detail', $value->id) }}" class="btn-morenews">ดูรายละเอียดเพิ่มเติม</a></div>
 
                         @elseif (Auth::user()->status == 4)
-                        <div class="col-md-12 mt-2"><a href="{{ url('admin/promotion_detail', $value->id) }}" style="font-size:14px; font-weight: bold; color:brown;">ดูรายละเอียดเพิ่มเติม</a></div>
+                        <div class="col-md-12 mt-2"><a href="{{ url('admin/promotion_detail', $value->id) }}" class="btn-morenews">ดูรายละเอียดเพิ่มเติม</a></div>
                         @endif
                         {{-- <div class="col-md-12 mt-5"><a href="{{ url('promotion_detail', $value->id) }}" style="font-size:14px; font-weight: bold; color:brown;">ดูรายละเอียดเพิ่มเติม</a></div> --}}
 

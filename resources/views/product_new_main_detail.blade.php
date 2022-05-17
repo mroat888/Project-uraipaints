@@ -1,8 +1,7 @@
 <div class="row">
     <div class="col-md-12">
         <section class="hk-sec-wrapper">
-            <h5 class="hk-sec-title">รายละเอียดข้อมูลสินค้าใหม่</h5>
-            {{-- <p class="mb-40">ข้อมูลโปรโมชั่นประจำวัน</p> --}}
+            <h5 class="hk-sec-title">รายละเอียดสินค้าใหม่</h5>
             <div class="row">
                 <div class="col-md-6 mt-10">
                     <img class="card-img"

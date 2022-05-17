@@ -554,7 +554,8 @@
                             <a class="nav-link {{ (request()->is('admin/master_assignment')) ? 'btn2' : '' }} {{ (request()->is('admin/master_objective_saleplan')) ? 'btn2' : '' }}
                                 {{ (request()->is('admin/master_present_saleplan')) ? 'btn2' : '' }} {{ (request()->is('admin/master_tag')) ? 'btn2' : '' }}
                                 {{ (request()->is('admin/master_objective_visit')) ? 'btn2' : '' }} {{ (request()->is('admin/master_customer_new')) ? 'btn2' : '' }}
-                                {{ (request()->is('admin/master_teamSales')) ? 'btn2' : '' }} {{ (request()->is('admin/master_setting')) ? 'btn2' : '' }}"
+                                {{ (request()->is('admin/master_teamSales')) ? 'btn2' : '' }} {{ (request()->is('admin/master_setting')) ? 'btn2' : '' }}
+                                {{ (request()->is('admin/master_news_tag')) ? 'btn2' : '' }}"
                             href="javascript:void(0);" data-toggle="collapse" data-target="#master">
                                 <i class="ion ion-md-folder-open" style="color: #044067;"></i>
                                 <span class="nav-link-text">มาสเตอร์</span>
@@ -584,6 +585,12 @@
                                             <a class="nav-link" href="{{ url('admin/master_tag') }}">
                                                 <i class="ion ion-md-bookmark" style="color: #044067;"></i>
                                                 <span class="nav-link-text">ป้ายกำกับ (บันทึกโน๊ต)</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item {{ (request()->is('admin/master_news_tag')) ? 'btn2' : '' }}">
+                                            <a class="nav-link" href="{{ url('admin/master_news_tag') }}">
+                                                <i class="ion ion-md-bookmark" style="color: #044067;"></i>
+                                                <span class="nav-link-text">ป้ายกำกับ (ข่าวสาร)</span>
                                             </a>
                                         </li>
                                         <li class="nav-item {{ (request()->is('admin/master_objective_visit')) ? 'btn2' : '' }}">

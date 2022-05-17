@@ -117,9 +117,13 @@ Route::post('search_month_note', 'NoteController@search_month_note');
 
 
 Route::get('news', 'NewsController@frontend_news');
+Route::post('search_news', 'NewsController@search_news');
 Route::get('news_detail/{id}', 'NewsController@news_detail');
+
 Route::get('promotions', 'PromotionController@frontend_promotion');
 Route::get('promotion_detail/{id}', 'PromotionController@promotion_detail');
+Route::post('search_promotion', 'PromotionController@search_promotion');
+
 Route::get('product_new', 'ProductNewController@frontend_product_new');
 Route::get('product_new_detail/{id}', 'ProductNewController@product_new_detail');
 
@@ -453,13 +457,13 @@ Route::post('admin/delete_news', 'NewsController@destroy');
 Route::get('admin/news_detail/{id}', 'NewsController@admin_news_detail');
 Route::post('admin/search-news-status-usage', 'NewsController@search_news_status_usage');
 Route::get('admin/update-news-status-use/{id}', 'NewsController@update_status_use');
-
-// News Banner
-Route::get('admin/newsBanner', 'NewsController@index_banner');
-Route::post('admin/create_newsBanner', 'NewsController@banner_store');
-Route::get('admin/edit_banner/{id}', 'NewsController@banner_edit');
-Route::post('admin/update_banner', 'NewsController@banner_update');
-Route::get('admin/delete_banner/{id}', 'NewsController@banner_destroy');
+// News Gallery
+Route::get('admin/news-gallery/{id}', 'NewsController@gallery');
+Route::get('admin/news-view-detail/{id}', 'NewsController@view_detail');
+Route::post('admin/create_news_gallery', 'NewsController@gallery_store');
+Route::get('admin/edit_news_gallery/{id}', 'NewsController@gallery_edit');
+Route::post('admin/update_news_gallery', 'NewsController@gallery_update');
+Route::post('admin/delete_news_gallery', 'NewsController@gallery_destroy');
 
 
 Route::get('admin/fontendPromotions', 'PromotionController@admin_frontend_promotion');
@@ -470,7 +474,21 @@ Route::post('admin/update_promotion', 'PromotionController@update');
 Route::get('admin/delete_promotion/{id}', 'PromotionController@destroy');
 Route::get('admin/promotion_detail/{id}', 'PromotionController@admin_promotion_detail');
 Route::post('admin/search-promotion-status-usage', 'PromotionController@search_promotion_status_promotion');
-// Route::get('admin/update-promotion-status-use/{id}', 'PromotionController@update_status_use');
+Route::get('admin/update-promotion-status-use/{id}', 'PromotionController@update_status_use');
+
+Route::get('admin/promotion-gallery/{id}', 'PromotionController@gallery');
+Route::get('admin/promotion-view-detail/{id}', 'PromotionController@view_detail');
+Route::post('admin/create_promotion_gallery', 'PromotionController@gallery_store');
+Route::get('admin/edit_promotion_gallery/{id}', 'PromotionController@gallery_edit');
+Route::post('admin/update_promotion_gallery', 'PromotionController@gallery_update');
+Route::post('admin/delete_promotion_gallery', 'PromotionController@gallery_destroy');
+
+// News Banner
+Route::get('admin/promotionBanner', 'PromotionController@index_banner');
+Route::post('admin/create_promotionBanner', 'PromotionController@banner_store');
+Route::get('admin/edit_promotionBanner/{id}', 'PromotionController@banner_edit');
+Route::post('admin/update_promotionBanner', 'PromotionController@banner_update');
+Route::post('admin/delete_promotionBanner', 'PromotionController@banner_destroy');
 
 
 // Product New
@@ -545,6 +563,12 @@ Route::post('admin/create_master_tag', 'Admin\MasterNoteTagController@store');
 Route::get('/admin/edit_master_tag/{id}', 'Admin\MasterNoteTagController@edit');
 Route::post('/admin/update_master_tag', 'Admin\MasterNoteTagController@update');
 Route::get('admin/delete_master_tag/{id}', 'Admin\MasterNoteTagController@destroy');
+
+Route::get('admin/master_news_tag', 'Admin\MasterNewsTagController@index');
+Route::post('admin/create_master_news_tag', 'Admin\MasterNewsTagController@store');
+Route::get('/admin/edit_master_news_tag/{id}', 'Admin\MasterNewsTagController@edit');
+Route::post('/admin/update_master_news_tag', 'Admin\MasterNewsTagController@update');
+Route::get('admin/delete_master_news_tag/{id}', 'Admin\MasterNewsTagController@destroy');
 
 Route::get('admin/master_objective_visit', 'Admin\MastrObjectiveVisitController@index');
 Route::post('admin/create_master_objective_visit', 'Admin\MastrObjectiveVisitController@store');
