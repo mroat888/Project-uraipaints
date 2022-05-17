@@ -33,7 +33,7 @@
                             <div class="table-wrap">
                                 <!-- เงื่อนไขการค้นหา -->
                                 @php
-                                    $action_search = 'admin/search'; //-- action form
+                                    $action_search = 'admin/change_customer_status/search'; //-- action form
                                     if (isset($date_filter)) {
                                         //-- สำหรับ แสดงวันที่ค้นหา
                                         $date_search = $date_filter;
@@ -46,8 +46,43 @@
                                     <div class="hk-pg-header mb-10">
                                         <div class="col-sm-12 col-md-12">
                                             <span class="form-inline pull-right pull-sm-center">
+                                            <span id="selectdate">
+                                                @if(count($team_sales) > 1)
+                                                <select name="selectteam_sales" class="form-control form-control-sm" aria-label=".form-select-lg example">
+                                                    <option value="" selected>เลือกทีม</option>
+                                                    @php 
+                                                        $checkteam_sales = "";
+                                                        if(isset($selectteam_sales)){
+                                                            $checkteam_sales = $selectteam_sales;
+                                                        }
+                                                    @endphp
+                                                    @foreach($team_sales as $team)
+                                                        @if($checkteam_sales == $team->id)
+                                                            <option value="{{ $team->id }}" selected>{{ $team->team_name }}</option>
+                                                        @else
+                                                            <option value="{{ $team->id }}">{{ $team->team_name }}</option>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                                @endif
+                                                <select name="selectusers" class="form-control form-control-sm" aria-label=".form-select-lg example">
+                                                    <option value="" selected>ผู้แทนขาย</option>
+                                                    @php 
+                                                        $checkusers = "";
+                                                        if(isset($selectusers)){
+                                                            $checkusers = $selectusers;
+                                                        }
+                                                    @endphp
+                                                    @foreach($users as $user)
+                                                        @if($checkusers == $user->id)
+                                                            <option value="{{ $user->id }}" selected>{{ $user->name }}</option>
+                                                        @else
+                                                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
                                                 <span id="selectdate">
-                                                    ปี/เดือน : <input type="month" id="selectdateFrom" name="selectdateFrom"
+                                                   <input type="month" id="selectdateFrom" name="selectdateFrom"
                                                         value="{{ $date_search }}" class="form-control form-control-sm"
                                                         style="margin-left:10px; margin-right:10px;" />
                                                     <button style="margin-left:5px; margin-right:5px;"
