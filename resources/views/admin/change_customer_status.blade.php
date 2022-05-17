@@ -464,7 +464,7 @@
                     {{-- <form action="{{url('admin/change_customer_status_update')}}" method="POST" enctype="multipart/form-data"> --}}
                     @csrf
                 <div class="modal-body">
-                        <input class="form-control" id="shop_id" name="shop_id" type="text">
+                        <input class="form-control" id="shop_id" name="shop_id" type="hidden">
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">รหัสลูกค้า (MRP)</label>
