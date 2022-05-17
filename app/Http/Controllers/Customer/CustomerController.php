@@ -66,7 +66,7 @@ class CustomerController extends Controller
         
         // -- นับ จำนวนร้านค้า สถานะสำเร็จ
         $sql_query_success = $sql_query." and `customer_shops`.`shop_status` = ? ".$sql_query_orderby;
-        $customer_shops_success = DB::select( $sql_query_success, [2,Auth::user()->id,1]);
+        $customer_shops_success = DB::select( $sql_query_success, [2,Auth::user()->id, 1]);
         $data['count_customer_success'] = count($customer_shops_success);
 
         // -- นับ จำนวนร้านค้า สถานะสนใจ

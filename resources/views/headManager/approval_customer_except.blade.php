@@ -197,7 +197,7 @@
                                 <!-- จบเงื่อนไขการค้นหา -->
                                 
                                 @php 
-                                    $btn_edit_hide = "display:none;";
+                                    $user_level = "header";
                                     $url_customer_detail = "head/approval_customer_except_detail";
                                 @endphp
                                 @include('union.lead_table')

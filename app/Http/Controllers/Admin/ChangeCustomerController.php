@@ -442,4 +442,27 @@ class ChangeCustomerController extends Controller
         return view('admin.change_customer_status', $data);
 
     }
+
+    public function approval_customer_except_detail($id){
+        $data['customer_shops'] = DB::table('customer_shops')
+            ->where('id', $id)
+            ->first();
+
+        $data['customer_contacts'] = DB::table('customer_contacts')
+            ->where('customer_shop_id', $data['customer_shops']->id)
+            ->orderBy('id', 'desc')
+            ->first();
+
+        $data['customer_history_contacts'] = DB::table('customer_history_contacts')
+            ->where('customer_shop_id', $data['customer_shops']->id)
+            ->orderBy('id', 'desc')
+            ->get();
+
+        $data['customer_shops_saleplan'] = DB::table('customer_shops_saleplan')
+            ->where('customer_shop_id', $data['customer_shops']->id)
+            ->orderBy('monthly_plan_id', 'asc')
+            ->get();
+            
+        return view('admin.approval_customer_except_detail', $data);
+    }
 }

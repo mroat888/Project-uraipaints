@@ -70,14 +70,39 @@
                 </td>
                 <td>
                     <div class="button-list">
-                        @if($shop->shop_status == 1)
+                        @php 
+
+                            //--- เช็คสถานะ User มาจากระบบไหน 
+
+                            $btn_edit_hide = "display:none";
+                            $btn_comment_hide = "display:none";
+                            $url_comment = "";
+                            
+                            if($user_level == "seller"){ //-- ถ้ามาจากระบบ sale และเป็นลูกค้าใหม่
+                                if($shop->shop_status == "0"){
+                                    $btn_edit_hide = "display:block";
+                                }
+                            }
+
+                            if($user_level == "header"){ //-- ถ้ามาจากระบบ header และเป็นลูกค้ารอตัดสินใจ
+                                if($shop->cust_result_status == "1" && $shop->shop_status == "0"){
+                                    $btn_comment_hide = "display:block";
+                                    $url_comment = "head/comment_customer_new_except";
+                                }
+                            }
+                        @endphp
                         <button class="btn btn-icon btn-edit btn_editshop" value="{{ $shop->id }}" style="{{ $btn_edit_hide }}">
                             <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-create"></i></h4></button>
-                            @endif
-                        <!-- <button class="btn btn-icon btn-info mr-10">
-                            <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-calendar"></i></h4></button> -->
+                        
                         <a href="{{ url($url_customer_detail, $shop->id) }}" class="btn btn-icon btn-purple">
                             <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></a>
+
+                        <a href="{{ url($url_comment, [$shop->id, $shop->customer_shops_saleplan_id, $shop->monthly_plans_id]) }}" 
+                            class="btn btn-icon btn-info mr-10" style="{{ $btn_comment_hide }}">
+                            <h4 class="btn-icon-wrap" style="color: white;">
+                                <span class="material-icons">question_answer</span>
+                            </h4>
+                        </a>
                     </div>
                 </td>
             </tr>

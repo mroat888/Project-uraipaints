@@ -24,13 +24,15 @@ class ApprovalCustomerExceptController extends Controller
 
         $sql_query = "select `monthly_plans`.*, `province`.`PROVINCE_NAME`, `customer_shops_saleplan_result`.*, 
         `customer_shops_saleplan`.*, `customer_shops_saleplan`.`shop_aprove_status` as `saleplan_shop_aprove_status`, 
+        `customer_shops_saleplan`.`id` as `customer_shops_saleplan_id`, 
+        `monthly_plans`.`id` as `monthly_plans_id`, 
         `customer_shops`.* from `customer_shops_saleplan` 
         left join `customer_shops` on `customer_shops`.`id` = `customer_shops_saleplan`.`customer_shop_id` 
         left join `customer_shops_saleplan_result` on `customer_shops_saleplan_result`.`customer_shops_saleplan_id` = `customer_shops_saleplan`.`id` 
         left join `monthly_plans` on `monthly_plans`.`id` = `customer_shops_saleplan`.`monthly_plan_id` 
         left join `province` on `province`.`PROVINCE_ID` = `customer_shops`.`shop_province_id` 
         left join `users` on `customer_shops_saleplan`.`created_by` = `users`.`id` 
-        where `customer_shops`.`shop_status` != ? and `users`.`status` = ?";
+        where `customer_shops`.`shop_status` != ? and `users`.`status` = ? ";
 
         $parameter = [2, 1];
         $sql_query_where_team = "";
@@ -125,6 +127,8 @@ class ApprovalCustomerExceptController extends Controller
 
         $sql_query = "select `monthly_plans`.*, `province`.`PROVINCE_NAME`, `customer_shops_saleplan_result`.*, 
         `customer_shops_saleplan`.*, `customer_shops_saleplan`.`shop_aprove_status` as `saleplan_shop_aprove_status`, 
+        `customer_shops_saleplan`.`id` as `customer_shops_saleplan_id`, 
+        `monthly_plans`.`id` as `monthly_plans_id`, 
         `customer_shops`.* from `customer_shops_saleplan` 
         left join `customer_shops` on `customer_shops`.`id` = `customer_shops_saleplan`.`customer_shop_id` 
         left join `customer_shops_saleplan_result` on `customer_shops_saleplan_result`.`customer_shops_saleplan_id` = `customer_shops_saleplan`.`id` 
@@ -143,7 +147,7 @@ class ApprovalCustomerExceptController extends Controller
         if(!is_null($request->selectteam_sales)){ //-- ทีมขาย
             $team = $request->selectteam_sales;
 
-            $sql_query_where_team .= "and (`users`.`team_id` = ?  or `users`.`team_id` like ? or `users`.`team_id` like ?) ";
+            $sql_query_where_team .= " and (`users`.`team_id` = ?  or `users`.`team_id` like ? or `users`.`team_id` like ?) ";
             $parameter[] = $team;
             $parameter[] = $team.',%';
             $parameter[] = '%'.$team;
@@ -355,6 +359,57 @@ class ApprovalCustomerExceptController extends Controller
         return redirect(url('head/approval_customer_except_detail', $data2->created_by));
 
     }
+
+    public function comment_customer_new_except($shop_id, $shops_saleplan_id, $monthly_plans_id){
+        $data['shop_id'] = $shop_id;
+        $data['shops_saleplan_id'] = $shops_saleplan_id;
+        $data['monthly_plans_id'] = $monthly_plans_id;
+
+        $data['data'] = CustomerShopComment::where('customer_shops_saleplan_id', $shops_saleplan_id)
+        ->where('created_by', Auth::user()->id)->first();
+
+        $data['customer'] = DB::table('customer_shops')->where('id', $shop_id)->first();
+
+        $data['customer_shop_comments'] = DB::table('customer_shop_comments')
+        ->where('customer_shops_saleplan_id', $shops_saleplan_id)
+        ->whereNotIn('created_by', [Auth::user()->id])
+        ->orderby('created_at', 'desc')
+        ->get();
+
+        return view('headManager.create_comment_customer_new_except', $data);
+
+    }
+
+    public function comment_customer_new_except_update(Request $request){
+        // dd($request);
+
+        $data = DB::table('customer_shop_comments')
+        ->where('customer_shops_saleplan_id', $request->shops_saleplan_id)
+        ->where('created_by', Auth::user()->id)
+        ->first();
+
+        if ($data) {
+            DB::table('customer_shop_comments')
+            ->where('customer_shops_saleplan_id', $request->shops_saleplan_id)
+            ->update([
+                'customer_comment_detail' => $request->comment,
+                'updated_by' => Auth::user()->id,
+                'updated_at'=> date('Y-m-d H:i:s')
+            ]);
+        } else {
+            DB::table('customer_shop_comments')
+            ->insert([
+                'customer_shops_saleplan_id' => $request->shops_saleplan_id,
+                'customer_id' => $request->shop_id,
+                'customer_comment_detail' => $request->comment,
+                'created_by' => Auth::user()->id,
+                'created_at'=> date('Y-m-d H:i:s')
+            ]);
+        }
+
+        return redirect(url('head/approval-customer-except'));
+    }
+
 
     public function approval_customer_confirm_all(Request $request)
     {

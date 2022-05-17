@@ -335,6 +335,10 @@
                                                                 </button>
                                                             @endif
 
+                                                            @php 
+                                                                $url_customer_detail = "admin/approval_customer_except_detail";
+                                                            @endphp
+
                                                             <a href="{{ url($url_customer_detail, $shop->id) }}" class="btn btn-icon btn-purple">
                                                                 <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4>
                                                             </a>

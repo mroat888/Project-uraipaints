@@ -303,6 +303,7 @@ Route::get('head/comment_customer_new/{id}/{custsaleplanID}/{createID}', 'HeadMa
 Route::post('head/create_comment_customer_new', 'HeadManager\ApprovalSalePlanController@create_comment_customer_new');
 Route::post('head/approvalsaleplan/search', 'HeadManager\ApprovalSalePlanController@search');
 
+
 Route::get('head/approvalgeneral', 'HeadManager\ApprovalController@index');
 Route::get('head/approvalgeneral/history', function () { return view('headManager.approval_general_history'); });
 Route::get('head/approval_general_detail/{id}', 'HeadManager\ApprovalController@approval_general_detail');
@@ -327,6 +328,8 @@ Route::get('head/approval_customer_except_detail/{id}', 'HeadManager\ApprovalCus
 Route::get('head/comment_customer_except/{id}/{custsaleplanID}/{createID}', 'HeadManager\ApprovalCustomerExceptController@comment_customer_except');
 Route::post('head/create_comment_customer_except', 'HeadManager\ApprovalCustomerExceptController@create_comment_customer_except');
 Route::post('head/approvalcustomer-except/search', 'HeadManager\ApprovalCustomerExceptController@search');
+Route::get('head/comment_customer_new_except/{shop_id}/{shops_saleplan_id}/{monthly_plans_id}', 'HeadManager\ApprovalCustomerExceptController@comment_customer_new_except'); //-- OAT
+Route::post('head/comment_customer_new_except_update', 'HeadManager\ApprovalCustomerExceptController@comment_customer_new_except_update'); //-- OAT
 
 // Note Head Manage
 Route::get('head/note', 'NoteController@note_head');
@@ -432,6 +435,7 @@ Route::post('admin/change_customer_status_update', 'Admin\ChangeCustomerControll
 Route::post('admin/change_customer_status/destroy','Admin\ChangeCustomerController@destroy');
 
 Route::post('admin/change_customer_status/search','Admin\ChangeCustomerController@customerLeadSearch');
+Route::get('admin/approval_customer_except_detail/{id}', 'Admin\ChangeCustomerController@approval_customer_except_detail');
 // Route::post('create_customer', 'Customer\CustomerController@store');
 Route::get('admin/edit_customerLead/{id}', 'Admin\ChangeCustomerController@edit');
 Route::post('admin/update_customerLead', 'Admin\ChangeCustomerController@update');
