@@ -625,11 +625,13 @@ Route::get('/fetch_postcode/{id}',[ProvinceController::class, 'postcode']);
 Route::get('/customer/autocomplete',[CustomerController::class, 'fetch_autocomplete']);
 Route::get('/fetch_customer_shops_byid/{id}','Customer\CustomerController@fetch_customer_shops_byid');
 Route::get('checkstore_campaigns/{seller}/detail/{id}','CheckStoreCampaignsController@show');
+Route::get('sellerdetail/{position}/{seller_level}/{id}', 'SellerDetailController@show');
 
 Route::get('fetch_subgroups/{id}', 'Api\ApiController@fetch_subgroups');
 Route::get('fetch_pdglists/{id}', 'Api\ApiController@fetch_pdglists');
 Route::get('fetch_products/{id}', 'Api\ApiController@fetch_products');
 Route::get('fetch_amphur_api/{position}/{id}', 'Api\ApiController@fetch_amphur_api');
+
 
 
 

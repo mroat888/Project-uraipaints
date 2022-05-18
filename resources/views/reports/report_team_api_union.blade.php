@@ -43,11 +43,13 @@
                                         <th><strong>พื้นที่</strong></th>
                                         <th><strong>รหัส</strong></th>
                                         <th><strong>ชื่อ-นามสกุล</strong></th>
-                                        <th><strong>ตัวแทนขาย</strong></th>
-                                        <th><strong>ลูกค้าทั้งหมด</strong></th>
-                                        <th><strong>ลูกค้า Active</strong></th>
-                                        <th><strong>ลูกค้า InActive</strong></th>
-                                        <th><strong>Hold_total</strong></th>
+                                        <th><strong>ตัวแทนขาย (คน)</strong></th>
+                                        <th><strong>ลูกค้าทั้งหมด (ราย)</strong></th>
+                                        <th><strong>ลูกค้า Active (ราย)</strong></th>
+                                        <th><strong>ลูกค้า InActive (ราย)</strong></th>
+                                        <!-- <th><strong>Hold_total</strong></th> -->
+                                        <th><strong>% ลูกค้า Actice</strong></th>
+                                        <th><strong>Action</strong></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -61,6 +63,9 @@
                                             $sum_hold_total = 0;
                                         @endphp
                                         @foreach($resteam_api[0]['Sale_Leader'] as $key => $value)
+                                            @php 
+                                                $present_active = ($value['active_total'] * 100)/$value['customer_total'];
+                                            @endphp
                                         <tr style="text-align:center">
                                             <th scope="row">{{ ++$no }}</th>
                                             <th scope="row">{{ $value['zone_name'] }}</th>
@@ -70,7 +75,15 @@
                                             <td>{{ number_format($value['customer_total']) }}</td>
                                             <td>{{ number_format($value['active_total']) }}</td>
                                             <td>{{ number_format($value['inactive_total']) }}</td>
-                                            <td>{{ number_format($value['hold_total']) }}</td>
+                                            {{-- <!-- <td>{{ number_format($value['hold_total']) }}</td> --> --}}
+                                            <td>{{ number_format($present_active,2) }}</td>
+                                            <td>
+                                                @php
+                                                    $pathurl_leader = url($path_detail).'/saleleaders/'.$value['saleleader_id'];
+                                                @endphp
+                                                <a href="{{ $pathurl_leader }}" class="btn btn-icon btn-purple mr-10">
+                                                <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></a>
+                                            </td>
                                         </tr>
                                             @php 
                                                 $sum_seller_total += $value['seller_total'];
@@ -78,6 +91,8 @@
                                                 $sum_active_total += $value['active_total'];
                                                 $sum_inactive_total += $value['inactive_total'];
                                                 $sum_hold_total += $value['hold_total'];
+
+                                                $sum_present_active = ($sum_active_total * 100) / $sum_customer_total;
                                             @endphp
                                         @endforeach
                                     @endif
@@ -88,7 +103,9 @@
                                     <td><strong>{{ number_format($sum_customer_total) }}</strong></td>
                                     <td><strong>{{ number_format($sum_active_total) }}</strong></td>
                                     <td><strong>{{ number_format($sum_inactive_total) }}</strong></td>
-                                    <td><strong>{{ number_format($sum_hold_total) }}</strong></td>
+                                    <!-- <td><strong>{{ number_format($sum_hold_total) }}</strong></td> -->
+                                    <td><strong>{{ number_format($sum_present_active,2) }}</strong></td>
+                                    <td></td>
                                 </tfoot>
                             </table>
                         </div>
@@ -127,7 +144,9 @@
                                             <th><strong>ลูกค้าทั้งหมด</strong></th>
                                             <th><strong>ลูกค้า Active</strong></th>
                                             <th><strong>ลูกค้า InActive</strong></th>
-                                            <th><strong>Hold_total</strong></th>
+                                            <!-- <th><strong>Hold_total</strong></th> -->
+                                            <th><strong>% ลูกค้า Actice</strong></th>
+                                            <th><strong>Action</strong></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -140,6 +159,9 @@
                                                 $sum_hold_total = 0;
                                             @endphp
                                             @foreach($resteam_api[1]['Sale_Seller'] as $key => $value)
+                                                @php 
+                                                    $present_active = ($value['active_total'] * 100)/$value['customer_total'];
+                                                @endphp
                                             <tr style="text-align:center">
                                                 <th scope="row">{{ ++$no }}</th>
                                                 <th scope="row">{{ $value['sector_name'] }}</th>
@@ -148,13 +170,23 @@
                                                 <td>{{ number_format($value['customer_total']) }}</td>
                                                 <td>{{ number_format($value['active_total']) }}</td>
                                                 <td>{{ number_format($value['inactive_total']) }}</td>
-                                                <td>{{ number_format($value['hold_total']) }}</td>
+                                                {{-- <!-- <td>{{ number_format($value['hold_total']) }}</td> --> --}}
+                                                <td>{{ number_format($present_active,2) }}</td>
+                                                <td>
+                                                    @php
+                                                        $pathurl_seller = url($path_detail).'/sellers/'.$value['sellercode'];
+                                                    @endphp
+                                                    <a href="{{ $pathurl_seller }}" class="btn btn-icon btn-purple mr-10">
+                                                    <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></a>
+                                                </td>
                                             </tr>
                                                 @php 
                                                     $sum_customer_total += $value['customer_total'];
                                                     $sum_active_total += $value['active_total'];
                                                     $sum_inactive_total += $value['inactive_total'];
                                                     $sum_hold_total += $value['hold_total'];
+
+                                                    $sum_present_active = ($sum_active_total * 100) / $sum_customer_total;
                                                 @endphp
                                             @endforeach
                                         @endif
@@ -164,7 +196,9 @@
                                         <td><strong>{{ number_format($sum_customer_total) }}</strong></td>
                                         <td><strong>{{ number_format($sum_active_total) }}</strong></td>
                                         <td><strong>{{ number_format($sum_inactive_total) }}</strong></td>
-                                        <td><strong>{{ number_format($sum_hold_total) }}</strong></td>
+                                        <!-- <td><strong>{{ number_format($sum_hold_total) }}</strong></td> -->
+                                        <td><strong>{{ number_format($sum_present_active,2) }}</strong></td>
+                                        <td></td>
                                     </tfoot>
                                 </table>
                             </div>
