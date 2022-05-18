@@ -5,7 +5,6 @@
  <nav class="hk-breadcrumb" aria-label="breadcrumb">
     <ol class="breadcrumb breadcrumb-light bg-transparent">
         <li class="breadcrumb-item active">โปรโมชั่น</li>
-        {{-- <li class="breadcrumb-item active" aria-current="page">ปฎิทินกิจกรรม</li> --}}
     </ol>
 </nav>
 <!-- /Breadcrumb -->
@@ -14,6 +13,16 @@
     <div class="container-fluid px-xxl-65 px-xl-20">
         <!-- Title -->
         <div class="hk-pg-header mb-10">
+            <div class="topichead-bgred"><i class="ion ion-md-gift"></i> บันทึกแจ้งรายการโปรโมชั่น</div>
+            <div class="content-right d-flex">
+                <button type="button" class="btn-green" data-toggle="modal" data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button>
+                <a href="{{url('admin/promotionBanner')}}" type="" class="btn btn-purple btn-rounded ml-2"> + เพิ่มแบนเนอร์ </a>
+            </div>
+        </div>
+        <!-- /Title -->
+
+        <!-- Title -->
+        {{-- <div class="hk-pg-header mb-10">
             <div>
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
                     data-feather="gift"></i></span></span>บันทึกรายการโปรโมชั่น</h4>
@@ -21,11 +30,11 @@
             <div class="d-flex">
                 <button type="button" class="btn btn-teal btn-sm btn-rounded px-3" data-toggle="modal" data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button>
             </div>
-        </div>
+        </div> --}}
         <!-- /Title -->
 
             <section class="hk-sec-wrapper">
-                <h5 class="hk-sec-title">ตารางรายการโปรโมชั่น</h5>
+                <h5 class="hk-sec-title">รายการแจ้งโปรโมชั่น</h5>
                 <div class="row">
                     <div class="col-sm">
                         <div class="table-wrap">
@@ -37,15 +46,15 @@
                                 <div class="d-flex">
                                     <select name="status_promotion" class="form-control custom-select">
                                         <option selected disabled>เลือกข้อมูล</option>
-                                            <option value="">ทั้งหมด</option>
+                                            {{-- <option value="">ทั้งหมด</option> --}}
                                             <option value="1">Active</option>
                                             <option value="0">Expired</option>
                                     </select>
-                                    <button type="submit" class="btn btn-info btn-sm mr-15 ml-2">ค้นหา</button>
+                                    <button type="submit" class="btn btn-green btn-sm mr-15 ml-2">ค้นหา</button>
                                 </div>
                             </form>
                             </div>
-                            <div class="table-responsive col-md-12">
+                            <div class="table-responsive table-color col-md-12">
                                 <table id="datable_1" class="table table-hover">
                                 <thead>
                                     <tr>
@@ -63,26 +72,41 @@
                                     <tr>
                                         <td>{{$key + 1}}</td>
                                         <td>{{$value->news_title}}</td>
-                                        <td><img src="{{ isset($value->news_image) ? asset('public/upload/PromotionImage/' . $value->news_image) : '' }}" width="100"></td>
+                                        <td>
+                                            <a href="{{url('admin/promotion-view-detail', $value->id)}}">
+                                            <img src="{{ isset($value->news_image) ? asset('public/upload/PromotionImage/' . $value->news_image) : '' }}" width="100">
+                                            </a>
+                                        </td>
                                         <td>{{$value->news_date}}</td>
                                         <td>{{$value->news_date_last}}</td>
                                         <td>
-                                            @if ($value->status_promotion != "NULL")
-                                            <span class='badge badge-soft-success mx-1' style='font-size: 14px;'>Active</span>
+                                            @if ($value->status_usage == 1)
+                                            <span class='badge badge-soft-success mx-1' style='font-size: 14px;'>ใช้งาน</span>
                                             @else
-                                            <span class='badge badge-soft-danger mx-1' style='font-size: 14px;'>Expired</span>
+                                            <span class='badge badge-soft-danger mx-1' style='font-size: 14px;'>ไม่ใช้งาน</span>
 
                                             @endif
                                         </td>
                                         <td>
                                             <div class="button-list">
-                                                {{-- <button class="btn btn-icon btn-primary mr-10">
-                                                    <span class="btn-icon-wrap"><i data-feather="feather"></i></span></button> --}}
+                                                <a href="{{ url('admin/update-promotion-status-use', $value->id)}}" class="btn btn-icon btn-teal">
+                                                    <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">settings_power</span></h4>
+                                                </a>
+                                                    <a href="{{ url('admin/promotion-gallery', $value->id)}}" class="btn btn-icon btn-purple">
+                                                            <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">collections</span></h4>
+                                                        </a>
                                                     <button onclick="edit_modal({{ $value->id }})"
-                                                        class="btn btn-icon btn-warning mr-10" data-toggle="modal" data-target="#editPromotion">
-                                                        <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
-                                                        <a href="{{url('admin/delete_promotion', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
-                                                            <span class="btn-icon-wrap"><i data-feather="trash-2"></i></span></a>
+                                                        class="btn btn-icon btn-edit" data-toggle="modal" data-target="#editPromotion">
+                                                        <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">
+                                                            drive_file_rename_outline</span></h4>
+                                                        </button>
+
+                                                            @if ($value->status_usage == 0)
+                                                            <a href="{{url('admin/delete_promotion', $value->id)}}" class="btn btn-icon btn-danger" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
+                                                                <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">
+                                                                    delete_outline</span></h4>
+                                                            </a>
+                                                            @endif
                                             </div>
                                         </td>
                                     </tr>
@@ -102,7 +126,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">ฟอร์มบันทึกโปโมชั่น</h5>
+                    <h5 class="modal-title">เพิ่มประกาศ (โปโมชั่น)</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

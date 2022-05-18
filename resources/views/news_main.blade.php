@@ -1,19 +1,28 @@
 <div class="row">
     <div class="col-md-12">
         <section class="hk-sec-wrapper">
-            <div class="topichead-bgred">รายการข่าวสาร</div>
+            <div class="topic-secondgery">รายการข่าวสาร</div>
             <div class="hk-pg-header mb-10" style="margin-top: 30px;">
                 <div class="col-sm-12 col-md-12">
                     <span class="form-inline pull-right pull-sm-center">
-                        <span id="selectdate">
-                            ปี/เดือน : <input type="month" id="selectdateFrom" name="selectdateFrom"
-                            value="" class="form-control form-control-sm"
-                            style="margin-left:10px; margin-right:10px;"/>
-                            <select name="" id="" class="form-control form-control-sm">
-                                <option value="">ป้ายกำกับ</option>
-                            </select>
-                            <button style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm" id="submit_request">ค้นหา</button>
-                        </span>
+                        <form action="{{ url('search_news') }}" method="post" enctype="multipart/form-data">
+                            @csrf
+                            <span id="selectdate">
+                                ปี/เดือน : <input type="month" id="selectdateFrom" name="selectdateFrom"
+                                value="" class="form-control form-control-sm"
+                                style="margin-left:10px; margin-right:10px;"/>
+                                <select name="tag" id="" class="form-control form-control-sm">
+                                    @php
+                                        $tags = App\MasterNews::orderBy('id', 'desc')->get();
+                                    @endphp
+                                    <option value="" disabled selected>เลือกป้ายกำกับ</option>
+                                    @foreach ($tags as $value)
+                                        <option value="{{$value->id}}">{{$value->name_tag}}</option>
+                                    @endforeach
+                                </select>
+                                <button style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm" id="submit_request">ค้นหา</button>
+                            </span>
+                        </form>
                     </span>
 
                 </div>
@@ -52,7 +61,7 @@
                     </div>
 
                 </div>
-                <div class="col-md-12 text-right" style="font-size: 18px;"><div class="boxnews-date">อัพเดตวันที่ : {{$value->updated_at->format('d/m/Y')}}</div></div>
+                <div class="col-md-12 text-right" style="font-size: 14px;"><div class="news-update">อัพเดตวันที่ : {{$value->updated_at->format('d/m/Y')}}</div></div>
             </div>
             @endforeach
         </section>

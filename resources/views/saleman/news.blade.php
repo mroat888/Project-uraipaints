@@ -14,13 +14,9 @@
     <!-- Container -->
     <div class="container-fluid px-xxl-65 px-xl-20">
          <!-- Title -->
-         <div class="hk-pg-header mb-10">
-            <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon">
-                    <i class="ion ion-md-wifi"></i></span>ข่าวสาร</h4>
-            </div>
-            <div class="d-flex">
-
+        <div class="hk-pg-header mb-10">
+            <div class="topichead-bgred"><i data-feather="file-text"></i> ข่าวสาร</div>
+            <div class="content-right d-flex">
             </div>
         </div>
         <!-- /Title -->
