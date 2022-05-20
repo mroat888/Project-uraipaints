@@ -711,3 +711,4 @@ Route::get('/api_fetch_provinces', 'Api\ApiController@api_fetch_provinces');
 Route::get('/api_fetch_amphures', 'Api\ApiController@api_fetch_amphures');  
 Route::get('/api_fetch_customers', 'Api\ApiController@api_fetch_customers');  
 Route::get('/api_fetch_pdglists', 'Api\ApiController@api_fetch_pdglists');  
+Route::get('/api_convert_pdglist_customer', 'Api\ApiController@api_convert_pdglist_customer');

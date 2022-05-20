@@ -1016,6 +1016,93 @@ class ApiController extends Controller
         }
     }
 
+    public function api_fetch_pdglists(){ // ดึงสินค้า pdglists
+        DB::beginTransaction();
+        try {
+            $api_token = $this->apiToken();
+            $path_search = "pdglists";
+            $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+            $res_api = $response->json();
+            
+            if($res_api['code'] == 200){
+                foreach($res_api['data'] as $api_key => $api_value){
+                    $api_provinces = DB::table('api_pdglists')->where('identify', $api_value['identify'])->first();
+                    if(is_null($api_provinces)){
+                        DB::table('api_pdglists')
+                        ->insert([
+                            'identify'  => $api_value['identify'],
+                            'name' => $api_value['name'],
+                            'sub_code' => $api_value['sub_code'],
+                        ]);
+                    }else{
+                        DB::table('api_pdglists')
+                        ->where('identify', $api_value['identify'])
+                        ->update([
+                            'identify'  => $api_value['identify'],
+                            'name' => $api_value['name'],
+                            'sub_code' => $api_value['sub_code'],
+                        ]);
+                    }
+                }
+            }
+            DB::commit();
+            return response()->json([
+                'status' => 200,
+                'message' => 'บันทึกข้อมูลสำเร็จ',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกข้อมูลได้',
+            ]);
+        }
+    }
+
+    public function api_convert_pdglist_customer(){ // ดึง ข้อมูลลูกค้า เปรียเทียบ สินค้าที่ซื้อ
+        DB::beginTransaction();
+        try {
+            $api_token = $this->apiToken();
+            $api_pdglists = DB::table('api_pdglists')->get();
+
+            foreach($api_pdglists as $pdglists){
+                $path_search = "pdglists/".$pdglists->identify."/customers";
+                $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+                $res_api = $response->json();
+
+                if($res_api['code'] == 200){
+                    foreach($res_api['data'] as $api_key => $api_value){
+                        $api_provinces = DB::table('api_convert_pdglist_customer')
+                        ->where('pdglist_identify', $pdglists->identify)
+                        ->where('customers_identify', $api_value['identify'])
+                        ->first();
+                        
+                        if(is_null($api_provinces)){
+                            DB::table('api_convert_pdglist_customer')
+                            ->insert([
+                                'pdglist_identify'  => $pdglists->identify,
+                                'customers_identify' => $api_value['identify'],
+                            ]);
+                        }
+
+                    }
+                }
+            }
+
+            DB::commit();
+            return response()->json([
+                'status' => 200,
+                'message' => 'บันทึกข้อมูลสำเร็จ',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกข้อมูลได้',
+            ]);
+        }
+    }
+
 
     /**
      * --- จบการดึง ดึงข้อมูลจาก API ลงฐานข้อมูลระบบ
