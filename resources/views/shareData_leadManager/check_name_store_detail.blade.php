@@ -4,10 +4,8 @@
 
 @include('shareData_union.check_name_store_detail')
 
-@section('footer')
-    @include('layouts.footer')
 @endsection
 
-
-
+@section('footer')
+    @include('layouts.footer')
 @endsection

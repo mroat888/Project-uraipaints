@@ -703,3 +703,11 @@ Route::get('/', 'HomeController@index')->name('home');
         Artisan::call('view:clear');
         return "Cache is cleared";
     });
+
+
+// Route ดึงข้อมูล APi ลงฐานข้อมูล
+
+Route::get('/api_fetch_provinces', 'Api\ApiController@api_fetch_provinces');  
+Route::get('/api_fetch_amphures', 'Api\ApiController@api_fetch_amphures');  
+Route::get('/api_fetch_customers', 'Api\ApiController@api_fetch_customers');  
+Route::get('/api_fetch_pdglists', 'Api\ApiController@api_fetch_pdglists');  

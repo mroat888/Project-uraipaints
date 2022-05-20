@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 use DataTables;
@@ -841,6 +842,184 @@ class ApiController extends Controller
     //-- จบ สำหรับ Admin--
 
 
+
+    /**
+     *  --- ดึงข้อมูลจาก API ลงฐานข้อมูลระบบ
+     */
+
+    public function api_fetch_provinces(){ //-- ดึงจังหวัด
+        DB::beginTransaction();
+        try {
+            $api_token = $this->apiToken();
+            $path_search = "provinces";
+            $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+            $res_api = $response->json();
+            
+            if($res_api['code'] == 200){
+                foreach($res_api['data'] as $api_key => $api_value){
+                    $api_provinces = DB::table('api_provinces')->where('identify', $api_value['identify'])->first();
+                    if(is_null($api_provinces)){
+                        DB::table('api_provinces')
+                        ->insert([
+                            'identify'  => $api_value['identify'],
+                            'name_thai' => $api_value['name_thai'],
+                            'region_id' => $api_value['region_id']
+                        ]);
+                    }else{
+                        DB::table('api_provinces')
+                        ->where('identify', $api_value['identify'])
+                        ->update([
+                            'name_thai' => $api_value['name_thai'],
+                            'region_id' => $api_value['region_id']
+                        ]);
+                    }
+                }
+            }
+            DB::commit();
+            return response()->json([
+                'status' => 200,
+                'message' => 'บันทึกข้อมูลสำเร็จ',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกข้อมูลได้',
+            ]);
+        }
+    }
+
+    public function api_fetch_amphures(){ //-- ดึง อำเภอ
+        DB::beginTransaction();
+        try {
+            $api_token = $this->apiToken();
+            $path_search = "amphures";
+            $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+            $res_api = $response->json();
+            
+            if($res_api['code'] == 200){
+                foreach($res_api['data'] as $api_key => $api_value){
+                    $api_provinces = DB::table('api_amphures')->where('identify', $api_value['identify'])->first();
+                    if(is_null($api_provinces)){
+                        DB::table('api_amphures')
+                        ->insert([
+                            'identify'  => $api_value['identify'],
+                            'name_thai' => $api_value['name_thai'],
+                            'province_id' => $api_value['province_id']
+                        ]);
+                    }else{
+                        DB::table('api_amphures')
+                        ->where('identify', $api_value['identify'])
+                        ->update([
+                            'name_thai' => $api_value['name_thai'],
+                            'province_id' => $api_value['province_id']
+                        ]);
+                    }
+                }
+            }
+            DB::commit();
+            return response()->json([
+                'status' => 200,
+                'message' => 'บันทึกข้อมูลสำเร็จ',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกข้อมูลได้',
+            ]);
+        }
+    }
+
+    public function api_fetch_customers(){ //-- ดึง ลูกค้า
+        DB::beginTransaction();
+        try {
+            $api_token = $this->apiToken();
+            $path_search = "customers";
+            $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+            $res_api = $response->json();
+            
+            if($res_api['code'] == 200){
+                foreach($res_api['data'] as $api_key => $api_value){
+                    $api_provinces = DB::table('api_customers')->where('identify', $api_value['identify'])->first();
+                    if(is_null($api_provinces)){
+                        DB::table('api_customers')
+                        ->insert([
+                            'identify'  => $api_value['identify'],
+                            'title' => $api_value['title'],
+                            'name' => $api_value['name'],
+                            'address1' => $api_value['address1'],
+                            'adrress2' => $api_value['adrress2'],
+                            'postal_id' => $api_value['postal_id'],
+                            'telephone' => $api_value['telephone'],
+                            'mobile' => $api_value['mobile'],
+                            'contact' => $api_value['contact'],
+                            'regional_id' => $api_value['regional_id'],
+                            'province_id' => $api_value['province_id'],
+                            'amphoe_id' => $api_value['amphoe_id'],
+                            'regional_name' => $api_value['regional_name'],
+                            'province_name' => $api_value['province_name'],
+                            'amphoe_name' => $api_value['amphoe_name'],
+                            'focusdate' => $api_value['focusdate'],
+                            'InMonthDays' => $api_value['InMonthDays'],
+                            'TotalDays' => $api_value['TotalDays'],
+                            'TotalCampaign' => $api_value['TotalCampaign'],
+                            'TotalLimit' => $api_value['TotalLimit'],
+                            'TotalAmount' => $api_value['TotalAmount'],
+                            'DiffAmt' => $api_value['DiffAmt'],
+                            'SellerCode' => $api_value['SellerCode'],
+                            'image_url' => $api_value['image_url'],
+                        ]);
+                    }else{
+                        DB::table('api_customers')
+                        ->where('identify', $api_value['identify'])
+                        ->update([
+                            'identify'  => $api_value['identify'],
+                            'title' => $api_value['title'],
+                            'name' => $api_value['name'],
+                            'address1' => $api_value['address1'],
+                            'adrress2' => $api_value['adrress2'],
+                            'postal_id' => $api_value['postal_id'],
+                            'telephone' => $api_value['telephone'],
+                            'mobile' => $api_value['mobile'],
+                            'contact' => $api_value['contact'],
+                            'regional_id' => $api_value['regional_id'],
+                            'province_id' => $api_value['province_id'],
+                            'amphoe_id' => $api_value['amphoe_id'],
+                            'regional_name' => $api_value['regional_name'],
+                            'province_name' => $api_value['province_name'],
+                            'amphoe_name' => $api_value['amphoe_name'],
+                            'focusdate' => $api_value['focusdate'],
+                            'InMonthDays' => $api_value['InMonthDays'],
+                            'TotalDays' => $api_value['TotalDays'],
+                            'TotalCampaign' => $api_value['TotalCampaign'],
+                            'TotalLimit' => $api_value['TotalLimit'],
+                            'TotalAmount' => $api_value['TotalAmount'],
+                            'DiffAmt' => $api_value['DiffAmt'],
+                            'SellerCode' => $api_value['SellerCode'],
+                            'image_url' => $api_value['image_url'],
+                        ]);
+                    }
+                }
+            }
+            DB::commit();
+            return response()->json([
+                'status' => 200,
+                'message' => 'บันทึกข้อมูลสำเร็จ',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกข้อมูลได้',
+            ]);
+        }
+    }
+
+
+    /**
+     * --- จบการดึง ดึงข้อมูลจาก API ลงฐานข้อมูลระบบ
+     */
 
 
 
