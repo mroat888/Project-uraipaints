@@ -81,7 +81,7 @@
                                             @foreach($cust_campaigns_api as $key => $value)
                                             <tr>
                                                 <td style="text-align:left;">{{ $key+1 }}</td>
-                                                <td style="text-align:center;">{{ $cust_campaigns_api[$key]['year'] }}</td>
+                                                <td style="text-align:center;">{{ $cust_campaigns_api[$key]['year']+543 }}</td>
                                                 <td style="text-align:left;">{{ $cust_campaigns_api[$key]['campaign_id'] }}</td>
                                                 <td style="text-align:left;">{{ $cust_campaigns_api[$key]['description'] }}</td>
                                                 <td style="text-align:right;">{{ number_format($cust_campaigns_api[$key]['amount_limit'],2) }}</td>
@@ -141,11 +141,11 @@
                                             @foreach($year_sum as $key => $value)
                                             <tr>
                                                 <td style="text-align:left;">{{ $key+1 }}</td>
-                                                <td style="text-align:center;">{{ $year_sum[$key]['year']}}</td>
+                                                <td style="text-align:center;">{{ $year_sum[$key]['year']+543 }}</td>
                                                 <td style="text-align:right;">{{ number_format($year_sum[$key]['amount_limit'],2) }}</td>
                                                 <td style="text-align:right;">{{ number_format($year_sum[$key]['saleamount'],2) }}</td>
                                                 <td style="text-align:right;">
-                                                @php
+                                                    @php
                                                         if($year_sum[$key]['amount_diff'] < 0){
                                                             $text_red = "color:#FF0000";
                                                         }else{

@@ -18,6 +18,7 @@ class FullCalendarController extends Controller
 
     public function index()
     {
+        // dd('sdasd');
         if(request()->ajax())
         {
 

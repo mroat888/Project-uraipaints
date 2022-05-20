@@ -46,10 +46,14 @@
                 }
             });
             var calendar = $('#calendar').fullCalendar({
-                editable: true,
+                // header: {
+                //     left: 'prev,next today',  
+                //     center: 'title',
+                //     right: 'month,agendaWeek,agendaDay',
+                // },   
+                editable: false,
                 events: "calendar", // -- แก้ไข url ได้
                 displayEventTime: false,
-                editable: true,
                 eventColor: '#6A5ACD',
                 eventTextColor: '#FFFFFF',
                 eventRender: function(event, element, view) {

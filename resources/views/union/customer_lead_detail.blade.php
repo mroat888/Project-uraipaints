@@ -95,138 +95,72 @@
         @endphp
         @foreach($customer_shops_saleplan as $key => $cust_shops_saleplan)
             <!-- ส่วนของแผน Saleman ---- -->
-            @if(($even_number % 2) == 0) <!-- หารเอาเศษ เช็คเลขคู่ -->
-                <div class="row">
-                    <div class="col-2" style="text-align:center;">
-                        @php
-                            $user = DB::table('users')
-                                ->where('id', $cust_shops_saleplan->created_by)
-                                ->orderBy('id', 'desc')
-                                ->first();
-                        @endphp
-                        <img src="{{ asset('/public/images/people-33.png')}}" alt="{{ $user->name }}" class="avatar-img">
-                        <div>{{ $user->name }}</div>
-                    </div>
-                    <div class="col-10">
-                        <section class="hk-sec-wrapper">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="row">
-                                        <div class="col-md-4 col-lg-4">
-                                            <p class="detail_listcus">
-                                                <i class="ion ion-md-calendar"></i>
-                                                <span> เดือน</span> :
-                                                @php
-                                                    $monthly_plans = DB::table('monthly_plans')
-                                                    ->where('id', $cust_shops_saleplan->monthly_plan_id)
-                                                    ->first();
-                                                @endphp
-                                                @if(!empty($monthly_plans))
-                                                    {{ thaidate('F Y', $monthly_plans->month_date) }}
-                                                @endif
-                                            </p>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <hr>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="desc_cusnote">
-                                                <blockquote class="blockquote mb-0">
-                                                    @php
-                                                        $master_objective = DB::table('master_objective_saleplans')
-                                                            ->where('id', $cust_shops_saleplan->customer_shop_objective)
-                                                            ->first();
-                                                        if(!is_null($master_objective)){
-                                                            $customer_shop_objective = $master_objective->masobj_title;
-                                                        }else{
-                                                            $customer_shop_objective = "ไม่ระบุ";
-                                                        }
-                                                    @endphp
-                                                    <p>	วัตถุประสงค์ : {{ $customer_shop_objective }}</p>
-                                                </blockquote>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 mt-15">
-                                            @php
-                                                list($sale_date, $sale_time) = explode(' ',$cust_shops_saleplan->created_at);
-                                            @endphp
-                                            วันที่ : {{ $sale_date }} เวลา : {{ $sale_time }}
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr>
-                            </div>
-                        </section>
-                    </div>
-                </div>
-                @php $even_number++; @endphp
-            @else
-                <div class="row">
-                    <div class="col-10">
+            
+            <div class="row">
+                <div class="col-10">
 
-                        <section class="hk-sec-wrapper">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="row">
-                                        <div class="col-md-4 col-lg-4">
-                                            <p class="detail_listcus">
-                                                <i class="ion ion-md-calendar"></i>
-                                                <span> เดือน</span> :
-                                                @php
-                                                    $monthly_plans = DB::table('monthly_plans')
-                                                    ->where('id', $cust_shops_saleplan->monthly_plan_id)
-                                                    ->first();
-                                                @endphp
-                                                @if(!empty($monthly_plans->month_date))
-                                                    {{ thaidate('F Y', $monthly_plans->month_date) }}
-                                                @endif
-                                            </p>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <hr>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="desc_cusnote">
-                                                <blockquote class="blockquote mb-0">
-                                                    @php
-                                                        $master_objective = DB::table('master_objective_saleplans')
-                                                            ->where('id', $cust_shops_saleplan->customer_shop_objective)
-                                                            ->first();
-                                                        if(!is_null($master_objective)){
-                                                            $customer_shop_objective = $master_objective->masobj_title;
-                                                        }else{
-                                                            $customer_shop_objective = "ไม่ระบุ";
-                                                        }
-                                                    @endphp
-                                                    <p>	วัตถุประสงค์ : {{ $customer_shop_objective }}</p>
-                                                </blockquote>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 mt-15">
+                    <section class="hk-sec-wrapper">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-4 col-lg-4">
+                                        <p class="detail_listcus">
+                                            <i class="ion ion-md-calendar"></i>
+                                            <span> เดือน</span> :
                                             @php
-                                                list($sale_date, $sale_time) = explode(' ',$cust_shops_saleplan->created_at);
+                                                $monthly_plans = DB::table('monthly_plans')
+                                                ->where('id', $cust_shops_saleplan->monthly_plan_id)
+                                                ->first();
                                             @endphp
-                                            วันที่ : {{ $sale_date }} เวลา : {{ $sale_time }}
+                                            @if(!empty($monthly_plans->month_date))
+                                                {{ thaidate('F Y', $monthly_plans->month_date) }}
+                                            @endif
+                                        </p>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <hr>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="desc_cusnote">
+                                            <blockquote class="blockquote mb-0">
+                                                @php
+                                                    $master_objective = DB::table('master_objective_saleplans')
+                                                        ->where('id', $cust_shops_saleplan->customer_shop_objective)
+                                                        ->first();
+                                                    if(!is_null($master_objective)){
+                                                        $customer_shop_objective = $master_objective->masobj_title;
+                                                    }else{
+                                                        $customer_shop_objective = "ไม่ระบุ";
+                                                    }
+                                                @endphp
+                                                <p>	วัตถุประสงค์ : {{ $customer_shop_objective }}</p>
+                                            </blockquote>
                                         </div>
                                     </div>
+                                    <div class="col-md-12 mt-15">
+                                        @php
+                                            list($sale_date, $sale_time) = explode(' ',$cust_shops_saleplan->created_at);
+                                        @endphp
+                                        วันที่ : {{ thaidate('d F Y', $sale_date) }} เวลา : {{ $sale_time }}
+                                    </div>
                                 </div>
-                                <hr>
                             </div>
-                        </section>
-                    </div>
-                    <div class="col-2" style="text-align:center;">
-                        @php
-                            $user = DB::table('users')
-                                ->where('id', $cust_shops_saleplan->created_by)
-                                ->orderBy('id', 'desc')
-                                ->first();
-                        @endphp
-                        <img src="{{ asset('/public/images/people-33.png')}}" alt="{{ $user->name }}" class="avatar-img">
-                        <div>{{ $user->name }}</div>
-                    </div>
+                            <hr>
+                        </div>
+                    </section>
                 </div>
-                @php $even_number++; @endphp
-            @endif
+                <div class="col-2" style="text-align:center;">
+                    @php
+                        $user = DB::table('users')
+                            ->where('id', $cust_shops_saleplan->created_by)
+                            ->orderBy('id', 'desc')
+                            ->first();
+                    @endphp
+                    <img src="{{ asset('/public/images/people-33.png')}}" alt="{{ $user->name }}" class="avatar-img">
+                    <div>{{ $user->name }}</div>
+                </div>
+            </div>
+
 
 
             <!-- จบ ส่วนของแผน Saleman ---- -->
@@ -241,100 +175,53 @@
             @endphp
 
             @foreach($customer_shop_comments as $comment)
-                @if(($even_number % 2) != 0) <!-- หารเอาเศษ เช็คเลขคี่ -->
-                    <div class="row">
-                        <div class="col-10">
-                            <section class="hk-sec-wrapper">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="row">
-                                            <div class="col-md-4 col-lg-4">
-                                                <p class="detail_listcus">
-                                                    <i class="ion ion-md-calendar"></i>
-                                                    <span> เดือน</span> :
-                                                    @php
-                                                        $monthly_plans = DB::table('monthly_plans')
-                                                        ->where('id', $cust_shops_saleplan->monthly_plan_id)
-                                                        ->first();
-                                                    @endphp
-                                                    {{ thaidate('F Y', $monthly_plans->month_date) }}
-                                                </p>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="desc_cusnote">
-                                                    <blockquote class="blockquote mb-0">
-                                                        <p>{{ $comment->customer_comment_detail }}</p>
-                                                    </blockquote>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 mt-15">
-                                                @php
-                                                    list($sale_date, $sale_time) = explode(' ',$comment->created_at);
-                                                @endphp
-                                                วันที่ : {{ $sale_date }} เวลา : {{ $sale_time }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                </div>
-                            </section>
-                        </div>
-                        <div class="col-2" style="text-align:center;">
-                            <img src="{{ asset('/public/images/people-33.png')}}" alt="{{ $comment->name }}" class="avatar-img">
-                            <div>{{ $comment->name }}</div>
-                        </div>
-                    </div>
-                @else
-                    <div class="row">
-                        <div class="col-2" style="text-align:center;">
-                            <img src="{{ asset('/public/images/people-33.png')}}" alt="{{ $comment->name }}" class="avatar-img">
-                            <div>{{ $comment->name }}</div>
-                        </div>
-                        <div class="col-10">
-                            <section class="hk-sec-wrapper">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="row">
-                                            <div class="col-md-4 col-lg-4">
-                                                <p class="detail_listcus">
-                                                    <i class="ion ion-md-calendar"></i>
-                                                    <span> เดือน</span> :
-                                                    @php
-                                                        $monthly_plans = DB::table('monthly_plans')
-                                                        ->where('id', $cust_shops_saleplan->monthly_plan_id)
-                                                        ->first();
-                                                    @endphp
-                                                    {{ thaidate('F Y', $monthly_plans->month_date) }}
-                                                </p>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="desc_cusnote">
-                                                    <blockquote class="blockquote mb-0">
-                                                        <p>{{ $comment->customer_comment_detail }}</p>
-                                                    </blockquote>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 mt-15">
-                                                @php
-                                                    list($sale_date, $sale_time) = explode(' ',$comment->created_at);
-                                                @endphp
-                                                วันที่ : {{ $sale_date }} เวลา : {{ $sale_time }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                </div>
-                            </section>
-                        </div>
-                    </div>
 
-                @endif
+                <div class="row">
+                    <div class="col-2" style="text-align:center;">
+                        <img src="{{ asset('/public/images/people-33.png')}}" alt="{{ $comment->name }}" class="avatar-img">
+                        <div>{{ $comment->name }}</div>
+                    </div>
+                    <div class="col-10">
+                        <section class="hk-sec-wrapper">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-4 col-lg-4">
+                                            <p class="detail_listcus">
+                                                <i class="ion ion-md-calendar"></i>
+                                                <span> เดือน</span> :
+                                                @php
+                                                    $monthly_plans = DB::table('monthly_plans')
+                                                    ->where('id', $cust_shops_saleplan->monthly_plan_id)
+                                                    ->first();
+                                                @endphp
+                                                {{ thaidate('F Y', $monthly_plans->month_date) }}
+                                            </p>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <hr>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="desc_cusnote">
+                                                <blockquote class="blockquote mb-0">
+                                                    <p>{{ $comment->customer_comment_detail }}</p>
+                                                </blockquote>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 mt-15">
+                                            @php
+                                                list($sale_date, $sale_time) = explode(' ',$comment->created_at);
+                                            @endphp
+                                            วันที่ : {{ thaidate('d F Y', $sale_date) }} เวลา : {{ $sale_time }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                        </section>
+                    </div>
+                    
+                </div>
 
                 @php $even_number++; @endphp
 
@@ -349,124 +236,63 @@
                     ->orderBy('customer_shops_saleplan_result.id', 'asc')
                     ->first();
             @endphp
-            @if(!is_null($customer_shops_saleplan_result)) <!-- is_null -->
-                @if(($even_number % 2) == 0) <!-- หารเอาเศษ เช็คเลขคู่ -->
-                    <div class="row">
-                        <div class="col-2" style="text-align:center;">
-                            <img src="{{ asset('/public/images/people-33.png')}}" alt="{{ $customer_shops_saleplan_result->name }}" class="avatar-img">
-                            <div>{{ $customer_shops_saleplan_result->name }}</div>
-                        </div>
-                        <div class="col-10">
-                            <section class="hk-sec-wrapper">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="row">
-                                            <div class="col-md-4 col-lg-4">
-                                                <p class="detail_listcus">
-                                                    <i class="ion ion-md-calendar"></i>
-                                                    <span> เดือน</span> :
-                                                    @php
-                                                        $monthly_plans = DB::table('monthly_plans')
-                                                        ->where('id', $cust_shops_saleplan->monthly_plan_id)
-                                                        ->first();
-                                                    @endphp
-                                                    {{ thaidate('F Y', $monthly_plans->month_date) }}
-                                                </p>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="desc_cusnote">
-                                                    <blockquote class="blockquote mb-0">
-                                                        <p>{{ $customer_shops_saleplan_result->cust_result_detail }}</p>
-                                                        @php
-                                                            switch($customer_shops_saleplan_result->cust_result_status){
-                                                                case 0: $result_status = "ไม่สนใจ";
-                                                                    break;
-                                                                case 1: $result_status = "รอตัดสินใจ";
-                                                                     break;
-                                                                case 2: $result_status = "สนใจ";
-                                                                    break;
-                                                            }
-                                                        @endphp
-                                                        <p>สถานะ : {{ $result_status }}</p>
-                                                    </blockquote>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 mt-15">
+            @if(!is_null($customer_shops_saleplan_result)) <!-- is_null -->         
+                <div class="row">
+                    <div class="col-10">
+                        <section class="hk-sec-wrapper">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-4 col-lg-4">
+                                            <p class="detail_listcus">
+                                                <i class="ion ion-md-calendar"></i>
+                                                <span> เดือน</span> :
                                                 @php
-                                                    list($sale_date, $sale_time) = explode(' ',$customer_shops_saleplan_result->updated_at);
+                                                    $monthly_plans = DB::table('monthly_plans')
+                                                    ->where('id', $cust_shops_saleplan->monthly_plan_id)
+                                                    ->first();
                                                 @endphp
-                                                วันที่ : {{ $sale_date }} เวลา : {{ $sale_time }}
-                                            </div>
+                                                {{ thaidate('F Y', $monthly_plans->month_date) }}
+                                            </p>
                                         </div>
-                                    </div>
-                                    <hr>
-                                </div>
-                            </section>
-                        </div>
-                    </div>
-                @else
-                    <div class="row">
-                        <div class="col-10">
-                            <section class="hk-sec-wrapper">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="row">
-                                            <div class="col-md-4 col-lg-4">
-                                                <p class="detail_listcus">
-                                                    <i class="ion ion-md-calendar"></i>
-                                                    <span> เดือน</span> :
+                                        <div class="col-md-12">
+                                            <hr>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="desc_cusnote">
+                                                <blockquote class="blockquote mb-0">
+                                                    <p>{{ $customer_shops_saleplan_result->cust_result_detail }}</p>
                                                     @php
-                                                        $monthly_plans = DB::table('monthly_plans')
-                                                        ->where('id', $cust_shops_saleplan->monthly_plan_id)
-                                                        ->first();
+                                                        switch($customer_shops_saleplan_result->cust_result_status){
+                                                            case 0: $result_status = "ไม่สนใจ";
+                                                                break;
+                                                            case 1: $result_status = "รอตัดสินใจ";
+                                                                    break;
+                                                            case 2: $result_status = "สนใจ";
+                                                                break;
+                                                        }
                                                     @endphp
-                                                    {{ thaidate('F Y', $monthly_plans->month_date) }}
-                                                </p>
+                                                    <p>สถานะ : {{ $result_status }}</p>
+                                                </blockquote>
                                             </div>
-                                            <div class="col-md-12">
-                                                <hr>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="desc_cusnote">
-                                                    <blockquote class="blockquote mb-0">
-                                                        <p>{{ $customer_shops_saleplan_result->cust_result_detail }}</p>
-                                                        @php
-                                                            switch($customer_shops_saleplan_result->cust_result_status){
-                                                                case 0: $result_status = "ไม่สนใจ";
-                                                                    break;
-                                                                case 1: $result_status = "รอตัดสินใจ";
-                                                                     break;
-                                                                case 2: $result_status = "สนใจ";
-                                                                    break;
-                                                            }
-                                                        @endphp
-                                                        <p>สถานะ : {{ $result_status }}</p>
-                                                    </blockquote>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 mt-15">
-                                            @php
-                                                list($sale_date, $sale_time) = explode(' ',$customer_shops_saleplan_result->updated_at);
-                                            @endphp
-                                            วันที่ : {{ $sale_date }} เวลา : {{ $sale_time }}
                                         </div>
-                                        </div>
+                                        <div class="col-md-12 mt-15">
+                                        @php
+                                            list($sale_date, $sale_time) = explode(' ',$customer_shops_saleplan_result->updated_at);
+                                        @endphp
+                                        วันที่ : {{ thaidate('d F Y', $sale_date) }} เวลา : {{ $sale_time }}
                                     </div>
-                                    <hr>
+                                    </div>
                                 </div>
-                            </section>
-                        </div>
-                        <div class="col-2" style="text-align:center;">
-                            <img src="{{ asset('/public/images/people-33.png')}}" alt="{{ $customer_shops_saleplan_result->name }}" class="avatar-img">
-                            <div>{{ $customer_shops_saleplan_result->name }}</div>
-                        </div>
+                                <hr>
+                            </div>
+                        </section>
                     </div>
-                @endif
-
-                @php $even_number++; @endphp
+                    <div class="col-2" style="text-align:center;">
+                        <img src="{{ asset('/public/images/people-33.png')}}" alt="{{ $customer_shops_saleplan_result->name }}" class="avatar-img">
+                        <div>{{ $customer_shops_saleplan_result->name }}</div>
+                    </div>
+                </div>
             @endif <!-- is_null -->
         @endforeach
 
