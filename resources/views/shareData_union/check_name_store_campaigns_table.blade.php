@@ -41,7 +41,7 @@
                                         </select>
 
                                         <select name="year_form_search" id="year_form_search" class="form-control" style="margin-left:5px; margin-right:5px;">
-                                            @php 
+                                            @php
                                                 $year_now = date("Y");
                                                 $year_back = $year_now - 1;
                                                 $year_form_search = array($year_now, $year_back);
@@ -50,15 +50,15 @@
                                                 @foreach($year_form_search as $value_year)
                                                     @if($year == $value_year)
                                                         <option value="{{ $value_year }}" selected>{{ $value_year }}</option>
-                                                    @else 
+                                                    @else
                                                         <option value="{{ $value_year }}">{{ $value_year }}</option>
                                                     @endif
                                                 @endforeach
                                             @endif
                                         </select>
-                                        
 
-                                        <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm">ค้นหา</button>
+
+                                        <button style="margin-left:5px; margin-right:5px;" class="btn btn-green">ค้นหา</button>
 
                                     </span>
                                 </form>
@@ -81,7 +81,7 @@
                                 <tbody id="table_body">
                                 @if(isset($customer_api))
                                     @foreach ($customer_api['data'] as $key => $value)
-                                        @php 
+                                        @php
                                             $persent_TotalLimit = ($value['TotalAmountSale'] / $value['TotalLimit']) * 100;
                                             // $persent_TotalLimit = (($value['TotalLimit'] - $value['TotalAmountSale']) * 100) / $value['TotalLimit'] ;
                                             if($persent_TotalLimit > 100){
@@ -104,7 +104,7 @@
                                                 @php
                                                     $pathurl = url($path_detail).'/'.$value['identify'];
                                                 @endphp
-                                                <a href="{{ $pathurl }}" class="btn btn-icon btn-success mr-10">
+                                                <a href="{{ $pathurl }}" class="btn btn-icon btn-purple mr-10">
                                                 <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></a>
                                             </td>
                                         </tr>
@@ -113,7 +113,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        
+
                     </div>
                 </div>
         </section>
@@ -121,8 +121,8 @@
 </div>
 
 <div class="row">
-    <div class="col-md-6">ข้อมูล ณ วันที่ 
-        @if(isset($customer_api)) 
+    <div class="col-md-6">ข้อมูล ณ วันที่
+        @if(isset($customer_api))
             {{ $customer_api['trans_last_date'] }}
         @endif
     </div>

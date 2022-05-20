@@ -2,10 +2,10 @@
 
 @section('content')
 
-    @php 
+    @php
         $url_back = "lead";
     @endphp
-    
+
     @include('union.customer_lead_detail')
 
 @endsection('content')

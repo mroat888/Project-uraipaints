@@ -12,11 +12,9 @@
     <div class="container-fluid px-xxl-65 px-xl-20">
         <!-- Title -->
         <div class="hk-pg-header mb-10">
-            <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-people"></i></span>รายละเอียดลูกค้า</h4>
-            </div>
-            <div class="d-flex">
-                <a href="{{ url($url_back)}}" type="button" class="btn btn-secondary btn-sm btn-rounded px-3 mr-10"> ย้อนกลับ </a>
+            <div class="topichead-bggreen"><i data-feather="user"></i> รายละเอียดลูกค้า</div>
+            <div class="content-right d-flex">
+                <a href="{{ url($url_back)}}" type="button" class="btn btn-secondary btn-rounded"> ย้อนกลับ </a>
             </div>
         </div>
         <!-- /Title -->
@@ -32,7 +30,7 @@
                                 <div class="col-md-5">
                                     <div>
                                         @if ($customer_shops->shop_profile_image)
-                                            <img src="{{ isset($customer_shops->shop_profile_image) ? asset('/public/upload/CustomerImage/' . $customer_shops->shop_profile_image) : '' }}" 
+                                            <img src="{{ isset($customer_shops->shop_profile_image) ? asset('/public/upload/CustomerImage/' . $customer_shops->shop_profile_image) : '' }}"
                                             alt="{{ $customer_shops->shop_name }}" style="max-width:60%;">
                                         @else
                                             <img src="{{ asset('/public/images/people-33.png')}}" alt="" style="max-width:30%;">
@@ -42,7 +40,7 @@
                                 <div class="col-md-7">
                                     <div style="float:right;">
                                         @if($customer_shops->shop_status == "0")
-                                            <span class="btn_purple badge badge-info pa-10 float-left" style="font-size: 14px;">ลูกค้าใหม่</span>
+                                            <span class="btn_purple badge btn-green pa-10 float-left" style="font-size: 14px;">ลูกค้าใหม่</span>
                                         @elseif($customer_shops->shop_status == "1")
                                             <span class="btn_purple badge badge-green pa-10 float-left" style="font-size: 14px;">สำเร็จ</span>
                                         @endif
@@ -83,15 +81,15 @@
             </div>
         </div>
 
-        <div class="row" style="margin-bottom:20px;">
-            <div class="col-xl-12">
-                <div class="row mt-2">
-                    <div class="col-md-12">
-                        <h5>ประวัติความคิดเห็น</h5>
-                    </div>
-                </div>
+         <!-- Title -->
+         <div class="hk-pg-header mb-10 mt-20">
+            <div>
+                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-clock"></i></span>ประวัติความคิดเห็น</h4>
+            </div>
+            <div class="d-flex">
             </div>
         </div>
+        <!-- /Title -->
         @php
             $even_number = 0;
         @endphp
