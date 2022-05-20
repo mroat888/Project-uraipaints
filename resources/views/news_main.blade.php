@@ -5,7 +5,13 @@
             <div class="hk-pg-header mb-10" style="margin-top: 30px;">
                 <div class="col-sm-12 col-md-12">
                     <span class="form-inline pull-right pull-sm-center">
+                        @if (Auth::user()->status == 1)
                         <form action="{{ url('search_news') }}" method="post" enctype="multipart/form-data">
+                            @elseif (Auth::user()->status == 2)
+                            <form action="{{ url('lead/search_news') }}" method="post" enctype="multipart/form-data">
+                            @elseif (Auth::user()->status == 3)
+                            <form action="{{ url('head/search_news') }}" method="post" enctype="multipart/form-data">
+                            @endif
                             @csrf
                             <span id="selectdate">
                                 ปี/เดือน : <input type="month" id="selectdateFrom" name="selectdateFrom"

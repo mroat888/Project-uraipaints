@@ -113,7 +113,6 @@
         <section class="hk-sec-wrapper">
             <div class="row">
                 <div class="col-md-6">
-                    {{-- <a class="item" data-fancybox="gallery" href="{{ asset('public/upload/NewsImage/' . $data->news_image)}}"><img src="{{ isset($data->news_image) ? asset('public/upload/NewsImage/' . $data->news_image) : '' }}"></a> --}}
                     <div class="partnerGal-slide detail_slide" style="border: 1px solid #ddd;">
                         <div id="big" class="owl-carousel owl-theme big-img slider">
                             <a class="item" data-fancybox="gallery" href="{{ asset('public/upload/NewsImage/' . $data->news_image)}}"><img src="{{ isset($data->news_image) ? asset('public/upload/NewsImage/' . $data->news_image) : '' }}"></a>
@@ -122,6 +121,7 @@
                             @endforeach
                         </div>
                         <div id="thumbs" class="owl-carousel owl-theme thumbs-img navigation-thumbs">
+                            <div class="item" href="{{ asset('public/upload/NewsImage/' . $data->news_image)}}"><img src="{{ isset($data->news_image) ? asset('public/upload/NewsImage/' . $data->news_image) : '' }}"></div>
                             @foreach ($gallerys as $value)
                             <div class="item"><img src="{{ isset($value->image) ? asset('public/upload/NewsGallery/' . $value->image) : '' }}"></div>
                             @endforeach

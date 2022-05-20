@@ -11,11 +11,10 @@
         <div class="row">
             <div class="col-md-12">
                 <section class="hk-sec-wrapper">
-        
+                    <div class="hk-pg-header mb-10">
+                        <div class="topichead-bgred">ค้นหารายการสินค้า</div>
+                    </div>
                     <div class="row mb-2">
-                        <div class="col-sm-12 col-md-3">
-                            <h5 class="hk-sec-title">ค้นหารายการสินค้า</h5>
-                        </div>
                     </div>
                     <div class="row mb-2">
                         <div class="col-sm-12 col-md-12">
@@ -33,7 +32,7 @@
                             <!-- ------ -->
                         </div>
                     </div>
-                    
+
                     <div class="row mb-2">
                         <div class="col-sm-12 col-md-12">
                             <div class="card">
@@ -50,27 +49,30 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="col-sm" id="table_customer">
-                                    
+
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-12">
                             <div class="card">
-                                <div class="card-header">
-                                    ข้อมูลรายการสินค้า
+                                <div class="hk-pg-header mb-10">
+                                    <div class="topichead-bggreen">ข้อมูลรายการสินค้า</div>
                                 </div>
+                                {{-- <div class="card-header">
+                                    ข้อมูลรายการสินค้า
+                                </div> --}}
                                 <div class="card-body">
                                     <div class="col-sm" id="table_product">
-                                    
+
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
-                    
-                    
+
+
                 </section>
             </div>
         </div>

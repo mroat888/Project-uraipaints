@@ -13,14 +13,14 @@
 
     <!-- Container -->
     <div class="container-fluid px-xxl-65 px-xl-20">
+        <!-- Title -->
         <div class="hk-pg-header mb-10">
-            <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-wifi"></i></span>รายละเอียดข่าวสาร</h4>
-            </div>
-            <div class="d-flex">
-                <a href="{{ url('lead/news')}}" type="button" class="btn btn-secondary btn-sm btn-rounded px-3 mr-10"> ย้อนกลับ </a>
+            <div class="topichead-bgred"><i data-feather="file-text"></i> รายละเอียดข่าวสาร</div>
+            <div class="content-right d-flex">
+                <a href="{{ url('lead/news')}}" type="button" class="btn btn-secondary btn-rounded"> ย้อนกลับ </a>
             </div>
         </div>
+        <!-- /Title -->
 
         @include('news_main_detail')
 

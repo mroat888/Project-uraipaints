@@ -243,10 +243,13 @@ Route::get('lead/delete_note/{id}', 'NoteController@destroy');
 Route::post('lead/search_month_note', 'NoteController@lead_search_month_note');
 
 Route::get('lead/news', 'NewsController@lead_frontend_news');
-Route::get('lead/promotions', 'PromotionController@lead_frontend_promotion');
 Route::get('lead/product_new', 'ProductNewController@lead_frontend_product_new');
 Route::get('lead/news_detail/{id}', 'NewsController@lead_news_detail');
+Route::post('lead/search_news', 'NewsController@lead_search_news');
+
+Route::get('lead/promotions', 'PromotionController@lead_frontend_promotion');
 Route::get('lead/promotion_detail/{id}', 'PromotionController@lead_promotion_detail');
+Route::post('lead/search_promotion', 'PromotionController@lead_search_promotion');
 
 //report
 Route::get('/leadManage/reportcustomer', function () { return view('reports.report_customer'); });
@@ -345,10 +348,13 @@ Route::post('head/search_month_note', 'NoteController@head_search_month_note');
 Route::get('head/status_pin_update/{id}', 'NoteController@status_pin_update');
 
 Route::get('head/news', 'NewsController@head_frontend_news');
-Route::get('head/promotions', 'PromotionController@head_frontend_promotion');
 Route::get('head/product_new', 'ProductNewController@head_frontend_product_new');
 Route::get('head/news_detail/{id}', 'NewsController@head_news_detail');
+Route::post('head/search_news', 'NewsController@head_search_news');
+
+Route::get('head/promotions', 'PromotionController@head_frontend_promotion');
 Route::get('head/promotion_detail/{id}', 'PromotionController@head_promotion_detail');
+Route::post('head/search_promotion', 'PromotionController@head_search_promotion');
 
 //report
 Route::get('/headManage/reportcustomer', function () { return view('reports.report_customer'); });

@@ -112,6 +112,8 @@ class ApprovalCustomerExceptController extends Controller
             })
             ->get();
         
+        // dd($data);
+        
         return view('headManager.approval_customer_except', $data);
     }
 

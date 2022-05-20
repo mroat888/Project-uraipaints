@@ -46,26 +46,26 @@ class CustomerController extends Controller
 
     public function customerLead()
     {
-        $sql_query = "select `monthly_plans`.*, `province`.`PROVINCE_NAME`, `customer_shops_saleplan_result`.*, 
-        `customer_shops_saleplan`.*, `customer_shops_saleplan`.`shop_aprove_status` as `saleplan_shop_aprove_status`, 
-        `customer_shops_saleplan`.`id` as `customer_shops_saleplan_id`, 
-        `monthly_plans`.`id` as `monthly_plans_id`, 
-        `customer_shops`.* from `customer_shops_saleplan` 
-        left join `customer_shops` on `customer_shops`.`id` = `customer_shops_saleplan`.`customer_shop_id` 
-        left join `customer_shops_saleplan_result` on `customer_shops_saleplan_result`.`customer_shops_saleplan_id` = `customer_shops_saleplan`.`id` 
-        left join `monthly_plans` on `monthly_plans`.`id` = `customer_shops_saleplan`.`monthly_plan_id` 
-        left join `province` on `province`.`PROVINCE_ID` = `customer_shops`.`shop_province_id` 
+        $sql_query = "select `monthly_plans`.*, `province`.`PROVINCE_NAME`, `customer_shops_saleplan_result`.*,
+        `customer_shops_saleplan`.*, `customer_shops_saleplan`.`shop_aprove_status` as `saleplan_shop_aprove_status`,
+        `customer_shops_saleplan`.`id` as `customer_shops_saleplan_id`,
+        `monthly_plans`.`id` as `monthly_plans_id`,
+        `customer_shops`.* from `customer_shops_saleplan`
+        left join `customer_shops` on `customer_shops`.`id` = `customer_shops_saleplan`.`customer_shop_id`
+        left join `customer_shops_saleplan_result` on `customer_shops_saleplan_result`.`customer_shops_saleplan_id` = `customer_shops_saleplan`.`id`
+        left join `monthly_plans` on `monthly_plans`.`id` = `customer_shops_saleplan`.`monthly_plan_id`
+        left join `province` on `province`.`PROVINCE_ID` = `customer_shops`.`shop_province_id`
         where `customer_shops`.`shop_status` != ? and `customer_shops`.`created_by` = ?";
 
-        $sql_query_orderby = "order by `customer_shops_saleplan`.`id` desc, 
+        $sql_query_orderby = "order by `customer_shops_saleplan`.`id` desc,
         `customer_shops_saleplan`.`monthly_plan_id` desc";
 
         $customer_shops = $sql_query.$sql_query_orderby;
         $customer_shops = DB::select( $sql_query, [2,Auth::user()->id]);
 
         // -- นับจำนวนร้านค้า ทั้งหมด
-        $data['count_customer_all'] = count($customer_shops); 
-        
+        $data['count_customer_all'] = count($customer_shops);
+
         // -- นับ จำนวนร้านค้า สถานะสำเร็จ
         $sql_query_success = $sql_query." and `customer_shops`.`shop_status` = ? ".$sql_query_orderby;
         $customer_shops_success = DB::select( $sql_query_success, [2,Auth::user()->id, 1]);
@@ -85,12 +85,12 @@ class CustomerController extends Controller
         $customer_shops_result_3 = $sql_query." and `customer_shops_saleplan_result`.`cust_result_status` = ? ".$sql_query_orderby;
         $customer_shops_result_3 = DB::select( $customer_shops_result_3, [2,Auth::user()->id,0]);
         $data['count_customer_result_3'] = count($customer_shops_result_3);
-            
+
         $data['customer_shops'] = $customer_shops;
         $data['province'] = DB::table('province')->get();
         $data['customer_contacts'] = DB::table('customer_contacts')->orderBy('id', 'desc')->get();
 
-        
+
         return view('customer.lead', $data);
     }
 
@@ -102,25 +102,25 @@ class CustomerController extends Controller
         $data['count_customer_result_2'] = $request->count_customer_result_2;
         $data['count_customer_result_3'] = $request->count_customer_result_3;
 
-        $sql_query = "select `monthly_plans`.*, `province`.`PROVINCE_NAME`, `customer_shops_saleplan_result`.*, 
-        `customer_shops_saleplan`.*, `customer_shops_saleplan`.`shop_aprove_status` as `saleplan_shop_aprove_status`, 
-        `customer_shops_saleplan`.`id` as `customer_shops_saleplan_id`, 
-        `monthly_plans`.`id` as `monthly_plans_id`, 
-        `customer_shops`.* from `customer_shops_saleplan` 
-        left join `customer_shops` on `customer_shops`.`id` = `customer_shops_saleplan`.`customer_shop_id` 
-        left join `customer_shops_saleplan_result` on `customer_shops_saleplan_result`.`customer_shops_saleplan_id` = `customer_shops_saleplan`.`id` 
-        left join `monthly_plans` on `monthly_plans`.`id` = `customer_shops_saleplan`.`monthly_plan_id` 
-        left join `province` on `province`.`PROVINCE_ID` = `customer_shops`.`shop_province_id` 
+        $sql_query = "select `monthly_plans`.*, `province`.`PROVINCE_NAME`, `customer_shops_saleplan_result`.*,
+        `customer_shops_saleplan`.*, `customer_shops_saleplan`.`shop_aprove_status` as `saleplan_shop_aprove_status`,
+        `customer_shops_saleplan`.`id` as `customer_shops_saleplan_id`,
+        `monthly_plans`.`id` as `monthly_plans_id`,
+        `customer_shops`.* from `customer_shops_saleplan`
+        left join `customer_shops` on `customer_shops`.`id` = `customer_shops_saleplan`.`customer_shop_id`
+        left join `customer_shops_saleplan_result` on `customer_shops_saleplan_result`.`customer_shops_saleplan_id` = `customer_shops_saleplan`.`id`
+        left join `monthly_plans` on `monthly_plans`.`id` = `customer_shops_saleplan`.`monthly_plan_id`
+        left join `province` on `province`.`PROVINCE_ID` = `customer_shops`.`shop_province_id`
         where `customer_shops`.`shop_status` != ? and `customer_shops`.`created_by` = ? ";
 
-        $sql_query_orderby = "order by `customer_shops_saleplan`.`id` desc, 
+        $sql_query_orderby = "order by `customer_shops_saleplan`.`id` desc,
         `customer_shops_saleplan`.`monthly_plan_id` desc";
 
         $parameter = [2,Auth::user()->id];
 
         if(!is_null($request->selectdateFrom)){
             list($year,$month) = explode('-', $request->selectdateFrom);
-            $sql_query = $sql_query." and `monthly_plans`.`month_date` LIKE ? 
+            $sql_query = $sql_query." and `monthly_plans`.`month_date` LIKE ?
             and `monthly_plans`.`month_date` LIKE ? ";
             $parameter[] = $year.'%';
             $parameter[] = '%'.$month.'%';

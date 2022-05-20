@@ -1,7 +1,7 @@
 <!-- Breadcrumb -->
 <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
-            <li class="breadcrumb-item"><a href="#">ข้อมูลลูกค้า</a></li>
+            <li class="breadcrumb-item"><a href="#">ข้อมูลร้านค้า (ทำเป้า)</a></li>
             <li class="breadcrumb-item active" aria-current="page">รายละเอียดลูกค้า (ทำเป้า)</li>
         </ol>
     </nav>
@@ -11,11 +11,9 @@
     <div class="container-fluid px-xxl-65 px-xl-20">
         <!-- Title -->
         <div class="hk-pg-header mb-10">
-            <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-people"></i></span>รายละเอียดลูกค้า (ทำเป้า)</h4>
-            </div>
-            <div class="d-flex">
-                <a href="javascript:history.back();" type="button" class="btn btn-secondary btn-sm btn-rounded px-3 mr-10"> ย้อนกลับ </a>
+            <div class="topichead-bgred"><i data-feather="user"></i> รายละเอียดลูกค้า (ทำเป้า)</div>
+            <div class="content-right d-flex">
+                <a href="javascript:history.back();" type="button" class="btn btn-secondary btn-rounded"> ย้อนกลับ </a>
             </div>
         </div>
         <!-- /Title -->
@@ -39,8 +37,8 @@
                                 <div class="col-md-12 col-lg-12">
                                     <h2>{{ $customer_shop['title'] }} {{ $customer_shop['name'] }}</h2>
                                     <span style="font-size: 18px;">
-                                        <p class="my-3">{{ $customer_shop['address1'] }} 
-                                            {{ $customer_shop['adrress2'] }} 
+                                        <p class="my-3">{{ $customer_shop['address1'] }}
+                                            {{ $customer_shop['adrress2'] }}
                                             {{ $customer_shop['postal_id'] }}
                                         </p>
                                         <p class="my-3">Tel. {{ $customer_shop['telephone'] }} </p>
@@ -54,20 +52,13 @@
             </div>
         </div>
 
+
         <div class="row">
             <div class="col-xl-12">
-                <div class="row mt-2">
-                    <div class="col-md-12 mb-10">
-                        <h5>ประวัติทำเป้า</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class="col-xl-12">
-                
                 <section class="hk-sec-wrapper">
+                    <div class="hk-pg-header mb-10">
+                        <div class="topichead-bggreen">ประวัติทำเป้า</div>
+                    </div>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="row">
@@ -81,7 +72,7 @@
                                                 <th style="font-weight: bold; text-align:left;">รหัสโปรโมชั่น</th>
                                                 <th style="font-weight: bold; text-align:left;">ชื่อโปรโมชั่น</th>
                                                 <th style="font-weight: bold; text-align:right;">ยอดซื้อเป้า</th>
-                                                <th style="font-weight: bold; text-align:right;">ยอดเบิกเป้า</th>                                           
+                                                <th style="font-weight: bold; text-align:right;">ยอดเบิกเป้า</th>
                                                 <th style="font-weight: bold; text-align:right;">คงเหลือ</th>
                                             </tr>
                                         </thead>
@@ -96,7 +87,7 @@
                                                 <td style="text-align:right;">{{ number_format($cust_campaigns_api[$key]['amount_limit'],2) }}</td>
                                                 <td style="text-align:right;">{{ number_format($cust_campaigns_api[$key]['saleamount'],2) }}</td>
                                                 <td style="text-align:right;">
-                                                    @php 
+                                                    @php
                                                         if($cust_campaigns_api[$key]['amount_diff'] < 0){
                                                             $text_red = "color:#FF0000";
                                                         }else{
@@ -108,7 +99,7 @@
                                             </tr>
                                             @endforeach
                                         @endif
-                                            
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -122,21 +113,14 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="row mt-2">
-                    <div class="col-md-12 mb-10">
-                        <h5>สรุปยอดเป้าปี</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- Row -->
         <div class="row">
             <div class="col-xl-12">
-                
                 <section class="hk-sec-wrapper">
+                    <div class="hk-pg-header mb-10">
+                        <div class="topichead-blue">สรุปยอดเป้าปี</div>
+                    </div>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="row">
@@ -161,7 +145,7 @@
                                                 <td style="text-align:right;">{{ number_format($year_sum[$key]['amount_limit'],2) }}</td>
                                                 <td style="text-align:right;">{{ number_format($year_sum[$key]['saleamount'],2) }}</td>
                                                 <td style="text-align:right;">
-                                                @php 
+                                                @php
                                                         if($year_sum[$key]['amount_diff'] < 0){
                                                             $text_red = "color:#FF0000";
                                                         }else{

@@ -15,49 +15,29 @@ class NewsController extends Controller
 {
     public function frontend_news()
     {
-        // $list_news_a = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
-        // ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
-        // ->orderBy('id', 'desc')->first();
         $list_news = News::where('status', "N")->orderBy('id', 'desc')->paginate(10);
-        // $list_banner = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
-        // ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
-        // ->orderBy('id', 'desc')->get();
+
         return view('saleman.news', compact('list_news'));
     }
 
     public function lead_frontend_news()
     {
-        // $list_news_a = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
-        // ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
-        // ->orderBy('id', 'desc')->first();
         $list_news = News::where('status', "N")->orderBy('id', 'desc')->paginate(10);
-        // $list_banner = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
-        // ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
-        // ->orderBy('id', 'desc')->get();
+
         return view('leadManager.news', compact('list_news'));
     }
 
     public function head_frontend_news()
     {
-        // $list_news_a = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
-        // ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
-        // ->orderBy('id', 'desc')->first();
         $list_news = News::where('status', "N")->orderBy('id', 'desc')->paginate(10);
-        // $list_banner = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
-        // ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
-        // ->orderBy('id', 'desc')->get();
+
         return view('headManager.news', compact('list_news'));
     }
 
     public function admin_frontend_news()
     {
-        // $list_news_a = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
-        // ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
-        // ->orderBy('id', 'desc')->first();
         $list_news = News::where('status', "N")->orderBy('id', 'desc')->paginate(10);
-        // $list_banner = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
-        // ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
-        // ->orderBy('id', 'desc')->get();
+
         return view('admin.fontendNews', compact('list_news'));
     }
 
@@ -72,8 +52,9 @@ class NewsController extends Controller
     public function lead_news_detail($id)
     {
         $data = News::where('id', $id)->first();
+        $gallerys = NewsGallery::where('news_id', $id)->orderBy('id', 'desc')->get();
 
-        return view('leadManager.news_detail', compact('data'));
+        return view('leadManager.news_detail', compact('data', 'gallerys'));
     }
 
     public function head_news_detail($id)
@@ -93,7 +74,7 @@ class NewsController extends Controller
 
     public function index()
     {
-        $list_news = News::where('status', "N")->orderBy('status_pin', 'desc')->orderBy('news_date', 'desc')->get();
+        $list_news = News::where('status', "N")->orderBy('status_usage', 'desc')->orderBy('status_pin', 'desc')->orderBy('news_date', 'desc')->get();
         return view('admin.news', compact('list_news'));
     }
 
@@ -114,11 +95,10 @@ class NewsController extends Controller
     public function search_news_status_usage(Request $request)
     {
         if ($request->status_usage != '') {
-            $list_news = News::where('status_usage', $request->status_usage)->where('status', "N")
-            ->orderBy('status_usage', 'desc')->orderBy('id', 'desc')->get();
+            $list_news = News::where('status_usage', $request->status_usage)->where('status', "N")->orderBy('status_usage', 'desc')->orderBy('status_pin', 'desc')->orderBy('news_date', 'desc')->get();
             return view('admin.news', compact('list_news'));
         }else{
-            $list_news = News::where('status', "N")->orderBy('status_usage', 'desc')->orderBy('id', 'desc')->get();
+            $list_news = News::where('status', "N")->orderBy('status_usage', 'desc')->orderBy('status_pin', 'desc')->orderBy('news_date', 'desc')->get();
             return view('admin.news', compact('list_news'));
         }
     }
@@ -142,11 +122,43 @@ class NewsController extends Controller
 
     }
 
-    // public function index_banner()
-    // {
-    //     $list_banner = NewsBanner::orderBy('id', 'desc')->get();
-    //     return view('admin.news_banner', compact('list_banner'));
-    // }
+    public function lead_search_news(Request $request)
+    {
+        // return $request->selectdateFrom;
+        if ($request->tag) {
+            $list_news = News::where('status', "N")
+            ->where('news_date', 'LIKE', $request->selectdateFrom.'%')
+            ->where('news_tags', 'LIKE', '%'.$request->tag.'%')
+            ->orderBy('id', 'desc')->paginate(10);
+        }else{
+            $list_news = News::where('status', "N")
+            ->where('news_date', 'LIKE', $request->selectdateFrom.'%')
+            ->orderBy('id', 'desc')->paginate(10);
+        }
+
+
+        return view('leadManager.news', compact('list_news'));
+
+    }
+
+    public function head_search_news(Request $request)
+    {
+        // return $request->selectdateFrom;
+        if ($request->tag) {
+            $list_news = News::where('status', "N")
+            ->where('news_date', 'LIKE', $request->selectdateFrom.'%')
+            ->where('news_tags', 'LIKE', '%'.$request->tag.'%')
+            ->orderBy('id', 'desc')->paginate(10);
+        }else{
+            $list_news = News::where('status', "N")
+            ->where('news_date', 'LIKE', $request->selectdateFrom.'%')
+            ->orderBy('id', 'desc')->paginate(10);
+        }
+
+
+        return view('headManager.news', compact('list_news'));
+
+    }
 
     public function store(Request $request)
     {
@@ -255,11 +267,11 @@ class NewsController extends Controller
     {
         $dataEdit = News::join('master_note', 'news_promotions.news_tags', 'master_note.id')
         ->where('news_promotions.id', $id)->select('news_promotions.*', 'master_note.name_tag')->first();
-        $master_note = DB::table('master_note')->get();
+        $master_news = DB::table('master_news')->get();
 
         $data = array(
             'dataEdit'     => $dataEdit,
-            'master_note'  => $master_note
+            'master_news'  => $master_news
         );
         echo json_encode($data);
     }
