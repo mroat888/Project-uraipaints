@@ -15,14 +15,14 @@ class ApiCustomerController extends Controller
     }
 
     public function index(){
-        
+
         $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/sellers/'.Auth::user()->api_identify.'/customers');
         $res_api = $response->json();
 
         $customer_api = array();
         foreach ($res_api['data'] as $key => $value) {
-            $customer_api[$key] = 
+            $customer_api[$key] =
             [
                 'identify' => $value['identify'],
                 'shopname' => $value['title']." ".$value['name'],
@@ -32,7 +32,7 @@ class ApiCustomerController extends Controller
                 'TotalCampaign' => $value['TotalCampaign'],
             ];
         }
-        
+
         return view('customer.customer-api', compact('customer_api'));
 
     }
@@ -45,16 +45,16 @@ class ApiCustomerController extends Controller
         $response_cust = Http::withToken($api_token)->get(env("API_LINK").'api/v1/customers/'.$id);
         $res_custapi = $response_cust->json();
         $data['customer_shop'] = $res_custapi['data'][0];
-        
+
         //- ดึงแคมเปญของร้านค้า
         $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/customers/'.$id.'/campaigns');
         $res_api = $response->json();
-        
+
         if(!empty($res_api)){
             if($res_api['code'] == 200){
                 $data['cust_campaigns_api'] = array();
                 foreach ($res_api['data'] as $key => $value) {
-                    $data['cust_campaigns_api'][$key] = 
+                    $data['cust_campaigns_api'][$key] =
                     [
                         'year' => $value['year'],
                         'campaign_id' => $value['campaign_id'],

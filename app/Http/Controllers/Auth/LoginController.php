@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Event;
+use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\Controller;
 use App\News;
 use App\Providers\RouteServiceProvider;
@@ -11,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class LoginController extends Controller
 {
@@ -41,6 +44,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
+        $this->api_token = new ApiController();
         $this->middleware('guest')->except('logout');
     }
 
@@ -54,19 +58,7 @@ class LoginController extends Controller
 
 
         if (auth()->attempt((array('email' => $input['email'], 'password' => $input['password'])))) {
-            // DB::beginTransaction();
-            // try {
-            //     $user_id = auth()->user()->id;
-            //     DB::table('users')
-            //     ->where('id', $user_id)
-            //     ->update([
-            //         'api_token' => '123456'
-            //     ]);
-            //     DB::commit();
-            // } catch (\Exception $e) {
 
-            //     DB::rollback();
-            // }
             $list_promotion = News::where('status', "P")->get();
             foreach ($list_promotion as $key => $value) {
                 if ($value->news_date <= Carbon::today()->format('Y-m-d') && $value->news_date_last < Carbon::today()->format('Y-m-d'))
@@ -83,6 +75,44 @@ class LoginController extends Controller
                 'date' => Carbon::now(),
                 'emp_id' => Auth::user()->id,
             ]);
+
+            $api_token = $this->api_token->apiToken();
+            $data['api_token'] = $api_token;
+
+            $path_search = env("API_LINK").env("API_PATH_VER").'/bdates/sellers/'.Auth::user()->api_identify.'/customers';
+            $api_token = $this->api_token->apiToken();
+            $response = Http::withToken($api_token)->get($path_search);
+            $res_api = $response->json();
+
+            if(!is_null($res_api['data'])) {
+                foreach ($res_api['data'] as $value) {
+                    $chkEvent = DB::table('events')->where('identify', $value['identify'])->first();
+
+                    if ($chkEvent) {
+                        $date = Carbon::parse($chkEvent->start);
+                    if ($date->format('Y-m-d') != $value['focusDate']) {
+                        DB::table('events')
+                        ->insert([
+                            'title' => $value['descripDate'],
+                            'start' => $value['focusDate'],
+                            'end' => $value['focusDate'],
+                            'identify' => $value['identify'],
+                            'created_by' => Auth::user()->id
+                        ]);
+                    }
+                    }else{
+                        DB::table('events')
+                        ->insert([
+                            'title' => $value['descripDate'],
+                            'start' => $value['focusDate'],
+                            'end' => $value['focusDate'],
+                            'identify' => $value['identify'],
+                            'created_by' => Auth::user()->id
+                        ]);
+                    }
+
+            }
+        }
 
             if (auth()->user()->status == 1) {
                 return redirect('dashboard');

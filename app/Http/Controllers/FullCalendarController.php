@@ -34,8 +34,8 @@ class FullCalendarController extends Controller
 
     public function show($id){
         $data_event = DB::table('events')->where('id',$id)->first();
-        
-        $path_search = env("API_LINK").env("API_PATH_VER").'/sellers/'.Auth::user()->api_identify.'/customers';      
+
+        $path_search = env("API_LINK").env("API_PATH_VER").'/sellers/'.Auth::user()->api_identify.'/customers';
         $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get($path_search);
         $res_api = $response->json();
@@ -53,7 +53,7 @@ class FullCalendarController extends Controller
                 'shop_address' => $value['amphoe_name']." , ".$value['province_name'],
             ];
         }
-        
+
 
         if(!is_null($data_event->sale_plans_id)){
             $sale_plans = DB::table('sale_plans')->where('id', $data_event->sale_plans_id)->first();
@@ -65,14 +65,14 @@ class FullCalendarController extends Controller
                 }
             }
         }elseif(!is_null($data_event->customer_shops_saleplan_id)){
-            
+
             $sale_sale_cust_new = DB::table('customer_shops_saleplan')->where('id', $data_event->customer_shops_saleplan_id)->first();
             $customer_shop_objective = DB::table('master_objective_saleplans')->where('id', $sale_sale_cust_new->customer_shop_objective)->first();
             $customer_shop = DB::table('customer_shops')->where('id', $sale_sale_cust_new->customer_shop_id)->first();
             $data_show['header'] = "เข้าพบลูกค้าใหม่";
             $data_show['title'] = $customer_shop_objective->masobj_title;
             $data_show['shop_name'] = $customer_shop->shop_name;
-            
+
         }elseif(!is_null($data_event->customer_visits_id)){
             $data_show['header'] = "เข้าพบลูกค้าเยี่ยม";
             $customer_visits = DB::table('customer_visits')->where('id',$data_event->customer_visits_id)->first();
@@ -85,7 +85,7 @@ class FullCalendarController extends Controller
             }
 
         }
-        
+
         return response()->json([
             'status' => 200,
             'message' => 'บันทึกข้อมูลสำเร็จ',
