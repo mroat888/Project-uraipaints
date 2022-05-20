@@ -12,7 +12,8 @@
 
     <!-- Container -->
     <div class="container-fluid px-xxl-65 px-xl-20">
-        {{-- <div class="mt-30 mb-30">
+        @if ($list_banner->count() > 0)
+        <div class="mt-30 mb-30">
             <div class="row">
                 <div class="col-xl-12">
                     <div class="row">
@@ -55,7 +56,8 @@
 
                 </div>
             </div>
-        </div> --}}
+        </div>
+        @endif
 
         @include('promotion_main')
 

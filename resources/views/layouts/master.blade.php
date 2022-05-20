@@ -688,6 +688,7 @@ License: You must have a valid license purchased only from themeforest to legall
 
     <!-- OwlCarousel -->
 <script src="{{ asset('public/OwlCarousel/owl.carousel.min.js')}}"></script>
+
 <!-- FANCYBOX -->
 <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
 

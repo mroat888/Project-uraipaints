@@ -30,21 +30,39 @@ class PromotionController extends Controller
 
     public function lead_frontend_promotion()
     {
+        $list_news_a = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
+        ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
+        ->orderBy('id', 'desc')->first();
+
+        $list_banner = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
+        ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
+        ->orderBy('id', 'desc')->get();
+
         $list_promotion = News::where('status', "P")->orderBy('id', 'desc')->paginate(10);
-        return view('leadManager.promotions', compact('list_promotion'));
+
+        return view('leadManager.promotions', compact('list_promotion', 'list_news_a', 'list_banner'));
     }
 
     public function head_frontend_promotion()
     {
+        $list_news_a = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
+        ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
+        ->orderBy('id', 'desc')->first();
+
+        $list_banner = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
+        ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
+        ->orderBy('id', 'desc')->get();
+
         $list_promotion = News::where('status', "P")->orderBy('id', 'desc')->paginate(10);
-        return view('headManager.promotions', compact('list_promotion'));
+
+        return view('headManager.promotions', compact('list_promotion', 'list_news_a', 'list_banner'));
     }
 
-    public function admin_frontend_promotion()
-    {
-        $list_promotion = News::where('status', "P")->orderBy('id', 'desc')->paginate(10);
-        return view('admin.fontendPromotions', compact('list_promotion'));
-    }
+    // public function admin_frontend_promotion()
+    // {
+    //     $list_promotion = News::where('status', "P")->orderBy('id', 'desc')->paginate(10);
+    //     return view('admin.fontendPromotions', compact('list_promotion'));
+    // }
 
     public function search_promotion(Request $request)
     {
@@ -63,6 +81,46 @@ class PromotionController extends Controller
 
 
         return view('saleman.promotions', compact('list_promotion', 'list_news_a', 'list_banner'));
+
+    }
+
+    public function lead_search_promotion(Request $request)
+    {
+        // return $request->selectdateFrom;
+            $list_promotion = News::where('status', "P")
+            ->where('news_date', 'LIKE', $request->selectdateFrom.'%')
+            ->orderBy('id', 'desc')->paginate(10);
+
+            $list_news_a = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
+        ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
+        ->orderBy('id', 'desc')->first();
+
+        $list_banner = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
+        ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
+        ->orderBy('id', 'desc')->get();
+
+
+        return view('leadManager.promotions', compact('list_promotion', 'list_news_a', 'list_banner'));
+
+    }
+
+    public function head_search_promotion(Request $request)
+    {
+        // return $request->selectdateFrom;
+            $list_promotion = News::where('status', "P")
+            ->where('news_date', 'LIKE', $request->selectdateFrom.'%')
+            ->orderBy('id', 'desc')->paginate(10);
+
+            $list_news_a = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
+        ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
+        ->orderBy('id', 'desc')->first();
+
+        $list_banner = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
+        ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
+        ->orderBy('id', 'desc')->get();
+
+
+        return view('headManager.promotions', compact('list_promotion', 'list_news_a', 'list_banner'));
 
     }
 
@@ -459,15 +517,17 @@ class PromotionController extends Controller
     public function lead_promotion_detail($id)
     {
         $data = News::where('id', $id)->first();
+        $gallerys = NewsGallery::where('news_id', $id)->orderBy('id', 'desc')->get();
 
-        return view('leadManager.promotions_detail', compact('data'));
+        return view('leadManager.promotions_detail', compact('data', 'gallerys'));
     }
 
     public function head_promotion_detail($id)
     {
         $data = News::where('id', $id)->first();
+        $gallerys = NewsGallery::where('news_id', $id)->orderBy('id', 'desc')->get();
 
-        return view('headManager.promotions_detail', compact('data'));
+        return view('headManager.promotions_detail', compact('data', 'gallerys'));
     }
 
     public function admin_promotion_detail($id)

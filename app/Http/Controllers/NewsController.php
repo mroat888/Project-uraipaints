@@ -52,8 +52,9 @@ class NewsController extends Controller
     public function lead_news_detail($id)
     {
         $data = News::where('id', $id)->first();
+        $gallerys = NewsGallery::where('news_id', $id)->orderBy('id', 'desc')->get();
 
-        return view('leadManager.news_detail', compact('data'));
+        return view('leadManager.news_detail', compact('data', 'gallerys'));
     }
 
     public function head_news_detail($id)
