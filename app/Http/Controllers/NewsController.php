@@ -122,6 +122,44 @@ class NewsController extends Controller
 
     }
 
+    public function lead_search_news(Request $request)
+    {
+        // return $request->selectdateFrom;
+        if ($request->tag) {
+            $list_news = News::where('status', "N")
+            ->where('news_date', 'LIKE', $request->selectdateFrom.'%')
+            ->where('news_tags', 'LIKE', '%'.$request->tag.'%')
+            ->orderBy('id', 'desc')->paginate(10);
+        }else{
+            $list_news = News::where('status', "N")
+            ->where('news_date', 'LIKE', $request->selectdateFrom.'%')
+            ->orderBy('id', 'desc')->paginate(10);
+        }
+
+
+        return view('leadManager.news', compact('list_news'));
+
+    }
+
+    public function head_search_news(Request $request)
+    {
+        // return $request->selectdateFrom;
+        if ($request->tag) {
+            $list_news = News::where('status', "N")
+            ->where('news_date', 'LIKE', $request->selectdateFrom.'%')
+            ->where('news_tags', 'LIKE', '%'.$request->tag.'%')
+            ->orderBy('id', 'desc')->paginate(10);
+        }else{
+            $list_news = News::where('status', "N")
+            ->where('news_date', 'LIKE', $request->selectdateFrom.'%')
+            ->orderBy('id', 'desc')->paginate(10);
+        }
+
+
+        return view('headManager.news', compact('list_news'));
+
+    }
+
     public function store(Request $request)
     {
         // dd($request);
