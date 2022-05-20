@@ -117,15 +117,16 @@ $(document).ready(function(){
                 data:{
                         "_token": "{{ csrf_token() }}",
                     },
-                },
-                columns: [
-                    {data: 'identify', name: 'identify'},
-                    {data: 'name', name: 'name'},
-                    {data: 'province_name', name: 'province_name'},
-                    {data: 'telephone', name: 'telephone'},
-                ]
+            },
+            columns: [
+                {data: 'identify', name: 'identify'},
+                {data: 'name', name: 'name'},
+                {data: 'province_name', name: 'province_name'},
+                {data: 'telephone', name: 'telephone'},
+            ]
         });
         //-- Table Customer
+
     });
 });
 

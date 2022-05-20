@@ -202,8 +202,12 @@ class ApiController extends Controller
 
     public function fetch_datatable_customer_sellers($pdgid,$pvid,$ampid){
         $api_token = $this->apiToken();
-        $path_search = "sellers/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers?province_id=".$pvid."&amphoe_id=".$ampid;
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+        // $path_search = "sellers/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers?province_id=".$pvid."&amphoe_id=".$ampid;
+        $path_search = "sellers/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers";
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search,[
+            'province_id' => $pvid,
+            'amphoe_id' => $ampid
+        ]);
         $res_api = $response->json();
         $customer = array();
 

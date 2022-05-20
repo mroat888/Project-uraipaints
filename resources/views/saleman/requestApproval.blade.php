@@ -16,7 +16,7 @@
         <div class="hk-pg-header mb-10">
             <div>
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                    data-feather="clipboard"></i></span></span>บันทึกข้อมูลการขออนุมัติ</h4>
+                    data-feather="clipboard"></i></span></span>บันทึกขออนุมัติ</h4>
             </div>
             <div class="d-flex">
                 <button type="button" class="btn btn-teal btn-sm btn-rounded px-3" data-toggle="modal" data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button>
@@ -30,7 +30,7 @@
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
                         <div class="col-sm-12 col-md-3">
-                            <h5 class="hk-sec-title">ตารางข้อมูลการขออนุมัติ</h5>
+                            <h5 class="hk-sec-title">รายการขออนุมัติ</h5>
                         </div>
 
                     </div>
@@ -309,7 +309,9 @@
                     content += "<thead>";
                         content += "<tr>";
                             content += "<th>#</th>";
+                            content += "<th>เรื่องด่วน</th>";
                             content += "<th>เรื่อง</th>";
+                            // content += "<th>ชื่อร้าน</th>";
                             content += "<th>วันที่</th>";
                             content += "<th>การอนุมัติ</th>";
                             content += "<th>สถานะ</th>";
@@ -337,6 +339,7 @@
                 },
                 columns: [
                     {data: 'key', name: 'key'},
+                    {data: 'assign_is_hot', name: 'assign_is_hot'},
                     {data: 'assign_title', name: 'assign_title'},
                     {data: 'assign_work_date', name: 'assign_work_date'},
                     {data: 'assign_status', name: 'assign_status'},

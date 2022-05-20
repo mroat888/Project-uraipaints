@@ -72,7 +72,7 @@ class RequestApprovalController extends Controller
                 class="btn btn-icon btn-violet mr-10" data-toggle="modal" data-target="#ApprovalComment">
                 <span class="btn-icon-wrap"><i class="ion ion-md-chatbubbles" style="font-size: 18px;"></i></span></button>';
                 }
-                if ($row['assign_status'] == 1) {
+                if ($row['assign_status'] == 1) { //-- OAT เปลี่ยนให้แสดง เรื่องด่วนแยกต่างหาก
                     $btn = '<button onclick="edit_modal(' . $row['id'] . ')" class="btn btn-icon btn-info mr-10" data-toggle="modal"
                         data-target="#editApproval"> <span class="btn-icon-wrap"><i class="ion ion-md-document" style="font-size: 18px;"></i></span></button>';
                 }elseif ($row['assign_status'] == 0) {
@@ -93,32 +93,43 @@ class RequestApprovalController extends Controller
             ->addColumn('assign_status', function ($row) {
                 if ($row['assign_status'] == 0) {
                     $status = '<span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>';
-                    if ($row['assign_is_hot'] == 1) {
-                        $status .= '<span class="badge badge-soft-danger" style="font-size: 12px;">HOT</span>';
-                    }
+                    // if ($row['assign_is_hot'] == 1) {
+                    //     $status .= '<span class="badge badge-soft-danger" style="font-size: 12px;">HOT</span>';
+                    // }
                     if ($row['assign_id']) {
                         $status .= '<span class="badge badge-soft-indigo" style="font-size: 12px;">Comment</span>';
                     }
                 } elseif ($row['assign_status'] == 1) {
                     $status = '<span class="badge badge-soft-success" style="font-size: 12px;">Approval</span>';
-                    if ($row['assign_is_hot'] == 1) {
-                        $status .= '<span class="badge badge-soft-danger" style="font-size: 12px;">HOT</span>';
-                    }
+                    // if ($row['assign_is_hot'] == 1) {
+                    //     $status .= '<span class="badge badge-soft-danger" style="font-size: 12px;">HOT</span>';
+                    // }
                     if ($row['assign_id']) {
                         $status .= '<span class="badge badge-soft-indigo" style="font-size: 12px;">Comment</span>';
                     }
                 } else {
                     $status = '<span class="badge badge-soft-secondary" style="font-size: 12px;">Reject</span>';
-                    if ($row['assign_is_hot'] == 1) {
-                        $status .= '<span class="badge badge-soft-danger" style="font-size: 12px;">HOT</span>';
-                    }
+                    // if ($row['assign_is_hot'] == 1) {
+                    //     $status .= '<span class="badge badge-soft-danger" style="font-size: 12px;">HOT</span>';
+                    // }
                     if ($row['assign_id']) {
                         $status .= '<span class="badge badge-soft-indigo" style="font-size: 12px;">Comment</span>';
                     }
                 }
                 return $status;
             })
-            ->rawColumns(['assign_status' => 'assign_status'])
+            // ->rawColumns(['assign_status' => 'assign_status'])
+
+            ->addColumn('assign_is_hot', function ($row) {
+                if ($row['assign_is_hot'] == 1) {
+                    $status_ishot = '<span class="badge badge-soft-danger" style="font-size: 12px;">HOT</span>';
+                }else{
+                    $status_ishot = "";
+                }
+                return $status_ishot;
+            })
+
+            ->rawColumns(['assign_status' => 'assign_status', 'status_ishot' => 'assign_is_hot'])
             ->make(true);
     }
 
