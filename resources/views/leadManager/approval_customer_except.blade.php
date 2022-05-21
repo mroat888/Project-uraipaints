@@ -197,7 +197,14 @@
                                                     </div>
                                                 </td>
                                                 <td>{{ $key + 1 }}</td>
-                                                <td>{{ Carbon\Carbon::parse($value->created_at)->format('Y-m-d') }}</td>
+                                                <td>
+                                                    @php 
+                                                        list($date,$time) = explode(" ",$value->created_at);
+                                                        list($year, $month, $day) = explode("-", $date);
+                                                        $created_at = $day."/".$month."/".$year;
+                                                    @endphp
+                                                    {{ $created_at }}
+                                                </td>
                                                 <td>{{ $value->name }}</td>
                                                 <td>{{ $value->shop_name }}</td>
                                                 <td>{{ $value->AMPHUR_NAME }},{{ $value->PROVINCE_NAME }}</td>

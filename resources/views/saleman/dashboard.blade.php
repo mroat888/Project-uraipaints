@@ -383,7 +383,12 @@
                     <h6 class="topic-page hk-sec-title topic-bgorange" style="font-weight: bold;">เทียบยอดขายรายเดือน
                         <?php echo thaidate('F', date("M")); ?> ระหว่างปี
                         @if (isset($res_api["data"][2]["SalesCurrent"]))
-                            {{$res_api["data"][2]["SalesCurrent"][0]["year"]}} กับปี  {{$res_api["data"][3]["SalesPrevious"][0]["year"]}}
+                            @php 
+                                $SalesCurrent_year = $res_api["data"][2]["SalesCurrent"][0]["year"] + 543;
+                                $SalesPrevious_year = $res_api["data"][3]["SalesPrevious"][0]["year"] + 543;
+                            @endphp
+                            {{ $SalesCurrent_year }} กับปี  
+                            {{ $SalesPrevious_year }}
                         @else
                             - กับปี -
                         @endif
@@ -391,7 +396,12 @@
                     <div class="row">
                         <div class="col-12 col-lg-8">
                             <canvas id="myChart" style="height: 294px"></canvas>
-                            <span class="mt-8 ml-40 text-danger">ข้อมูล ณ วันที่ {{$res_api["trans_last_date"]}}
+                            <span class="mt-8 ml-40 text-danger">ข้อมูล ณ วันที่ 
+                                @php 
+                                    list($year,$month,$day) = explode("-", $res_api["trans_last_date"]);
+                                    $trans_last_date = $day."/".$month."/".$year;
+                                @endphp
+                                {{ $trans_last_date }}
                             </span>
                         </div>
                         <div class="col-12 col-lg-4">
@@ -430,7 +440,7 @@
                                             <span class="d-block">
                                                 <span><?php echo thaidate('F', date("M")); ?></h6><??>
                                                         @if (isset($res_api["data"][3]["SalesPrevious"]))
-                                                            /{{$res_api["data"][3]["SalesPrevious"][0]["year"]}}
+                                                            /{{ $SalesPrevious_year }}
                                                         @endif
                                                 </span>
                                             </span>
@@ -438,7 +448,7 @@
                                         <div>
                                             <span><?php echo thaidate('F', date("M")); ?></h6>
                                                 @if (isset($res_api["data"][2]["SalesCurrent"]))
-                                                            /{{$res_api["data"][2]["SalesCurrent"][0]["year"]}}
+                                                            /{{ $SalesCurrent_year }}
                                                 @endif
                                             </span>
                                         </div>
@@ -574,7 +584,7 @@
         data: {
             labels: [{{ $day_month }}],
             datasets: [{
-                label: 'ยอดขายปี {{$res_api["data"][2]["SalesCurrent"][0]["year"]}}',
+                label: 'ยอดขายปี {{ $SalesCurrent_year }}',
                 data: [{{ $amtsale_current }}],
                 fill: false,
                 borderColor: 'rgba(206,30,40,1)',
@@ -582,7 +592,7 @@
                 tension: 0
             },
             {
-                label: 'ยอดขายปี {{$res_api["data"][3]["SalesPrevious"][0]["year"]}}',
+                label: 'ยอดขายปี {{ $SalesPrevious_year }}',
                 data: [{{ $amtsale_previous }}],
                 fill: false,
                 borderColor: 'rgba(2, 119, 144,1)',

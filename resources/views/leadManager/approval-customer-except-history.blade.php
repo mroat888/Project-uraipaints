@@ -253,12 +253,16 @@
                                                 <td>
                                                     @php 
                                                         list($shop_date, $shop_time) = explode(' ',$shop->shop_created_at);
+                                                        list($year, $month, $day) = explode("-", $shop_date);
+                                                        $shop_date = $day."/".$month."/".$year;
                                                     @endphp
                                                     {{ $shop_date }}</td>
-                                                <td>
+                                                <td style="text-align:center;">
                                                     @php 
                                                         if(isset($shop->approve_at)){
-                                                            list($approve_date, $approve_time) = explode(' ', $shop->approve_at);
+                                                            list($date, $approve_time) = explode(' ', $shop->approve_at);
+                                                            list($year, $month, $day) = explode("-", $date);
+                                                            $approve_date = $day."/".$month."/".$year;
                                                         }else{
                                                             $approve_date = "-";
                                                         }
