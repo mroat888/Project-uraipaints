@@ -23,6 +23,7 @@
                                 <div class="form-group col-md-12">
                                     <select name="sel_pdglists" id="sel_pdglists" class="form-control sel_pdglists select2" required>
                                         <option value="">--ค้นหารายการสินค้า--</option>
+                                        
                                         @foreach($pdglists['data'] as $value)
                                             <option value="{{ $value['identify'] }}">{{ $value['name'] }}</option>
                                         @endforeach
@@ -54,7 +55,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-12">
+                        <!-- <div class="col-sm-12 col-md-12">
                             <div class="card">
                                 <div class="hk-pg-header mb-10">
                                     <div class="topichead-bggreen">ข้อมูลรายการสินค้า</div>
@@ -68,7 +69,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
                     </div>
 
