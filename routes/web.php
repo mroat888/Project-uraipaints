@@ -100,7 +100,8 @@ Route::get('edit_approval/{id}', 'SaleMan\RequestApprovalController@edit');
 Route::post('update_approval', 'SaleMan\RequestApprovalController@update');
 Route::post('delete_approval', 'SaleMan\RequestApprovalController@destroy');
 Route::get('view_comment/{id}', 'SaleMan\RequestApprovalController@view_comment');
-Route::post('search_month_requestApprove', 'SaleMan\RequestApprovalController@search_month_requestApprove');
+// Route::post('search_month_requestApprove', 'SaleMan\RequestApprovalController@search_month_requestApprove');
+Route::get('search_month_requestApprove/{fromMonth}/{toMonth}', 'SaleMan\RequestApprovalController@search_month_requestApprove');
 
 // TEST REQUEST
 Route::get('approval', 'SaleMan\RequestApprovalController@index');
