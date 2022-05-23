@@ -310,7 +310,8 @@ Route::post('head/approvalsaleplan/search', 'HeadManager\ApprovalSalePlanControl
 
 
 Route::get('head/approvalgeneral', 'HeadManager\ApprovalController@index');
-Route::get('head/approvalgeneral/history', function () { return view('headManager.approval_general_history'); });
+Route::get('head/approvalgeneral/history', 'HeadManager\ApprovalController@approval_history');
+Route::post('head/approvalgeneral/history/search', 'HeadManager\ApprovalController@approval_history_search');
 Route::get('head/approval_general_detail/{id}', 'HeadManager\ApprovalController@approval_general_detail');
 Route::get('head/comment_approval/{id}/{createID}', 'HeadManager\ApprovalController@comment_approval');
 Route::post('head/create_comment_request_approval', 'HeadManager\ApprovalController@create_comment_request_approval');
@@ -657,7 +658,7 @@ Route::get('fetch_pdglists/{id}', 'Api\ApiController@fetch_pdglists');
 Route::get('fetch_products/{id}', 'Api\ApiController@fetch_products');
 Route::get('fetch_amphur_api/{position}/{id}', 'Api\ApiController@fetch_amphur_api');
 
-Route::get('fetch_products/{id}', 'Api\ApiController@fetch_products');
+Route::get('assignments_commentshow/{id}', 'UnionAssignmentController@commentshow');
 
 
 

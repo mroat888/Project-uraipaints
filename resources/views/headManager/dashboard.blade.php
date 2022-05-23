@@ -331,7 +331,8 @@
                                                 </div>
                                                 <div class="col-4">
                                                     <span class="txt-custotal">
-                                                        @if(!is_null($res_api["data"][0]["Responsibility"][0]["ActiveTotal"]))
+                                                        @if(!is_null($res_api["data"][0]["Responsibility"][0]["ActiveTotal"]) && 
+                                                        $res_api["data"][0]["Responsibility"][0]["ActiveTotal"] > 0)
                                                             {{ number_format($res_api["data"][0]["Responsibility"][0]["ActiveTotal"]) }}
                                                         @else
                                                             -
