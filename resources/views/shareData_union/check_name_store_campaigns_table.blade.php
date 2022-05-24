@@ -104,7 +104,7 @@
                                                 @php
                                                     $pathurl = url($path_detail).'/'.$value['identify'];
                                                 @endphp
-                                                <a href="{{ $pathurl }}" class="btn btn-icon btn-purple mr-10">
+                                                <a href="{{ $pathurl }}" class="btn btn-icon btn-purple">
                                                 <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></a>
                                             </td>
                                         </tr>

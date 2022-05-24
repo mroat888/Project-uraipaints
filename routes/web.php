@@ -514,6 +514,12 @@ Route::post('admin/update_product_new', 'ProductNewController@update');
 Route::get('admin/delete_product_new/{id}', 'ProductNewController@destroy');
 Route::post('admin/search-productNew-status-usage', 'ProductNewController@search_news_status_usage');
 Route::get('admin/update-productNew-status-use/{id}', 'ProductNewController@update_status_use');
+Route::get('admin/product-new-gallery/{id}', 'ProductNewController@gallery');
+Route::post('admin/create_product_new_gallery', 'ProductNewController@gallery_store');
+Route::get('admin/edit_product_new_gallery/{id}', 'ProductNewController@gallery_edit');
+Route::post('admin/update_product_new_gallery', 'ProductNewController@gallery_update');
+Route::post('admin/delete_product_new_gallery', 'ProductNewController@gallery_destroy');
+Route::get('admin/view_product_new_detail/{id}', 'ProductNewController@view_detail');
 
 
 // Product Property
