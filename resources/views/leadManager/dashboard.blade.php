@@ -331,7 +331,7 @@
                                                 </div>
                                                 <div class="col-4">
                                                     <span class="txt-custotal">
-                                                        @if(!is_null($res_api["data"][0]["Responsibility"][0]["ActiveTotal"]))
+                                                        @if(isset($res_api["data"]) && $res_api["data"][0]["Responsibility"][0]["ActiveTotal"] > 0)
                                                             {{ number_format($res_api["data"][0]["Responsibility"][0]["ActiveTotal"]) }}
                                                         @else
                                                             -
@@ -351,7 +351,11 @@
                                                     <div class="col-12 col-xl-4">
                                                         <div>
                                                             @php
-                                                                $FocusDates_count = count($res_api["data"][1]["FocusDates"]);
+                                                                if(isset($res_api["data"])){
+                                                                    $FocusDates_count = count($res_api["data"][1]["FocusDates"]);
+                                                                }else{
+                                                                    $FocusDates_count = 0;
+                                                                }
                                                             @endphp
                                                             @if($FocusDates_count > 0)
                                                                 <div class="num-specialday">{{ $res_api["data"][1]["FocusDates"][0]["TotalCustomers"] }} ร้าน </div>
@@ -381,15 +385,17 @@
                 <section class="hk-sec-wrapper">
                     <h6 class="topic-page hk-sec-title topic-bgorange" style="font-weight: bold;">เทียบยอดขายรายเดือน
                         <?php echo thaidate('F', date("M")); ?> ระหว่างปี
-                        @if (isset($res_api["data"][2]["SalesCurrent"]))
-                            @php 
+                        @php 
+                            if (isset($res_api["data"][2]["SalesCurrent"])){
                                 $SalesCurrent_year = $res_api["data"][2]["SalesCurrent"][0]["year"] + 543;
-                                $SalesPrevious_year = $res_api["data"][3]["SalesPrevious"][0]["year"] + 543;
-                            @endphp
-                            {{ $SalesCurrent_year }} กับปี  {{ $SalesPrevious_year }}
-                        @else
-                            - กับปี -
-                        @endif
+                                $SalesPrevious_year = $res_api["data"][3]["SalesPrevious"][0]["year"] + 543;                   
+                            }else{
+                                $SalesCurrent_year = "-";
+                                $SalesPrevious_year = "-";
+                            }
+                        @endphp
+                        {{ $SalesCurrent_year }} กับปี  
+                        {{ $SalesPrevious_year }}
                     </h6>
                     <div class="row">
                         <div class="col-12 col-lg-8">
@@ -406,9 +412,17 @@
                             <div class="mt-sumsales card card-sm">
                                 <div class="card-sumsales card-body" style="color: #fff;">
                                     @php
-                                        $SalesPrevious = $res_api["data"][3]["SalesPrevious"];
-                                        $totalAmtSale_th_Previous = $SalesPrevious[0]["sales_th"]; // เป้ายอดขายปีที่แล้ว
-                                        $totalAmtSale_Previous = $SalesPrevious[0]["sales"]; // เป้ายอดขายปีที่แล้ว
+                                    if(isset($res_api["data"][3]["SalesPrevious"]) && isset($res_api["data"][2]["SalesCurrent"])){
+
+                                        if(!empty($res_api["data"][3]["SalesPrevious"])){
+                                            $SalesPrevious = $res_api["data"][3]["SalesPrevious"];
+                                            $totalAmtSale_th_Previous = $SalesPrevious[0]["sales_th"]; // เป้ายอดขายปีที่แล้ว
+                                            $totalAmtSale_Previous = $SalesPrevious[0]["sales"]; // เป้ายอดขายปีที่แล้ว
+                                        }else{
+                                            $SalesPrevious = 0;
+                                            $totalAmtSale_th_Previous = "0"; // เป้ายอดขายปีที่แล้ว
+                                            $totalAmtSale_Previous = 0; // เป้ายอดขายปีที่แล้ว
+                                        }
 
                                         $percentAmtCrn =0;
                                         if(!empty($res_api["data"][2]["SalesCurrent"])){
@@ -423,6 +437,15 @@
                                             $percentAmtCrn = 0;
                                         }
 
+                                    }else{
+                                        $SalesPrevious = 0;
+                                        $totalAmtSale_th_Previous = "0";
+                                        $totalAmtSale_Previous = 0; 
+
+                                        $totalAmtSale_th = "0";
+                                        $totalAmtSale = 0;
+                                        $percentAmtCrn = 0;
+                                    } 
                                     @endphp
 
                                     <span class="d-block font-11 font-weight-500 text-dark text-uppercase mb-10"></span>

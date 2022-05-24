@@ -162,7 +162,9 @@
                                         <td>{{ $assignments->api_customers_title }} {{ $assignments->api_customers_name }}</td>
                                         <td>
                                             @php 
-                                                list($assign_date, $assign_time) = explode(' ',$assignments->assign_request_date)
+                                                list($assign_date, $assign_time) = explode(' ',$assignments->assign_request_date);
+                                                list($as_year,$as_month,$as_day) = explode('-', $assign_date);
+                                                $assign_date = $as_day."/".$as_month."/".$as_year;
                                             @endphp
                                             {{ $assign_date }}
                                         </td>
@@ -184,18 +186,10 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-icon btn-info btn-link btn_asssign_show" 
-                                                value="{{ $assignments->id }}">
-                                                <i data-feather="file-text"></i>
-                                            </button>
                                             <button onclick="edit_modal({{ $assignments->id }})" type="button" class="btn btn-icon btn-violet mr-10"
-                                                data-original-title="ดูรายละเอียด" data-toggle="tooltip" data-toggle="modal" data-target="editApproval">
-                                                <i data-feather="eye"></i></button>
-                                            <a href="{{ url('head/comment_approval', [$assignments->id, $assignments->created_by]) }}" class="btn btn-icon btn-info mr-10">
-                                                <h4 class="btn-icon-wrap" style="color: white;">
-                                                    <i data-feather="message-square"></i>
-                                                </h4>
-                                            </a>
+                                                data-original-title="ดูรายละเอียดและคอมเม้นต์" data-toggle="tooltip" data-toggle="modal" data-target="editApproval">
+                                                <i data-feather="message-square"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -215,7 +209,7 @@
 
 <!-- Modal Edit -->
 <div class="modal fade" id="editApproval" tabindex="-1" role="dialog" aria-labelledby="editApproval" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">รายละเอียดข้อมูลการขออนุมัติ</h5>
@@ -223,13 +217,13 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            {{-- <form action="{{ url('update_approval') }}" method="post" enctype="multipart/form-data">
-                @csrf --}}
+            <form id="form_comment" method="post" enctype="multipart/form-data">
+                @csrf
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label for="firstName">ขออนุมัติสำหรับ</label>
-                                <select class="form-control custom-select" name="approved_for" id="get_for" readonly>
+                                <select class="form-control custom-select" name="approved_for" id="get_for" disabled="true">
                                     <option selected disabled>เลือก</option>
                                     <?php $masters = App\ObjectiveAssign::get(); ?>
                                 @foreach ($masters as $value)
@@ -265,12 +259,23 @@
                     </div>
 
                     <input type="hidden" name="id" id="get_id">
+                    <div>
+                        <h5>ความคิดเห็น</h5>
+                    </div>
+                    <div class="card-body">
+                        <textarea class="form-control" id="comment" name="comment" cols="30" rows="5" placeholder="เพิ่มความคิดเห็น" type="text"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <div id="div_comment"></div>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
-                    {{-- <button type="submit" class="btn btn-primary">บันทึก</button> --}}
+                    <button type="submit" class="btn btn-primary">บันทึก</button> 
                 </div>
-            {{-- </form> --}}
+            </form>
         </div>
     </div>
 </div>
@@ -284,7 +289,11 @@
             dataType: "JSON",
             async: false,
             success: function(data) {
+                console.log(data);
                 $('#customCheck6').children().remove().end();
+                $('#div_comment').children().remove().end();
+                $('#comment').val('');
+
                 $('#get_id').val(data.dataEdit.id);
                 $('#get_work_date').val(data.dataEdit.assign_work_date);
                 $('#get_title').val(data.dataEdit.assign_title);
@@ -292,87 +301,72 @@
                 $('#get_for').val(data.dataEdit.approved_for);
                 $('#get_xx').val(data.dataEdit.assign_is_hot);
 
+                if(data.dataEdit_comment_edit){
+                    $('#comment').val(data.dataEdit_comment_edit.assign_comment_detail);
+                }
+                
                 if (data.dataEdit.assign_is_hot == 1) {
                     $('#customCheck6').append("<input type='checkbox' class='custom-control-input' id='customCheck7' name='assign_is_hot' value='1' checked readonly><label class='custom-control-label' for='customCheck7' readonly>ขออนุมัติด่วน</label>");
                 }else{
                     $('#customCheck6').append("<input type='checkbox' class='custom-control-input' id='customCheck8' name='assign_is_hot' value='1' readonly><label class='custom-control-label' for='customCheck8' readonly>ขออนุมัติด่วน</label>");
                 }
-                // $('#customCheck2').val(data.dataEdit.assign_is_hot);
+
+                if(data.dataEdit_comment){
+                    $.each(data['dataEdit_comment'], function(key, value){
+                        $('#div_comment').append('<div>Comment by: '+value.user_comment+' Date: '+value.created_at+'</div>');
+                        $('#div_comment').append('<div class="alert alert-primary py-20" role="alert">'+value.assign_comment_detail+'</div>');
+                    });
+                }
 
                 $('#editApproval').modal('toggle');
+
             }
         });
     }
     //Edit
-</script> 
 
 
-
-
-
-<!-- Modal -->
-<div class="modal fade" id="ApprovalComment" tabindex="-1" role="dialog" >
-    @include('union.general_history_display')
-</div>
-
-
-<script>
-    $(document).on('click', '.btn_asssign_show', function(){
-        let id = $(this).val();
-
+    //-- Create Comment 
+    $("#form_comment").on("submit", function (e) {
+        e.preventDefault();
+        // var formData = $(this).serialize();
+        var formData = new FormData(this);
+        // console.log(formData);
         $.ajax({
-            type: "GET",
-            url: "{!! url('assignments_commentshow/"+id+"') !!}",
-            dataType: "JSON",
-            async: false,
-            success: function(data) {
-                $('#div_comment').children().remove().end();
-                $('#div_assign_status').children().remove().end();
-                console.log(data['dataassign']);
-                switch(data['dataassign'].assign_status) {
-                    case 0 : div_assign_status = '<span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>';
-                        break;
-                    case 1 : div_assign_status = '<span class="badge badge-soft-success" style="font-size: 12px;">Approval</span>';
-                        break;
-                    case 2 : div_assign_status = '<span class="badge badge-soft-secondary" style="font-size: 12px;">Reject</span>';
-                        break;
-                    default: $div_assign_status = '<span class="badge badge-soft-warning" style="font-size: 12px;">ไม่มี</span>'
+            type:'POST',
+            url: '{{ url("head/create_comment_request_approval") }}',
+            data:formData,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(response){
+                //console.log(response);
+                if(response.status == 200){
+                    $("#ModalVisitResult").modal('hide');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    location.reload();
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Your work has been saved',
+                        text: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
                 }
-
-                $('#assign_detail_comment').text(data['dataassign'].assign_detail);
-                $('#header_title_comment').text('เรื่อง : '+data['dataassign'].assign_title);
-                $('#header_approved_for_comment').text(data['dataassign'].masassign_title);
-                $('#get_assign_work_date_comment').text(data['dataassign'].assign_work_date);
-                $('#header_approved_for_comment').text(data['dataassign'].masassign_title);
-  
-                $('#div_assign_status').append('<span>การอนุมัติ : </span>'+div_assign_status);
-
-                $.each(data['comment'], function(key, value){
-                    
-                    $('#div_comment').append('<div>Comment by: '+value.user_comment+' Date: '+value.created_at+'</div>');
-                    $('#div_comment').append('<div class="alert alert-primary py-20" role="alert">'+value.assign_comment_detail+'</div>');
-                });
-
-                $('#ApprovalComment').modal('toggle');
+            },
+            error: function(response){
+                console.log("error");
+                console.log(response);
             }
         });
-    
     });
-
-</script>
-
-    <script>
-        function showselectdate(){
-        $("#selectdate").css("display", "block");
-    }
-
-    function hidetdate(){
-        $("#selectdate").css("display", "none");
-    }
-    </script>
-
-
-
-
+    //-- End Create Comment
+</script> 
 
 @endsection('content')

@@ -162,7 +162,9 @@
                                         <td>{{ $assignments->api_customers_title }} {{ $assignments->api_customers_name }}</td>
                                         <td>
                                             @php 
-                                                list($assign_date, $assign_time) = explode(' ',$assignments->assign_request_date)
+                                                list($assign_date, $assign_time) = explode(' ',$assignments->assign_request_date);
+                                                list($as_year,$as_month,$as_day) = explode('-', $assign_date);
+                                                $assign_date = $as_day."/".$as_month."/".$as_year;
                                             @endphp
                                             {{ $assign_date }}
                                         </td>
