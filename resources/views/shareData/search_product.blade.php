@@ -20,56 +20,58 @@ $(document).ready(function(){
     $('#sel_pdglists').on("change", function(e) {
         e.preventDefault();
         var pdglist = $(this).val();
-        console.log(pdglist);
+        // console.log(pdglist);
         $('.province').children().remove().end();
         $('.amphur').children().remove().end();
         $('.province').append('<option selected value="">เลือกจังหวัด</option>');
         $('.amphur').append('<option selected value="">เลือกอำเภอ</option>');
 
-        var content = "<div id='table_list' class='table-responsive col-md-12'>";
-                content += "<table id='datable_1' class='table table-hover data-table'>";
-                    content += "<thead>";
-                        content += "<tr>";
-                            content += "<th style='font-weight: bold;'>#</th>";
-                            content += "<th style='font-weight: bold;'>รหัสสินค้า</th>";
-                            content += "<th style='font-weight: bold;'>ชื่อสินค้า</th>";
-                            content += "<th style='font-weight: bold;'>หน่วยแพ็ค</th>";
-                            content += "<th style='font-weight: bold;'>ขนาดแพ็ค</th>";
-                        content += "</tr>";
-                    content += "</thead>";
-                    content += "<tbody>";
-                    content += "<tbody>";
-                content += "</table>";
-            content += "</div>";
+        // ** -- OAT คอเม้นต์ออก เนื่องจากลูกค้า (คุณหนุ่ย) แจ้ง ไม่ต้องแสดงรายการสินค้า --- **//
 
-        $("#table_product").html(content);
+        // var content = "<div id='table_list' class='table-responsive col-md-12'>";
+        //         content += "<table id='datable_1' class='table table-hover data-table'>";
+        //             content += "<thead>";
+        //                 content += "<tr>";
+        //                     content += "<th style='font-weight: bold;'>#</th>";
+        //                     content += "<th style='font-weight: bold;'>รหัสสินค้า</th>";
+        //                     content += "<th style='font-weight: bold;'>ชื่อสินค้า</th>";
+        //                     content += "<th style='font-weight: bold;'>หน่วยแพ็ค</th>";
+        //                     content += "<th style='font-weight: bold;'>ขนาดแพ็ค</th>";
+        //                 content += "</tr>";
+        //             content += "</thead>";
+        //             content += "<tbody>";
+        //             content += "<tbody>";
+        //         content += "</table>";
+        //     content += "</div>";
 
-        // $.fn.dataTable.ext.errMode = 'throw'; //-- ไม่ให้แสดง Erorr จาก Datatable
-        $.fn.dataTable.ext.errMode = () => alert('Error while loading the table data. Please refresh');
+        // $("#table_product").html(content);
 
-        $('#datable_1').DataTable({
-            processing: false,
-            serverSide: false,
-            ajax: {
-                method:"GET",
-                url:"{{url('fetch_products')}}/"+pdglist,
-                dataType: 'json',
-                data:{
-                        "_token": "{{ csrf_token() }}",
-                    },
-                },
-                columns: [
-                    {data: 'url_image', name: 'url_image'},
-                    {data: 'identify', name: 'identify'},
-                    {data: 'name', name: 'name'},
-                    {data: 'pack_unit', name: 'pack_unit'},
-                    {data: 'pack_ratio', name: 'pack_ratio'},
-                ]
-        });
+        // // $.fn.dataTable.ext.errMode = 'throw'; //-- ไม่ให้แสดง Erorr จาก Datatable
+        // $.fn.dataTable.ext.errMode = () => alert('Error while loading the table data. Please refresh');
+
+        // $('#datable_1').DataTable({
+        //     processing: false,
+        //     serverSide: false,
+        //     ajax: {
+        //         method:"GET",
+        //         url:"{{url('fetch_products')}}/"+pdglist,
+        //         dataType: 'json',
+        //         data:{
+        //                 "_token": "{{ csrf_token() }}",
+        //             },
+        //         },
+        //         columns: [
+        //             {data: 'url_image', name: 'url_image'},
+        //             {data: 'identify', name: 'identify'},
+        //             {data: 'name', name: 'name'},
+        //             {data: 'pack_unit', name: 'pack_unit'},
+        //             {data: 'pack_ratio', name: 'pack_ratio'},
+        //         ]
+        // });
 
         $.ajax({
             method: 'GET',
-            url: '{{ url("/fetch_provinces_products") }}/'+pdglist,
+            url: '{{ url("/fetch_provinces_products") }}/'+pdglist, //-- แก้ไขเป็นฐานข้อมูลแล้ว
             datatype: 'json',
             success: function(response){
                 if(response.status == 200){
@@ -112,7 +114,7 @@ $(document).ready(function(){
             serverSide: false,
             ajax: {
                 method:"GET",
-                url:"{{url('fetch_datatable_customer_sellers_pdglist')}}/"+pdglist,
+                url:"{{url('fetch_datatable_customer_sellers_pdglist')}}/"+pdglist,  //-- แก้ไขเป็นฐานข้อมูลแล้ว
                 dataType: 'json',
                 data:{
                         "_token": "{{ csrf_token() }}",
@@ -161,7 +163,7 @@ $(document).on('change','.province', function(e){
         serverSide: false,
         ajax: {
             method:"GET",
-            url:"{{url('fetch_datatable_customer_sellers_pdglist_pvid')}}/"+pdglist+'/'+pvid,
+            url:"{{url('fetch_datatable_customer_sellers_pdglist_pvid')}}/"+pdglist+'/'+pvid,  //-- แก้ไขเป็นฐานข้อมูลแล้ว
             dataType: 'json',
             data:{
                     "_token": "{{ csrf_token() }}",
@@ -179,11 +181,11 @@ $(document).on('change','.province', function(e){
 
     $.ajax({
         method: 'GET',
-        url: '{{ url("/fetch_amphur_products") }}/'+pdglist+'/'+pvid,
+        url: '{{ url("/fetch_amphur_products") }}/'+pdglist+'/'+pvid,  //-- แก้ไขเป็นฐานข้อมูลแล้ว
         datatype: 'json',
         success: function(response){
             if(response.status == 200){
-                // console.log(response.amphures);
+                console.log(response.amphures);
                 $('.amphur').children().remove().end();
                 $('.amphur').append('<option selected value="">เลือกอำเภอ</option>');
                 let rows = response.amphures.length;
@@ -228,7 +230,7 @@ $(document).on('change','#amphur', function(e){
         serverSide: false,
         ajax: {
             method:"GET",
-            url:"{{url('fetch_datatable_customer_sellers')}}/"+pdglist+"/"+pvid+"/"+ampid,
+            url:"{{url('fetch_datatable_customer_sellers')}}/"+pdglist+"/"+pvid+"/"+ampid,  //-- แก้ไขเป็นฐานข้อมูลแล้ว
             dataType: 'json',
             data:{
                     "_token": "{{ csrf_token() }}",

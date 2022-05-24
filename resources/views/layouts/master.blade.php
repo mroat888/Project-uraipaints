@@ -675,6 +675,8 @@ License: You must have a valid license purchased only from themeforest to legall
 
     <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@3.9.0/dist/fullcalendar.min.js"></script>
+    <script src="{{ asset('public/template/vendors/fullcalendar/lang/locale/th.js')}}"></script>
+
 
     <!-- Gmap JavaScript -->
     <script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyBazijMOj67rUPPtVybwi2Nbo90tx7vwZs">

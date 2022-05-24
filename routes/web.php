@@ -100,7 +100,8 @@ Route::get('edit_approval/{id}', 'SaleMan\RequestApprovalController@edit');
 Route::post('update_approval', 'SaleMan\RequestApprovalController@update');
 Route::post('delete_approval', 'SaleMan\RequestApprovalController@destroy');
 Route::get('view_comment/{id}', 'SaleMan\RequestApprovalController@view_comment');
-Route::post('search_month_requestApprove', 'SaleMan\RequestApprovalController@search_month_requestApprove');
+// Route::post('search_month_requestApprove', 'SaleMan\RequestApprovalController@search_month_requestApprove');
+Route::get('search_month_requestApprove/{fromMonth}/{toMonth}', 'SaleMan\RequestApprovalController@search_month_requestApprove');
 
 // TEST REQUEST
 Route::get('approval', 'SaleMan\RequestApprovalController@index');
@@ -243,13 +244,10 @@ Route::get('lead/delete_note/{id}', 'NoteController@destroy');
 Route::post('lead/search_month_note', 'NoteController@lead_search_month_note');
 
 Route::get('lead/news', 'NewsController@lead_frontend_news');
+Route::get('lead/promotions', 'PromotionController@lead_frontend_promotion');
 Route::get('lead/product_new', 'ProductNewController@lead_frontend_product_new');
 Route::get('lead/news_detail/{id}', 'NewsController@lead_news_detail');
-Route::post('lead/search_news', 'NewsController@lead_search_news');
-
-Route::get('lead/promotions', 'PromotionController@lead_frontend_promotion');
 Route::get('lead/promotion_detail/{id}', 'PromotionController@lead_promotion_detail');
-Route::post('lead/search_promotion', 'PromotionController@lead_search_promotion');
 
 //report
 Route::get('/leadManage/reportcustomer', function () { return view('reports.report_customer'); });
@@ -312,7 +310,8 @@ Route::post('head/approvalsaleplan/search', 'HeadManager\ApprovalSalePlanControl
 
 
 Route::get('head/approvalgeneral', 'HeadManager\ApprovalController@index');
-Route::get('head/approvalgeneral/history', function () { return view('headManager.approval_general_history'); });
+Route::get('head/approvalgeneral/history', 'HeadManager\ApprovalController@approval_history');
+Route::post('head/approvalgeneral/history/search', 'HeadManager\ApprovalController@approval_history_search');
 Route::get('head/approval_general_detail/{id}', 'HeadManager\ApprovalController@approval_general_detail');
 Route::get('head/comment_approval/{id}/{createID}', 'HeadManager\ApprovalController@comment_approval');
 Route::post('head/create_comment_request_approval', 'HeadManager\ApprovalController@create_comment_request_approval');
@@ -348,13 +347,10 @@ Route::post('head/search_month_note', 'NoteController@head_search_month_note');
 Route::get('head/status_pin_update/{id}', 'NoteController@status_pin_update');
 
 Route::get('head/news', 'NewsController@head_frontend_news');
+Route::get('head/promotions', 'PromotionController@head_frontend_promotion');
 Route::get('head/product_new', 'ProductNewController@head_frontend_product_new');
 Route::get('head/news_detail/{id}', 'NewsController@head_news_detail');
-Route::post('head/search_news', 'NewsController@head_search_news');
-
-Route::get('head/promotions', 'PromotionController@head_frontend_promotion');
 Route::get('head/promotion_detail/{id}', 'PromotionController@head_promotion_detail');
-Route::post('head/search_promotion', 'PromotionController@head_search_promotion');
 
 //report
 Route::get('/headManage/reportcustomer', function () { return view('reports.report_customer'); });
@@ -668,6 +664,8 @@ Route::get('fetch_pdglists/{id}', 'Api\ApiController@fetch_pdglists');
 Route::get('fetch_products/{id}', 'Api\ApiController@fetch_products');
 Route::get('fetch_amphur_api/{position}/{id}', 'Api\ApiController@fetch_amphur_api');
 
+Route::get('assignments_commentshow/{id}', 'UnionAssignmentController@commentshow');
+
 
 
 
@@ -715,3 +713,12 @@ Route::get('/', 'HomeController@index')->name('home');
         Artisan::call('view:clear');
         return "Cache is cleared";
     });
+
+
+// Route ดึงข้อมูล APi ลงฐานข้อมูล
+
+Route::get('/api_fetch_provinces', 'Api\ApiController@api_fetch_provinces');  
+Route::get('/api_fetch_amphures', 'Api\ApiController@api_fetch_amphures');  
+Route::get('/api_fetch_customers', 'Api\ApiController@api_fetch_customers');  
+Route::get('/api_fetch_pdglists', 'Api\ApiController@api_fetch_pdglists');  
+Route::get('/api_customer_to_pdglist', 'Api\ApiController@api_customer_to_pdglist');

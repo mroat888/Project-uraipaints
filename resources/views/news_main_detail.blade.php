@@ -133,7 +133,13 @@
                     <div class="row">
                         <div class="col-md-12"><h5><strong>{{$data->news_title}}</strong></h5></div>
                         <div class="col-md-12 mt-2">
-                            <span style="font-size:16px;">วันที่เริ่ม : {{$data->news_date}}</span>
+                            <span style="font-size:16px;">
+                              @php 
+                                  list($year,$month,$day) = explode("-", $data->news_date);
+                                  $news_date = $day."/".$month."/".$year;
+                              @endphp
+                              วันที่เริ่ม : {{ $news_date }}
+                            </span>
                         </div>
                         <div class="col-md-12 mt-2"><p>{{ $data->news_detail }}</p></div>
                         <div class="col-md-12 mt-2"><a href="{{ $data->url }}" style="font-size:14px; font-weight: bold; color:rgb(6, 25, 109);">

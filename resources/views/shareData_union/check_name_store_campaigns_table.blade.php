@@ -1,7 +1,7 @@
 <!-- Title -->
 <div class="hk-pg-header mb-10">
     <div>
-        <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-document"></i></span>รายชื่อร้านค้า (ทำเป้า) ปี {{ $year }}</h4>
+        <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-document"></i></span>รายชื่อร้านค้า (ทำเป้า) ปี {{ $year+543 }}</h4>
     </div>
 </div>
 <!-- /Title -->
@@ -11,7 +11,7 @@
         <section class="hk-sec-wrapper">
             <div class="row mb-2">
                 <div class="col-sm-12 col-md-12">
-                    <div class="topichead-bgred" style="margin-bottom: 30px;">จำนวนเป้า {{ $year }}</div>
+                    <div class="topichead-bgred" style="margin-bottom: 30px;">จำนวนเป้า {{ $year+543 }}</div>
                 </div>
 
             </div>
@@ -48,10 +48,13 @@
                                             @endphp
                                             @if(isset($year_form_search))
                                                 @foreach($year_form_search as $value_year)
+                                                    @php 
+                                                        $year_thai = $value_year+543;
+                                                    @endphp
                                                     @if($year == $value_year)
-                                                        <option value="{{ $value_year }}" selected>{{ $value_year }}</option>
+                                                        <option value="{{ $value_year }}" selected>{{ $year_thai }}</option>
                                                     @else
-                                                        <option value="{{ $value_year }}">{{ $value_year }}</option>
+                                                        <option value="{{ $value_year }}">{{ $year_thai }}</option>
                                                     @endif
                                                 @endforeach
                                             @endif
@@ -123,7 +126,12 @@
 <div class="row">
     <div class="col-md-6">ข้อมูล ณ วันที่
         @if(isset($customer_api))
-            {{ $customer_api['trans_last_date'] }}
+            @php 
+                list($year,$month,$day) = explode('-',$customer_api['trans_last_date']);
+                $year = $year+543;
+                $trans_last_date = $day."/".$month."/".$year;
+            @endphp
+            {{ $trans_last_date }}
         @endif
     </div>
     <div class="col-md-6" style="text-align:right;">หน่วย : บาท</div>

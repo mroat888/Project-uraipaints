@@ -73,7 +73,7 @@
                         @php 
 
                             //--- เช็คสถานะ User มาจากระบบไหน 
-
+                            
                             $btn_edit_hide = "display:none";
                             $btn_comment_hide = "display:none";
                             $url_comment = "";
@@ -90,6 +90,7 @@
                                     $url_comment = "head/comment_customer_new_except";
                                 }
                             }
+                            
                         @endphp
                         <button class="btn btn-icon btn-edit btn_editshop" value="{{ $shop->id }}" style="{{ $btn_edit_hide }}">
                             <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-create"></i></h4></button>

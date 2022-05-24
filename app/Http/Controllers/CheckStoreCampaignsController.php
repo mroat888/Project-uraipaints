@@ -89,9 +89,9 @@ class CheckStoreCampaignsController extends Controller
         switch($position){
             case "sellers" : $return = "shareData.check_store_campaigns_detail";
             break;
-            case "leader" : $return = "ShareData_LeadManager.check_store_campaigns_detail";
+            case "leader" : $return = "shareData_leadManager.check_store_campaigns_detail";
             break;
-            case "header" : $return = "ShareData_HeadManager.check_store_campaigns_detail";
+            case "header" : $return = "shareData_headManager.check_store_campaigns_detail";
             break;
             case "admin" : $return = "shareData_admin.check_store_campaigns_detail";
             break;

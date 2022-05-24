@@ -16,7 +16,7 @@
         <div class="hk-pg-header mb-10">
             <div>
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                    data-feather="clipboard"></i></span></span>บันทึกขออนุมัติ</h4>
+                    data-feather="clipboard"></i></span></span>บันทึกข้อมูลการขออนุมัติ</h4>
             </div>
             <div class="d-flex">
                 <button type="button" class="btn btn-teal btn-sm btn-rounded px-3" data-toggle="modal" data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button>
@@ -30,7 +30,7 @@
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
                         <div class="col-sm-12 col-md-3">
-                            <h5 class="hk-sec-title">รายการขออนุมัติ</h5>
+                            <h5 class="hk-sec-title">ตารางข้อมูลการขออนุมัติ</h5>
                         </div>
 
                     </div>
@@ -46,15 +46,16 @@
 
                                         <span class="form-inline pull-right pull-sm-center">
                                             <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</button>
-                                            <form action="{{ url('search_month_requestApprove') }}" method="post" enctype="multipart/form-data">
-                                                @csrf
+                                            <!-- <form action="{{ url('search_month_requestApprove') }}" method="post" enctype="multipart/form-data"> -->
+                                            <form id="form_search" enctype="multipart/form-data">
+                                                
                                                 <span id="selectdate" style="display:none;">
 
                                                     เดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateFrom" name="fromMonth"/>
 
                                                     ถึงเดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name="toMonth"/>
 
-                                                <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm">ค้นหา</button>
+                                                <button type="submit"style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm">ค้นหา</button>
 
                                                 {{-- <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button> --}}
                                                 </span>
@@ -63,10 +64,11 @@
                                         <!-- ------ -->
                                     </div>
                                 </div>
-                                {{-- <div class="table-responsive col-md-12"> --}}
 
-                                    <div class="" id="table_product">
-                                {{-- </div> --}}
+
+                                <div id="table_product"></div>
+
+
                             </div>
                         </div>
                 </section>
@@ -94,7 +96,7 @@
                         <div class="col-md-6 form-group">
                             <label for="firstName">ขออนุมัติสำหรับ</label>
                                 <select class="form-control custom-select" name="approved_for" required>
-                                    <option selected disabled>กรุณาเลือก</option>
+                                    <option selected disabled value="">กรุณาเลือก</option>
                                     <?php $masters = App\ObjectiveAssign::get(); ?>
                                     @foreach ($masters as $value)
                                     <option value="{{$value->id}}">{{$value->masassign_title}}</option>
@@ -119,14 +121,25 @@
                                     type="text" required></textarea>
                             </div>
                         </div>
-                            <div class="row">
-                                <div class="col-md-6 form-group">
-                                    <label for="firstName">เรื่องด่วน</label>
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck1" name="assign_is_hot" value="1">
-                                        <label class="custom-control-label" for="customCheck1">ขออนุมัติด่วน</label>
-                                    </div>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label for="firstName">ค้นหาชื่อร้าน</label>
+                                <select name="sel_searchShop2" id="sel_searchShop2" class="form-control custom-select select2">
+                                    <option value="" selected disabled>กรุณาเลือกชื่อร้านค้า</option>
+                                    @foreach ($customer_api as $key => $value)
+                                        <option value="{{$customer_api[$key]['id']}}">{{$customer_api[$key]['shop_name']}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">เรื่องด่วน</label>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck1" name="assign_is_hot" value="1">
+                                    <label class="custom-control-label" for="customCheck1">ขออนุมัติด่วน</label>
                                 </div>
+                            </div>
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -180,14 +193,22 @@
                                     type="text" readonly></textarea>
                             </div>
                         </div>
-                            <div class="row">
-                                <div class="col-md-6 form-group">
-                                    <label for="firstName">เรื่องด่วน</label>
-                                    {{-- <input type="text" name="" id="get_xx"> --}}
-                                    <div class="custom-control custom-checkbox">
-                                        <div id="customCheck6"></div>
-                                    </div>
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <label for="firstName">ค้นหาชื่อร้าน</label>
+                                <select name="sel_searchShopEdit" id="sel_searchShopEdit" class="form-control custom-select select2">
+                                    <option value="" selected disabled>เลือกข้อมูล</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">เรื่องด่วน</label>
+                                {{-- <input type="text" name="" id="get_xx"> --}}
+                                <div class="custom-control custom-checkbox">
+                                    <div id="customCheck6"></div>
                                 </div>
+                            </div>
                         </div>
 
                         <input type="hidden" name="id" id="get_id">
@@ -240,7 +261,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">ความคิดเห็น</h5>
+                    <h5 class="modal-title">รายละเอียดการขออนุมัติ</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -249,16 +270,26 @@
 
                         <div class="card">
                             <div class="card-body">
-                                <h5 id="header_title" class="card-title"></h5>
-                                {{-- <div class="my-3"><span>ผู้คอมเม้นท์ : </span><span id="get_assign_approve_id"></span></div> --}}
-                                <div class="my-3"><span>วันที่ปฎิบัติ : </span><span id="get_assign_work_date"></span></div>
+                         
+                                <h5 id="header_title_comment" class="card-title"></h5>
+
+                                <div class="my-3"><span>ขออนุมัติสำหรับ : </span>
+                                    <span id="header_approved_for_comment"></span>
+                                </div>
+
+                                <div class="my-3"><span>วันที่ปฎิบัติ : </span>
+                                    <span id="get_assign_work_date_comment"></span>
+                                </div>
 
                                 <div class="my-3">
                                     <p>รายละเอียด : </p>
-                                    <p  id="assign_detail" class="card-text"></p>
+                                    <p  id="assign_detail_comment" class="card-text"></p>
                                 </div>
-                                {{-- <div class="my-3" id="img_show"></div> --}}
+
                             </div>
+                        </div>
+                        <div class="my-10" id="div_assign_status">
+
                         </div>
 
                         <div class="form-group">
@@ -311,8 +342,8 @@
                             content += "<th>#</th>";
                             content += "<th>เรื่องด่วน</th>";
                             content += "<th>เรื่อง</th>";
-                            // content += "<th>ชื่อร้าน</th>";
-                            content += "<th>วันที่</th>";
+                            content += "<th>ชื่อร้าน</th>";
+                            content += "<th>วันที่ปฎิบัติงาน</th>";
                             content += "<th>การอนุมัติ</th>";
                             content += "<th>สถานะ</th>";
                             content += "<th>Action</th>";
@@ -333,17 +364,15 @@
                 method:"GET",
                 url:"{{url('approval2')}}",
                 dataType: 'json',
-                // data:{
-                //         "_token": "{{ csrf_token() }}",
-                //     },
                 },
                 columns: [
                     {data: 'key', name: 'key'},
                     {data: 'assign_is_hot', name: 'assign_is_hot'},
                     {data: 'assign_title', name: 'assign_title'},
+                    {data: 'assign_shop_name', name: 'assign_shop_name'},
                     {data: 'assign_work_date', name: 'assign_work_date'},
                     {data: 'assign_status', name: 'assign_status'},
-                    {data: 'assign_status_actoin', name: 'assign_status_actoin'},
+                    {data: 'assign_status_approve', name: 'assign_status_approve'},
                     {data: 'action', name: 'action'},
                 ]
         });
@@ -393,7 +422,7 @@
             e.preventDefault();
             // var formData = $(this).serialize();
             var formData = new FormData(this);
-            //console.log(formData);
+            console.log(formData);
             $.ajax({
                 type:'POST',
                 url: '{{ url("create_approval") }}',
@@ -429,6 +458,7 @@
             dataType: "JSON",
             async: false,
             success: function(data) {
+                console.log(data.customer_api);
                 $('#customCheck6').children().remove().end();
                 $('#get_id').val(data.dataEdit.id);
                 $('#get_work_date').val(data.dataEdit.assign_work_date);
@@ -442,6 +472,14 @@
                 }else{
                     $('#customCheck6').append("<input type='checkbox' class='custom-control-input' id='customCheck8' name='assign_is_hot' value='1' disabled><label class='custom-control-label' for='customCheck8'>ขออนุมัติด่วน</label>");
                 }
+                
+                $.each(data.customer_api, function(key, value){
+                    if(data.customer_api[key]['id'] == data.dataEdit.assign_shop){
+                        $('#sel_searchShopEdit').append('<option value='+data.customer_api[key]['id']+' selected>'+data.customer_api[key]['shop_name']+'</option>');
+                    }else{
+                        $('#sel_searchShopEdit').append('<option value='+data.customer_api[key]['id']+'>'+data.customer_api[key]['shop_name']+'</option>');
+                    }
+                });
                 // $('#customCheck2').val(data.dataEdit.assign_is_hot);
 
                 $('#editApproval').modal('toggle');
@@ -453,8 +491,10 @@
                     content += "<thead>";
                         content += "<tr>";
                             content += "<th>#</th>";
+                            content += "<th>เรื่องด่วน</th>";
                             content += "<th>เรื่อง</th>";
-                            content += "<th>วันที่</th>";
+                            // content += "<th>ชื่อร้าน</th>";
+                            content += "<th>วันที่ปฎิบัติงาน</th>";
                             content += "<th>การอนุมัติ</th>";
                             content += "<th>สถานะ</th>";
                             content += "<th>Action</th>";
@@ -475,16 +515,14 @@
                 method:"GET",
                 url:"{{url('approval2')}}",
                 dataType: 'json',
-                // data:{
-                //         "_token": "{{ csrf_token() }}",
-                //     },
                 },
                 columns: [
                     {data: 'key', name: 'key'},
+                    {data: 'assign_is_hot', name: 'assign_is_hot'},
                     {data: 'assign_title', name: 'assign_title'},
                     {data: 'assign_work_date', name: 'assign_work_date'},
                     {data: 'assign_status', name: 'assign_status'},
-                    {data: 'assign_status_actoin', name: 'assign_status_actoin'},
+                    {data: 'assign_status_approve', name: 'assign_status_approve'},
                     {data: 'action', name: 'action'},
                 ]
         });
@@ -512,8 +550,9 @@
 
 <script>
 
-    //Edit
+    //approval_comment
     function approval_comment(id) {
+        console.log(id);
         $.ajax({
             type: "GET",
             url: "{!! url('view_comment/"+id+"') !!}",
@@ -521,15 +560,30 @@
             async: false,
             success: function(data) {
                 $('#div_comment').children().remove().end();
-                console.log(data);
+                $('#div_assign_status').children().remove().end();
+                // console.log(data['dataassign']);
+                switch(data['dataassign'].assign_status) {
+                    case 0 : div_assign_status = '<span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>';
+                        break;
+                    case 1 : div_assign_status = '<span class="badge badge-soft-success" style="font-size: 12px;">Approval</span>';
+                        break;
+                    case 2 : div_assign_status = '<span class="badge badge-soft-secondary" style="font-size: 12px;">Reject</span>';
+                        break;
+                    default: $div_assign_status = '<span class="badge badge-soft-warning" style="font-size: 12px;">ไม่มี</span>'
+                }
 
-                $.each(data, function(key, value){
-                    $('#assign_detail').text(data[key].assign_detail);
-                    $('#header_title').text(data[key].assign_title);
-                    $('#get_assign_work_date').text(data[key].assign_work_date);
-                    $('#get_assign_approve_id').text(data[key].user_comment);
-                    $('#div_comment').append('<div>Comment by: '+data[key].user_comment+' Date: '+data[key].created_at+'</div>');
-                    $('#div_comment').append('<div class="alert alert-primary py-20" role="alert">'+data[key].assign_comment_detail+'</div>');
+                $('#assign_detail_comment').text(data['dataassign'].assign_detail);
+                $('#header_title_comment').text('เรื่อง : '+data['dataassign'].assign_title);
+                $('#header_approved_for_comment').text(data['dataassign'].masassign_title);
+                $('#get_assign_work_date_comment').text(data['dataassign'].assign_work_date);
+                $('#header_approved_for_comment').text(data['dataassign'].masassign_title);
+  
+                $('#div_assign_status').append('<span>การอนุมัติ : </span>'+div_assign_status);
+
+                $.each(data['comment'], function(key, value){
+                    
+                    $('#div_comment').append('<div>Comment by: '+value.user_comment+' Date: '+value.created_at+'</div>');
+                    $('#div_comment').append('<div class="alert alert-primary py-20" role="alert">'+value.assign_comment_detail+'</div>');
                 });
 
                 $('#ApprovalComment').modal('toggle');
@@ -541,8 +595,10 @@
                     content += "<thead>";
                         content += "<tr>";
                             content += "<th>#</th>";
+                            content += "<th>เรื่องด่วน</th>";
                             content += "<th>เรื่อง</th>";
-                            content += "<th>วันที่</th>";
+                            // content += "<th>ชื่อร้าน</th>";
+                            content += "<th>วันที่ปฎิบัติงาน</th>";
                             content += "<th>การอนุมัติ</th>";
                             content += "<th>สถานะ</th>";
                             content += "<th>Action</th>";
@@ -563,20 +619,69 @@
                 method:"GET",
                 url:"{{url('approval2')}}",
                 dataType: 'json',
-                // data:{
-                //         "_token": "{{ csrf_token() }}",
-                //     },
                 },
                 columns: [
                     {data: 'key', name: 'key'},
+                    {data: 'assign_is_hot', name: 'assign_is_hot'},
                     {data: 'assign_title', name: 'assign_title'},
                     {data: 'assign_work_date', name: 'assign_work_date'},
                     {data: 'assign_status', name: 'assign_status'},
-                    {data: 'assign_status_actoin', name: 'assign_status_actoin'},
+                    {data: 'assign_status_approve', name: 'assign_status_approve'},
                     {data: 'action', name: 'action'},
                 ]
         });
     }
+
+
+    $("#form_search").on("submit", function (e) {
+        e.preventDefault();
+        // var formData = new FormData(this);
+        var fromMonth = $('#selectdateFrom').val();
+        var toMonth = $('#selectdateTo').val();
+
+        var content = "<div class='table-responsive col-md-12'>";
+                content += "<table id='datable_request' class='table table-hover'>";
+                    content += "<thead>";
+                        content += "<tr>";
+                            content += "<th>#</th>";
+                            content += "<th>เรื่องด่วน</th>";
+                            content += "<th>เรื่อง</th>";
+                            // content += "<th>ชื่อร้าน</th>";
+                            content += "<th>วันที่ปฎิบัติงาน</th>";
+                            content += "<th>การอนุมัติ</th>";
+                            content += "<th>สถานะ</th>";
+                            content += "<th>Action</th>";
+                        content += "</tr>";
+                    content += "</thead>";
+                    content += "<tbody>";
+                    content += "<tbody>";
+                    content += "<tbody>";
+                content += "</table>";
+            content += "</div>";
+
+        $("#table_product").html(content);
+
+        $('#datable_request').DataTable({
+            processing: false,
+            serverSide: false,
+            ajax: {
+                method:"get",
+                url: '{{ url("/search_month_requestApprove") }}/'+fromMonth+"/"+toMonth,
+                dataType: 'json',
+                },
+                columns: [
+                    {data: 'key', name: 'key'},
+                    {data: 'assign_is_hot', name: 'assign_is_hot'},
+                    {data: 'assign_title', name: 'assign_title'},
+                    {data: 'assign_work_date', name: 'assign_work_date'},
+                    {data: 'assign_status', name: 'assign_status'},
+                    {data: 'assign_status_approve', name: 'assign_status_approve'},
+                    {data: 'action', name: 'action'},
+                ]
+        });
+
+    });
+
 </script>
 
     <script>

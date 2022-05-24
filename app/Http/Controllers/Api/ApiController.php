@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 use DataTables;
@@ -108,14 +109,16 @@ class ApiController extends Controller
 
     public function fetch_products($id){
 
+        //-- ดึงแบบ API
         $api_token = $this->apiToken();
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/products?sort_by=product_code",[
             'productlist_id' => $id
         ]);
 
         $res_api = $response->json();
+        $products = array();
         if($res_api['code'] == 200){
-            $products = array();
+            
             foreach($res_api['data'] as $value){
                 if($value['list_code'] == $id){
                     $products[] = [
@@ -151,21 +154,42 @@ class ApiController extends Controller
 
     //-- สำหรับ Seller--
     public function fetch_provinces_products($id){
+         /**
+         * ดึงแบบ API
+         */
+        // $api_token = $this->apiToken();
+        // $path_search = "/sellers/".Auth::user()->api_identify."/pdglists/".$id."/provinces";
+        // $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
+        // $res_api = $response->json();
+        // $provinces = array();
 
-        $api_token = $this->apiToken();
-        $path_search = "/sellers/".Auth::user()->api_identify."/pdglists/".$id."/provinces";
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
-        $res_api = $response->json();
-        $provinces = array();
+        // if($res_api['code'] == 200){
+        //     foreach($res_api['data'] as $value){
+        //         $provinces[] = [
+        //             'identify' => $value['identify'],
+        //             'name_thai' => $value['name_thai'],
+        //             'region_id' => $value['region_id']
+        //         ];
+        //     }
+        // }
 
-        if($res_api['code'] == 200){
-            foreach($res_api['data'] as $value){
-                $provinces[] = [
-                    'identify' => $value['identify'],
-                    'name_thai' => $value['name_thai'],
-                    'region_id' => $value['region_id']
-                ];
-            }
+         /**
+         * ดึงจากฐานข้อมูล และแปลงเป็น Array เพื่อไม่ต้องแก้ไขหน้า view
+         */
+        $api_provinces = DB::table('api_provinces')
+        ->join('api_customers', 'api_customers.province_id', 'api_provinces.identify')
+        ->leftJoin('api_customer_to_pdglist', 'api_customer_to_pdglist.customers_identify', 'api_customers.identify')
+        ->where('api_customer_to_pdglist.pdglist_identify', $id)
+        ->select('api_provinces.*')
+        ->groupBy('api_provinces.identify')
+        ->get();
+
+        foreach($api_provinces as $value){
+            $provinces[] = [
+                'identify' => $value->identify,
+                'name_thai' => $value->name_thai,
+                'region_id' => $value->region_id
+            ];
         }
 
         return response()->json([
@@ -176,21 +200,45 @@ class ApiController extends Controller
     }
 
     public function fetch_amphur_products($pdgid, $id){
+        /**
+         * ดึงแบบ API
+         */
+        // $api_token = $this->apiToken();
+        // $path_search = "/sellers/".Auth::user()->api_identify."/pdglists/".$pdgid."/amphures?province_id=".$id;
+        // $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
+        // $res_api = $response->json();
+        // $provinces = array();
 
-        $api_token = $this->apiToken();
-        $path_search = "/sellers/".Auth::user()->api_identify."/pdglists/".$pdgid."/amphures?province_id=".$id;
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
-        $res_api = $response->json();
-        $provinces = array();
+        // if($res_api['code'] == 200){
+        //     foreach($res_api['data'] as $value){
+        //         $amphures[] = [
+        //             'identify' => $value['identify'],
+        //             'name_thai' => $value['name_thai'],
+        //             'province_id' => $value['province_id']
+        //         ];
+        //     }
+        // }
 
-        if($res_api['code'] == 200){
-            foreach($res_api['data'] as $value){
-                $amphures[] = [
-                    'identify' => $value['identify'],
-                    'name_thai' => $value['name_thai'],
-                    'province_id' => $value['province_id']
-                ];
-            }
+        /**
+         * ดึงจากฐานข้อมูล และแปลงเป็น Array เพื่อไม่ต้องแก้ไขหน้า view
+         */
+        $api_amphures = DB::table('api_amphures')
+        ->join('api_customers', 'api_customers.amphoe_id', 'api_amphures.identify')
+        ->leftJoin('api_customer_to_pdglist', 'api_customer_to_pdglist.customers_identify', 'api_customers.identify')
+        ->where('api_customer_to_pdglist.pdglist_identify', $pdgid)
+        ->where('api_amphures.province_id', $id)
+        ->select('api_amphures.*')
+        ->groupBy('api_amphures.identify')
+        ->get();
+
+        $amphures = array();
+
+        foreach($api_amphures as $value){
+            $amphures[] = [
+                'identify' => $value->identify,
+                'name_thai' => $value->name_thai,
+                'province_id' => $value->province_id
+            ];
         }
 
         return response()->json([
@@ -201,29 +249,54 @@ class ApiController extends Controller
     }
 
     public function fetch_datatable_customer_sellers($pdgid,$pvid,$ampid){
-        $api_token = $this->apiToken();
-        // $path_search = "sellers/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers?province_id=".$pvid."&amphoe_id=".$ampid;
-        $path_search = "sellers/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers";
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search,[
-            'province_id' => $pvid,
-            'amphoe_id' => $ampid
-        ]);
-        $res_api = $response->json();
-        $customer = array();
+        /**
+         * ดึงแบบ API
+         */
+        // $api_token = $this->apiToken();
+        // $path_search = "sellers/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers";
+        // $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search,[
+        //     'province_id' => $pvid,
+        //     'amphoe_id' => $ampid
+        // ]);
+        // $res_api = $response->json();
+        // $customer = array();
 
-        if($res_api['code'] == 200){
-            foreach($res_api['data'] as $value){
-                $customer[] = [
-                    'identify' => $value['identify'],
-                    'title' => $value['title'],
-                    'name' => $value['name'],
-                    'amphoe_name' => $value['amphoe_name'],
-                    'province_name' => $value['province_name'],
-                    'telephone' => $value['telephone'],
-                    'mobile' => $value['mobile']
-                ];
-            }
-        }
+        // if($res_api['code'] == 200){
+        //     foreach($res_api['data'] as $value){
+        //         $customer[] = [
+        //             'identify' => $value['identify'],
+        //             'title' => $value['title'],
+        //             'name' => $value['name'],
+        //             'amphoe_name' => $value['amphoe_name'],
+        //             'province_name' => $value['province_name'],
+        //             'telephone' => $value['telephone'],
+        //             'mobile' => $value['mobile']
+        //         ];
+        //     }
+        // }
+
+        /**
+         * ดึงจากฐานข้อมูล และแปลงเป็น Array เพื่อไม่ต้องแก้ไขหน้า view
+         */
+
+        $customer = array();
+        $api_customers = DB::table('api_customers')
+            ->leftJoin('api_customer_to_pdglist', 'api_customer_to_pdglist.customers_identify', 'api_customers.identify')
+            ->where('api_customer_to_pdglist.pdglist_identify', $pdgid)
+            ->where('api_customers.province_id', $pvid)
+            ->where('api_customers.amphoe_id', $ampid)
+            ->get();
+        foreach($api_customers as $value){
+            $customer[] = [
+                'identify' => $value->identify,
+                'title' => $value->title,
+                'name' => $value->name,
+                'amphoe_name' => $value->amphoe_name,
+                'province_name' => $value->province_name,
+                'telephone' => $value->telephone,
+                'mobile' => $value->mobile
+            ];
+        } 
 
         return Datatables::of($customer)
         ->addIndexColumn()
@@ -243,25 +316,49 @@ class ApiController extends Controller
     }
 
     public function fetch_datatable_customer_sellers_pdglist($pdgid){
-        $api_token = $this->apiToken();
-        $path_search = "sellers/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers";
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
-        $res_api = $response->json();
+        /**
+         * ดึงแบบ API
+         */
+        // $api_token = $this->apiToken();
+        // $path_search = "sellers/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers";
+        // $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+        // $res_api = $response->json();
+        // $customer = array();
+
+        // if($res_api['code'] == 200){
+        //     foreach($res_api['data'] as $value){
+        //         $customer[] = [
+        //             'identify' => $value['identify'],
+        //             'title' => $value['title'],
+        //             'name' => $value['name'],
+        //             'amphoe_name' => $value['amphoe_name'],
+        //             'province_name' => $value['province_name'],
+        //             'telephone' => $value['telephone'],
+        //             'mobile' => $value['mobile']
+        //         ];
+        //     }
+        // }
+
+        /**
+         * ดึงจากฐานข้อมูล และแปลงเป็น Array เพื่อไม่ต้องแก้ไขหน้า view
+         */
         $customer = array();
 
-        if($res_api['code'] == 200){
-            foreach($res_api['data'] as $value){
-                $customer[] = [
-                    'identify' => $value['identify'],
-                    'title' => $value['title'],
-                    'name' => $value['name'],
-                    'amphoe_name' => $value['amphoe_name'],
-                    'province_name' => $value['province_name'],
-                    'telephone' => $value['telephone'],
-                    'mobile' => $value['mobile']
-                ];
-            }
-        }
+        $api_customers = DB::table('api_customers')
+            ->leftJoin('api_customer_to_pdglist', 'api_customer_to_pdglist.customers_identify', 'api_customers.identify')
+            ->where('api_customer_to_pdglist.pdglist_identify', $pdgid)
+            ->get();
+        foreach($api_customers as $value){
+            $customer[] = [
+                'identify' => $value->identify,
+                'title' => $value->title,
+                'name' => $value->name,
+                'amphoe_name' => $value->amphoe_name,
+                'province_name' => $value->province_name,
+                'telephone' => $value->telephone,
+                'mobile' => $value->mobile
+            ];
+        } 
 
         return Datatables::of($customer)
         ->addIndexColumn()
@@ -282,27 +379,58 @@ class ApiController extends Controller
     }
 
     public function fetch_datatable_customer_sellers_pdglist_pvid($pdgid, $pvid){
-        $api_token = $this->apiToken();
-        $path_search = "sellers/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers";
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search,[
-            'province_id' => $pvid,
-        ]);
-        $res_api = $response->json();
+        /**
+         * ดึงแบบ API
+         */
+        // $api_token = $this->apiToken();
+        // $path_search = "sellers/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers";
+        // $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search,[
+        //     'province_id' => $pvid,
+        // ]);
+        // $res_api = $response->json();
+        // $customer = array();
+
+        // if($res_api['code'] == 200){
+        //     foreach($res_api['data'] as $value){
+        //         $customer[] = [
+        //             'identify' => $value['identify'],
+        //             'title' => $value['title'],
+        //             'name' => $value['name'],
+        //             'amphoe_name' => $value['amphoe_name'],
+        //             'province_name' => $value['province_name'],
+        //             'telephone' => $value['telephone'],
+        //             'mobile' => $value['mobile']
+        //         ];
+        //     }
+        // }
+
+        /**
+         * ดึงจากฐานข้อมูล และแปลงเป็น Array เพื่อไม่ต้องแก้ไขหน้า view
+         */
+
         $customer = array();
 
-        if($res_api['code'] == 200){
-            foreach($res_api['data'] as $value){
-                $customer[] = [
-                    'identify' => $value['identify'],
-                    'title' => $value['title'],
-                    'name' => $value['name'],
-                    'amphoe_name' => $value['amphoe_name'],
-                    'province_name' => $value['province_name'],
-                    'telephone' => $value['telephone'],
-                    'mobile' => $value['mobile']
-                ];
+        $api_customers = DB::table('api_customers')
+            ->leftJoin('api_customer_to_pdglist', 'api_customer_to_pdglist.customers_identify', 'api_customers.identify')
+            ->where('api_customer_to_pdglist.pdglist_identify', $pdgid);
+
+            if($pvid != ""){
+                $api_customers = $api_customers->where('api_customers.province_id', $pvid);
             }
-        }
+            
+            $api_customers = $api_customers->get();
+
+        foreach($api_customers as $value){
+            $customer[] = [
+                'identify' => $value->identify,
+                'title' => $value->title,
+                'name' => $value->name,
+                'amphoe_name' => $value->amphoe_name,
+                'province_name' => $value->province_name,
+                'telephone' => $value->telephone,
+                'mobile' => $value->mobile
+            ];
+        } 
 
         return Datatables::of($customer)
         ->addIndexColumn()
@@ -841,6 +969,263 @@ class ApiController extends Controller
     //-- จบ สำหรับ Admin--
 
 
+
+    /**
+     *  --- ดึงข้อมูลจาก API ลงฐานข้อมูลระบบ
+     */
+
+    public function api_fetch_provinces(){ //-- ดึงจังหวัด
+        DB::beginTransaction();
+        try {
+            $api_token = $this->apiToken();
+            $path_search = "provinces";
+            $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+            $res_api = $response->json();
+            
+            if($res_api['code'] == 200){
+                foreach($res_api['data'] as $api_key => $api_value){
+                    $api_provinces = DB::table('api_provinces')->where('identify', $api_value['identify'])->first();
+                    if(is_null($api_provinces)){
+                        DB::table('api_provinces')
+                        ->insert([
+                            'identify'  => $api_value['identify'],
+                            'name_thai' => $api_value['name_thai'],
+                            'region_id' => $api_value['region_id']
+                        ]);
+                    }else{
+                        DB::table('api_provinces')
+                        ->where('identify', $api_value['identify'])
+                        ->update([
+                            'name_thai' => $api_value['name_thai'],
+                            'region_id' => $api_value['region_id']
+                        ]);
+                    }
+                }
+            }
+            DB::commit();
+            return response()->json([
+                'status' => 200,
+                'message' => 'บันทึกข้อมูลสำเร็จ',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกข้อมูลได้',
+            ]);
+        }
+    }
+
+    public function api_fetch_amphures(){ //-- ดึง อำเภอ
+        DB::beginTransaction();
+        try {
+            $api_token = $this->apiToken();
+            $path_search = "amphures";
+            $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+            $res_api = $response->json();
+            
+            if($res_api['code'] == 200){
+                foreach($res_api['data'] as $api_key => $api_value){
+                    $api_provinces = DB::table('api_amphures')->where('identify', $api_value['identify'])->first();
+                    if(is_null($api_provinces)){
+                        DB::table('api_amphures')
+                        ->insert([
+                            'identify'  => $api_value['identify'],
+                            'name_thai' => $api_value['name_thai'],
+                            'province_id' => $api_value['province_id']
+                        ]);
+                    }else{
+                        DB::table('api_amphures')
+                        ->where('identify', $api_value['identify'])
+                        ->update([
+                            'name_thai' => $api_value['name_thai'],
+                            'province_id' => $api_value['province_id']
+                        ]);
+                    }
+                }
+            }
+            DB::commit();
+            return response()->json([
+                'status' => 200,
+                'message' => 'บันทึกข้อมูลสำเร็จ',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกข้อมูลได้',
+            ]);
+        }
+    }
+
+    public function api_fetch_customers(){ //-- ดึง ลูกค้า
+        DB::beginTransaction();
+        try {
+            $api_token = $this->apiToken();
+            $path_search = "customers";
+            $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+            $res_api = $response->json();
+            
+            if($res_api['code'] == 200){
+                foreach($res_api['data'] as $api_key => $api_value){
+                    $api_provinces = DB::table('api_customers')->where('identify', $api_value['identify'])->first();
+                    if(is_null($api_provinces)){
+                        DB::table('api_customers')
+                        ->insert([
+                            'identify'  => $api_value['identify'],
+                            'title' => $api_value['title'],
+                            'name' => $api_value['name'],
+                            'address1' => $api_value['address1'],
+                            'adrress2' => $api_value['adrress2'],
+                            'postal_id' => $api_value['postal_id'],
+                            'telephone' => $api_value['telephone'],
+                            'mobile' => $api_value['mobile'],
+                            'contact' => $api_value['contact'],
+                            'regional_id' => $api_value['regional_id'],
+                            'province_id' => $api_value['province_id'],
+                            'amphoe_id' => $api_value['amphoe_id'],
+                            'regional_name' => $api_value['regional_name'],
+                            'province_name' => $api_value['province_name'],
+                            'amphoe_name' => $api_value['amphoe_name'],
+                            'focusdate' => $api_value['focusdate'],
+                            'InMonthDays' => $api_value['InMonthDays'],
+                            'TotalDays' => $api_value['TotalDays'],
+                            'TotalCampaign' => $api_value['TotalCampaign'],
+                            'TotalLimit' => $api_value['TotalLimit'],
+                            'TotalAmount' => $api_value['TotalAmount'],
+                            'DiffAmt' => $api_value['DiffAmt'],
+                            'SellerCode' => $api_value['SellerCode'],
+                            'image_url' => $api_value['image_url'],
+                        ]);
+                    }else{
+                        DB::table('api_customers')
+                        ->where('identify', $api_value['identify'])
+                        ->update([
+                            'identify'  => $api_value['identify'],
+                            'title' => $api_value['title'],
+                            'name' => $api_value['name'],
+                            'address1' => $api_value['address1'],
+                            'adrress2' => $api_value['adrress2'],
+                            'postal_id' => $api_value['postal_id'],
+                            'telephone' => $api_value['telephone'],
+                            'mobile' => $api_value['mobile'],
+                            'contact' => $api_value['contact'],
+                            'regional_id' => $api_value['regional_id'],
+                            'province_id' => $api_value['province_id'],
+                            'amphoe_id' => $api_value['amphoe_id'],
+                            'regional_name' => $api_value['regional_name'],
+                            'province_name' => $api_value['province_name'],
+                            'amphoe_name' => $api_value['amphoe_name'],
+                            'focusdate' => $api_value['focusdate'],
+                            'InMonthDays' => $api_value['InMonthDays'],
+                            'TotalDays' => $api_value['TotalDays'],
+                            'TotalCampaign' => $api_value['TotalCampaign'],
+                            'TotalLimit' => $api_value['TotalLimit'],
+                            'TotalAmount' => $api_value['TotalAmount'],
+                            'DiffAmt' => $api_value['DiffAmt'],
+                            'SellerCode' => $api_value['SellerCode'],
+                            'image_url' => $api_value['image_url'],
+                        ]);
+                    }
+                }
+            }
+            DB::commit();
+            return response()->json([
+                'status' => 200,
+                'message' => 'บันทึกข้อมูลสำเร็จ',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกข้อมูลได้',
+            ]);
+        }
+    }
+
+    public function api_fetch_pdglists(){ // ดึงสินค้า pdglists
+        DB::beginTransaction();
+        try {
+            $api_token = $this->apiToken();
+            $path_search = "pdglists";
+            $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+            $res_api = $response->json();
+            
+            if($res_api['code'] == 200){
+                foreach($res_api['data'] as $api_key => $api_value){
+                    $api_provinces = DB::table('api_pdglists')->where('identify', $api_value['identify'])->first();
+                    if(is_null($api_provinces)){
+                        DB::table('api_pdglists')
+                        ->insert([
+                            'identify'  => $api_value['identify'],
+                            'name' => $api_value['name'],
+                            'sub_code' => $api_value['sub_code'],
+                        ]);
+                    }else{
+                        DB::table('api_pdglists')
+                        ->where('identify', $api_value['identify'])
+                        ->update([
+                            'identify'  => $api_value['identify'],
+                            'name' => $api_value['name'],
+                            'sub_code' => $api_value['sub_code'],
+                        ]);
+                    }
+                }
+            }
+            DB::commit();
+            return response()->json([
+                'status' => 200,
+                'message' => 'Yes. Success.!',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => 404,
+                'message' => 'Database Not Save.!',
+            ]);
+        }
+    }
+
+    public function api_customer_to_pdglist(){ // ดึง ข้อมูลลูกค้า เปรียเทียบ สินค้าที่ซื้อ
+        DB::beginTransaction();
+        try {
+            $api_token = $this->apiToken();
+            DB::table('api_customer_to_pdglist')->delete(); //-- ลบข้อมูลออกทั้งหมด
+
+            $path_search = "customer-productlists";
+            $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+            $res_api = $response->json();
+
+            // dd($res_api);
+
+            if($res_api['code'] == 200){
+                foreach($res_api['data'] as $api_key => $api_value){
+                    DB::table('api_customer_to_pdglist')
+                    ->insert([
+                        'customers_identify' => $api_value['identify'],
+                        'pdglist_identify'  => $api_value['pdlist_id'],
+                    ]);
+                }
+            }
+
+            DB::commit();
+            return response()->json([
+                'status' => 200,
+                'message' => 'Yes. Success.!',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => 404,
+                'message' => 'Database Not Save.!',
+            ]);
+        }
+    }
+
+
+    /**
+     * --- จบการดึง ดึงข้อมูลจาก API ลงฐานข้อมูลระบบ
+     */
 
 
 

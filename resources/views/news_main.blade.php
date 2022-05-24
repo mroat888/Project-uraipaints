@@ -44,7 +44,13 @@
                 <div class="col-8 col-md-10">
                     <div class="row">
                         <div class="col-md-12"><div class="topic-news">{{$value->news_title}}</div> </div>
-                        <div class="col-md-12"><div class="boxnews-date">วันที่ : {{$value->news_date}}</div></div>
+                        <div class="col-md-12"><div class="boxnews-date">
+                            @php 
+                                list($year,$month,$day) = explode("-", $value->news_date);
+                                $news_date = $day."/".$month."/".$year;
+                            @endphp
+                            วันที่ : {{ $news_date }}
+                        </div></div>
                         <div class="col-md-12"><div class="shortdesc-news">
                             @if(strlen($value->news_detail) > 679)
                                 {{ substr($value->news_detail,0,680) }} ...
