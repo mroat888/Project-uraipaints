@@ -35,8 +35,7 @@ class ApprovalController extends Controller
                         ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
                 }
             })
-            ->select('assignments.created_by')
-            ->distinct()->get();
+            ->whereNotNull('assignments.assign_request_date')->select('users.name', 'assignments.*')->get();
 
         // dd($data['request_approval']);
 
@@ -262,7 +261,7 @@ class ApprovalController extends Controller
             })
             ->get();
 
-            
+
         // $auth_team_id = explode(',',Auth::user()->team_id);
         // $auth_team = array();
         // foreach($auth_team_id as $value){
@@ -407,7 +406,7 @@ class ApprovalController extends Controller
                     // return "yy";
                     foreach ($data as $value) {
                         foreach ($request->checkapprove as $key => $chk) {
-                            Assignment::where('created_by', $chk)->where('assign_status', 0)->update([
+                            Assignment::where('id', $chk)->where('assign_status', 0)->update([
                                 'assign_status' => 1,
                                 'assign_status_actoin' => 0,
                                 'assign_approve_date' => Carbon::now(),
@@ -424,7 +423,7 @@ class ApprovalController extends Controller
                 } else {
                     foreach ($data as $value) {
                         foreach ($request->checkapprove as $key => $chk) {
-                            Assignment::where('created_by', $chk)->where('assign_status', 0)->update([
+                            Assignment::where('id', $chk)->where('assign_status', 0)->update([
                                 'assign_status' => 1,
                                 'assign_status_actoin' => 0,
                                 'assign_approve_date' => Carbon::now(),

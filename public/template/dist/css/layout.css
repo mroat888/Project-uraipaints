@@ -644,7 +644,16 @@ background: linear-gradient(90deg, rgba(121,218,97,1) 0%, rgba(37,140,20,1) 100%
     background: rgba(198,18,70,1);
     border-radius: 50px;
     color: #fff;
-    padding: 10px 30px;
+    padding: 8px 30px;
+    border: 0;
+    transition: 0.5s;
+}
+
+.btn-approval{
+    background: #027790;
+    border-radius: 50px;
+    color: #fff;
+    padding: 8px 30px;
     border: 0;
     transition: 0.5s;
 }

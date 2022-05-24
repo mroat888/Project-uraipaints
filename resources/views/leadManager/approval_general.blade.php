@@ -18,7 +18,7 @@
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
             <li class="breadcrumb-item"><a href="#">Page</a></li>
-            <li class="breadcrumb-item active" aria-current="page">การขออนุมัติ</li>
+            <li class="breadcrumb-item active" aria-current="page">อนุมัติคำขออนุมัติ</li>
         </ol>
     </nav>
     <!-- /Breadcrumb -->
@@ -38,15 +38,9 @@
         <div class="hk-pg-header mb-10">
             <div>
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                    data-feather="file-text"></i></span></span>บันทึกข้อมูลการขออนุมัติ</h4>
+                    data-feather="file-text"></i></span></span>อนุมัติคำขออนุมัติ</h4>
             </div>
             <div class="d-flex">
-                {{-- <form action="{{ url('lead/approval_confirm_all') }}" method="POST" enctype="multipart/form-data"> --}}
-                {{-- <form id="from_general_approve" enctype="multipart/form-data">
-                    @csrf
-                <button type="button" id="btn_saleplan_approve" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" name="approve" value="approve">อนุมัติ</button>
-
-                <button type="button" id="btn_saleplan_approve2" class="btn btn_purple btn-danger btn-sm btn-rounded px-3 ml-5" name="failed" value="failed">ไม่อนุมัติ</button> --}}
             </div>
         </div>
         <!-- /Title -->
@@ -76,7 +70,7 @@
                     </div>
                     <div class="row mb-2">
                             <div class="col-md-3">
-                                <h5 class="hk-sec-title">ตารางข้อมูลการขออนุมัติ</h5>
+                                <h5 class="hk-sec-title">รายการคำขออนุมัติ</h5>
                             </div>
                             <div class="col-md-9">
                                 <!-- ------ -->
@@ -101,9 +95,9 @@
                             <div class="mb-20">
                                 <form id="from_general_approve" enctype="multipart/form-data">
                                     @csrf
-                                <button type="button" id="btn_saleplan_approve" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" name="approve" value="approve">อนุมัติ</button>
+                                <button type="button" id="btn_saleplan_approve" class="btn btn_purple btn-approval" name="approve" value="approve">อนุมัติ</button>
 
-                                <button type="button" id="btn_saleplan_approve2" class="btn btn_purple btn-danger btn-sm btn-rounded px-3 ml-5" name="failed" value="failed">ไม่อนุมัติ</button>
+                                <button type="button" id="btn_saleplan_approve2" class="btn btn_purple btn-reject ml-5" name="failed" value="failed">ไม่อนุมัติ</button>
                             </div>
                             <div class="table-responsive-sm">
                                 <table class="table table-sm table-hover">
@@ -118,18 +112,71 @@
                                                 </div>
                                             </th>
                                             <th>#</th>
+                                            <th>ผู้แทนขาย</th>
+                                            <th>เรื่องขออนุมัติ</th>
+                                            <th>ชื่อร้าน</th>
                                             <th>วันที่ขออนุมัติ</th>
-                                            {{-- <th>เรื่อง</th> --}}
-                                            <th>พนักงาน</th>
                                             <th>การอนุมัติ</th>
+                                            <th>ความคิดเห็น</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($request_approval as $key => $value)
-                                        <?php $chk =  App\Assignment::join('users', 'assignments.created_by', '=', 'users.id')
-                                        ->whereNotNull('assignments.assign_request_date')
-                                        ->where('assignments.created_by', $value->created_by)->select('users.name', 'assignments.*')->first();
+                                        <?php
+                                        // $chk =  App\Assignment::join('users', 'assignments.created_by', '=', 'users.id')
+                                        // ->whereNotNull('assignments.assign_request_date')
+                                        // ->where('assignments.created_by', $value->created_by)->select('users.name', 'assignments.*')->first();
+                                        ?>
+                                        <tr>
+                                            <td>
+                                                {{-- <div class="custom-control custom-checkbox checkbox-info">
+                                                    <input type="checkbox" class="custom-control-input checkapprove"
+                                                        name="checkapprove[]" id="customCheck{{$key + 1}}" value="{{$chk->created_by}}">
+                                                    <label class="custom-control-label" for="customCheck{{$key + 1}}"></label>
+                                                </div> --}}
+                                                <div class="custom-control custom-checkbox checkbox-info">
+                                                    <input type="checkbox" class="custom-control-input checkapprove"
+                                                        name="checkapprove[]" id="customCheck{{$key + 1}}" value="{{$value->id}}">
+                                                    <label class="custom-control-label" for="customCheck{{$key + 1}}"></label>
+                                                </div>
+                                                {{$value->id}}
+                                            </td>
+                                            <td>{{$key + 1}}</td>
+                                            {{-- <td>{{Carbon\Carbon::parse($chk->assign_request_date)->format('Y-m-d')}}</td> --}}
+                                            <td>{{$value->name}}</td>
+                                            <td>
+                                                @if ($value->assign_is_hot == 1)
+                                                <span class="material-icons" style="color: orangered;"> offline_bolt </span>
+                                                @endif
+                                                {{$value->assign_title}}</td>
+                                            <td>{{$value->assign_shop}}</td>
+                                            <td>{{Carbon\Carbon::parse($value->assign_request_date)->format('Y-m-d')}}</td>
+                                            <td>
+                                                <span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>
+                                            </td>
+                                            <td align="center">
+                                                <span class="badge badge-soft-primary" style="font-size: 12px;">มี</span>
+                                            </td>
+                                            <td>
+                                                <div class="button-list">
+                                                <a href="{{ url('comment_approval', [$value->id, $value->created_by]) }}" class="btn btn-icon btn-purple mr-10">
+                                                    <h4 class="btn-icon-wrap" style="color: white;">
+                                                        <i data-feather="message-square"></i>
+                                                    </h4>
+                                                </a>
+                                                <a href="{{url('lead/approval_general_detail', $value->created_by)}}" class="btn btn-icon btn-primary btn-link btn_showplan pt-5" value="3">
+                                                    <i data-feather="file-text"></i>
+                                                </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                        {{-- @foreach ($request_approval as $key => $value)
+                                        <?php
+                                        // $chk =  App\Assignment::join('users', 'assignments.created_by', '=', 'users.id')
+                                        // ->whereNotNull('assignments.assign_request_date')
+                                        // ->where('assignments.created_by', $value->created_by)->select('users.name', 'assignments.*')->first();
                                         ?>
                                         <tr>
                                             <td>
@@ -151,7 +198,7 @@
                                                 </a>
                                             </td>
                                         </tr>
-                                        @endforeach
+                                        @endforeach --}}
                                     </tbody>
                                 </table>
                             </div>
