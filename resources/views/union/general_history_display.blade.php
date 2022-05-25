@@ -10,6 +10,25 @@
         </div>
             <div class="modal-body">
 
+                <div class="card text-white bg-secondary" id="assign_parent" style="display:none">
+                        <div class="card-body">
+                            <h5 id="title_parent" class="card-title text-white"></h5>
+
+                            <div class="my-3"><span>ขออนุมัติสำหรับ : </span>
+                                <span id="approved_for_parent"></span>
+                            </div>
+
+                            <div class="my-3"><span>วันที่ปฎิบัติ : </span>
+                                <span id="assign_work_date_parent"></span>
+                            </div>
+
+                            <div class="my-3">
+                                <p>รายละเอียด : </p>
+                                <p  id="assign_detail_parent" class="card-text"></p>
+                            </div>
+                        </div>
+                </div>
+
                 <div class="card">
                     <div class="card-body">
                     

@@ -66,83 +66,8 @@
                                 </div>
 
 
-                                <div id="table_product">
-                                    <div class="table-responsive-sm">
-                                        <table id="datable_1" class="table table-sm table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>เรื่องด่วน</th>
-                                                    <th>เรื่อง</th>
-                                                    <th>ชื่อร้าน</th>
-                                                    <th>วันที่ปฎิบัติงาน</th>
-                                                    <th>การอนุมัติ</th>
-                                                    <th>สถานะ</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($list_approval as $key => $value)
-                                                <tr>
-                                                    <td>{{ ++$key }}</td>
-                                                    <td>
-                                                        @if($value->assign_is_hot == 1)
-                                                            <span class="badge badge-soft-danger" style="font-size: 12px;">HOT</span>
-                                                        @endif
-                                                    </td>
-                                                    <td>{{ $value->assign_title }}</td>
-                                                    <td>{{ $value->customer_title }} {{ $value->customer_name }}</td>
-                                                    <td>{{ $value->assign_work_date }}</td>
-                                                    <td>
-                                                        @php
-                                                            switch($value->assign_status){
-                                                                case 0 :    $badge_status = "badge-soft-warning";
-                                                                            $status = "Pending";
-                                                                    break;
-                                                                case 1 :    $badge_status = "badge-soft-success";
-                                                                            $status = "Approval";
-                                                                    break;
-                                                                case 2 :    $badge_status = "badge-soft-secondary";
-                                                                            $status = "Reject";
-                                                                    break;
-                                                                case 4 :    $badge_status = "badge-soft-info";
-                                                                            $status = "แก้ไขใหม่";
-                                                                    break;
-                                                                default:    $status = ""; 
-                                                                            $badge_status = "";
-                                                            }
-                                                        @endphp
-                                                        <span class="badge {{ $badge_status }}" style="font-size: 12px;">{{ $status }}</span>
-                                                        @if($value->assign_id)
-                                                            <span class="badge badge-soft-indigo" style="font-size: 12px;">Comment</span>
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        @if($value->assign_status == 0 || $value->assign_status == 4)
-                                                            <span class="badge badge-soft-warning" style="font-size: 12px;">ขออนุมัติ</span>
-                                                        @elseif($value->assign_status == 1 || $value->assign_status == 2)
-                                                            <span class="badge badge-soft-success" style="font-size: 12px;">สำเร็จ</span>
-                                                         @endif
-                                                    </td>
-                                                    <td>
-                                                        <button onclick="approval_comment({{ $value->id }})"
-                                                        class="btn btn-icon btn-purple mr-10" data-toggle="modal" data-target="#ApprovalComment">
-                                                        <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></button>
-                                                        
-                                                        @if ($value->assign_status == 4) <!-- สถานะให้แก้ไข -->
-                                                            <button onclick="edit_modal({{ $value->id }})" class="btn btn-icon btn-warning mr-10" data-toggle="modal"
-                                                                data-target="#editApproval">
-                                                                <span class="btn-icon-wrap"><i class="ion ion-md-create" style="font-size: 18px;"></i></span>
-                                                            </button>
-                                                        @endif
-                                                        
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-                                            <tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                                <div id="table_product"></div>
+
 
                             </div>
                         </div>
@@ -231,42 +156,41 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">แก้ไขข้อมูลการขออนุมัติ</h5>
+                    <h5 class="modal-title">รายละเอียดข้อมูลการขออนุมัติ</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                {{-- <form action="{{ url('update_approval') }}" method="post" enctype="multipart/form-data"> --}}
-                <form id="form_update_request_approval" enctype="multipart/form-data">
+                <form action="{{ url('update_approval') }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ขออนุมัติสำหรับ</label>
-                                <select class="form-control custom-select" name="approved_for" id="get_for">
-                                    <option selected disabled>เลือก</option>
-                                    <?php $masters = App\ObjectiveAssign::get(); ?>
+                                    <select class="form-control custom-select" name="approved_for" id="get_for" disabled>
+                                        <option selected disabled>เลือก</option>
+                                        <?php $masters = App\ObjectiveAssign::get(); ?>
                                     @foreach ($masters as $value)
                                     <option value="{{$value->id}}">{{$value->masassign_title}}</option>
                                     @endforeach
-                                </select>
+                                    </select>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">หัวข้อ / เรื่อง</label>
-                                <input class="form-control" placeholder="กรุณาใส่หัวข้อ / เรื่อง" name="assign_title" id="get_title" type="text">
+                                <input class="form-control" placeholder="กรุณาใส่หัวข้อ / เรื่อง" name="assign_title" id="get_title" type="text" readonly>
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="firstName">วันที่ / Date</label>
-                                <input class="form-control" type="date" name="assign_work_date" id="get_work_date" min="<?= date('Y-m-d') ?>" >
+                                <input class="form-control" type="date" name="assign_work_date" id="get_work_date" min="<?= date('Y-m-d') ?>" readonly>
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-md-12">
                                 <label for="username">รายละเอียด</label>
                                 <textarea class="form-control" cols="30" rows="5" id="get_detail" name="assign_detail"
-                                    type="text"></textarea>
+                                    type="text" readonly></textarea>
                             </div>
                         </div>
                         <div class="row">
@@ -280,90 +204,250 @@
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">เรื่องด่วน</label>
+                                {{-- <input type="text" name="" id="get_xx"> --}}
                                 <div class="custom-control custom-checkbox">
                                     <div id="customCheck6"></div>
                                 </div>
                             </div>
                         </div>
+
+                        <input type="hidden" name="id" id="get_id">
                     </div>
-                    <input type="hidden" name="get_id" id="get_id">
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
-                        <button type="submit" class="btn btn-primary">บันทึก</button>
+                        {{-- <button type="submit" class="btn btn-primary">บันทึก</button> --}}
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-<!-- Modal ApprovalComment -->
-<div class="modal fade" id="ApprovalComment" tabindex="-1" role="dialog" >
-    @include('union.general_history_display')
-</div>
+    <!-- Modal Approval Detail-->
+    <div class="modal fade" id="ApprovalDetail" tabindex="-1" role="dialog" aria-labelledby="ApprovalDetail" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">รายละเอียด</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                    <div class="modal-body">
+
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 id="header_title" class="card-title"></h5>
+                                <div class="my-3"><span>หัวข้อ/เรื่อง : </span><span id="get_assign_title"></span></div>
+                                <div class="my-3"><span>วันที่ปฎิบัติ : </span><span id="get_assign_work_date"></span></div>
+
+                                <div class="my-3">
+                                    <p>รายละเอียด : </p>
+                                    <p  id="assign_detail" class="card-text"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                    </div>
+            </div>
+        </div>
+    </div>
 
 
-{{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script> --}}
+    <!-- Modal ApprovalComment -->
+    <div class="modal fade" id="ApprovalComment" tabindex="-1" role="dialog" aria-labelledby="ApprovalComment" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">รายละเอียดการขออนุมัติ</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                    <div class="modal-body">
 
-<script>
-    $("#form_insert_request_approval").on("submit", function (e) {
-        e.preventDefault();
-        // var formData = $(this).serialize();
-        var formData = new FormData(this);
-        console.log(formData);
-        $.ajax({
-            type:'POST',
-            url: '{{ url("create_approval") }}',
-            data:formData,
-            cache:false,
-            contentType: false,
-            processData: false,
-            success:function(response){
-                console.log(response);
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Your work has been saved',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-                $("#addCustomer").modal('hide');
-                location.reload();
-            },
-            error: function(response){
-                console.log("error");
-                console.log(response);
-            }
+                        <div class="card">
+                            <div class="card-body">
+                         
+                                <h5 id="header_title_comment" class="card-title"></h5>
+
+                                <div class="my-3"><span>ขออนุมัติสำหรับ : </span>
+                                    <span id="header_approved_for_comment"></span>
+                                </div>
+
+                                <div class="my-3"><span>วันที่ปฎิบัติ : </span>
+                                    <span id="get_assign_work_date_comment"></span>
+                                </div>
+
+                                <div class="my-3">
+                                    <p>รายละเอียด : </p>
+                                    <p  id="assign_detail_comment" class="card-text"></p>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="my-10" id="div_assign_status">
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <div id="div_comment">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Delete Saleplan -->
+    <div class="modal fade" id="ModalSaleplanDelete" tabindex="-1" role="dialog" aria-labelledby="ModalSaleplanDelete"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form id="from_request_delete" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">คุณต้องการลบข้อมูลขออนุมัติ ใช่หรือไม่</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="text-align:center;">
+                        <h3>คุณต้องการลบข้อมูลขออนุมัติ ใช่หรือไม่ ?</h3>
+                        <input class="form-control" id="request_id_delete" name="request_id_delete" type="hidden" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                        <button type="submit" class="btn btn-primary" id="btn_save_edit">ยืนยัน</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script> --}}
+    <script>
+        $(document).ready(function(){
+            var content = "<div class='table-responsive col-md-12'>";
+                content += "<table id='datable_request' class='table table-hover'>";
+                    content += "<thead>";
+                        content += "<tr>";
+                            content += "<th>#</th>";
+                            content += "<th>เรื่องด่วน</th>";
+                            content += "<th>เรื่อง</th>";
+                            content += "<th>ชื่อร้าน</th>";
+                            content += "<th>วันที่ปฎิบัติงาน</th>";
+                            content += "<th>การอนุมัติ</th>";
+                            content += "<th>สถานะ</th>";
+                            content += "<th>Action</th>";
+                        content += "</tr>";
+                    content += "</thead>";
+                    content += "<tbody>";
+                    content += "<tbody>";
+                    content += "<tbody>";
+                content += "</table>";
+            content += "</div>";
+
+        $("#table_product").html(content);
+
+        $('#datable_request').DataTable({
+            processing: false,
+            serverSide: false,
+            ajax: {
+                method:"GET",
+                url:"{{url('approval2')}}",
+                dataType: 'json',
+                },
+                columns: [
+                    {data: 'key', name: 'key'},
+                    {data: 'assign_is_hot', name: 'assign_is_hot'},
+                    {data: 'assign_title', name: 'assign_title'},
+                    {data: 'assign_shop_name', name: 'assign_shop_name'},
+                    {data: 'assign_work_date', name: 'assign_work_date'},
+                    {data: 'assign_status', name: 'assign_status'},
+                    {data: 'assign_status_approve', name: 'assign_status_approve'},
+                    {data: 'action', name: 'action'},
+                ]
         });
     });
 
-    $("#form_update_request_approval").on("submit", function (e) {
-        e.preventDefault();
-        var formData = new FormData(this);
-        console.log(formData);
-        $.ajax({
-            type:'POST',
-            url: '{{ url("update_approval") }}',
-            data:formData,
-            cache:false,
-            contentType: false,
-            processData: false,
-            success:function(response){
-                console.log(response);
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Your work has been saved',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-                $("#editApproval").modal('hide');
-                location.reload();
-            },
-            error: function(response){
-                console.log("error");
-                console.log(response);
-            }
-        });
+    $(document).on('click', '#btn_request_delete', function() { // ปุ่มลบ Slaplan
+        let request_id_delete = $(this).val();
+        $('#request_id_delete').val(request_id_delete);
+        $('#ModalSaleplanDelete').modal('show');
     });
-</script>
+
+    $("#from_request_delete").on("submit", function(e) {
+            e.preventDefault();
+            //var formData = $(this).serialize();
+            var formData = new FormData(this);
+            console.log(formData);
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('delete_approval') }}',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    console.log(response);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Deleted!',
+                        text: "ลบข้อมูลลูกค้าเรียบร้อยแล้วค่ะ",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    $('#ModalSaleplanDelete').modal('hide');
+                    $('#shop_status_name_lead').text('ลบข้อมูล Sale Plan เรียบร้อย')
+                    $('#btn_request_delete').prop('disabled', true);
+                    location.reload();
+                },
+                error: function(response) {
+                    console.log("error");
+                    console.log(response);
+                }
+            });
+        });
+
+
+        $("#form_insert_request_approval").on("submit", function (e) {
+            e.preventDefault();
+            // var formData = $(this).serialize();
+            var formData = new FormData(this);
+            console.log(formData);
+            $.ajax({
+                type:'POST',
+                url: '{{ url("create_approval") }}',
+                data:formData,
+                cache:false,
+                contentType: false,
+                processData: false,
+                success:function(response){
+                    console.log(response);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    $("#addCustomer").modal('hide');
+                    location.reload();
+                },
+                error: function(response){
+                    console.log("error");
+                    console.log(response);
+                }
+            });
+        });
+    </script>
 
 <script>
     //Edit
@@ -384,9 +468,9 @@
                 $('#get_xx').val(data.dataEdit.assign_is_hot);
 
                 if (data.dataEdit.assign_is_hot == 1) {
-                    $('#customCheck6').append("<input type='checkbox' class='custom-control-input' id='customCheck7' name='assign_is_hot' value='1' checked><label class='custom-control-label' for='customCheck7'>ขออนุมัติด่วน</label>");
+                    $('#customCheck6').append("<input type='checkbox' class='custom-control-input' id='customCheck7' name='assign_is_hot' value='1' checked disabled><label class='custom-control-label' for='customCheck7'>ขออนุมัติด่วน</label>");
                 }else{
-                    $('#customCheck6').append("<input type='checkbox' class='custom-control-input' id='customCheck8' name='assign_is_hot' value='0'><label class='custom-control-label' for='customCheck8'>ขออนุมัติด่วน</label>");
+                    $('#customCheck6').append("<input type='checkbox' class='custom-control-input' id='customCheck8' name='assign_is_hot' value='1' disabled><label class='custom-control-label' for='customCheck8'>ขออนุมัติด่วน</label>");
                 }
                 
                 $.each(data.customer_api, function(key, value){
@@ -401,6 +485,65 @@
                 $('#editApproval').modal('toggle');
             }
         });
+
+        // var content = "<div class='table-responsive col-md-12'>";
+        //         content += "<table id='datable_request' class='table table-hover'>";
+        //             content += "<thead>";
+        //                 content += "<tr>";
+        //                     content += "<th>#</th>";
+        //                     content += "<th>เรื่องด่วน</th>";
+        //                     content += "<th>เรื่อง</th>";
+        //                     // content += "<th>ชื่อร้าน</th>";
+        //                     content += "<th>วันที่ปฎิบัติงาน</th>";
+        //                     content += "<th>การอนุมัติ</th>";
+        //                     content += "<th>สถานะ</th>";
+        //                     content += "<th>Action</th>";
+        //                 content += "</tr>";
+        //             content += "</thead>";
+        //             content += "<tbody>";
+        //             content += "<tbody>";
+        //             content += "<tbody>";
+        //         content += "</table>";
+        //     content += "</div>";
+
+        // $("#table_product").html(content);
+
+        // $('#datable_request').DataTable({
+        //     processing: false,
+        //     serverSide: false,
+        //     ajax: {
+        //         method:"GET",
+        //         url:"{{url('approval2')}}",
+        //         dataType: 'json',
+        //         },
+        //         columns: [
+        //             {data: 'key', name: 'key'},
+        //             {data: 'assign_is_hot', name: 'assign_is_hot'},
+        //             {data: 'assign_title', name: 'assign_title'},
+        //             {data: 'assign_work_date', name: 'assign_work_date'},
+        //             {data: 'assign_status', name: 'assign_status'},
+        //             {data: 'assign_status_approve', name: 'assign_status_approve'},
+        //             {data: 'action', name: 'action'},
+        //         ]
+        // });
+    }
+
+    function approval_detail(id){
+        $.ajax({
+            type: "GET",
+            url: "{!! url('edit_approval/"+id+"') !!}",
+            dataType: "JSON",
+            async: false,
+            success: function(data) {
+               // console.log(data);
+                $('#get_assign_work_date').text(data.dataEdit.assign_work_date);
+                $('#get_assign_title').text(data.dataEdit.assign_title);
+                $('#assign_detail').text(data.dataEdit.assign_detail);
+
+                $('#ApprovalDetail').modal('toggle');
+            }
+        });
+
     }
 
 </script>
@@ -418,9 +561,7 @@
             success: function(data) {
                 $('#div_comment').children().remove().end();
                 $('#div_assign_status').children().remove().end();
-                $("#assign_parent").hide();
-                
-
+                // console.log(data['dataassign']);
                 switch(data['dataassign'].assign_status) {
                     case 0 : div_assign_status = '<span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>';
                         break;
@@ -435,6 +576,8 @@
                 $('#header_title_comment').text('เรื่อง : '+data['dataassign'].assign_title);
                 $('#header_approved_for_comment').text(data['dataassign'].masassign_title);
                 $('#get_assign_work_date_comment').text(data['dataassign'].assign_work_date);
+                $('#header_approved_for_comment').text(data['dataassign'].masassign_title);
+  
                 $('#div_assign_status').append('<span>การอนุมัติ : </span>'+div_assign_status);
 
                 $.each(data['comment'], function(key, value){
@@ -442,23 +585,53 @@
                     $('#div_comment').append('<div>Comment by: '+value.user_comment+' Date: '+value.created_at+'</div>');
                     $('#div_comment').append('<div class="alert alert-primary py-20" role="alert">'+value.assign_comment_detail+'</div>');
                 });
-                
-                if(data['dataassign_parent']){
-                    let count_parent = Object.keys(data['dataassign_parent']).length;
-                    // console.log(count_parent);
-                    if(count_parent > 0){
-                        $("#assign_parent").attr("style", { display: "block" });
-                        $("#title_parent").text(data['dataassign_parent'].assign_title);
-                        $("#approved_for_parent").text(data['dataassign_parent'].masassign_title);
-                        $("#assign_work_date_parent").text(data['dataassign_parent'].assign_work_date);
-                        $("#assign_detail_parent").text(data['dataassign_parent'].assign_detail);
-                    }
-                }
 
                 $('#ApprovalComment').modal('toggle');
             }
         });
+
+        // var content = "<div class='table-responsive col-md-12'>";
+        //         content += "<table id='datable_request' class='table table-hover'>";
+        //             content += "<thead>";
+        //                 content += "<tr>";
+        //                     content += "<th>#</th>";
+        //                     content += "<th>เรื่องด่วน</th>";
+        //                     content += "<th>เรื่อง</th>";
+        //                     // content += "<th>ชื่อร้าน</th>";
+        //                     content += "<th>วันที่ปฎิบัติงาน</th>";
+        //                     content += "<th>การอนุมัติ</th>";
+        //                     content += "<th>สถานะ</th>";
+        //                     content += "<th>Action</th>";
+        //                 content += "</tr>";
+        //             content += "</thead>";
+        //             content += "<tbody>";
+        //             content += "<tbody>";
+        //             content += "<tbody>";
+        //         content += "</table>";
+        //     content += "</div>";
+
+        // $("#table_product").html(content);
+
+        // $('#datable_request').DataTable({
+        //     processing: false,
+        //     serverSide: false,
+        //     ajax: {
+        //         method:"GET",
+        //         url:"{{url('approval2')}}",
+        //         dataType: 'json',
+        //         },
+        //         columns: [
+        //             {data: 'key', name: 'key'},
+        //             {data: 'assign_is_hot', name: 'assign_is_hot'},
+        //             {data: 'assign_title', name: 'assign_title'},
+        //             {data: 'assign_work_date', name: 'assign_work_date'},
+        //             {data: 'assign_status', name: 'assign_status'},
+        //             {data: 'assign_status_approve', name: 'assign_status_approve'},
+        //             {data: 'action', name: 'action'},
+        //         ]
+        // });
     }
+
 
     $("#form_search").on("submit", function (e) {
         e.preventDefault();
@@ -466,14 +639,6 @@
         var fromMonth = $('#selectdateFrom').val();
         var toMonth = $('#selectdateTo').val();
 
-        if(fromMonth === ""){
-            fromMonth = "00";
-        }
-
-        if(toMonth === ""){
-            toMonth = "00";
-        }
-        
         var content = "<div class='table-responsive col-md-12'>";
                 content += "<table id='datable_request' class='table table-hover'>";
                     content += "<thead>";
@@ -481,7 +646,7 @@
                             content += "<th>#</th>";
                             content += "<th>เรื่องด่วน</th>";
                             content += "<th>เรื่อง</th>";
-                            content += "<th>ชื่อร้าน</th>";
+                            // content += "<th>ชื่อร้าน</th>";
                             content += "<th>วันที่ปฎิบัติงาน</th>";
                             content += "<th>การอนุมัติ</th>";
                             content += "<th>สถานะ</th>";
@@ -509,7 +674,6 @@
                     {data: 'assign_is_hot', name: 'assign_is_hot'},
                     {data: 'assign_title', name: 'assign_title'},
                     {data: 'assign_work_date', name: 'assign_work_date'},
-                    {data: 'assign_shop_name', name: 'assign_shop_name'},
                     {data: 'assign_status', name: 'assign_status'},
                     {data: 'assign_status_approve', name: 'assign_status_approve'},
                     {data: 'action', name: 'action'},
@@ -518,6 +682,14 @@
 
     });
 
+</script>
+
+    <script>
+    $(document).on('click', '.btn_showplan', function(){
+        let plan_id = $(this).val();
+        //alert(goo);
+        $('#Modalsaleplan').modal("show");
+    });
 </script>
 
 @section('footer')
