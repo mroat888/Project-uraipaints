@@ -24,9 +24,45 @@ class ApprovalController extends Controller
             $auth_team[] = $value;
         }
 
+        // $data['request_approval'] = DB::table('assignments')
+        //     ->join('users', 'assignments.created_by', '=', 'users.id')
+        //     ->where('assignments.assign_status', 0) // สถานะการอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน)
+        //     ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+        //     ->where(function($query) use ($auth_team) {
+        //         for ($i = 0; $i < count($auth_team); $i++){
+        //             $query->orWhere('users.team_id', $auth_team[$i])
+        //                 ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+        //                 ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+        //         }
+        //     })
+        //     ->whereNotNull('assignments.assign_request_date')->select('users.name', 'assignments.*')->get();
+
         $data['request_approval'] = DB::table('assignments')
-            ->join('users', 'assignments.created_by', '=', 'users.id')
-            ->where('assignments.assign_status', 0) // สถานะการอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน)
+        ->leftJoin('assignments_comments', 'assignments.id', 'assignments_comments.assign_id')
+        ->leftJoin('api_customers', 'api_customers.identify', 'assignments.assign_shop')
+        ->join('users', 'assignments.created_by', 'users.id')
+        ->whereIn('assignments.assign_status', [0, 4]) // สถานะอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน, 4=แก้ไขงาน))
+        ->where(function($query) use ($auth_team) {
+            for ($i = 0; $i < count($auth_team); $i++){
+                $query->orWhere('users.team_id', $auth_team[$i])
+                    ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                    ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+            }
+        })
+        ->select(
+            'assignments.*',
+            'assignments_comments.assign_id' ,
+            'users.name',
+            'users.id as user_id',
+            'users.api_identify',
+            'api_customers.title as api_customers_title',
+            'api_customers.name as api_customers_name',
+        )
+        ->orderBy('assignments.assign_request_date', 'desc')
+        ->groupBy('assignments.id')
+        ->get();
+
+            $data['users'] = DB::table('users')
             ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
             ->where(function($query) use ($auth_team) {
                 for ($i = 0; $i < count($auth_team); $i++){
@@ -35,7 +71,16 @@ class ApprovalController extends Controller
                         ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
                 }
             })
-            ->whereNotNull('assignments.assign_request_date')->select('users.name', 'assignments.*')->get();
+            ->get();
+
+            $data['team_sales'] = DB::table('master_team_sales')
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('id', $auth_team[$i])
+                        ->orWhere('id', 'like', $auth_team[$i].',%')
+                        ->orWhere('id', 'like', '%,'.$auth_team[$i]);
+                }
+            })->get();
 
         // dd($data['request_approval']);
 
@@ -44,6 +89,30 @@ class ApprovalController extends Controller
 
     public function search(Request $request)
     {
+        // dd($request);
+        // $auth_team_id = explode(',',Auth::user()->team_id);
+        // $auth_team = array();
+        // foreach($auth_team_id as $value){
+        //     $auth_team[] = $value;
+        // }
+
+        // $data['request_approval'] = DB::table('assignments')
+        // ->join('users', 'assignments.created_by', '=', 'users.id')
+        // ->where('assignments.assign_status', 0)
+        // ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+        // ->where('assignments.assign_request_date', $request->selectdateTo)
+        // ->where(function($query) use ($auth_team) {
+        //     for ($i = 0; $i < count($auth_team); $i++){
+        //         $query->orWhere('users.team_id', $auth_team[$i])
+        //             ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+        //             ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+        //     }
+        // })
+        // ->select('assignments.created_by')
+        // ->distinct()->get();
+
+        // return view('leadManager.approval_general', $data);
+
         $auth_team_id = explode(',',Auth::user()->team_id);
         $auth_team = array();
         foreach($auth_team_id as $value){
@@ -51,19 +120,78 @@ class ApprovalController extends Controller
         }
 
         $data['request_approval'] = DB::table('assignments')
-        ->join('users', 'assignments.created_by', '=', 'users.id')
-        ->where('assignments.assign_status', 0)
-        ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
-        ->where('assignments.assign_request_date', $request->selectdateTo)
-        ->where(function($query) use ($auth_team) {
-            for ($i = 0; $i < count($auth_team); $i++){
-                $query->orWhere('users.team_id', $auth_team[$i])
-                    ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
-                    ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
-            }
-        })
-        ->select('assignments.created_by')
-        ->distinct()->get();
+        ->leftJoin('assignments_comments', 'assignments.id', 'assignments_comments.assign_id')
+        ->leftJoin('api_customers', 'api_customers.identify', 'assignments.assign_shop')
+        ->join('users', 'assignments.created_by', 'users.id')
+        ->whereIn('assignments.assign_status', [0, 4]) // สถานะอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน, 4=แก้ไขงาน))
+        ->select(
+            'assignments.*',
+            'assignments_comments.assign_id' ,
+            'users.name',
+            'users.id as user_id',
+            'users.api_identify',
+            'api_customers.title as api_customers_title',
+            'api_customers.name as api_customers_name',
+        );
+
+        if(!is_null($request->selectteam_sales)){
+            $request_approval = $data['request_approval']->where('users.team_id', $request->selectteam_sales);
+            $data['checkteam_sales'] = $request->selectteam_sales;
+        }else{
+            $request_approval = $data['request_approval']->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('users.team_id', $auth_team[$i])
+                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+                }
+            });
+        }
+
+        if(!is_null($request->selectusers)){
+            $request_approval = $request_approval->where('assignments.created_by', $request->selectusers);
+            $data['checkusers'] = $request->selectusers;
+        }
+
+        if(!is_null($request->selectdateFrom)){
+            $request_approval = $request_approval->whereDate('assignments.assign_request_date', '>=', $request->selectdateFrom);
+            $data['checkdateFrom'] = $request->selectdateFrom;
+        }else{
+            $data['checkdateFrom'] = "";
+        }
+
+        if(!is_null($request->selectdateTo)){
+            $request_approval = $request_approval->whereDate('assignments.assign_request_date', '<=', $request->selectdateTo);
+            $data['checkdateTo'] = $request->selectdateTo;
+        }else{
+            $data['checkdateTo'] = "";
+        }
+
+        $request_approval = $request_approval
+        ->orderBy('assignments.assign_request_date', 'desc')
+        ->groupBy('assignments.id')
+        ->get();
+
+        $data['request_approval'] = $request_approval;
+
+        $data['users'] = DB::table('users')
+            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('users.team_id', $auth_team[$i])
+                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+                }
+            })
+            ->get();
+
+        $data['team_sales'] = DB::table('master_team_sales')
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('id', $auth_team[$i])
+                        ->orWhere('id', 'like', $auth_team[$i].',%')
+                        ->orWhere('id', 'like', '%,'.$auth_team[$i]);
+                }
+            })->get();
 
         return view('leadManager.approval_general', $data);
     }

@@ -74,11 +74,10 @@
                             </div>
                             <div class="col-md-9">
                                 <!-- ------ -->
-                                <span class="form-inline pull-right">
+                                {{-- <span class="form-inline pull-right">
                                    <a style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกวันที่</a>
                                    <form action="{{ url('lead/approvalGeneral/search') }}" method="POST" enctype="multipart/form-data">
                                        @csrf
-                                       {{-- <input type="hidden" name="id" value="{{$id_create}}" /> --}}
 
                                        <span id="selectdate" style="display:none;">
                                             <input type="date" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" name ="selectdateTo" value="" />
@@ -86,8 +85,77 @@
                                            <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-success btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button>
                                        </span>
                                    </form>
-                                   </span>
+                                   </span> --}}
                                    <!-- ------ -->
+
+                                   <!-- ------ -->
+                            <span class="form-inline pull-right">
+                                <!-- เงื่อนไขการค้นหา -->
+                                @php
+
+                                    if(isset($checkteam_sales)){
+                                        $checkteam_sales = $checkteam_sales;
+                                    }else{
+                                        $checkteam_sales = "";
+                                    }
+                                    if(isset($checkusers)){
+                                        $checkusers = $checkusers;
+                                    }else{
+                                        $checkusers = "";
+                                    }
+                                    if(isset($checkdateFrom)){
+                                        $checkdateFrom = $checkdateFrom;
+                                    }else{
+                                        $checkdateFrom = "";
+                                    }
+
+                                    if(isset($checkdateTo)){
+                                        $checkdateTo = $checkdateTo;
+                                    }else{
+                                        $checkdateTo = "";
+                                    }
+
+                                @endphp
+
+                                <form action="{{ url('lead/approvalGeneral/search') }}" method="post">
+                                @csrf
+                                <span id="selectdate" >
+                                    @if(count($team_sales) > 1)
+                                    <select name="selectteam_sales" class="form-control form-control-sm" aria-label=".form-select-lg example">
+                                        <option value="" selected>เลือกทีม</option>
+                                            @foreach($team_sales as $team)
+                                                @if($checkteam_sales == $team->id)
+                                                    <option value="{{ $team->id }}" selected>{{ $team->team_name }}</option>
+                                                @else
+                                                    <option value="{{ $team->id }}">{{ $team->team_name }}</option>
+                                                @endif
+                                            @endforeach
+                                    </select>
+                                    @endif
+                                    <select name="selectusers" class="form-control form-control-sm" aria-label=".form-select-lg example">
+                                        <option value="" selected>ผู้แทนขาย</option>
+                                        @foreach($users as $user)
+                                            @if($checkusers == $user->id)
+                                                <option value="{{ $user->id }}" selected>{{ $user->name }}</option>
+                                            @else
+                                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                    <input type="date" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;"
+                                    id="selectdateFrom" name="selectdateFrom" value="{{ $checkdateFrom }}" />
+
+                                    ถึง <input type="date" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;"
+                                    id="selectdateTo" name="selectdateTo" value="{{ $checkdateTo }}" />
+
+                                    <button style="margin-left:5px; margin-right:5px;" class="btn btn-success btn-sm" id="submit_request">ค้นหา</button>
+                                </span>
+
+                                </form>
+                                <!-- จบเงื่อนไขการค้นหา -->
+
+                            </span>
+                            <!-- ------ -->
                            </div>
                         </div>
                     <div class="row">
@@ -123,18 +191,8 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($request_approval as $key => $value)
-                                        <?php
-                                        // $chk =  App\Assignment::join('users', 'assignments.created_by', '=', 'users.id')
-                                        // ->whereNotNull('assignments.assign_request_date')
-                                        // ->where('assignments.created_by', $value->created_by)->select('users.name', 'assignments.*')->first();
-                                        ?>
                                         <tr>
                                             <td>
-                                                {{-- <div class="custom-control custom-checkbox checkbox-info">
-                                                    <input type="checkbox" class="custom-control-input checkapprove"
-                                                        name="checkapprove[]" id="customCheck{{$key + 1}}" value="{{$chk->created_by}}">
-                                                    <label class="custom-control-label" for="customCheck{{$key + 1}}"></label>
-                                                </div> --}}
                                                 <div class="custom-control custom-checkbox checkbox-info">
                                                     <input type="checkbox" class="custom-control-input checkapprove"
                                                         name="checkapprove[]" id="customCheck{{$key + 1}}" value="{{$value->id}}">
@@ -142,14 +200,16 @@
                                                 </div>
                                             </td>
                                             <td>{{$key + 1}}</td>
-                                            {{-- <td>{{Carbon\Carbon::parse($chk->assign_request_date)->format('Y-m-d')}}</td> --}}
                                             <td>{{$value->name}}</td>
                                             <td>
-                                                @if ($value->assign_is_hot == 1)
-                                                <span class="material-icons" style="color: orangered;"> offline_bolt </span>
+                                                @if($value->assign_is_hot == "1")
+                                                <span class="material-icons" style="color: orangered;">
+                                                    local_fire_department
+                                                    </span>
                                                 @endif
                                                 {{$value->assign_title}}</td>
-                                            <td>{{$value->assign_shop}}</td>
+                                            {{-- <td>{{$value->assign_shop}}</td> --}}
+                                            <td>{{ $value->api_customers_title }} {{ $value->api_customers_name }}</td>
                                             <td>{{Carbon\Carbon::parse($value->assign_request_date)->format('Y-m-d')}}</td>
                                             <td>
                                                 <span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>
