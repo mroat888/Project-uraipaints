@@ -21,18 +21,6 @@
         </div>
         <!-- /Title -->
 
-        <!-- Title -->
-        {{-- <div class="hk-pg-header mb-10">
-            <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                    data-feather="gift"></i></span></span>บันทึกรายการโปรโมชั่น</h4>
-            </div>
-            <div class="d-flex">
-                <button type="button" class="btn btn-teal btn-sm btn-rounded px-3" data-toggle="modal" data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button>
-            </div>
-        </div> --}}
-        <!-- /Title -->
-
             <section class="hk-sec-wrapper">
                 <h5 class="hk-sec-title">รายการแจ้งโปรโมชั่น</h5>
                 <div class="row">

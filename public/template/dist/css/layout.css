@@ -296,6 +296,49 @@ border: 3px solid #ce1e28;
     font-size: 1.5rem;
     color: #fff;
 }
+
+.customer-btn-green{
+    background: #027790;
+    border-radius: 20px;
+    color: #fff;
+    padding: 10px 15px;
+    border: 0;
+    transition: 0.5s;
+}
+
+.customer-topic-numchart{
+    display: inline-block;
+    font-size: 1.2rem;
+    color: #fff;
+}
+
+.customer-numchart{
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    left: 5px;
+    background-color: #fff;
+    border-radius: 50%;
+    float: right;
+    color: #ffffff;
+    position: relative;
+    border: 1px solid #f6d6d3;
+}
+
+.customer-number{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.customer-number.txt-num{
+    padding-left: 0;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #ce1e28;
+}
+
 .bg-blue{
     /* background: rgb(118,123,245);
 background: linear-gradient(90deg, rgba(118,123,245,1) 0%, rgba(95,168,240,1) 100%); */
@@ -306,6 +349,7 @@ border: 3px solid #055a61;
     background: linear-gradient(90deg, rgba(238,83,95,1) 0%, rgba(236,161,93,1) 100%); */
     border: 3px solid #004f9e;
 }
+
 .txt-numchart{
     padding-left: 5px;
     font-size: 1.4rem;
@@ -642,6 +686,24 @@ background: linear-gradient(90deg, rgba(121,218,97,1) 0%, rgba(37,140,20,1) 100%
 
 .btn-reject{
     background: rgba(198,18,70,1);
+    border-radius: 50px;
+    color: #fff;
+    padding: 8px 30px;
+    border: 0;
+    transition: 0.5s;
+}
+
+.btn-approval{
+    background: #027790;
+    border-radius: 50px;
+    color: #fff;
+    padding: 8px 30px;
+    border: 0;
+    transition: 0.5s;
+}
+
+.btn-customer-all{
+    background: rgb(28, 76, 148);
     border-radius: 50px;
     color: #fff;
     padding: 10px 30px;

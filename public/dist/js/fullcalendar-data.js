@@ -3,7 +3,7 @@ $(document).ready(function() {
 	'use strict';
 	var drag =  function() {
         $('.calendar-event').each(function() {
-		
+
 		// store data so the calendar knows to render an event upon drop
         $(this).data('event', {
             title: $.trim($(this).find('p').text()), // use the element's text as the event title
@@ -12,7 +12,7 @@ $(document).ready(function() {
             textColor: $(this).css('color'), // use the element's text color as the event text color
             stick: true // maintain when user navigates (see docs on the renderEvent method)
 		});
-		
+
         // make the event draggable using jQuery UI
         $(this).draggable({
             zIndex: 1111999,
@@ -21,7 +21,7 @@ $(document).ready(function() {
         });
     });
     };
-    
+
     var removeEvent =  function() {
 		$(document).on('click','.remove-calendar-event',function(e) {
 			$(this).closest('.calendar-event').fadeOut();
@@ -34,17 +34,17 @@ $(document).ready(function() {
 		drag();
 		return false;
 	});
-  
-    
-    
+
+
+
     drag();
     removeEvent();
-    
+
     var date = new Date();
     var day = date.getDate();
     var month = date.getMonth();
     var year = date.getFullYear();
-	
+
 	$('#calendar').fullCalendar({
 	themeSystem: 'bootstrap4',
 	  customButtons: {
@@ -57,7 +57,7 @@ $(document).ready(function() {
 	center: 'prev,title,next',
 	right: 'month,agendaWeek,agendaDay,listMonth'
 	},
-	droppable: true,	
+	droppable: true,
 	editable: true,
 	height: 'parent',
 	eventLimit: true, // allow "more" link when too many events
@@ -142,5 +142,5 @@ $(document).ready(function() {
 		$('.fc-right .btn-group').addClass('btn-group-sm');
 		$('.fc-right .btn').removeClass('btn-primary').addClass('btn-outline-secondary');
 	},100);
-	
+
 });

@@ -13,18 +13,16 @@
     <div class="container-fluid px-xxl-65 px-xl-20">
         <!-- Title -->
         <div class="hk-pg-header mb-10">
-            <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                    data-feather="star"></i></span></span>บันทึกสินค้าใหม่</h4>
-            </div>
-            <div class="d-flex">
-                <button type="button" class="btn btn-teal btn-sm btn-rounded px-3 mr-10" data-toggle="modal" data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button>
+            <div class="topichead-bgred"><i
+                data-feather="star"></i> บันทึกแจ้งสินค้าใหม่</div>
+            <div class="content-right d-flex">
+                <button type="button" class="btn btn-green" data-toggle="modal" data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button>
             </div>
         </div>
         <!-- /Title -->
 
             <section class="hk-sec-wrapper">
-                <h5 class="hk-sec-title">ตารางสินค้าใหม่</h5>
+                <h5 class="hk-sec-title">รายการแจ้งสินค้าใหม่</h5>
                 <div class="row">
                     <div class="col-sm">
                         <div class="table-wrap">
@@ -40,7 +38,7 @@
                                             <option value="1">ใช้งาน</option>
                                             <option value="0">ไม่ใช้งาน</option>
                                     </select>
-                                    <button type="submit" class="btn btn-info btn-sm mr-15 ml-2">ค้นหา</button>
+                                    <button type="submit" class="btn btn-green btn-sm ml-2">ค้นหา</button>
                                 </div>
                             </form>
                             </div>
@@ -50,6 +48,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>เรื่อง</th>
+                                        <th>วันที่อัพเดตล่าสุด</th>
                                         <th>รูปภาพ</th>
                                         <th>สถานะ</th>
                                         <th>URL</th>
@@ -58,10 +57,18 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($product_new as $key => $value)
+                                    @php
+                                        $date = Carbon\Carbon::parse($value->updated_at)->addYear(543)->format('d/m/Y');
+                                    @endphp
                                     <tr>
                                         <td>{{$key + 1}}</td>
                                         <td>{{$value->product_title}}</td>
-                                        <td><img src="{{ isset($value->product_image) ? asset('public/upload/ProductNewImage/' . $value->product_image) : '' }}" width="100"></td>
+                                        <td>{{$date}}</td>
+                                        <td>
+                                            <a href="{{url('admin/view_product_new_detail', $value->id)}}">
+                                                <img src="{{ isset($value->product_image) ? asset('public/upload/ProductNewImage/' . $value->product_image) : '' }}" width="100">
+                                            </a>
+                                        </td>
                                         <td>
                                             @switch($value->status_usage)
                                                 @case(0)
@@ -73,22 +80,28 @@
                                             @endswitch
                                         </td>
                                         <td><a href="{{$value->product_url	}}" style="color: rgb(11, 8, 141);">{!! Str::limit($value->product_url,20) !!}</a></td>
-                                        {{-- <td>
-                                                    <button onclick="edit_modal({{ $value->id }})"
-                                                        class="btn btn-icon btn-warning" data-toggle="modal" data-target="#editProductNew">
-                                                        <span class="btn-icon-wrap"><i data-feather="edit"></i></span></button>
-                                        </td> --}}
                                         <td>
                                             <form action="{{url('admin/delete_product_new', $value->id)}}" method="get">
                                                 @csrf
                                                 <a href="{{ url('admin/update-productNew-status-use', $value->id)}}" class="btn btn-icon btn-teal">
-                                                    <span class="btn-icon-wrap"><i data-feather="power"></i></span></a>
-                                                <div onclick="edit_modal({{ $value->id }})"
-                                                    class="btn btn-icon btn-warning" data-toggle="modal" data-target="#editProductNew">
-                                                    <span class="btn-icon-wrap"><i data-feather="edit"></i></span></div>
+                                                    <h4 class="btn-icon-wrap" style="color: white;"><span
+                                                        class="material-icons">settings_power</span></h4>
+                                                </a>
+                                                <a href="{{ url('admin/product-new-gallery', $value->id) }}"
+                                                    class="btn btn-icon btn-purple">
+                                                    <h4 class="btn-icon-wrap" style="color: white;"><span
+                                                            class="material-icons">collections</span></h4>
+                                                </a>
+                                                <a onclick="edit_modal({{ $value->id }})"
+                                                    class="btn btn-icon btn-edit" data-toggle="modal" data-target="#editProductNew">
+                                                    <h4 class="btn-icon-wrap" style="color: white;"><span
+                                                        class="material-icons">drive_file_rename_outline</span></h4>
+                                                </a>
                                                     @if ($value->status_usage == 0)
                                                     <button type="button" class="btn btn-icon btn-danger delete_product_new">
-                                                        <span class="btn-icon-wrap"><i data-feather="trash-2"></i></span></button>
+                                                        <h4 class="btn-icon-wrap" style="color: white;"><span
+                                                            class="material-icons">delete_outline</span></h4>
+                                                    </button>
                                                     @endif
                                             </form>
                                         </td>
@@ -109,7 +122,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">ฟอร์มบันทึกสินค้าใหม่</h5>
+                    <h5 class="modal-title">เพิ่มแจ้งสินค้าใหม่</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -123,6 +136,13 @@
                                 <label for="firstName">ชื่อสินค้า</label>
                                 <input class="form-control" placeholder="กรุณาใส่ชื่อเรื่อง" type="text" name="product_title" required>
                             </div>
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">วันที่อัพเดตล่าสุด</label>
+                                @php
+                                    $date2 = Carbon\Carbon::now()->addYear(543);
+                                @endphp
+                                <input class="form-control" type="text" name="date" value="{{$date2->format('d/m/Y')}}" readonly>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="username">รายละเอียด</label>
@@ -134,7 +154,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
-                                <label for="firstName">รูปภาพ</label>
+                                <label for="firstName">รูปภาพ (หน้าปกสินค้า) </label>
                                 <input type="file" name="image" class="form-control">
                             </div>
                         </div>
@@ -153,7 +173,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">ฟอร์มแก้ไขสินค้าใหม่</h5>
+                    <h5 class="modal-title">แก้ไขแจ้งสินค้าใหม่</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -167,6 +187,10 @@
                                 <label for="firstName">ชื่อสินค้า</label>
                                 <input class="form-control" id="get_title" type="text" name="product_title_edit" required>
                             </div>
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">วันที่อัพเดตล่าสุด</label>
+                                <input class="form-control" type="text" name="date" value="{{$date2->format('d/m/Y')}}" readonly>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="username">รายละเอียด</label>
@@ -175,6 +199,11 @@
                         <div class="form-group">
                             <label for="username">Link URL</label>
                             <input class="form-control" id="get_url" name="product_url_edit" type="text">
+                        </div>
+                        <div>
+                            <div class="form-group">
+                                <span id="img_show" class="mt-5"></span>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
@@ -245,12 +274,21 @@
                 dataType: "JSON",
                 async: false,
                 success: function(data) {
+                    $('#img_show').children().remove().end();
+
                     $('#get_id').val(data.dataEdit.id);
                     $('#get_title').val(data.dataEdit.product_title);
                     $('#get_detail').val(data.dataEdit.product_detail);
-                    // $('#get_image').val(data.dataEdit.product_image);
                     $('#get_url').val(data.dataEdit.product_url);
-                    // $('#get_image').val(data.dataEdit.product_image);
+
+                    let img_name = '{{ asset('/public/upload/ProductNewImage') }}/' + data.dataEdit.product_image;
+                    if (data.dataEdit.product_image != "") {
+                        ext = data.dataEdit.product_image.split('.').pop().toLowerCase();
+                        console.log(img_name);
+                        if (img_name) {
+                            $('#img_show').append('<img src = "' + img_name + '" style="max-width:20%;">');
+                        }
+                    }
 
                     $('#editProductNew').modal('toggle');
                 }

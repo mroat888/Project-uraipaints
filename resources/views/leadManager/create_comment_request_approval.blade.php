@@ -8,8 +8,7 @@
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
             <li class="breadcrumb-item"><a href="#">Page</a></li>
-            <li class="breadcrumb-item">การขออนุมัติ</li>
-            <li class="breadcrumb-item">รายการข้อมูลการขออนุมัติ</li>
+            <li class="breadcrumb-item">อนุมัติคำขออนุมัติ</li>
             <li class="breadcrumb-item active" aria-current="page">เพิ่มความคิดเห็น</li>
         </ol>
     </nav>
@@ -48,7 +47,7 @@
                                     </div>
                             </div>
                             <div class="modal-footer">
-                                <a href="{{ url('lead/approval_general_detail', $createID) }}" type="button" class="btn btn-secondary">ย้อนกลับ</a>
+                                <a href="{{ url('approvalgeneral') }}" type="button" class="btn btn-secondary">ย้อนกลับ</a>
                                 <button type="submit" class="btn btn-primary">บันทึก</button>
                             </div>
                             </form>
@@ -81,7 +80,7 @@
                                     </div>
                             </div>
                             <div class="modal-footer">
-                                <a href="{{ url('lead/approval_general_detail', $createID) }}" type="button" class="btn btn-secondary">ย้อนกลับ</a>
+                                <a href="{{ url('approvalgeneral') }}" type="button" class="btn btn-secondary">ย้อนกลับ</a>
                                 <button type="submit" class="btn btn-primary">บันทึก</button>
                             </div>
                             </form>

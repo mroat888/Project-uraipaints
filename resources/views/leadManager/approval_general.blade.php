@@ -18,7 +18,7 @@
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
             <li class="breadcrumb-item"><a href="#">Page</a></li>
-            <li class="breadcrumb-item active" aria-current="page">การขออนุมัติ</li>
+            <li class="breadcrumb-item active" aria-current="page">อนุมัติคำขออนุมัติ</li>
         </ol>
     </nav>
     <!-- /Breadcrumb -->
@@ -38,15 +38,9 @@
         <div class="hk-pg-header mb-10">
             <div>
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                    data-feather="file-text"></i></span></span>บันทึกข้อมูลการขออนุมัติ</h4>
+                    data-feather="file-text"></i></span></span>อนุมัติคำขออนุมัติ</h4>
             </div>
             <div class="d-flex">
-                {{-- <form action="{{ url('lead/approval_confirm_all') }}" method="POST" enctype="multipart/form-data"> --}}
-                {{-- <form id="from_general_approve" enctype="multipart/form-data">
-                    @csrf
-                <button type="button" id="btn_saleplan_approve" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" name="approve" value="approve">อนุมัติ</button>
-
-                <button type="button" id="btn_saleplan_approve2" class="btn btn_purple btn-danger btn-sm btn-rounded px-3 ml-5" name="failed" value="failed">ไม่อนุมัติ</button> --}}
             </div>
         </div>
         <!-- /Title -->
@@ -76,15 +70,14 @@
                     </div>
                     <div class="row mb-2">
                             <div class="col-md-3">
-                                <h5 class="hk-sec-title">ตารางข้อมูลการขออนุมัติ</h5>
+                                <h5 class="hk-sec-title">รายการคำขออนุมัติ</h5>
                             </div>
                             <div class="col-md-9">
                                 <!-- ------ -->
-                                <span class="form-inline pull-right">
+                                {{-- <span class="form-inline pull-right">
                                    <a style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกวันที่</a>
                                    <form action="{{ url('lead/approvalGeneral/search') }}" method="POST" enctype="multipart/form-data">
                                        @csrf
-                                       {{-- <input type="hidden" name="id" value="{{$id_create}}" /> --}}
 
                                        <span id="selectdate" style="display:none;">
                                             <input type="date" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" name ="selectdateTo" value="" />
@@ -92,8 +85,77 @@
                                            <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-success btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button>
                                        </span>
                                    </form>
-                                   </span>
+                                   </span> --}}
                                    <!-- ------ -->
+
+                                   <!-- ------ -->
+                            <span class="form-inline pull-right">
+                                <!-- เงื่อนไขการค้นหา -->
+                                @php
+
+                                    if(isset($checkteam_sales)){
+                                        $checkteam_sales = $checkteam_sales;
+                                    }else{
+                                        $checkteam_sales = "";
+                                    }
+                                    if(isset($checkusers)){
+                                        $checkusers = $checkusers;
+                                    }else{
+                                        $checkusers = "";
+                                    }
+                                    if(isset($checkdateFrom)){
+                                        $checkdateFrom = $checkdateFrom;
+                                    }else{
+                                        $checkdateFrom = "";
+                                    }
+
+                                    if(isset($checkdateTo)){
+                                        $checkdateTo = $checkdateTo;
+                                    }else{
+                                        $checkdateTo = "";
+                                    }
+
+                                @endphp
+
+                                <form action="{{ url('lead/approvalGeneral/search') }}" method="post">
+                                @csrf
+                                <span id="selectdate" >
+                                    @if(count($team_sales) > 1)
+                                    <select name="selectteam_sales" class="form-control form-control-sm" aria-label=".form-select-lg example">
+                                        <option value="" selected>เลือกทีม</option>
+                                            @foreach($team_sales as $team)
+                                                @if($checkteam_sales == $team->id)
+                                                    <option value="{{ $team->id }}" selected>{{ $team->team_name }}</option>
+                                                @else
+                                                    <option value="{{ $team->id }}">{{ $team->team_name }}</option>
+                                                @endif
+                                            @endforeach
+                                    </select>
+                                    @endif
+                                    <select name="selectusers" class="form-control form-control-sm" aria-label=".form-select-lg example">
+                                        <option value="" selected>ผู้แทนขาย</option>
+                                        @foreach($users as $user)
+                                            @if($checkusers == $user->id)
+                                                <option value="{{ $user->id }}" selected>{{ $user->name }}</option>
+                                            @else
+                                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                    <input type="date" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;"
+                                    id="selectdateFrom" name="selectdateFrom" value="{{ $checkdateFrom }}" />
+
+                                    ถึง <input type="date" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;"
+                                    id="selectdateTo" name="selectdateTo" value="{{ $checkdateTo }}" />
+
+                                    <button style="margin-left:5px; margin-right:5px;" class="btn btn-success btn-sm" id="submit_request">ค้นหา</button>
+                                </span>
+
+                                </form>
+                                <!-- จบเงื่อนไขการค้นหา -->
+
+                            </span>
+                            <!-- ------ -->
                            </div>
                         </div>
                     <div class="row">
@@ -101,9 +163,9 @@
                             <div class="mb-20">
                                 <form id="from_general_approve" enctype="multipart/form-data">
                                     @csrf
-                                <button type="button" id="btn_saleplan_approve" class="btn btn_purple btn-violet btn-sm btn-rounded px-3" name="approve" value="approve">อนุมัติ</button>
+                                <button type="button" id="btn_saleplan_approve" class="btn btn_purple btn-approval" name="approve" value="approve">อนุมัติ</button>
 
-                                <button type="button" id="btn_saleplan_approve2" class="btn btn_purple btn-danger btn-sm btn-rounded px-3 ml-5" name="failed" value="failed">ไม่อนุมัติ</button>
+                                <button type="button" id="btn_saleplan_approve2" class="btn btn_purple btn-reject ml-5" name="failed" value="failed">ไม่อนุมัติ</button>
                             </div>
                             <div class="table-responsive-sm">
                                 <table class="table table-sm table-hover">
@@ -118,18 +180,66 @@
                                                 </div>
                                             </th>
                                             <th>#</th>
+                                            <th>ผู้แทนขาย</th>
+                                            <th>เรื่องขออนุมัติ</th>
+                                            <th>ชื่อร้าน</th>
                                             <th>วันที่ขออนุมัติ</th>
-                                            {{-- <th>เรื่อง</th> --}}
-                                            <th>พนักงาน</th>
                                             <th>การอนุมัติ</th>
+                                            <th>ความคิดเห็น</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($request_approval as $key => $value)
-                                        <?php $chk =  App\Assignment::join('users', 'assignments.created_by', '=', 'users.id')
-                                        ->whereNotNull('assignments.assign_request_date')
-                                        ->where('assignments.created_by', $value->created_by)->select('users.name', 'assignments.*')->first();
+                                        <tr>
+                                            <td>
+                                                <div class="custom-control custom-checkbox checkbox-info">
+                                                    <input type="checkbox" class="custom-control-input checkapprove"
+                                                        name="checkapprove[]" id="customCheck{{$key + 1}}" value="{{$value->id}}">
+                                                    <label class="custom-control-label" for="customCheck{{$key + 1}}"></label>
+                                                </div>
+                                            </td>
+                                            <td>{{$key + 1}}</td>
+                                            <td>{{$value->name}}</td>
+                                            <td>
+                                                @if($value->assign_is_hot == "1")
+                                                <span class="material-icons" style="color: orangered;">
+                                                    local_fire_department
+                                                    </span>
+                                                @endif
+                                                {{$value->assign_title}}</td>
+                                            {{-- <td>{{$value->assign_shop}}</td> --}}
+                                            <td>{{ $value->api_customers_title }} {{ $value->api_customers_name }}</td>
+                                            <td>{{Carbon\Carbon::parse($value->assign_request_date)->format('Y-m-d')}}</td>
+                                            <td>
+                                                <span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>
+                                            </td>
+                                            <td align="center">
+                                                <span class="badge badge-soft-primary" style="font-size: 12px;">มี</span>
+                                            </td>
+                                            <td>
+                                                <div class="button-list">
+                                                {{-- <a href="{{ url('comment_approval', [$value->id, $value->created_by]) }}" class="btn btn-icon btn-purple mr-10">
+                                                    <h4 class="btn-icon-wrap" style="color: white;">
+                                                        <i data-feather="message-square"></i>
+                                                    </h4>
+                                                </a>
+                                                <a href="{{url('lead/approval_general_detail', $value->created_by)}}" class="btn btn-icon btn-primary btn-link btn_showplan pt-5" value="3">
+                                                    <i data-feather="file-text"></i>
+                                                </a> --}}
+                                                <button onclick="edit_modal({{ $value->id }})" type="button" class="btn btn-icon btn-violet mr-10"
+                                                    data-original-title="ดูรายละเอียดและคอมเม้นต์" data-toggle="tooltip" data-toggle="modal" data-target="editApproval">
+                                                    <i data-feather="message-square"></i>
+                                                </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                        {{-- @foreach ($request_approval as $key => $value)
+                                        <?php
+                                        // $chk =  App\Assignment::join('users', 'assignments.created_by', '=', 'users.id')
+                                        // ->whereNotNull('assignments.assign_request_date')
+                                        // ->where('assignments.created_by', $value->created_by)->select('users.name', 'assignments.*')->first();
                                         ?>
                                         <tr>
                                             <td>
@@ -151,7 +261,7 @@
                                                 </a>
                                             </td>
                                         </tr>
-                                        @endforeach
+                                        @endforeach --}}
                                     </tbody>
                                 </table>
                             </div>
@@ -188,30 +298,121 @@
     </div>
     <!-- /Container -->
 
+    <div class="modal fade" id="editApproval" tabindex="-1" role="dialog" aria-labelledby="editApproval" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">รายละเอียดข้อมูลการขออนุมัติ</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="form_comment" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">ขออนุมัติสำหรับ</label>
+                                    <select class="form-control custom-select" name="approved_for" id="get_for" disabled="true">
+                                        <option selected disabled>เลือก</option>
+                                        <?php $masters = App\ObjectiveAssign::get(); ?>
+                                    @foreach ($masters as $value)
+                                    <option value="{{$value->id}}">{{$value->masassign_title}}</option>
+                                    @endforeach
+                                    </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">หัวข้อ / เรื่อง</label>
+                                <input class="form-control" placeholder="กรุณาใส่หัวข้อ / เรื่อง" name="assign_title" id="get_title" type="text" readonly>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">วันที่ / Date</label>
+                                <input class="form-control" type="date" name="assign_work_date" id="get_work_date" min="<?= date('Y-m-d') ?>" readonly>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label for="username">รายละเอียด</label>
+                                <textarea class="form-control" cols="30" rows="5" id="get_detail" name="assign_detail"
+                                    type="text" readonly></textarea>
+                            </div>
+                        </div>
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label for="firstName">เรื่องด่วน</label>
+                                    <div class="custom-control custom-checkbox">
+                                        <div id="customCheck6"></div>
+                                    </div>
+                                </div>
+                        </div>
+
+                        <input type="hidden" name="id" id="get_id">
+                        <div>
+                            <h5>ความคิดเห็น</h5>
+                        </div>
+                        <div class="card-body">
+                            <textarea class="form-control" id="comment" name="comment" cols="30" rows="5" placeholder="เพิ่มความคิดเห็น" type="text"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <div id="div_comment"></div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                        <button type="submit" class="btn btn-primary">บันทึก</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 <script type="text/javascript">
 
-function showselectdate() {
-        $("#selectdate").css("display", "block");
-        $("#bt_showdate").hide();
-    }
+function edit_modal(id) {
+        $.ajax({
+            type: "GET",
+            url: "{!! url('lead/view_approval/"+id+"') !!}",
+            dataType: "JSON",
+            async: false,
+            success: function(data) {
+                console.log(data);
+                $('#customCheck6').children().remove().end();
+                $('#div_comment').children().remove().end();
+                $('#comment').val('');
 
-    function hidetdate() {
-        $("#selectdate").css("display", "none");
-        $("#bt_showdate").show();
-    }
+                $('#get_id').val(data.dataEdit.id);
+                $('#get_work_date').val(data.dataEdit.assign_work_date);
+                $('#get_title').val(data.dataEdit.assign_title);
+                $('#get_detail').val(data.dataEdit.assign_detail);
+                $('#get_for').val(data.dataEdit.approved_for);
+                $('#get_xx').val(data.dataEdit.assign_is_hot);
 
-$(document).on('click', '#btn_saleplan_approve', function() {
-            let approve = $(this).val();
-            $('#approve').val(approve);
-            $('#ModalSaleplanApprove').modal('show');
+                if(data.dataEdit_comment_edit){
+                    $('#comment').val(data.dataEdit_comment_edit.assign_comment_detail);
+                }
+
+                if (data.dataEdit.assign_is_hot == 1) {
+                    $('#customCheck6').append("<input type='checkbox' class='custom-control-input' id='customCheck7' name='assign_is_hot' value='1' checked readonly><label class='custom-control-label' for='customCheck7' readonly>ขออนุมัติด่วน</label>");
+                }else{
+                    $('#customCheck6').append("<input type='checkbox' class='custom-control-input' id='customCheck8' name='assign_is_hot' value='1' readonly><label class='custom-control-label' for='customCheck8' readonly>ขออนุมัติด่วน</label>");
+                }
+
+                if(data.dataEdit_comment){
+                    $.each(data['dataEdit_comment'], function(key, value){
+                        $('#div_comment').append('<div>Comment by: '+value.user_comment+' Date: '+value.created_at+'</div>');
+                        $('#div_comment').append('<div class="alert alert-primary py-20" role="alert">'+value.assign_comment_detail+'</div>');
+                    });
+                }
+
+                $('#editApproval').modal('toggle');
+
+            }
         });
-
-        $(document).on('click', '#btn_saleplan_approve2', function() {
-            let failed = $(this).val();
-            $('#failed').val(failed);
-            $('#ModalSaleplanApprove').modal('show');
-        });
-
+    }
 
         $("#from_general_approve").on("submit", function(e) {
             e.preventDefault();
@@ -268,6 +469,48 @@ $(document).on('click', '#btn_saleplan_approve', function() {
             }
         }
     }
+
+    //-- Create Comment
+    $("#form_comment").on("submit", function (e) {
+        e.preventDefault();
+        // var formData = $(this).serialize();
+        var formData = new FormData(this);
+        // console.log(formData);
+        $.ajax({
+            type:'POST',
+            url: '{{ url("lead/create_comment_request_approval") }}',
+            data:formData,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(response){
+                //console.log(response);
+                if(response.status == 200){
+                    $("#ModalVisitResult").modal('hide');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    location.reload();
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Your work has been saved',
+                        text: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+            },
+            error: function(response){
+                console.log("error");
+                console.log(response);
+            }
+        });
+    });
+    //-- End Create Comment
 </script>
 
 @endsection

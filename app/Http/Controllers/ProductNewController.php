@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\News;
 use App\NewsBanner;
 use App\ProductNew;
+use App\ProductNewGallery;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +18,13 @@ class ProductNewController extends Controller
     {
         $product_new = ProductNew::orderBy('status_usage', 'desc')->orderBy('id', 'desc')->get();
         return view('admin.product_new', compact('product_new'));
+    }
+
+    public function gallery($id)
+    {
+        $productID = ProductNew::find($id);
+        $gallerys = ProductNewGallery::where('product_new_id', $id)->orderBy('id', 'desc')->get();
+        return view('admin.product_new_gallery', compact('productID', 'gallerys'));
     }
 
     public function search_news_status_usage(Request $request)
@@ -87,6 +95,8 @@ class ProductNewController extends Controller
                 // 'product_status'      => 1,
                 'created_by'          => Auth::user()->id,
                 'created_at'          => Carbon::now(),
+                'updated_by'          => Auth::user()->id,
+                'updated_at'          => Carbon::now(),
             ]);
             }else{
                 DB::table('product_new')
@@ -96,6 +106,8 @@ class ProductNewController extends Controller
                     'product_url'         => $request->product_url,
                     'created_by'          => Auth::user()->id,
                     'created_at'          => Carbon::now(),
+                    'updated_by'          => Auth::user()->id,
+                    'updated_at'          => Carbon::now(),
                 ]);
             }
 
@@ -221,4 +233,125 @@ class ProductNewController extends Controller
         }
         return back();
     }
+
+    public function gallery_store(Request $request)
+    {
+        // dd($request->news_gallery);
+        DB::beginTransaction();
+        try {
+
+        foreach ($request->news_gallery as $key => $gallery) {
+
+            $path = 'upload/ProductNewGallery';
+            $image = '';
+            $img_name = '';
+            $img = '';
+            if (!empty($request->news_gallery[$key])) {
+                $img = $request->news_gallery[$key];
+                $img_name = 'gallery-' . time(). $key. '.' . $img->getClientOriginalExtension();
+                $save_path = $img->move(public_path($path), $img_name);
+                $image = $img_name;
+
+            }
+
+            ProductNewGallery::create([
+                'product_new_id' => $request->productID_id,
+                'image' => $image,
+                'path' => $path,
+                'created_by'   => Auth::user()->id,
+            ]);
+
+
+                // echo $image;
+
+        }
+        // return back();
+
+            DB::commit();
+            return response()->json([
+                'status' => 200,
+                'message' => 'บันทึกข้อมูลสำเร็จ',
+                // 'data' => $img_name,
+            ]);
+
+        } catch (\Exception $e) {
+
+            DB::rollback();
+
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกข้อมูลได้',
+                // 'data' => $request,
+            ]);
+        }
+    }
+
+    public function gallery_edit($id)
+    {
+        $dataEdit = ProductNewGallery::find($id);
+
+        $data = array(
+            'dataEdit'     => $dataEdit,
+        );
+        echo json_encode($data);
+    }
+
+    public function gallery_update(Request $request)
+    {
+            $path = 'upload/ProductNewGallery';
+            $image = '';
+            $data = ProductNewGallery::find($request->id);
+
+            if (!empty($request->file('news_gallery'))) {
+                //ลบรูปเก่าเพื่ออัพโหลดรูปใหม่แทน
+                if (!empty($data->image)) {
+                    $path2 = 'upload/ProductNewGallery/';
+                    unlink(public_path($path2) . $data->image);
+                }
+
+                $img = $request->file('news_gallery');
+                $img_name = 'gallery-' . time() . '.' . $img->getClientOriginalExtension();
+                $save_path = $img->move(public_path($path), $img_name);
+                $image = $img_name;
+
+
+                $data2 = ProductNewGallery::find($request->id);
+                $data2->image             = $image;
+                $data2->updated_by        = Auth::user()->id;
+                $data2->updated_at        = Carbon::now();
+                $data2->update();
+                DB::commit();
+            }
+
+        return back();
+    }
+
+    public function gallery_destroy(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+
+            $data = ProductNewGallery::find($request->gallery_id_delete);
+            if (!empty($data->image)) {
+                $path1 = 'public/upload/ProductNewGallery/';
+                unlink($path1 . $data->image);
+            }
+
+        ProductNewGallery::find($request->gallery_id_delete)->delete();
+        DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+        }
+
+        return response()->json([
+            'status' => 200,
+        ]);
+    }
+
+    public function view_detail()
+    {
+        return view('admin.product_new_view_detail');
+    }
+
 }
