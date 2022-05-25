@@ -328,11 +328,50 @@ class ApprovalController extends Controller
 
     public function view_approval($id)
     {
-        $dataEdit = RequestApproval::find($id);
-        $data = array(
-            'dataEdit'     => $dataEdit,
-        );
-        echo json_encode($data);
+        // $dataEdit = RequestApproval::find($id);
+        // $data = array(
+        //     'dataEdit'     => $dataEdit,
+        // );
+        // echo json_encode($data);
+
+        $dataEdit = DB::table('assignments')
+            ->where('assignments.id', $id)
+            ->first();
+
+        $dataEdit_comment_edit = DB::table('assignments_comments')
+            ->where('assign_id', $id)
+            ->where('created_by', Auth::user()->id)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        $request_comment = DB::table('assignments_comments')
+            ->where('assign_id', $id)
+            ->whereNotIn('assignments_comments.created_by', [Auth::user()->id])
+            ->orderBy('assignments_comments.created_at', 'desc')
+            ->get();
+
+        if(count($request_comment) > 0){
+            foreach ($request_comment as $key => $value) {
+                $users = DB::table('users')->where('id', $value->created_by)->first();
+                $date_comment = substr($value->created_at, 0, 10);
+                $dataEdit_comment[$key] =
+                    [
+                        'assign_comment_detail' => $value->assign_comment_detail,
+                        'user_comment' => $users->name,
+                        'created_at' => $date_comment,
+                    ];
+            }
+
+        }else{
+            $dataEdit_comment = null;
+        }
+
+        return response()->json([
+            'status' => 200,
+            'dataEdit' => $dataEdit,
+            'dataEdit_comment_edit' => $dataEdit_comment_edit,
+            'dataEdit_comment' => $dataEdit_comment,
+        ]);
     }
 
     public function comment_approval($id, $createID)
@@ -371,23 +410,61 @@ class ApprovalController extends Controller
     {
         // dd($request);
 
-            $data = AssignmentComment::where('assign_id', $request->id)->where('created_by', Auth::user()->id)->first();
-            // return $request->id;
-            if ($data) {
-               $dataEdit = AssignmentComment::where('assign_id', $request->id)->update([
-                    'assign_comment_detail' => $request->comment,
-                    'updated_by' => Auth::user()->id,
-                ]);
+            // $data = AssignmentComment::where('assign_id', $request->id)->where('created_by', Auth::user()->id)->first();
+            // // return $request->id;
+            // if ($data) {
+            //    $dataEdit = AssignmentComment::where('assign_id', $request->id)->update([
+            //         'assign_comment_detail' => $request->comment,
+            //         'updated_by' => Auth::user()->id,
+            //     ]);
 
+            // } else {
+            //     AssignmentComment::create([
+            //         'assign_id' => $request->id,
+            //         'assign_comment_detail' => $request->comment,
+            //         'created_by' => Auth::user()->id,
+            //     ]);
+            // }
+
+            // return redirect(url('lead/approval_general_detail', $request->createID));
+
+            DB::beginTransaction();
+        try {
+
+            $data = AssignmentComment::where('assign_id', $request->id)->where('created_by', Auth::user()->id)->first();
+
+            if ($data) {
+                DB::table('assignments_comments')
+                ->where('assign_id', $request->id)
+                ->where('created_by', Auth::user()->id)
+                ->update([
+                    'assign_id' => $request->id,
+                    'assign_comment_detail' => $request->comment,
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ]);
             } else {
-                AssignmentComment::create([
+                DB::table('assignments_comments')
+                ->insert([
                     'assign_id' => $request->id,
                     'assign_comment_detail' => $request->comment,
                     'created_by' => Auth::user()->id,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s'),
                 ]);
             }
+            DB::commit();
+            return response()->json([
+                'status' => 200,
+                'message' => 'บันทึกข้อมูลเรียบร้อยแล้ว',
+            ]);
 
-            return redirect(url('lead/approval_general_detail', $request->createID));
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกได้',
+            ]);
+        }
 
     }
 
