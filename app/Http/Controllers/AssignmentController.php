@@ -27,20 +27,28 @@ class AssignmentController extends Controller
             $auth_team[] = $value;
         }
 
-            $users = DB::table('users')
-            // ->where('team_id', Auth::user()->team_id)
-            ->where('status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
-            ->where(function($query) use ($auth_team) {
-                for ($i = 0; $i < count($auth_team); $i++){
-                    $query->orWhere('team_id', $auth_team[$i])
-                        ->orWhere('team_id', 'like', $auth_team[$i].',%')
-                        ->orWhere('team_id', 'like', '%,'.$auth_team[$i]);
-                }
-            })
-            ->get();
+        $users = DB::table('users')
+        ->where('status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+        ->where(function($query) use ($auth_team) {
+            for ($i = 0; $i < count($auth_team); $i++){
+                $query->orWhere('team_id', $auth_team[$i])
+                    ->orWhere('team_id', 'like', $auth_team[$i].',%')
+                    ->orWhere('team_id', 'like', '%,'.$auth_team[$i]);
+            }
+        })
+        ->get();
 
+        $team_sales =  DB::table('master_team_sales')
+        ->where(function($query) use ($auth_team) {
+            for ($i = 0; $i < count($auth_team); $i++){
+                $query->orWhere('id', $auth_team[$i])
+                    ->orWhere('id', 'like', $auth_team[$i].',%')
+                    ->orWhere('id', 'like', '%,'.$auth_team[$i]);
+            }
+        })
+        ->get();
 
-        return view('leadManager.add_assignment', compact('assignments', 'users'));
+        return view('leadManager.add_assignment', compact('assignments', 'users', 'team_sales'));
     }
 
     public function assignIndex()
@@ -344,27 +352,61 @@ class AssignmentController extends Controller
 
     // }
 
-    public function lead_search_month_add_assignment(Request $request)
-    {
-        // dd($request);
-        // $from = Carbon::parse($request->fromMonth)->format('m');
-        // $to = Carbon::parse($request->toMonth)->format('m');
+    public function lead_search_month_add_assignment(Request $request){
+
+        $auth_team_id = explode(',',Auth::user()->team_id);
+        $auth_team = array();
+        foreach($auth_team_id as $value){
+            $auth_team[] = $value;
+        }  
+
         $from = $request->fromMonth."-01";
         $to = $request->toMonth."-31";
-        $assignments = Assignment::join('users', 'assignments.assign_emp_id', 'users.id')
+
+        $assignments= Assignment::join('users', 'assignments.assign_emp_id', 'users.id')
         ->where('assignments.created_by', Auth::user()->id)
         ->where('assignments.assign_status', 3)
         ->whereDate('assignments.assign_work_date', '>=', $from)
         ->whereDate('assignments.assign_work_date', '<=', $to)
         ->orderBy('assignments.id', 'desc')
-        ->select('assignments.*', 'users.name')->get();
+        ->select('assignments.*', 'users.name');
+        
+        if(!is_null($request->selectteam_sales)){ //-- ทีมขาย
+            $assignments = $assignments->where('users.team_id', $request->selectteam_sales);
+            $data['selectteam_sales'] = $request->selectteam_sales;
+        }
+        
+        if(!is_null($request->selectusers)){ //-- ผู้แทนขาย
+            $assignments = $assignments->where('users.id', $request->selectusers);
+            $data['selectusers'] = $request->selectusers;
+        }
+        
+        $assignments = $assignments->get();
 
-        $users = DB::table('users')
-            ->where('team_id', Auth::user()->team_id)
-            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
-            ->get();
+        $data['assignments']  = $assignments;
 
-        return view('leadManager.add_assignment', compact('assignments', 'users'));
+        $data['users'] = DB::table('users')
+        ->where('status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+        ->where(function($query) use ($auth_team) {
+            for ($i = 0; $i < count($auth_team); $i++){
+                $query->orWhere('team_id', $auth_team[$i])
+                    ->orWhere('team_id', 'like', $auth_team[$i].',%')
+                    ->orWhere('team_id', 'like', '%,'.$auth_team[$i]);
+            }
+        })
+        ->get();
+
+        $data['team_sales'] =  DB::table('master_team_sales')
+        ->where(function($query) use ($auth_team) {
+            for ($i = 0; $i < count($auth_team); $i++){
+                $query->orWhere('id', $auth_team[$i])
+                    ->orWhere('id', 'like', $auth_team[$i].',%')
+                    ->orWhere('id', 'like', '%,'.$auth_team[$i]);
+            }
+        })
+        ->get();
+
+        return view('leadManager.add_assignment', $data);
     }
 
     public function lead_search_month_get_assignment(Request $request)
