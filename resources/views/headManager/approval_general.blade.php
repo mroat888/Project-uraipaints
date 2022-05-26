@@ -174,7 +174,7 @@
                                                 switch($assignments->assign_status){
                                                     case "0" : $status = '<span class="badge badge-soft-warning" style="font-size: 12px;">Padding</span>';
                                                         break;
-                                                    case "4" : $status = '<span class="badge badge-soft-danger" style="font-size: 12px;">แก้ไขใหม่</span>';
+                                                    case "4" : $status = '<span class="badge badge-soft-danger" style="font-size: 12px;">Re-write</span>';
                                                         break;
                                                 }
                                             @endphp

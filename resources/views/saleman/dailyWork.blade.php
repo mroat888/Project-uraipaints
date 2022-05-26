@@ -234,7 +234,11 @@
                                                     <a href="{{url('data_name_store')}}" class="txt-cusall text-dark">ลูกค้าทั้งหมด</a>
                                                 </div>
                                                 <div class="col-4">
-                                                    <span class="txt-custotal">{{ number_format($res_api["data"][0]["Customers"][0]["ActiveTotal"]) }}</span>
+                                                    <span class="txt-custotal">
+                                                        @if(isset($res_api) && !empty($res_api) && !is_null($res_api) && count($res_api) > 0)
+                                                            {{ number_format($res_api["data"][0]["Customers"][0]["ActiveTotal"]) }}
+                                                        @endif
+                                                    </span>
                                                 </div>
                                             </div>
                                             <div class="bggrey-cus" id="bdate">
@@ -986,10 +990,12 @@
                 async: false,
                 success: function(data) {
                     $('#div_comment').children().remove().end();
-                    console.log(data);
+                    // console.log(data);
 
                     $.each(data, function(key, value){
-                        $('#div_comment').append('<div>Comment by: '+data[key].user_comment+' Date: '+data[key].created_at+'</div>');
+                        let com_date = data[key].created_at.split("-");
+                        let created_at = com_date[2]+"/"+com_date[1]+"/"+com_date[0];
+                        $('#div_comment').append('<div>Comment by: '+data[key].user_comment+' Date: '+created_at+'</div>');
                         $('#div_comment').append('<div class="alert alert-primary py-20" role="alert">'+data[key].saleplan_comment_detail+'</div>');
                     });
 
@@ -1006,9 +1012,11 @@
                 async: false,
                 success: function(data) {
                     $('#div_cust_new_comment').children().remove().end();
-                    console.log(data);
+                    // console.log(data);
                     $.each(data, function(key, value){
-                        $('#div_cust_new_comment').append('<div>Comment by: '+data[key].user_comment+' Date: '+data[key].created_at+'</div>');
+                        let com_date = data[key].created_at.split("-");
+                        let created_at = com_date[2]+"/"+com_date[1]+"/"+com_date[0];
+                        $('#div_cust_new_comment').append('<div>Comment by: '+data[key].user_comment+' Date: '+created_at+'</div>');
                         $('#div_cust_new_comment').append('<div class="alert alert-primary py-20" role="alert">'+data[key].customer_comment_detail+'</div>');
                     });
 

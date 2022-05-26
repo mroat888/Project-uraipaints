@@ -1067,6 +1067,7 @@ class ApiController extends Controller
             $res_api = $response->json();
             
             if($res_api['code'] == 200){
+                DB::table('api_customers')->delete();
                 foreach($res_api['data'] as $api_key => $api_value){
                     $api_provinces = DB::table('api_customers')->where('identify', $api_value['identify'])->first();
                     if(is_null($api_provinces)){

@@ -1,7 +1,7 @@
 <!-- Title -->
 <div class="hk-pg-header mb-10">
     <div>
-        <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-document"></i></span>รายชื่อร้านค้า (ทำเป้า) ปี {{ $year+543 }}</h4>
+        <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-document"></i></span>รายชื่อร้านค้า (ทำเป้า)</h4>
     </div>
 </div>
 <!-- /Title -->
@@ -11,7 +11,7 @@
         <section class="hk-sec-wrapper">
             <div class="row mb-2">
                 <div class="col-sm-12 col-md-12">
-                    <div class="topichead-bgred" style="margin-bottom: 30px;">จำนวนเป้า {{ $year+543 }}</div>
+                    <div class="topichead-bgred" style="margin-bottom: 30px;">รายชื่อร้านค้า (ทำเป้า) ปี {{ $year+543 }}</div>
                 </div>
 
             </div>

@@ -34,8 +34,8 @@ Route::get('/palncalendar', function () { return view('saleplan.salePalnCalendar
 
 // Assignments
 Route::get('assignment', 'SaleMan\AssignmentController@index');
-Route::get('assignment_result_get/{id}', 'SaleMan\AssignmentController@assignment_result_get');
-Route::post('assignment_Result', 'SaleMan\AssignmentController@saleplan_result');
+// Route::get('assignment_result_get/{id}', 'SaleMan\AssignmentController@assignment_result_get'); //-- ย้ายไป utility
+// Route::post('assignment_Result', 'SaleMan\AssignmentController@saleplan_result'); //-- ย้ายไป utility
 Route::post('search_month_assignment', 'SaleMan\AssignmentController@search_month_assignment');
 
 // Visit Customer
@@ -667,8 +667,8 @@ Route::get('fetch_products/{id}', 'Api\ApiController@fetch_products');
 Route::get('fetch_amphur_api/{position}/{id}', 'Api\ApiController@fetch_amphur_api');
 
 Route::get('assignments_commentshow/{id}', 'UnionAssignmentController@commentshow');
-
-
+Route::get('assignment_result_get/{id}', 'UnionAssignmentController@assignment_result_get');
+Route::post('assignment_Result', 'UnionAssignmentController@saleplan_result');
 
 
 

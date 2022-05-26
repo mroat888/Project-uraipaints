@@ -181,7 +181,7 @@
                                                         break;
                                                     case "2" : $status = '<span class="badge badge-soft-secondary" style="font-size: 12px;">Reject</span>';
                                                         break;
-                                                    case "4" : $status = '<span class="badge badge-soft-warning" style="font-size: 12px;">แก้ไขใหม่</span>';
+                                                    case "4" : $status = '<span class="badge badge-soft-warning" style="font-size: 12px;">Re-write</span>';
                                                         break;
                                                 }
                                             @endphp
