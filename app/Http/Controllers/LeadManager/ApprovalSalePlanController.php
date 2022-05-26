@@ -975,7 +975,7 @@ class ApprovalSalePlanController extends Controller
     {
 
         $request_approval_month = MonthlyPlan::find($request->restros_id);
-        $request_approval_month->status_approve   = 0; // ย้อนกับเป็นแบบร่าง
+        $request_approval_month->status_approve   = 5; // ย้อนกับเป็นแบบร่าง แก้ไขใหม่
         $request_approval_month->update();
 
         $request_approval = SalePlan::where('monthly_plan_id', $request->restros_id)->get();

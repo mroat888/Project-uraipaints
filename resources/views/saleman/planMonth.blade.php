@@ -88,7 +88,7 @@
                                                         ->where('monthly_plan_id', $value->id)
                                                         ->where('shop_status', 2)->count();
                                                     @endphp
-                                                    <tr>
+                                                    <tr style="text-align:center;">
                                                         <td>{{ $key + 1 }}</td>
                                                         <td>{{ thaidate('F Y', $value->month_date) }}</td>
                                                         <td>{{ $sale_plan_amount }}</td>
@@ -96,11 +96,11 @@
                                                         <td>{{ $total_plan }}</td>
                                                         @if ($data_close_sales)
                                                             <td>{{ $data_close_sales->close_sale }}</td>
-                                                            <td>{{ $data_close_sales->total_sales }}</td>
+                                                            <td style="text-align:right">{{ number_format($data_close_sales->total_sales,2) }}</td>
                                                             <td>{{ $data_close_sales->close_sales_not }}</td>
                                                         @else
                                                             <td>0</td>
-                                                            <td>0</td>
+                                                            <td style="text-align:right">{{ number_format(0,2) }}</td>
                                                             <td>0</td>
                                                         @endif
 
@@ -128,13 +128,17 @@
                                                                     style="font-size: 12px;">
                                                                     Reject
                                                                 </span>
-                                                            @else
+                                                            @elseif ($value->status_approve == 4)
                                                                 <span class="btn-close"
                                                                     style="font-size: 12px;">
                                                                     Close
                                                                 </span>
+                                                            @elseif ($value->status_approve == 5)
+                                                                <span class="btn btn-warning"
+                                                                    style="font-size: 12px;">
+                                                                    Re-write
+                                                                </span>
                                                             @endif
-
 
                                                         </td>
                                                         <td style="text-align:center">

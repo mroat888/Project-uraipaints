@@ -106,7 +106,7 @@
                                                                             $status = "Reject";
                                                                     break;
                                                                 case 4 :    $badge_status = "badge-soft-info";
-                                                                            $status = "แก้ไขใหม่";
+                                                                            $status = "Re-write";
                                                                     break;
                                                                 default:    $status = ""; 
                                                                             $badge_status = "";

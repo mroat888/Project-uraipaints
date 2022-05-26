@@ -44,7 +44,7 @@
                                             <th style="text-align:center">จำนวนเป้า</th>
                                             <th style="text-align:center">ยอดเป้า</th>
                                             <th style="text-align:center">ยอดเบิกเป้า</th>
-                                            <th style="text-align:center">% field</th>
+                                            <th style="text-align:center">%</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -68,8 +68,8 @@
                                         <tr class="tb_camp" rel="{{ $key }}">
                                             <td style="text-align:center">{{ ++$no }}</td>
                                             <td style="text-align:center">{{ $value['year']+543 }}</td>
-                                            <td style="text-align:right">{{ number_format($value['TotalCustomer']) }}</td>
-                                            <td style="text-align:right">{{ number_format($value['TotalPromotion']) }}</td>
+                                            <td style="text-align:center">{{ number_format($value['TotalCustomer']) }}</td>
+                                            <td style="text-align:center">{{ number_format($value['TotalPromotion']) }}</td>
                                             <td style="text-align:right">{{ number_format($value['TotalLimit'],2) }}</td>
                                             <td style="text-align:right">{{ number_format($value['TotalAmountSale'],2) }}</td>
                                             <td style="text-align:right">{{ number_format($persent_TotalAmountSale,2) }}</td>
@@ -193,8 +193,8 @@
                                         @endphp
                                         <tr style="font-weight: bold;">
                                             <td colspan="2" style=" text-align:center; font-weight: bold;">ทั้งหมด</td>
-                                            <td style="font-weight: bold; text-align:right">{{ number_format($sum_TotalCustomer) }}</td>
-                                            <td style="font-weight: bold; text-align:right">{{ number_format($sum_TotalPromotion) }}</td>
+                                            <td style="font-weight: bold; text-align:center">{{ number_format($sum_TotalCustomer) }}</td>
+                                            <td style="font-weight: bold; text-align:center">{{ number_format($sum_TotalPromotion) }}</td>
                                             <td style="font-weight: bold; text-align:right">{{ number_format($sum_TotalLimit,2) }}</td>
                                             <td style="font-weight: bold; text-align:right">{{ number_format($sum_TotalAmountSale,2) }}</td>
                                             <td style="font-weight: bold; text-align:right">{{ number_format($sum_persent_TotalAmountSale,2) }}</td>

@@ -471,7 +471,7 @@ class RequestApprovalController extends Controller
                 } elseif ($row['assign_status'] == 2) {
                     $status = '<span class="badge badge-soft-secondary" style="font-size: 12px;">Reject</span>';
                 } elseif ($row['assign_status'] == 4) {
-                    $status = '<span class="badge badge-soft-info" style="font-size: 12px;">แก้ไขใหม่</span>';
+                    $status = '<span class="badge badge-soft-info" style="font-size: 12px;">Re-write</span>';
                 }
                 
                 if ($row['assign_id']) {
