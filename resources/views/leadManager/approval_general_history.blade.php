@@ -146,7 +146,7 @@
                     </div>
                 <div class="row">
                     <div class="col-sm">
-                        <div class="table-responsive-sm">
+                        <div class="table-responsive-sm table-color">
                             <table id="datable_1" class="table table-sm table-hover">
                                 <thead>
                                     <tr>

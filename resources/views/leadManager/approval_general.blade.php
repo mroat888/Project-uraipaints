@@ -160,7 +160,7 @@
 
                                 <button type="button" id="btn_saleplan_approve2" class="btn btn_purple btn-reject ml-5" name="failed" value="failed">ไม่อนุมัติ</button>
                             </div>
-                            <div class="table-responsive-sm">
+                            <div class="table-responsive-sm table-color">
                                 <table id="datable_1" class="table table-sm table-hover">
                                     <thead>
                                         <tr>
@@ -168,8 +168,7 @@
                                                 <div class="custom-control custom-checkbox checkbox-info">
                                                     <input type="checkbox" class="custom-control-input"
                                                         id="customCheck4" onclick="chkAll(this);" name="CheckAll" value="Y">
-                                                    <label class="custom-control-label"
-                                                        for="customCheck4">ทั้งหมด</label>
+                                                    <label class="custom-control-label" for="customCheck4" style="color: white;">ทั้งหมด</label>
                                                 </div>
                                             </th>
                                             <th>#</th>
