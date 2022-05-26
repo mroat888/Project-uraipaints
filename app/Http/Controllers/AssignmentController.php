@@ -72,6 +72,21 @@ class AssignmentController extends Controller
         return view('headManager.add_assignment', compact('assignments', 'users'));
     }
 
+    public function get_assign()
+    {
+        $assignments = Assignment::where('assign_emp_id', Auth::user()->id)
+        ->where('assign_status', 3)
+        ->orderBy('id', 'desc')
+        ->get();
+
+        if (Auth::user()->status == 2) {
+            return view('leadManager.get_assignment', compact('assignments'));
+        }elseif (Auth::user()->status == 3) {
+            return view('headManager.get_assignment', compact('assignments'));
+        }
+
+    }
+
     public function store(Request $request)
     {
         // dd($request);
@@ -352,6 +367,26 @@ class AssignmentController extends Controller
         return view('leadManager.add_assignment', compact('assignments', 'users'));
     }
 
+    public function lead_search_month_get_assignment(Request $request)
+    {
+        // dd($request);
+        // $from = Carbon::parse($request->fromMonth)->format('m');
+        // $to = Carbon::parse($request->toMonth)->format('m');
+        $from = $request->fromMonth."-01";
+        $to = $request->toMonth."-31";
+        $assignments = Assignment::join('users', 'assignments.assign_emp_id', 'users.id')
+        ->where('assignments.assign_emp_id', Auth::user()->id)
+        ->where('assignments.assign_status', 3)
+        ->whereDate('assignments.assign_work_date', '>=', $from)
+        ->whereDate('assignments.assign_work_date', '<=', $to)
+        ->orderBy('assignments.id', 'desc')
+        ->select('assignments.*', 'users.name')->get();
+
+        $users = DB::table('users')->where('id', Auth::user()->id)->get();
+
+        return view('leadManager.get_assignment', compact('assignments', 'users'));
+    }
+
     public function head_search_month_add_assignment(Request $request)
     {
         // dd($request);
@@ -373,6 +408,26 @@ class AssignmentController extends Controller
             ->get();
 
         return view('headManager.add_assignment', compact('assignments', 'users'));
+    }
+
+    public function head_search_month_get_assignment(Request $request)
+    {
+        // dd($request);
+        // $from = Carbon::parse($request->fromMonth)->format('m');
+        // $to = Carbon::parse($request->toMonth)->format('m');
+        $from = $request->fromMonth."-01";
+        $to = $request->toMonth."-31";
+        $assignments = Assignment::join('users', 'assignments.assign_emp_id', 'users.id')
+        ->where('assignments.assign_emp_id', Auth::user()->id)
+        ->where('assignments.assign_status', 3)
+        ->whereDate('assignments.assign_work_date', '>=', $from)
+        ->whereDate('assignments.assign_work_date', '<=', $to)
+        ->orderBy('assignments.id', 'desc')
+        ->select('assignments.*', 'users.name')->get();
+
+        $users = DB::table('users')->where('id', Auth::user()->id)->get();
+
+        return view('headManager.get_assignment', compact('assignments', 'users'));
     }
 
     public function update_status_result(Request $request)

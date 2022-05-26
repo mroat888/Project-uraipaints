@@ -1,7 +1,7 @@
 <!-- Modal Result -->
 <div class="modal fade" id="ModalResult_show" tabindex="-1" role="dialog" aria-labelledby="ModalResult_show" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
-        
+
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">สรุปผลงานที่ได้รับมอบหมาย</h5>
@@ -31,6 +31,8 @@
                         </div>
                     </div>
 
+                    <div class="card">
+                        <div class="card-body">
                     <div class="row">
                         <div class="form-group col-md-12">
                             <label for="username">ผลดำเนินงาน</label>
@@ -40,8 +42,10 @@
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label for="firstName">ไฟล์เอกสาร</label>
-                            
+
                             <div id="img_show_text_result_history" class="mt-5"></div>
+                        </div>
+                    </div>
                         </div>
                     </div>
                 </div>
@@ -49,7 +53,7 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
                     <!-- <button type="submit" class="btn btn-primary">ส่งงาน</button> -->
                 </div>
-            
+
             </div>
 
 
@@ -83,18 +87,19 @@ function assignment_show_result(id) {
                 if(ext == "pdf"){
                     $('#img_show_text_history').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');
                 }else{
-                    $('#img_show_text_history').append('<a href="'+img_name+'" target="_blank"><img src = "'+img_name+'" style="max-width:80%;"></a>');
+                    $('#img_show_text_history').append('<a href="'+img_name+'" target="_blank"><img src = "'+img_name+'" style="max-width:50%;"></a>');
                 }
             }
 
             $('#assign_result_detail_history').text(data.dataResult.assign_result_detail);
 
+            let img_name2 = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataResult.assign_result_fileupload;
             if(data.dataResult.assign_result_fileupload != ""){
                 ext = data.dataResult.assign_result_fileupload.split('.').pop().toLowerCase();
                 if(ext == "pdf"){
-                    $('#img_show_text_result_history').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');
+                    $('#img_show_text_result_history').append('<span><a href="'+img_name2+'" target="_blank">เปิดไฟล์ PDF</a></span>');
                 }else{
-                    $('#img_show_text_result_history').append('<a href="'+img_name+'" target="_blank"><img src = "'+img_name+'" style="max-width:80%;"></a>');
+                    $('#img_show_text_result_history').append('<a href="'+img_name2+'" target="_blank"><img src = "'+img_name2+'" style="max-width:50%;"></a>');
                 }
             }
 

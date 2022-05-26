@@ -570,6 +570,13 @@ class ApprovalController extends Controller
                     'assign_comment_detail' => $request->comment,
                     'updated_at' => date('Y-m-d H:i:s'),
                 ]);
+
+                DB::table('assignments')->where('id', $request->id)
+                ->update([
+                    'assign_status' => $request->approval_send,
+                    'assign_approve_id' => Auth::user()->id,
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ]);
             } else {
                 DB::table('assignments_comments')
                 ->insert([
@@ -577,6 +584,13 @@ class ApprovalController extends Controller
                     'assign_comment_detail' => $request->comment,
                     'created_by' => Auth::user()->id,
                     'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ]);
+
+                DB::table('assignments')->where('id', $request->id)
+                ->update([
+                    'assign_status' => $request->approval_send,
+                    'assign_approve_id' => Auth::user()->id,
                     'updated_at' => date('Y-m-d H:i:s'),
                 ]);
             }

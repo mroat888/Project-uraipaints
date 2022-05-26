@@ -168,7 +168,7 @@
                                 <button type="button" id="btn_saleplan_approve2" class="btn btn_purple btn-reject ml-5" name="failed" value="failed">ไม่อนุมัติ</button>
                             </div>
                             <div class="table-responsive-sm">
-                                <table class="table table-sm table-hover">
+                                <table id="datable_1" class="table table-sm table-hover">
                                     <thead>
                                         <tr>
                                             <th>
@@ -346,6 +346,15 @@
                                         <div id="customCheck6"></div>
                                     </div>
                                 </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="firstName">การอนุมัติ</label>
+                                    <select id="approval_send" class="form-control custom-select" name="approval_send" required>
+                                        <option value="">เลือกข้อมูล</option>
+                                        <option value="1">อนุมัติ</option>
+                                        <option value="4">แก้ไขใหม่</option>
+                                        <option value="2">ไม่อนุมัติ</option>
+                                    </select>
+                                </div>
                         </div>
 
                         <input type="hidden" name="id" id="get_id">
@@ -353,7 +362,7 @@
                             <h5>ความคิดเห็น</h5>
                         </div>
                         <div class="card-body">
-                            <textarea class="form-control" id="comment" name="comment" cols="30" rows="5" placeholder="เพิ่มความคิดเห็น" type="text"></textarea>
+                            <textarea class="form-control" id="comment" name="comment" cols="30" rows="5" placeholder="เพิ่มความคิดเห็น" type="text" required></textarea>
                         </div>
 
                         <div class="form-group">

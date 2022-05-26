@@ -233,6 +233,9 @@ Route::post('lead/update_assignment', 'AssignmentController@update');
 Route::get('lead/delete_assignment/{id}', 'AssignmentController@destroy');
 Route::get('lead/assignment_result_get/{id}', 'AssignmentController@assignment_result_get');
 Route::post('lead/search_month_add-assignment', 'AssignmentController@lead_search_month_add_assignment');
+Route::post('lead/update_assignment_status_result', 'AssignmentController@update_status_result');
+Route::get('lead/get_assignment', 'AssignmentController@get_assign');
+Route::post('lead/search_month_get-assignment', 'AssignmentController@lead_search_month_get_assignment');
 
 // NOTE Lead Manage
 Route::get('/leadManage/note', 'NoteController@note_lead');
@@ -326,6 +329,8 @@ Route::post('head/update_assignment', 'AssignmentController@update');
 Route::get('head/delete_assignment/{id}', 'AssignmentController@destroy');
 Route::post('head/search_month_add-assignment', 'AssignmentController@head_search_month_add_assignment');
 Route::post('head/update_assignment_status_result', 'AssignmentController@update_status_result');
+Route::get('head/get_assignment', 'AssignmentController@get_assign');
+Route::post('head/search_month_get-assignment', 'AssignmentController@head_search_month_get_assignment');
 
 
 // อนุมัติลูกค้าใหม่นอกแผน
