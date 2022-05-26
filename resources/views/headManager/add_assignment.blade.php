@@ -25,27 +25,34 @@
         <div class="row">
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
-
+                    <div class="row">
+                        <div class="col-sm">
+                            <ul class="nav nav-pills nav-fill bg-light pa-10 mb-40" role="tablist">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link" style="background: rgb(5, 90, 97); color:rgb(255, 255, 255);">สั่งงานผู้จัดการเขต และ ผู้แทนขาย</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{url('head/get_assignment')}}" class="nav-link" style="color: rgb(22, 21, 21);">งานที่ได้รับมอบหมาย</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                     <div class="row mb-2">
                         <div class="col-sm-12 col-md-3">
-                            <h5 class="hk-sec-title">รายการสั่งงานผู้แทนขาย</h5>
+                            <h5 class="hk-sec-title">รายการสั่งงานผู้จัดการเขต และ ผู้แทนขาย</h5>
                         </div>
                         <div class="col-sm-12 col-md-9">
                             <!-- ------ -->
-
                             <span class="form-inline pull-right pull-sm-center">
-                                <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</button>
                                 <form action="{{ url('head/search_month_add-assignment') }}" method="post" enctype="multipart/form-data">
                                     @csrf
-                                <span id="selectdate" style="display:none;">
+                                <span id="selectdate">
 
                                     เดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateFrom" name="fromMonth"/>
 
                                     ถึงเดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name="toMonth"/>
 
-                                <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm">ค้นหา</button>
-
-                                {{-- <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button> --}}
+                                <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm">ค้นหา</button>
                                 </span>
                             </form>
                             </span>
@@ -62,10 +69,10 @@
                                             <th>#</th>
                                             <th>เรื่อง</th>
                                             <th>รูปภาพ</th>
-                                            <th>ชื่อผู้แทนขาย</th>
+                                            <th>ผู้แทนขาย</th>
                                             <th>วันที่กำหนดส่ง</th>
                                             <th>สถานะ</th>
-                                            <th>การประเมินผล</th>
+                                            <th>ประเมินผล</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -99,7 +106,7 @@
                                             </td>
                                             <td>
                                                 @if ($value->assign_result_status == 0 && $value->assign_work_date >= Carbon\Carbon::today()->format('Y-m-d'))
-                                                    <button onclick="edit_modal({{ $value->id }})" class="btn btn-icon btn-warning" data-toggle="modal" data-target="#modalEdit">
+                                                    <button onclick="edit_modal({{ $value->id }})" class="btn btn-icon btn-edit" data-toggle="modal" data-target="#modalEdit">
                                                         <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">drive_file_rename_outline</span></h4>
                                                     </button>
                                                     <a href="{{url('head/delete_assignment', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
@@ -328,8 +335,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">บันทึก</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                    <button type="submit" class="btn btn-primary">บันทึก</button>
                 </div>
             </form>
             </div>
@@ -364,10 +371,19 @@
                         console.log(img_name);
                         if(ext == "pdf"){
                             $('#img_show_text').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');
-                            $('#img_show_text_send').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');
                         }else{
                             $('#img_show_text').append('<img src = "'+img_name+'" style="max-width:100%;">');
-                            $('#img_show_text_send').append('<img src = "'+img_name+'" style="max-width:100%;">');
+                        }
+                    }
+
+                    let img_name_send = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataEdit.assign_result_fileupload;
+                    if(data.dataEdit.assign_result_fileupload != ""){
+                        ext = data.dataEdit.assign_result_fileupload.split('.').pop().toLowerCase();
+                        console.log(img_name_send);
+                        if(ext == "pdf"){
+                            $('#img_show_text_send').append('<span><a href="'+img_name_send+'" target="_blank">เปิดไฟล์ PDF</a></span>');
+                        }else{
+                            $('#img_show_text_send').append('<img src = "'+img_name_send+'" style="max-width:100%;">');
                         }
                     }
 

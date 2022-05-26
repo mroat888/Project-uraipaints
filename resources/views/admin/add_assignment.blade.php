@@ -88,7 +88,7 @@
                                             <td>{{$key + 1}}</td>
                                             <td><img src="{{ isset($value->assign_fileupload) ? asset('public/upload/AssignmentFile/' . $value->assign_fileupload) : '' }}" width="30"></td>
                                             <td>{{$value->assign_title}}</td>
-                                            <td>{{$value->assign_work_date}}</td>
+                                            <td>{{Carbon\Carbon::parse($value->assign_work_date)->addYear(543)->format('d/m/Y')}}</td>
                                             <td>{{$value->name}}</td>
                                             <td>
                                                 @if ($value->assign_result_status == 0)
@@ -365,8 +365,8 @@
             </div>
             </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">บันทึก</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                    <button type="submit" class="btn btn-primary">บันทึก</button>
                 </div>
             </div>
             </form>
@@ -482,12 +482,21 @@
                     console.log(img_name);
                     if(ext == "pdf"){
                         $('#img_show_text').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');
-                        $('#img_show_text_send').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');
                     }else{
                         $('#img_show_text').append('<img src = "'+img_name+'" style="max-width:100%;">');
-                        $('#img_show_text_send').append('<img src = "'+img_name+'" style="max-width:100%;">');
                     }
                 }
+
+                let img_name_send = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataEdit.assign_result_fileupload;
+                    if(data.dataEdit.assign_result_fileupload != ""){
+                        ext = data.dataEdit.assign_result_fileupload.split('.').pop().toLowerCase();
+                        console.log(img_name_send);
+                        if(ext == "pdf"){
+                            $('#img_show_text_send').append('<span><a href="'+img_name_send+'" target="_blank">เปิดไฟล์ PDF</a></span>');
+                        }else{
+                            $('#img_show_text_send').append('<img src = "'+img_name_send+'" style="max-width:100%;">');
+                        }
+                    }
 
                 $.each(data.dataUser, function(key, value){
                     if(value.id == data.dataEdit.assign_approve_id){

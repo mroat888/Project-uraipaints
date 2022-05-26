@@ -5,7 +5,7 @@
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
             <li class="breadcrumb-item"><a href="#">Page</a></li>
-            <li class="breadcrumb-item active" aria-current="page">บันทึกการสั่งงาน</li>
+            <li class="breadcrumb-item active" aria-current="page">สั่งงานผู้แทนขาย</li>
         </ol>
     </nav>
     <!-- /Breadcrumb -->
@@ -14,13 +14,9 @@
     <div class="container-fluid px-xxl-65 px-xl-20">
         <!-- Title -->
         <div class="hk-pg-header mb-10">
-            <div>
-                <h4 class="hk-pg-title mt-40"><span class="pg-title-icon"><i
-                            class="ion ion-md-document"></i></span>ตารางบันทึกการสั่งงาน</h4>
-            </div>
-            <div class="d-flex">
-                <button type="button" class="btn btn-teal btn-sm btn-rounded px-3" data-toggle="modal"
-                    data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button>
+            <div class="topichead-bgred"><span class="pg-title-icon"><i class="ion ion-md-create"></i></span> สั่งงานผู้แทนขาย</div>
+            <div class="content-right d-flex">
+                <button type="button" class="btn-green" data-toggle="modal" data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button>
             </div>
         </div>
         <!-- /Title -->
@@ -29,27 +25,35 @@
         <div class="row">
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
-
+                        <div class="row">
+                            <div class="col-sm">
+                                <ul class="nav nav-pills nav-fill bg-light pa-10 mb-40" role="tablist">
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link" style="background: rgb(5, 90, 97); color:rgb(255, 255, 255);">สั่งงานผู้แทนขาย</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{url('lead/get_assignment')}}" class="nav-link" style="color: rgb(22, 21, 21);">งานที่ได้รับมอบหมาย</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     <div class="row mb-2">
                         <div class="col-sm-12 col-md-3">
-                            <h5 class="hk-sec-title">ตารางบันทึกการสั่งงาน</h5>
+                            <h5 class="hk-sec-title">รายการสั่งงานผู้แทนขาย</h5>
                         </div>
                         <div class="col-sm-12 col-md-9">
                              <!-- ------ -->
-
                              <span class="form-inline pull-right pull-sm-center">
-                                <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</button>
                                 <form action="{{ url('lead/search_month_add-assignment') }}" method="post" enctype="multipart/form-data">
                                     @csrf
-                                <span id="selectdate" style="display:none;">
+                                <span id="selectdate">
 
                                     เดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateFrom" name="fromMonth"/>
 
                                     ถึงเดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name="toMonth"/>
 
-                                <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm">ค้นหา</button>
+                                <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm">ค้นหา</button>
 
-                                {{-- <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button> --}}
                                 </span>
                             </form>
                             </span>
@@ -59,63 +63,64 @@
 
                     <div class="row">
                         <div class="col-sm">
-                            <div class="table-responsive-sm">
+                            <div class="table-responsive-sm table-color">
                                 <table id="datable_1" class="table table-sm table-hover">
-                                    <thead align="center">
+                                    <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th style="text-align:left">เรื่อง</th>
-                                            <th>วันที่</th>
-                                            <th>พนักงาน</th>
+                                            <th>เรื่อง</th>
+                                            <th>รูปภาพ</th>
+                                            <th>ผู้แทนขาย</th>
+                                            <th>วันที่กำหนดส่ง</th>
                                             <th>สถานะ</th>
+                                            <th>ประเมินผล</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody align="center">
+                                    <tbody>
                                         @foreach ($assignments as $key => $value)
                                         <tr>
                                             <td>{{$key + 1}}</td>
-                                            <td style="text-align:left">
-                                                {{$value->assign_title}}
-                                                @if ($value->assign_fileupload)
-                                                    &nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                    class="feather feather-paperclip" style="color: rgb(0, 0, 102);">
-                                                    <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
-                                                    </svg>
-                                                @endif
-                                            </td>
-                                            <td>{{$value->assign_work_date}}</td>
+                                            <td>{{$value->assign_title}}</td>
+                                            <td><img src="{{ isset($value->assign_fileupload) ? asset('public/upload/AssignmentFile/' . $value->assign_fileupload) : '' }}" width="50"></td>
+                                            <td>{{Carbon\Carbon::parse($value->assign_work_date)->addYear(543)->format('d/m/Y')}}</td>
                                             <td>{{$value->name}}</td>
                                             <td>
                                                 @if ($value->assign_result_status == 0)
-                                                    <span class="badge badge-soft-secondary" style="font-size: 12px;">รอดำเนินการ</span>
-                                                    @elseif ($value->assign_result_status == 1)
-                                                    <span class="badge badge-soft-success" style="font-size: 12px;">สำเร็จ</span>
-                                                    @elseif ($value->assign_result_status == 2)
-                                                    <span class="badge badge-soft-danger" style="font-size: 12px;">ไม่สำเร็จ</span>
+                                                    @if ($value->assign_work_date < Carbon\Carbon::today()->format('Y-m-d'))
+                                                    <span class="btn-expired" style="font-size: 12px;">Expired</span>
+                                                        @else
+                                                        <span class="btn-draf" style="font-size: 12px;">รอดำเนินการ</span>
+                                                    @endif
+                                                @elseif ($value->assign_result_status == 1 || $value->assign_result_status == 2 || $value->assign_result_status == 3)
+                                                <span class="btn-approve" style="font-size: 12px;">ดำเนินการแล้ว</span>
                                                 @endif
                                             </td>
                                             <td>
+                                                @if ($value->assign_result_status == 1)
+                                                    <span class="btn-approve" style="font-size: 12px;">สำเร็จ</span>
+                                                    @elseif ($value->assign_result_status == 2)
+                                                    <span class="btn-failed" style="font-size: 12px;">ไม่สำเร็จ</span>
+                                                    @else
+                                                    <span style="font-size: 12px;">-</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <div class="button-list">
                                                 @if ($value->assign_result_status == 0)
-                                                <button onclick="edit_modal({{ $value->id }})"
-                                                    class="btn btn-icon btn-warning mr-10" data-toggle="modal"
-                                                    data-target="#modalEdit">
-                                                    <h4 class="btn-icon-wrap" style="color: white;"><i
-                                                        class="ion ion-md-create"></i></h4></button>
+                                                <button onclick="edit_modal({{ $value->id }})" class="btn btn-icon btn-edit mr-10" data-toggle="modal" data-target="#modalEdit">
+                                                    <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">drive_file_rename_outline</span></h4>
+                                                </button>
                                                 <a href="{{url('lead/delete_assignment', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
-                                                    <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-trash"></i></h4></a>
+                                                    <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">delete_outline</span></h4>
+                                                </a>
 
                                                 @else
-                                                    <div class="button-list">
-                                                        <button class="btn btn-icon btn-neon" data-toggle="modal"
-                                                        data-target="#ModalResult"
-                                                        onclick="show_result({{$value->id}})">
-                                                        <h4 class="btn-icon-wrap" style="color: white;"><i
-                                                            class="ion ion-md-list"></i></h4></button>
-                                                        </div>
+                                                <button class="btn btn-icon btn-summarize" data-toggle="modal" data-target="#ModalResult" onclick="show_result({{$value->id}})">
+                                                    <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">library_books</span></h4>
+                                                </button>
                                                 @endif
+                                            </div>
                                             </td>
                                         </tr>
                                         @endforeach
@@ -258,6 +263,9 @@
     <div class="modal fade" id="ModalResult" tabindex="-1" role="dialog" aria-labelledby="ModalResult"
         aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
+            <form id="from_updateassign_status_result" enctype="multipart/form-data">
+                {{-- <form action="{{url('admin/update_assignment_status_result')}}" method="POST" enctype="multipart/form-data"> --}}
+                @csrf
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">รายละเอียดการดำเนินงาน</h5>
@@ -267,7 +275,8 @@
                 </div>
 
                 <div class="modal-body">
-                    <input type="hidden" name="id" id="get_id">
+                    <section class="hk-sec-wrapper" style="background: rgb(190, 190, 190);">
+                    <input type="hidden" name="id" id="get_id_text_send">
                         <div class="form-group">
                             <label for="firstName">เรื่อง : </label>
                             <span id="get_title_text"></span>
@@ -294,11 +303,51 @@
                                 <span id="get_emp_text"></span>
                             </div>
                         </div>
+                    </section>
+
+                    <section class="hk-sec-wrapper">
+                        <h6><span id="get_emp_send"></span></h6><br>
+                        <div class="form-group">
+                            <label for="firstName">เรื่อง</label>
+                            <span id="get_title_text_send"></span>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <label for="username">รายละเอียด</label>
+                                <span id="get_detail_text_send"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">วันที่</label>
+                                <span id="get_date_text_send"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">ไฟล์เอกสาร</label>
+                                <div id="img_show_text_send" class="mt-5"></div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">สั่งงานให้</label>
+                                <span id="get_emp_text_send"></span>
+                            </div>
+                        </div>
+                    </section>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="username">สรุปผลลัพธ์</label>
+                            <select id="result_send" class="form-control custom-select" name="result_send" required>
+                                <option value="">เลือกข้อมูล</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
-
+                    <button type="submit" class="btn btn-primary">บันทึก</button>
                 </div>
+            </form>
             </div>
         </div>
     </div>
@@ -318,9 +367,25 @@
                     $('#get_title_text').text(data.dataEdit.assign_title);
                     $('#get_detail_text').text(data.dataEdit.assign_detail);
 
+                    $('#img_show_text_send').children().remove().end();
+                    $('#result_send').children().remove().end();
+                    $('#get_id_text_send').val(data.dataEdit.id);
+                    $('#get_date_text_send').text(data.dataEdit.assign_work_date);
+                    $('#get_title_text_send').text(data.dataEdit.assign_title);
+                    $('#get_detail_text_send').text(data.dataEdit.assign_result_detail);
+
                     $.each(data.dataUser, function(key, value){
                         if(value.id == data.dataEdit.assign_emp_id){
                             $('#get_emp_text').text(value.name);
+                            $('#get_emp_text_send').text(value.name);
+
+                            if (value.status == 1) {
+                            $('#get_emp_send').text("ผู้แทนขายส่งงาน");
+                            }if (value.status == 2) {
+                            $('#get_emp_send').text("ผู้จัดการเขตส่งงาน");
+                            }if (value.status == 3) {
+                            $('#get_emp_send').text("ผู้จัดการฝ่ายส่งงาน");
+                            }
                         }
                     });
 
@@ -333,6 +398,27 @@
                         }else{
                             $('#img_show_text').append('<img src = "'+img_name+'" style="max-width:100%;">');
                         }
+                    }
+
+                    let img_name_send = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataEdit.assign_result_fileupload;
+                    if(data.dataEdit.assign_result_fileupload != ""){
+                        ext = data.dataEdit.assign_result_fileupload.split('.').pop().toLowerCase();
+                        console.log(img_name_send);
+                        if(ext == "pdf"){
+                            $('#img_show_text_send').append('<span><a href="'+img_name_send+'" target="_blank">เปิดไฟล์ PDF</a></span>');
+                        }else{
+                            $('#img_show_text_send').append('<img src = "'+img_name_send+'" style="max-width:100%;">');
+                        }
+                    }
+
+                    if (data.dataEdit.assign_result_status == 1) {
+                        $('#result_send').append('<option value='+data.dataEdit.assign_result_status+' selected>สำเร็จ</option> <option value="2">ไม่สำเร็จ</option>');
+                    }
+                    if (data.dataEdit.assign_result_status == 2){
+                        $('#result_send').append('<option value='+data.dataEdit.assign_result_status+' selected>ไม่สำเร็จ</option> <option value="1">สำเร็จ</option>');
+                    }
+                    if (data.dataEdit.assign_result_status == 3 || data.dataEdit.assign_result_status == 0){
+                        $('#result_send').append('<option value="" selected>เลือกข้อมูล</option> <option value="2">ไม่สำเร็จ</option> <option value="1">สำเร็จ</option>');
                     }
 
 
@@ -491,6 +577,48 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Your work has been saved',
+                        text: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+            },
+            error: function(response){
+                console.log("error");
+                console.log(response);
+            }
+        });
+    });
+
+
+    $("#from_updateassign_status_result").on("submit", function (e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        console.log(formData);
+        $.ajax({
+            type:'POST',
+            url: '{{ url("/lead/update_assignment_status_result") }}',
+            data:formData,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(response){
+                console.log(response);
+                if(response.status == 200){
+                    $("#modalEdit").modal('hide');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'บันทึกข้อมูลสำเร็จ',
+                        text: "บันทึกข้อมูลสรุปผลการสั่งงานเรียบร้อยแล้ว",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    location.reload();
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'บันทึกข้อมูลไม่สำเร็จ',
+                        text: "ไม่สามารถบันทึกข้อมูลสรุปผลการสั่งงานได้",
                         text: response.message,
                         showConfirmButton: false,
                         timer: 1500

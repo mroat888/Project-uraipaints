@@ -1,7 +1,7 @@
 <!-- Modal Result -->
 <div class="modal fade" id="ModalResult" tabindex="-1" role="dialog" aria-labelledby="ModalResult" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
-        
+
         <form id="form_assignment_result" enctype="multipart/form-data">
             @csrf
             <div class="modal-content">
@@ -51,7 +51,7 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
                     <button type="submit" class="btn btn-primary">ส่งงาน</button>
                 </div>
-            
+
             </div>
         </form>
 
@@ -117,7 +117,7 @@ function assignment_result(id) {
                 if(ext == "pdf"){
                     $('#img_show_text').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');
                 }else{
-                    $('#img_show_text').append('<a href="'+img_name+'" target="_blank"><img src = "'+img_name+'" style="max-width:100%;"></a>');
+                    $('#img_show_text').append('<a href="'+img_name+'" target="_blank"><img src = "'+img_name+'" style="max-width:50%;"></a>');
                 }
             }
 

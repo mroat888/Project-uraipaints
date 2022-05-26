@@ -36,11 +36,8 @@
     @endif
         <!-- Title -->
         <div class="hk-pg-header mb-10">
-            <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                    data-feather="file-text"></i></span></span>อนุมัติคำขออนุมัติ</h4>
-            </div>
-            <div class="d-flex">
+            <div class="topichead-bgred"><i data-feather="file-text"></i> อนุมัติคำขออนุมัติ</div>
+            <div class="content-right d-flex">
             </div>
         </div>
         <!-- /Title -->
@@ -50,6 +47,19 @@
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
                     <div class="row">
+                        <div class="col-sm">
+                            <ul class="nav nav-pills nav-fill bg-light pa-10 mb-40" role="tablist">
+                                <li class="nav-item">
+                                    <a href="{{ url('/approvalgeneral') }}" class="nav-link" style="background: rgb(5, 90, 97); color:rgb(255, 255, 255);">รายการรออนุมัติ</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('approvalgeneral/history') }}" class="nav-link" style="color: rgb(22, 21, 21);">ประวัติการอนุมัติ</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    {{-- <div class="row">
                         <div class="col-sm">
                             <a href="{{ url('/approvalgeneral') }}" type="button" class="btn btn-violet btn-wth-icon icon-wthot-bg btn-sm text-white">
                                 <span class="icon-label">
@@ -65,30 +75,13 @@
                                 <span class="btn-text">ประวัติ</span>
                             </a>
                             <hr>
-                            <div id="calendar"></div>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="row mb-2">
                             <div class="col-md-3">
                                 <h5 class="hk-sec-title">รายการคำขออนุมัติ</h5>
                             </div>
                             <div class="col-md-9">
-                                <!-- ------ -->
-                                {{-- <span class="form-inline pull-right">
-                                   <a style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกวันที่</a>
-                                   <form action="{{ url('lead/approvalGeneral/search') }}" method="POST" enctype="multipart/form-data">
-                                       @csrf
-
-                                       <span id="selectdate" style="display:none;">
-                                            <input type="date" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" name ="selectdateTo" value="" />
-
-                                           <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-success btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button>
-                                       </span>
-                                   </form>
-                                   </span> --}}
-                                   <!-- ------ -->
-
-                                   <!-- ------ -->
                             <span class="form-inline pull-right">
                                 <!-- เงื่อนไขการค้นหา -->
                                 @php
@@ -148,7 +141,7 @@
                                     ถึง <input type="date" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;"
                                     id="selectdateTo" name="selectdateTo" value="{{ $checkdateTo }}" />
 
-                                    <button style="margin-left:5px; margin-right:5px;" class="btn btn-success btn-sm" id="submit_request">ค้นหา</button>
+                                    <button style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm" id="submit_request">ค้นหา</button>
                                 </span>
 
                                 </form>
@@ -167,16 +160,15 @@
 
                                 <button type="button" id="btn_saleplan_approve2" class="btn btn_purple btn-reject ml-5" name="failed" value="failed">ไม่อนุมัติ</button>
                             </div>
-                            <div class="table-responsive-sm">
-                                <table class="table table-sm table-hover">
+                            <div class="table-responsive-sm table-color">
+                                <table id="datable_1" class="table table-sm table-hover">
                                     <thead>
                                         <tr>
                                             <th>
                                                 <div class="custom-control custom-checkbox checkbox-info">
                                                     <input type="checkbox" class="custom-control-input"
                                                         id="customCheck4" onclick="chkAll(this);" name="CheckAll" value="Y">
-                                                    <label class="custom-control-label"
-                                                        for="customCheck4">ทั้งหมด</label>
+                                                    <label class="custom-control-label" for="customCheck4" style="color: white;">ทั้งหมด</label>
                                                 </div>
                                             </th>
                                             <th>#</th>
@@ -210,58 +202,23 @@
                                                 {{$value->assign_title}}</td>
                                             {{-- <td>{{$value->assign_shop}}</td> --}}
                                             <td>{{ $value->api_customers_title }} {{ $value->api_customers_name }}</td>
-                                            <td>{{Carbon\Carbon::parse($value->assign_request_date)->format('Y-m-d')}}</td>
+                                            <td>{{Carbon\Carbon::parse($value->assign_request_date)->addYear(543)->format('d/m/Y')}}</td>
                                             <td>
-                                                <span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>
+                                                <span class="btn-pending" style="font-size: 12px;">Pending</span>
                                             </td>
-                                            <td align="center">
-                                                <span class="badge badge-soft-primary" style="font-size: 12px;">มี</span>
+                                            <td>
+                                                <span class="btn-approve" style="font-size: 12px;">มี</span>
                                             </td>
                                             <td>
                                                 <div class="button-list">
-                                                {{-- <a href="{{ url('comment_approval', [$value->id, $value->created_by]) }}" class="btn btn-icon btn-purple mr-10">
-                                                    <h4 class="btn-icon-wrap" style="color: white;">
-                                                        <i data-feather="message-square"></i>
-                                                    </h4>
-                                                </a>
-                                                <a href="{{url('lead/approval_general_detail', $value->created_by)}}" class="btn btn-icon btn-primary btn-link btn_showplan pt-5" value="3">
-                                                    <i data-feather="file-text"></i>
-                                                </a> --}}
-                                                <button onclick="edit_modal({{ $value->id }})" type="button" class="btn btn-icon btn-violet mr-10"
+                                                <button onclick="edit_modal({{ $value->id }})" type="button" class="btn btn-icon btn-purple mr-10"
                                                     data-original-title="ดูรายละเอียดและคอมเม้นต์" data-toggle="tooltip" data-toggle="modal" data-target="editApproval">
-                                                    <i data-feather="message-square"></i>
+                                                    <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">comment</span></h4>
                                                 </button>
                                                 </div>
                                             </td>
                                         </tr>
                                         @endforeach
-                                        {{-- @foreach ($request_approval as $key => $value)
-                                        <?php
-                                        // $chk =  App\Assignment::join('users', 'assignments.created_by', '=', 'users.id')
-                                        // ->whereNotNull('assignments.assign_request_date')
-                                        // ->where('assignments.created_by', $value->created_by)->select('users.name', 'assignments.*')->first();
-                                        ?>
-                                        <tr>
-                                            <td>
-                                                <div class="custom-control custom-checkbox checkbox-info">
-                                                    <input type="checkbox" class="custom-control-input checkapprove"
-                                                        name="checkapprove[]" id="customCheck{{$key + 1}}" value="{{$chk->created_by}}">
-                                                    <label class="custom-control-label" for="customCheck{{$key + 1}}"></label>
-                                                </div>
-                                            </td>
-                                            <td>{{$key + 1}}</td>
-                                            <td>{{Carbon\Carbon::parse($chk->assign_request_date)->format('Y-m-d')}}</td>
-                                            <td>{{$chk->name}}</td>
-                                            <td>
-                                                <span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>
-                                            </td>
-                                            <td>
-                                                <a href="{{url('lead/approval_general_detail', $chk->created_by)}}" class="btn btn-icon btn-primary btn-link btn_showplan pt-5" value="3">
-                                                    <i data-feather="file-text"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        @endforeach --}}
                                     </tbody>
                                 </table>
                             </div>
@@ -346,6 +303,15 @@
                                         <div id="customCheck6"></div>
                                     </div>
                                 </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="firstName">การอนุมัติ</label>
+                                    <select id="approval_send" class="form-control custom-select" name="approval_send" required>
+                                        <option value="">เลือกข้อมูล</option>
+                                        <option value="1">อนุมัติ</option>
+                                        <option value="4">แก้ไขใหม่</option>
+                                        <option value="2">ไม่อนุมัติ</option>
+                                    </select>
+                                </div>
                         </div>
 
                         <input type="hidden" name="id" id="get_id">
@@ -353,7 +319,7 @@
                             <h5>ความคิดเห็น</h5>
                         </div>
                         <div class="card-body">
-                            <textarea class="form-control" id="comment" name="comment" cols="30" rows="5" placeholder="เพิ่มความคิดเห็น" type="text"></textarea>
+                            <textarea class="form-control" id="comment" name="comment" cols="30" rows="5" placeholder="เพิ่มความคิดเห็น" type="text" required></textarea>
                         </div>
 
                         <div class="form-group">
