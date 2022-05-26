@@ -47,4 +47,58 @@ class UnionAssignmentController extends Controller
         ]);
 
     }
+
+    public function assignment_result_get($id){
+        $dataResult = DB::table('assignments')->where('id', $id)->first();
+        $emp_approve = DB::table('users')
+        ->where('id', $dataResult->assign_approve_id)
+        ->first();
+
+        return response()->json([
+            'dataResult' => $dataResult,
+            'emp_approve' => $emp_approve
+        ]);
+    }
+
+    public function saleplan_result(Request $request){ // สรุปผลลัพธ์
+        // dd($request);
+        DB::beginTransaction();
+        try {
+
+            $pathFle = 'upload/AssignmentFile';
+            $uploadfile = '';
+            if (!empty($request->file('assign_result_fileupload'))) {
+                $uploadF = $request->file('assign_result_fileupload');
+                $file_name = 'file-' . time() . '.' . $uploadF->getClientOriginalExtension();
+                $uploadF->move(public_path($pathFle), $file_name);
+                $uploadfile = $file_name;
+            }
+
+            DB::table('assignments')->where('id', $request->assign_id)
+            ->update([
+                'assign_result_detail' => $request->assign_result_detail,
+                'assign_result_status' => $request->assign_result_status,
+                'assign_result_fileupload' => $uploadfile,
+                'updated_by' => Auth::user()->id,
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+
+            DB::commit();
+            return response()->json([
+                'status' => 200,
+                'message' => 'บันทึกข้อมูลสำเร็จ',
+                'data' => $uploadfile,
+            ]);
+
+        } catch (\Exception $e) {
+
+            DB::rollback();
+
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกข้อมูลได้',
+                'data' => $request,
+            ]);
+        }
+    }
 }
