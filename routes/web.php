@@ -427,10 +427,12 @@ Route::post('admin/approvalgeneral/search', 'Admin\ApprovalController@search');
 Route::get('admin/view_approval/{id}', 'Admin\ApprovalController@view_approval');
 
 Route::get('admin/assignment-add', 'Admin\AssignmentController@index');
-Route::get('admin/fetch_user/{id}', 'Admin\AssignmentController@fetch_user');
+// Route::get('admin/fetch_user/{id}', 'Admin\AssignmentController@fetch_user');
+Route::get('admin/fetch_user', 'Admin\AssignmentController@fetch_user');
 Route::post('admin/create_assignment', 'Admin\AssignmentController@store');
 Route::get('admin/edit_assignment/{id}', 'Admin\AssignmentController@edit');
 Route::post('admin/update_assignment', 'Admin\AssignmentController@update');
+Route::post('admin/update_assignment_status_result', 'Admin\AssignmentController@update_status_result');
 Route::get('admin/delete_assignment/{id}', 'Admin\AssignmentController@destroy');
 Route::post('admin/search_month_add-assignment', 'Admin\AssignmentController@search');
 
@@ -717,8 +719,8 @@ Route::get('/', 'HomeController@index')->name('home');
 
 // Route ดึงข้อมูล APi ลงฐานข้อมูล
 
-Route::get('/api_fetch_provinces', 'Api\ApiController@api_fetch_provinces');  
-Route::get('/api_fetch_amphures', 'Api\ApiController@api_fetch_amphures');  
-Route::get('/api_fetch_customers', 'Api\ApiController@api_fetch_customers');  
-Route::get('/api_fetch_pdglists', 'Api\ApiController@api_fetch_pdglists');  
+Route::get('/api_fetch_provinces', 'Api\ApiController@api_fetch_provinces');
+Route::get('/api_fetch_amphures', 'Api\ApiController@api_fetch_amphures');
+Route::get('/api_fetch_customers', 'Api\ApiController@api_fetch_customers');
+Route::get('/api_fetch_pdglists', 'Api\ApiController@api_fetch_pdglists');
 Route::get('/api_customer_to_pdglist', 'Api\ApiController@api_customer_to_pdglist');

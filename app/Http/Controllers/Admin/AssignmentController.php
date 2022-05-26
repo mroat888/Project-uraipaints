@@ -14,37 +14,51 @@ class AssignmentController extends Controller
 
     public function index()
     {
-        $assignments = DB::table('assignments')
+        $data['assignments'] = DB::table('assignments')
             ->join('users', 'assignments.assign_emp_id', 'users.id')
             ->where('assignments.created_by', Auth::user()->id)
             ->select('assignments.*', 'users.name')
-            ->orderBy('assignments.id', 'desc')
-            ->get();
+            ->orderBy('assignments.id', 'desc')->get();
 
-        $managers = DB::table('users')->where('status', 2)->get();
-        return view('admin.add_assignment', compact('managers', 'assignments'));
+            $data['team_sales'] = DB::table('master_team_sales')->get();
+            $data['users'] = DB::table('users')->whereNotIn('id', [Auth::user()->id])->get();
+
+            $data['managers'] = DB::table('users')->where('status', 2)->get();
+
+        return view('admin.add_assignment', $data);
     }
 
-    public function fetch_user($id){
-        $users = DB::table('users')->where('id', $id)->first();
+    // public function fetch_user($id){
+    //         $users = DB::table('users')->where('id', $id)->first();
 
-        $auth_team_id = explode(',',$users->team_id);
-        $auth_team = array();
-        foreach($auth_team_id as $value){
-            $auth_team[] = $value;
-        }
+    //     $auth_team_id = explode(',',$users->team_id);
+    //     $auth_team = array();
+    //     foreach($auth_team_id as $value){
+    //         $auth_team[] = $value;
+    //     }
 
-        // $saleman = DB::table('users')->where('status', 1)->where('team_id', $users->team_id)->get();
-        $saleman = DB::table('users')
-        ->where('status', 1)
-        ->where(function($query) use ($auth_team) {
-            for ($i = 0; $i < count($auth_team); $i++){
-                $query->orWhere('users.team_id', $auth_team[$i])
-                    ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
-                    ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
-            }
-        })
-        ->get();
+    //     $saleman = DB::table('users')
+    //     ->where('status', 1)
+    //     ->where(function($query) use ($auth_team) {
+    //         for ($i = 0; $i < count($auth_team); $i++){
+    //             $query->orWhere('users.team_id', $auth_team[$i])
+    //                 ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+    //                 ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+    //         }
+    //     })
+    //     ->get();
+
+
+    //     return response()->json([
+    //         'status' => 200,
+    //         'saleman' => $saleman
+    //     ]);
+    // }
+
+    public function fetch_user(){
+
+        $saleman = DB::table('users')->whereNotIn('id', [Auth::user()->id])->get();
+
         return response()->json([
             'status' => 200,
             'saleman' => $saleman
@@ -94,14 +108,13 @@ class AssignmentController extends Controller
                  DB::table('assignments')
                  ->insert([
                      'assign_work_date' => $request->date,
-                     // 'assign_request_date' => Carbon::now(), // วันขอนุมัติ
                      'assign_approve_date' => Carbon::now(), // วันที่อนุมัติ
                      'assign_title' => $request->assign_title,
                      'assign_detail' => $request->assign_detail,
                      'assign_fileupload' => $uploadfile,
                      'assign_emp_id' => $emp_id,
                      'assign_status' => 3,
-                     'assign_approve_id' => $request->assign_manager,
+                     'assign_approve_id' => Auth::user()->id,
                      'assign_result_status' => 0,
                      'created_by' => Auth::user()->id,
                      'created_at' => Carbon::now(),
@@ -127,62 +140,20 @@ class AssignmentController extends Controller
          }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $dataEdit = Assignment::find($id);
-        $dataManager = DB::table('users')->where('status',2)->get();
         $users_team = DB::table('users')->where('id',$dataEdit->assign_approve_id)->first();
 
-        $auth_team_id = explode(',',$users_team->team_id);
-        $auth_team = array();
-        foreach($auth_team_id as $value){
-            $auth_team[] = $value;
-        }
-
-        $dataUser = DB::table('users')
-        ->where('status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
-        ->where(function($query) use ($auth_team) {
-            for ($i = 0; $i < count($auth_team); $i++){
-                $query->orWhere('team_id', $auth_team[$i])
-                    ->orWhere('team_id', 'like', $auth_team[$i].',%')
-                    ->orWhere('team_id', 'like', '%,'.$auth_team[$i]);
-            }
-        })
-        ->get();
-
+        $dataUser = DB::table('users')->whereNotIn('id', [Auth::user()->id])->get();
 
         $data = array(
             'dataEdit'  => $dataEdit,
             'dataUser'  => $dataUser,
-            'dataManager' => $dataManager,
         );
         echo json_encode($data);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request)
     {
         DB::beginTransaction();
@@ -216,12 +187,36 @@ class AssignmentController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    public function update_status_result(Request $request)
+    {
+        // dd($request);
+        DB::beginTransaction();
+        try {
+            DB::table('assignments')->where('id',$request->id)
+            ->update([
+                'assign_result_status' => $request->result_send,
+                'updated_by' => Auth::user()->id,
+                'updated_at' => Carbon::now(),
+            ]);
+
+            DB::commit();
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'บันทึกข้อมูลสำเร็จ',
+            ]);
+
+        } catch (\Exception $e) {
+
+            DB::rollback();
+
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกข้อมูลได้',
+            ]);
+        }
+    }
+
     public function destroy($id)
     {
         DB::beginTransaction();
