@@ -18,48 +18,50 @@ class CheckStoreController extends Controller
 
     public function index()
     {
-        // $api_token = $this->api_token->apiToken();
+        $api_token = $this->api_token->apiToken();
 
-        // $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/customers');
-        // $res_api = $response->json();
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/customers',[
+            'limits' => env("API_CUST_LIMIT")
+        ]);
+        $res_api = $response->json();
 
-        // if(!empty($res_api)){
-        //     if($res_api['code'] == 200){
-        //         $data['customer_api'] = $res_api['data'];
-        //     }
-        // }
+        if(!empty($res_api)){
+            if($res_api['code'] == 200){
+                $data['customer_api'] = $res_api['data'];
+            }
+        }
 
-        // // ดึงจังหวัด -- API
-        // $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/provinces');
-        // $res_api = $response->json();
-        // if(!empty($res_api)){
-        //     if($res_api['code'] == 200){
-        //         $data['provinces'] = $res_api['data'];
-        //     }
-        // }
+        // ดึงจังหวัด -- API
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/provinces');
+        $res_api = $response->json();
+        if(!empty($res_api)){
+            if($res_api['code'] == 200){
+                $data['provinces'] = $res_api['data'];
+            }
+        }
 
         // -- แปลงมาใช้ดึงจากฐานข้อมูล
-        $api_customers = DB::table('api_customers')->get();
-        foreach($api_customers as $key => $value){
-            $data['customer_api'][] = [
-                'image_url' => $value->image_url,
-                'identify' => $value->identify,
-                'title' => $value->title,
-                'name' => $value->name,
-                'amphoe_name' => $value->amphoe_name,
-                'province_name' => $value->province_name,
-                'telephone' => $value->telephone,
-                'mobile' => $value->mobile,
-            ];
-        }
+        // $api_customers = DB::table('api_customers')->get();
+        // foreach($api_customers as $key => $value){
+        //     $data['customer_api'][] = [
+        //         'image_url' => $value->image_url,
+        //         'identify' => $value->identify,
+        //         'title' => $value->title,
+        //         'name' => $value->name,
+        //         'amphoe_name' => $value->amphoe_name,
+        //         'province_name' => $value->province_name,
+        //         'telephone' => $value->telephone,
+        //         'mobile' => $value->mobile,
+        //     ];
+        // }
 
-        $api_provinces = DB::table('api_provinces')->get();
-        foreach($api_provinces as $key => $value){
-           $data['provinces'][] = [
-               'identify' => $value->identify,
-               'name_thai' => $value->name_thai,
-           ];
-        }
+        // $api_provinces = DB::table('api_provinces')->get();
+        // foreach($api_provinces as $key => $value){
+        //    $data['provinces'][] = [
+        //        'identify' => $value->identify,
+        //        'name_thai' => $value->name_thai,
+        //    ];
+        // }
 
         return view('shareData_admin.check_name_store', $data);
     }
@@ -67,63 +69,63 @@ class CheckStoreController extends Controller
     public function search(Request $request)
     {
 
-        // $api_token = $this->api_token->apiToken();
+        $api_token = $this->api_token->apiToken();
 
-        // if(!is_null($request->amphur)){ 
-        //     $patch_search = '/amphures/'.$request->amphur.'/customers';
-        // }elseif(!is_null($request->province)){
-        //     $patch_search = '/provinces/'.$request->province.'/customers';
-        // }else{
-        //     $patch_search = '/customers';
-        // }
+        if(!is_null($request->amphur)){ 
+            $patch_search = '/amphures/'.$request->amphur.'/customers';
+        }elseif(!is_null($request->province)){
+            $patch_search = '/provinces/'.$request->province.'/customers';
+        }else{
+            $patch_search = '/customers';
+        }
 
-        // $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$patch_search);
-        // $res_api = $response->json();
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$patch_search,[
+            'limits' => env("API_CUST_LIMIT")
+        ]);
+        $res_api = $response->json();
 
-        // if($res_api['code'] == 200){
-        //     $data['customer_api'] = $res_api['data'];
-        // }
+        if($res_api['code'] == 200){
+            $data['customer_api'] = $res_api['data'];
+        }
 
-        // // ดึงจังหวัด -- API
-        // $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/provinces');
-        // $res_provinces_api = $response->json();
-        // $data['provinces'] = $res_provinces_api['data'];
+        // ดึงจังหวัด -- API
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/provinces');
+        $res_provinces_api = $response->json();
+        $data['provinces'] = $res_provinces_api['data'];
 
 
         
         // -- แปลงมาใช้ดึงจากฐานข้อมูล
-        $api_customers = DB::table('api_customers');
+        // $api_customers = DB::table('api_customers');
 
-        if(!is_null($request->amphur)){
-            $api_customer = $api_customer->where('amphoe_id', $request->amphur);
-        }elseif(!is_null($request->province)){
-            $api_customer = $api_customer->where('province_id', $request->province);
-        }
+        // if(!is_null($request->amphur)){
+        //     $api_customer = $api_customer->where('amphoe_id', $request->amphur);
+        // }elseif(!is_null($request->province)){
+        //     $api_customer = $api_customer->where('province_id', $request->province);
+        // }
         
-        $api_customers = $$api_customers->get();
+        // $api_customers = $$api_customers->get();
 
-        foreach($api_customers as $key => $value){
-            $data['customer_api'][] = [
-                'image_url' => $value->image_url,
-                'identify' => $value->identify,
-                'title' => $value->title,
-                'name' => $value->name,
-                'amphoe_name' => $value->amphoe_name,
-                'province_name' => $value->province_name,
-                'telephone' => $value->telephone,
-                'mobile' => $value->mobile,
-            ];
-        }
+        // foreach($api_customers as $key => $value){
+        //     $data['customer_api'][] = [
+        //         'image_url' => $value->image_url,
+        //         'identify' => $value->identify,
+        //         'title' => $value->title,
+        //         'name' => $value->name,
+        //         'amphoe_name' => $value->amphoe_name,
+        //         'province_name' => $value->province_name,
+        //         'telephone' => $value->telephone,
+        //         'mobile' => $value->mobile,
+        //     ];
+        // }
 
-
-
-        $api_provinces = DB::table('api_provinces')->get();
-        foreach($api_provinces as $key => $value){
-           $data['provinces'][] = [
-               'identify' => $value->identify,
-               'name_thai' => $value->name_thai,
-           ];
-        }
+        // $api_provinces = DB::table('api_provinces')->get();
+        // foreach($api_provinces as $key => $value){
+        //    $data['provinces'][] = [
+        //        'identify' => $value->identify,
+        //        'name_thai' => $value->name_thai,
+        //    ];
+        // }
         
         return view('shareData_admin.check_name_store', $data);
     }
