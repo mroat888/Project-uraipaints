@@ -517,6 +517,9 @@
                 if (data.dataEdit.assign_result_status == 2){
                     $('#result_send').append('<option value='+data.dataEdit.assign_result_status+' selected>ไม่สำเร็จ</option> <option value="1">สำเร็จ</option>');
                 }
+                if (data.dataEdit.assign_result_status == 3){
+                    $('#result_send').append('<option value="2" selected>เลือกข้อมูล</option> <option value="2">ไม่สำเร็จ</option> <option value="1">สำเร็จ</option>');
+                }
 
                 $('#ModalResult').modal('toggle');
             }
