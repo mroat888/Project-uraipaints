@@ -673,6 +673,27 @@ background: linear-gradient(90deg, rgba(121,218,97,1) 0%, rgba(37,140,20,1) 100%
     padding: 5px 20px;
     border-radius: 5px;
 }
+.btn-expired,
+.btn-expired:hover{
+    color: rgba(73,39,113,1);
+    background: rgba(73,39,113,0.2);
+    padding: 5px 20px;
+    border-radius: 5px;
+}
+.btn-failed,
+.btn-failed:hover{
+    color: rgba(73,39,113,1);
+    background: rgba(73,39,113,0.2);
+    padding: 5px 20px;
+    border-radius: 5px;
+}
+.btn-close,
+.btn-close:hover{
+    color: rgba(198,18,70,1);
+    background: rgba(198,18,70,0.2);
+    padding: 5px 20px;
+    border-radius: 5px;
+}
 .btn-edit,
 .btn-edit:hover{
     background-color: #ea6912;
@@ -681,6 +702,11 @@ background: linear-gradient(90deg, rgba(121,218,97,1) 0%, rgba(37,140,20,1) 100%
 .btn-view,
 .btn-view:hover{
     background-color: #004f9e;
+    color: #fff;
+}
+.btn-summarize,
+.btn-summarize:hover{
+    background-color: #027790;
     color: #fff;
 }
 
