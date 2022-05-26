@@ -62,10 +62,10 @@
                                             <th>#</th>
                                             <th>เรื่อง</th>
                                             <th>รูปภาพ</th>
-                                            <th>ชื่อผู้แทนขาย</th>
+                                            <th>ผู้แทนขาย</th>
                                             <th>วันที่กำหนดส่ง</th>
                                             <th>สถานะ</th>
-                                            <th>การประเมินผล</th>
+                                            <th>ประเมินผล</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -99,7 +99,7 @@
                                             </td>
                                             <td>
                                                 @if ($value->assign_result_status == 0 && $value->assign_work_date >= Carbon\Carbon::today()->format('Y-m-d'))
-                                                    <button onclick="edit_modal({{ $value->id }})" class="btn btn-icon btn-warning" data-toggle="modal" data-target="#modalEdit">
+                                                    <button onclick="edit_modal({{ $value->id }})" class="btn btn-icon btn-edit" data-toggle="modal" data-target="#modalEdit">
                                                         <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">drive_file_rename_outline</span></h4>
                                                     </button>
                                                     <a href="{{url('head/delete_assignment', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">

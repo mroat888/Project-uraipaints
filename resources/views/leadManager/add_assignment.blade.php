@@ -5,7 +5,7 @@
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
             <li class="breadcrumb-item"><a href="#">Page</a></li>
-            <li class="breadcrumb-item active" aria-current="page">บันทึกการสั่งงาน</li>
+            <li class="breadcrumb-item active" aria-current="page">สั่งงานผู้แทนขาย</li>
         </ol>
     </nav>
     <!-- /Breadcrumb -->
@@ -16,7 +16,7 @@
         <div class="hk-pg-header mb-10">
             <div>
                 <h4 class="hk-pg-title mt-40"><span class="pg-title-icon"><i
-                            class="ion ion-md-document"></i></span>ตารางบันทึกการสั่งงาน</h4>
+                            class="ion ion-md-document"></i></span>สั่งงานผู้แทนขาย</h4>
             </div>
             <div class="d-flex">
                 <button type="button" class="btn btn-teal btn-sm btn-rounded px-3" data-toggle="modal"
@@ -32,7 +32,7 @@
 
                     <div class="row mb-2">
                         <div class="col-sm-12 col-md-3">
-                            <h5 class="hk-sec-title">ตารางบันทึกการสั่งงาน</h5>
+                            <h5 class="hk-sec-title">รายการสั่งงานผู้แทนขาย</h5>
                         </div>
                         <div class="col-sm-12 col-md-9">
                              <!-- ------ -->
@@ -64,10 +64,12 @@
                                     <thead align="center">
                                         <tr>
                                             <th>#</th>
-                                            <th style="text-align:left">เรื่อง</th>
-                                            <th>วันที่</th>
-                                            <th>พนักงาน</th>
+                                            <th>เรื่อง</th>
+                                            <th>รูปภาพ</th>
+                                            <th>ผู้แทนขาย</th>
+                                            <th>วันที่กำหนดส่ง</th>
                                             <th>สถานะ</th>
+                                            <th>ประเมินผล</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -75,47 +77,46 @@
                                         @foreach ($assignments as $key => $value)
                                         <tr>
                                             <td>{{$key + 1}}</td>
-                                            <td style="text-align:left">
-                                                {{$value->assign_title}}
-                                                @if ($value->assign_fileupload)
-                                                    &nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                    class="feather feather-paperclip" style="color: rgb(0, 0, 102);">
-                                                    <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
-                                                    </svg>
-                                                @endif
-                                            </td>
+                                            <td>{{$value->assign_title}}</td>
+                                            <td><img src="{{ isset($value->assign_fileupload) ? asset('public/upload/AssignmentFile/' . $value->assign_fileupload) : '' }}" width="50"></td>
                                             <td>{{$value->assign_work_date}}</td>
                                             <td>{{$value->name}}</td>
                                             <td>
                                                 @if ($value->assign_result_status == 0)
-                                                    <span class="badge badge-soft-secondary" style="font-size: 12px;">รอดำเนินการ</span>
-                                                    @elseif ($value->assign_result_status == 1)
-                                                    <span class="badge badge-soft-success" style="font-size: 12px;">สำเร็จ</span>
-                                                    @elseif ($value->assign_result_status == 2)
-                                                    <span class="badge badge-soft-danger" style="font-size: 12px;">ไม่สำเร็จ</span>
+                                                    @if ($value->assign_work_date < Carbon\Carbon::today()->format('Y-m-d'))
+                                                    <span class="btn-expired" style="font-size: 12px;">Expired</span>
+                                                        @else
+                                                        <span class="btn-draf" style="font-size: 12px;">รอดำเนินการ</span>
+                                                    @endif
+                                                @elseif ($value->assign_result_status == 1 || $value->assign_result_status == 2 || $value->assign_result_status == 3)
+                                                <span class="btn-approve" style="font-size: 12px;">ดำเนินการแล้ว</span>
                                                 @endif
                                             </td>
                                             <td>
+                                                @if ($value->assign_result_status == 1)
+                                                    <span class="btn-approve" style="font-size: 12px;">สำเร็จ</span>
+                                                    @elseif ($value->assign_result_status == 2)
+                                                    <span class="btn-failed" style="font-size: 12px;">ไม่สำเร็จ</span>
+                                                    @else
+                                                    <span style="font-size: 12px;">-</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <div class="button-list">
                                                 @if ($value->assign_result_status == 0)
-                                                <button onclick="edit_modal({{ $value->id }})"
-                                                    class="btn btn-icon btn-warning mr-10" data-toggle="modal"
-                                                    data-target="#modalEdit">
-                                                    <h4 class="btn-icon-wrap" style="color: white;"><i
-                                                        class="ion ion-md-create"></i></h4></button>
+                                                <button onclick="edit_modal({{ $value->id }})" class="btn btn-icon btn-edit mr-10" data-toggle="modal" data-target="#modalEdit">
+                                                    <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">drive_file_rename_outline</span></h4>
+                                                </button>
                                                 <a href="{{url('lead/delete_assignment', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
-                                                    <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-trash"></i></h4></a>
+                                                    <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">delete_outline</span></h4>
+                                                </a>
 
                                                 @else
-                                                    <div class="button-list">
-                                                        <button class="btn btn-icon btn-neon" data-toggle="modal"
-                                                        data-target="#ModalResult"
-                                                        onclick="show_result({{$value->id}})">
-                                                        <h4 class="btn-icon-wrap" style="color: white;"><i
-                                                            class="ion ion-md-list"></i></h4></button>
-                                                        </div>
+                                                <button class="btn btn-icon btn-summarize" data-toggle="modal" data-target="#ModalResult" onclick="show_result({{$value->id}})">
+                                                    <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">library_books</span></h4>
+                                                </button>
                                                 @endif
+                                            </div>
                                             </td>
                                         </tr>
                                         @endforeach
