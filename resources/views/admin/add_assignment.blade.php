@@ -618,7 +618,8 @@
                     $("#exampleModalLarge01").modal('hide');
                     Swal.fire({
                         icon: 'success',
-                        title: 'Your work has been saved',
+                        title: 'บันทึกข้อมูลสำเร็จ',
+                        text: "บันทึกข้อมูลการสั่งงานเรียบร้อยแล้ว",
                         showConfirmButton: false,
                         timer: 1500
                     });
@@ -626,7 +627,8 @@
                 }else{
                     Swal.fire({
                         icon: 'error',
-                        title: 'Your work has been saved',
+                        title: 'บันทึกข้อมูลไม่สำเร็จ',
+                        text: "ไม่สามารถบันทึกข้อมูลการสั่งงานได้",
                         text: response.message,
                         showConfirmButton: false,
                         timer: 1500
@@ -657,7 +659,8 @@
                     $("#modalEdit").modal('hide');
                     Swal.fire({
                         icon: 'success',
-                        title: 'Your work has been saved',
+                        title: 'บันทึกข้อมูลสำเร็จ',
+                        text: "บันทึกข้อมูลแก้ไขการสั่งงานเรียบร้อยแล้ว",
                         showConfirmButton: false,
                         timer: 1500
                     });
@@ -665,7 +668,8 @@
                 }else{
                     Swal.fire({
                         icon: 'error',
-                        title: 'Your work has been saved',
+                        title: 'บันทึกข้อมูลไม่สำเร็จ',
+                        text: "ไม่สามารถบันทึกข้อมูลแก้ไขการสั่งงานได้",
                         text: response.message,
                         showConfirmButton: false,
                         timer: 1500
@@ -697,7 +701,8 @@
                     $("#modalEdit").modal('hide');
                     Swal.fire({
                         icon: 'success',
-                        title: 'Your work has been saved',
+                        title: 'บันทึกข้อมูลสำเร็จ',
+                        text: "บันทึกข้อมูลสรุปผลการสั่งงานเรียบร้อยแล้ว",
                         showConfirmButton: false,
                         timer: 1500
                     });
@@ -705,7 +710,8 @@
                 }else{
                     Swal.fire({
                         icon: 'error',
-                        title: 'Your work has been saved',
+                        title: 'บันทึกข้อมูลไม่สำเร็จ',
+                        text: "ไม่สามารถบันทึกข้อมูลสรุปผลการสั่งงานได้",
                         text: response.message,
                         showConfirmButton: false,
                         timer: 1500
