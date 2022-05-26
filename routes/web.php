@@ -325,6 +325,7 @@ Route::get('head/edit_assignment/{id}', 'AssignmentController@edit');
 Route::post('head/update_assignment', 'AssignmentController@update');
 Route::get('head/delete_assignment/{id}', 'AssignmentController@destroy');
 Route::post('head/search_month_add-assignment', 'AssignmentController@head_search_month_add_assignment');
+Route::post('head/update_assignment_status_result', 'AssignmentController@update_status_result');
 
 
 // อนุมัติลูกค้าใหม่นอกแผน

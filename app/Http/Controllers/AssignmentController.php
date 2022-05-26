@@ -27,7 +27,7 @@ class AssignmentController extends Controller
             $auth_team[] = $value;
         }
 
-        $users = DB::table('users')
+            $users = DB::table('users')
             // ->where('team_id', Auth::user()->team_id)
             ->where('status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
             ->where(function($query) use ($auth_team) {
@@ -47,7 +47,7 @@ class AssignmentController extends Controller
     {
         $assignments = Assignment::join('users', 'assignments.assign_emp_id', 'users.id')
         ->where('assignments.created_by', Auth::user()->id)
-        // ->where('assignments.assign_status', 1)
+        ->where('assignments.assign_status', 3)
         ->select('assignments.*', 'users.name')
         ->orderBy('assignments.id', 'desc')->get();
 
@@ -59,7 +59,7 @@ class AssignmentController extends Controller
 
             $users = DB::table('users')
                 // ->where('team_id', Auth::user()->team_id)
-                ->where('status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+                ->whereIn('status', [1, 2]) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
                 ->where(function($query) use ($auth_team) {
                     for ($i = 0; $i < count($auth_team); $i++){
                         $query->orWhere('team_id', $auth_team[$i])
@@ -373,6 +373,36 @@ class AssignmentController extends Controller
             ->get();
 
         return view('headManager.add_assignment', compact('assignments', 'users'));
+    }
+
+    public function update_status_result(Request $request)
+    {
+        // dd($request);
+        DB::beginTransaction();
+        try {
+            DB::table('assignments')->where('id',$request->id)
+            ->update([
+                'assign_result_status' => $request->result_send,
+                'updated_by' => Auth::user()->id,
+                'updated_at' => Carbon::now(),
+            ]);
+
+            DB::commit();
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'บันทึกข้อมูลสำเร็จ',
+            ]);
+
+        } catch (\Exception $e) {
+
+            DB::rollback();
+
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกข้อมูลได้',
+            ]);
+        }
     }
 
 }
