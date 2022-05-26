@@ -2,7 +2,7 @@
 
 @section('content')
 
-    @php 
+    @php
         $title_header = "ประวัติอนุมัติคำขออนุมัติ";
         $title_header_table = "รายการประวัติขออนุมัติ";
 
@@ -39,6 +39,19 @@
             <section class="hk-sec-wrapper">
                 <div class="row">
                     <div class="col-sm">
+                        <ul class="nav nav-pills nav-fill bg-light pa-10 mb-40" role="tablist">
+                            <li class="nav-item">
+                                <a href="{{ url($url_approvalgeneral) }}" class="nav-link" style="background: rgb(5, 90, 97); color:rgb(255, 255, 255);">รายการรออนุมัติ</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ url($url_approvalgeneral_history) }}" class="nav-link" style="color: rgb(22, 21, 21);">ประวัติการอนุมัติ</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                {{-- <div class="row">
+                    <div class="col-sm">
                         <a href="{{ url($url_approvalgeneral) }}" type="button" class="btn btn-secondary btn-wth-icon icon-wthot-bg btn-sm text-white">
                             <span class="icon-label">
                                 <i class="fa fa-file"></i>
@@ -55,7 +68,7 @@
                         <hr>
                         <div id="calendar"></div>
                     </div>
-                </div>
+                </div> --}}
                 <div class="row mb-2">
                         <div class="col-md-3">
                             <h5 class="hk-sec-title">{{ $title_header_table }}</h5>
@@ -64,8 +77,8 @@
                             <!-- ------ -->
                             <span class="form-inline pull-right">
                                 <!-- เงื่อนไขการค้นหา -->
-                                @php 
-                                
+                                @php
+
                                     if(isset($checkteam_sales)){
                                         $checkteam_sales = $checkteam_sales;
                                     }else{
@@ -89,7 +102,7 @@
                                     }
 
                                 @endphp
-                                
+
                                 <form action="{{ url($action_search) }}" method="post">
                                 @csrf
                                 <span id="selectdate" >
@@ -115,10 +128,10 @@
                                             @endif
                                         @endforeach
                                     </select>
-                                    <input type="date" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" 
+                                    <input type="date" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;"
                                     id="selectdateFrom" name="selectdateFrom" value="{{ $checkdateFrom }}" />
 
-                                    ถึง <input type="date" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" 
+                                    ถึง <input type="date" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;"
                                     id="selectdateTo" name="selectdateTo" value="{{ $checkdateTo }}" />
 
                                     <button style="margin-left:5px; margin-right:5px;" class="btn btn-success btn-sm" id="submit_request">ค้นหา</button>
@@ -154,13 +167,13 @@
                                     <tr>
                                         <td>{{ ++$key }}</td>
                                         <td>
-                                            @php 
+                                            @php
                                                 list($assign_date, $assign_time) = explode(' ',$assignments->assign_request_date)
                                             @endphp
                                             {{ $assign_date }}
                                         </td>
                                         <td>
-                                            @php 
+                                            @php
                                                 list($assign_approve_date, $assign_approve_time) = explode(' ',$assignments->assign_approve_date)
                                             @endphp
                                             {{ $assign_approve_date }}
@@ -174,7 +187,7 @@
                                         <td>{{ $assignments->assign_title }}</td>
                                         <td><td>{{ $assignments->api_customers_title }} {{ $assignments->api_customers_name }}</td></td>
                                         <td>
-                                            @php 
+                                            @php
                                                 $status = "";
                                                 switch($assignments->assign_status){
                                                     case "1" : $status = '<span class="badge badge-soft-success" style="font-size: 12px;">Approval</span>';
@@ -193,14 +206,14 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-icon btn-info btn-link btn_asssign_show" 
+                                            <button type="button" class="btn btn-icon btn-info btn-link btn_asssign_show"
                                                 value="{{ $assignments->id }}">
                                                 <i data-feather="file-text"></i>
                                             </button>
                                         </td>
                                     </tr>
                                     @endforeach
-                                    
+
                                 </tbody>
                             </table>
                         </div>
@@ -248,11 +261,11 @@
                 $('#header_approved_for_comment').text(data['dataassign'].masassign_title);
                 $('#get_assign_work_date_comment').text(data['dataassign'].assign_work_date);
                 $('#header_approved_for_comment').text(data['dataassign'].masassign_title);
-  
+
                 $('#div_assign_status').append('<span>การอนุมัติ : </span>'+div_assign_status);
 
                 $.each(data['comment'], function(key, value){
-                    
+
                     $('#div_comment').append('<div>Comment by: '+value.user_comment+' Date: '+value.created_at+'</div>');
                     $('#div_comment').append('<div class="alert alert-primary py-20" role="alert">'+value.assign_comment_detail+'</div>');
                 });
@@ -260,7 +273,7 @@
                 $('#ApprovalComment').modal('toggle');
             }
         });
-    
+
     });
 
 </script>
