@@ -46,15 +46,15 @@
                             <span class="form-inline pull-right pull-sm-center">
                                 <form action="{{ url('head/search_month_add-assignment') }}" method="post" enctype="multipart/form-data">
                                     @csrf
-                                <span id="selectdate">
+                                    <span id="selectdate">
 
-                                    เดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateFrom" name="fromMonth"/>
+                                        เดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateFrom" name="fromMonth"/>
 
-                                    ถึงเดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name="toMonth"/>
+                                        ถึงเดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name="toMonth"/>
 
-                                <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm">ค้นหา</button>
-                                </span>
-                            </form>
+                                    <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm">ค้นหา</button>
+                                    </span>
+                                </form>
                             </span>
                             <!-- ------ -->
                         </div>
