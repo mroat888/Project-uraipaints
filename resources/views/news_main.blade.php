@@ -25,6 +25,12 @@
                                     }else{
                                         $search_data = "";
                                     }
+
+                                    if(isset($search_tag)){
+                                        $search_tag = $search_tag;
+                                    }else{
+                                        $search_tag = "";
+                                    }
                                 @endphp
                                 ปี/เดือน : <input type="month" id="selectdateFrom" name="selectdateFrom"
                                 value="{{ $search_data }}" class="form-control form-control-sm"
@@ -32,15 +38,10 @@
                                 <select name="tag" id="" class="form-control form-control-sm">
                                     @php
                                         $tags = App\MasterNews::orderBy('id', 'desc')->get();
-                                        if(isset($search_tag)){
-                                            $search_tag = $search_tag;
-                                        }else{
-                                            $search_tag = "";
-                                        }
                                     @endphp
                                     <option value="">เลือกป้ายกำกับ</option>
                                     @foreach ($tags as $value)
-                                        @if($search_tag == $value)
+                                        @if($search_tag == $value->id)
                                             <option value="{{$value->id}}" selected>{{$value->name_tag}}</option>
                                         @else
                                             <option value="{{$value->id}}">{{$value->name_tag}}</option>
