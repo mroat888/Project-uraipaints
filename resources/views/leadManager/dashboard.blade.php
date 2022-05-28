@@ -513,7 +513,7 @@
                                                     </div>
                                                     <div class="col-6 col-md-5 pdr-0" style="text-align:right;">
                                                         <span style="font-weight: bold; font-size: 16px;">
-                                                            @if (!is_null($res_api["data"][0]["Responsibility"]))
+                                                            @if (isset($res_api["data"][0]["Responsibility"]))
                                                                 {{ number_format($res_api["data"][0]["Responsibility"][0]["ActiveTotal"]) }} ราย
                                                             @else
                                                                 - ราย

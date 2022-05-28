@@ -5,18 +5,26 @@
             <div class="hk-pg-header mb-10" style="margin-top: 30px;">
                 <div class="col-sm-12 col-md-12">
                     <span class="form-inline pull-right pull-sm-center">
-                        @if (Auth::user()->status == 1)
-                        <form action="{{ url('search_promotion') }}" method="post" enctype="multipart/form-data">
-                            @elseif (Auth::user()->status == 2)
-                            <form action="{{ url('lead/search_promotion') }}" method="post" enctype="multipart/form-data">
-                            @elseif (Auth::user()->status == 3)
-                            <form action="{{ url('head/search_promotion') }}" method="post" enctype="multipart/form-data">
-                            @endif
-
+                        @php 
+                            switch(Auth::user()->status){
+                                case 1 : $action_search = "search_promotion";
+                                    break;
+                                case 2 : $action_search = "lead/search_promotion";
+                                    break;
+                                case 3 : $action_search = "head/search_promotion";
+                                    break;
+                            }
+                            if(isset($search_data)){
+                                $search_data = $search_data;
+                            }else{
+                                $search_data = "";
+                            }
+                        @endphp
+                        <form action="{{ url($action_search) }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <span id="selectdate">
                                 ปี/เดือน : <input type="month" id="selectdateFrom" name="selectdateFrom"
-                                value="" class="form-control form-control-sm"
+                                value="{{ $search_data }}" class="form-control form-control-sm"
                                 style="margin-left:10px; margin-right:10px;"/>
                                 <button style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm" id="submit_request">ค้นหา</button>
                             </span>
