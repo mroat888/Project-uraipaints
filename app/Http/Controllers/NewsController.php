@@ -105,60 +105,80 @@ class NewsController extends Controller
 
     public function search_news(Request $request)
     {
-        // return $request->selectdateFrom;
-        if ($request->tag) {
-            $list_news = News::where('status', "N")
-            ->where('news_date', 'LIKE', $request->selectdateFrom.'%')
-            ->where('news_tags', 'LIKE', '%'.$request->tag.'%')
-            ->orderBy('id', 'desc')->paginate(10);
-        }else{
-            $list_news = News::where('status', "N")
-            ->where('news_date', 'LIKE', $request->selectdateFrom.'%')
-            ->orderBy('id', 'desc')->paginate(10);
+        // dd($request);
+        $list_news = News::where('status', "N");
+
+        if(!is_null($request->selectdateFrom)){
+            $list_news = $list_news->where('news_date', 'LIKE', $request->selectdateFrom.'%');
+            $data['search_data'] = $request->selectdateFrom;
         }
 
+        if (!is_null($request->tag)) {
+            $list_news = $list_news->where('news_tags', 'LIKE', '%'.$request->tag.'%');
+            $data['search_tag'] = $request->tag;
+        }
 
-        return view('saleman.news', compact('list_news'));
+        $list_news = $list_news->orderBy('id', 'desc')
+            ->paginate(10);
+
+        $data['list_news'] = $list_news;
+
+        switch (Auth::user()->status){
+            case 1 :    return view('saleman.news', $data);  
+                break;
+            case 2 :    return view('leadManager.news', $data);
+                break;
+            case 3 :    return view('headManager.news', $data);
+                break;
+        }
 
     }
 
-    public function lead_search_news(Request $request)
-    {
-        // return $request->selectdateFrom;
-        if ($request->tag) {
-            $list_news = News::where('status', "N")
-            ->where('news_date', 'LIKE', $request->selectdateFrom.'%')
-            ->where('news_tags', 'LIKE', '%'.$request->tag.'%')
-            ->orderBy('id', 'desc')->paginate(10);
-        }else{
-            $list_news = News::where('status', "N")
-            ->where('news_date', 'LIKE', $request->selectdateFrom.'%')
-            ->orderBy('id', 'desc')->paginate(10);
-        }
+    /*----------------------------------------------------------------
+            OAT คอมเม้นต์ ใช้งานร่วมกันที่ function search_news ด้านบน
+    -----------------------------------------------------------------*/
+
+    // public function lead_search_news(Request $request)
+    // {
+    //     // return $request->selectdateFrom;
+    //     if ($request->tag) {
+    //         $list_news = News::where('status', "N")
+    //         ->where('news_date', 'LIKE', $request->selectdateFrom.'%')
+    //         ->where('news_tags', 'LIKE', '%'.$request->tag.'%')
+    //         ->orderBy('id', 'desc')->paginate(10);
+    //     }else{
+    //         $list_news = News::where('status', "N")
+    //         ->where('news_date', 'LIKE', $request->selectdateFrom.'%')
+    //         ->orderBy('id', 'desc')->paginate(10);
+    //     }
 
 
-        return view('leadManager.news', compact('list_news'));
+    //     return view('leadManager.news', compact('list_news'));
 
-    }
+    // }
 
-    public function head_search_news(Request $request)
-    {
-        // return $request->selectdateFrom;
-        if ($request->tag) {
-            $list_news = News::where('status', "N")
-            ->where('news_date', 'LIKE', $request->selectdateFrom.'%')
-            ->where('news_tags', 'LIKE', '%'.$request->tag.'%')
-            ->orderBy('id', 'desc')->paginate(10);
-        }else{
-            $list_news = News::where('status', "N")
-            ->where('news_date', 'LIKE', $request->selectdateFrom.'%')
-            ->orderBy('id', 'desc')->paginate(10);
-        }
+    // public function head_search_news(Request $request)
+    // {
+    //     // return $request->selectdateFrom;
+    //     if ($request->tag) {
+    //         $list_news = News::where('status', "N")
+    //         ->where('news_date', 'LIKE', $request->selectdateFrom.'%')
+    //         ->where('news_tags', 'LIKE', '%'.$request->tag.'%')
+    //         ->orderBy('id', 'desc')->paginate(10);
+    //     }else{
+    //         $list_news = News::where('status', "N")
+    //         ->where('news_date', 'LIKE', $request->selectdateFrom.'%')
+    //         ->orderBy('id', 'desc')->paginate(10);
+    //     }
 
 
-        return view('headManager.news', compact('list_news'));
+    //     return view('headManager.news', compact('list_news'));
 
-    }
+    // }
+
+    /*---------------------------------------------------------
+            จบ OAT คอมเม้นต์ ใช้งานร่วมกัน function search_news
+    -----------------------------------------------------------*/
 
     public function store(Request $request)
     {

@@ -25,9 +25,10 @@
 
     </div>
     <!-- /Container -->
+    
+@endsection
 
 @section('footer')
     @include('layouts.footer')
 @endsection
 
-@endsection
