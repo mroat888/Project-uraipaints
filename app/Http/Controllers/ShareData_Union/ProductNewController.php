@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\ShareData_HeadManager;
+namespace App\Http\Controllers\ShareData_Union;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -11,7 +11,6 @@ use App\Http\Controllers\Api\ApiController;
 
 class ProductNewController extends Controller
 {
-
     public function __construct(){
         $this->api_token = new ApiController();
     }
@@ -21,11 +20,27 @@ class ProductNewController extends Controller
         // $year_now = date("Y");
         $year_now = "2021";
         $api_token = $this->api_token->apiToken();
-        $patch_search = "campaignpromotes/*/sellertargets";
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$patch_search,[
-            'years' => $year_now, 
-            'saleheader_id' => Auth::user()->api_identify,
-        ]);
+
+        switch  (Auth::user()->status){
+            case 2 :    $patch_search = "campaignpromotes/*/sellertargets"; //-- Lead
+                        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$patch_search,[
+                            'years' => $year_now, 
+                            'saleleader_id' => Auth::user()->api_identify,
+                        ]);
+                break;
+            case 3 :    $patch_search = "campaignpromotes/*/sellertargets"; //-- Head
+                        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$patch_search,[
+                            'years' => $year_now, 
+                            'saleheader_id' => Auth::user()->api_identify,
+                        ]);
+                break;
+            case 4 :    $patch_search = "campaignpromotes/*/sellertargets"; //-- Admin
+                        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$patch_search,[
+                            'years' => $year_now, 
+                        ]);
+                break;
+        }
+
         $res_api = $response->json();
 
         $campaign_api = array();
@@ -127,22 +142,17 @@ class ProductNewController extends Controller
 
       // dd($data['campaign_api'], $data['campaign_api_target']);
 
-        return view('shareData_headManager.report_product_new', $data);
-    }
+      switch  (Auth::user()->status){
+        case 2 :    $return = "shareData_leadManager.report_product_new"; //-- Lead
+                    return view('shareData_leadManager.report_product_new', $data);
+            break;
+        case 3 :    $return = "shareData_headManager.report_product_new"; //-- Head
+                    return view('shareData_headManager.report_product_new', $data);
+            break;
+        case 4 :    $return = "shareData_admin.report_product_new"; //-- Admin
+                    return view('shareData_admin.report_product_new', $data);
+            break;
+        }
 
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

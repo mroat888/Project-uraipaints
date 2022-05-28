@@ -273,7 +273,8 @@ Route::post('leadManage/data_name_store/search', 'ShareData_LeadManager\CheckSto
 Route::get('leadManage/data_name_store/detail/{id}', 'ShareData_LeadManager\CheckStoreController@show');
 Route::get('leadManage/data_search_product', 'ShareData_LeadManager\SearchroductController@index');
 Route::post('leadManage/data_search_product/search', 'ShareData_LeadManager\SearchroductController@search');
-Route::get('leadManage/data_report_product-new', 'ShareData_LeadManager\ProductNewController@index');
+// Route::get('leadManage/data_report_product-new', 'ShareData_LeadManager\ProductNewController@index'); //-- OAT เปลี่ยนไปใช้อันล่าง
+Route::get('leadManage/data_report_product-new', 'ShareData_Union\ProductNewController@index');
 Route::get('leadManage/data_report_full-year', 'ShareData_LeadManager\ReportFullYearController@index');
 Route::post('leadManage/data_report_full-year/search', 'ShareData_LeadManager\ReportFullYearController@search');
 Route::get('leadManage/data_report_historical-year', 'ShareData_LeadManager\ReportHistoricalYearController@index');
@@ -387,7 +388,8 @@ Route::post('headManage/data_name_store/search', 'ShareData_HeadManager\CheckSto
 Route::get('headManage/data_name_store/detail/{id}', 'ShareData_HeadManager\CheckStoreController@show');
 Route::get('headManage/data_search_product', 'ShareData_HeadManager\SearchroductController@index');
 Route::post('headManage/data_search_product/search', 'ShareData_HeadManager\SearchroductController@search');
-Route::get('headManage/data_report_product-new', 'ShareData_HeadManager\ProductNewController@index');
+// Route::get('headManage/data_report_product-new', 'ShareData_HeadManager\ProductNewController@index'); //-- OAT เปลี่ยนเป็นด้านล่าง
+Route::get('headManage/data_report_product-new', 'ShareData_Union\ProductNewController@index');
 Route::get('headManage/data_report_full-year', 'ShareData_HeadManager\ReportFullYearController@index');
 Route::post('headManage/data_report_full-year/search', 'ShareData_HeadManager\ReportFullYearController@search');
 Route::get('headManage/data_report_historical-year', 'ShareData_HeadManager\ReportHistoricalYearController@index');
@@ -625,7 +627,8 @@ Route::post('admin/data_name_store/search', 'ShareData_Admin\CheckStoreControlle
 Route::get('admin/data_name_store/detail/{id}', 'ShareData_Admin\CheckStoreController@show');
 Route::get('admin/data_search_product', 'ShareData_Admin\SearchroductController@index');
 Route::post('admin/data_search_product/search', 'ShareData_Admin\SearchroductController@search');
-Route::get('admin/data_report_product-new', 'ShareData_Admin\ProductNewController@index');
+// Route::get('admin/data_report_product-new', 'ShareData_Admin\ProductNewController@index'); //-- OAT เปลี่ยนมาใช้อันล่าง
+Route::get('admin/data_report_product-new', 'ShareData_Union\ProductNewController@index');
 Route::post('admin/data_report_product-new/search', 'ShareData_Admin\ProductNewController@search');
 Route::get('admin/data_report_product-new/show/{id}', 'ShareData_Admin\ProductNewController@show');
 Route::get('admin/data_report_full-year', 'ShareData_Admin\ReportFullYearController@index');
