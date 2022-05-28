@@ -680,6 +680,8 @@ Route::get('assignments_commentshow/{id}', 'UnionAssignmentController@commentsho
 Route::get('assignment_result_get/{id}', 'UnionAssignmentController@assignment_result_get');
 Route::post('assignment_Result', 'UnionAssignmentController@saleplan_result');
 
+Route::post('manager/data_report_product-new/search', 'ShareData_Union\ProductNewController@search');
+
 
 
 //-- Salller

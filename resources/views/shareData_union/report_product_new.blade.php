@@ -27,13 +27,32 @@
                         </div>
                         <div class="col-sm-12 col-md-6">
                             <!-- ------ -->
-                            <span class="form-inline pull-right">
-                                <!-- <span class="mr-5">เลือก</span> -->
-                                <!-- <input type="month" name="" id="" class="form-control"> -->
-                                {{-- <button class="btn btn-primary btn-sm ml-10 mr-15"><i data-feather="printer"></i> พิมพ์</button> --}}
-                                </span>
+                            <form action="{{ url('manager/data_report_product-new/search') }}" method="post" enctype="multipart/form-data">
+                                @csrf
+                                <span class="form-inline pull-right pull-sm-center">
+                                    <select name="year_search" id="year_form_search" class="form-control" style="margin-left:5px; margin-right:5px;">
+                                        @php
+                                            $year_now = date("Y");
+                                            $year_back = $year_now - 1;
+                                            $year_form_search = array($year_now, $year_back);
+                                        @endphp
+                                        @if(isset($year_form_search))
+                                            @foreach($year_form_search as $value_year)
+                                                @php 
+                                                    $year_thai = $value_year+543;
+                                                @endphp
+                                                @if((isset($year_search)) && ($year_search == $value_year))
+                                                    <option value="{{ $value_year }}" selected>{{ $year_thai }}</option>
+                                                @else
+                                                    <option value="{{ $value_year }}">{{ $year_thai }}</option>
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    </select>
 
-                            </span>
+                                    <button style="margin-left:5px; margin-right:5px;" class="btn btn-green">ค้นหา</button>
+                                </span>
+                            </form>
                             <!-- ------ -->
                         </div>
                     </div>

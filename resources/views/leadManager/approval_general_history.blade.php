@@ -26,9 +26,8 @@
 
     <!-- Title -->
     <div class="hk-pg-header mb-10">
-        <div>
-            <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                data-feather="file-text"></i></span></span>{{ $title_header }}</h4>
+        <div class="topichead-bgred"><i data-feather="file-text"></i> {{ $title_header }}</div>
+        <div class="content-right d-flex">
         </div>
     </div>
     <!-- /Title -->
@@ -41,10 +40,10 @@
                     <div class="col-sm">
                         <ul class="nav nav-pills nav-fill bg-light pa-10 mb-40" role="tablist">
                             <li class="nav-item">
-                                <a href="{{ url($url_approvalgeneral) }}" class="nav-link" style="background: rgb(5, 90, 97); color:rgb(255, 255, 255);">รายการรออนุมัติ</a>
+                                <a href="{{ url($url_approvalgeneral) }}" class="nav-link" style="color: rgb(22, 21, 21);">รายการรออนุมัติ</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ url($url_approvalgeneral_history) }}" class="nav-link" style="color: rgb(22, 21, 21);">ประวัติการอนุมัติ</a>
+                                <a href="{{ url($url_approvalgeneral_history) }}" class="nav-link" style="background: rgb(5, 90, 97); color:rgb(255, 255, 255);">ประวัติการอนุมัติ</a>
                             </li>
                         </ul>
                     </div>
@@ -168,13 +167,19 @@
                                         <td>{{ ++$key }}</td>
                                         <td>
                                             @php
-                                                list($assign_date, $assign_time) = explode(' ',$assignments->assign_request_date)
-                                            @endphp
+                                                list($assign_date, $assign_time) = explode(' ',$assignments->assign_request_date);
+                                                list($assign_year,$assign_month,$assign_day) = explode("-", $assign_date);
+                                                $assign_year_thai = $assign_year+543;
+                                                $assign_date = $assign_day."/".$assign_month."/".$assign_year_thai;
+                                             @endphp
                                             {{ $assign_date }}
                                         </td>
                                         <td>
                                             @php
-                                                list($assign_approve_date, $assign_approve_time) = explode(' ',$assignments->assign_approve_date)
+                                                list($assign_approve_date, $assign_approve_time) = explode(' ',$assignments->assign_approve_date);
+                                               list($assign_approve_year,$assign_approve_month,$assign_approve_day) = explode("-", $assign_approve_date);
+                                                $assign_approve__year_thai = $assign_approve_year+543;
+                                                $assign_approve_date = $assign_approve_day."/".$assign_approve_month."/".$assign_approve__year_thai;
                                             @endphp
                                             {{ $assign_approve_date }}
                                         </td>
@@ -185,7 +190,9 @@
                                             @endif
                                         </td>
                                         <td>{{ $assignments->assign_title }}</td>
-                                        <td><td>{{ $assignments->api_customers_title }} {{ $assignments->api_customers_name }}</td></td>
+                                        <td>
+                                            {{ $assignments->api_customers_title }} {{ $assignments->api_customers_name }}
+                                        </td>
                                         <td>
                                             @php
                                                 $status = "";
@@ -247,13 +254,13 @@
                 $('#div_assign_status').children().remove().end();
                 console.log(data['dataassign']);
                 switch(data['dataassign'].assign_status) {
-                    case 0 : div_assign_status = '<span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>';
+                    case 0 : $('#div_assign_status').append('<span>การอนุมัติ : </span> <span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>');
                         break;
-                    case 1 : div_assign_status = '<span class="badge badge-soft-success" style="font-size: 12px;">Approval</span>';
+                    case 1 : $('#div_assign_status').append('<span>การอนุมัติ : </span> <span class="badge badge-soft-success" style="font-size: 12px;">Approval</span>');
                         break;
-                    case 2 : div_assign_status = '<span class="badge badge-soft-secondary" style="font-size: 12px;">Reject</span>';
+                    case 2 : $('#div_assign_status').append('<span>การอนุมัติ : </span> <span class="badge badge-soft-secondary" style="font-size: 12px;">Reject</span>');
                         break;
-                    default: $div_assign_status = '<span class="badge badge-soft-warning" style="font-size: 12px;">ไม่มี</span>'
+                    default:$('#div_assign_status').append('<span>การอนุมัติ : </span> <span class="badge badge-soft-warning" style="font-size: 12px;">ไม่มี</span>');
                 }
 
                 $('#assign_detail_comment').text(data['dataassign'].assign_detail);
@@ -262,7 +269,7 @@
                 $('#get_assign_work_date_comment').text(data['dataassign'].assign_work_date);
                 $('#header_approved_for_comment').text(data['dataassign'].masassign_title);
 
-                $('#div_assign_status').append('<span>การอนุมัติ : </span>'+div_assign_status);
+                // $('#div_assign_status').append('<span>การอนุมัติ : </span>'+div_assign_status);
 
                 $.each(data['comment'], function(key, value){
 
