@@ -220,6 +220,11 @@
                                                         @endif
 
                                                         </tbody>
+                                                        <tr class="tb_camp" rel="{{ $key }}">
+                                                            <td colspan="8" style="text-align:center;">
+                                                                <button type="button" class="btn btn-green btn-sm btn-block">ย่อ</button>
+                                                            </td>
+                                                        </tr>
                                                     </table>
                                                 </div>
 
