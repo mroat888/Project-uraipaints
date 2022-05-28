@@ -258,7 +258,7 @@ License: You must have a valid license purchased only from themeforest to legall
                                         <li class="nav-item {{ (request()->is('approvalsaleplan')) ? 'btn2' : '' }}">
                                             <a class="nav-link link-with-badge" href="{{ url('/approvalsaleplan') }}">
                                                 <i class="ion ion-md-today" style="color: #044067;"></i>
-                                                <span class="nav-link-text">อนุมัติแผนประจำเดือน</span>
+                                                <span class="nav-link-text">อนุมัติ Sale Plan</span>
                                                 <span class="badge badge-danger badge-pill">{{$monthly_plan}}</span>
                                             </a>
                                         </li>
@@ -402,7 +402,7 @@ License: You must have a valid license purchased only from themeforest to legall
                                 href="javascript:void(0);" data-toggle="collapse" data-target="#charts_drp2">
                                 <i class="ion ion-md-create" style="color: #044067;"></i>
                                 <span class="nav-link-text">ขออนุมัติ และสั่งงาน</span>
-                                <span class="badge badge-danger badge-pill ml-2">{{$monthly_plan + $request_approval + $customers }}</span>
+                                <span class="badge badge-danger badge-pill ml-2">{{$monthly_plan + $request_approval}}</span>
                             </a>
                             <ul id="charts_drp2" class="nav flex-column collapse collapse-level-1">
                                 <li class="nav-item">

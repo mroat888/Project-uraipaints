@@ -43,32 +43,39 @@
                     <section class="hk-sec-wrapper">
                         <div class="row mb-2">
                             <div class="col-sm-12 col-md-6">
-                                @php
+                                @php 
                                     if(isset($search_month) && isset($search_year)){
                                         $search_date = $search_year.'-'.$search_month;
-                                        $search_date = thaidate('F Y', $search_date);
+                                        $search_date_thai = thaidate('F Y', $search_date);
                                     }else{
                                         $search_date = "";
+                                        $search_date_thai = "";
                                     }
                                 @endphp
-                                <h5 class="hk-sec-title">รายการแผนประจำเดือน {{ $search_date }}</h5>
+                                <h5 class="hk-sec-title">รายการแผนประจำเดือน {{ $search_date_thai }}</h5>
                             </div>
                             <div class="col-sm-12 col-md-6">
                                 <!-- ------ -->
                                 <span class="form-inline pull-right">
-                                    <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เงื่อนไขค้นหา</button>
+                                    <!-- <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เงื่อนไขค้นหา</button> -->
                                     <form action="{{ url('admin/approvalsaleplan/search') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
-                                        <span id="selectdate" style="display:none;">
+                                        <span id="selectdate" >
                                             <select name="sel_team" class="form-select form-control form-control-sm" aria-label="Default select example">
                                                 <option value="0" selected>---เลือกทีม--</option>
                                                 @foreach($teams as $team)
-                                                    <option value="{{ $team->id }}">{{ $team->team_name }}</option>
+                                                    @if(isset($search_team) && $search_team == $team->id)
+                                                        <option value="{{ $team->id }}" selected>{{ $team->team_name }}</option>
+                                                    @else
+                                                        <option value="{{ $team->id }}">{{ $team->team_name }}</option>
+                                                    @endif
                                                 @endforeach
                                             </select>
-                                            <input type="month" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name ="selectdateTo" value="<?= date('Y-m-d'); ?>"/>
+                                            <input type="month" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" 
+                                            id="selectdateTo" name ="selectdateTo" value="{{ $search_date }}"/>
 
-                                            <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-success btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button>
+                                            <!-- <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-success btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button> -->
+                                            <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-success btn-sm" id="submit_request">ค้นหา</button>
                                         </span>
                                     </form>
                                     </span>

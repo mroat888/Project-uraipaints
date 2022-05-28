@@ -110,7 +110,16 @@
                             $users_comment = DB::table('users')->where('id', $value->created_by)->first();
                         @endphp
                         {{ $users_comment->name }}
-                        <cite title="Source Title">{{ $value->created_at }}</cite>
+                        <cite title="Source Title">
+                            @php 
+                                list($date_at, $time_at) = explode(' ', $value->created_at);
+                                list($year_at, $month_at, $day_at) = explode('-',$date_at);
+                                $year_at_thai = $year_at+543;
+
+                                $created_at = $day_at."/".$month_at."/".$year_at_thai." ".$time_at;
+                            @endphp
+                            {{ $created_at }}
+                        </cite>
                     </footer>
                     </blockquote>
                 </div>

@@ -45,6 +45,7 @@
                                             <th style="text-align:center">ยอดเป้า</th>
                                             <th style="text-align:center">ยอดเบิกเป้า</th>
                                             <th style="text-align:center">%</th>
+                                            <th style="text-align:center"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -73,10 +74,15 @@
                                             <td style="text-align:right">{{ number_format($value['TotalLimit'],2) }}</td>
                                             <td style="text-align:right">{{ number_format($value['TotalAmountSale'],2) }}</td>
                                             <td style="text-align:right">{{ number_format($persent_TotalAmountSale,2) }}</td>
+                                            <td style="text-align:center">
+                                                <a class="btn btn-icon btn-purple tb_camp" rel="{{ $key }}">
+                                                    <h4 class="btn-icon-wrap tb_camp" style="color: white;" rel="{{ $key }}"><i class="ion ion-md-pie"></i></h4>
+                                                </a>
+                                            </td>
                                         </tr>
                                         <tr class="tb_detail" rel="{{ $key }}">
                                             @if(isset($customer_campaigns))
-                                            <td colspan="7">
+                                            <td colspan="8">
                                                 <div class="row">
                                                     <div class="col-6"><h5>รายละเอียดร้านค้าทำเป้า</h5></div>
                                                     <div class="col-6" style="text-align:right;">หน่วยบาท</div>
@@ -122,7 +128,20 @@
                                                                         <td style="text-align:center"><strong>{{ number_format($sum_sub_TotalPromotion) }}</strong></td>
                                                                         <td style="text-align:center"><strong>{{ number_format($sum_sub_TotalLimit,2) }}</strong></td>
                                                                         <td style="text-align:center"><strong>{{ number_format($sum_sub_TotalAmountSale,2) }}</strong></td>
-                                                                        <td style="text-align:center"><strong>{{ number_format($persent_sub_camTotalAmountSale,2) }}</strong></td>
+                                                                        <td style="text-align:center">
+                                                                            <strong>
+                                                                                @php
+                                                                                    if($persent_sub_camTotalAmountSale > 100){
+                                                                                        $color = "color:#FF0000";
+                                                                                    }else{
+                                                                                        $color = "";
+                                                                                    }
+                                                                                @endphp
+                                                                                <span style="{{ $color }}">
+                                                                                    {{ number_format($persent_sub_camTotalAmountSale,2) }}
+                                                                                </span>
+                                                                            </strong>
+                                                                        </td>
                                                                     </tr>
                                                                     @php 
                                                                         $province_name_check = "";
@@ -160,7 +179,18 @@
                                                                 <td style="text-align:center">{{ number_format($cust_campaigns_value['TotalPromotion']) }}</td>
                                                                 <td style="text-align:right">{{ number_format($cust_campaigns_value['TotalLimit'],2) }}</td>
                                                                 <td style="text-align:right">{{ number_format($cust_campaigns_value['TotalAmountSale'],2) }}</td>
-                                                                <td style="text-align:right">{{ number_format($persent_camTotalAmountSale,2) }}</td>
+                                                                <td style="text-align:right">
+                                                                    @php
+                                                                        if($persent_camTotalAmountSale > 100){
+                                                                            $color = "color:#FF0000";
+                                                                        }else{
+                                                                            $color = "";
+                                                                        }
+                                                                    @endphp
+                                                                    <span style="{{ $color }}">
+                                                                        {{ number_format($persent_camTotalAmountSale,2) }}
+                                                                    </span>
+                                                                </td>
                                                             </tr>
                                                         @endforeach
 
@@ -172,7 +202,20 @@
                                                                 <td style="text-align:center"><strong>{{ number_format($sum_sub_TotalPromotion) }}</strong></td>
                                                                 <td style="text-align:center"><strong>{{ number_format($sum_sub_TotalLimit,2) }}</strong></td>
                                                                 <td style="text-align:center"><strong>{{ number_format($sum_sub_TotalAmountSale,2) }}</strong></td>
-                                                                <td style="text-align:center"><strong>{{ number_format($persent_sub_camTotalAmountSale,2) }}</strong></td>
+                                                                <td style="text-align:center">
+                                                                    <strong>
+                                                                        @php
+                                                                            if($persent_sub_camTotalAmountSale > 100){
+                                                                                $color = "color:#FF0000";
+                                                                            }else{
+                                                                                $color = "";
+                                                                            }
+                                                                        @endphp
+                                                                        <span style="{{ $color }}">
+                                                                            {{ number_format($persent_sub_camTotalAmountSale,2) }}
+                                                                        </span>
+                                                                    </strong>
+                                                                </td>
                                                             </tr>
                                                         @endif
 
@@ -198,6 +241,7 @@
                                             <td style="font-weight: bold; text-align:right">{{ number_format($sum_TotalLimit,2) }}</td>
                                             <td style="font-weight: bold; text-align:right">{{ number_format($sum_TotalAmountSale,2) }}</td>
                                             <td style="font-weight: bold; text-align:right">{{ number_format($sum_persent_TotalAmountSale,2) }}</td>
+                                            <td></td>
                                         </tr>
                                     </tfoot>
                                 </table>

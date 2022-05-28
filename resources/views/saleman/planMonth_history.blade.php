@@ -132,7 +132,7 @@
                     <section class="hk-sec-wrapper">
                         <div class="hk-pg-header mb-10">
                             <div>
-                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">แผนงานประจำเดือน <?php echo thaidate('F Y', $monthly_plan_history->month_date); ?></h6>
+                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">Sale Plan (นำเสนอสินค้า)</h6>
                             </div>
                         </div>
                         <div class="row">
@@ -147,15 +147,22 @@
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
-                                                    <th>เรื่อง</th>
+                                                    <th>วัตถุประสงค์</th>
                                                     <th>ลูกค้า</th>
                                                     <th>อำเภอ,จังหวัด</th>
+                                                    <th style="text-align:center">จำนวนรายการนำเสนอ</th>
+                                                    <th style="text-align:center">การอนุมัติ</th>
+                                                    <th style="text-align:center">ความคิดเห็น</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @if(!is_null($list_saleplan))
+                                                @php 
+                                                    $tag_array = array();
+                                                @endphp
                                                 @foreach ($list_saleplan as $key => $value)
                                                     @php
+                                                        $tag_array = "";
                                                         $shop_name = "";
                                                         $shop_address = "";
                                                         foreach($customer_api as $key_api => $value_api){
@@ -167,7 +174,7 @@
                                                     @endphp
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
-                                                        <td>{!! Str::limit($value->sale_plans_title, 20) !!}</td>
+                                                        <td>{!! Str::limit($value->masobj_title, 30) !!}</td>
                                                         <td>
                                                             @if($shop_name != "")
                                                                 {!! Str::limit($shop_name,20) !!}
@@ -176,6 +183,32 @@
                                                         <td>
                                                             @if($shop_address != "")
                                                                 {{ $shop_address }}
+                                                            @endif
+                                                        </td>
+                                                        <td style="text-align:center">
+                                                            @php 
+                                                                $tag_array = explode(",", $value->sale_plans_tags);
+                                                            @endphp
+                                                            {{ count($tag_array) }}
+                                                        </td>
+                                                        <td style="text-align:center">
+                                                            @if ($value->sale_plans_status == 1)
+                                                                <span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span></td>
+                                                            @elseif ($value->sale_plans_status == 2)
+                                                                <span class="badge badge-soft-success" style="font-size: 12px;">Approve</span></td>
+                                                            @elseif ($value->sale_plans_status == 3)
+                                                                <span class="badge badge-soft-danger" style="font-size: 12px;">Reject</span></td>
+                                                            @endif
+                                                        </td>
+                                                        <td style="text-align:center">
+                                                            @if ($value->saleplan_id)
+                                                            <button onclick="approval_comment({{ $value->id }})"
+                                                                class="btn btn-icon btn-violet" data-toggle="modal"
+                                                                data-target="#ApprovalComment">
+                                                                <span class="btn-icon-wrap"><i data-feather="message-square"></i></span>
+                                                            </button>
+                                                            @else
+                                                                -
                                                             @endif
                                                         </td>
                                                     </tr>
@@ -193,7 +226,7 @@
                     <section class="hk-sec-wrapper">
                         <div class="hk-pg-header mb-10">
                             <div>
-                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">พบลูกค้าใหม่</h6>
+                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">Sale Plan (เปิดลูกค้าใหม่)</h6>
                             </div>
                         </div>
                         <div class="row">
@@ -204,26 +237,42 @@
                                         </div>
                                     </div>
                                     <div class="table-responsive col-md-12">
-                                        <table id="datable_1_2" class="table table-hover">
+                                        <table id="datable_2" class="table table-hover">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
                                                     <th>ชื่อร้าน</th>
                                                     <th>อำเภอ,จังหวัด</th>
                                                     <th>วัตถุประสงค์</th>
+                                                    <th style="text-align:center;">ความคิดเห็น</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @if(!is_null($customer_new))
-                                                @foreach ($customer_new as $key => $value)
-
-                                                    <tr>
-                                                        <td>{{ $key + 1 }}</td>
-                                                        <td>{{ $value->shop_name }}</td>
-                                                        <td>{{ $value->AMPHUR_NAME }}, {{ $value->PROVINCE_NAME }}</td>
-                                                        <td>{{$value->cust_name}}</td>
-                                                    </tr>
-                                                @endforeach
+                                                    @foreach ($customer_new as $key => $value)
+                                                        <tr>
+                                                            <td>{{ $key + 1 }}</td>
+                                                            <td>{{ $value->shop_name }}</td>
+                                                            <td>{{ $value->AMPHUR_NAME }}, {{ $value->PROVINCE_NAME }}</td>
+                                                            <td>{{$value->cust_name}}</td>
+                                                            <td style="text-align:center;"> 
+                                                                @php
+                                                                    $count_new = DB::table('customer_shop_comments')
+                                                                    ->where('customer_shops_saleplan_id', $value->id)
+                                                                    ->count();
+                                                                @endphp
+                                                                @if ($count_new > 0)
+                                                                <button onclick="custnew_comment({{ $value->id }})"
+                                                                    class="btn btn-icon btn-violet" data-toggle="modal"
+                                                                    data-target="#CustNewComment">
+                                                                    <span class="btn-icon-wrap"><i data-feather="message-square"></i></span>
+                                                                </button>
+                                                                @else
+                                                                    -
+                                                                @endif
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
                                                 @endif
                                             </tbody>
                                         </table>
@@ -248,13 +297,14 @@
                                         </div>
                                     </div>
                                     <div class="table-responsive col-md-12">
-                                        <table id="datable_1_3" class="table table-hover">
+                                        <table id="datable_2_1" class="table table-hover">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
                                                     <th>ชื่อร้าน</th>
                                                     <th>อำเภอ,จังหวัด</th>
                                                     <th>วันสำคัญ</th>
+                                                    <th style="text-align:center">วันที่ Check-in</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -267,6 +317,23 @@
                                                     <td>{{ $customer_visit_api[$key]['shop_name'] }}</td>
                                                     <td>{{ $customer_visit_api[$key]['shop_address'] }}</td>
                                                     <td>{{ $customer_visit_api[$key]['focusdate'] }}</td>
+                                                    <td style="text-align:center">
+                                                        @php 
+                                                            $cust_visits_result = DB::table('customer_visit_results')
+                                                                ->where('customer_visit_id', $value['id'])
+                                                                ->first();
+                                                            $check_id_date = "-";
+                                                            if(!is_null($cust_visits_result)){
+                                                                if(!is_null( $cust_visits_result->cust_visit_checkin_date)){
+                                                                    list($chk_date, $chk_time) = explode(" ",$cust_visits_result->cust_visit_checkin_date);
+                                                                    list($chk_year, $chk_month, $chk_day) = explode("-", $chk_date);
+                                                                    $chk_year_thai = $chk_year+543;
+                                                                    $check_id_date = $chk_day."/".$chk_month."/".$chk_year_thai." ".$chk_time;
+                                                                }
+                                                            }
+                                                        @endphp
+                                                        {{ $check_id_date }}
+                                                    </td>
                                                 </tr>
                                                 @endforeach
 
@@ -350,7 +417,10 @@
                     //     $('#div_comment').append('<div class="alert alert-primary py-20" role="alert">'+value.saleplan_comment_detail+'</div>');
                     // });
                     $.each(data, function(key, value){
-                        $('#div_comment').append('<div>Comment by: '+data[key].user_comment+' Date: '+data[key].created_at+'</div>');
+                        let date_array = data[key].created_at.split("-");
+                        let year_thai = parseInt(date_array[0]) +543;
+                        let created_at = date_array[2]+"/"+date_array[1]+"/"+year_thai;
+                        $('#div_comment').append('<div>Comment by: '+data[key].user_comment+' วันที่ : '+created_at+'</div>');
                         $('#div_comment').append('<div class="alert alert-primary py-20" role="alert">'+data[key].saleplan_comment_detail+'</div>');
                     });
 
@@ -369,7 +439,10 @@
                     $('#div_cust_new_comment').children().remove().end();
                     console.log(data);
                     $.each(data, function(key, value){
-                        $('#div_cust_new_comment').append('<div>Comment by: '+data[key].user_comment+' Date: '+data[key].created_at+'</div>');
+                        let date_array = data[key].created_at.split("-");
+                        let year_thai = parseInt(date_array[0]) +543;
+                        let created_at = date_array[2]+"/"+date_array[1]+"/"+year_thai;
+                        $('#div_cust_new_comment').append('<div>Comment by: '+data[key].user_comment+' วันที่ : '+created_at+'</div>');
                         $('#div_cust_new_comment').append('<div class="alert alert-primary py-20" role="alert">'+data[key].customer_comment_detail+'</div>');
                     });
 
@@ -377,7 +450,6 @@
                 }
             });
         }
-
     </script>
 
 

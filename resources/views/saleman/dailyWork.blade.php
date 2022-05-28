@@ -993,8 +993,9 @@
                     // console.log(data);
 
                     $.each(data, function(key, value){
-                        let com_date = data[key].created_at.split("-");
-                        let created_at = com_date[2]+"/"+com_date[1]+"/"+com_date[0];
+                        let date_array = data[key].created_at.split("-");
+                        let year_thai = parseInt(date_array[0]) +543;
+                        let created_at = date_array[2]+"/"+date_array[1]+"/"+year_thai;
                         $('#div_comment').append('<div>Comment by: '+data[key].user_comment+' Date: '+created_at+'</div>');
                         $('#div_comment').append('<div class="alert alert-primary py-20" role="alert">'+data[key].saleplan_comment_detail+'</div>');
                     });
@@ -1014,8 +1015,9 @@
                     $('#div_cust_new_comment').children().remove().end();
                     // console.log(data);
                     $.each(data, function(key, value){
-                        let com_date = data[key].created_at.split("-");
-                        let created_at = com_date[2]+"/"+com_date[1]+"/"+com_date[0];
+                        let date_array = data[key].created_at.split("-");
+                        let year_thai = parseInt(date_array[0]) +543;
+                        let created_at = date_array[2]+"/"+date_array[1]+"/"+year_thai;
                         $('#div_cust_new_comment').append('<div>Comment by: '+data[key].user_comment+' Date: '+created_at+'</div>');
                         $('#div_cust_new_comment').append('<div class="alert alert-primary py-20" role="alert">'+data[key].customer_comment_detail+'</div>');
                     });

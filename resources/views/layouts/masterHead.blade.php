@@ -169,6 +169,61 @@ License: You must have a valid license purchased only from themeforest to legall
         </form>
         <!-- /Top Navbar -->
 
+        <?php
+
+        $auth_team_id = explode(',',Auth::user()->team_id);
+        $auth_team = array();
+        foreach($auth_team_id as $value){
+            $auth_team[] = $value;
+        }
+        
+        $monthly_plan = DB::table('monthly_plans')
+            ->join('users', 'users.id', 'monthly_plans.created_by')
+            ->where('monthly_plans.status_approve', 1)
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('users.team_id', $auth_team[$i])
+                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+                }
+            })
+            ->select(
+                'users.*',
+                'monthly_plans.*')->count();
+
+            $request_approval = DB::table('assignments')
+            ->join('users', 'assignments.created_by', '=', 'users.id')
+            ->where('assignments.assign_status', 0) // สถานะการอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน)
+            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('users.team_id', $auth_team[$i])
+                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+                }
+            })
+            ->select('assignments.created_by')
+            ->distinct()->count();
+
+            $customers = DB::table('customer_shops_saleplan')
+            ->join('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
+            ->join('users', 'customer_shops_saleplan.created_by', '=', 'users.id')
+            ->where('customer_shops.shop_status', 0)
+            ->where('customer_shops_saleplan.shop_aprove_status', 1) // ส่งขออนุมัติ
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('users.team_id', $auth_team[$i])
+                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+                }
+            })
+            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+            ->where('customer_shops_saleplan.is_monthly_plan', 'N')
+            ->select('customer_shops_saleplan.created_by as shop_created_by')
+            ->distinct()->count();
+
+        ?>
+
         <!-- Vertical Nav -->
         <nav class="hk-nav hk-nav-light">
             <a href="javascript:void(0);" id="hk_nav_close" class="hk-nav-close"><span class="feather-icon"><i
@@ -193,7 +248,9 @@ License: You must have a valid license purchased only from themeforest to legall
                                         <li class="nav-item {{ (request()->is('head/approvalsaleplan')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('head/approvalsaleplan') }}">
                                                 <i class="ion ion-md-today" style="color: #044067;"></i>
-                                                ตรวจสอบแผนประจำเดือน</a>
+                                                ให้ความเห็น Sale Plan
+                                                <span class="badge badge-danger badge-pill">{{ $monthly_plan }}</span>
+                                            </a>
                                         </li>
                                     </ul>
                                 </li>
@@ -217,7 +274,8 @@ License: You must have a valid license purchased only from themeforest to legall
                                         <li class="nav-item {{ (request()->is('head/approval-customer-except')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('head/approval-customer-except') }}">
                                                 <i class="ion ion-md-checkbox"></i>
-                                                <span class="nav-link-text">ลูกค้าใหม่</span>
+                                                <span class="nav-link-text">ลูกค้าใหม่</span> 
+                                                <span class="badge badge-danger badge-pill">{{$customers}}</span>
                                             </a>
                                         </li>
                                         <li class="nav-item {{ (request()->is('headManage/data_report_sale_compare-year')) ? 'btn2' : '' }}">
@@ -340,6 +398,7 @@ License: You must have a valid license purchased only from themeforest to legall
                                             <a class="nav-link" href="{{ url('head/approvalgeneral') }}">
                                                 <i class="ion ion-md-checkbox"></i>
                                                 <span class="nav-link-text">ให้ความเห็นขออนุมัติ</span>
+                                                <span class="badge badge-danger badge-pill">{{$request_approval}}</span>
                                             </a>
                                         </li>
                                         <li class="nav-item {{ (request()->is('head/assignment/add')) ? 'btn2' : '' }}">

@@ -3,7 +3,7 @@
 @section('content')
 
     @php 
-        $url_back = "head/approval-customer-except";
+        $url_back = "lead/approval-customer-except-history";
     @endphp
     
     @include('union.customer_lead_detail')
