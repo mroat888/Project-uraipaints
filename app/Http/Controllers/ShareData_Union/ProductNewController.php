@@ -142,16 +142,16 @@ class ProductNewController extends Controller
 
       // dd($data['campaign_api'], $data['campaign_api_target']);
 
-      switch  (Auth::user()->status){
-        case 2 :    $return = "shareData_leadManager.report_product_new"; //-- Lead
-                    return view('shareData_leadManager.report_product_new', $data);
-            break;
-        case 3 :    $return = "shareData_headManager.report_product_new"; //-- Head
-                    return view('shareData_headManager.report_product_new', $data);
-            break;
-        case 4 :    $return = "shareData_admin.report_product_new"; //-- Admin
-                    return view('shareData_admin.report_product_new', $data);
-            break;
+        switch  (Auth::user()->status){
+            case 2 :    $return = "shareData_leadManager.report_product_new"; //-- Lead
+                        return view('shareData_leadManager.report_product_new', $data);
+                break;
+            case 3 :    $return = "shareData_headManager.report_product_new"; //-- Head
+                        return view('shareData_headManager.report_product_new', $data);
+                break;
+            case 4 :    $return = "shareData_admin.report_product_new"; //-- Admin
+                        return view('shareData_admin.report_product_new', $data);
+                break;
         }
 
     }
@@ -169,18 +169,18 @@ class ProductNewController extends Controller
                             'years' => $year_now, 
                             'saleleader_id' => Auth::user()->api_identify,
                         ]);
-                break;
+            break;
             case 3 :    $patch_search = "campaignpromotes/*/sellertargets"; //-- Head
                         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$patch_search,[
                             'years' => $year_now, 
                             'saleheader_id' => Auth::user()->api_identify,
                         ]);
-                break;
+            break;
             case 4 :    $patch_search = "campaignpromotes/*/sellertargets"; //-- Admin
                         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$patch_search,[
                             'years' => $year_now, 
                         ]);
-                break;
+            break;
         }
 
         $res_api = $response->json();
@@ -285,14 +285,11 @@ class ProductNewController extends Controller
       // dd($data['campaign_api'], $data['campaign_api_target']);
 
       switch  (Auth::user()->status){
-        case 2 :    $return = "shareData_leadManager.report_product_new"; //-- Lead
-                    return view('shareData_leadManager.report_product_new', $data);
+        case 2 :    return view('shareData_leadManager.report_product_new', $data); //-- Lead
             break;
-        case 3 :    $return = "shareData_headManager.report_product_new"; //-- Head
-                    return view('shareData_headManager.report_product_new', $data);
+        case 3 :    return view('shareData_headManager.report_product_new', $data); //-- Head
             break;
-        case 4 :    $return = "shareData_admin.report_product_new"; //-- Admin
-                    return view('shareData_admin.report_product_new', $data);
+        case 4 :    return view('shareData_admin.report_product_new', $data); //-- Admin
             break;
         }
     }
