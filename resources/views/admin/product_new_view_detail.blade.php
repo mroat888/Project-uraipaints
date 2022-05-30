@@ -11,6 +11,124 @@
 </nav>
 <!-- /Breadcrumb -->
 
+<style>
+    /* .img_1 {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  /* width: 150px; */
+  /* height: 150px;  */
+
+  .curveBG {
+  background: -moz-linear-gradient(top, rgba(235, 235, 235, 0.3) 10%, #768693 90%);
+  background: -webkit-linear-gradient(top, rgba(235, 235, 235, 0.3) 10%, #768693 90%);
+  background: linear-gradient(to bottom, rgba(235, 235, 235, 0.3) 10%, #768693 90%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4debebeb', endColorstr='#768693',GradientType=0 );
+  padding: 90px 0 140px 0;
+  position: relative;
+  z-index: 0; }
+  .curveBG:before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    background-image: url(../images/product/curveBG.jpg);
+    background-repeat: no-repeat;
+    background-position: bottom center;
+    background-size: cover;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    mix-blend-mode: luminosity;
+    opacity: 0.6;
+    z-index: -1; }
+
+.gal-txt-section {
+  width: 30%;
+  position: absolute;
+  bottom: 30%; }
+  .gal-txt-section h3.BK-BG {
+    float: left;
+    font-size: 24px;
+    letter-spacing: 0.06rem;
+    padding: 5px 22px;
+    margin: 0 0 25px 0;
+    display: block; }
+  .gal-txt-section .txt-content {
+    margin-bottom: 0; }
+    .gal-txt-section .txt-content p {
+      color: #253746; }
+
+.partnerGal-slide {
+  background-color: white;
+  padding: 10px;
+  z-index: 99; }
+  .partnerGal-slide .owl-theme .owl-nav {
+    margin-top: 0; }
+    .partnerGal-slide .owl-theme .owl-nav [class*='owl-'] {
+      -webkit-transition: all .3s ease;
+      transition: all .3s ease; }
+      .partnerGal-slide .owl-theme .owl-nav [class*='owl-'].disabled:hover {
+        background-color: #D6D6D6; }
+  .partnerGal-slide .big-img.owl-theme {
+    margin-bottom: 12px; }
+    .partnerGal-slide .big-img.owl-theme .owl-prev, .partnerGal-slide .big-img.owl-theme .owl-next {
+      width: 40px;
+      height: 40px;
+      background: rgba(19, 30, 41, 0.6);
+      border: 1px solid white;
+      border-radius: 50%;
+      margin: 0;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      outline: none; }
+      .partnerGal-slide .big-img.owl-theme .owl-prev:hover, .partnerGal-slide .big-img.owl-theme .owl-next:hover {
+        background-color: #253746; }
+    .partnerGal-slide .big-img.owl-theme i {
+      font-size: 15px;
+      color: white;
+      line-height: 38px; }
+    .partnerGal-slide .big-img.owl-theme .owl-prev {
+      left: 15px; }
+    .partnerGal-slide .big-img.owl-theme .owl-next {
+      right: 15px; }
+  .partnerGal-slide #thumbs .owl-nav {
+    display: none; }
+  .partnerGal-slide .owl-theme.navigation-thumbs .item {
+    background-color: white;
+    border: 1px solid white;
+    cursor: pointer; }
+    .partnerGal-slide .owl-theme.navigation-thumbs .item img {
+      opacity: 0.6; }
+  .partnerGal-slide .owl-theme.navigation-thumbs .owl-item.synced .item {
+    border-color: #032033;
+    z-index: 999; }
+    .partnerGal-slide .owl-theme.navigation-thumbs .owl-item.synced .item img {
+      opacity: 1; }
+
+      .slide-navButton .owl-carousel .owl-nav .owl-prev, .slide-navButton .owl-carousel .owl-nav .owl-next {
+    width: 36px;
+    height: 36px; }
+  .slide-navButton .owl-carousel .owl-nav i {
+    font-size: 14px;
+    line-height: 36px; }
+  .slide-navButton .owl-carousel .owl-dots .owl-dot span {
+    width: 9px;
+    height: 9px; }
+  .slide-navButton.nav-out .owl-carousel .owl-nav .owl-prev, .slide-navButton.nav-out .owl-carousel .owl-nav .owl-next {
+    width: 40px;
+    height: 45px; }
+  .slide-navButton.nav-out .owl-carousel .owl-nav .owl-prev {
+    left: -18px; }
+  .slide-navButton.nav-out .owl-carousel .owl-nav .owl-next {
+    right: -18px; }
+  .slide-navButton.nav-out .owl-carousel .owl-nav i {
+    font-size: 14px;
+    line-height: 43px; }
+
+</style>
+
     <!-- Container -->
     <div class="container-fluid px-xxl-65 px-xl-20">
          <!-- Title -->
@@ -23,293 +141,63 @@
         <!-- /Title -->
 
             <section class="hk-sec-wrapper">
-                <div class="topic-secondgery">รายการแกลลอรี่</div>
-                <div class="row">
-                    <div class="col-sm">
-                        <div class="table-wrap">
-                            <div class="table-responsive table-color col-md-12">
-                                <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>รูปภาพ</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {{-- @foreach ($gallerys as $key => $value)
-                                    <tr>
-                                        <td>{{$key + 1}}</td>
-                                        <td><img src="{{ isset($value->image) ? asset('public/upload/ProductNewGallery/' . $value->image) : '' }}" width="100"></td>
-                                        <td>
-                                            <div class="button-list">
-                                                    <button onclick="edit_modal({{ $value->id }})"
-                                                        class="btn btn-icon btn-edit" data-toggle="modal" data-target="#editNews">
-                                                        <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">
-                                                            drive_file_rename_outline</span></h4>
-                                                        </button>
-                                                        <button id="btn_product_new_delete" class="btn btn-icon btn-danger"
-                                                             value="{{ $value->id }}">
-                                                             <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">
-                                                                delete_outline
-                                                                </span></h4>
-                                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endforeach --}}
-                                </tbody>
-                            </table>
+                <div class="col-md-6">
+                    <div class="partnerGal-slide detail_slide" style="border: 1px solid #ddd;">
+                        <div id="big" class="owl-carousel owl-theme big-img slider">
+                            <a class="item" data-fancybox="gallery" href="{{ asset('public/upload/NewsImage/news-1652519059.jpg')}}"><img src="{{ asset('public/upload/NewsImage/news-1652519059.jpg')}}"></a>
+                            {{-- @foreach ($gallerys as $value)
+                            <a class="item" data-fancybox="gallery" href="{{ asset('public/upload/NewsGallery/' . $value->image)}}"><img src="{{ isset($value->image) ? asset('public/upload/NewsGallery/' . $value->image) : '' }}"></a>
+                            @endforeach --}}
+                        </div>
+                        <div id="thumbs" class="owl-carousel owl-theme thumbs-img navigation-thumbs">
+                            <div class="item" href="{{ asset('public/upload/NewsImage/news-1652519059.jpg')}}"><img src="{{ asset('public/upload/NewsImage/news-1652519059.jpg')}}"></div>
+                            {{-- @foreach ($gallerys as $value)
+                            <div class="item"><img src="{{ isset($value->image) ? asset('public/upload/NewsGallery/' . $value->image) : '' }}"></div>
+                            @endforeach --}}
+                        </div>
+                    </div>
+                </div>
+                <div class="">
+                    <div class="row items-news">
+                    <div class="col-4 col-md-6">
+                        {{-- <img class="card-img" src="{{ asset('public/upload/NewsImage/news-1652519059.jpg')}}"
+                        alt="" style="max-width:100%;"> --}}
+                    </div>
+                    <div class="col-8 col-md-6">
+                        <div class="row">
+                            <div class="col-md-12"><div class="boxnews-date">
+                                <h6>{{$data_product->product_title}}</h6>
+                                <p class="mt-2">{{$data_product->product_detail}}</p>
                             </div>
                         </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-12 text-right" style="font-size: 14px;">อัพเดตวันที่ : {{$data_product->updated_at->addYear(543)->format('d/m/Y')}}</div>
+                </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm">
+
                     </div>
                 </div>
             </section>
 
-
-            <section class="hk-sec-wrapper">
+            {{-- <section class="hk-sec-wrapper">
                 <div class="topic-secondgery">อัลบั้ม</div>
                 <div class="row">
-                    <div class="col-sm">
-                        <div class="table-wrap">
-                            <div class="table-responsive table-color col-md-12">
-                                <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>รูปภาพ</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {{-- @foreach ($gallerys as $key => $value)
-                                    <tr>
-                                        <td>{{$key + 1}}</td>
-                                        <td><img src="{{ isset($value->image) ? asset('public/upload/ProductNewGallery/' . $value->image) : '' }}" width="100"></td>
-                                        <td>
-                                            <div class="button-list">
-                                                    <button onclick="edit_modal({{ $value->id }})"
-                                                        class="btn btn-icon btn-edit" data-toggle="modal" data-target="#editNews">
-                                                        <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">
-                                                            drive_file_rename_outline</span></h4>
-                                                        </button>
-                                                        <button id="btn_product_new_delete" class="btn btn-icon btn-danger"
-                                                             value="{{ $value->id }}">
-                                                             <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">
-                                                                delete_outline
-                                                                </span></h4>
-                                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endforeach --}}
-                                </tbody>
-                            </table>
-                            </div>
+                    @foreach ($gallerys as $value)
+                        <div class="col-lg-2 col-md-4 col-sm-4 col-6 mb-10">
+                            <img class="card-img img_1" src="{{ isset($value->image) ? asset('public/upload/ProductNewGallery/' . $value->image) : '' }}" alt="" style="max-width:100%;">
                         </div>
-                    </div>
+                    @endforeach
                 </div>
-            </section>
+            </section> --}}
     </div>
     <!-- /Container -->
 
-     <!-- Modal -->
-     <div class="modal fade" id="exampleModalLarge01" tabindex="-1" role="dialog" aria-labelledby="exampleModalLarge01" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">เพิ่มแกลลอรี่</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form id="form_insert_product_new_gallery" enctype="multipart/form-data">
-                {{-- <form action="{{ url('admin/create_product_new_gallery') }}" method="post" enctype="multipart/form-data"> --}}
-                    @csrf
-                    {{-- <input type="hidden" name="productID_id" value="{{$productID->id}}"> --}}
-                <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label for="firstName">รูปภาพ</label>
-                                <input type="file" name="news_gallery[]" multiple class="form-control">
-                            </div>
-
-                </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
-                    <button type="submit" class="btn btn-primary">บันทึก</button>
-                </div>
-            </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Edit -->
-    <div class="modal fade" id="editNews" tabindex="-1" role="dialog" aria-labelledby="editNews" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">แก้ไขรูปภาพ</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="{{ url('admin/update_product_new_gallery') }}" method="post" enctype="multipart/form-data">
-                    @csrf
-                    <input type="hidden" name="id" id="get_id">
-                    <div class="modal-body">
-                        <div>
-                            <div class="form-group">
-                            <span id="img_show" class="mt-5"></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label for="firstName">รูปภาพ</label>
-                                <input type="file" name="news_gallery" id="get_image" class="form-control">
-                            </div>
-
-                </div>
-                    </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
-                    <button type="submit" class="btn btn-primary">บันทึก</button>
-                </div>
-            </form>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- Modal Delete Saleplan -->
-    <div class="modal fade" id="ModalProductNewDelete" tabindex="-1" role="dialog" aria-labelledby="ModalProductNewDelete"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <form id="from_product_new_delete" enctype="multipart/form-data">
-                @csrf
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">คุณต้องการลบรูปภาพใช่หรือไม่</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body" style="text-align:center;">
-                        <h3>คุณต้องการลบรูปภาพใช่หรือไม่ ?</h3>
-                        <input class="form-control" id="gallery_id_delete" name="gallery_id_delete" type="hidden" />
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-                        <button type="submit" class="btn btn-primary" id="btn_save_edit">ยืนยัน</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        $(document).on('click', '#btn_product_new_delete', function() { // ปุ่มลบ Slaplan
-        let gallery_id_delete = $(this).val();
-        $('#gallery_id_delete').val(gallery_id_delete);
-        $('#ModalProductNewDelete').modal('show');
-    });
-
-    $("#from_product_new_delete").on("submit", function(e) {
-            e.preventDefault();
-            var formData = new FormData(this);
-            console.log(formData);
-            $.ajax({
-                type: 'POST',
-                url: '{{ url('admin/delete_product_new_gallery') }}',
-                data: formData,
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function(response) {
-                    console.log(response);
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Deleted!',
-                        text: "ลบข้อมูลข่าวสารเรียบร้อยแล้ว",
-                        showConfirmButton: false,
-                        timer: 1500,
-                    });
-                    $('#ModalProductNewDelete').modal('hide');
-                    $('#btn_product_new_delete').prop('disabled', true);
-                    location.reload();
-                },
-                error: function(response) {
-                    console.log("error");
-                    console.log(response);
-                }
-            });
-        });
-
-        $("#form_insert_product_new_gallery").on("submit", function (e) {
-            e.preventDefault();
-            var formData = new FormData(this);
-            $.ajax({
-                type:'POST',
-                url: '{{ url("admin/create_product_new_gallery") }}',
-                data:formData,
-                cache:false,
-                contentType: false,
-                processData: false,
-                success:function(response){
-                    console.log(response);
-                    if(response.status == 200){
-                        $("#exampleModalLarge01").modal('hide');
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'บันทึกข้อมูลสำเร็จ',
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                        location.reload();
-                    }else{
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'บันทึกข้อมูลไม่สำเร็จ',
-                            text: response.message,
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
-                    }
-
-                },
-                error: function(response){
-                    console.log("error");
-                    console.log(response);
-                }
-            });
-        });
-    </script>
-
-    <script>
-        //Edit
-        function edit_modal(id) {
-            $.ajax({
-                type: "GET",
-                url: "{!! url('admin/edit_product_new_gallery/"+id+"') !!}",
-                dataType: "JSON",
-                async: false,
-                success: function(data) {
-                    $('#img_show').children().remove().end();
-                    $('#get_id').val(data.dataEdit.id);
-
-                let img_name = '{{ asset("/public/upload/ProductNewGallery") }}/' + data.dataEdit.image;
-                if(data.dataEdit.image != ""){
-                    // ext = data.dataEdit.image.split('.').pop().toLowerCase();
-                    console.log(img_name);
-                    if(img_name){
-                        $('#img_show').append('<img src = "'+img_name+'" style="max-width:20%;">');
-                    }
-                }
-
-                    $('#editNews').modal('toggle');
-                }
-            });
-        }
-    </script>
+@section('footer')
+@include('layouts.footer')
+@endsection
 @endsection

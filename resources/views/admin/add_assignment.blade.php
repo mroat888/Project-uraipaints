@@ -25,10 +25,9 @@
         <div class="row">
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
-
+                    <div class="topic-secondgery">รายการสั่งงาน</div>
                     <div class="row mb-2">
                         <div class="col-sm-12 col-md-3">
-                            <h5 class="hk-sec-title">รายการสั่งงาน</h5>
                         </div>
                         <div class="col-sm-12 col-md-9">
                             <!-- ------ -->
@@ -39,10 +38,10 @@
                                     <select name="select_status" class="form-control form-control-sm" aria-label=".form-select-lg example">
                                         <option value="" selected>เลือกสถานะ</option>
                                         <option value="0">รอดำเนินการ</option>
-                                        <option value="3">ส่งงาน</option>
+                                        <option value="1">ส่งงาน</option>
                                     </select>
 
-                                    @if(count($team_sales) > 1)
+                                    @if(count($team_sales) >= 1)
                                     <select name="selectteam_sales" class="form-control form-control-sm" aria-label=".form-select-lg example">
                                         <option value="" selected>เลือกทีม</option>
                                             @foreach($team_sales as $team)
@@ -57,6 +56,7 @@
                                                 <option value="{{ $user->id }}">{{ $user->name }}</option>
                                         @endforeach
                                     </select>
+
                                          <input type="month" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" name ="selectdateTo" value="<?= date('Y-m-d'); ?>"/>
 
                                         <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm" id="submit_request">ค้นหา</button>

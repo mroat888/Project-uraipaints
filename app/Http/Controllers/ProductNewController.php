@@ -349,9 +349,11 @@ class ProductNewController extends Controller
         ]);
     }
 
-    public function view_detail()
+    public function view_detail($id)
     {
-        return view('admin.product_new_view_detail');
+        $data_product = ProductNew::find($id);
+        $gallerys = ProductNewGallery::where('product_new_id', $id)->orderBy('id', 'desc')->get();
+        return view('admin.product_new_view_detail', compact('data_product', 'gallerys'));
     }
 
 }

@@ -36,8 +36,7 @@
             @foreach ($list_news as $value)
             <div class="row items-news">
                 <div class="col-4 col-md-2">
-                    <img class="card-img"
-                    src="{{ isset($value->news_image) ? asset('public/upload/NewsImage/' . $value->news_image) : '' }}"
+                    <img class="card-img" src="{{ isset($value->news_image) ? asset('public/upload/NewsImage/' . $value->news_image) : '' }}"
                     alt="{{ $value->news_title }}"
                     style="max-width:100%;">
                 </div>
@@ -45,7 +44,7 @@
                     <div class="row">
                         <div class="col-md-12"><div class="topic-news">{{$value->news_title}}</div> </div>
                         <div class="col-md-12"><div class="boxnews-date">
-                            @php 
+                            @php
                                 list($year,$month,$day) = explode("-", $value->news_date);
                                 $news_date = $day."/".$month."/".$year;
                             @endphp

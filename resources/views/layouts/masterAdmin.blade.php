@@ -23,6 +23,16 @@
     <link rel="shortcut icon" href="favicon.ico">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 
+        <!-- OwlCarousel -->
+        <link rel="stylesheet" href="{{ asset('public/OwlCarousel/owl.carousel.min.css')}}">
+        <link rel="stylesheet" href="{{ asset('public/OwlCarousel/owl.theme.default.min.css')}}">
+
+        <!-- FANCYBOX -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"/>
+
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/v4-shims.css">
+
     <!-- Calendar CSS -->
     {{-- <link href="vendors/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet" type="text/css" /> --}}
     <script src="{{ asset('https://code.jquery.com/jquery-3.5.1.min.js') }}" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
@@ -842,6 +852,116 @@
     <script src="{{ asset('https://unpkg.com/sweetalert/dist/sweetalert.min.js')}}"></script>
 
     @yield('scripts')
+
+    <script type="text/javascript">
+        $('.detail_slide').each(function(){
+            (function(_e){
+        var sync1 = $(_e).find(".slider");
+        var sync2 = $(_e).find(".navigation-thumbs");
+
+        var thumbnailItemClass = '.owl-item';
+
+        var slides = sync1.owlCarousel({
+            video: true,
+            startPosition: 0,
+            items: 1,
+            animateOut: 'fadeOut',
+            loop: false,
+            rewind: true,
+            margin: 0,
+            autoplay: false,
+            autoplayHoverPause: true,
+            autoplayTimeout: 7000,
+            smartSpeed: 500,
+            autoplayHoverPause: true,
+            navText: [
+                '<span><i class="fas fa-chevron-left"></i></span>',
+                '<span><i class="fas fa-chevron-right"></i></span>'
+            ],
+            nav: true,
+            dots: false
+        }).on('changed.owl.carousel', syncPosition);
+
+        function syncPosition(el) {
+            $owl_slider = $(this).data('owl.carousel');
+            var loop = $owl_slider.options.loop;
+
+            if(loop){
+            var count = el.item.count-1;
+            var current = Math.round(el.item.index - (el.item.count/2) - .5);
+            if(current < 0) {
+                current = count;
+            }
+            if(current > count) {
+                current = 0;
+            }
+            }else{
+            var current = el.item.index;
+
+            }
+            console.log(current);
+
+            var owl_thumbnail = sync2.data('owl.carousel');
+            var itemClass = "." + owl_thumbnail.options.itemClass;
+
+
+            var thumbnailCurrentItem = sync2
+            .find(itemClass)
+            .removeClass("synced")
+            .eq(current);
+
+            thumbnailCurrentItem.addClass('synced');
+
+            //if (!thumbnailCurrentItem.hasClass('active')) {
+            var duration = 300;
+            sync2.trigger('to.owl.carousel',[current-2, duration, true]);
+            //}
+        }
+        var thumbs = sync2.owlCarousel({
+            startPosition: 0,
+            items: 4,
+            loop: false,
+            margin: 10,
+            autoplay: false,
+            autoplayHoverPause: true,
+            nav: true,
+            navText: false,
+            dots: false,
+            responsive:{
+                0:{
+                    items: 3,
+                    margin: 5
+                },
+                500:{
+                    margin: 5
+                },
+                768:{
+                    margin: 5
+                },
+                1201:{
+                    margin: 10
+                }
+            },
+            onInitialized: function (e) {
+            var thumbnailCurrentItem =  $(e.target).find(thumbnailItemClass).eq(this._current);
+            thumbnailCurrentItem.addClass('synced');
+            },
+        })
+
+        .on('click', thumbnailItemClass, function(e) {
+            e.preventDefault();
+            var duration = 300;
+            var itemIndex =  $(e.target).parents(thumbnailItemClass).index();
+            sync1.trigger('to.owl.carousel',[itemIndex, duration, true]);
+        }).on("changed.owl.carousel", function (el) {
+            //var number = el.item.index;
+            //$owl_slider = sync1.data('owl.carousel');
+            //$owl_slider.to(number, 100, true);
+        });
+        })(this);
+        });
+
+    </script>
 
 </body>
 

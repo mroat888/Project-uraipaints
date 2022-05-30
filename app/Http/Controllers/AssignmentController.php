@@ -14,10 +14,9 @@ class AssignmentController extends Controller
 
     public function index()
     {
-        $assignments = Assignment::join('users', 'assignments.assign_emp_id', 'users.id')
+        $data['assignments'] = Assignment::join('users', 'assignments.assign_emp_id', 'users.id')
         ->where('assignments.created_by', Auth::user()->id)
-        ->orWhere('assignments.assign_approve_id', Auth::user()->id)
-        ->where('assignments.assign_status', 3) // สถานะการอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน)
+        ->where('assignments.assign_status', 3)
         ->select('assignments.*', 'users.name')
         ->orderBy('assignments.id', 'desc')->get();
 
@@ -27,25 +26,33 @@ class AssignmentController extends Controller
             $auth_team[] = $value;
         }
 
-            $users = DB::table('users')
-            // ->where('team_id', Auth::user()->team_id)
-            ->where('status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
-            ->where(function($query) use ($auth_team) {
-                for ($i = 0; $i < count($auth_team); $i++){
-                    $query->orWhere('team_id', $auth_team[$i])
-                        ->orWhere('team_id', 'like', $auth_team[$i].',%')
-                        ->orWhere('team_id', 'like', '%,'.$auth_team[$i]);
-                }
-            })
-            ->get();
+        $data['users'] = DB::table('users')
+        // ->where('team_id', Auth::user()->team_id)
+        ->whereIn('status', [1]) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+        ->where(function($query) use ($auth_team) {
+            for ($i = 0; $i < count($auth_team); $i++){
+                $query->orWhere('team_id', $auth_team[$i])
+                    ->orWhere('team_id', 'like', $auth_team[$i].',%')
+                    ->orWhere('team_id', 'like', '%,'.$auth_team[$i]);
+            }
+        })->get();
+
+    $data['team_sales'] = DB::table('master_team_sales')
+    ->where(function($query) use ($auth_team) {
+        for ($i = 0; $i < count($auth_team); $i++){
+            $query->orWhere('id', $auth_team[$i])
+                ->orWhere('id', 'like', $auth_team[$i].',%')
+                ->orWhere('id', 'like', '%,'.$auth_team[$i]);
+        }
+    })->get();
 
 
-        return view('leadManager.add_assignment', compact('assignments', 'users'));
+        return view('leadManager.add_assignment', $data);
     }
 
     public function assignIndex()
     {
-        $assignments = Assignment::join('users', 'assignments.assign_emp_id', 'users.id')
+        $data['assignments'] = Assignment::join('users', 'assignments.assign_emp_id', 'users.id')
         ->where('assignments.created_by', Auth::user()->id)
         ->where('assignments.assign_status', 3)
         ->select('assignments.*', 'users.name')
@@ -57,7 +64,7 @@ class AssignmentController extends Controller
                 $auth_team[] = $value;
             }
 
-            $users = DB::table('users')
+            $data['users'] = DB::table('users')
                 // ->where('team_id', Auth::user()->team_id)
                 ->whereIn('status', [1, 2]) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
                 ->where(function($query) use ($auth_team) {
@@ -66,10 +73,18 @@ class AssignmentController extends Controller
                             ->orWhere('team_id', 'like', $auth_team[$i].',%')
                             ->orWhere('team_id', 'like', '%,'.$auth_team[$i]);
                     }
-                })
-                ->get();
+                })->get();
 
-        return view('headManager.add_assignment', compact('assignments', 'users'));
+            $data['team_sales'] = DB::table('master_team_sales')
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('id', $auth_team[$i])
+                        ->orWhere('id', 'like', $auth_team[$i].',%')
+                        ->orWhere('id', 'like', '%,'.$auth_team[$i]);
+                }
+            })->get();
+
+        return view('headManager.add_assignment', $data);
     }
 
     public function get_assign()
@@ -347,24 +362,66 @@ class AssignmentController extends Controller
     public function lead_search_month_add_assignment(Request $request)
     {
         // dd($request);
-        // $from = Carbon::parse($request->fromMonth)->format('m');
-        // $to = Carbon::parse($request->toMonth)->format('m');
-        $from = $request->fromMonth."-01";
-        $to = $request->toMonth."-31";
-        $assignments = Assignment::join('users', 'assignments.assign_emp_id', 'users.id')
-        ->where('assignments.created_by', Auth::user()->id)
-        ->where('assignments.assign_status', 3)
-        ->whereDate('assignments.assign_work_date', '>=', $from)
-        ->whereDate('assignments.assign_work_date', '<=', $to)
-        ->orderBy('assignments.id', 'desc')
-        ->select('assignments.*', 'users.name')->get();
+        $auth_team_id = explode(',',Auth::user()->team_id);
+        $auth_team = array();
+        foreach($auth_team_id as $value){
+            $auth_team[] = $value;
+        }
 
-        $users = DB::table('users')
-            ->where('team_id', Auth::user()->team_id)
-            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+        $data['assignments'] = Assignment::join('users', 'assignments.assign_emp_id', 'users.id')
+        ->where('assignments.created_by', Auth::user()->id)
+        ->where('assignments.assign_status', 3);
+
+        if(!is_null($request->selectteam_sales)){ //-- ทีมขาย
+            $team = $request->selectteam_sales;
+            $data['assignments'] = $data['assignments']
+                ->where(function($query) use ($team) {
+                    $query->orWhere('users.team_id', $team)
+                        ->orWhere('users.team_id', 'like', $team.',%')
+                        ->orWhere('users.team_id', 'like', '%,'.$team);
+                });
+            $data['selectteam_sales'] = $request->selectteam_sales;
+        }
+
+        if(!is_null($request->selectusers)){ //-- ผู้แทนขาย
+            $data['assignments'] = $data['assignments']
+                ->where('users.id', $request->selectusers);
+            $data['selectusers'] = $request->selectusers;
+        }
+
+        if(!is_null($request->selectdateTo)){ //-- วันที่
+            list($year,$month) = explode('-', $request->selectdateTo);
+            $data['assignments'] = $data['assignments']->whereYear('assignments.created_at',$year)
+            ->whereMonth('assignments.created_at', $month);
+            $data['date_filter'] = $request->selectdateTo;
+        }
+
+        $data['assignments'] = $data['assignments']->orderBy('assignments.id', 'desc')
+            ->select('assignments.*', 'users.name')->get();
+
+        $data['users'] = DB::table('users')
+                // ->where('team_id', Auth::user()->team_id)
+                ->whereIn('status', [1, 2]) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+                ->where(function($query) use ($auth_team) {
+                    for ($i = 0; $i < count($auth_team); $i++){
+                        $query->orWhere('team_id', $auth_team[$i])
+                            ->orWhere('team_id', 'like', $auth_team[$i].',%')
+                            ->orWhere('team_id', 'like', '%,'.$auth_team[$i]);
+                    }
+                })
+                ->get();
+
+                $data['team_sales'] = DB::table('master_team_sales')
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('id', $auth_team[$i])
+                        ->orWhere('id', 'like', $auth_team[$i].',%')
+                        ->orWhere('id', 'like', '%,'.$auth_team[$i]);
+                }
+            })
             ->get();
 
-        return view('leadManager.add_assignment', compact('assignments', 'users'));
+        return view('leadManager.add_assignment', $data);
     }
 
     public function lead_search_month_get_assignment(Request $request)
@@ -390,24 +447,66 @@ class AssignmentController extends Controller
     public function head_search_month_add_assignment(Request $request)
     {
         // dd($request);
-        // $from = Carbon::parse($request->fromMonth)->format('m');
-        // $to = Carbon::parse($request->toMonth)->format('m');
-        $from = $request->fromMonth."-01";
-        $to = $request->toMonth."-31";
-        $assignments = Assignment::join('users', 'assignments.assign_emp_id', 'users.id')
-        ->where('assignments.created_by', Auth::user()->id)
-        ->where('assignments.assign_status', 3)
-        ->whereDate('assignments.assign_work_date', '>=', $from)
-        ->whereDate('assignments.assign_work_date', '<=', $to)
-        ->orderBy('assignments.id', 'desc')
-        ->select('assignments.*', 'users.name')->get();
+        $auth_team_id = explode(',',Auth::user()->team_id);
+        $auth_team = array();
+        foreach($auth_team_id as $value){
+            $auth_team[] = $value;
+        }
 
-        $users = DB::table('users')
-            ->where('team_id', Auth::user()->team_id)
-            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+        $data['assignments'] = Assignment::join('users', 'assignments.assign_emp_id', 'users.id')
+        ->where('assignments.created_by', Auth::user()->id)
+        ->where('assignments.assign_status', 3);
+
+        if(!is_null($request->selectteam_sales)){ //-- ทีมขาย
+            $team = $request->selectteam_sales;
+            $data['assignments'] = $data['assignments']
+                ->where(function($query) use ($team) {
+                    $query->orWhere('users.team_id', $team)
+                        ->orWhere('users.team_id', 'like', $team.',%')
+                        ->orWhere('users.team_id', 'like', '%,'.$team);
+                });
+            $data['selectteam_sales'] = $request->selectteam_sales;
+        }
+
+        if(!is_null($request->selectusers)){ //-- ผู้แทนขาย
+            $data['assignments'] = $data['assignments']
+                ->where('users.id', $request->selectusers);
+            $data['selectusers'] = $request->selectusers;
+        }
+
+        if(!is_null($request->selectdateTo)){ //-- วันที่
+            list($year,$month) = explode('-', $request->selectdateTo);
+            $data['assignments'] = $data['assignments']->whereYear('assignments.created_at',$year)
+            ->whereMonth('assignments.created_at', $month);
+            $data['date_filter'] = $request->selectdateTo;
+        }
+
+        $data['assignments'] = $data['assignments']->orderBy('assignments.id', 'desc')
+            ->select('assignments.*', 'users.name')->get();
+
+        $data['users'] = DB::table('users')
+                // ->where('team_id', Auth::user()->team_id)
+                ->whereIn('status', [1, 2]) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+                ->where(function($query) use ($auth_team) {
+                    for ($i = 0; $i < count($auth_team); $i++){
+                        $query->orWhere('team_id', $auth_team[$i])
+                            ->orWhere('team_id', 'like', $auth_team[$i].',%')
+                            ->orWhere('team_id', 'like', '%,'.$auth_team[$i]);
+                    }
+                })
+                ->get();
+
+                $data['team_sales'] = DB::table('master_team_sales')
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('id', $auth_team[$i])
+                        ->orWhere('id', 'like', $auth_team[$i].',%')
+                        ->orWhere('id', 'like', '%,'.$auth_team[$i]);
+                }
+            })
             ->get();
 
-        return view('headManager.add_assignment', compact('assignments', 'users'));
+        return view('headManager.add_assignment', $data);
     }
 
     public function head_search_month_get_assignment(Request $request)

@@ -263,14 +263,6 @@
                     $('#get_title').val(data.dataEdit.note_title);
                     $('#get_detail').val(data.dataEdit.note_detail);
                     $('#get_tags').children().remove().end();
-                    // $('#get_tags').val(data.dataEdit.note_tags);
-                    // $('#get_tags').html(
-                    //                 "<optgroup label='กรุณาเลือก'>"+
-                    //                     "<option value='"+data.dataEdit.note_tags+"' selected>"+ data.dataEdit.name_tag +"</option>"+
-                    //                     "@foreach ($master as $value)"+
-                    //                     "<option value='"+{{$value->id}}+"'>{{$value->name_tag}}</option>"+
-                    //                     "@endforeach"+
-                    //                 "</optgroup>");
 
                     let rows_tags = data.dataEdit.note_tags.split(",");
                     let count_tags = rows_tags.length;

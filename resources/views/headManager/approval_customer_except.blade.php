@@ -39,7 +39,7 @@
                         <div class="col-sm">
                             <div class="table-wrap">
                                 <!-- เงื่อนไขการค้นหา -->
-                                @php 
+                                @php
                                     $action_search = "/head/approvalcustomer-except/search"; //-- action form
                                     if(isset($date_filter)){ //-- สำหรับ แสดงวันที่ค้นหา
                                         $date_search = $date_filter;
@@ -55,7 +55,7 @@
                                             <span id="selectdate">
                                                 <select name="selectteam_sales" class="form-control form-control-sm" aria-label=".form-select-lg example">
                                                     <option value="" selected>เลือกทีม</option>
-                                                    @php 
+                                                    @php
                                                         $checkteam_sales = "";
                                                         if(isset($selectteam_sales)){
                                                             $checkteam_sales = $selectteam_sales;
@@ -71,7 +71,7 @@
                                                 </select>
                                                 <select name="selectusers" class="form-control form-control-sm" aria-label=".form-select-lg example">
                                                     <option value="" selected>ผู้แทนขาย</option>
-                                                    @php 
+                                                    @php
                                                         $checkusers = "";
                                                         if(isset($selectusers)){
                                                             $checkusers = $selectusers;
@@ -85,17 +85,17 @@
                                                         @endif
                                                     @endforeach
                                                 </select>
-                                                
+
                                                 <!-- ปี/เดือน :  -->
-                                                <input type="month" id="selectdateFrom" name="selectdateFrom" 
-                                                value="{{ $date_search }}" class="form-control form-control-sm" 
+                                                <input type="month" id="selectdateFrom" name="selectdateFrom"
+                                                value="{{ $date_search }}" class="form-control form-control-sm"
                                                 style="margin-left:10px; margin-right:10px;"/>
                                                 <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm" id="submit_request">ค้นหา</button>
                                             </span>
                                         </span>
                                     </div>
                                 </div>
-                                @php 
+                                @php
                                     $check_Radio_1 = "";
                                     $check_Radio_2 = "";
                                     $check_Radio_3 = "";
@@ -195,8 +195,8 @@
                                 </div>
                                 </form>
                                 <!-- จบเงื่อนไขการค้นหา -->
-                                
-                                @php 
+
+                                @php
                                     $user_level = "header";
                                     $url_customer_detail = "head/approval_customer_except_detail";
                                 @endphp

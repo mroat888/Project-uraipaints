@@ -239,20 +239,52 @@ class AssignmentController extends Controller
 
     public function search(Request $request)
     {
-        list($year,$month) = explode('-', $request->selectdateTo);
+        // dd($request);
 
-        $assignments = DB::table('assignments')
-            ->join('users', 'assignments.assign_emp_id', 'users.id')
+        $data['assignments'] = DB::table('assignments')->join('users', 'assignments.assign_emp_id', 'users.id')
             ->whereIn('assignments.assign_status', [3])
-            ->where('assignments.created_by', Auth::user()->id)
-            ->whereYear('assignments.created_at', $year)
-            ->whereMonth('assignments.created_at', $month)
+            ->where('assignments.created_by', Auth::user()->id);
+
+            if(!is_null($request->select_status)){ //-- สถานะ
+                $data['assignments'] = $data['assignments']
+                    ->where('assignments.assign_result_status', $request->select_status);
+                $data['select_status'] = $request->select_status;
+            }
+
+
+            if(!is_null($request->selectusers)){ //-- ผู้แทนขาย
+                $data['assignments'] = $data['assignments']
+                    ->where('users.id', $request->selectusers);
+                $data['selectusers'] = $request->selectusers;
+            }
+
+            if(!is_null($request->selectteam_sales)){ //-- ทีมขาย
+                $team = $request->selectteam_sales;
+                $data['assignments'] = $data['assignments']
+                    ->where(function($query) use ($team) {
+                        $query->orWhere('users.team_id', $team)
+                            ->orWhere('users.team_id', 'like', $team.',%')
+                            ->orWhere('users.team_id', 'like', '%,'.$team);
+                    });
+                $data['selectteam_sales'] = $request->selectteam_sales;
+            }
+
+            if(!is_null($request->selectdateTo)){ //-- วันที่
+                list($year,$month) = explode('-', $request->selectdateTo);
+                $data['assignments'] = $data['assignments']->whereYear('assignments.created_at',$year)
+                ->whereMonth('assignments.created_at', $month);
+                $data['date_filter'] = $request->selectdateTo;
+            }
+
+            $data['assignments'] = $data['assignments']
             ->select('assignments.*', 'users.name')
-            ->orderBy('assignments.id', 'desc')
-            ->get();
+            ->orderBy('assignments.id', 'desc')->get();
 
-        $managers = DB::table('users')->where('status', 2)->get();
+            $data['team_sales'] = DB::table('master_team_sales')->get();
+            $data['users'] = DB::table('users')->whereNotIn('id', [Auth::user()->id])->get();
 
-        return view('admin.add_assignment', compact('assignments', 'managers'));
+            $data['managers'] = DB::table('users')->where('status', 2)->get();
+
+        return view('admin.add_assignment', $data);
     }
 }

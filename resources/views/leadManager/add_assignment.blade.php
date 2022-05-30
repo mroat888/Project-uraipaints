@@ -37,21 +37,33 @@
                                 </ul>
                             </div>
                         </div>
-                    <div class="row mb-2">
-                        <div class="col-sm-12 col-md-3">
+                        <div class="col-sm-12 col-md-12" style="margin-bottom: 30px;">
                             <h5 class="hk-sec-title">รายการสั่งงานผู้แทนขาย</h5>
                         </div>
-                        <div class="col-sm-12 col-md-9">
+                    <div class="row" style="margin-bottom: 30px;">
+                        <div class="col-sm-12 col-md-12">
                              <!-- ------ -->
                              <span class="form-inline pull-right pull-sm-center">
                                 <form action="{{ url('lead/search_month_add-assignment') }}" method="post" enctype="multipart/form-data">
                                     @csrf
                                 <span id="selectdate">
 
-                                    เดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateFrom" name="fromMonth"/>
+                                    @if(count($team_sales) >= 1)
+                                    <select name="selectteam_sales" class="form-control form-control-sm" aria-label=".form-select-lg example">
+                                        <option value="" selected>เลือกทีม</option>
+                                            @foreach($team_sales as $team)
+                                                    <option value="{{ $team->id }}">{{ $team->team_name }}</option>
+                                            @endforeach
+                                    </select>
+                                    @endif
 
-                                    ถึงเดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name="toMonth"/>
-
+                                    <select name="selectusers" class="form-control form-control-sm" aria-label=".form-select-lg example">
+                                        <option value="" selected>ผู้แทนขาย</option>
+                                        @foreach($users as $user)
+                                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <input type="month" value="" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="" name="selectdateTo"/>
                                 <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm">ค้นหา</button>
 
                                 </span>
