@@ -4,26 +4,48 @@
             <div class="topic-secondgery">รายการข่าวสาร</div>
             <div class="hk-pg-header mb-10" style="margin-top: 30px;">
                 <div class="col-sm-12 col-md-12">
+
                     <span class="form-inline pull-right pull-sm-center">
-                        @if (Auth::user()->status == 1)
-                        <form action="{{ url('search_news') }}" method="post" enctype="multipart/form-data">
-                            @elseif (Auth::user()->status == 2)
-                            <form action="{{ url('lead/search_news') }}" method="post" enctype="multipart/form-data">
-                            @elseif (Auth::user()->status == 3)
-                            <form action="{{ url('head/search_news') }}" method="post" enctype="multipart/form-data">
-                            @endif
+                        @php 
+                            switch(Auth::user()->status){
+                                case 1 : $action_search = "search_news";
+                                    break;
+                                case 2 : $action_search = "lead/search_news";
+                                    break;
+                                case 3 : $action_search = "head/search_news";
+                                    break;
+                            }
+                        @endphp
+                        <form action="{{ url($action_search) }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <span id="selectdate">
+                                @php 
+                                    if(isset($search_data)){
+                                        $search_data = $search_data;
+                                    }else{
+                                        $search_data = "";
+                                    }
+
+                                    if(isset($search_tag)){
+                                        $search_tag = $search_tag;
+                                    }else{
+                                        $search_tag = "";
+                                    }
+                                @endphp
                                 ปี/เดือน : <input type="month" id="selectdateFrom" name="selectdateFrom"
-                                value="" class="form-control form-control-sm"
+                                value="{{ $search_data }}" class="form-control form-control-sm"
                                 style="margin-left:10px; margin-right:10px;"/>
                                 <select name="tag" id="" class="form-control form-control-sm">
                                     @php
                                         $tags = App\MasterNews::orderBy('id', 'desc')->get();
                                     @endphp
-                                    <option value="" disabled selected>เลือกป้ายกำกับ</option>
+                                    <option value="">เลือกป้ายกำกับ</option>
                                     @foreach ($tags as $value)
-                                        <option value="{{$value->id}}">{{$value->name_tag}}</option>
+                                        @if($search_tag == $value->id)
+                                            <option value="{{$value->id}}" selected>{{$value->name_tag}}</option>
+                                        @else
+                                            <option value="{{$value->id}}">{{$value->name_tag}}</option>
+                                        @endif
                                     @endforeach
                                 </select>
                                 <button style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm" id="submit_request">ค้นหา</button>

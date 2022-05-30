@@ -14,7 +14,8 @@
         <div class="hk-pg-header mb-10">
             <div class="topichead-bggreen"><i data-feather="user"></i> รายละเอียดลูกค้า</div>
             <div class="content-right d-flex">
-                <a href="{{ url($url_back)}}" type="button" class="btn btn-secondary btn-rounded"> ย้อนกลับ </a>
+                <!-- <a href="{{-- url($url_back) --}}" type="button" class="btn btn-secondary btn-rounded"> ย้อนกลับ </a> -->
+                <a href="javascript:history.back();" type="button" class="btn btn-secondary btn-rounded"> ย้อนกลับ </a>
             </div>
         </div>
         <!-- /Title -->
@@ -124,11 +125,11 @@
                                         <div class="desc_cusnote">
                                             <blockquote class="blockquote mb-0">
                                                 @php
-                                                    $master_objective = DB::table('master_objective_saleplans')
+                                                    $master_customer_new = DB::table('master_customer_new')
                                                         ->where('id', $cust_shops_saleplan->customer_shop_objective)
                                                         ->first();
-                                                    if(!is_null($master_objective)){
-                                                        $customer_shop_objective = $master_objective->masobj_title;
+                                                    if(!is_null($master_customer_new)){
+                                                        $customer_shop_objective = $master_customer_new->cust_name;
                                                     }else{
                                                         $customer_shop_objective = "ไม่ระบุ";
                                                     }

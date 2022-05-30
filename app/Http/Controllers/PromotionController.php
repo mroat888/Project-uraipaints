@@ -66,63 +66,85 @@ class PromotionController extends Controller
 
     public function search_promotion(Request $request)
     {
-        // return $request->selectdateFrom;
-            $list_promotion = News::where('status', "P")
-            ->where('news_date', 'LIKE', $request->selectdateFrom.'%')
-            ->orderBy('id', 'desc')->paginate(10);
+        // dd($request);
 
-            $list_news_a = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
-        ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
-        ->orderBy('id', 'desc')->first();
+        $list_promotion = News::where('status', "P");
 
-        $list_banner = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
-        ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
-        ->orderBy('id', 'desc')->get();
+        if(!is_null($request->selectdateFrom)){
+            $list_promotion = $list_promotion->where('news_date', 'LIKE', $request->selectdateFrom.'%');
+            $data['search_data'] = $request->selectdateFrom;
+        }
+        
+        $list_promotion = $list_promotion->orderBy('id', 'desc')->paginate(10);
+        $data['list_promotion'] = $list_promotion;
 
+        $data['list_news_a'] = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
+            ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
+            ->orderBy('id', 'desc')->first();
 
-        return view('saleman.promotions', compact('list_promotion', 'list_news_a', 'list_banner'));
+        $data['list_banner'] = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
+            ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
+            ->orderBy('id', 'desc')->get();
+        
 
-    }
-
-    public function lead_search_promotion(Request $request)
-    {
-        // return $request->selectdateFrom;
-            $list_promotion = News::where('status', "P")
-            ->where('news_date', 'LIKE', $request->selectdateFrom.'%')
-            ->orderBy('id', 'desc')->paginate(10);
-
-            $list_news_a = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
-        ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
-        ->orderBy('id', 'desc')->first();
-
-        $list_banner = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
-        ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
-        ->orderBy('id', 'desc')->get();
-
-
-        return view('leadManager.promotions', compact('list_promotion', 'list_news_a', 'list_banner'));
+        switch (Auth::user()->status){
+            case 1 :    return view('saleman.promotions', $data);
+                break;
+            case 2 :    return view('leadManager.promotions', $data);
+                break;
+            case 3 :    return view('headManager.promotions', $data);
+                break;
+        }
 
     }
 
-    public function head_search_promotion(Request $request)
-    {
-        // return $request->selectdateFrom;
-            $list_promotion = News::where('status', "P")
-            ->where('news_date', 'LIKE', $request->selectdateFrom.'%')
-            ->orderBy('id', 'desc')->paginate(10);
+    /*----------------------------------------------------------------
+            OAT คอมเม้นต์ ใช้งานร่วมกันที่ function search_news ด้านบน
+    -----------------------------------------------------------------*/
 
-            $list_news_a = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
-        ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
-        ->orderBy('id', 'desc')->first();
+    // public function lead_search_promotion(Request $request)
+    // {
+    //     // return $request->selectdateFrom;
+    //         $list_promotion = News::where('status', "P")
+    //         ->where('news_date', 'LIKE', $request->selectdateFrom.'%')
+    //         ->orderBy('id', 'desc')->paginate(10);
 
-        $list_banner = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
-        ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
-        ->orderBy('id', 'desc')->get();
+    //         $list_news_a = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
+    //     ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
+    //     ->orderBy('id', 'desc')->first();
+
+    //     $list_banner = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
+    //     ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
+    //     ->orderBy('id', 'desc')->get();
 
 
-        return view('headManager.promotions', compact('list_promotion', 'list_news_a', 'list_banner'));
+    //     return view('leadManager.promotions', compact('list_promotion', 'list_news_a', 'list_banner'));
 
-    }
+    // }
+
+    // public function head_search_promotion(Request $request)
+    // {
+    //     // return $request->selectdateFrom;
+    //         $list_promotion = News::where('status', "P")
+    //         ->where('news_date', 'LIKE', $request->selectdateFrom.'%')
+    //         ->orderBy('id', 'desc')->paginate(10);
+
+    //         $list_news_a = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
+    //     ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
+    //     ->orderBy('id', 'desc')->first();
+
+    //     $list_banner = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))
+    //     ->where('date_last', '>=', Carbon::today()->format('Y-m-d'))
+    //     ->orderBy('id', 'desc')->get();
+
+
+    //     return view('headManager.promotions', compact('list_promotion', 'list_news_a', 'list_banner'));
+
+    // }
+
+    /*----------------------------------------------------------------
+            จบ OAT คอมเม้นต์ ใช้งานร่วมกันที่ function search_news ด้านบน
+    -----------------------------------------------------------------*/
 
     public function index()
     {

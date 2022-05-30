@@ -20,9 +20,10 @@ class CheckStoreController extends Controller
         $api_token = $this->api_token->apiToken();    
 
         $patch_search = "/sellers/".Auth::user()->api_identify."/customers";
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$patch_search);
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$patch_search,[
+            'limits' => env("API_CUST_LIMIT")
+        ]);
         $res_api = $response->json();
-
 
         if(!empty($res_api)){
             if($res_api['code'] == 200){
@@ -59,7 +60,9 @@ class CheckStoreController extends Controller
             $patch_search = "/sellers/".Auth::user()->api_identify."/customers";
         }
         
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$patch_search);
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$patch_search,[
+            'limits' => env("API_CUST_LIMIT")
+        ]);
         $res_api = $response->json();
 
         if($res_api['code'] == 200){

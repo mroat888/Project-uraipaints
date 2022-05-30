@@ -26,31 +26,50 @@
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
-                        <div class="col-sm-12 col-md-6">
+                        <div class="col-sm-12 col-md-4">
                             <h5 class="hk-sec-title">ตารางรายงานยอดขายสินค้าใหม่</h5>
                         </div>
-                        <div class="col-sm-12 col-md-6">
+                        <div class="col-sm-12 col-md-8">
                             <!-- ------ -->
-                            <span class="form-inline pull-right">
-                                <!-- <span class="mr-5">เลือก</span> -->
-                                <!-- <input type="month" name="" id="" class="form-control"> -->
-                                {{-- <button class="btn btn-primary btn-sm ml-10 mr-15"><i data-feather="printer"></i> พิมพ์</button> --}}
-                                </span>
+                            <span class="form-inline pull-right pull-sm-center">
+                                <form action="{{ url('data_report_product-new/search') }}" method="post" enctype="multipart/form-data">
+                                    @csrf
+                                    <span id="selectdate">
 
+                                        เป้า : <input type="number" value="{{ date('Y-m') }}" id="target" name="target" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;"/>
+                                        
+                                        ปี :
+                                        <select class="form-control form-control-sm mr-5" name="sel_year">
+                                            @php 
+                                                $year_now = date("Y");
+                                                $year_now_thai = $year_now+543;
+                                             @endphp
+                                            @for($i=0; $i < 2; $i++)
+                                                @php 
+                                                    $year = $year_now-$i;
+                                                    $year_thai = $year_now_thai-$i;
+                                                @endphp
+                                                <option value="{{ $year }}">{{ $year_thai }}</option>
+                                            @endfor
+                                        </select>
+
+                                    <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm">ค้นหา</button>
+                                    </span>
+                                </form>
                             </span>
                             <!-- ------ -->
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="row mt-50">
                         <div class="col-sm">
                             <div class="table-responsive-sm">
                                 <table class="table table-sm table-hover table-bordered">
                                     <thead>
                                         <tr>
                                             <th rowspan="2">#</th>
-                                            <th colspan="2" style="text-align:center;">รายละเอียดเป้าสินค้าใหม่</th>
-                                            <th colspan="5" style="text-align:center;">ทำได้</th>
+                                            <th colspan="3" style="text-align:center;">รายละเอียดเป้าสินค้าใหม่</th>
+                                            <th colspan="5" style="text-align:center;">ผลงาน</th>
                                             <!-- <th colspan="3" style="text-align:center;">รายการยอดขายสินค้าใหม่</th>
                                             <th colspan="2" style="text-align:center;">คิดเป็นเปอร์เซ็น (%)</th> -->
                                         </tr>
@@ -58,10 +77,9 @@
                                         <tr style="text-align:center">
                                             <th>ชื่อเป้า</th>
                                             <th>ระยะเวลา</th>
-                                            <th>เป้าทั้งหมด</th>
-                                            <th>เป้าที่ทำได้</th>
-                                            <th>คิดเป็น%</th>
-                                            <th>คงเหลือ</th>
+                                            <th>เป้าทั้งหมด<br>(หน่วย)</th>
+                                            <th>เป้าที่ทำได้<br>(หน่วย)</th>
+                                            <th>คงเหลือ<br>(หน่วย)</th>
                                             <th>คิดเป็น%</th>
                                         </tr>
                                     </thead>
@@ -71,10 +89,12 @@
                                         $no=0;
                                         for($i=0 ; $i< $rows; $i++){
                                             list($fyear,$fmonth,$fday) = explode("-",$sellers_api[$i]['fromdate']);
-                                            $fromdate = $fday."/".$fmonth."/".$fyear;
+                                            $fyear_thai = $fyear+543;
+                                            $fromdate = $fday."/".$fmonth."/".$fyear_thai;
 
                                             list($tyear,$tmonth,$tday) = explode("-",$sellers_api[$i]['todate']);
-                                            $todate = $tday."/".$tmonth."/".$tyear;
+                                            $tyear_thai = $tyear+543;
+                                            $todate = $tday."/".$tmonth."/".$tyear_thai;
                                     ?>
 
                                         <tr style="text-align:center">
@@ -83,9 +103,8 @@
                                             <td>{{ $fromdate }} - {{ $todate }}</td>
                                             <td>{{ number_format($sellers_api[$i]['Target'],0) }}</td>
                                             <td>{{ number_format($sellers_api[$i]['Sales'],0) }}</td>
-                                            <td>{{ number_format($sellers_api[$i]['persent_sale'],0) }}%</td>
                                             <td>{{ number_format($sellers_api[$i]['Diff'],0) }}</td>
-                                            <td>{{ number_format($sellers_api[$i]['persent_diff'],0) }}%</td>
+                                            <td>{{ number_format($sellers_api[$i]['persent_sale'],2)}}%</td>
                                         </tr>
                                         
                                     <?php
@@ -96,12 +115,22 @@
                                         <td colspan="3" align="center">ทั้งหมด</td>
                                         <td class="text-success">{{ number_format($summary_sellers_api['sum_target'],0) }}</td>
                                         <td class="text-success">{{ number_format($summary_sellers_api['sum_sales'],0) }}</td>
-                                        <td class="text-success">{{ number_format($summary_sellers_api['sum_persent_sale'],0) }}%</td>
                                         <td class="text-danger">{{ number_format($summary_sellers_api['sum_diff'],0) }}</td>
-                                        <td class="text-danger">{{ number_format($summary_sellers_api['sum_persent_diff'],0) }}%</td>
+                                        <td class="text-success">{{ number_format($summary_sellers_api['sum_persent_sale'],2) }}%</td>
                                     </tfoot>
                                 </table>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm">
+                            หน่วย หมายถึง ...................
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">
+                            ข้อมูล ณ วันที่ {{ $trans_last_date }}
                         </div>
                     </div>
                 </section>

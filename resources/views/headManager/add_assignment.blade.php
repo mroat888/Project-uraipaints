@@ -46,6 +46,7 @@
                             <span class="form-inline pull-right pull-sm-center">
                                 <form action="{{ url('head/search_month_add-assignment') }}" method="post" enctype="multipart/form-data">
                                     @csrf
+<<<<<<< HEAD
                                 <span id="selectdate">
                                     @if(count($team_sales) >= 1)
                                     <select name="selectteam_sales" class="form-control form-control-sm" aria-label=".form-select-lg example">
@@ -64,10 +65,17 @@
                                     </select>
 
                                     <input type="month" value="" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="" name="selectdateTo"/>
+=======
+                                    <span id="selectdate">
 
-                                <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm">ค้นหา</button>
-                                </span>
-                            </form>
+                                        เดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateFrom" name="fromMonth"/>
+
+                                        ถึงเดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name="toMonth"/>
+>>>>>>> 3bc5408ab745059a12548ce6b56edb45fdec7f02
+
+                                    <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm">ค้นหา</button>
+                                    </span>
+                                </form>
                             </span>
                             <!-- ------ -->
                         </div>

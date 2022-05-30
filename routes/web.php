@@ -148,6 +148,7 @@ Route::get('data_name_store/detail/{id}', 'ShareData\CheckStoreController@show')
 Route::get('data_search_product', 'ShareData\SearchroductController@index');
 Route::post('data_search_product/search', 'ShareData\SearchroductController@search');
 Route::get('data_report_product-new', 'ShareData\ProductNewController@index');
+Route::post('data_report_product-new/search', 'ShareData\ProductNewController@search');
 Route::get('data_report_full-year', 'ShareData\ReportFullYearController@index');
 Route::post('data_report_full-year/search', 'ShareData\ReportFullYearController@search');
 Route::get('data_report_historical-year', 'ShareData\ReportHistoricalYearController@index');
@@ -247,7 +248,9 @@ Route::get('lead/delete_note/{id}', 'NoteController@destroy');
 Route::post('lead/search_month_note', 'NoteController@lead_search_month_note');
 
 Route::get('lead/news', 'NewsController@lead_frontend_news');
+Route::post('lead/search_news', 'NewsController@search_news');
 Route::get('lead/promotions', 'PromotionController@lead_frontend_promotion');
+Route::post('lead/search_promotion', 'PromotionController@search_promotion');
 Route::get('lead/product_new', 'ProductNewController@lead_frontend_product_new');
 Route::get('lead/news_detail/{id}', 'NewsController@lead_news_detail');
 Route::get('lead/promotion_detail/{id}', 'PromotionController@lead_promotion_detail');
@@ -257,7 +260,7 @@ Route::get('/leadManage/reportcustomer', function () { return view('reports.repo
 Route::get('/leadManage/reportStore','LeadManager\ApiCustomerController@index');
 Route::get('/leadManage/reportStore/detail/{id}','LeadManager\ApiCustomerController@show');
 // Route::get('/leadManage/reportTeam', 'LeadManager\ReportTeamController@index'); // -- ลูกค้าให้เปลี่ยนใช้ api อันล่าง
-Route::get('/leadManage/reportTeam', 'LeadManager\ReportTeamController@reportTeamApi'); // เปลี่ยนมาอันนี้ <----|
+Route::get('/leadManage/reportTeam', 'LeadManager\ReportTeamController@reportTeamApi'); // เปลี่ยนมาอันนี้ <---|
 // Route::get('/leadManage/reportSaleplan', 'LeadManager\ReportSalePlanController@index'); //-- เปลี่ยนรูปแบบรายงานใหม่ ใช้อันล่าง
 // Route::post('/leadManage/reportSaleplan/search', 'LeadManager\ReportSalePlanController@search'); //-- เปลี่ยนรูปแบบรายงานใหม่ ใช้อันล่าง
 Route::get('/leadManage/reportSaleplan', 'LeadManager\ReportSalePlanController@reportsalepaln');
@@ -272,7 +275,8 @@ Route::post('leadManage/data_name_store/search', 'ShareData_LeadManager\CheckSto
 Route::get('leadManage/data_name_store/detail/{id}', 'ShareData_LeadManager\CheckStoreController@show');
 Route::get('leadManage/data_search_product', 'ShareData_LeadManager\SearchroductController@index');
 Route::post('leadManage/data_search_product/search', 'ShareData_LeadManager\SearchroductController@search');
-Route::get('leadManage/data_report_product-new', 'ShareData_LeadManager\ProductNewController@index');
+// Route::get('leadManage/data_report_product-new', 'ShareData_LeadManager\ProductNewController@index'); //-- OAT เปลี่ยนไปใช้อันล่าง
+Route::get('leadManage/data_report_product-new', 'ShareData_Union\ProductNewController@index');
 Route::get('leadManage/data_report_full-year', 'ShareData_LeadManager\ReportFullYearController@index');
 Route::post('leadManage/data_report_full-year/search', 'ShareData_LeadManager\ReportFullYearController@search');
 Route::get('leadManage/data_report_historical-year', 'ShareData_LeadManager\ReportHistoricalYearController@index');
@@ -353,7 +357,9 @@ Route::post('head/search_month_note', 'NoteController@head_search_month_note');
 Route::get('head/status_pin_update/{id}', 'NoteController@status_pin_update');
 
 Route::get('head/news', 'NewsController@head_frontend_news');
+Route::post('head/search_news', 'NewsController@search_news');
 Route::get('head/promotions', 'PromotionController@head_frontend_promotion');
+Route::post('head/search_promotion', 'PromotionController@search_promotion');
 Route::get('head/product_new', 'ProductNewController@head_frontend_product_new');
 Route::get('head/news_detail/{id}', 'NewsController@head_news_detail');
 Route::get('head/promotion_detail/{id}', 'PromotionController@head_promotion_detail');
@@ -386,7 +392,8 @@ Route::post('headManage/data_name_store/search', 'ShareData_HeadManager\CheckSto
 Route::get('headManage/data_name_store/detail/{id}', 'ShareData_HeadManager\CheckStoreController@show');
 Route::get('headManage/data_search_product', 'ShareData_HeadManager\SearchroductController@index');
 Route::post('headManage/data_search_product/search', 'ShareData_HeadManager\SearchroductController@search');
-Route::get('headManage/data_report_product-new', 'ShareData_HeadManager\ProductNewController@index');
+// Route::get('headManage/data_report_product-new', 'ShareData_HeadManager\ProductNewController@index'); //-- OAT เปลี่ยนเป็นด้านล่าง
+Route::get('headManage/data_report_product-new', 'ShareData_Union\ProductNewController@index');
 Route::get('headManage/data_report_full-year', 'ShareData_HeadManager\ReportFullYearController@index');
 Route::post('headManage/data_report_full-year/search', 'ShareData_HeadManager\ReportFullYearController@search');
 Route::get('headManage/data_report_historical-year', 'ShareData_HeadManager\ReportHistoricalYearController@index');
@@ -624,7 +631,8 @@ Route::post('admin/data_name_store/search', 'ShareData_Admin\CheckStoreControlle
 Route::get('admin/data_name_store/detail/{id}', 'ShareData_Admin\CheckStoreController@show');
 Route::get('admin/data_search_product', 'ShareData_Admin\SearchroductController@index');
 Route::post('admin/data_search_product/search', 'ShareData_Admin\SearchroductController@search');
-Route::get('admin/data_report_product-new', 'ShareData_Admin\ProductNewController@index');
+// Route::get('admin/data_report_product-new', 'ShareData_Admin\ProductNewController@index'); //-- OAT เปลี่ยนมาใช้อันล่าง
+Route::get('admin/data_report_product-new', 'ShareData_Union\ProductNewController@index');
 Route::post('admin/data_report_product-new/search', 'ShareData_Admin\ProductNewController@search');
 Route::get('admin/data_report_product-new/show/{id}', 'ShareData_Admin\ProductNewController@show');
 Route::get('admin/data_report_full-year', 'ShareData_Admin\ReportFullYearController@index');
@@ -675,6 +683,8 @@ Route::get('fetch_amphur_api/{position}/{id}', 'Api\ApiController@fetch_amphur_a
 Route::get('assignments_commentshow/{id}', 'UnionAssignmentController@commentshow');
 Route::get('assignment_result_get/{id}', 'UnionAssignmentController@assignment_result_get');
 Route::post('assignment_Result', 'UnionAssignmentController@saleplan_result');
+
+Route::post('manager/data_report_product-new/search', 'ShareData_Union\ProductNewController@search');
 
 
 

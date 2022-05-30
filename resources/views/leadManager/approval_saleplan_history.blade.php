@@ -21,7 +21,7 @@
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
             <li class="breadcrumb-item"><a href="#">Page</a></li>
-            <li class="breadcrumb-item active" aria-current="page">ประวัติการอนุมัติ Sale Plan</li>
+            <li class="breadcrumb-item active" aria-current="page">ประวัติอนุมัติ Sale Plan</li>
         </ol>
     </nav>
     <!-- /Breadcrumb -->
@@ -40,7 +40,7 @@
          <!-- Title -->
         <div class="hk-pg-header mb-10">
             <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-analytics"></i></span>ประวัติการอนุมัติ Sale Plan</h4>
+                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-analytics"></i></span>ประวัติอนุมัติ Sale Plan</h4>
             </div>
             <div class="d-flex">
 
@@ -72,18 +72,22 @@
                             </div>
                         </div>
                         <div class="row mb-2">
+                            @php 
+                                $action_search = "lead/approvalsaleplan-history/search"; //-- action form
+                                if(isset($date_filter)){ //-- สำหรับ แสดงวันที่ค้นหา
+                                    $date_search = $date_filter;
+                                    list($year_p,$month_p) = explode("-", $date_filter);
+                                    $year_p_thai = $year_p+543;
+                                }else{
+                                    $date_search = "";
+                                    $year_p_thai = date("Y")+543;
+                                }
+                            @endphp
                             <div class="col-sm-12 col-md-6">
-                                <h5 class="hk-sec-title">ตารางประวัติการอนุมัติ Sale Plan</h5>
+                                <h5 class="hk-sec-title">ประวัติอนุมัติ Sale Plan {{ $year_p_thai }}</h5>
                             </div>
                             <div class="col-sm-12 col-md-6">
-                                @php 
-                                    $action_search = "lead/approvalsaleplan-history/search"; //-- action form
-                                    if(isset($date_filter)){ //-- สำหรับ แสดงวันที่ค้นหา
-                                        $date_search = $date_filter;
-                                    }else{
-                                        $date_search = "";
-                                    }
-                                @endphp
+                                
                                 <!-- ------ -->
                                 <span class="form-inline pull-right pull-sm-center">
                                     <form action="{{ url($action_search) }}" method="POST" enctype="multipart/form-data">
@@ -191,6 +195,8 @@
                                                             <span class="badge badge-soft-info" style="font-size: 12px;">Close</span>
                                                             @elseif ($value->status_approve == 2)
                                                             <span class="badge badge-soft-success" style="font-size: 12px;">Approval</span>
+                                                            @elseif ($value->status_approve == 3)
+                                                            <span class="badge badge-soft-danger" style="font-size: 12px;">UnApproval</span>
                                                             @endif
 
                                                         </td>

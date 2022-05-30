@@ -380,17 +380,19 @@
 
             <div class="col-md-12">
                 <section class="hk-sec-wrapper">
-                    <h6 class="topic-page hk-sec-title topic-bgorange" style="font-weight: bold;">เทียบยอดขายรายเดือน
+                    <h6 class="topic-page hk-sec-title topic-bgorange" style="font-weight: bold;">เทียบยอดขายเดือน
                         <?php echo thaidate('F', date("M")); ?> ระหว่างปี
-                        @if (isset($res_api["data"][2]["SalesCurrent"]))
-                            @php 
+                        @php 
+                            if (isset($res_api["data"][2]["SalesCurrent"])){
                                 $SalesCurrent_year = $res_api["data"][2]["SalesCurrent"][0]["year"] + 543;
-                                $SalesPrevious_year = $res_api["data"][3]["SalesPrevious"][0]["year"] + 543;
-                            @endphp
-                            {{ $SalesCurrent_year }} กับปี  {{ $SalesPrevious_year }}
-                        @else
-                            - กับปี -
-                        @endif
+                                $SalesPrevious_year = $res_api["data"][3]["SalesPrevious"][0]["year"] + 543;                   
+                            }else{
+                                $SalesCurrent_year = "-";
+                                $SalesPrevious_year = "-";
+                            }
+                        @endphp
+                        {{ $SalesCurrent_year }} กับปี  
+                        {{ $SalesPrevious_year }}
                     </h6>
                     <div class="row">
                         <div class="col-12 col-lg-8">
@@ -398,6 +400,7 @@
                             <span class="mt-8 ml-40 text-danger">
                                 @php 
                                     list($year,$month,$day) = explode("-", $res_api["trans_last_date"]);
+                                    $year = $year+543;
                                     $trans_last_date = $day."/".$month."/".$year;
                                 @endphp
                                 ข้อมูล ณ วันที่ {{ $trans_last_date }}
@@ -514,7 +517,18 @@
                                                 </div>
                                                 <div class="row box-txttotalsum">
                                                     <div class="col-6 col-md-7 pdl-0">
-                                                        <span style="font-weight: bold; font-size: 14px;">ร้านค้า เปิดบิล คิดเป็น <br> ณ วันที่ <?php echo date("d/m/Y"); ?></span>
+                                                        <span style="font-weight: bold; font-size: 14px;">ร้านค้า เปิดบิล คิดเป็น <br> 
+                                                        @php 
+                                                            if(isset($res_api["trans_last_date"])){
+                                                                list($year,$month,$day) = explode("-", $res_api["trans_last_date"]);
+                                                                $year = $year+543;
+                                                                $trans_last_date = $day."/".$month."/".$year;
+                                                            }else{
+                                                                $trans_last_date = "-";
+                                                            }
+                                                        @endphp
+                                                        ณ วันที่  {{ $trans_last_date }}
+                                                        </span>
                                                     </div>
                                                     <div class="col-6 col-md-5 pdr-0" style="text-align:right;">
                                                         <span style="font-weight: bold; font-size: 16px;">

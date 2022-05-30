@@ -21,8 +21,8 @@ class ReportSaleCompareYearController extends Controller
          */
         
         list($year,$month,$day) = explode('-',date('Y-m-d'));
-        $path_search = "campaigns/years/".$year."/admins/";
         $api_token = $this->api_token->apiToken();
+        $path_search = "campaigns/years/".$year."/admins/";
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search,[
             'back_years' => 1
         ]);

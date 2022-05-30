@@ -47,7 +47,48 @@
                                 <form action="{{ url('lead/search_month_add-assignment') }}" method="post" enctype="multipart/form-data">
                                     @csrf
                                 <span id="selectdate">
+                                @if (count($team_sales) > 1)
+                                    <select name="selectteam_sales" class="form-control form-control-sm mr-2"
+                                        aria-label=".form-select-lg example">
+                                        <option value="" selected>เลือกทีม</option>
+                                        @php
+                                            $checkteam_sales = '';
+                                            if (isset($selectteam_sales)) {
+                                                $checkteam_sales = $selectteam_sales;
+                                            }
+                                        @endphp
+                                        @foreach ($team_sales as $team)
+                                            @if ($checkteam_sales == $team->id)
+                                                <option value="{{ $team->id }}" selected>
+                                                    {{ $team->team_name }}</option>
+                                            @else
+                                                <option value="{{ $team->id }}">
+                                                    {{ $team->team_name }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                @endif
+                                <select name="selectusers" class="form-control form-control-sm"
+                                    aria-label=".form-select-lg example">
+                                    <option value="" selected>ผู้แทนขาย</option>
+                                    @php
+                                        $checkusers = '';
+                                        if (isset($selectusers)) {
+                                            $checkusers = $selectusers;
+                                        }
+                                    @endphp
+                                    @foreach ($users as $user)
+                                        @if ($checkusers == $user->id)
+                                            <option value="{{ $user->id }}" selected>
+                                                {{ $user->name }}</option>
+                                        @else
+                                            <option value="{{ $user->id }}">{{ $user->name }}
+                                            </option>
+                                        @endif
+                                    @endforeach
+                                </select>
 
+<<<<<<< HEAD
                                     @if(count($team_sales) >= 1)
                                     <select name="selectteam_sales" class="form-control form-control-sm" aria-label=".form-select-lg example">
                                         <option value="" selected>เลือกทีม</option>
@@ -56,6 +97,10 @@
                                             @endforeach
                                     </select>
                                     @endif
+=======
+                                    <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateFrom" name="fromMonth"/>
+                                    ถึง : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name="toMonth"/>
+>>>>>>> 3bc5408ab745059a12548ce6b56edb45fdec7f02
 
                                     <select name="selectusers" class="form-control form-control-sm" aria-label=".form-select-lg example">
                                         <option value="" selected>ผู้แทนขาย</option>

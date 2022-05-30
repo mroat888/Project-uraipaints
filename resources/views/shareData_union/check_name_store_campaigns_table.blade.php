@@ -11,9 +11,26 @@
         <section class="hk-sec-wrapper">
             <div class="row mb-2">
                 <div class="col-sm-12 col-md-12">
-                    <div class="topichead-bgred" style="margin-bottom: 30px;">รายชื่อร้านค้า (ทำเป้า) ปี {{ $year+543 }}</div>
+                    <div class="topichead-bgred" style="margin-bottom: 30px;">
+                        <div class="row">
+                            <div class="col-6">
+                                รายชื่อร้านค้า (ทำเป้า) ปี {{ $year+543 }}
+                            </div>
+                            <div class="col-6" style="text-align:right;">
+                                ข้อมูล ณ วันที่
+                                @if(isset($customer_api))
+                                    @php 
+                                        list($year,$month,$day) = explode('-',$customer_api['trans_last_date']);
+                                        $year = $year+543;
+                                        $trans_last_date = $day."/".$month."/".$year;
+                                    @endphp
+                                    {{ $trans_last_date }}
+                                @endif&nbsp;
+                                (หน่วย : บาท)
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
             </div>
 
             <div class="row">
@@ -116,25 +133,10 @@
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
         </section>
     </div>
-</div>
-
-<div class="row">
-    <div class="col-md-6">ข้อมูล ณ วันที่
-        @if(isset($customer_api))
-            @php 
-                list($year,$month,$day) = explode('-',$customer_api['trans_last_date']);
-                $year = $year+543;
-                $trans_last_date = $day."/".$month."/".$year;
-            @endphp
-            {{ $trans_last_date }}
-        @endif
-    </div>
-    <div class="col-md-6" style="text-align:right;">หน่วย : บาท</div>
 </div>
 
 <!-- /Row -->

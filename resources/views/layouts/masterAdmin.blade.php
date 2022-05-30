@@ -481,7 +481,7 @@
                     </ul>
                     <hr class="nav-separator">
                     <div class="nav-header">
-                        <span>การจัดการ</span>
+                        <span style="color:#FFFFFF">การจัดการ</span>
                         <span>MG</span>
                     </div>
                     <ul class="navbar-nav flex-column">
