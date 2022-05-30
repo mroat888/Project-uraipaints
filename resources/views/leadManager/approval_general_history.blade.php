@@ -176,11 +176,18 @@
                                         </td>
                                         <td>
                                             @php
-                                                list($assign_approve_date, $assign_approve_time) = explode(' ',$assignments->assign_approve_date);
-                                               list($assign_approve_year,$assign_approve_month,$assign_approve_day) = explode("-", $assign_approve_date);
-                                                $assign_approve__year_thai = $assign_approve_year+543;
-                                                $assign_approve_date = $assign_approve_day."/".$assign_approve_month."/".$assign_approve__year_thai;
-                                            @endphp
+                                                if(!is_null($assignments->assign_approve_date)){
+                                                    list($assign_approve_date, $assign_approve_time) = explode(' ',$assignments->assign_approve_date);
+                                                    
+                                                    list($assign_approve_year,$assign_approve_month,$assign_approve_day) = explode("-", $assign_approve_date);
+                                                    $assign_approve_year_thai = $assign_approve_year+543;
+                                                
+                                                    $assign_approve_date = $assign_approve_day."/".$assign_approve_month."/".$assign_approve_year_thai;
+                                                }else{
+                                                    $assign_approve_date = "-";
+                                                }
+                                                
+                                             @endphp
                                             {{ $assign_approve_date }}
                                         </td>
                                         <td>{{ $assignments->name }}</td>

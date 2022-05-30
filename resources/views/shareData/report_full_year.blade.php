@@ -85,9 +85,9 @@
                                             <td>{{ $value['year'] }}</td>
                                             <td>{{ number_format($value['customers']) }}</td>
                                             <td>{{ number_format($value['sales'],2) }}</td>
-                                            <td>{{ number_format($value['credits'],2) }}</td>
-                                            <td>{{ number_format($value['netSales'],2) }}</td>
-                                            <td>{{ number_format($value['%Credit'],2) }}%</td>
+                                            <td>{{-- number_format($value['credits'],2) --}}</td>
+                                            <td>{{-- number_format($value['netSales'],2) --}}</td>
+                                            <td>{{-- number_format($value['%Credit'],2) --}}%</td>
                                         </tr>
                                         @endforeach
                                     @endif
@@ -148,9 +148,9 @@
                                                         <td>{{ $value['pdgroup_name'] }}</td>
                                                         <td style="text-align:center;">{{ number_format($value['customers']) }}</td>
                                                         <td style="text-align:right;">{{ number_format($value['sales'],2) }}</td>
-                                                        <td style="text-align:right;">{{ number_format($value['credits'],2) }}</td>
-                                                        <td style="text-align:right;">{{ number_format($value['netSales'],2) }}</td>
-                                                        <td style="text-align:right;">{{ number_format($value['%Credit'],2) }}%</td>
+                                                        <td style="text-align:right;">{{-- number_format($value['credits'],2) --}}</td>
+                                                        <td style="text-align:right;">{{-- number_format($value['netSales'],2) --}}</td>
+                                                        <td style="text-align:right;">{{-- number_format($value['%Credit'],2) --}}%</td>
                                                     </tr>
                                                 @else
                                                     @if($key == 10)
@@ -167,9 +167,9 @@
                                                         <td>{{ $value['pdgroup_name'] }}</td>
                                                         <td style="text-align:center;">{{ number_format($value['customers']) }}</td>
                                                         <td style="text-align:right;">{{ number_format($value['sales'],2) }}</td>
-                                                        <td style="text-align:right;">{{ number_format($value['credits'],2) }}</td>
-                                                        <td style="text-align:right;">{{ number_format($value['netSales'],2) }}</td>
-                                                        <td style="text-align:right;">{{ number_format($value['%Credit'],2) }}%</td>
+                                                        <td style="text-align:right;">{{-- number_format($value['credits'],2) --}}</td>
+                                                        <td style="text-align:right;">{{-- number_format($value['netSales'],2) --}}</td>
+                                                        <td style="text-align:right;">{{-- number_format($value['%Credit'],2) --}}%</td>
                                                     </tr>
                                                 @endif
                                             @endforeach
@@ -179,9 +179,9 @@
                                             <td colspan="3" align="center">ทั้งหมด</td>
                                             <td class="text-success">{{ number_format($summary_group_api['sum_group_customers'],0) }}</td>
                                             <td class="text-success" style="text-align:right;">{{ number_format($summary_group_api['sum_group_sales'],2) }}</td>
-                                            <td class="text-danger" style="text-align:right;">{{ number_format($summary_group_api['sum_group_credits'],2) }}</td>
-                                            <td class="text-success" style="text-align:right;">{{ number_format($summary_group_api['sum_group_netSales'],2) }}</td>
-                                            <td class="text-danger" style="text-align:right;">{{ number_format($summary_group_api['sum_group_persentcredit'],2) }}%</td>
+                                            <td class="text-danger" style="text-align:right;">{{-- number_format($summary_group_api['sum_group_credits'],2) --}}</td>
+                                            <td class="text-success" style="text-align:right;">{{-- number_format($summary_group_api['sum_group_netSales'],2) --}}</td>
+                                            <td class="text-danger" style="text-align:right;">{{-- number_format($summary_group_api['sum_group_persentcredit'],2) --}}%</td>
                                         </tfoot>
                                     </table>
                                 </div>
@@ -213,9 +213,9 @@
                                                         <td>{{ $value['subgroup_name'] }}</td>
                                                         <td style="text-align:center;">{{ number_format($value['customers']) }}</td>
                                                         <td style="text-align:right;">{{ number_format($value['sales'],2) }}</td>
-                                                        <td style="text-align:right;">{{ number_format($value['credits'],2) }}</td>
-                                                        <td style="text-align:right;">{{ number_format($value['netSales'],2) }}</td>
-                                                        <td style="text-align:right;">{{ number_format($value['%Credit'],2) }}%</td>
+                                                        <td style="text-align:right;">{{-- number_format($value['credits'],2) --}}</td>
+                                                        <td style="text-align:right;">{{-- number_format($value['netSales'],2) --}}</td>
+                                                        <td style="text-align:right;">{{-- number_format($value['%Credit'],2) --}}%</td>
                                                     </tr>
                                                 @else
                                                     @if($key == 10)
@@ -232,9 +232,9 @@
                                                         <td>{{ $value['subgroup_name'] }}</td>
                                                         <td style="text-align:center;">{{ number_format($value['customers']) }}</td>
                                                         <td style="text-align:right;">{{ number_format($value['sales'],2) }}</td>
-                                                        <td style="text-align:right;">{{ number_format($value['credits'],2) }}</td>
-                                                        <td style="text-align:right;">{{ number_format($value['netSales'],2) }}</td>
-                                                        <td style="text-align:right;">{{ number_format($value['%Credit'],2) }}%</td>
+                                                        <td style="text-align:right;">{{-- number_format($value['credits'],2) --}}</td>
+                                                        <td style="text-align:right;">{{-- number_format($value['netSales'],2) --}}</td>
+                                                        <td style="text-align:right;">{{-- number_format($value['%Credit'],2) --}}%</td>
                                                     </tr>
                                                 @endif
                                             @endforeach
@@ -244,9 +244,9 @@
                                             <td colspan="3" align="center">ทั้งหมด</td>
                                             <td class="text-success">{{ number_format($summary_subgroup_api['sum_subgroup_customers'],0) }}</td>
                                             <td class="text-success" style="text-align:right;">{{ number_format($summary_subgroup_api['sum_subgroup_sales'],2) }}</td>
-                                            <td class="text-danger" style="text-align:right;">{{ number_format($summary_subgroup_api['sum_subgroup_credits'],2) }}</td>
-                                            <td class="text-success" style="text-align:right;">{{ number_format($summary_subgroup_api['sum_subgroup_netSales'],2) }}</td>
-                                            <td class="text-danger" style="text-align:right;">{{ number_format($summary_subgroup_api['sum_subgroup_persentcredit'],2) }}%</td>
+                                            <td class="text-danger" style="text-align:right;">{{-- number_format($summary_subgroup_api['sum_subgroup_credits'],2) --}}</td>
+                                            <td class="text-success" style="text-align:right;">{{-- number_format($summary_subgroup_api['sum_subgroup_netSales'],2) --}}</td>
+                                            <td class="text-danger" style="text-align:right;">{{-- number_format($summary_subgroup_api['sum_subgroup_persentcredit'],2) --}}%</td>
                                         </tfoot>
                                     </table>
                                 </div>
@@ -278,9 +278,9 @@
                                                         <td>{{ $value['pdlist_name'] }}</td>
                                                         <td style="text-align:center;">{{ number_format($value['customers']) }}</td>
                                                         <td style="text-align:right;">{{ number_format($value['sales'],2) }}</td>
-                                                        <td style="text-align:right;">{{ number_format($value['credits'],2) }}</td>
-                                                        <td style="text-align:right;">{{ number_format($value['netSales'],2) }}</td>
-                                                        <td style="text-align:right;">{{ number_format($value['%Credit'],2) }}%</td>
+                                                        <td style="text-align:right;">{{-- number_format($value['credits'],2) --}}</td>
+                                                        <td style="text-align:right;">{{-- number_format($value['netSales'],2) --}}</td>
+                                                        <td style="text-align:right;">{{-- number_format($value['%Credit'],2) --}}%</td>
                                                     </tr>
                                                 @else
                                                     @if($key == 10)
@@ -297,9 +297,9 @@
                                                         <td>{{ $value['pdlist_name'] }}</td>
                                                         <td style="text-align:center;">{{ number_format($value['customers']) }}</td>
                                                         <td style="text-align:right;">{{ number_format($value['sales'],2) }}</td>
-                                                        <td style="text-align:right;">{{ number_format($value['credits'],2) }}</td>
-                                                        <td style="text-align:right;">{{ number_format($value['netSales'],2) }}</td>
-                                                        <td style="text-align:right;">{{ number_format($value['%Credit'],2) }}%</td>
+                                                        <td style="text-align:right;">{{-- number_format($value['credits'],2) --}}</td>
+                                                        <td style="text-align:right;">{{-- number_format($value['netSales'],2) --}}</td>
+                                                        <td style="text-align:right;">{{-- number_format($value['%Credit'],2) --}}%</td>
                                                     </tr>
                                                 @endif
                                             @endforeach
@@ -309,9 +309,9 @@
                                             <td colspan="3" align="center">ทั้งหมด</td>
                                             <td class="text-success">{{ number_format($summary_pdlist_api['sum_pdlist_customers'],0) }}</td>
                                             <td class="text-success" style="text-align:right;">{{ number_format($summary_pdlist_api['sum_pdlist_sales'],2) }}</td>
-                                            <td class="text-danger" style="text-align:right;">{{ number_format($summary_pdlist_api['sum_pdlist_credits'],2) }}</td>
-                                            <td class="text-success" style="text-align:right;">{{ number_format($summary_pdlist_api['sum_pdlist_netSales'],2) }}</td>
-                                            <td class="text-danger" style="text-align:right;">{{ number_format($summary_pdlist_api['sum_pdlist_persentcredit'],2) }}%</td>
+                                            <td class="text-danger" style="text-align:right;">{{-- number_format($summary_pdlist_api['sum_pdlist_credits'],2) --}}</td>
+                                            <td class="text-success" style="text-align:right;">{{-- number_format($summary_pdlist_api['sum_pdlist_netSales'],2) --}}</td>
+                                            <td class="text-danger" style="text-align:right;">{{-- number_format($summary_pdlist_api['sum_pdlist_persentcredit'],2) --}}%</td>
                                         </tfoot>
                                     </table>
                                 </div>
