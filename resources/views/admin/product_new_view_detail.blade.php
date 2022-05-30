@@ -12,12 +12,13 @@
 <!-- /Breadcrumb -->
 
 <style>
-    /* .img_1 {
+    .img_1 {
   border: 1px solid #ddd;
   border-radius: 4px;
   padding: 5px;
-  /* width: 150px; */
-  /* height: 150px;  */
+  width: 150px;
+  height: 150px;
+    }
 
   .curveBG {
   background: -moz-linear-gradient(top, rgba(235, 235, 235, 0.3) 10%, #768693 90%);
@@ -141,50 +142,30 @@
         <!-- /Title -->
 
             <section class="hk-sec-wrapper">
+                <div class="row">
                 <div class="col-md-6">
                     <div class="partnerGal-slide detail_slide" style="border: 1px solid #ddd;">
                         <div id="big" class="owl-carousel owl-theme big-img slider">
-                            <a class="item" data-fancybox="gallery" href="{{ asset('public/upload/NewsImage/news-1652519059.jpg')}}"><img src="{{ asset('public/upload/NewsImage/news-1652519059.jpg')}}"></a>
-                            {{-- @foreach ($gallerys as $value)
-                            <a class="item" data-fancybox="gallery" href="{{ asset('public/upload/NewsGallery/' . $value->image)}}"><img src="{{ isset($value->image) ? asset('public/upload/NewsGallery/' . $value->image) : '' }}"></a>
-                            @endforeach --}}
-                        </div>
-                        <div id="thumbs" class="owl-carousel owl-theme thumbs-img navigation-thumbs">
-                            <div class="item" href="{{ asset('public/upload/NewsImage/news-1652519059.jpg')}}"><img src="{{ asset('public/upload/NewsImage/news-1652519059.jpg')}}"></div>
-                            {{-- @foreach ($gallerys as $value)
-                            <div class="item"><img src="{{ isset($value->image) ? asset('public/upload/NewsGallery/' . $value->image) : '' }}"></div>
-                            @endforeach --}}
+                            <a class="item" data-fancybox="gallery" href="{{ asset('public/upload/ProductNewImage/' . $data_product->product_image)}}"><img src="{{ asset('public/upload/ProductNewImage/' . $data_product->product_image)}}"></a>
                         </div>
                     </div>
                 </div>
-                <div class="">
-                    <div class="row items-news">
-                    <div class="col-4 col-md-6">
-                        {{-- <img class="card-img" src="{{ asset('public/upload/NewsImage/news-1652519059.jpg')}}"
-                        alt="" style="max-width:100%;"> --}}
-                    </div>
-                    <div class="col-8 col-md-6">
-                        <div class="row">
-                            <div class="col-md-12"><div class="boxnews-date">
-                                <h6>{{$data_product->product_title}}</h6>
-                                <p class="mt-2">{{$data_product->product_detail}}</p>
-                            </div>
-                        </div>
-                        </div>
 
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-12"><div class="boxnews-date">
+                            <h6>{{$data_product->product_title}}</h6>
+                            <p class="mt-2">{{$data_product->product_detail}}</p>
+                        </div>
                     </div>
-                    <div class="col-md-12 text-right" style="font-size: 14px;">อัพเดตวันที่ : {{$data_product->updated_at->addYear(543)->format('d/m/Y')}}</div>
-                </div>
+                    </div>
 
                 </div>
-                <div class="row">
-                    <div class="col-sm">
-
-                    </div>
+                <div class="col-md-12 text-right" style="font-size: 14px;">อัพเดตวันที่ : {{$data_product->updated_at->addYear(543)->format('d/m/Y')}}</div>
                 </div>
             </section>
 
-            {{-- <section class="hk-sec-wrapper">
+            <section class="hk-sec-wrapper">
                 <div class="topic-secondgery">อัลบั้ม</div>
                 <div class="row">
                     @foreach ($gallerys as $value)
@@ -193,7 +174,7 @@
                         </div>
                     @endforeach
                 </div>
-            </section> --}}
+            </section>
     </div>
     <!-- /Container -->
 

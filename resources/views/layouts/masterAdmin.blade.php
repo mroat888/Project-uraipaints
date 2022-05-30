@@ -851,6 +851,12 @@
 
     <script src="{{ asset('https://unpkg.com/sweetalert/dist/sweetalert.min.js')}}"></script>
 
+    <!-- OwlCarousel -->
+    <script src="{{ asset('public/OwlCarousel/owl.carousel.min.js')}}"></script>
+
+    <!-- FANCYBOX -->
+    <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
     @yield('scripts')
 
     <script type="text/javascript">
