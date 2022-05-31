@@ -41,7 +41,7 @@ class ApprovalController extends Controller
         ->leftJoin('assignments_comments', 'assignments.id', 'assignments_comments.assign_id')
         ->leftJoin('api_customers', 'api_customers.identify', 'assignments.assign_shop')
         ->join('users', 'assignments.created_by', 'users.id')
-        ->whereIn('assignments.assign_status', [0, 4]) // สถานะอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน, 4=แก้ไขงาน))
+        ->whereIn('assignments.assign_status', [0]) // สถานะอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน, 4=แก้ไขงาน))
         ->where(function($query) use ($auth_team) {
             for ($i = 0; $i < count($auth_team); $i++){
                 $query->orWhere('users.team_id', $auth_team[$i])
@@ -620,107 +620,128 @@ class ApprovalController extends Controller
 
             if ($request->checkapprove) {
                 if ($request->approve) {
-                $data = Assignment::get();
-                if ($request->CheckAll == "Y") {
-                    // return "yy";
-                    foreach ($data as $value) {
-                        foreach ($request->checkapprove as $key => $chk) {
-                            Assignment::where('id', $chk)->where('assign_status', 0)->update([
-                                'assign_status' => 1,
-                                'assign_status_actoin' => 0,
-                                'assign_approve_date' => Carbon::now(),
-                                'assign_approve_id' => Auth::user()->id,
-                                'updated_by' => Auth::user()->id,
-                            ]);
+                // $data = Assignment::get();
+                    if ($request->CheckAll == "Y") {
+                        // return "yy";
+                        foreach ($data as $value) {
+                            foreach ($request->checkapprove as $key => $chk) {
+                                //dd($chk);
+                                Assignment::where('id', $chk)->where('assign_status', 0)->update([
+                                    'assign_status' => 1,
+                                    'assign_status_actoin' => 0,
+                                    'assign_approve_date' => Carbon::now(),
+                                    'assign_approve_id' => Auth::user()->id,
+                                    'updated_by' => Auth::user()->id,
+                                ]);
+                            }
                         }
-                    }
+                        DB::commit();
+                        return response()->json([
+                            'status' => 200,
+                            'message' => 'บันทึกข้อมูลได้',
+                            'req' => 'All'
+                        ]);
+                    } else {
+                        foreach ($data as $value) {
+                            foreach ($request->checkapprove as $key => $chk) {
+                                dd($chk);
+                                DB::table('assignments')
+                                ->where('id', $chk)
+                                ->where('assign_status', 0)
+                                ->update([
+                                        'assign_status' => 1,
+                                        'assign_status_actoin' => 0,
+                                        'assign_approve_date' => Carbon::now(),
+                                        'assign_approve_id' => Auth::user()->id,
+                                        'updated_by' => Auth::user()->id,
+                                    ]);
+
+                                // Assignment::where('id', $chk)->where('assign_status', 0)->update([
+                                //     'assign_status' => 1,
+                                //     'assign_status_actoin' => 0,
+                                //     'assign_approve_date' => Carbon::now(),
+                                //     'assign_approve_id' => Auth::user()->id,
+                                //     'updated_by' => Auth::user()->id,
+                                // ]);
+                            }
+                        }
                     DB::commit();
                     return response()->json([
                         'status' => 200,
                         'message' => 'บันทึกข้อมูลได้',
+                        'req' => 'REQ'
                     ]);
-                } else {
-                    foreach ($data as $value) {
-                        foreach ($request->checkapprove as $key => $chk) {
-                            Assignment::where('id', $chk)->where('assign_status', 0)->update([
-                                'assign_status' => 1,
-                                'assign_status_actoin' => 0,
-                                'assign_approve_date' => Carbon::now(),
-                                'assign_approve_id' => Auth::user()->id,
-                                'updated_by' => Auth::user()->id,
-                            ]);
-                        }
                     }
-                    DB::commit();
-                    return response()->json([
-                        'status' => 200,
-                        'message' => 'บันทึกข้อมูลได้',
-                    ]);
+                    
+                }else{
+                    $data = Assignment::get();
+                    if ($request->CheckAll == "Y") {
+                        // return "yy";
+                        foreach ($data as $value) {
+                            foreach ($request->checkapprove as $key => $chk) {
+                                Assignment::where('id', $chk)->where('assign_status', 0)->update([
+                                    'assign_status' => 2,
+                                    'assign_status_actoin' => 0,
+                                    'assign_approve_date' => Carbon::now(),
+                                    'assign_approve_id' => Auth::user()->id,
+                                    'updated_by' => Auth::user()->id,
+                                ]);
+                            }
+                        }
+                        DB::commit();
+                        return response()->json([
+                            'status' => 200,
+                            'message' => 'บันทึกข้อมูลได้',
+                            'req' => 'OKOK',
+                        ]);
+                    } else {
+                        foreach ($data as $value) {
+                            foreach ($request->checkapprove as $key => $chk) {
+                                Assignment::where('id', $chk)->where('assign_status', 0)->update([
+                                    'assign_status' => 2,
+                                    'assign_status_actoin' => 0,
+                                    'assign_approve_date' => Carbon::now(),
+                                    'assign_approve_id' => Auth::user()->id,
+                                    'updated_by' => Auth::user()->id,
+                                ]);
+                            }
+                        }
+                        DB::commit();
+                        return response()->json([
+                            'status' => 200,
+                            'message' => 'บันทึกข้อมูลได้',
+                            'req' => $request->approve,
+                        ]);
+                    }
                 }
-        }else {
-            $data = Assignment::get();
-                if ($request->CheckAll == "Y") {
-                    // return "yy";
-                    foreach ($data as $value) {
-                        foreach ($request->checkapprove as $key => $chk) {
-                            Assignment::where('created_by', $chk)->where('assign_status', 0)->update([
-                                'assign_status' => 2,
-                                'assign_status_actoin' => 0,
-                                'assign_approve_date' => Carbon::now(),
-                                'assign_approve_id' => Auth::user()->id,
-                                'updated_by' => Auth::user()->id,
-                            ]);
-                        }
-                    }
-                    DB::commit();
-                    return response()->json([
-                        'status' => 200,
-                        'message' => 'บันทึกข้อมูลได้',
-                    ]);
-                } else {
-                    foreach ($data as $value) {
-                        foreach ($request->checkapprove as $key => $chk) {
-                            Assignment::where('created_by', $chk)->where('assign_status', 0)->update([
-                                'assign_status' => 2,
-                                'assign_status_actoin' => 0,
-                                'assign_approve_date' => Carbon::now(),
-                                'assign_approve_id' => Auth::user()->id,
-                                'updated_by' => Auth::user()->id,
-                            ]);
-                        }
-                    }
-                    DB::commit();
-                    return response()->json([
-                        'status' => 200,
-                        'message' => 'บันทึกข้อมูลได้',
-                    ]);
-                }
+            }else{
+                DB::rollback();
+                // return back()->with('error', "กรุณาเลือกรายการอนุมัติ");
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'กรุณาเลือกรายการอนุมัติ',
+                    'req' => $request->approve,
+                    'check' => $request->checkapprove,
+                ]);
             }
-        }else{
-            DB::rollback();
-            // return back()->with('error', "กรุณาเลือกรายการอนุมัติ");
-            return response()->json([
-                'status' => 404,
-                'message' => 'กรุณาเลือกรายการอนุมัติ',
-            ]);
-        }
 
         DB::commit();
         return response()->json([
             'status' => 200,
             'message' => 'บันทึกข้อมูลได้',
+            'Req' => 'sdsdsd',
         ]);
 
 
-    } catch (\Exception $e) {
+        } catch (\Exception $e) {
 
-        DB::rollback();
-        return response()->json([
-            'status' => 404,
-            'message' => 'ไม่สามารถบันทึกข้อมูลได้',
-        ]);
+            DB::rollback();
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกข้อมูลได้',
+            ]);
 
-    }
+        }
     }
 
     public function approval_confirm_detail(Request $request)
