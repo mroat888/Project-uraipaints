@@ -159,6 +159,16 @@
                         </div>
                     </div>
                     </div>
+                    @if ($data_product->status_share == 1)
+                            <div class="col-md-12 mt-5 text-right"><p>แชร์ข้อมูลไปที่</p>
+                                <a href="http://www.facebook.com/sharer.php?u={{$data_product->product_url}}" target="_blank" class="btn btn-icon btn-icon-circle btn-indigo btn-icon-style-2 mt-2"><span class="btn-icon-wrap"><i class="fa fa-facebook"></i></span></a>
+                                <a href="https://social-plugins.line.me/lineit/share?url={{$data_product->product_url}}" class="btn btn-icon btn-icon-circle btn-success btn-icon-style-2 mt-2" target="_blank">
+                                    {{-- <img src="{{ asset('public/images/icon/icon-linePK.svg')}}"> --}}
+                                    <span class="btn-icon-wrap"><img src="{{ asset('public/images/icon/icon-lineWH.svg')}}" width="20"></span>
+
+                                </a>
+                            </div>
+                            @endif
 
                 </div>
                 <div class="col-md-12 text-right" style="font-size: 14px;">อัพเดตวันที่ : {{$data_product->updated_at->addYear(543)->format('d/m/Y')}}</div>
@@ -170,7 +180,12 @@
                 <div class="row">
                     @foreach ($gallerys as $value)
                         <div class="col-lg-2 col-md-4 col-sm-4 col-6 mb-10">
-                            <img class="card-img img_1" src="{{ isset($value->image) ? asset('public/upload/ProductNewGallery/' . $value->image) : '' }}" alt="" style="max-width:100%;">
+                            <div class="partnerGal-slide detail_slide" style="border: 1px solid #ddd;">
+                                <div id="big" class="owl-carousel owl-theme big-img slider">
+                                    <a class="item" data-fancybox="gallery" href="{{ isset($value->image) ? asset('public/upload/ProductNewGallery/' . $value->image) : '' }}"><img src="{{ isset($value->image) ? asset('public/upload/ProductNewGallery/' . $value->image) : '' }}"></a>
+                                </div>
+                            </div>
+                            {{-- <img class="card-img img_1" src="{{ isset($value->image) ? asset('public/upload/ProductNewGallery/' . $value->image) : '' }}" alt="" style="max-width:100%;"> --}}
                         </div>
                     @endforeach
                 </div>

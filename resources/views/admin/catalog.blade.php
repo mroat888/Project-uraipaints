@@ -4,7 +4,7 @@
  <!-- Breadcrumb -->
  <nav class="hk-breadcrumb" aria-label="breadcrumb">
     <ol class="breadcrumb breadcrumb-light bg-transparent">
-        <li class="breadcrumb-item active">สินค้าใหม่</li>
+        <li class="breadcrumb-item active">แคตตาล็อกสินค้า</li>
     </ol>
 </nav>
 <!-- /Breadcrumb -->
@@ -14,7 +14,7 @@
         <!-- Title -->
         <div class="hk-pg-header mb-10">
             <div class="topichead-bgred"><i
-                data-feather="star"></i> บันทึกแจ้งสินค้าใหม่</div>
+                data-feather="star"></i> แคตตาล็อกสินค้า</div>
             <div class="content-right d-flex">
                 <button type="button" class="btn btn-green" data-toggle="modal" data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button>
             </div>
@@ -22,7 +22,7 @@
         <!-- /Title -->
 
             <section class="hk-sec-wrapper">
-                <div class="topic-secondgery">รายการแจ้งสินค้าใหม่</div>
+                <div class="topic-secondgery">รายการแคตตาล็อกสินค้า</div>
                 <div class="row">
                     <div class="col-sm">
                         <div class="table-wrap">
@@ -47,7 +47,8 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>เรื่อง</th>
+                                        <th>รหัส Product List</th>
+                                        <th>ชื่อ Product List</th>
                                         <th>วันที่อัพเดตล่าสุด</th>
                                         <th>รูปภาพ</th>
                                         <th>สถานะ</th>
@@ -62,6 +63,7 @@
                                     @endphp
                                     <tr>
                                         <td>{{$key + 1}}</td>
+                                        <td></td>
                                         <td>{{$value->product_title}}</td>
                                         <td>{{$date}}</td>
                                         <td>
@@ -86,11 +88,6 @@
                                                 <a href="{{ url('admin/update-productNew-status-use', $value->id)}}" class="btn btn-icon btn-teal">
                                                     <h4 class="btn-icon-wrap" style="color: white;"><span
                                                         class="material-icons">settings_power</span></h4>
-                                                </a>
-                                                <a href="{{ url('admin/product-new-gallery', $value->id) }}"
-                                                    class="btn btn-icon btn-purple">
-                                                    <h4 class="btn-icon-wrap" style="color: white;"><span
-                                                            class="material-icons">collections</span></h4>
                                                 </a>
                                                 <a onclick="edit_modal({{ $value->id }})"
                                                     class="btn btn-icon btn-edit" data-toggle="modal" data-target="#editProductNew">
@@ -122,7 +119,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">เพิ่มแจ้งสินค้าใหม่</h5>
+                    <h5 class="modal-title">เพิ่มแคตตาล็อกสินค้า</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -133,8 +130,13 @@
                 <div class="modal-body">
                         <div class="row">
                             <div class="col-md-6 form-group">
-                                <label for="firstName">ชื่อสินค้า</label>
-                                <input class="form-control" placeholder="กรุณาใส่ชื่อเรื่อง" type="text" name="product_title" required>
+                                <label for="firstName">หมวด</label>
+                                <select name="category" class="form-control custom-select select2" required>
+                                    <option value="" selected disabled>กรุณาเลือกหมวด</option>
+                                    {{-- @foreach ($customer_api as $key => $value)
+                                        <option value="{{$customer_api[$key]['id']}}">{{$customer_api[$key]['shop_name']}}</option>
+                                    @endforeach --}}
+                                </select>
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="firstName">วันที่อัพเดตล่าสุด</label>
@@ -144,9 +146,29 @@
                                 <input class="form-control" type="text" name="date" value="{{$date2->format('d/m/Y')}}" readonly>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">ตราสินค้า</label>
+                                <select name="brand" class="form-control custom-select select2" required>
+                                    <option value="" selected disabled>กรุณาเลือกตราสินค้า</option>
+                                    {{-- @foreach ($customer_api as $key => $value)
+                                        <option value="{{$customer_api[$key]['id']}}">{{$customer_api[$key]['shop_name']}}</option>
+                                    @endforeach --}}
+                                </select>
+                            </div>
+                                    <div class="col-md-6 form-group">
+                                        <label for="firstName">Product List</label>
+                                        <select name="product_list" class="form-control custom-select select2" required>
+                                            <option value="" selected disabled>กรุณาเลือก Product List</option>
+                                            {{-- @foreach ($customer_api as $key => $value)
+                                                <option value="{{$customer_api[$key]['id']}}">{{$customer_api[$key]['shop_name']}}</option>
+                                            @endforeach --}}
+                                        </select>
+                                    </div>
+                        </div>
                         <div class="form-group">
-                            <label for="username">รายละเอียด</label>
-                            <textarea class="form-control" cols="30" rows="5" placeholder="กรุณาใส่รายละเอียด" type="text" name="product_detail" required></textarea>
+                            <label for="username">คำอธิบาย (Description)</label>
+                            <textarea class="form-control" cols="30" rows="5" placeholder="คำอธิบาย (Description)" type="text" name="product_detail" required></textarea>
                         </div>
                         <div class="form-group">
                             <label for="username">Link URL</label>
@@ -154,7 +176,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
-                                <label for="firstName">รูปภาพ (หน้าปกสินค้า) </label>
+                                <label for="firstName">รูปภาพ (หน้าปก) </label>
                                 <input type="file" name="image" class="form-control">
                             </div>
                         </div>

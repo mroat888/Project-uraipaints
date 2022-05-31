@@ -642,6 +642,7 @@ class ApprovalController extends Controller
                 } else {
                     foreach ($data as $value) {
                         foreach ($request->checkapprove as $key => $chk) {
+                            // return $chk;
                             Assignment::where('id', $chk)->where('assign_status', 0)->update([
                                 'assign_status' => 1,
                                 'assign_status_actoin' => 0,
@@ -663,7 +664,7 @@ class ApprovalController extends Controller
                     // return "yy";
                     foreach ($data as $value) {
                         foreach ($request->checkapprove as $key => $chk) {
-                            Assignment::where('created_by', $chk)->where('assign_status', 0)->update([
+                            Assignment::where('id', $chk)->where('assign_status', 0)->update([
                                 'assign_status' => 2,
                                 'assign_status_actoin' => 0,
                                 'assign_approve_date' => Carbon::now(),
@@ -680,7 +681,7 @@ class ApprovalController extends Controller
                 } else {
                     foreach ($data as $value) {
                         foreach ($request->checkapprove as $key => $chk) {
-                            Assignment::where('created_by', $chk)->where('assign_status', 0)->update([
+                            Assignment::where('id', $chk)->where('assign_status', 0)->update([
                                 'assign_status' => 2,
                                 'assign_status_actoin' => 0,
                                 'assign_approve_date' => Carbon::now(),
@@ -723,74 +724,74 @@ class ApprovalController extends Controller
     }
     }
 
-    public function approval_confirm_detail(Request $request)
-    {
-        // dd($request);
+    // public function approval_confirm_detail(Request $request)
+    // {
+    //     // dd($request);
 
-        if ($request->checkapprove) {
-            if ($request->approve) {
-            $data = Assignment::get();
-            if ($request->CheckAll == "Y") {
-                // return "yy";
-                // foreach ($data as $value) {
-                    foreach ($request->checkapprove as $key => $chk) {
-                        Assignment::where('id', $chk)->update([
-                            'assign_status' => 1,
-                            'assign_status_actoin' => 0,
-                            'assign_approve_date' => Carbon::now(),
-                            'assign_approve_id' => Auth::user()->id,
-                            'updated_by' => Auth::user()->id,
-                        ]);
-                    }
-                // }
-            } else {
-                // foreach ($data as $value) {
-                    foreach ($request->checkapprove as $key => $chk) {
-                        Assignment::where('id', $chk)->update([
-                            'assign_status' => 1,
-                            'assign_status_actoin' => 0,
-                            'assign_approve_date' => Carbon::now(),
-                            'assign_approve_id' => Auth::user()->id,
-                            'updated_by' => Auth::user()->id,
-                        ]);
-                    }
-                // }
-            }
-        }else {
-            $data = Assignment::get();
-                if ($request->CheckAll == "Y") {
-                    // return "yy";
-                    // foreach ($data as $value) {
-                        foreach ($request->checkapprove as $key => $chk) {
-                            Assignment::where('id', $chk)->update([
-                                'assign_status' => 2,
-                                'assign_status_actoin' => 0,
-                                'assign_approve_date' => Carbon::now(),
-                                'assign_approve_id' => Auth::user()->id,
-                                'updated_by' => Auth::user()->id,
-                            ]);
-                        }
-                    // }
-                    return back();
-                } else {
-                    // foreach ($data as $value) {
-                        foreach ($request->checkapprove as $key => $chk) {
-                            Assignment::where('id', $chk)->update([
-                                'assign_status' => 2,
-                                'assign_status_actoin' => 0,
-                                'assign_approve_date' => Carbon::now(),
-                                'assign_approve_id' => Auth::user()->id,
-                                'updated_by' => Auth::user()->id,
-                            ]);
-                        }
-                    // }
-                    return back();
-                }
-        }
-        } else {
-            return back()->with('error', "กรุณาเลือกรายการอนุมัติ");
-        }
+    //     if ($request->checkapprove) {
+    //         if ($request->approve) {
+    //         $data = Assignment::get();
+    //         if ($request->CheckAll == "Y") {
+    //             // return "yy";
+    //             // foreach ($data as $value) {
+    //                 foreach ($request->checkapprove as $key => $chk) {
+    //                     Assignment::where('id', $chk)->update([
+    //                         'assign_status' => 1,
+    //                         'assign_status_actoin' => 0,
+    //                         'assign_approve_date' => Carbon::now(),
+    //                         'assign_approve_id' => Auth::user()->id,
+    //                         'updated_by' => Auth::user()->id,
+    //                     ]);
+    //                 }
+    //             // }
+    //         } else {
+    //             // foreach ($data as $value) {
+    //                 foreach ($request->checkapprove as $key => $chk) {
+    //                     Assignment::where('id', $chk)->update([
+    //                         'assign_status' => 1,
+    //                         'assign_status_actoin' => 0,
+    //                         'assign_approve_date' => Carbon::now(),
+    //                         'assign_approve_id' => Auth::user()->id,
+    //                         'updated_by' => Auth::user()->id,
+    //                     ]);
+    //                 }
+    //             // }
+    //         }
+    //     }else {
+    //         $data = Assignment::get();
+    //             if ($request->CheckAll == "Y") {
+    //                 // return "yy";
+    //                 // foreach ($data as $value) {
+    //                     foreach ($request->checkapprove as $key => $chk) {
+    //                         Assignment::where('id', $chk)->update([
+    //                             'assign_status' => 2,
+    //                             'assign_status_actoin' => 0,
+    //                             'assign_approve_date' => Carbon::now(),
+    //                             'assign_approve_id' => Auth::user()->id,
+    //                             'updated_by' => Auth::user()->id,
+    //                         ]);
+    //                     }
+    //                 // }
+    //                 return back();
+    //             } else {
+    //                 // foreach ($data as $value) {
+    //                     foreach ($request->checkapprove as $key => $chk) {
+    //                         Assignment::where('id', $chk)->update([
+    //                             'assign_status' => 2,
+    //                             'assign_status_actoin' => 0,
+    //                             'assign_approve_date' => Carbon::now(),
+    //                             'assign_approve_id' => Auth::user()->id,
+    //                             'updated_by' => Auth::user()->id,
+    //                         ]);
+    //                     }
+    //                 // }
+    //                 return back();
+    //             }
+    //     }
+    //     } else {
+    //         return back()->with('error', "กรุณาเลือกรายการอนุมัติ");
+    //     }
 
-        return back();
-    }
+    //     return back();
+    // }
 }

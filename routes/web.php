@@ -127,6 +127,7 @@ Route::post('search_promotion', 'PromotionController@search_promotion');
 
 Route::get('product_new', 'ProductNewController@frontend_product_new');
 Route::get('product_new_detail/{id}', 'ProductNewController@product_new_detail');
+Route::post('search_product_new', 'ProductNewController@search_product_new');
 
 // Report
 Route::get('/reportSale/reportMonthlyPlans', 'Report\ReportMonthlyPlansController@index');
@@ -252,6 +253,8 @@ Route::post('lead/search_news', 'NewsController@search_news');
 Route::get('lead/promotions', 'PromotionController@lead_frontend_promotion');
 Route::post('lead/search_promotion', 'PromotionController@search_promotion');
 Route::get('lead/product_new', 'ProductNewController@lead_frontend_product_new');
+Route::get('lead/product_new_detail/{id}', 'ProductNewController@product_new_detail');
+Route::post('lead/search_product_new', 'ProductNewController@search_product_new');
 Route::get('lead/news_detail/{id}', 'NewsController@lead_news_detail');
 Route::get('lead/promotion_detail/{id}', 'PromotionController@lead_promotion_detail');
 
@@ -361,6 +364,8 @@ Route::post('head/search_news', 'NewsController@search_news');
 Route::get('head/promotions', 'PromotionController@head_frontend_promotion');
 Route::post('head/search_promotion', 'PromotionController@search_promotion');
 Route::get('head/product_new', 'ProductNewController@head_frontend_product_new');
+Route::get('head/product_new_detail/{id}', 'ProductNewController@product_new_detail');
+Route::post('head/search_product_new', 'ProductNewController@search_product_new');
 Route::get('head/news_detail/{id}', 'NewsController@head_news_detail');
 Route::get('head/promotion_detail/{id}', 'PromotionController@head_promotion_detail');
 
@@ -531,6 +536,15 @@ Route::get('admin/edit_product_new_gallery/{id}', 'ProductNewController@gallery_
 Route::post('admin/update_product_new_gallery', 'ProductNewController@gallery_update');
 Route::post('admin/delete_product_new_gallery', 'ProductNewController@gallery_destroy');
 Route::get('admin/view_product_new_detail/{id}', 'ProductNewController@view_detail');
+
+
+
+// Catalog
+Route::get('admin/catalog', 'Admin\CatalogController@index');
+Route::post('admin/create_product_property', 'Admin\ProductPropertyController@store');
+Route::get('admin/edit_product_property/{id}', 'Admin\ProductPropertyController@edit');
+Route::post('admin/update_product_property', 'Admin\ProductPropertyController@update');
+Route::get('admin/delete_product_property/{id}', 'Admin\ProductPropertyController@destroy');
 
 
 // Product Property

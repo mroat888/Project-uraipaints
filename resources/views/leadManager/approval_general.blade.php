@@ -59,24 +59,6 @@
                         </div>
                     </div>
 
-                    {{-- <div class="row">
-                        <div class="col-sm">
-                            <a href="{{ url('/approvalgeneral') }}" type="button" class="btn btn-violet btn-wth-icon icon-wthot-bg btn-sm text-white">
-                                <span class="icon-label">
-                                    <i class="fa fa-file"></i>
-                                </span>
-                                <span class="btn-text">รออนุมัติ</span>
-                            </a>
-
-                            <a href="{{ url('approvalgeneral/history') }}" type="button" class="btn btn-secondary btn-wth-icon icon-wthot-bg btn-sm text-white">
-                                <span class="icon-label">
-                                    <i class="fa fa-list"></i>
-                                </span>
-                                <span class="btn-text">ประวัติ</span>
-                            </a>
-                            <hr>
-                        </div>
-                    </div> --}}
                     <div class="row mb-2">
                             <div class="col-md-3">
                                 <h5 class="hk-sec-title">รายการคำขออนุมัติ</h5>
@@ -151,11 +133,12 @@
                             <!-- ------ -->
                            </div>
                         </div>
+                        <form id="from_general_approve" enctype="multipart/form-data">
+                            {{-- <form action="{{url('lead/approval_confirm_all')}}" method="post" enctype="multipart/form-data"> --}}
+                            @csrf
                     <div class="row">
                         <div class="col-sm">
                             <div class="mb-20">
-                                <form id="from_general_approve" enctype="multipart/form-data">
-                                    @csrf
                                 <button type="button" id="btn_saleplan_approve" class="btn btn_purple btn-approval" name="approve" value="approve">อนุมัติ</button>
 
                                 <button type="button" id="btn_saleplan_approve2" class="btn btn_purple btn-reject ml-5" name="failed" value="failed">ไม่อนุมัติ</button>
@@ -222,12 +205,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </div>
-         <!-- ModalSaleplanApprove -->
+                            <!-- ModalSaleplanApprove -->
          <div class="modal fade" id="ModalSaleplanApprove" tabindex="-1" role="dialog" aria-labelledby="ModalSaleplanApprove"
          aria-hidden="true">
          <div class="modal-dialog" role="document">
@@ -250,7 +228,14 @@
          </div>
      </div>
          <!-- End ModalSaleplanApprove -->
-    </form>
+                        </form>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+    {{-- </form> --}}
         <!-- /Row -->
     </div>
     <!-- /Container -->
@@ -337,6 +322,18 @@
     </div>
 
 <script type="text/javascript">
+
+$(document).on('click', '#btn_saleplan_approve', function() {
+            let approve = $(this).val();
+            $('#approve').val(approve);
+            $('#ModalSaleplanApprove').modal('show');
+        });
+
+        $(document).on('click', '#btn_saleplan_approve2', function() {
+            let failed = $(this).val();
+            $('#failed').val(failed);
+            $('#ModalSaleplanApprove').modal('show');
+        });
 
 function edit_modal(id) {
         $.ajax({

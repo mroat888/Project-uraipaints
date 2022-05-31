@@ -278,7 +278,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link {{ (request()->is('product_new')) ? 'btn2' : '' }}"
+                            <a class="nav-link {{ (request()->is('admin/product_new')) ? 'btn2' : '' }} {{ (request()->is('admin/catalog')) ? 'btn2' : '' }}"
                                 href="javascript:void(0);" data-toggle="collapse" data-target="#products_dropdwon">
                                 <i class="ion ion-md-globe" style="color: #044067;"></i>
                                 <span class="nav-link-text">สินค้า</span>
@@ -293,10 +293,10 @@
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item {{ (request()->is('admin/catalog')) ? 'btn2' : '' }}">
                                     <ul class="nav flex-column">
                                         <li class="nav-item ">
-                                            <a class="nav-link" href="javascript:void(0)">
+                                            <a class="nav-link" href="{{ url('admin/catalog') }}">
                                                 <i class="ion ion-md-cube" style="color: #044067;"></i>แคตตาล๊อคสินค้า</a>
                                         </li>
                                     </ul>

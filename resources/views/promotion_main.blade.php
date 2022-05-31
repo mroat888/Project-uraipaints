@@ -1,3 +1,13 @@
+<style>
+    .img_1 {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  /* width: 150px;
+  height: 150px; */
+    }
+</style>
+
 <div class="row">
     <div class="col-md-12">
         <section class="hk-sec-wrapper">
@@ -5,7 +15,7 @@
             <div class="hk-pg-header mb-10" style="margin-top: 30px;">
                 <div class="col-sm-12 col-md-12">
                     <span class="form-inline pull-right pull-sm-center">
-                        @php 
+                        @php
                             switch(Auth::user()->status){
                                 case 1 : $action_search = "search_promotion";
                                     break;
@@ -36,7 +46,7 @@
             @foreach ($list_promotion as $value)
             <div class="row items-news">
                 <div class="col-md-2">
-                    <img class="card-img"
+                    <img class="card-img img_1"
                     src="{{ isset($value->news_image) ? asset('public/upload/PromotionImage/' . $value->news_image) : '' }}"
                     alt="{{ $value->news_title }}"
                     style="max-width:100%;">
@@ -71,6 +81,7 @@
 
                     </div>
                 </div>
+                <div class="col-md-12 text-right" style="font-size: 14px;"><div class="news-update">อัพเดตวันที่ : {{$value->updated_at->format('d/m/Y')}}</div></div>
             </div>
 
             @endforeach

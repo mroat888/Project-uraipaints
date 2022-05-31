@@ -41,9 +41,16 @@ class ProductNewController extends Controller
 
     public function product_new_detail($id)
     {
-        $data = ProductNew::where('id', $id)->first();
+        $data_product = ProductNew::where('id', $id)->first();
+        $gallerys = ProductNewGallery::where('product_new_id', $id)->orderBy('id', 'desc')->get();
 
-        return view('saleman.product_new_detail', compact('data'));
+        if (Auth::user()->status == 1) {
+            return view('saleman.product_new_detail', compact('data_product', 'gallerys'));
+        }elseif (Auth::user()->status == 2) {
+            return view('leadManager.product_new_detail', compact('data_product', 'gallerys'));
+        }elseif (Auth::user()->status == 3) {
+            return view('headManager.product_new_detail', compact('data_product', 'gallerys'));
+        }
     }
 
     public function frontend_product_new()
@@ -68,6 +75,19 @@ class ProductNewController extends Controller
     {
         $list_product_new = ProductNew::orderBy('id', 'desc')->paginate(10);
         return view('admin.frontendProduct_new', compact('list_product_new'));
+    }
+
+    public function search_product_new(Request $request)
+    {
+        $list_product_new = ProductNew::where('product_title', 'LIKE', '%'.$request->search.'%')->orderBy('id', 'desc')->paginate(10);
+
+        if (Auth::user()->status == 1) {
+            return view('saleman.product_new', compact('list_product_new'));
+        }elseif (Auth::user()->status == 2) {
+            return view('leadManager.product_new', compact('list_product_new'));
+        }elseif (Auth::user()->status == 3) {
+            return view('headManager.product_new', compact('list_product_new'));
+        }
     }
 
     public function store(Request $request)

@@ -88,7 +88,6 @@
                                     @endforeach
                                 </select>
 
-<<<<<<< HEAD
                                     @if(count($team_sales) >= 1)
                                     <select name="selectteam_sales" class="form-control form-control-sm" aria-label=".form-select-lg example">
                                         <option value="" selected>เลือกทีม</option>
@@ -97,10 +96,6 @@
                                             @endforeach
                                     </select>
                                     @endif
-=======
-                                    <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateFrom" name="fromMonth"/>
-                                    ถึง : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name="toMonth"/>
->>>>>>> 3bc5408ab745059a12548ce6b56edb45fdec7f02
 
                                     <select name="selectusers" class="form-control form-control-sm" aria-label=".form-select-lg example">
                                         <option value="" selected>ผู้แทนขาย</option>
