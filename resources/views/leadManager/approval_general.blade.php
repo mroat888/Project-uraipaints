@@ -58,7 +58,6 @@
                             </ul>
                         </div>
                     </div>
-
                     <div class="row mb-2">
                             <div class="col-md-3">
                                 <h5 class="hk-sec-title">รายการคำขออนุมัติ</h5>
@@ -137,11 +136,13 @@
                             {{-- <form action="{{url('lead/approval_confirm_all')}}" method="post" enctype="multipart/form-data"> --}}
                             @csrf
                     <div class="row">
+                    <form id="from_general_approve" enctype="multipart/form-data">
+                            @csrf
                         <div class="col-sm">
                             <div class="mb-20">
                                 <button type="button" id="btn_saleplan_approve" class="btn btn_purple btn-approval" name="approve" value="approve">อนุมัติ</button>
 
-                                <button type="button" id="btn_saleplan_approve2" class="btn btn_purple btn-reject ml-5" name="failed" value="failed">ไม่อนุมัติ</button>
+                                <button type="button" id="btn_saleplan_approve2" class="btn btn_purple btn-reject ml-5 btn_click" name="failed" value="failed">ไม่อนุมัติ</button>
                             </div>
                             <div class="table-responsive-sm table-color">
                                 <table id="datable_1" class="table table-sm table-hover">
@@ -377,11 +378,58 @@ function edit_modal(id) {
         });
     }
 
+    $(".btn_click").on("click", function(){
+        var btn_val = $(this).val();
+        var formData = new FormData();
+        formData.append( 'approve', $(this).val());
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            type: 'POST',
+            url: '{{ url('lead/approval_confirm_all') }}',
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                console.log(response);
+                if(response.status == 200){
+                Swal.fire({
+                    icon: 'success',
+                    title: 'เรียบร้อย!',
+                    text: "ยืนยันการอนุมัติเรียบร้อยแล้วค่ะ",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+                $('#ModalSaleplanApprove').modal('hide');
+                $('#shop_status_name_lead').text('ยืนยันการอนุมัติเรียบร้อย');
+                // $('#btn_saleplan_restrospective').prop('disabled', true);
+                // location.reload();
+            }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ไม่สามารถบันทึกข้อมูลได้',
+                    text: response.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                $('#ModalSaleplanApprove').modal('hide');
+            }
+            }
+        });
+    })
+
+
         $("#from_general_approve").on("submit", function(e) {
             e.preventDefault();
             //var formData = $(this).serialize();
             var formData = new FormData(this);
-            console.log(formData);
+            var btn_click = $(this).val();
+            console.log(btn_click);
             $.ajax({
                 type: 'POST',
                 url: '{{ url('lead/approval_confirm_all') }}',
@@ -402,7 +450,7 @@ function edit_modal(id) {
                     $('#ModalSaleplanApprove').modal('hide');
                     $('#shop_status_name_lead').text('ยืนยันการอนุมัติเรียบร้อย');
                     // $('#btn_saleplan_restrospective').prop('disabled', true);
-                    location.reload();
+                   // location.reload();
                 }else{
                     Swal.fire({
                         icon: 'error',

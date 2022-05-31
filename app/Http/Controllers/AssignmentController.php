@@ -46,15 +46,15 @@ class AssignmentController extends Controller
         }
     })->get();
 
-        $team_sales =  DB::table('master_team_sales')
-        ->where(function($query) use ($auth_team) {
-            for ($i = 0; $i < count($auth_team); $i++){
-                $query->orWhere('id', $auth_team[$i])
-                    ->orWhere('id', 'like', $auth_team[$i].',%')
-                    ->orWhere('id', 'like', '%,'.$auth_team[$i]);
-            }
-        })
-        ->get();
+    $team_sales =  DB::table('master_team_sales')
+    ->where(function($query) use ($auth_team) {
+        for ($i = 0; $i < count($auth_team); $i++){
+            $query->orWhere('id', $auth_team[$i])
+                ->orWhere('id', 'like', $auth_team[$i].',%')
+                ->orWhere('id', 'like', '%,'.$auth_team[$i]);
+        }
+    })
+    ->get();
 
         return view('leadManager.add_assignment', $data);
     }

@@ -46,7 +46,6 @@
                             <span class="form-inline pull-right pull-sm-center">
                                 <form action="{{ url('head/search_month_add-assignment') }}" method="post" enctype="multipart/form-data">
                                     @csrf
-<<<<<<< HEAD
                                 <span id="selectdate">
                                     @if(count($team_sales) >= 1)
                                     <select name="selectteam_sales" class="form-control form-control-sm" aria-label=".form-select-lg example">
@@ -65,13 +64,6 @@
                                     </select>
 
                                     <input type="month" value="" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="" name="selectdateTo"/>
-=======
-                                    <span id="selectdate">
-
-                                        เดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateFrom" name="fromMonth"/>
-
-                                        ถึงเดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name="toMonth"/>
->>>>>>> 3bc5408ab745059a12548ce6b56edb45fdec7f02
 
                                     <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm">ค้นหา</button>
                                     </span>
@@ -369,7 +361,7 @@
         function show_result(id){
             $.ajax({
                 type: "GET",
-                url: '{{ url("head/edit_assignment/") }}/'+id,
+                url: '{{ url("head/edit_assignment") }}/'+id,
                 dataType: "JSON",
                 async: false,
                 success: function(data) {
@@ -398,7 +390,7 @@
                     }
 
                     let img_name_send = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataEdit.assign_result_fileupload;
-                    if(data.dataEdit.assign_result_fileupload != ""){
+                    if(data.dataEdit.assign_result_fileupload != "" && data.dataEdit.assign_result_fileupload !== null){
                         ext = data.dataEdit.assign_result_fileupload.split('.').pop().toLowerCase();
                         console.log(img_name_send);
                         if(ext == "pdf"){
@@ -423,17 +415,17 @@
                         }
                     });
 
-                if (data.dataEdit.assign_result_status == 1) {
-                $('#result_send').append('<option value='+data.dataEdit.assign_result_status+' selected>สำเร็จ</option> <option value="2">ไม่สำเร็จ</option>');
-                }
-                if (data.dataEdit.assign_result_status == 2){
-                    $('#result_send').append('<option value='+data.dataEdit.assign_result_status+' selected>ไม่สำเร็จ</option> <option value="1">สำเร็จ</option>');
-                }
-                if (data.dataEdit.assign_result_status == 3 || data.dataEdit.assign_result_status == 0){
-                    $('#result_send').append('<option value="" selected>เลือกข้อมูล</option> <option value="2">ไม่สำเร็จ</option> <option value="1">สำเร็จ</option>');
-                }
+                    if (data.dataEdit.assign_result_status == 1) {
+                        $('#result_send').append('<option value='+data.dataEdit.assign_result_status+' selected>สำเร็จ</option> <option value="2">ไม่สำเร็จ</option>');
+                    }
+                    if (data.dataEdit.assign_result_status == 2){
+                        $('#result_send').append('<option value='+data.dataEdit.assign_result_status+' selected>ไม่สำเร็จ</option> <option value="1">สำเร็จ</option>');
+                    }
+                    if (data.dataEdit.assign_result_status == 3 || data.dataEdit.assign_result_status == 0){
+                        $('#result_send').append('<option value="" selected>เลือกข้อมูล</option> <option value="2">ไม่สำเร็จ</option> <option value="1">สำเร็จ</option>');
+                    }
 
-                    $('#ModalResult').modal('toggle');
+                        $('#ModalResult').modal('toggle');
                 }
             });
         }
