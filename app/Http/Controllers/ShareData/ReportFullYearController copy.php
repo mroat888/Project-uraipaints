@@ -17,16 +17,15 @@ class ReportFullYearController extends Controller
     public function index()
     {
         list($year,$month,$day) = explode('-',date('Y-m-d'));
+        $path_search = "reports/years/".$year."/sellers/".Auth::user()->api_identify;
         $api_token = $this->api_token->apiToken();
-
-        // กลุ่มสินค้า
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/groups');
-        $group_api = $response->json();
-        $data['group_api'] = $group_api['data'];
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search);
+        $data['yearseller_api'] = $response->json();
 
         // สินค้า Top Group
         // $path_search_top = "reports/years/".$year."/sellers/".Auth::user()->api_identify."/pdgroups?sortorder=DESC&limits=10"; 
         $path_search_top = "reports/years/".$year."/sellers/".Auth::user()->api_identify."/pdgroups?sortorder=DESC"; 
+        $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search_top);
         $data['grouptop_api'] = $response->json();
 
@@ -54,7 +53,7 @@ class ReportFullYearController extends Controller
 
         // สินค้า Top SubGroup
         $path_search_top = "reports/years/".$year."/sellers/".Auth::user()->api_identify."/pdsubgroups?sortorder=DESC"; 
-        // $api_token = $this->api_token->apiToken();
+        $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search_top);
         $data['subgrouptop_api'] = $response->json();
 
@@ -84,7 +83,7 @@ class ReportFullYearController extends Controller
 
         // สินค้า Top Product List
         $path_search_top = "reports/years/".$year."/sellers/".Auth::user()->api_identify."/pdlists?sortorder=DESC"; 
-        // $api_token = $this->api_token->apiToken();
+        $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search_top);
         $data['pdlisttop_api'] = $response->json();
 

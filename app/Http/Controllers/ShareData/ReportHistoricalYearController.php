@@ -17,260 +17,176 @@ class ReportHistoricalYearController extends Controller
 
     public function index()
     {
+
         list($year,$month,$day) = explode('-',date('Y-m-d'));
         $year = $year+0;
         $year_old1 = $year-1; 
-        $year_old2 = $year-2;
-     
+        $year_search = $year.",".$year_old1;
 
-        $path_search = "reports/years/".$year.",".$year_old1.",".$year_old2."/sellers/".Auth::user()->api_identify;
+        $data['year_search'] = array($year, $year_old1);
+
+        // -- รายปี
+        $path_search = "reports/years/".$year_search."/sellers/".Auth::user()->api_identify;
         $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search);
         $year_api = $response->json();
         
         // dd($year_api);
         if($year_api['code'] == 200){
-            $sum_sales = 0;
-            $sum_credits = 0;
-            $sum_netSales = 0;
-            $sum_persent_credits =0 ;
-            $persent_sale =0 ;
-            $chat_customer = "";
-            $chat_netsales = "";
-            $chat_year = "";
-            $chat_persent_sale = "";
-
-            foreach($year_api['data'] as $value){
-                $sum_sales += $value['sales'];
-                $sum_credits += $value['credits'];
-                $sum_netSales += $value['netSales'];
-            }
-
             $count_row = count($year_api['data']); // นับจำนวน array
             $crow = 1;
             foreach($year_api['data'] as $value){
-                $persent_sale =  round(($value['netSales'] * 100 ) / $sum_netSales);
-                $yearadmin_api[] = [
+                // $persent_sale =  round(($value['netSales'] * 100 ) / $sum_netSales);
+                $data['yearadmin_api'][] = [
                     'year' => $value['year'],
+                    'identify' => $value['identify'],
+                    'name' => $value['name'],
+                    'sales' => $value['sales'],
                     'customers' => $value['customers'],
                     'months' => $value['months'],
-                    'sales' => $value['sales'],
-                    'credits' => $value['credits'],
-                    '%Credit' => $value['%Credit'],
-                    'netSales' => $value['netSales'],
-                    '%Sale' => $persent_sale,
-                ];
-
-                // -- Caht data
-                if($crow != $count_row){
-                    if(!is_null($value['customers'])){
-                        $chat_customer .= $value['customers'].",";
-                        $chat_netsales .= $value['netSales'].",";
-                        $chat_persent_sale .= $persent_sale.",";
-                    }else{
-                        $chat_customer .= "0,";
-                        $chat_netsales .= "0,";
-                        $chat_persent_sale .= "0,";
-                    }
-                }else{
-                    if(!is_null($value['customers'])){
-                        $chat_customer .= $value['customers'];
-                        $chat_netsales .= $value['netSales'];
-                        $chat_persent_sale .= $persent_sale.",";
-                    }else{
-                        $chat_customer .= "0";
-                        $chat_netsales .= "0";
-                        $chat_persent_sale .= "0";
-                    }
-                }
-                // -- Caht data
-
+                    'sales_th' => $value['sales_th'],
+                ];        
             }
 
-            $sum_persent_credits = ($sum_credits * 100)/$sum_sales;
-
-            $summary_yearadmin_api = [
-                'sum_sales' => $sum_sales,
-                'sum_credits' => $sum_credits,
-                'sum_persent_credits' => $sum_persent_credits,
-                'sum_netSales' => $sum_netSales,
-            ];
-
-            // -- Chat
-            $chat_year = $year_old2.",".$year_old1.",".$year;
-
+            $data['trans_last_date'] = $year_api['trans_last_date'];
         }
+        // -- จบ รายปี
 
-        return view('shareData.report_historical_year', compact('yearadmin_api', 'summary_yearadmin_api', 'chat_year', 'chat_customer', 'chat_netsales', 'chat_persent_sale'));
+        // -- รายเดือน
+        $path_search = "reports/years/".$year_search."/sellers/".Auth::user()->api_identify."/months";
+        $api_token = $this->api_token->apiToken();
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search, [
+            'year_compare' => 'Y'
+        ]);
+        $month_api = $response->json();
+
+        if($month_api['code'] == 200){
+
+            $year = $data['yearadmin_api'][0]['year']; //-- ให้สัมพันธ์กับค้นหาปีด้านบน
+            $year_old1 = $data['yearadmin_api'][1]['year']; //-- ให้สัมพันธ์กับค้นหาปีด้านบน
+
+            foreach($month_api['data'] as $value){
+
+                if($year == $value['year']){ //-- แยกข้อมูลออกเป็น 2 ชุด ข้อมูลชุดที่ 1
+                    $data['monthadmin_api'][$year][] = [
+                        'identify' => $value['identify'],
+                        'name' => $value['name'],
+                        'year' => $value['year'],
+                        'quater' => $value['quater'],
+                        'month' => $value['month'],
+                        'sales' => $value['sales'],
+                        'credits' => $value['credits'],
+                        '%Credit' => $value['%Credit'],
+                        'customers' => $value['customers'],
+                        'sales_th' => $value['sales_th'],
+                    ];        
+                }
+
+                if($year_old1 == $value['year']){ //-- ข้อมูลชุดที่ 2
+                    $data['monthadmin_api'][$year_old1][] = [
+                        'identify' => $value['identify'],
+                        'name' => $value['name'],
+                        'year' => $value['year'],
+                        'quater' => $value['quater'],
+                        'month' => $value['month'],
+                        'sales' => $value['sales'],
+                        'credits' => $value['credits'],
+                        '%Credit' => $value['%Credit'],
+                        'customers' => $value['customers'],
+                        'sales_th' => $value['sales_th'],
+                    ];        
+                }
+            }
+            $data['customer_trans_last_date'] = $month_api['trans_last_date'];
+        }
+        // -- จบ รายเดือน
+
+        return view('shareData.report_historical_year', $data);
     }
 
     public function search(Request $request){
-        if($request->sel_year_form >= $request->sel_year_to){
-            $reage_year = $request->sel_year_form - $request->sel_year_to;
-        }else{
-            $reage_year = $request->sel_year_to - $request->sel_year_form;
-        }
-        $year_text = "";
-        $search_year = "";
-        if($reage_year >= 1){
-            for($i=1; $i<$reage_year; $i++){
-                if($request->sel_year_form >= $request->sel_year_to){
-                    $year_text .= $request->sel_year_to+$i."," ;
-                }else{
-                    $year_text .= $request->sel_year_form+$i."," ;
-                }
-            }
-            if($request->sel_year_form >= $request->sel_year_to){
-                $search_year =  $request->sel_year_to.",".$year_text.$request->sel_year_form;
-            }else{
-                $search_year =  $request->sel_year_form.",".$year_text.$request->sel_year_to;
-            }
-        }else{
-            $search_year =  $request->sel_year_form;
-        }
 
-        $path_search = "reports/years/".$search_year."/sellers/".Auth::user()->api_identify;
+        $year = $request->sel_year_form;
+        $year_old1 = $request->sel_year_to; 
+        $year_search = $year.",".$year_old1;
+
+        //-- รายปี
+        $path_search = "reports/years/".$year_search."/sellers/".Auth::user()->api_identify;
         $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search);
         $year_api = $response->json();
-        
-        if($year_api['code'] == 200){
-            $sum_sales = 0;
-            $sum_credits = 0;
-            $sum_netSales = 0;
-            $sum_persent_credits =0 ;
-            $persent_sale =0 ;
-            $chat_customer = "";
-            $chat_netsales = "";
-            $chat_year = "";
-            $chat_persent_sale = "";
 
-            foreach($year_api['data'] as $value){
-                $sum_sales += $value['sales'];
-                $sum_credits += $value['credits'];
-                $sum_netSales += $value['netSales'];
-            }
+        if($year_api['code'] == 200){
 
             $count_row = count($year_api['data']); // นับจำนวน array
             $crow = 1;
             foreach($year_api['data'] as $value){
-                $persent_sale =  round(($value['netSales'] * 100 ) / $sum_netSales);
-                $yearadmin_api[] = [
+                // $persent_sale =  round(($value['netSales'] * 100 ) / $sum_netSales);
+                $data['yearadmin_api'][] = [
                     'year' => $value['year'],
+                    'identify' => $value['identify'],
+                    'name' => $value['name'],
+                    'sales' => $value['sales'],
                     'customers' => $value['customers'],
                     'months' => $value['months'],
-                    'sales' => $value['sales'],
-                    'credits' => $value['credits'],
-                    '%Credit' => $value['%Credit'],
-                    'netSales' => $value['netSales'],
-                    '%Sale' => $persent_sale,
-                ];
-
-                // -- Caht data
-                if($crow != $count_row){
-                    if(!is_null($value['customers'])){
-                        $chat_customer .= $value['customers'].",";
-                        $chat_netsales .= $value['netSales'].",";
-                        $chat_persent_sale .= $persent_sale.",";
-                    }else{
-                        $chat_customer .= "0,";
-                        $chat_netsales .= "0,";
-                        $chat_persent_sale .= "0,";
-                    }
-                }else{
-                    if(!is_null($value['customers'])){
-                        $chat_customer .= $value['customers'];
-                        $chat_netsales .= $value['netSales'];
-                        $chat_persent_sale .= $persent_sale.",";
-                    }else{
-                        $chat_customer .= "0";
-                        $chat_netsales .= "0";
-                        $chat_persent_sale .= "0";
-                    }
-                }
-                // -- Caht data
-
+                    'sales_th' => $value['sales_th'],
+                ];        
             }
 
-            $sum_persent_credits = ($sum_credits * 100)/$sum_sales;
-
-            $summary_yearadmin_api = [
-                'sum_sales' => $sum_sales,
-                'sum_credits' => $sum_credits,
-                'sum_persent_credits' => $sum_persent_credits,
-                'sum_netSales' => $sum_netSales,
-            ];
-
-            // -- Chat
-            $chat_year = $search_year;
+            $data['trans_last_date'] = $year_api['trans_last_date'];
         }
+        //-- จบรายปี
 
-        return view('shareData.report_historical_year', compact('yearadmin_api', 'summary_yearadmin_api', 'chat_year', 'chat_customer', 'chat_netsales', 'chat_persent_sale'));
+        // -- รายเดือน
+        $path_search = "reports/years/".$year_search."/sellers/".Auth::user()->api_identify."/months";
+        $api_token = $this->api_token->apiToken();
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search, [
+            'year_compare' => 'Y'
+        ]);
+        $month_api = $response->json();
+
+        if($month_api['code'] == 200){
+
+            $year = $data['yearadmin_api'][0]['year']; //-- ให้สัมพันธ์กับค้นหาปีด้านบน
+            $year_old1 = $data['yearadmin_api'][1]['year']; //-- ให้สัมพันธ์กับค้นหาปีด้านบน
+
+            foreach($month_api['data'] as $value){
+
+                if($year == $value['year']){ //-- แยกข้อมูลออกเป็น 2 ชุด ข้อมูลชุดที่ 1
+                    $data['monthadmin_api'][$year][] = [
+                        'identify' => $value['identify'],
+                        'name' => $value['name'],
+                        'year' => $value['year'],
+                        'quater' => $value['quater'],
+                        'month' => $value['month'],
+                        'sales' => $value['sales'],
+                        'credits' => $value['credits'],
+                        '%Credit' => $value['%Credit'],
+                        'customers' => $value['customers'],
+                        'sales_th' => $value['sales_th'],
+                    ];        
+                }
+
+                if($year_old1 == $value['year']){ //-- ข้อมูลชุดที่ 2
+                    $data['monthadmin_api'][$year_old1][] = [
+                        'identify' => $value['identify'],
+                        'name' => $value['name'],
+                        'year' => $value['year'],
+                        'quater' => $value['quater'],
+                        'month' => $value['month'],
+                        'sales' => $value['sales'],
+                        'credits' => $value['credits'],
+                        '%Credit' => $value['%Credit'],
+                        'customers' => $value['customers'],
+                        'sales_th' => $value['sales_th'],
+                    ];        
+                }
+            }
+            $data['customer_trans_last_date'] = $month_api['trans_last_date'];
+        }
+        // -- จบ รายเดือน
+
+        return view('shareData.report_historical_year', $data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

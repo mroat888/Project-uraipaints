@@ -34,7 +34,10 @@ class ApiController extends Controller
     public function fetch_subgroups($id){
 
         $api_token = $this->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/subgroups/');
+
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/subgroups/', [
+            'group_id' => $id
+        ]);
         $res_api = $response->json();
         $subgroups = array();
         foreach($res_api['data'] as $value){
@@ -46,6 +49,18 @@ class ApiController extends Controller
                 ];
             }
         }
+        // $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/subgroups/', );
+        // $res_api = $response->json();
+        // $subgroups = array();
+        // foreach($res_api['data'] as $value){
+        //     if($value['group_id'] == $id){
+        //         $subgroups[] = [
+        //             'identify' => $value['identify'],
+        //             'name' => $value['name'],
+        //             'group_id' => $value['group_id']
+        //         ];
+        //     }
+        // }
         return response()->json([
             'status' => 200,
             'id' => $id,
@@ -57,7 +72,10 @@ class ApiController extends Controller
     public function fetch_pdglists($id){
 
         $api_token = $this->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/pdglists/');
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/pdglists/',[
+            'sortorder' => 'DESC',
+            'subgroup_id' => $id,
+        ]);
         $res_api = $response->json();
         $pdglists = array();
         foreach($res_api['data'] as $value){
