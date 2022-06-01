@@ -33,8 +33,7 @@ class ReportHistoricalYearController extends Controller
         
         // dd($year_api);
         if($year_api['code'] == 200){
-            $count_row = count($year_api['data']); // นับจำนวน array
-            $crow = 1;
+            
             foreach($year_api['data'] as $value){
                 // $persent_sale =  round(($value['netSales'] * 100 ) / $sum_netSales);
                 $data['yearadmin_api'][] = [
@@ -118,8 +117,6 @@ class ReportHistoricalYearController extends Controller
 
         if($year_api['code'] == 200){
 
-            $count_row = count($year_api['data']); // นับจำนวน array
-            $crow = 1;
             foreach($year_api['data'] as $value){
                 // $persent_sale =  round(($value['netSales'] * 100 ) / $sum_netSales);
                 $data['yearadmin_api'][] = [
