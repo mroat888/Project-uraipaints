@@ -15,8 +15,7 @@ class ReportHistoricalYearController extends Controller
         $this->api_token = new ApiController();
     }
 
-    public function index()
-    {
+    public function index(){
 
         list($year,$month,$day) = explode('-',date('Y-m-d'));
         $year = $year+0;
@@ -33,7 +32,7 @@ class ReportHistoricalYearController extends Controller
         
         // dd($year_api);
         if($year_api['code'] == 200){
-            
+
             foreach($year_api['data'] as $value){
                 // $persent_sale =  round(($value['netSales'] * 100 ) / $sum_netSales);
                 $data['yearadmin_api'][] = [
