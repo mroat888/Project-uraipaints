@@ -21,7 +21,6 @@ class ReportCustomerCompareYearController extends Controller
         $year_2 = $year+0;
         $year_1 = $year-1; 
         $year_search = $year_1.",".$year_2;
-        $data['year_search'] = array($year_1, $year_2);
 
         switch  (Auth::user()->status){
             case 1 :    $path_search_provinces = "sellers/".Auth::user()->api_identify."/provinces";
@@ -52,6 +51,8 @@ class ReportCustomerCompareYearController extends Controller
             }
         }
         // --- จบ หาจังหวัดแสดงในส่วนค้นหา --
+
+        $data['keysearch_provinces'] = $data['provinces'][0]['identify']; 
 
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search,[
             'province_id' => $data['provinces'][0]['identify'],
@@ -102,9 +103,11 @@ class ReportCustomerCompareYearController extends Controller
             if($count_1 > $count_2){
                 $customer_count = $customer_api[$year_1];
                 $compare_year = $year_2;
+                $data['year_search'] = array($year_1, $year_2);
             }else{
                 $customer_count = $customer_api[$year_2];
                 $compare_year = $year_1;
+                $data['year_search'] = array($year_2, $year_1);
             }
 
             $sum_sales = 0;
@@ -163,7 +166,7 @@ class ReportCustomerCompareYearController extends Controller
                 'sum_customer_diff' => $sum_customer_diff,
                 'sum_persent_diff' => $sum_persent_diff,
             ];
-             // -- จบส่วนประมวลผล เพื่อใช้ Datatable
+            // -- จบส่วนประมวลผล เพื่อใช้ Datatable
         }
        
         
@@ -222,10 +225,12 @@ class ReportCustomerCompareYearController extends Controller
 
         if(!is_null($request->province)){
             $path_search .= "&province_id=".$request->province;
+            $data['keysearch_provinces'] = $request->province;
         }
 
         if(!is_null($request->amphur)){
             $path_search .= "&amphoe_id=".$request->amphur;
+            $data['keysearch_amphur'] = $request->amphur;
         }
 
 
@@ -267,7 +272,6 @@ class ReportCustomerCompareYearController extends Controller
                 }
 
             }
-
             
             //-- ส่วนประมวลผล เพื่อใช้ Datatable
             $count_1 = count($customer_api[$year_1]);
@@ -276,9 +280,11 @@ class ReportCustomerCompareYearController extends Controller
             if($count_1 > $count_2){
                 $customer_count = $customer_api[$year_1];
                 $compare_year = $year_2;
+                $data['year_search'] = array($year_1, $year_2);
             }else{
                 $customer_count = $customer_api[$year_2];
                 $compare_year = $year_1;
+                $data['year_search'] = array($year_2, $year_1);
             }
 
             $sum_sales = 0;

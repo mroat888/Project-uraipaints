@@ -34,17 +34,22 @@
                                 <span id="selectdate" >
 
                                     <select name="province" class="form-control form-control-sm province" aria-label=".form-select-lg example">
-                                        <option value="">--โปรดเลือก--</option>
+                                        <option value="">--เลือกจังหวัด--</option>
                                         @foreach($provinces as $province)
-                                            <option value="{{ $province['identify'] }}">{{ $province['name_thai'] }}</option>
+                                            @if($keysearch_provinces == $province['identify'])
+                                                <option value="{{ $province['identify'] }}" selected>{{ $province['name_thai'] }}</option>
+                                            @else 
+                                                <option value="{{ $province['identify'] }}">{{ $province['name_thai'] }}</option>
+                                            @endif
                                         @endforeach
                                     </select>
 
                                     <select name="amphur" class="form-control form-control-sm amphur" aria-label=".form-select-lg example">
-                                        <option value="" selected>--โปรดเลือก--</option>
+                                        <option value="" selected>--เลือกอำเภอ--</option>
                                     </select>
 
-                                    <select name="sel_year_form" id="sel_year_form" class="form-control" required>
+                                    เทียบระหว่างปี
+                                    <select name="sel_year_form" id="sel_year_form" class="form-control form-control-sm" required>
                                         <option value="">--ค้นหาปี--</option>
                                         <?php
                                             list($year,$month,$day) = explode("-", date("Y-m-d"));
@@ -61,9 +66,9 @@
                                         ?>
                                     </select>
 
-                                    ถึง 
+                                    กับปี
 
-                                    <select name="sel_year_to" id="sel_year_to" class="form-control" required>
+                                    <select name="sel_year_to" id="sel_year_to" class="form-control form-control-sm" required>
                                         <option value="">--ค้นหาปี--</option>
                                         <?php
                                             list($year,$month,$day) = explode("-", date("Y-m-d"));
@@ -116,14 +121,14 @@
                                 @if(isset($customer_compare_api))
                                 <tbody>
                                     @foreach($customer_compare_api as $key => $customer)
-                                    <tr>
+                                    <tr style="text-align:center">
                                         <td>{{ ++$key }}</td>
                                         <td>{{ $customer['identify'] }}</td>
-                                        <td>{{ $customer['name'] }}</td>
+                                        <td style="text-align:left">{{ $customer['name'] }}</td>
                                         <td>{{ $customer['sales_th'] }}</td>
                                         <td>{{ $customer['compare_sales_th'] }}</td>
-                                        <td>{{ number_format($customer['customer_diff'],2) }}</td>
-                                        <td>{{ number_format($customer['persent_diff'],2) }}</td>
+                                        <td style="text-align:right">{{ number_format($customer['customer_diff'],2) }}</td>
+                                        <td style="text-align:right">{{ number_format($customer['persent_diff'],2) }}</td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -138,14 +143,14 @@
                                         <td colspan = "3">รวม</td>
                                         <td>{{ number_format($sum_sales,2) }} ล้าน</td>
                                         <td>{{ number_format($sum_compare_sale,2) }} ล้าน</td>
-                                        <td>{{ number_format($sum_customer_diff,2) }} ล้าน</td>
-                                        <td>{{ number_format($sum_persent_diff,2) }}</td>
+                                        <td style="text-align:right">{{ number_format($sum_customer_diff,2) }} ล้าน</td>
+                                        <td style="text-align:right">{{ number_format($sum_persent_diff,2) }}</td>
                                     </tr>
                                 </tfoot>
                                 @endif
                             </table>
                         </div>
-                        <div class="my-3" style="text-align:right;">
+                        <div class="mt-3" style="text-align:left;">
                             ข้อมูลสิ้นสุด ณ วันที่ 
                             @if(isset($customer_compare_api))
                                 @php 

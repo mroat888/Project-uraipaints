@@ -432,7 +432,9 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="javascript:void(0)">
+                                            <li class="nav-item {{ (request()->is('admin/data_report_product_return')) ? 'btn2' : '' }}">
+                                            <a class="nav-link"
+                                                href="{{ url('admin/data_report_product_return') }}">
                                                 <i class="ion ion-md-stats" style="color: #044067;"></i>รายงานรับคืนสินค้า
                                             </a>
                                         </li>
