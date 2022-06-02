@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\ShareData;
+namespace App\Http\Controllers\ShareData_Union;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -24,21 +24,34 @@ class ReportHistoricalYearController extends Controller
 
         $data['year_search'] = array($year, $year_old1);
 
-        // -- รายปี
-        $path_search = "reports/years/".$year_search."/sellers/".Auth::user()->api_identify;
+         /**
+         *   --------- บล๊อกที่ รายปี ------------- 
+         */
+
+        switch  (Auth::user()->status){
+            case 1 :    $path_search = "reports/years/".$year_search."/sellers/".Auth::user()->api_identify;
+                break;
+            case 2 :    $path_search = "reports/years/".$year_search."/leaders/".Auth::user()->api_identify;
+                break;
+            case 3 :    $path_search = "reports/years/".$year_search."/headers/".Auth::user()->api_identify;
+                break;
+            case 4 :    $path_search = "reports/years/".$year_search;
+                break;
+        }
+
         $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search);
         $year_api = $response->json();
-        
-        // dd($year_api);
+
+
         if($year_api['code'] == 200){
 
             foreach($year_api['data'] as $value){
                 // $persent_sale =  round(($value['netSales'] * 100 ) / $sum_netSales);
                 $data['yearadmin_api'][] = [
                     'year' => $value['year'],
-                    'identify' => $value['identify'],
-                    'name' => $value['name'],
+                    // 'identify' => $value['identify'],
+                    // 'name' => $value['name'],
                     'sales' => $value['sales'],
                     'customers' => $value['customers'],
                     'months' => $value['months'],
@@ -48,10 +61,26 @@ class ReportHistoricalYearController extends Controller
 
             $data['trans_last_date'] = $year_api['trans_last_date'];
         }
-        // -- จบ รายปี
 
-        // -- รายเดือน
-        $path_search = "reports/years/".$year_search."/sellers/".Auth::user()->api_identify."/months";
+         /**
+         *   --------- จบ บล๊อกที่ รายปี ------------- 
+         */
+
+         /**
+         *   --------- บล๊อกที่ รายเดือน ------------- 
+         */
+
+        switch  (Auth::user()->status){
+            case 1 :    $path_search = "reports/years/".$year_search."/sellers/".Auth::user()->api_identify."/months";
+                break;
+            case 2 :    $path_search = "reports/years/".$year_search."/leaders/".Auth::user()->api_identify."/months";
+                break;
+            case 3 :    $path_search = "reports/years/".$year_search."/headers/".Auth::user()->api_identify."/months";
+                break;
+            case 4 :    $path_search = "reports/years/".$year_search."/months";
+                break;
+        }
+
         $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search, [
             'year_compare' => 'Y'
@@ -67,8 +96,8 @@ class ReportHistoricalYearController extends Controller
 
                 if($year == $value['year']){ //-- แยกข้อมูลออกเป็น 2 ชุด ข้อมูลชุดที่ 1
                     $data['monthadmin_api'][$year][] = [
-                        'identify' => $value['identify'],
-                        'name' => $value['name'],
+                        // 'identify' => $value['identify'],
+                        // 'name' => $value['name'],
                         'year' => $value['year'],
                         'quater' => $value['quater'],
                         'month' => $value['month'],
@@ -82,8 +111,8 @@ class ReportHistoricalYearController extends Controller
 
                 if($year_old1 == $value['year']){ //-- ข้อมูลชุดที่ 2
                     $data['monthadmin_api'][$year_old1][] = [
-                        'identify' => $value['identify'],
-                        'name' => $value['name'],
+                        // 'identify' => $value['identify'],
+                        // 'name' => $value['name'],
                         'year' => $value['year'],
                         'quater' => $value['quater'],
                         'month' => $value['month'],
@@ -97,9 +126,21 @@ class ReportHistoricalYearController extends Controller
             }
             $data['customer_trans_last_date'] = $month_api['trans_last_date'];
         }
-        // -- จบ รายเดือน
+         /**
+         *   --------- จบ บล๊อกที่ รายเดือน ------------- 
+         */
 
-        return view('shareData.report_historical_year', $data);
+        switch  (Auth::user()->status){
+            case 1 :    return view('shareData.report_historical_year', $data);
+                break;
+            case 2 :    return view('shareData_leadManager.report_historical_year', $data);
+                break;
+            case 3 :    return view('shareData_headManager.report_historical_year', $data);
+                break;
+            case 4 :    return view('shareData_admin.report_historical_year', $data);
+                break;
+        }
+
     }
 
     public function search(Request $request){
@@ -108,8 +149,21 @@ class ReportHistoricalYearController extends Controller
         $year_old1 = $request->sel_year_to; 
         $year_search = $year.",".$year_old1;
 
-        //-- รายปี
-        $path_search = "reports/years/".$year_search."/sellers/".Auth::user()->api_identify;
+         /**
+         *   --------- บล๊อกที่ รายปี ------------- 
+         */
+
+        switch  (Auth::user()->status){
+            case 1 :    $path_search = "reports/years/".$year_search."/sellers/".Auth::user()->api_identify;
+                break;
+            case 2 :    $path_search = "reports/years/".$year_search."/leaders/".Auth::user()->api_identify;
+                break;
+            case 3 :    $path_search = "reports/years/".$year_search."/headers/".Auth::user()->api_identify;
+                break;
+            case 4 :    $path_search = "reports/years/".$year_search;
+                break;
+        }
+
         $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search);
         $year_api = $response->json();
@@ -120,8 +174,8 @@ class ReportHistoricalYearController extends Controller
                 // $persent_sale =  round(($value['netSales'] * 100 ) / $sum_netSales);
                 $data['yearadmin_api'][] = [
                     'year' => $value['year'],
-                    'identify' => $value['identify'],
-                    'name' => $value['name'],
+                    // 'identify' => $value['identify'],
+                    // 'name' => $value['name'],
                     'sales' => $value['sales'],
                     'customers' => $value['customers'],
                     'months' => $value['months'],
@@ -131,10 +185,26 @@ class ReportHistoricalYearController extends Controller
 
             $data['trans_last_date'] = $year_api['trans_last_date'];
         }
-        //-- จบรายปี
 
-        // -- รายเดือน
-        $path_search = "reports/years/".$year_search."/sellers/".Auth::user()->api_identify."/months";
+         /**
+         *   --------- จบ บล๊อกที่ รายปี ------------- 
+         */
+
+         /**
+         *   --------- บล๊อกที่ รายเดือน ------------- 
+         */
+
+        switch  (Auth::user()->status){
+            case 1 :    $path_search = "reports/years/".$year_search."/sellers/".Auth::user()->api_identify."/months";
+                break;
+            case 2 :    $path_search = "reports/years/".$year_search."/leaders/".Auth::user()->api_identify."/months";
+                break;
+            case 3 :    $path_search = "reports/years/".$year_search."/headers/".Auth::user()->api_identify."/months";
+                break;
+            case 4 :    $path_search = "reports/years/".$year_search."/months";
+                break;
+        }
+
         $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search, [
             'year_compare' => 'Y'
@@ -150,8 +220,8 @@ class ReportHistoricalYearController extends Controller
 
                 if($year == $value['year']){ //-- แยกข้อมูลออกเป็น 2 ชุด ข้อมูลชุดที่ 1
                     $data['monthadmin_api'][$year][] = [
-                        'identify' => $value['identify'],
-                        'name' => $value['name'],
+                        // 'identify' => $value['identify'],
+                        // 'name' => $value['name'],
                         'year' => $value['year'],
                         'quater' => $value['quater'],
                         'month' => $value['month'],
@@ -165,8 +235,8 @@ class ReportHistoricalYearController extends Controller
 
                 if($year_old1 == $value['year']){ //-- ข้อมูลชุดที่ 2
                     $data['monthadmin_api'][$year_old1][] = [
-                        'identify' => $value['identify'],
-                        'name' => $value['name'],
+                        // 'identify' => $value['identify'],
+                        // 'name' => $value['name'],
                         'year' => $value['year'],
                         'quater' => $value['quater'],
                         'month' => $value['month'],
@@ -180,9 +250,19 @@ class ReportHistoricalYearController extends Controller
             }
             $data['customer_trans_last_date'] = $month_api['trans_last_date'];
         }
-        // -- จบ รายเดือน
+         /**
+         *   --------- จบ บล๊อกที่ รายเดือน ------------- 
+         */
 
-        return view('shareData.report_historical_year', $data);
+        switch  (Auth::user()->status){
+            case 1 :    return view('shareData.report_historical_year', $data);
+                break;
+            case 2 :    return view('shareData_leadManager.report_historical_year', $data);
+                break;
+            case 3 :    return view('shareData_headManager.report_historical_year', $data);
+                break;
+            case 4 :    return view('shareData_admin.report_historical_year', $data);
+                break;
+        }
     }
-
 }
