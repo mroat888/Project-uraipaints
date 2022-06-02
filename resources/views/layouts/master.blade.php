@@ -431,7 +431,9 @@ License: You must have a valid license purchased only from themeforest to legall
                                                 <i class="ion ion-md-stats" style="color: #044067;"></i>รายงานสรุปยอดทำเป้า เทียบปี</a>
                                         </li> -->
                                         <li class="nav-item">
-                                            <a class="nav-link" href="javascript:void(0)">
+                                            <li class="nav-item {{ (request()->is('data_report_customer_compare-year')) ? 'btn2' : '' }}">
+                                            <a class="nav-link"
+                                                href="{{ url('data_report_customer_compare-year') }}">
                                                 <i class="ion ion-md-stats" style="color: #044067;"></i>ยอดขายร้านค้า เทียบปีต่อปี
                                             </a>
                                         </li>

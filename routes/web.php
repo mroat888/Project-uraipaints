@@ -163,6 +163,9 @@ Route::post('data_report_historical-month/search', 'ShareData\ReportHistoricalMo
 Route::get('data_report_sale_compare-year','ShareData\ReportSaleCompareYearController@index');
 Route::post('data_report_sale_compare-year/search','ShareData\ReportSaleCompareYearController@search');
 
+Route::get('data_report_customer_compare-year','ShareData_Union\ReportCustomerCompareYearController@index');
+Route::post('data_report_customer_compare-year/search','ShareData_Union\ReportCustomerCompareYearController@search');
+
 });
 
 
@@ -295,8 +298,12 @@ Route::post('leadManage/data_report_historical-month/search', 'ShareData_LeadMan
 Route::get('leadManage/data_report_sale_compare-year','ShareData_LeadManager\ReportSaleCompareYearController@index');
 Route::post('leadManage/data_report_sale_compare-year/search','ShareData_LeadManager\ReportSaleCompareYearController@search');
 
+Route::get('leadManage/data_report_customer_compare-year','ShareData_Union\ReportCustomerCompareYearController@index');
+Route::post('leadManage/data_report_customer_compare-year/search','ShareData_Union\ReportCustomerCompareYearController@search');
+
 Route::get('lead/edit-profile', 'ProfileController@lead_index');
 Route::post('lead/userProfileUpdate', 'ProfileController@update');
+
 
 });
 
@@ -415,6 +422,10 @@ Route::get('headManage/data_report_historical-month', 'ShareData_HeadManager\Rep
 Route::post('headManage/data_report_historical-month/search', 'ShareData_HeadManager\ReportHistoricalMonthController@search');
 Route::get('headManage/data_report_sale_compare-year','ShareData_HeadManager\ReportSaleCompareYearController@index');
 Route::post('headManage/data_report_sale_compare-year/search','ShareData_HeadManager\ReportSaleCompareYearController@search');
+
+Route::get('headManage/data_report_customer_compare-year','ShareData_Union\ReportCustomerCompareYearController@index');
+Route::post('headManage/data_report_customer_compare-year/search','ShareData_Union\ReportCustomerCompareYearController@search');
+
 });
 
 
@@ -667,6 +678,9 @@ Route::get('admin/data_report_historical-month', 'ShareData_Admin\ReportHistoric
 Route::post('admin/data_report_historical-month/search', 'ShareData_Admin\ReportHistoricalMonthController@search');
 Route::get('admin/data_report_sale_compare-year','ShareData_Admin\ReportSaleCompareYearController@index');
 Route::post('admin/data_report_sale_compare-year/search','ShareData_Admin\ReportSaleCompareYearController@search');
+
+Route::get('admin/data_report_customer_compare-year','ShareData_Union\ReportCustomerCompareYearController@index');
+Route::post('admin/data_report_customer_compare-year/search','ShareData_Union\ReportCustomerCompareYearController@search');
 
 });
 
