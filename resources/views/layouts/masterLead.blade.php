@@ -677,6 +677,10 @@ License: You must have a valid license purchased only from themeforest to legall
     </div>
     <!-- /HK Wrapper -->
 
+    <!-- Select2 JavaScript -->
+    <script src="{{ asset('public/template/vendors/select2/dist/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('public/template/dist/js/select2-data.js') }}"></script>
+
     <!-- jQuery -->
     <script src="{{ asset('public/template/vendors/jquery/dist/jquery.min.js') }}"></script>
 
@@ -727,10 +731,6 @@ License: You must have a valid license purchased only from themeforest to legall
 
     <!-- Owl Init JavaScript -->
     <script src="{{ asset('public/template/dist/js/owl-data.js') }}"></script>
-
-    <!-- Select2 JavaScript -->
-    <script src="{{ asset('public/template/vendors/select2/dist/js/select2.full.min.js') }}"></script>
-    <script src="{{ asset('public/template/dist/js/select2-data.js') }}"></script>
 
     <!-- Bootstrap Tagsinput JavaScript -->
     {{-- <script src="{{asset('public/template/vendors/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js')}}"></script> --}}

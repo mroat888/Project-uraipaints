@@ -75,8 +75,8 @@
                                     <tr style="text-align:center">
                                         <td>{{ $yearadmin_api[0]['year']+543 }}</td>
                                         <td>{{ $yearadmin_api[0]['sales_th'] }}</td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>{{ number_format($yearadmin_api[0]['credits'],2) }}</td>
+                                        <td>{{ number_format($yearadmin_api[0]['%Credit'],2) }}</td>
                                     </tr>
                                 </tbody>
                                 @endif

@@ -36,6 +36,7 @@ class ApiController extends Controller
         $api_token = $this->apiToken();
 
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/subgroups/', [
+            'sortorder' => 'DESC',
             'group_id' => $id
         ]);
         $res_api = $response->json();
@@ -49,18 +50,7 @@ class ApiController extends Controller
                 ];
             }
         }
-        // $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/subgroups/', );
-        // $res_api = $response->json();
-        // $subgroups = array();
-        // foreach($res_api['data'] as $value){
-        //     if($value['group_id'] == $id){
-        //         $subgroups[] = [
-        //             'identify' => $value['identify'],
-        //             'name' => $value['name'],
-        //             'group_id' => $value['group_id']
-        //         ];
-        //     }
-        // }
+
         return response()->json([
             'status' => 200,
             'id' => $id,

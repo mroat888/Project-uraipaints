@@ -100,7 +100,7 @@ class ReportCustomerCompareYearController extends Controller
             $count_1 = count($customer_api[$year_1]);
             $count_2 = count($customer_api[$year_2]);
 
-            if($count_1 > $count_2){
+            if($count_1 >= $count_2){
                 $customer_count = $customer_api[$year_1];
                 $compare_year = $year_2;
                 $data['year_search'] = array($year_1, $year_2);
@@ -175,7 +175,7 @@ class ReportCustomerCompareYearController extends Controller
         switch  (Auth::user()->status){
             case 1 :    return view('shareData.report_customer_compare_year', $data);
                 break;
-            case 2 :    return view('shareData_headManager.report_customer_compare_year', $data);
+            case 2 :    return view('shareData_leadManager.report_customer_compare_year', $data);
                 break;
             case 3 :    return view('shareData_headManager.report_customer_compare_year', $data);
                 break;
@@ -197,7 +197,7 @@ class ReportCustomerCompareYearController extends Controller
                         $path_search = "reports/years/".$year_search."/sellers/".Auth::user()->api_identify."/customers?year_compare=Y";
                 break;
             case 2 :    $path_search_provinces = "saleleaders/".Auth::user()->api_identify."/provinces";
-                        $path_search = "reports/years/".$year_search."/leaders/".Auth::user()->api_identify."/customers";
+                        $path_search = "reports/years/".$year_search."/leaders/".Auth::user()->api_identify."/customers?year_compare=Y";
                 break;
             case 3 :    $path_search_provinces = "saleheaders/".Auth::user()->api_identify."/provinces";
                         $path_search = "reports/years/".$year_search."/headers/".Auth::user()->api_identify."/customers?year_compare=Y";
@@ -277,7 +277,7 @@ class ReportCustomerCompareYearController extends Controller
             $count_1 = count($customer_api[$year_1]);
             $count_2 = count($customer_api[$year_2]);
 
-            if($count_1 > $count_2){
+            if($count_1 >= $count_2){
                 $customer_count = $customer_api[$year_1];
                 $compare_year = $year_2;
                 $data['year_search'] = array($year_1, $year_2);
@@ -351,7 +351,7 @@ class ReportCustomerCompareYearController extends Controller
         switch  (Auth::user()->status){
             case 1 :    return view('shareData.report_customer_compare_year', $data);
                 break;
-            case 2 :    return view('shareData_headManager.report_customer_compare_year', $data);
+            case 2 :    return view('shareData_leadManager.report_customer_compare_year', $data);
                 break;
             case 3 :    return view('shareData_headManager.report_customer_compare_year', $data);
                 break;
