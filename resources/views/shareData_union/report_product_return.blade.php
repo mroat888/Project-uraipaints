@@ -83,7 +83,13 @@
                             </table>
                         </div>
                         <div class="mt-3" style="text-align:left;">
-                            ข้อมูลสิ้นสุด ณ วันที่ 
+                            ข้อมูลสิ้นสุด ณ วันที่
+                            @php 
+                                list($lat_year, $lat_month, $lat_day) = explode("-", $trans_last_date);
+                                $lat_year_thai = $lat_year + 543;
+                                $trans_last_date = $lat_day."/".$lat_month."/".$lat_year_thai;
+                            @endphp 
+                            {{ $trans_last_date }}
                         </div>
                     </div>
                 </div>
@@ -157,7 +163,12 @@
                             </div>
                             <div>
                                 ข้อมูลสิ้นสุด ณ วันที่ 
-
+                                @php 
+                                    list($lat_year, $lat_month, $lat_day) = explode("-", $customer_trans_last_date);
+                                    $lat_year_thai = $lat_year + 543;
+                                    $customer_trans_last_date = $lat_day."/".$lat_month."/".$lat_year_thai;
+                                @endphp 
+                                {{ $customer_trans_last_date }}
                             </div>
                         </div>
                     </div>

@@ -36,7 +36,7 @@
                                     <select name="province" class="form-control form-control-sm province" aria-label=".form-select-lg example">
                                         <option value="">--เลือกจังหวัด--</option>
                                         @foreach($provinces as $province)
-                                            @if($keysearch_provinces == $province['identify'])
+                                            @if(isset($keysearch_provinces) && ($keysearch_provinces == $province['identify']))
                                                 <option value="{{ $province['identify'] }}" selected>{{ $province['name_thai'] }}</option>
                                             @else 
                                                 <option value="{{ $province['identify'] }}">{{ $province['name_thai'] }}</option>
@@ -176,25 +176,28 @@
 $(document).on('change','.province', function(e){
     e.preventDefault();
     let pvid = $(this).val();
-    $(":submit").attr("disabled", true);
-    $.ajax({
-        method: 'GET',
-        url: '{{ url("/fetch_amphur_api") }}/{{ $position_province }}/'+pvid,
-        datatype: 'json',
-        success: function(response){
-            console.log(response);
-            if(response.status == 200){
-                console.log(response.amphures);
-                $('.amphur').children().remove().end();
-                $('.amphur').append('<option selected value="">เลือกอำเภอ</option>');
-                let rows = response.amphures.length;
-                for(let i=0 ;i<rows; i++){
-                    $('.amphur').append('<option value="'+response.amphures[i]['identify']+'">'+response.amphures[i]['name_thai']+'</option>');
+    // console.log(pvid);
+    if(pvid != ""){
+        $(":submit").attr("disabled", true);
+        $.ajax({
+            method: 'GET',
+            url: '{{ url("/fetch_amphur_api") }}/{{ $position_province }}/'+pvid,
+            datatype: 'json',
+            success: function(response){
+                console.log(response);
+                if(response.status == 200){
+                    console.log(response.amphures);
+                    $('.amphur').children().remove().end();
+                    $('.amphur').append('<option selected value="">เลือกอำเภอ</option>');
+                    let rows = response.amphures.length;
+                    for(let i=0 ;i<rows; i++){
+                        $('.amphur').append('<option value="'+response.amphures[i]['identify']+'">'+response.amphures[i]['name_thai']+'</option>');
+                    }
+                    $(":submit").attr("disabled", false);
                 }
-                $(":submit").attr("disabled", false);
             }
-        }
-    });
+        });
+    }
 });
 
 

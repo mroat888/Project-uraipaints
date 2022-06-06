@@ -17,10 +17,19 @@ class ReportCustomerCompareYearController extends Controller
 
     public function index(){
 
-        list($year,$month,$day) = explode('-',date('Y-m-d'));
+        $year = date('Y');
         $year_2 = $year+0;
         $year_1 = $year-1; 
+
+        if($year_2 >= $year_1){
+            $year_2 = $year_2;
+            $year_1 = $year_1; 
+        }else{
+            $year_2 = $year_1;
+            $year_1 = $year_2; 
+        }
         $year_search = $year_1.",".$year_2;
+        $data['year_search'] = array($year_1, $year_2);
 
         switch  (Auth::user()->status){
             case 1 :    $path_search_provinces = "sellers/".Auth::user()->api_identify."/provinces";
@@ -60,18 +69,28 @@ class ReportCustomerCompareYearController extends Controller
         ]);
         $api_customer = $response->json();
 
+    
+
         //-- แยกข้อมูลออกเป็น 2 ชุด 
         $year_1 = $year_1; //-- ใช้แบ่งกลุ่มลูกค้าแต่ละปี
         $year_2 = $year_2; //-- ใช้แบ่งกลุ่มลูกค้าแต่ละปี
 
-        // dd($api_customer);
+        // dd( $path_search, $api_customer);
+
         if(!is_null($api_customer) && $api_customer['code'] == 200){
 
             $data['trans_last_date'] = $api_customer['trans_last_date'];
 
+            $identify_array = array();
+            foreach($api_customer['data'] as $value){ //-- เก็บรหัส identify ทั้งหมดเพื่อเช็ค
+                if(!in_array($value['identify'], $identify_array)){
+                    $identify_array[] = $value['identify'];
+                }
+            }
+
             foreach($api_customer['data'] as $value){
 
-                if($year_1 == $value['year']){ //--  ข้อมูลชุดที่ 1
+                if($year_1 == $value['year']){ //--  ข้อมูลชุดที่ 1 (ปีเก่า)
                     $customer_api[$year_1][] = [
                         'year' => $value['year'],
                         'identify' => $value['identify'],
@@ -82,7 +101,7 @@ class ReportCustomerCompareYearController extends Controller
                     ];        
                 }
 
-                if($year_2 == $value['year']){ //-- ข้อมูลชุดที่ 2
+                if($year_2 == $value['year']){ //-- ข้อมูลชุดที่ 2 (ปีใหม่)
                     $customer_api[$year_2][] = [
                         'year' => $value['year'],
                         'identify' => $value['identify'],
@@ -95,20 +114,9 @@ class ReportCustomerCompareYearController extends Controller
 
             }
 
-            
+            // dd($api_customer['data'], $customer_api);
+  
             //-- ส่วนประมวลผล เพื่อใช้ Datatable
-            $count_1 = count($customer_api[$year_1]);
-            $count_2 = count($customer_api[$year_2]);
-
-            if($count_1 >= $count_2){
-                $customer_count = $customer_api[$year_1];
-                $compare_year = $year_2;
-                $data['year_search'] = array($year_1, $year_2);
-            }else{
-                $customer_count = $customer_api[$year_2];
-                $compare_year = $year_1;
-                $data['year_search'] = array($year_2, $year_1);
-            }
 
             $sum_sales = 0;
             $sum_compare_sale = 0;
@@ -117,45 +125,52 @@ class ReportCustomerCompareYearController extends Controller
 
             // dd($customer_count);
 
-            foreach($customer_count as $key => $customer){
+            for($i = 0; $i<count($identify_array); $i++){
+                $customer_name = "";
                 $customer_diff = 0;
                 $persent_diff = 0 ;
-                $customer_compare_sales = 0;
-                $customer_compare_sales_th = 0;
+                $year1_sales = 0;
+                $year2_sales = 0;
+                $year1_sales_th = 0;
+                $year2_sales_th = 0;
 
-                foreach($customer_api[$compare_year] as $customer_compare){
-                    if($customer_compare['identify'] == $customer['identify']){
-                        $customer_compare_sales = $customer_compare['sales'];
-                        $customer_compare_sales_th = $customer_compare['sales_th'];
-                        $customer_diff = $customer_compare['sales'] - $customer['sales'];
-                        if($customer['sales'] != 0){
-                            $persent_diff = ($customer_diff*100)/$customer['sales'];
-                        }
+                foreach($customer_api[$year_1] as $year1_value){
+                    if($year1_value['identify'] == $identify_array[$i]){
+                        $customer_name = $year1_value['name'];
+                        $year1_sales_th = $year1_value['sales_th'];
+                        $year1_sales = $year1_value['sales'];
                     }
                 }
 
-                if($customer_diff == 0){
-                    $customer_diff = 0 - $customer['sales'];
-                }
-
-                if($persent_diff == 0){
-                    if($customer['sales'] != 0){
-                        $persent_diff = ($customer_diff*100)/$customer['sales'];
+                foreach($customer_api[$year_2] as $year2_value){
+                    if($year2_value['identify'] == $identify_array[$i]){
+                        $customer_name = $year2_value['name'];
+                        $year2_sales_th = $year2_value['sales_th'];
+                        $year2_sales = $year2_value['sales'];
                     }
                 }
+
+                $customer_diff = $year2_sales -  $year1_sales;
+
+                if($year2_sales != 0){
+                    $persent_diff = ($customer_diff*100)/$year2_sales;
+                }
+
 
                 $data['customer_compare_api'][] = [
-                    'identify' => $customer['identify'],
-                    'name' => $customer['name'],
-                    'sales_th' => $customer['sales_th'],
-                    'compare_sales_th' => $customer_compare_sales_th,
+                    'identify' => $identify_array[$i],
+                    'name' => $customer_name,
+                    'sales_th' => $year1_sales_th,
+                    'compare_sales_th' => $year2_sales_th,
                     'customer_diff' => $customer_diff,
                     'persent_diff' => $persent_diff,
                 ];
                 
-                $sum_sales += $customer['sales'];
-                $sum_compare_sale += $customer_compare_sales;
+                $sum_sales += $year1_sales;
+                $sum_compare_sale += $year2_sales;
             }
+
+            // dd(count($identify_array), $data['customer_compare_api']);
 
             $sum_customer_diff = $sum_compare_sale - $sum_sales;
             $sum_persent_diff = ($sum_customer_diff*100)/$sum_sales;
@@ -187,10 +202,17 @@ class ReportCustomerCompareYearController extends Controller
     public function search(Request $request){
         //dd($request);
 
-        $year_2 = $request->sel_year_to;
-        $year_1 = $request->sel_year_form; 
+        if($request->sel_year_to >= $request->sel_year_form){
+            $year_2 = $request->sel_year_to;
+            $year_1 = $request->sel_year_form; 
+        }else{
+            $year_2 = $request->sel_year_form;
+            $year_1 = $request->sel_year_to; 
+        }
         $year_search = $year_1.",".$year_2;
         $data['year_search'] = array($year_1, $year_2);
+        
+        // dd($request->sel_year_to, $request->sel_year_form, $data['year_search']);
 
         switch  (Auth::user()->status){
             case 1 :    $path_search_provinces = "sellers/".Auth::user()->api_identify."/provinces";
@@ -241,15 +263,22 @@ class ReportCustomerCompareYearController extends Controller
         $year_1 = $year_1; //-- ใช้แบ่งกลุ่มลูกค้าแต่ละปี
         $year_2 = $year_2; //-- ใช้แบ่งกลุ่มลูกค้าแต่ละปี
 
-        //dd($path_search, $api_customer);
-        
+        // dd( $path_search, $api_customer);
+
         if(!is_null($api_customer) && $api_customer['code'] == 200){
 
             $data['trans_last_date'] = $api_customer['trans_last_date'];
 
+            $identify_array = array();
+            foreach($api_customer['data'] as $value){ //-- เก็บรหัส identify ทั้งหมดเพื่อเช็ค
+                if(!in_array($value['identify'], $identify_array)){
+                    $identify_array[] = $value['identify'];
+                }
+            }
+
             foreach($api_customer['data'] as $value){
 
-                if($year_1 == $value['year']){ //--  ข้อมูลชุดที่ 1
+                if($year_1 == $value['year']){ //--  ข้อมูลชุดที่ 1 (ปีเก่า)
                     $customer_api[$year_1][] = [
                         'year' => $value['year'],
                         'identify' => $value['identify'],
@@ -260,7 +289,7 @@ class ReportCustomerCompareYearController extends Controller
                     ];        
                 }
 
-                if($year_2 == $value['year']){ //-- ข้อมูลชุดที่ 2
+                if($year_2 == $value['year']){ //-- ข้อมูลชุดที่ 2 (ปีใหม่)
                     $customer_api[$year_2][] = [
                         'year' => $value['year'],
                         'identify' => $value['identify'],
@@ -272,20 +301,10 @@ class ReportCustomerCompareYearController extends Controller
                 }
 
             }
-            
-            //-- ส่วนประมวลผล เพื่อใช้ Datatable
-            $count_1 = count($customer_api[$year_1]);
-            $count_2 = count($customer_api[$year_2]);
 
-            if($count_1 >= $count_2){
-                $customer_count = $customer_api[$year_1];
-                $compare_year = $year_2;
-                $data['year_search'] = array($year_1, $year_2);
-            }else{
-                $customer_count = $customer_api[$year_2];
-                $compare_year = $year_1;
-                $data['year_search'] = array($year_2, $year_1);
-            }
+            // dd($api_customer['data'], $customer_api);
+  
+            //-- ส่วนประมวลผล เพื่อใช้ Datatable
 
             $sum_sales = 0;
             $sum_compare_sale = 0;
@@ -294,45 +313,52 @@ class ReportCustomerCompareYearController extends Controller
 
             // dd($customer_count);
 
-            foreach($customer_count as $key => $customer){
+            for($i = 0; $i<count($identify_array); $i++){
+                $customer_name = "";
                 $customer_diff = 0;
                 $persent_diff = 0 ;
-                $customer_compare_sales = 0;
-                $customer_compare_sales_th = 0;
+                $year1_sales = 0;
+                $year2_sales = 0;
+                $year1_sales_th = 0;
+                $year2_sales_th = 0;
 
-                foreach($customer_api[$compare_year] as $customer_compare){
-                    if($customer_compare['identify'] == $customer['identify']){
-                        $customer_compare_sales = $customer_compare['sales'];
-                        $customer_compare_sales_th = $customer_compare['sales_th'];
-                        $customer_diff = $customer_compare['sales'] - $customer['sales'];
-                        if($customer['sales'] != 0){
-                            $persent_diff = ($customer_diff*100)/$customer['sales'];
-                        }
+                foreach($customer_api[$year_1] as $year1_value){
+                    if($year1_value['identify'] == $identify_array[$i]){
+                        $customer_name = $year1_value['name'];
+                        $year1_sales_th = $year1_value['sales_th'];
+                        $year1_sales = $year1_value['sales'];
                     }
                 }
 
-                if($customer_diff == 0){
-                    $customer_diff = 0 - $customer['sales'];
-                }
-
-                if($persent_diff == 0){
-                    if($customer['sales'] != 0){
-                        $persent_diff = ($customer_diff*100)/$customer['sales'];
+                foreach($customer_api[$year_2] as $year2_value){
+                    if($year2_value['identify'] == $identify_array[$i]){
+                        $customer_name = $year2_value['name'];
+                        $year2_sales_th = $year2_value['sales_th'];
+                        $year2_sales = $year2_value['sales'];
                     }
                 }
+
+                $customer_diff = $year2_sales -  $year1_sales;
+
+                if($year2_sales != 0){
+                    $persent_diff = ($customer_diff*100)/$year2_sales;
+                }
+
 
                 $data['customer_compare_api'][] = [
-                    'identify' => $customer['identify'],
-                    'name' => $customer['name'],
-                    'sales_th' => $customer['sales_th'],
-                    'compare_sales_th' => $customer_compare_sales_th,
+                    'identify' => $identify_array[$i],
+                    'name' => $customer_name,
+                    'sales_th' => $year1_sales_th,
+                    'compare_sales_th' => $year2_sales_th,
                     'customer_diff' => $customer_diff,
                     'persent_diff' => $persent_diff,
                 ];
                 
-                $sum_sales += $customer['sales'];
-                $sum_compare_sale += $customer_compare_sales;
+                $sum_sales += $year1_sales;
+                $sum_compare_sale += $year2_sales;
             }
+
+            // dd(count($identify_array), $data['customer_compare_api']);
 
             $sum_customer_diff = $sum_compare_sale - $sum_sales;
             $sum_persent_diff = ($sum_customer_diff*100)/$sum_sales;
@@ -345,8 +371,9 @@ class ReportCustomerCompareYearController extends Controller
             ];
             // -- จบส่วนประมวลผล เพื่อใช้ Datatable
         }
+       
         
-        // dd($data['customer_compare_api']);
+        // dd($data['customer_api']);
 
         switch  (Auth::user()->status){
             case 1 :    return view('shareData.report_customer_compare_year', $data);
