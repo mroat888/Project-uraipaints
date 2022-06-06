@@ -69,8 +69,6 @@ class ReportCustomerCompareYearController extends Controller
         ]);
         $api_customer = $response->json();
 
-    
-
         //-- แยกข้อมูลออกเป็น 2 ชุด 
         $year_1 = $year_1; //-- ใช้แบ่งกลุ่มลูกค้าแต่ละปี
         $year_2 = $year_2; //-- ใช้แบ่งกลุ่มลูกค้าแต่ละปี

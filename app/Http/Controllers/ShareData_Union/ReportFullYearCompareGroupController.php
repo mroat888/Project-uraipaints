@@ -189,9 +189,19 @@ class ReportFullYearCompareGroupController extends Controller
 
     public function search(Request $request){
         
-        $year_2 = $request->sel_year_to;
-        $year_1 = $request->sel_year_form; 
+        // $year_2 = $request->sel_year_to;
+        // $year_1 = $request->sel_year_form; 
+        // $year_search = $year_1.",".$year_2;
+
+        if($request->sel_year_to >= $request->sel_year_form){
+            $year_2 = $request->sel_year_to;
+            $year_1 = $request->sel_year_form; 
+        }else{
+            $year_2 = $request->sel_year_form;
+            $year_1 = $request->sel_year_to; 
+        }
         $year_search = $year_1.",".$year_2;
+        $data['year_search'] = array($year_1, $year_2);
 
         switch  (Auth::user()->status){
             case 1 :    $path_search = "reports/years/".$year_search."/sellers/".Auth::user()->api_identify."/pdgroups"; 

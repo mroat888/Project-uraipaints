@@ -53,10 +53,11 @@
                                         <option value="">--ค้นหาปี--</option>
                                         @php
                                             list($year,$month,$day) = explode('-', date('Y-m-d'));
+                                            $year_thai = $year+543;
                                         @endphp
 
                                         @for($i = 0; $i<3; $i++)
-                                            <option value="{{ $year-$i}}">{{ $year-$i}}</option>
+                                            <option value="{{ $year-$i}}">{{ $year_thai}}</option>
                                         @endfor
                                     </select>
                                 </div>
