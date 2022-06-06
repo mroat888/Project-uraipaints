@@ -84,10 +84,16 @@ class ProductNewController extends Controller
     }
 
     public function search(Request $request){
-
         $year_now = $request->sel_year;
+        $sel_campaign = $request->sel_campaign;
+
+        if(!is_null($sel_campaign)){
+            $patch_search = "campaignpromotes/".$sel_campaign."/sellertargets/".Auth::user()->api_identify;
+        }else{
+            $patch_search = "campaignpromotes/*/sellertargets/".Auth::user()->api_identify;
+        }
+
         $api_token = $this->api_token->apiToken();
-        $patch_search = "campaignpromotes/*/sellertargets/".Auth::user()->api_identify;
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$patch_search,[
             'years' => $year_now
         ]);

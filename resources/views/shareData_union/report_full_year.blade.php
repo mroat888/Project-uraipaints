@@ -53,10 +53,12 @@
                                         <option value="">--ค้นหาปี--</option>
                                         @php
                                             list($year,$month,$day) = explode('-', date('Y-m-d'));
-                                            $year_thai = $year+543;
                                         @endphp
 
                                         @for($i = 0; $i<3; $i++)
+                                            @php 
+                                                $year_thai = $year-$i + 543;
+                                            @endphp
                                             <option value="{{ $year-$i}}">{{ $year_thai}}</option>
                                         @endfor
                                     </select>
@@ -209,7 +211,7 @@
                                                     }
 
                                                 @endphp
-                                                @if($key < 10)
+                                                @if($key < 15)
                                                     <tr>
                                                         <td style="text-align:center;">{{ ++$key }}</td>
                                                         <td style="text-align:center;">{{ $pdgroup_id }}</td>

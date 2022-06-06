@@ -1237,6 +1237,40 @@ class ApiController extends Controller
      */
 
 
+    public function fetch_campaignpromotes($year){
 
+        $api_token = $this->apiToken();
+
+        $path_search = "campaignpromotes";
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search,[
+            'year' => $year
+        ]);
+        $res_api = $response->json();
+
+        // dd($res_api);
+
+        if($res_api['code'] == 200){
+            foreach($res_api['data'] as $key => $value){
+                $campaignpromotes[] = [
+                    'campaign_id' => $value['campaign_id'],
+                    'description' => $value['description'],
+                    'fromdate' => $value['fromdate'],
+                    'todate' => $value['todate'],
+                    'remark' => $value['remark'],
+                    'Product' => $value['Product'],
+                    'Seller' => $value['Seller'],
+                    'Target' => $value['Target'],
+                    'Sales' => $value['Sales'],
+                    'Diff' => $value['Diff']
+                ];
+            }
+        }
+        return response()->json([
+            'status' => 200,
+            'campaignpromotes' => $campaignpromotes,
+            'message' => 'Yes. Success.!',
+        ]);
+
+    }
 
 }

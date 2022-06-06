@@ -27,7 +27,7 @@
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
                         <div class="col-sm-12 col-md-4">
-                            <h5 class="hk-sec-title">ตารางรายงานยอดขายสินค้าใหม่</h5>
+                            <!-- <h5 class="hk-sec-title">ตารางรายงานยอดขายสินค้าใหม่</h5> -->
                         </div>
                         <div class="col-sm-12 col-md-8">
                             <!-- ------ -->
@@ -36,10 +36,13 @@
                                     @csrf
                                     <span id="selectdate">
 
-                                        เป้า : <input type="number" value="{{ date('Y-m') }}" id="target" name="target" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;"/>
+                                        เป้า : 
+                                        <select class="form-control form-control-sm mr-5" name="sel_campaign" id="sel_campaign">
+                                            <option value="">เลือกแคมเปญ</option>
+                                        </select>
                                         
                                         ปี :
-                                        <select class="form-control form-control-sm mr-5" name="sel_year">
+                                        <select class="form-control form-control-sm mr-5" name="sel_year" id="sel_year">
                                             @php 
                                                 $year_now = date("Y");
                                                 $year_now_thai = $year_now+543;
@@ -79,8 +82,8 @@
                                             <th>ระยะเวลา</th>
                                             <th>เป้าทั้งหมด<br>(หน่วย)</th>
                                             <th>เป้าที่ทำได้<br>(หน่วย)</th>
-                                            <th>คงเหลือ<br>(หน่วย)</th>
                                             <th>คิดเป็น%</th>
+                                            <th>คงเหลือ<br>(หน่วย)</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -103,8 +106,8 @@
                                             <td>{{ $fromdate }} - {{ $todate }}</td>
                                             <td>{{ number_format($sellers_api[$i]['Target'],0) }}</td>
                                             <td>{{ number_format($sellers_api[$i]['Sales'],0) }}</td>
-                                            <td>{{ number_format($sellers_api[$i]['Diff'],0) }}</td>
                                             <td>{{ number_format($sellers_api[$i]['persent_sale'],2)}}%</td>
+                                            <td>{{ number_format($sellers_api[$i]['Diff'],0) }}</td>
                                         </tr>
                                         
                                     <?php
@@ -115,8 +118,8 @@
                                         <td colspan="3" align="center">ทั้งหมด</td>
                                         <td class="text-success">{{ number_format($summary_sellers_api['sum_target'],0) }}</td>
                                         <td class="text-success">{{ number_format($summary_sellers_api['sum_sales'],0) }}</td>
-                                        <td class="text-danger">{{ number_format($summary_sellers_api['sum_diff'],0) }}</td>
                                         <td class="text-success">{{ number_format($summary_sellers_api['sum_persent_sale'],2) }}%</td>
+                                        <td class="text-danger">{{ number_format($summary_sellers_api['sum_diff'],0) }}</td>
                                     </tfoot>
                                 </table>
                             </div>
@@ -140,12 +143,39 @@
         <!-- /Row -->
     </div>
 
+
+<script>
+
+    $(document).on('change','#sel_year', function(e){
+        e.preventDefault();
+        let sel_year = $(this).val();
+        console.log(sel_year);
+        $.ajax({
+            method: 'GET',
+            url: '{{ url("/fetch_campaignpromotes") }}/'+sel_year, 
+            datatype: 'json',
+            success: function(response){
+                if(response.status == 200){
+                    console.log(response.campaignpromotes);
+                    $('#sel_campaign').children().remove().end();
+                    $('#sel_campaign').append('<option selected value="">เลือกแคมเปญ</option>');
+                    let rows = response.campaignpromotes.length;
+                    for(let i=0 ;i<rows; i++){
+                        $('#sel_campaign').append('<option value="'+response.campaignpromotes[i]['campaign_id']+'">'+response.campaignpromotes[i]['description']+'</option>');
+                    }
+                }else{
+                    console.log("ไม่พบ จังหวัด สินค้า");
+                }
+            }
+        });
+    });
+
+</script>
+
+@endsection
+
 @section('footer')
     @include('layouts.footer')
 @endsection
 
- <!-- EChartJS JavaScript -->
- <script src="{{asset('public/template/vendors/echarts/dist/echarts-en.min.js')}}"></script>
- <script src="{{asset('public/template/barcharts/barcharts-data.js')}}"></script>
-@endsection
 

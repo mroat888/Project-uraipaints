@@ -153,9 +153,9 @@ Route::post('data_report_product-new/search', 'ShareData\ProductNewController@se
 
 // Route::get('data_report_full-year', 'ShareData\ReportFullYearController@index'); //-- OAT เปลี่ยนเป็นอันล่าง ใช้งานร่วมกัน
 // Route::post('data_report_full-year/search', 'ShareData\ReportFullYearController@search'); //-- OAT เปลี่ยนเป็นอันล่าง ใช้งานร่วมกัน
-
 Route::get('data_report_full-year', 'ShareData_Union\ReportFullYearController@index');
 Route::post('data_report_full-year/search', 'ShareData_Union\ReportFullYearController@search');
+
 Route::get('data_report_full-year/detail/{pdgroup}/{year}/{id}', 'ShareData_Union\ReportFullYearController@show');
 Route::get('data_report_full-year_compare_group', 'ShareData_Union\ReportFullYearCompareGroupController@index');
 Route::post('data_report_full-year_compare_group/search', 'ShareData_Union\ReportFullYearCompareGroupController@search');
@@ -756,6 +756,7 @@ Route::get('fetch_subgroups/{id}', 'Api\ApiController@fetch_subgroups');
 Route::get('fetch_pdglists/{id}', 'Api\ApiController@fetch_pdglists');
 Route::get('fetch_products/{id}', 'Api\ApiController@fetch_products');
 Route::get('fetch_amphur_api/{position}/{id}', 'Api\ApiController@fetch_amphur_api');
+Route::get('fetch_campaignpromotes/{year}', 'Api\ApiController@fetch_campaignpromotes');
 
 Route::get('assignments_commentshow/{id}', 'UnionAssignmentController@commentshow');
 Route::get('assignment_result_get/{id}', 'UnionAssignmentController@assignment_result_get');
