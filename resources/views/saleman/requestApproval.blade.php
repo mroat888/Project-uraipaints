@@ -83,6 +83,11 @@
                                             </thead>
                                             <tbody>
                                                 @foreach($list_approval as $key => $value)
+                                                    @php 
+                                                        list($aswork_year, $aswork_month, $aswork_day) = explode("-", $value->assign_work_date);
+                                                        $aswork_year_thai = $aswork_year + 543;
+                                                        $assign_work_date = $aswork_day."/".$aswork_month."/".$aswork_year_thai;
+                                                    @endphp
                                                 <tr>
                                                     <td>{{ ++$key }}</td>
                                                     <td>
@@ -92,7 +97,7 @@
                                                     </td>
                                                     <td>{{ $value->assign_title }}</td>
                                                     <td>{{ $value->customer_title }} {{ $value->customer_name }}</td>
-                                                    <td>{{ $value->assign_work_date }}</td>
+                                                    <td>{{ $assign_work_date }}</td>
                                                     <td>
                                                         @php
                                                             switch($value->assign_status){
@@ -185,7 +190,7 @@
                                 <input class="form-control" placeholder="กรุณาใส่หัวข้อ / เรื่อง" name="assign_title" type="text" required>
                             </div>
                             <div class="col-md-6 form-group">
-                                <label for="firstName">วันที่ / Date</label>
+                                <label for="firstName">วันที่ต้องการ</label>
                                 <input class="form-control" type="date" name="assign_work_date" min="<?= date('Y-m-d') ?>" required>
                             </div>
                         </div>
@@ -430,10 +435,12 @@
                         break;
                     default: $div_assign_status = '<span class="badge badge-soft-warning" style="font-size: 12px;">ไม่มี</span>'
                 }
+                let get_assign_request_date = data['dataassign'].assign_request_date.split(" ");
 
                 $('#assign_detail_comment').text(data['dataassign'].assign_detail);
                 $('#header_title_comment').text('เรื่อง : '+data['dataassign'].assign_title);
                 $('#header_approved_for_comment').text(data['dataassign'].masassign_title);
+                $('#get_assign_request_date').text(get_assign_request_date[0]);
                 $('#get_assign_work_date_comment').text(data['dataassign'].assign_work_date);
                 $('#div_assign_status').append('<span>การอนุมัติ : </span>'+div_assign_status);
 
@@ -447,9 +454,12 @@
                     let count_parent = Object.keys(data['dataassign_parent']).length;
                     // console.log(count_parent);
                     if(count_parent > 0){
+                        let assign_request_date = data['dataassign_parent'].assign_request_date.split(" ");
+
                         $("#assign_parent").attr("style", { display: "block" });
                         $("#title_parent").text(data['dataassign_parent'].assign_title);
                         $("#approved_for_parent").text(data['dataassign_parent'].masassign_title);
+                        $("#assign_request_date").text(assign_request_date[0]);
                         $("#assign_work_date_parent").text(data['dataassign_parent'].assign_work_date);
                         $("#assign_detail_parent").text(data['dataassign_parent'].assign_detail);
                     }

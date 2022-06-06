@@ -104,7 +104,7 @@ Route::get('view_comment/{id}', 'SaleMan\RequestApprovalController@view_comment'
 Route::get('search_month_requestApprove/{fromMonth}/{toMonth}', 'SaleMan\RequestApprovalController@search_month_requestApprove');
 
 // TEST REQUEST
-Route::get('approval', 'SaleMan\RequestApprovalController@index');
+// Route::get('approval', 'SaleMan\RequestApprovalController@index');
 Route::get('approval2', 'SaleMan\RequestApprovalController@index2');
 
 // NOTE
