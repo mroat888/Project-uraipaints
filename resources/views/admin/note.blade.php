@@ -119,8 +119,7 @@
                                                                     class="material-icons">drive_file_rename_outline</span></h4>
                                                             </button>
                                                             <a href="{{url('admin/delete_note', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
-                                                                <h4 class="btn-icon-wrap" style="color: white;"><span
-                                                                    class="material-icons">delete_outline</span></h4>
+                                                                <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">delete_outline</span></h4>
                                                             </a>
                                                         </div>
                                                     </td>
