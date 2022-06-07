@@ -13,18 +13,12 @@
     <div class="container-fluid px-xxl-65 px-xl-20">
         <!-- Title -->
         <div class="hk-pg-header mb-10">
-            <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                    data-feather="edit"></i></span></span>บันทึกกำหนดค่าต่างๆ</h4>
-            </div>
-            <div class="d-flex">
-                <!-- <button type="button" class="btn btn-teal btn-sm btn-rounded px-3 mr-10" data-toggle="modal" data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button> -->
-            </div>
+            <div class="topichead-bgred"><i data-feather="edit"></i> บันทึกกำหนดค่าต่างๆ</div>
         </div>
         <!-- /Title -->
 
             <section class="hk-sec-wrapper">
-                <h5 class="hk-sec-title">ตารางกำหนดค่า</h5>
+                <div class="topic-secondgery">รายการกำหนดค่า</div>
                 <div class="row">
                     <div class="col-sm">
                         <div class="table-wrap">
@@ -46,14 +40,14 @@
                                         <div class="form-group row ">
                                             <label for="staticEmail" class="col-sm-2 col-form-label" style="text-align:right;"></label>
                                             <div class="col-sm-2">
-                                                <button type="submit" class="btn btn-primary">บันทึก</button>
+                                                <button type="submit" class="btn btn-view">บันทึก</button>
                                             </div>
                                         </div>
-                                        
+
                                     </form>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
