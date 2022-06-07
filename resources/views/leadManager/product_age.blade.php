@@ -13,7 +13,7 @@
     <div class="container-fluid px-xxl-65 px-xl-20">
         <!-- Title -->
         <div class="hk-pg-header mb-10">
-            <div class="topichead-bgred"><i data-feather="grid"></i> อายุจัดเก็บสินค้า</div>
+            <div class="topichead-bgred"><i data-feather="clock"></i> อายุจัดเก็บสินค้า</div>
         </div>
         <!-- /Title -->
 

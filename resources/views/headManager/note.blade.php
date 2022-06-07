@@ -14,13 +14,9 @@
     <div class="container-fluid px-xxl-65 px-xl-20">
         <!-- Title -->
         <div class="hk-pg-header mb-10">
-            <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                                data-feather="file-text"></i></span></span>บันทึกโน๊ตส่วนตัว</h4>
-            </div>
-            <div class="d-flex">
-                <button type="button" class="btn btn-teal btn-sm btn-rounded px-3" data-toggle="modal"
-                    data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button>
+            <div class="topichead-bgred"><i data-feather="file-text"></i> บันทึกโน๊ตส่วนตัว</div>
+            <div class="content-right d-flex">
+                <button type="button" class="btn btn-green" data-toggle="modal" data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button>
             </div>
         </div>
         <!-- /Title -->
@@ -28,12 +24,7 @@
         <div class="row">
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
-                    <div class="row mb-2">
-                        <div class="col-sm-12 col-md-3">
-                            <h5 class="hk-sec-title">ตารางข้อมูลโน๊ตส่วนตัว</h5>
-                        </div>
-                    </div>
-
+                    <div class="topic-secondgery">รายการโน๊ตส่วนตัว</div>
                     <div class="row">
                         <div class="col-sm">
                             <div class="table-wrap">
@@ -42,27 +33,22 @@
                                     </div>
                                     <div class="col-sm-12 col-md-9">
                                         <!-- ------ -->
-
                                         <span class="form-inline pull-right pull-sm-center">
-                                            <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</button>
                                             <form action="{{ url('head/search_month_note') }}" method="post" enctype="multipart/form-data">
                                                 @csrf
-                                            <span id="selectdate" style="display:none;">
+                                            <span>
+                                                เดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" name="fromMonth"/>
 
-                                                เดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateFrom" name="fromMonth"/>
+                                                ถึงเดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" name="toMonth"/>
 
-                                                ถึงเดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name="toMonth"/>
-
-                                            <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm">ค้นหา</button>
-
-                                            {{-- <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button> --}}
+                                            <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm">ค้นหา</button>
                                             </span>
                                         </form>
                                         </span>
                                         <!-- ------ -->
                                     </div>
                                 </div>
-                                <div class="table-responsive col-md-12">
+                                <div class="table-responsive col-md-12 table-color">
                                     <table id="datable_1" class="table table-hover">
                                         <thead>
                                             <tr>
@@ -77,7 +63,12 @@
                                             @foreach ($data as $key => $value)
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
-                                                    <td>{{ $value->note_title }}</td>
+                                                    <td>{{ $value->note_title }}
+                                                        @if ($value->status_pin == 1)
+                                                        {{-- <span class="badge badge-danger badge-indicator" style="width: 10px; height: 10px;"></span> --}}
+                                                        <span class="material-icons" style="color: rgb(180, 33, 33);">push_pin</span>
+                                                        @endif
+                                                    </td>
                                                     <td>
                                                         <?php
                                                             $masterNote = App\NoteTag::get();
@@ -108,25 +99,29 @@
                                                         ?>
                                                     </td>
                                                     <?php $date = new Carbon\Carbon($value->note_date); ?>
-                                                    <td>{{ $date->format('d/m/Y') }}</td>
+                                                    <td>{{ $date->addYear(543)->format('d/m/Y') }}</td>
                                                     <td>
                                                         <div class="button-list">
                                                             @if ($value->status_pin == 1)
                                                             <a href="{{url('head/status_pin_update', $value->id)}}" class="btn btn-icon btn-secondary mr-10">
-                                                                <span class="btn-icon-wrap"><i
-                                                                        data-feather="feather"></i></span></a>
+                                                                <h4 class="btn-icon-wrap" style="color: white;"><span
+                                                                    class="material-icons">push_pin</span></h4>
+                                                            </a>
                                                             @else
-                                                            <a href="{{url('head/status_pin_update', $value->id)}}" class="btn btn-icon btn-primary mr-10">
-                                                                <span class="btn-icon-wrap"><i
-                                                                        data-feather="feather"></i></span></a>
+                                                            <a href="{{url('head/status_pin_update', $value->id)}}" class="btn btn-icon btn-view mr-10">
+                                                                <h4 class="btn-icon-wrap" style="color: white;"><span
+                                                                    class="material-icons">push_pin</span></h4>
+                                                            </a>
                                                             @endif
                                                             <button onclick="edit_modal({{ $value->id }})"
-                                                                class="btn btn-icon btn-warning mr-10" data-toggle="modal"
-                                                                data-target="#editNote">
-                                                                <span class="btn-icon-wrap"><i
-                                                                        data-feather="edit"></i></span></button>
+                                                                class="btn btn-icon btn-edit mr-10" data-toggle="modal"
+                                                                data-target="#editNote"><h4 class="btn-icon-wrap" style="color: white;"><span
+                                                                    class="material-icons">drive_file_rename_outline</span></h4>
+                                                            </button>
                                                             <a href="{{url('head/delete_note', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
-                                                                <span class="btn-icon-wrap"><i data-feather="trash-2"></i></span></a>
+                                                                <h4 class="btn-icon-wrap" style="color: white;"><span
+                                                                    class="material-icons">delete_outline</span></h4>
+                                                            </a>
                                                         </div>
                                                     </td>
                                                 </tr>
