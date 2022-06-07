@@ -2,16 +2,11 @@
 
 @section('content')
 
-@php
-    $action_search = "data_search_product/search";
-@endphp
+    @php
+        $action_search = "data_search_product/search";
+    @endphp
 
-@include('shareData_union.search_product')
-
-@section('footer')
-    @include('layouts.footer')
-@endsection
-
+    @include('shareData_union.search_product')
 
 <script>
 
@@ -248,6 +243,9 @@ $(document).on('change','#amphur', function(e){
 
 </script>
 
+@endsection
 
 
+@section('footer')
+    @include('layouts.footer')
 @endsection

@@ -612,12 +612,30 @@ License: You must have a valid license purchased only from themeforest to legall
     </div>
     <!-- /HK Wrapper -->
 
-    <!-- Select2 JavaScript -->
-    <script src="{{ asset('public/template/vendors/select2/dist/js/select2.full.min.js') }}"></script>
-    <script src="{{ asset('public/template/dist/js/select2-data.js') }}"></script>
 
-    <!-- jQuery -->
-    <script src="{{ asset('public/template/vendors/jquery/dist/jquery.min.js') }}"></script>
+
+    @if(isset($disable_jquery))
+        <!-- Select2 JavaScript -->
+        <script src="{{ asset('public/template/vendors/select2/dist/js/select2.full.min.js') }}"></script>
+        <script src="{{ asset('public/template/dist/js/select2-data.js') }}"></script>
+
+        <!-- jQuery -->
+        <script src="{{ asset('public/template/vendors/jquery/dist/jquery.min.js') }}"></script>
+    @else 
+        <!-- jQuery -->
+        <script src="{{ asset('public/template/vendors/jquery/dist/jquery.min.js') }}"></script>
+
+        <!-- Select2 JavaScript -->
+        <script src="{{ asset('public/template/vendors/select2/dist/js/select2.full.min.js') }}"></script>
+        <script src="{{ asset('public/template/dist/js/select2-data.js') }}"></script>
+    @endif
+
+    <!-- Data Table JavaScript -->
+    <script src="{{ asset('public/template/vendors/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('public/template/vendors/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('public/template/dist/js/dataTables-data.js') }}"></script>
+    <script src="{{ asset('public/template/vendors/datatables.net-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
+
 
     <!-- Bootstrap Core JavaScript -->
     <script src="{{ asset('public/template/vendors/popper.js/dist/umd/popper.min.js') }}"></script>
@@ -675,12 +693,6 @@ License: You must have a valid license purchased only from themeforest to legall
     <!-- Jasny-bootstrap  JavaScript -->
     <script src="{{ asset('public/template/vendors/jasny-bootstrap/dist/js/jasny-bootstrap.min.js') }}"></script>
 
-    <!-- Data Table JavaScript -->
-    <script src="{{ asset('public/template/vendors/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('public/template/vendors/datatables.net-responsive/js/dataTables.responsive.min.js') }}">
-    </script>
-    <script src="{{ asset('public/template/dist/js/dataTables-data.js') }}"></script>
-    <script src="{{ asset('public/template/vendors/datatables.net-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
 
 
     <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>

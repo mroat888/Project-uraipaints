@@ -682,12 +682,21 @@ License: You must have a valid license purchased only from themeforest to legall
     </div>
     <!-- /HK Wrapper -->
 
-    <!-- Select2 JavaScript -->
-    <script src="{{ asset('public/template/vendors/select2/dist/js/select2.full.min.js') }}"></script>
-    <script src="{{ asset('public/template/dist/js/select2-data.js') }}"></script>
+    @if(isset($disable_jquery))
+        <!-- Select2 JavaScript -->
+        <script src="{{ asset('public/template/vendors/select2/dist/js/select2.full.min.js') }}"></script>
+        <script src="{{ asset('public/template/dist/js/select2-data.js') }}"></script>
 
-    <!-- jQuery -->
-    <script src="{{ asset('public/template/vendors/jquery/dist/jquery.min.js') }}"></script>
+        <!-- jQuery -->
+        <script src="{{ asset('public/template/vendors/jquery/dist/jquery.min.js') }}"></script>
+    @else 
+        <!-- jQuery -->
+        <script src="{{ asset('public/template/vendors/jquery/dist/jquery.min.js') }}"></script>
+
+        <!-- Select2 JavaScript -->
+        <script src="{{ asset('public/template/vendors/select2/dist/js/select2.full.min.js') }}"></script>
+        <script src="{{ asset('public/template/dist/js/select2-data.js') }}"></script>
+    @endif
 
     <!-- Bootstrap Core JavaScript -->
     <script src="{{ asset('public/template/vendors/popper.js/dist/umd/popper.min.js') }}"></script>
