@@ -20,10 +20,10 @@ class ReportHistoricalYearController extends Controller
         list($year,$month,$day) = explode('-',date('Y-m-d'));
         $year = $year+0;
         $year_old1 = $year-1; 
-        $year_old2 = $year-2;
+        $year_search = $year.",".$year_old1;
      
-
-        $path_search = "reports/years/".$year.",".$year_old1.",".$year_old2."/sellers/".Auth::user()->api_identify;
+    
+        $path_search = "reports/years/".$year_search."/sellers/".Auth::user()->api_identify;
         $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search);
         $year_api = $response->json();
@@ -31,56 +31,51 @@ class ReportHistoricalYearController extends Controller
         // dd($year_api);
         if($year_api['code'] == 200){
             $sum_sales = 0;
-            $sum_credits = 0;
-            $sum_netSales = 0;
-            $sum_persent_credits =0 ;
-            $persent_sale =0 ;
-            $chat_customer = "";
-            $chat_netsales = "";
-            $chat_year = "";
-            $chat_persent_sale = "";
 
             foreach($year_api['data'] as $value){
                 $sum_sales += $value['sales'];
-                $sum_credits += $value['credits'];
-                $sum_netSales += $value['netSales'];
+                // $sum_credits += $value['credits'];
+                // $sum_netSales += $value['netSales'];
             }
 
             $count_row = count($year_api['data']); // นับจำนวน array
             $crow = 1;
             foreach($year_api['data'] as $value){
-                $persent_sale =  round(($value['netSales'] * 100 ) / $sum_netSales);
+                // $persent_sale =  round(($value['netSales'] * 100 ) / $sum_netSales);
                 $yearadmin_api[] = [
                     'year' => $value['year'],
+                    'identify' => $value['identify'],
+                    'name' => $value['name'],
+                    'sales' => $value['sales'],
                     'customers' => $value['customers'],
                     'months' => $value['months'],
-                    'sales' => $value['sales'],
-                    'credits' => $value['credits'],
-                    '%Credit' => $value['%Credit'],
-                    'netSales' => $value['netSales'],
-                    '%Sale' => $persent_sale,
+                    'sales_th' => $value['sales_th'],
+                    // 'credits' => $value['credits'],
+                    // '%Credit' => $value['%Credit'],
+                    // 'netSales' => $value['netSales'],
+                    // '%Sale' => $persent_sale,
                 ];
 
                 // -- Caht data
                 if($crow != $count_row){
                     if(!is_null($value['customers'])){
                         $chat_customer .= $value['customers'].",";
-                        $chat_netsales .= $value['netSales'].",";
-                        $chat_persent_sale .= $persent_sale.",";
+                        //$chat_netsales .= $value['netSales'].",";
+                        //$chat_persent_sale .= $persent_sale.",";
                     }else{
                         $chat_customer .= "0,";
-                        $chat_netsales .= "0,";
-                        $chat_persent_sale .= "0,";
+                        //$chat_netsales .= "0,";
+                        //$chat_persent_sale .= "0,";
                     }
                 }else{
                     if(!is_null($value['customers'])){
                         $chat_customer .= $value['customers'];
-                        $chat_netsales .= $value['netSales'];
-                        $chat_persent_sale .= $persent_sale.",";
+                        //$chat_netsales .= $value['netSales'];
+                        //$chat_persent_sale .= $persent_sale.",";
                     }else{
                         $chat_customer .= "0";
-                        $chat_netsales .= "0";
-                        $chat_persent_sale .= "0";
+                        // $chat_netsales .= "0";
+                        // $chat_persent_sale .= "0";
                     }
                 }
                 // -- Caht data
@@ -91,9 +86,9 @@ class ReportHistoricalYearController extends Controller
 
             $summary_yearadmin_api = [
                 'sum_sales' => $sum_sales,
-                'sum_credits' => $sum_credits,
-                'sum_persent_credits' => $sum_persent_credits,
-                'sum_netSales' => $sum_netSales,
+                // 'sum_credits' => $sum_credits,
+                // 'sum_persent_credits' => $sum_persent_credits,
+                // 'sum_netSales' => $sum_netSales,
             ];
 
             // -- Chat

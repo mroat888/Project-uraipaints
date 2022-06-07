@@ -436,12 +436,16 @@ License: You must have a valid license purchased only from themeforest to legall
                                                 <i class="ion ion-md-stats" style="color: #044067;"></i>รายงานสรุปยอดทำเป้า เทียบปี</a>
                                         </li> -->
                                         <li class="nav-item">
-                                            <a class="nav-link" href="javascript:void(0)">
+                                            <li class="nav-item {{ (request()->is('data_report_customer_compare-year')) ? 'btn2' : '' }}">
+                                            <a class="nav-link"
+                                                href="{{ url('data_report_customer_compare-year') }}">
                                                 <i class="ion ion-md-stats" style="color: #044067;"></i>ยอดขายร้านค้า เทียบปีต่อปี
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="javascript:void(0)">
+                                            <li class="nav-item {{ (request()->is('data_report_product_return')) ? 'btn2' : '' }}">
+                                            <a class="nav-link"
+                                                href="{{ url('data_report_product_return') }}">
                                                 <i class="ion ion-md-stats" style="color: #044067;"></i>รายงานรับคืนสินค้า
                                             </a>
                                         </li>
@@ -608,6 +612,10 @@ License: You must have a valid license purchased only from themeforest to legall
     </div>
     <!-- /HK Wrapper -->
 
+    <!-- Select2 JavaScript -->
+    <script src="{{ asset('public/template/vendors/select2/dist/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('public/template/dist/js/select2-data.js') }}"></script>
+
     <!-- jQuery -->
     <script src="{{ asset('public/template/vendors/jquery/dist/jquery.min.js') }}"></script>
 
@@ -660,9 +668,6 @@ License: You must have a valid license purchased only from themeforest to legall
     <!-- Owl Init JavaScript -->
     <script src="{{ asset('public/template/dist/js/owl-data.js') }}"></script>
 
-    <!-- Select2 JavaScript -->
-    <script src="{{ asset('public/template/vendors/select2/dist/js/select2.full.min.js') }}"></script>
-    <script src="{{ asset('public/template/dist/js/select2-data.js') }}"></script>
 
     <!-- Bootstrap Tagsinput JavaScript -->
     {{-- <script src="{{asset('public/template/vendors/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js')}}"></script> --}}

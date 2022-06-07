@@ -3,10 +3,10 @@
 @section('content')
 
     @php 
-        $action_search = "admin/data_report_historical-year/search";
-    @endphp 
+        $action_search = "admin/data_report_product_return/search";
+    @endphp  
 
-    @include('shareData_union.report_historical_year')  
+    @include('shareData_union.report_product_return')  
 
 @endsection
 

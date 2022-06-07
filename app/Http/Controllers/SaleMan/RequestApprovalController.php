@@ -359,6 +359,7 @@ class RequestApprovalController extends Controller
                 'parent_id' => $dataResult->parent_id,
                 'assign_detail' => $assing_parent->assign_detail,
                 'assign_title' => $assing_parent->assign_title,
+                'assign_request_date' => $assing_parent->assign_request_date,
                 'assign_work_date' => $assing_parent->assign_work_date,
                 'masassign_title' => $assing_parent->masassign_title,
                 'assign_status' => $assing_parent->assign_status,
@@ -369,6 +370,7 @@ class RequestApprovalController extends Controller
         $dataassign = [
             'assign_detail' => $dataResult->assign_detail,
             'assign_title' => $dataResult->assign_title,
+            'assign_request_date' => $dataResult->assign_request_date,
             'assign_work_date' => $dataResult->assign_work_date,
             'masassign_title' => $dataResult->masassign_title,
             'assign_status' => $dataResult->assign_status,

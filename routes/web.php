@@ -104,7 +104,7 @@ Route::get('view_comment/{id}', 'SaleMan\RequestApprovalController@view_comment'
 Route::get('search_month_requestApprove/{fromMonth}/{toMonth}', 'SaleMan\RequestApprovalController@search_month_requestApprove');
 
 // TEST REQUEST
-Route::get('approval', 'SaleMan\RequestApprovalController@index');
+// Route::get('approval', 'SaleMan\RequestApprovalController@index');
 Route::get('approval2', 'SaleMan\RequestApprovalController@index2');
 
 // NOTE
@@ -175,16 +175,32 @@ Route::get('data_search_product', 'ShareData\SearchroductController@index');
 Route::post('data_search_product/search', 'ShareData\SearchroductController@search');
 Route::get('data_report_product-new', 'ShareData\ProductNewController@index');
 Route::post('data_report_product-new/search', 'ShareData\ProductNewController@search');
-Route::get('data_report_full-year', 'ShareData\ReportFullYearController@index');
-Route::post('data_report_full-year/search', 'ShareData\ReportFullYearController@search');
-Route::get('data_report_historical-year', 'ShareData\ReportHistoricalYearController@index');
-Route::post('data_report_historical-year/search', 'ShareData\ReportHistoricalYearController@search');
+
+// Route::get('data_report_full-year', 'ShareData\ReportFullYearController@index'); //-- OAT เปลี่ยนเป็นอันล่าง ใช้งานร่วมกัน
+// Route::post('data_report_full-year/search', 'ShareData\ReportFullYearController@search'); //-- OAT เปลี่ยนเป็นอันล่าง ใช้งานร่วมกัน
+Route::get('data_report_full-year', 'ShareData_Union\ReportFullYearController@index');
+Route::post('data_report_full-year/search', 'ShareData_Union\ReportFullYearController@search');
+
+Route::get('data_report_full-year/detail/{pdgroup}/{year}/{id}', 'ShareData_Union\ReportFullYearController@show');
+Route::get('data_report_full-year_compare_group', 'ShareData_Union\ReportFullYearCompareGroupController@index');
+Route::post('data_report_full-year_compare_group/search', 'ShareData_Union\ReportFullYearCompareGroupController@search');
+
+
+// Route::get('data_report_historical-year', 'ShareData\ReportHistoricalYearController@index'); //-- OAT เปลี่ยนอันล่าง ไปใช้ Controller เดียวกัน
+// Route::post('data_report_historical-year/search', 'ShareData\ReportHistoricalYearController@search'); //-- OAT เปลี่ยนอันล่าง ไปใช้ Controller เดียวกัน 
+Route::get('data_report_historical-year', 'ShareData_Union\ReportHistoricalYearController@index');
+Route::post('data_report_historical-year/search', 'ShareData_Union\ReportHistoricalYearController@search');
 Route::get('data_report_historical-quarter', 'ShareData\ReportHistoricalQuarterController@index');
 Route::post('data_report_historical-quarter/search', 'ShareData\ReportHistoricalQuarterController@search');
 Route::get('data_report_historical-month', 'ShareData\ReportHistoricalMonthController@index');
 Route::post('data_report_historical-month/search', 'ShareData\ReportHistoricalMonthController@search');
 Route::get('data_report_sale_compare-year','ShareData\ReportSaleCompareYearController@index');
 Route::post('data_report_sale_compare-year/search','ShareData\ReportSaleCompareYearController@search');
+
+Route::get('data_report_customer_compare-year','ShareData_Union\ReportCustomerCompareYearController@index');
+Route::post('data_report_customer_compare-year/search','ShareData_Union\ReportCustomerCompareYearController@search');
+Route::get('data_report_product_return','ShareData_Union\ReportProductReturnController@index');
+Route::post('data_report_product_return/search','ShareData_Union\ReportProductReturnController@search');
 
 });
 
@@ -329,10 +345,20 @@ Route::get('leadManage/data_search_product', 'ShareData_LeadManager\Searchroduct
 Route::post('leadManage/data_search_product/search', 'ShareData_LeadManager\SearchroductController@search');
 // Route::get('leadManage/data_report_product-new', 'ShareData_LeadManager\ProductNewController@index'); //-- OAT เปลี่ยนไปใช้อันล่าง
 Route::get('leadManage/data_report_product-new', 'ShareData_Union\ProductNewController@index');
-Route::get('leadManage/data_report_full-year', 'ShareData_LeadManager\ReportFullYearController@index');
-Route::post('leadManage/data_report_full-year/search', 'ShareData_LeadManager\ReportFullYearController@search');
-Route::get('leadManage/data_report_historical-year', 'ShareData_LeadManager\ReportHistoricalYearController@index');
-Route::post('leadManage/data_report_historical-year/search', 'ShareData_LeadManager\ReportHistoricalYearController@search');
+
+// Route::get('leadManage/data_report_full-year', 'ShareData_LeadManager\ReportFullYearController@index'); //-- OAT เปลี่ยนมาใช้อันล่าง 
+// Route::post('leadManage/data_report_full-year/search', 'ShareData_LeadManager\ReportFullYearController@search');
+
+Route::get('leadManage/data_report_full-year', 'ShareData_Union\ReportFullYearController@index');
+Route::post('leadManage/data_report_full-year/search', 'ShareData_Union\ReportFullYearController@search');
+Route::get('leadManage/data_report_full-year/detail/{pdgroup}/{year}/{id}', 'ShareData_Union\ReportFullYearController@show');
+Route::get('leadManage/data_report_full-year_compare_group', 'ShareData_Union\ReportFullYearCompareGroupController@index');
+Route::post('leadManage/data_report_full-year_compare_group/search', 'ShareData_Union\ReportFullYearCompareGroupController@search');
+
+// Route::get('leadManage/data_report_historical-year', 'ShareData_LeadManager\ReportHistoricalYearController@index'); //-- OAT เปลี่ยนไปใช้อันล่าง ใช้ร่วมกัน
+// Route::post('leadManage/data_report_historical-year/search', 'ShareData_LeadManager\ReportHistoricalYearController@search'); //-- OAT เปลี่ยนไปใช้อันล่าง ใช้ร่วมกัน
+Route::get('leadManage/data_report_historical-year', 'ShareData_Union\ReportHistoricalYearController@index');
+Route::post('leadManage/data_report_historical-year/search', 'ShareData_Union\ReportHistoricalYearController@search');
 Route::get('leadManage/data_report_historical-quarter', 'ShareData_LeadManager\ReportHistoricalQuarterController@index');
 Route::post('leadManage/data_report_historical-quarter/search', 'ShareData_LeadManager\ReportHistoricalQuarterController@search');
 Route::get('leadManage/data_report_historical-month', 'ShareData_LeadManager\ReportHistoricalMonthController@index');
@@ -340,8 +366,14 @@ Route::post('leadManage/data_report_historical-month/search', 'ShareData_LeadMan
 Route::get('leadManage/data_report_sale_compare-year','ShareData_LeadManager\ReportSaleCompareYearController@index');
 Route::post('leadManage/data_report_sale_compare-year/search','ShareData_LeadManager\ReportSaleCompareYearController@search');
 
+Route::get('leadManage/data_report_customer_compare-year','ShareData_Union\ReportCustomerCompareYearController@index');
+Route::post('leadManage/data_report_customer_compare-year/search','ShareData_Union\ReportCustomerCompareYearController@search');
+Route::get('leadManage/data_report_product_return','ShareData_Union\ReportProductReturnController@index');
+Route::post('leadManage/data_report_product_return/search','ShareData_Union\ReportProductReturnController@search');
+
 Route::get('lead/edit-profile', 'ProfileController@lead_index');
 Route::post('lead/userProfileUpdate', 'ProfileController@update');
+
 
 });
 
@@ -472,16 +504,31 @@ Route::get('headManage/data_search_product', 'ShareData_HeadManager\Searchroduct
 Route::post('headManage/data_search_product/search', 'ShareData_HeadManager\SearchroductController@search');
 // Route::get('headManage/data_report_product-new', 'ShareData_HeadManager\ProductNewController@index'); //-- OAT เปลี่ยนเป็นด้านล่าง
 Route::get('headManage/data_report_product-new', 'ShareData_Union\ProductNewController@index');
-Route::get('headManage/data_report_full-year', 'ShareData_HeadManager\ReportFullYearController@index');
-Route::post('headManage/data_report_full-year/search', 'ShareData_HeadManager\ReportFullYearController@search');
-Route::get('headManage/data_report_historical-year', 'ShareData_HeadManager\ReportHistoricalYearController@index');
-Route::post('headManage/data_report_historical-year/search', 'ShareData_HeadManager\ReportHistoricalYearController@search');
+
+// Route::get('headManage/data_report_full-year', 'ShareData_HeadManager\ReportFullYearController@index');
+// Route::post('headManage/data_report_full-year/search', 'ShareData_HeadManager\ReportFullYearController@search');
+
+Route::get('headManage/data_report_full-year', 'ShareData_Union\ReportFullYearController@index');
+Route::post('headManage/data_report_full-year/search', 'ShareData_Union\ReportFullYearController@search');
+Route::get('headManage/data_report_full-year/detail/{pdgroup}/{year}/{id}', 'ShareData_Union\ReportFullYearController@show');
+
+Route::get('headManage/data_report_full-year_compare_group', 'ShareData_Union\ReportFullYearCompareGroupController@index');
+Route::post('headManage/data_report_full-year_compare_group/search', 'ShareData_Union\ReportFullYearCompareGroupController@search');
+
+// Route::get('headManage/data_report_historical-year', 'ShareData_HeadManager\ReportHistoricalYearController@index'); //-- OAT เปลี่ยนมาใช้อันล่าง ใช้ร่วมกัน
+// Route::post('headManage/data_report_historical-year/search', 'ShareData_HeadManager\ReportHistoricalYearController@search'); //-- OAT เปลี่ยนมาใช้อันล่าง ใช้ร่วมกัน
+Route::get('headManage/data_report_historical-year', 'ShareData_Union\ReportHistoricalYearController@index');
+Route::post('headManage/data_report_historical-year/search', 'ShareData_Union\ReportHistoricalYearController@search');
 Route::get('headManage/data_report_historical-quarter', 'ShareData_HeadManager\ReportHistoricalQuarterController@index');
 Route::post('headManage/data_report_historical-quarter/search', 'ShareData_HeadManager\ReportHistoricalQuarterController@search');
 Route::get('headManage/data_report_historical-month', 'ShareData_HeadManager\ReportHistoricalMonthController@index');
 Route::post('headManage/data_report_historical-month/search', 'ShareData_HeadManager\ReportHistoricalMonthController@search');
 Route::get('headManage/data_report_sale_compare-year','ShareData_HeadManager\ReportSaleCompareYearController@index');
 Route::post('headManage/data_report_sale_compare-year/search','ShareData_HeadManager\ReportSaleCompareYearController@search');
+Route::get('headManage/data_report_customer_compare-year','ShareData_Union\ReportCustomerCompareYearController@index');
+Route::post('headManage/data_report_customer_compare-year/search','ShareData_Union\ReportCustomerCompareYearController@search');
+Route::get('headManage/data_report_product_return','ShareData_Union\ReportProductReturnController@index');
+Route::post('headManage/data_report_product_return/search','ShareData_Union\ReportProductReturnController@search');
 });
 
 
@@ -775,16 +822,32 @@ Route::post('admin/data_search_product/search', 'ShareData_Admin\SearchroductCon
 Route::get('admin/data_report_product-new', 'ShareData_Union\ProductNewController@index');
 Route::post('admin/data_report_product-new/search', 'ShareData_Admin\ProductNewController@search');
 Route::get('admin/data_report_product-new/show/{id}', 'ShareData_Admin\ProductNewController@show');
-Route::get('admin/data_report_full-year', 'ShareData_Admin\ReportFullYearController@index');
-Route::post('admin/data_report_full-year/search', 'ShareData_Admin\ReportFullYearController@search');
-Route::get('admin/data_report_historical-year', 'ShareData_Admin\ReportHistoricalYearController@index');
-Route::post('admin/data_report_historical-year/search', 'ShareData_Admin\ReportHistoricalYearController@search');
+
+// Route::get('admin/data_report_full-year', 'ShareData_Admin\ReportFullYearController@index');  //-- OAT เปลี่ยนมาใช้อันล่าง
+// Route::post('admin/data_report_full-year/search', 'ShareData_Admin\ReportFullYearController@search');  //-- OAT เปลี่ยนมาใช้อันล่าง
+
+Route::get('admin/data_report_full-year', 'ShareData_Union\ReportFullYearController@index');
+Route::post('admin/data_report_full-year/search', 'ShareData_Union\ReportFullYearController@search');
+Route::get('admin/data_report_full-year/detail/{pdgroup}/{year}/{id}', 'ShareData_Union\ReportFullYearController@show');
+
+Route::get('admin/data_report_full-year_compare_group', 'ShareData_Union\ReportFullYearCompareGroupController@index');
+Route::post('admin/data_report_full-year_compare_group/search', 'ShareData_Union\ReportFullYearCompareGroupController@search');
+
+// Route::get('admin/data_report_historical-year', 'ShareData_Admin\ReportHistoricalYearController@index'); //-- OAT เปลี่ยนมาใช้อันล่าง ใช้งานร่วมกัน
+// Route::post('admin/data_report_historical-year/search', 'ShareData_Admin\ReportHistoricalYearController@search'); //-- OAT เปลี่ยนมาใช้อันล่าง ใช้งานร่วมกัน
+Route::get('admin/data_report_historical-year', 'ShareData_Union\ReportHistoricalYearController@index');
+Route::post('admin/data_report_historical-year/search', 'ShareData_Union\ReportHistoricalYearController@search');
 Route::get('admin/data_report_historical-quarter', 'ShareData_Admin\ReportHistoricalQuarterController@index');
 Route::post('admin/data_report_historical-quarter/search', 'ShareData_Admin\ReportHistoricalQuarterController@search');
 Route::get('admin/data_report_historical-month', 'ShareData_Admin\ReportHistoricalMonthController@index');
 Route::post('admin/data_report_historical-month/search', 'ShareData_Admin\ReportHistoricalMonthController@search');
 Route::get('admin/data_report_sale_compare-year','ShareData_Admin\ReportSaleCompareYearController@index');
 Route::post('admin/data_report_sale_compare-year/search','ShareData_Admin\ReportSaleCompareYearController@search');
+
+Route::get('admin/data_report_customer_compare-year','ShareData_Union\ReportCustomerCompareYearController@index');
+Route::post('admin/data_report_customer_compare-year/search','ShareData_Union\ReportCustomerCompareYearController@search');
+Route::get('admin/data_report_product_return','ShareData_Union\ReportProductReturnController@index');
+Route::post('admin/data_report_product_return/search','ShareData_Union\ReportProductReturnController@search');
 
 });
 
@@ -819,6 +882,7 @@ Route::get('fetch_subgroups/{id}', 'Api\ApiController@fetch_subgroups');
 Route::get('fetch_pdglists/{id}', 'Api\ApiController@fetch_pdglists');
 Route::get('fetch_products/{id}', 'Api\ApiController@fetch_products');
 Route::get('fetch_amphur_api/{position}/{id}', 'Api\ApiController@fetch_amphur_api');
+Route::get('fetch_campaignpromotes/{year}', 'Api\ApiController@fetch_campaignpromotes');
 
 Route::get('assignments_commentshow/{id}', 'UnionAssignmentController@commentshow');
 Route::get('assignment_result_get/{id}', 'UnionAssignmentController@assignment_result_get');
