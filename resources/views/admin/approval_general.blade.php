@@ -88,7 +88,7 @@
                                         @if ($chk)
                                         <tr>
                                             <td>{{$count++}}</td>
-                                            <td>{{Carbon\Carbon::parse($chk->assign_request_date)->format('Y-m-d')}}</td>
+                                            <td>{{Carbon\Carbon::parse($chk->assign_request_date)->addYear(543)->format('Y-m-d')}}</td>
                                             <td>{{$chk->name}}</td>
                                             <td>
                                                 @if ($chk->assign_status == 0)

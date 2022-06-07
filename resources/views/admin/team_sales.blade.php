@@ -11,21 +11,18 @@
 
     <!-- Container -->
     <div class="container-fluid px-xxl-65 px-xl-20">
+
         <!-- Title -->
         <div class="hk-pg-header mb-10">
-            <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                    data-feather="users"></i></span></span>บันทึกรายการกลุ่มและทีม</h4>
-            </div>
-            <div class="d-flex">
-                <button type="button" class="btn btn-teal btn-sm btn-rounded px-3" data-toggle="modal"
-                    data-target="#modalInsert"> + เพิ่มใหม่ </button>
+            <div class="topichead-bgred"><i data-feather="users"></i> บันทึกรายการกลุ่มและทีม</div>
+            <div class="content-right d-flex">
+                <button type="button" class="btn btn-green" data-toggle="modal" data-target="#modalInsert"> + เพิ่มใหม่ </button>
             </div>
         </div>
         <!-- /Title -->
 
             <section class="hk-sec-wrapper">
-                <h5 class="hk-sec-title">ตารางรายการกลุ่มและทีม</h5>
+                <div class="topic-secondgery">รายการกลุ่มและทีม</div>
                 <div class="row">
                     <div class="col-sm">
                         <div class="table-wrap">
@@ -33,7 +30,7 @@
                                 <div>
                                 </div>
                             </div>
-                            <div class="table-responsive col-md-12">
+                            <div class="table-responsive col-md-12 table-color">
                                 <table id="datable_1" class="table table-hover">
                                 <thead>
                                     <tr>
@@ -49,11 +46,14 @@
                                         <td>{{ $value->team_name }}</td>
                                         <td>
                                             <div class="button-list">
-                                                <button class="btn btn-icon btn-warning mr-10 btn_edit" value="{{ $value->id }}">
-                                                    <span class="btn-icon-wrap"><i data-feather="edit"></i></span>
+                                                <button class="btn btn-icon btn-edit mr-10 btn_edit" value="{{ $value->id }}">
+                                                    <h4 class="btn-icon-wrap" style="color: white;"><span
+                                                        class="material-icons">drive_file_rename_outline</span></h4>
                                                 </button>
-                                                <a href="{{ url('admin/teamSales_detail', $value->id)}}" class="btn btn-icon btn-info mr-10">
-                                                    <span class="btn-icon-wrap"><i data-feather="book"></i></span></a>
+                                                <a href="{{ url('admin/teamSales_detail', $value->id)}}" class="btn btn-icon btn-view mr-10">
+                                                    <h4 class="btn-icon-wrap" style="color: white;"><span
+                                                        class="material-icons">assignment</span></h4>
+                                                </a>
                                                 <!-- <button class="btn btn-icon btn-danger mr-10">
                                                     <span class="btn-icon-wrap"><i data-feather="trash-2"></i></span></button> -->
                                             </div>
