@@ -124,6 +124,52 @@ class ReportHistoricalYearController extends Controller
                     ];        
                 }
             }
+
+            //-- ประมวลผล สร้างกราฟ ---
+
+            $grap_data = array();
+            $grap_data_quarter = array();
+
+            $sum_sale_0 = 0;
+            $sum_sale_1 = 0;
+
+            for($i=1; $i<13; $i++){
+                $key = $i-1;
+                $sales_0 = 0;
+                $sales_1 = 0;
+               
+
+                if(isset($data['monthadmin_api'][$year][$key]['sales'])){
+                    $sales_0 = $data['monthadmin_api'][$year][$key]['sales'];
+                    $sum_sale_0 += $sales_0;
+                }
+                
+                if(isset($data['monthadmin_api'][$year_old1][$key]['sales'])){
+                    $sales_1 = $data['monthadmin_api'][$year_old1][$key]['sales'];
+                    $sum_sale_1 += $sales_1;
+                }
+
+                $grap_data[$year][] = $sales_0;
+                $grap_data[$year_old1][] = $sales_1;
+
+                $qt_break = $i % 3;
+                if($qt_break == 0){
+                    $grap_data_quarter[$year][] = $sum_sale_0;
+                    $grap_data_quarter[$year_old1][] = $sum_sale_1;
+
+                    $sum_sale_0 = 0;
+                    $sum_sale_1 = 0;
+                }
+            }
+       
+            $data['grap_lable'] = array($year, $year_old1);
+            $data['grap_data'] = $grap_data;
+            $data['grap_data_quarter'] = $grap_data_quarter;
+
+            // dd($data['grap_data_quarter']);
+
+            //-- จบ ประมวลผล สร้างกราฟ ---
+
             $data['customer_trans_last_date'] = $month_api['trans_last_date'];
         }
          /**
@@ -253,6 +299,52 @@ class ReportHistoricalYearController extends Controller
          /**
          *   --------- จบ บล๊อกที่ รายเดือน ------------- 
          */
+
+
+        //-- ประมวลผล สร้างกราฟ ---
+
+        $grap_data = array();
+        $grap_data_quarter = array();
+
+        $sum_sale_0 = 0;
+        $sum_sale_1 = 0;
+
+        for($i=1; $i<13; $i++){
+            $key = $i-1;
+            $sales_0 = 0;
+            $sales_1 = 0;
+           
+
+            if(isset($data['monthadmin_api'][$year][$key]['sales'])){
+                $sales_0 = $data['monthadmin_api'][$year][$key]['sales'];
+                $sum_sale_0 += $sales_0;
+            }
+            
+            if(isset($data['monthadmin_api'][$year_old1][$key]['sales'])){
+                $sales_1 = $data['monthadmin_api'][$year_old1][$key]['sales'];
+                $sum_sale_1 += $sales_1;
+            }
+
+            $grap_data[$year][] = $sales_0;
+            $grap_data[$year_old1][] = $sales_1;
+
+            $qt_break = $i % 3;
+            if($qt_break == 0){
+                $grap_data_quarter[$year][] = $sum_sale_0;
+                $grap_data_quarter[$year_old1][] = $sum_sale_1;
+
+                $sum_sale_0 = 0;
+                $sum_sale_1 = 0;
+            }
+        }
+   
+        $data['grap_lable'] = array($year, $year_old1);
+        $data['grap_data'] = $grap_data;
+        $data['grap_data_quarter'] = $grap_data_quarter;
+
+        // dd($data['grap_data_quarter']);
+
+        //-- จบ ประมวลผล สร้างกราฟ ---
 
         switch  (Auth::user()->status){
             case 1 :    return view('shareData.report_historical_year', $data);

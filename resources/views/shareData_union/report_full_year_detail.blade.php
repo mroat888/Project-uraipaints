@@ -106,7 +106,7 @@
                                             <td style="text-align:center;">{{ $customer['identify'] }}</td>
                                             <td>{{ $customer['title'] }} {{ $customer['name'] }}</td>
                                             <td >{{ $customer['amphoe_name'] }}, {{ $customer['province_name'] }}</td>
-                                            <td style="text-align:right;">{{ $customer['sales_th'] }}</td>
+                                            <td style="text-align:right;">{{ number_format($customer['sales'],2) }}</td>
                                             <td style="text-align:right;">{{ number_format($present_sale,2) }}</td>
                                         </tr>
                                         @endforeach

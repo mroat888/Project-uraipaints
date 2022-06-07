@@ -109,32 +109,41 @@
                                     <tbody>
                                         <tr style="text-align:center">
                                             <td style="text-align:left">ยอดขาย(บาท)</td>
-                                            <td>{{ $yearadmin_api[0]['sales_th'] }}</td>
-                                            <td>{{ $sales_th_1 }}</td>
-                                            <td>
+                                            <td>{{ number_format($yearadmin_api[0]['sales'],2) }}</td>
+                                            <td>{{ number_format($sales_1,2) }}</td>
                                                 @php 
                                                     $diff_sale = $sales_1 - $yearadmin_api[0]['sales'];
                                                     $diff_sale_thai = $diff_sale/1000000;
 
                                                     $prasent_diff = ($diff_sale*100)/$yearadmin_api[0]['sales'];
+
+                                                    if($diff_sale < 0){
+                                                        $text_color = "text-danger";
+                                                    }else{
+                                                        $text_color = "text-success";
+                                                    }
+
                                                 @endphp
-                                                {{ number_format($diff_sale_thai,2) }} ล้าน
-                                            </td>
-                                            <td>{{ number_format($prasent_diff,2) }} %</td>
+                                            <td class = "{{ $text_color }}">{{ number_format($diff_sale,2) }}</td>
+                                            <td class = "{{ $text_color }}">{{ number_format($prasent_diff,2) }} %</td>
                                         </tr>
                                         <tr style="text-align:center">
                                             <td style="text-align:left">จำนวนร้านค้า(ร้าน)</td>
                                             <td>{{ number_format($yearadmin_api[0]['customers']) }}</td>
                                             <td>{{ number_format($customers_1) }}</td>
-                                            <td>
                                                 @php 
                                                     $diff_customers = $customers_1 - $yearadmin_api[0]['customers'];
-
                                                     $prasent_customers = ($diff_customers*100)/$yearadmin_api[0]['customers'];
+
+                                                    if($diff_customers < 0){
+                                                        $text_color = "text-danger";
+                                                    }else{
+                                                        $text_color = "text-success";
+                                                    }
+
                                                 @endphp
-                                                {{ number_format($diff_customers) }}
-                                            </td>
-                                            <td>{{ number_format($prasent_customers,2) }} %</td>
+                                            <td class = "{{ $text_color }}">{{ number_format($diff_customers) }}</td>
+                                            <td class = "{{ $text_color }}">{{ number_format($prasent_customers,2) }} %</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -172,9 +181,6 @@
                         <div class="col-sm">
                             <div class="table-responsive-sm">
                                 <table class="table table-sm table-hover table-bordered">
-                                    @php 
-
-                                    @endphp
                                     <thead>
                                         <tr style="text-align:center">
                                             <th rowspan="2">#</th>   
@@ -202,13 +208,16 @@
                                         <?php 
                                             $sum_sale_0 = 0;
                                             $sum_sale_1 = 0;
-                                            $sum_sale_0 = 0;
-                                            $sum_sale_1 = 0;
                                             $sum_sale_diff = 0;
                                             $sum_persent_sale = 0;
                                             $sum_customers_0 = 0; 
                                             $sum_customers_1 = 0; 
                                             $sum_customers_diff = 0; 
+
+                                            $total_sale_0 = 0;
+                                            $total_sale_1 = 0;
+                                            $total_sale_diff = 0;
+                                            $total_persent_sale = 0;
 
                                             for($i=1; $i<13; $i++){
                                         ?>
@@ -239,6 +248,11 @@
                                                 $sale_diff_thai = $sale_diff/1000000;
 
                                                 $persent_sale = ($sale_diff*100)/$sales_0;
+                                                if($sale_diff < 0){
+                                                    $text_color_sale = "text-danger";
+                                                }else{
+                                                    $text_color_sale = "text-success";
+                                                }
 
                                                 if(isset($monthadmin_api[$year][$key]['customers'])){
                                                     $customers_0 = $monthadmin_api[$year][$key]['customers'];
@@ -252,21 +266,38 @@
 
                                                 $customers_diff = $customers_1 - $customers_0;
 
+                                                if($customers_diff < 0){
+                                                    $text_color_customer = "text-danger";
+                                                }else{
+                                                    $text_color_customer = "text-success";
+                                                }
+
                                             @endphp
-                                            <tr style="text-align:center">
-                                                <td>{{ $i }}</td>
-                                                <td>{{ $month_thai[$i] }}</td>
-                                                <td>{{ $sales_th_0 }}</td>
-                                                <td>{{ $sales_th_1 }}</td>
-                                                <td>{{ number_format($sale_diff_thai,2) }} ล้าน</td>
-                                                <td>{{ number_format($persent_sale,2) }}</td>
-                                                <td>{{ number_format($customers_0) }}</td>
-                                                <td>{{ number_format($customers_1) }}</td>
-                                                <td>{{ number_format($customers_diff) }}</td>
+                                            <tr style="text-align:right">
+                                                <td style="text-align:center;">{{ $i }}</td>
+                                                <td style="text-align:left;">{{ $month_thai[$i] }}</td>
+                                                <td>{{ number_format($sales_0,2) }}</td>
+                                                <td>{{ number_format($sales_1,2) }}</td>
+                                                <td class="{{ $text_color_sale }}">{{ number_format($sale_diff,2) }}</td>
+                                                <td class="{{ $text_color_sale }}">{{ number_format($persent_sale,2) }}</td>
+                                                <td style="text-align:center;">{{ number_format($customers_0) }}</td>
+                                                <td style="text-align:center;">{{ number_format($customers_1) }}</td>
+                                                <td style="text-align:center;" class="{{ $text_color_customer }}">{{ number_format($customers_diff) }}</td>
                                             </tr>
                                             @php 
                                                 $qt_break = $i % 3;
                                                 $qt_qt = $i/3;
+
+                                                switch($qt_qt){
+                                                    case 1 : $bg_row = "bg-info";
+                                                        break;
+                                                    case 2 : $bg_row = "bg-teal";
+                                                        break;
+                                                    case 3 : $bg_row = "bg-warning";
+                                                        break;
+                                                    case 4 : $bg_row = "btn-purple";
+                                                        break;
+                                                }
                                             @endphp
                                             @if($qt_break == 0)
                                                 @php 
@@ -276,16 +307,26 @@
                                                     $sum_sale_diff_thai = $sum_sale_diff/1000000;
                                                     $sum_persent_sale = ($sum_sale_diff*100)/$sum_sale_0;
                                                     $sum_customers_diff = $sum_customers_1 - $sum_customers_0;
+
+                                                    $total_sale_0 += $sum_sale_0;
+                                                    $total_sale_1 += $sum_sale_1;
+
+                                                    if($sum_sale_diff < 0){
+                                                        $text_color_sum = "text-danger";
+                                                    }else{
+                                                        $text_color_sum = "text-success";
+                                                    }
+
                                                 @endphp
-                                                <tr class="bg-primary" style="text-align:center; font-weight:bold;">
+                                                <tr class="{{ $bg_row }}" style="text-align:right; font-weight:bold;">
                                                     <td colspan="2">สรุปไตรมาส {{ $qt_qt }}</td>
-                                                    <td>{{ number_format($sum_sale_0_thai,2) }} ล้าน</td>
-                                                    <td>{{ number_format($sum_sale_1_thai,2) }} ล้าน</td>
-                                                    <td>{{ number_format($sum_sale_diff_thai,2) }} ล้าน</td>
-                                                    <td>{{ number_format($sum_persent_sale) }}</td>
-                                                    <td>{{ number_format($sum_customers_0) }}</td>
-                                                    <td>{{ number_format($sum_customers_1) }}</td>
-                                                    <td>{{ number_format($sum_customers_diff) }}</td>
+                                                    <td>{{ number_format($sum_sale_0,2) }}</td>
+                                                    <td>{{ number_format($sum_sale_1,2) }}</td>
+                                                    <td class="{{ $text_color_sum }}">{{ number_format($sum_sale_diff,2) }}</td>
+                                                    <td class="{{ $text_color_sum }}">{{ number_format($sum_persent_sale) }}</td>
+                                                    <td style="text-align:center;"></td>
+                                                    <td style="text-align:center;"></td>
+                                                    <td style="text-align:center;" class="{{ $text_color_customer }}"></td>
                                                 </tr>
                                                 @php 
                                                     $sum_sale_0 = 0;
@@ -300,6 +341,28 @@
                                         <?php
                                             }
                                         ?>
+                                            <tfoot style="font-weight: bold; text-align:right">
+                                            @php 
+                                                $total_sale_diff = $total_sale_1 - $total_sale_0;
+                                                $total_persent_sale = ($total_sale_diff*100)/$total_sale_0;
+
+                                                if($total_sale_diff < 0){
+                                                    $text_color_sum = "text-danger";
+                                                }else{
+                                                    $text_color_sum = "text-success";
+                                                }
+                                            @endphp
+                                            <tr>
+                                                <td colspan="2">รวมทั้งปี</td>
+                                                <td>{{ number_format($total_sale_0,2) }}</td>
+                                                <td>{{ number_format($total_sale_1,2) }}</td>
+                                                <td class="{{ $text_color_sum }}">{{ number_format($total_sale_diff,2) }}</td>
+                                                <td class="{{ $text_color_sum }}">{{ number_format($total_persent_sale,2) }}</td>
+                                                <td style="text-align:center;"></td>
+                                                <td style="text-align:center;"></td>
+                                                <td style="text-align:center;"></td>
+                                            </tr>
+                                    </tfoot>
                                     </tbody>
                                 </table>
                             </div>
@@ -318,5 +381,176 @@
             </div>
         </div>
         <!-- /Row -->
-
+        <!-- Row -->
+        <div class="row">
+            <div class="col-xl-12">
+                <section class="hk-sec-wrapper">
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <canvas id="myChart" style="height: 294px"></canvas>
+                        </div>
+                        <div class="col-md-6">
+                            <canvas id="myChart_2" style="height: 294px"></canvas>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <!-- /Row -->
     </div>
+
+    <script src="{{ asset('public/template/graph/Chart.bundle.js') }}"></script>
+
+<?php
+    //-- กราฟ ส่วนเดือน ---
+    $count = count($grap_data);
+    $data_text = array();
+    $lable_thai = array();
+
+    for($i=0;$i<2;$i++){
+        $data_text[$i] = "";
+        $lable = $grap_lable[$i];
+        $lable_thai[] = $grap_lable[$i] + 543;
+
+        for($m=0;$m<12;$m++){
+            if(isset($grap_data[$lable][$m])){
+                $value = $grap_data[$lable][$m];
+            }else{
+                $value = "0";
+            }
+
+            if($m == 11){
+                $data_text[$i] .= $value;
+            }else{
+                $data_text[$i] .= $value.",";
+            } 
+        }
+    }
+    //-- จบ กราฟ ส่วนเดือน ---
+?>
+
+<script>
+
+    var ctx = document.getElementById("myChart").getContext('2d');
+
+    var datset =[];
+    var newDataset =[];
+    newDataset[0] = {
+        label: 'ยอดขายปี {{ $lable_thai[0] }}',
+        borderColor: [
+            'rgba(255, 99, 132, 1)'
+        ],
+        fill: false,
+        data: [<?=$data_text[0]?>],
+        borderWidth: 2,
+        tension: 0
+    };
+    newDataset[1] = {
+        label: 'ยอดขายปี {{ $lable_thai[1] }}',
+        borderColor: [
+            'rgba(255, 153, 51, 1)'
+        ],
+        fill: false,
+        data: [<?=$data_text[1]?>],
+        borderWidth: 2,
+         tension: 0
+    };
+
+    for(let i=0; i<newDataset.length ; i++){
+        datset.push(newDataset[i]);
+    }
+
+    const myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ["มกราคม", "กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน",
+            "กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"],
+            datasets: datset
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                }
+            }
+        }
+    });
+    
+</script>
+
+
+<?php
+//-- กราฟ ส่วนไตรมาส ---
+$count = count($grap_data_quarter);
+$data_text_quarter = array();
+$lable_thai_quarter = array();
+
+for($i=0;$i<2;$i++){
+    $data_text_quarter[$i] = "";
+    $lable = $grap_lable[$i];
+    $lable_thai[] = $grap_lable[$i] + 543;
+
+    for($qt=0;$qt<4;$qt++){
+        if(isset($grap_data_quarter[$lable][$qt])){
+            $value = $grap_data_quarter[$lable][$qt];
+        }else{
+            $value = "0";
+        }
+
+        if($qt == 3){
+            $data_text_quarter[$i] .= $value;
+        }else{
+            $data_text_quarter[$i] .= $value.",";
+        } 
+    }
+}
+//-- จบ กราฟ ส่วนไตรมาส ---
+?>
+
+<script>
+
+    var ctx = document.getElementById("myChart_2").getContext('2d');
+
+    var datset =[];
+    var newDataset =[];
+    newDataset[0] = {
+        label: 'ยอดขายปี {{ $lable_thai[0] }}',
+        borderColor: [
+            'rgba(255, 99, 132, 1)'
+        ],
+        fill: false,
+        data: [<?=$data_text_quarter[0]?>],
+        borderWidth: 2,
+        tension: 0
+    };
+    newDataset[1] = {
+        label: 'ยอดขายปี {{ $lable_thai[1] }}',
+        borderColor: [
+            'rgba(255, 153, 51, 1)'
+        ],
+        fill: false,
+        data: [<?=$data_text_quarter[1]?>],
+        borderWidth: 2,
+         tension: 0
+    };
+
+    for(let i=0; i<newDataset.length ; i++){
+        datset.push(newDataset[i]);
+    }
+
+    const myChart_2 = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ["ไตรมาส 1", "ไตรมาส 2","ไตรมาส 3","ไตรมาส 4"],
+            datasets: datset
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                }
+            }
+        }
+    });
+    
+</script>
