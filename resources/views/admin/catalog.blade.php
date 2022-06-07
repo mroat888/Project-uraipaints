@@ -13,8 +13,7 @@
     <div class="container-fluid px-xxl-65 px-xl-20">
         <!-- Title -->
         <div class="hk-pg-header mb-10">
-            <div class="topichead-bgred"><i
-                data-feather="star"></i> แคตตาล็อกสินค้า</div>
+            <div class="topichead-bgred"><i data-feather="grid"></i> แคตตาล็อกสินค้า</div>
             <div class="content-right d-flex">
                 <button type="button" class="btn btn-green" data-toggle="modal" data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button>
             </div>
@@ -29,18 +28,35 @@
                             <div class="hk-pg-header" style="margin-bottom: 30px;">
                                 <div>
                                 </div>
-                                <form action="{{url('admin/search-productNew-status-usage')}}" method="POST" enctype="multipart/form-data">
-                                    @csrf
-                                <div class="d-flex">
-                                    <select name="status_usage" class="form-control custom-select">
-                                        <option selected disabled>เลือกข้อมูล</option>
-                                            <option value="">ทั้งหมด</option>
-                                            <option value="1">ใช้งาน</option>
-                                            <option value="0">ไม่ใช้งาน</option>
-                                    </select>
-                                    <button type="submit" class="btn btn-green btn-sm ml-2">ค้นหา</button>
-                                </div>
-                            </form>
+                                <span class="form-inline pull-right">
+                                    <form action="{{url('admin/search-productCatalog')}}" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                    {{-- <div class="d-flex"> --}}
+                                        <select name="category" class="form-control" aria-label=".form-select-lg example">
+                                            <option value="" selected>หมวด</option>
+                                            @foreach ($groups as $key => $value)
+                                                <option value="{{$groups[$key]['id']}}">{{$groups[$key]['group_name']}}</option>
+                                            @endforeach
+                                        </select>
+
+                                        <select name="brand" class="form-control" aria-label=".form-select-lg example">
+                                            <option value="" selected>ชื่อตราสินค้า</option>
+                                            @foreach ($brands as $key => $value)
+                                                <option value="{{$brands[$key]['id']}}">{{$brands[$key]['brand_name']}}</option>
+                                            @endforeach
+                                        </select>
+
+                                        <select name="status_usage" class="form-control">
+                                            <option selected disabled>เลือกข้อมูล</option>
+                                                <option value="">ทั้งหมด</option>
+                                                <option value="1">ใช้งาน</option>
+                                                <option value="0">ไม่ใช้งาน</option>
+                                        </select>
+                                        <button type="submit" class="btn btn-green btn-sm ml-2">ค้นหา</button>
+                                    {{-- </div> --}}
+                                </form>
+                                </span>
+
                             </div>
                             <div class="table-responsive col-md-12 table-color">
                                 <table id="datable_1" class="table table-hover">
@@ -57,22 +73,28 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($product_new as $key => $value)
+                                    @foreach ($product_catalog as $key => $value)
                                     @php
                                         $date = Carbon\Carbon::parse($value->updated_at)->addYear(543)->format('d/m/Y');
                                     @endphp
                                     <tr>
                                         <td>{{$key + 1}}</td>
-                                        <td></td>
-                                        <td>{{$value->product_title}}</td>
+                                        <td>{{$value->product_list}}</td>
+                                        <td>
+                                            @foreach ($pdglists as $keyp => $pdglist)
+                                            @if ($pdglists[$keyp]['id'] == $value->product_list)
+                                                {{$pdglists[$keyp]['pdglist_name']}}
+                                            @endif
+                                            @endforeach
+                                        </td>
                                         <td>{{$date}}</td>
                                         <td>
-                                            <a href="{{url('admin/view_product_new_detail', $value->id)}}">
-                                                <img src="{{ isset($value->product_image) ? asset('public/upload/ProductNewImage/' . $value->product_image) : '' }}" width="100">
+                                            <a href="#" onclick="view_modal({{ $value->id }})" data-toggle="modal" data-target="#viewCatalog">
+                                                <img src="{{ isset($value->image) ? asset('public/upload/Catalog/' . $value->image) : '' }}" width="100">
                                             </a>
                                         </td>
                                         <td>
-                                            @switch($value->status_usage)
+                                            @switch($value->status)
                                                 @case(0)
                                                 <span class="btn-failed" style="font-size: 12px;">ไม่ใช้งาน</span>
                                                     @break
@@ -81,11 +103,11 @@
                                                         @break
                                             @endswitch
                                         </td>
-                                        <td><a href="{{$value->product_url	}}" style="color: rgb(11, 8, 141);">{!! Str::limit($value->product_url,20) !!}</a></td>
+                                        <td><a href="{{$value->url	}}" style="color: rgb(11, 8, 141);">{!! Str::limit($value->url,20) !!}</a></td>
                                         <td>
-                                            <form action="{{url('admin/delete_product_new', $value->id)}}" method="get">
-                                                @csrf
-                                                <a href="{{ url('admin/update-productNew-status-use', $value->id)}}" class="btn btn-icon btn-teal">
+                                            {{-- <form action="{{url('admin/delete_catalog', $value->id)}}" method="get">
+                                                @csrf --}}
+                                                <a href="{{ url('admin/update-productCatalog-status-use', $value->id)}}" class="btn btn-icon btn-teal">
                                                     <h4 class="btn-icon-wrap" style="color: white;"><span
                                                         class="material-icons">settings_power</span></h4>
                                                 </a>
@@ -94,13 +116,13 @@
                                                     <h4 class="btn-icon-wrap" style="color: white;"><span
                                                         class="material-icons">drive_file_rename_outline</span></h4>
                                                 </a>
-                                                    @if ($value->status_usage == 0)
-                                                    <button type="button" class="btn btn-icon btn-danger delete_product_new">
+                                                    @if ($value->status == 0)
+                                                    <button type="button" class="btn btn-icon btn-danger" id="btn_catalog_delete" value="{{ $value->id }}">
                                                         <h4 class="btn-icon-wrap" style="color: white;"><span
                                                             class="material-icons">delete_outline</span></h4>
                                                     </button>
                                                     @endif
-                                            </form>
+                                            {{-- </form> --}}
                                         </td>
                                     </tr>
                                     @endforeach
@@ -124,18 +146,18 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="form_insert_product_new" enctype="multipart/form-data">
-                {{-- <form action="{{ url('admin/create_product_new') }}" method="post" enctype="multipart/form-data"> --}}
+                <form id="form_insert_product_catalog" enctype="multipart/form-data">
+                {{-- <form action="{{ url('admin/create_product_catalog') }}" method="post" enctype="multipart/form-data"> --}}
                     @csrf
                 <div class="modal-body">
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">หมวด</label>
-                                <select name="category" class="form-control custom-select select2" required>
+                                <select name="category_id" class="form-control custom-select select2" required>
                                     <option value="" selected disabled>กรุณาเลือกหมวด</option>
-                                    {{-- @foreach ($customer_api as $key => $value)
-                                        <option value="{{$customer_api[$key]['id']}}">{{$customer_api[$key]['shop_name']}}</option>
-                                    @endforeach --}}
+                                    @foreach ($groups as $key => $value)
+                                        <option value="{{$groups[$key]['id']}}">{{$groups[$key]['group_name']}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="col-md-6 form-group">
@@ -149,30 +171,30 @@
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ตราสินค้า</label>
-                                <select name="brand" class="form-control custom-select select2" required>
+                                <select name="brand_id" class="form-control custom-select select2" required>
                                     <option value="" selected disabled>กรุณาเลือกตราสินค้า</option>
-                                    {{-- @foreach ($customer_api as $key => $value)
-                                        <option value="{{$customer_api[$key]['id']}}">{{$customer_api[$key]['shop_name']}}</option>
-                                    @endforeach --}}
+                                    @foreach ($brands as $key => $value)
+                                        <option value="{{$brands[$key]['id']}}">{{$brands[$key]['brand_name']}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                                     <div class="col-md-6 form-group">
                                         <label for="firstName">Product List</label>
                                         <select name="product_list" class="form-control custom-select select2" required>
                                             <option value="" selected disabled>กรุณาเลือก Product List</option>
-                                            {{-- @foreach ($customer_api as $key => $value)
-                                                <option value="{{$customer_api[$key]['id']}}">{{$customer_api[$key]['shop_name']}}</option>
-                                            @endforeach --}}
+                                            @foreach ($pdglists as $key => $value)
+                                                <option value="{{$pdglists[$key]['id']}}">{{$pdglists[$key]['pdglist_name']}}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                         </div>
                         <div class="form-group">
                             <label for="username">คำอธิบาย (Description)</label>
-                            <textarea class="form-control" cols="30" rows="5" placeholder="คำอธิบาย (Description)" type="text" name="product_detail" required></textarea>
+                            <textarea class="form-control" cols="30" rows="5" placeholder="คำอธิบาย (Description)" type="text" name="description" required></textarea>
                         </div>
                         <div class="form-group">
                             <label for="username">Link URL</label>
-                            <input class="form-control" placeholder="URL" name="product_url" type="text">
+                            <input class="form-control" placeholder="URL" name="url" type="text">
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
@@ -195,32 +217,45 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">แก้ไขแจ้งสินค้าใหม่</h5>
+                    <h5 class="modal-title">แก้ไขแคตตาล็อกสินค้า</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="form_update_product_new" enctype="multipart/form-data">
-                {{-- <form action="{{ url('admin/update_product_new') }}" method="post" enctype="multipart/form-data"> --}}
+                <form id="form_update_product_catalog" enctype="multipart/form-data">
+                {{-- <form action="{{ url('admin/update_product_catalog') }}" method="post" enctype="multipart/form-data"> --}}
                     @csrf
                 <div class="modal-body">
                         <div class="row">
                             <div class="col-md-6 form-group">
-                                <label for="firstName">ชื่อสินค้า</label>
-                                <input class="form-control" id="get_title" type="text" name="product_title_edit" required>
+                                <label for="firstName">หมวด</label>
+                                <select name="category_id" id="category_id" class="form-control custom-select select2">
+                                </select>
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="firstName">วันที่อัพเดตล่าสุด</label>
-                                <input class="form-control" type="text" name="date" value="{{$date2->format('d/m/Y')}}" readonly>
+                                <input class="form-control" type="text" name="date" value="" id="get_date" readonly>
                             </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">ตราสินค้า</label>
+                                <select name="brand_id" id="brand_id" class="form-control custom-select select2">
+                                </select>
+                            </div>
+                                    <div class="col-md-6 form-group">
+                                        <label for="firstName">Product List</label>
+                                        <select name="product_list" id="product_list" class="form-control custom-select select2">
+                                        </select>
+                                    </div>
                         </div>
                         <div class="form-group">
                             <label for="username">รายละเอียด</label>
-                            <textarea class="form-control" cols="30" rows="5" id="get_detail" type="text" name="product_detail_edit" required></textarea>
+                            <textarea class="form-control" cols="30" rows="5" id="get_description" type="text" name="description_edit"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="username">Link URL</label>
-                            <input class="form-control" id="get_url" name="product_url_edit" type="text">
+                            <input class="form-control" id="get_url" name="url_edit" type="text">
                         </div>
                         <div>
                             <div class="form-group">
@@ -244,15 +279,157 @@
         </div>
     </div>
 
+
+    <div class="modal fade" id="viewCatalog" tabindex="-1" role="dialog" aria-labelledby="viewCatalog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">รายละเอียดแคตตาล็อกสินค้า</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="color: black;">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="category" style="font-weight: bold;">หมวด : </label>
+                                <span id="view_category_id"></span>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="date" style="font-weight: bold;">วันที่อัพเดตล่าสุด : </label>
+                                <span id="view_date"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="brand" style="font-weight: bold;">ตราสินค้า : </label>
+                                <span id="view_brand_id"></span>
+                            </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="ProductList" style="font-weight: bold;">Product List : </label>
+                                    <span id="view_product_list"></span>
+                                </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="description" style="font-weight: bold;">รายละเอียด : </label>
+                            <span id="view_description"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="url" style="font-weight: bold;">Link URL : </label>
+                            <span id="view_url"></span>
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label for="image" style="font-weight: bold;">รูปภาพ</label>
+                        </div>
+                        <div>
+                            <div class="form-group">
+                                <center>
+                                    <span id="view_img_show" class=""></span>
+                                </center>
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal Delete -->
+    <div class="modal fade" id="ModalCatalogDelete" tabindex="-1" role="dialog" aria-labelledby="ModalCatalogDelete"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <form id="from_catalog_delete" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">คุณต้องการลบข้อมูลแคตตาล็อกใช่หรือไม่</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="text-align:center;">
+                        <h3>คุณต้องการลบข้อมูลแคตตาล็อกใช่หรือไม่ ?</h3>
+                        <input class="form-control" id="catalog_id_delete" name="catalog_id_delete" type="hidden" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                        <button type="submit" class="btn btn-primary" id="btn_save_edit">ยืนยัน</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <style>
+        .img_1 {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 5px;
+        }
+    </style>
+
     <script>
-        $("#form_insert_product_new").on("submit", function (e) {
+        //Edit
+        function view_modal(id) {
+            $.ajax({
+                type: "GET",
+                url: "{!! url('admin/view_product_catalog_detail/"+id+"') !!}",
+                dataType: "JSON",
+                async: false,
+                success: function(data) {
+                    $('#view_img_show').children().remove().end();
+
+                    // $('#get_id').val(data.dataEdit.id);
+                    $('#view_date').text(data.dataEdit.updated_at);
+                    $('#view_description').text(data.dataEdit.description);
+                    $('#view_url').text(data.dataEdit.url);
+
+                    $.each(data.editGroups, function(key, value){
+                        if(data.editGroups[key]['id'] == data.dataEdit.category_id){
+                            $('#view_category_id').text(data.editGroups[key]['group_name']);
+                        }
+                    });
+
+                    $.each(data.editBrands, function(key, value){
+                        if(data.editBrands[key]['id'] == data.dataEdit.brand_id){
+                            $('#view_brand_id').text(data.editBrands[key]['brand_name']);
+                        }
+                    });
+
+                    $.each(data.editPdglists, function(key, value){
+                        if(data.editPdglists[key]['id'] == data.dataEdit.product_list){
+                            $('#view_product_list').text(data.editPdglists[key]['pdglist_name']);
+                        }
+                    });
+
+                    let img_name = '{{ asset('/public/upload/Catalog') }}/' + data.dataEdit.image;
+                    if (data.dataEdit.image != "") {
+                        ext = data.dataEdit.image.split('.').pop().toLowerCase();
+                        console.log(img_name);
+                        if (img_name) {
+                            $('#view_img_show').append('<img class="img_1" src = "' + img_name + '" style="max-width:100%;">');
+                        }
+                    }
+
+                    $('#viewCatalog').modal('toggle');
+                }
+            });
+        }
+    </script>
+
+    <script>
+        $("#form_insert_product_catalog").on("submit", function (e) {
             e.preventDefault();
             // var formData = $(this).serialize();
             var formData = new FormData(this);
             //console.log(formData);
             $.ajax({
                 type:'POST',
-                url: '{{ url("admin/create_product_new") }}',
+                url: '{{ url("admin/create_product_catalog") }}',
                 data:formData,
                 cache:false,
                 contentType: false,
@@ -264,6 +441,7 @@
                         Swal.fire({
                             icon: 'success',
                             title: 'บันทึกข้อมูลสำเร็จ',
+                            text: "บันทึกข้อมูลแคตตาล็อกเรียบร้อยแล้ว",
                             showConfirmButton: false,
                             timer: 1500
                         });
@@ -292,20 +470,44 @@
         function edit_modal(id) {
             $.ajax({
                 type: "GET",
-                url: "{!! url('admin/edit_product_new/"+id+"') !!}",
+                url: "{!! url('admin/edit_product_catalog/"+id+"') !!}",
                 dataType: "JSON",
                 async: false,
                 success: function(data) {
                     $('#img_show').children().remove().end();
 
                     $('#get_id').val(data.dataEdit.id);
-                    $('#get_title').val(data.dataEdit.product_title);
-                    $('#get_detail').val(data.dataEdit.product_detail);
-                    $('#get_url').val(data.dataEdit.product_url);
+                    $('#get_date').val(data.dataEdit.updated_at);
+                    $('#get_description').val(data.dataEdit.description);
+                    $('#get_url').val(data.dataEdit.url);
 
-                    let img_name = '{{ asset('/public/upload/ProductNewImage') }}/' + data.dataEdit.product_image;
-                    if (data.dataEdit.product_image != "") {
-                        ext = data.dataEdit.product_image.split('.').pop().toLowerCase();
+                    $.each(data.editGroups, function(key, value){
+                        if(data.editGroups[key]['id'] == data.dataEdit.category_id){
+                            $('#category_id').append('<option value='+data.editGroups[key]['id']+' selected>'+data.editGroups[key]['group_name']+'</option>');
+                        }else{
+                            $('#category_id').append('<option value='+data.editGroups[key]['id']+'>'+data.editGroups[key]['group_name']+'</option>');
+                        }
+                    });
+
+                    $.each(data.editBrands, function(key, value){
+                        if(data.editBrands[key]['id'] == data.dataEdit.brand_id){
+                            $('#brand_id').append('<option value='+data.editBrands[key]['id']+' selected>'+data.editBrands[key]['brand_name']+'</option>');
+                        }else{
+                            $('#brand_id').append('<option value='+data.editBrands[key]['id']+'>'+data.editBrands[key]['brand_name']+'</option>');
+                        }
+                    });
+
+                    $.each(data.editPdglists, function(key, value){
+                        if(data.editPdglists[key]['id'] == data.dataEdit.product_list){
+                            $('#product_list').append('<option value='+data.editPdglists[key]['id']+' selected>'+data.editPdglists[key]['pdglist_name']+'</option>');
+                        }else{
+                            $('#product_list').append('<option value='+data.editPdglists[key]['id']+'>'+data.editPdglists[key]['pdglist_name']+'</option>');
+                        }
+                    });
+
+                    let img_name = '{{ asset('/public/upload/Catalog') }}/' + data.dataEdit.image;
+                    if (data.dataEdit.image != "") {
+                        ext = data.dataEdit.image.split('.').pop().toLowerCase();
                         console.log(img_name);
                         if (img_name) {
                             $('#img_show').append('<img src = "' + img_name + '" style="max-width:20%;">');
@@ -319,14 +521,14 @@
     </script>
 
 <script>
-    $("#form_update_product_new").on("submit", function (e) {
+    $("#form_update_product_catalog").on("submit", function (e) {
         e.preventDefault();
         // var formData = $(this).serialize();
         var formData = new FormData(this);
         //console.log(formData);
         $.ajax({
             type:'POST',
-            url: '{{ url("admin/update_product_new") }}',
+            url: '{{ url("admin/update_product_catalog") }}',
             data:formData,
             cache:false,
             contentType: false,
@@ -338,6 +540,7 @@
                     Swal.fire({
                         icon: 'success',
                         title: 'แก้ไขข้อมูลสำเร็จ',
+                        text: "แก้ไขข้อมูลแคตตาล็อกเรียบร้อยแล้ว",
                         showConfirmButton: false,
                         timer: 1500
                     });
@@ -362,30 +565,42 @@
 </script>
 
 <script>
-    $(document).ready(function() {
-        $('.delete_product_new').click(function(evt) {
-            var form = $(this).closest("form");
-            evt.preventDefault();
-
-            swal({
-                title: `ต้องการลบข้อมูลหรือไม่ ?`,
-                text: "ถ้าลบแล้วไม่สามารถกู้คืนข้อมูลได้",
-                icon: "warning",
-                // buttons: true,
-                buttons: [
-                    'ยกเลิก',
-                    'ตกลง'
-                ],
-                // infoMode: true
-                dangerMode: true
-            }).then((willDelete) => {
-                if (willDelete) {
-                    form.submit();
-                }
-            })
-
+    $(document).on('click', '#btn_catalog_delete', function() { // ปุ่มลบ Slaplan
+            let catalog_id_delete = $(this).val();
+            $('#catalog_id_delete').val(catalog_id_delete);
+            $('#ModalCatalogDelete').modal('show');
         });
 
-    });
+        $("#from_catalog_delete").on("submit", function(e) {
+            e.preventDefault();
+            //var formData = $(this).serialize();
+            var formData = new FormData(this);
+            console.log(formData);
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('admin/delete_catalog') }}',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    console.log(response);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'ลบข้อมูลสำเร็จ!',
+                        text: "ลบข้อมูลแคตตาล็อกเรียบร้อยแล้ว",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    $('#ModalCatalogDelete').modal('hide');
+                    $('#btn_catalog_delete').prop('disabled', true);
+                    location.reload();
+                },
+                error: function(response) {
+                    console.log("error");
+                    console.log(response);
+                }
+            });
+        });
 </script>
 @endsection

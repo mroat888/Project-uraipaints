@@ -1,0 +1,26 @@
+@extends('layouts.masterLead')
+
+@section('content')
+
+    <!-- Breadcrumb -->
+    <nav class="hk-breadcrumb" aria-label="breadcrumb">
+        <ol class="breadcrumb breadcrumb-light bg-transparent">
+            <li class="breadcrumb-item">ใบราคา</li>
+            <li class="breadcrumb-item active">รายละเอียดข้อมูลใบราคา</li>
+        </ol>
+    </nav>
+    <!-- /Breadcrumb -->
+
+    <!-- Container -->
+    <div class="container-fluid px-xxl-65 px-xl-20">
+
+        @include('product_price_main_detail')
+
+    </div>
+    <!-- /Container -->
+
+@section('footer')
+    @include('layouts.footer')
+@endsection
+
+@endsection

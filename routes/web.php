@@ -129,6 +129,31 @@ Route::get('product_new', 'ProductNewController@frontend_product_new');
 Route::get('product_new_detail/{id}', 'ProductNewController@product_new_detail');
 Route::post('search_product_new', 'ProductNewController@search_product_new');
 
+Route::get('catalog', 'CatalogController@index');
+Route::get('view_product_catalog_detail/{id}', 'CatalogController@catalog_detail');
+Route::post('search-productCatalog', 'CatalogController@search');
+
+// Product Age
+Route::get('product_age', 'ProductAgeController@index');
+Route::post('search-product_age', 'ProductAgeController@search');
+Route::get('view_product_age_detail/{id}', 'ProductAgeController@view_detail');
+
+// Product MTO
+Route::get('product_mto', 'ProductMtoController@index');
+Route::post('search-product_mto', 'ProductMtoController@search');
+Route::get('view_product_mto_detail/{id}', 'ProductMtoController@view_detail');
+
+// Product Cancel
+Route::get('product_cancel', 'ProductCancelController@index');
+Route::post('search-product_cancel', 'ProductCancelController@search');
+Route::get('view_product_cancel_detail/{id}', 'ProductCancelController@view_detail');
+
+// Product Price
+Route::get('product_price', 'ProductPriceController@index');
+Route::post('search-product_price', 'ProductPriceController@search');
+Route::get('view_product_price_detail/{id}', 'ProductPriceController@view_detail');
+
+
 // Report
 Route::get('/reportSale/reportMonthlyPlans', 'Report\ReportMonthlyPlansController@index');
 Route::post('/reportSale/reportMonthlyPlans/search', 'Report\ReportMonthlyPlansController@search');
@@ -258,6 +283,30 @@ Route::post('lead/search_product_new', 'ProductNewController@search_product_new'
 Route::get('lead/news_detail/{id}', 'NewsController@lead_news_detail');
 Route::get('lead/promotion_detail/{id}', 'PromotionController@lead_promotion_detail');
 
+Route::get('lead/catalog', 'CatalogController@index');
+Route::get('lead/view_product_catalog_detail/{id}', 'CatalogController@catalog_detail');
+Route::post('lead/search-productCatalog', 'CatalogController@search');
+
+// Product Age
+Route::get('lead/product_age', 'ProductAgeController@index');
+Route::post('lead/search-product_age', 'ProductAgeController@search');
+Route::get('lead/view_product_age_detail/{id}', 'ProductAgeController@view_detail');
+
+// Product MTO
+Route::get('lead/product_mto', 'ProductMtoController@index');
+Route::post('lead/search-product_mto', 'ProductMtoController@search');
+Route::get('lead/view_product_mto_detail/{id}', 'ProductMtoController@view_detail');
+
+// Product Cancel
+Route::get('lead/product_cancel', 'ProductCancelController@index');
+Route::post('lead/search-product_cancel', 'ProductCancelController@search');
+Route::get('lead/view_product_cancel_detail/{id}', 'ProductCancelController@view_detail');
+
+// Product Price
+Route::get('lead/product_price', 'ProductPriceController@index');
+Route::post('lead/search-product_price', 'ProductPriceController@search');
+Route::get('lead/view_product_price_detail/{id}', 'ProductPriceController@view_detail');
+
 //report
 Route::get('/leadManage/reportcustomer', function () { return view('reports.report_customer'); });
 Route::get('/leadManage/reportStore','LeadManager\ApiCustomerController@index');
@@ -368,6 +417,30 @@ Route::get('head/product_new_detail/{id}', 'ProductNewController@product_new_det
 Route::post('head/search_product_new', 'ProductNewController@search_product_new');
 Route::get('head/news_detail/{id}', 'NewsController@head_news_detail');
 Route::get('head/promotion_detail/{id}', 'PromotionController@head_promotion_detail');
+
+Route::get('head/catalog', 'CatalogController@index');
+Route::get('head/view_product_catalog_detail/{id}', 'CatalogController@catalog_detail');
+Route::post('head/search-productCatalog', 'CatalogController@search');
+
+// Product Age
+Route::get('head/product_age', 'ProductAgeController@index');
+Route::post('head/search-product_age', 'ProductAgeController@search');
+Route::get('head/view_product_age_detail/{id}', 'ProductAgeController@view_detail');
+
+// Product MTO
+Route::get('head/product_mto', 'ProductMtoController@index');
+Route::post('head/search-product_mto', 'ProductMtoController@search');
+Route::get('head/view_product_mto_detail/{id}', 'ProductMtoController@view_detail');
+
+// Product Cancel
+Route::get('head/product_cancel', 'ProductCancelController@index');
+Route::post('head/search-product_cancel', 'ProductCancelController@search');
+Route::get('head/view_product_cancel_detail/{id}', 'ProductCancelController@view_detail');
+
+// Product Price
+Route::get('head/product_price', 'ProductPriceController@index');
+Route::post('head/search-product_price', 'ProductPriceController@search');
+Route::get('head/view_product_price_detail/{id}', 'ProductPriceController@view_detail');
 
 //report
 Route::get('/headManage/reportcustomer', function () { return view('reports.report_customer'); });
@@ -541,10 +614,63 @@ Route::get('admin/view_product_new_detail/{id}', 'ProductNewController@view_deta
 
 // Catalog
 Route::get('admin/catalog', 'Admin\CatalogController@index');
-Route::post('admin/create_product_property', 'Admin\ProductPropertyController@store');
-Route::get('admin/edit_product_property/{id}', 'Admin\ProductPropertyController@edit');
-Route::post('admin/update_product_property', 'Admin\ProductPropertyController@update');
-Route::get('admin/delete_product_property/{id}', 'Admin\ProductPropertyController@destroy');
+Route::post('admin/create_product_catalog', 'Admin\CatalogController@store');
+Route::get('admin/update-productCatalog-status-use/{id}', 'Admin\CatalogController@update_status_use');
+Route::get('admin/edit_product_catalog/{id}', 'Admin\CatalogController@edit');
+Route::post('admin/update_product_catalog', 'Admin\CatalogController@update');
+Route::post('admin/search-productCatalog', 'Admin\CatalogController@search');
+Route::get('admin/view_product_catalog_detail/{id}', 'Admin\CatalogController@view_detail');
+Route::post('admin/delete_catalog', 'Admin\CatalogController@destroy');
+
+
+// Product Age
+Route::get('admin/product_age', 'Admin\ProductAgeController@index');
+Route::post('admin/create_product_age', 'Admin\ProductAgeController@store');
+Route::get('admin/update-productAge-status-use/{id}', 'Admin\ProductAgeController@update_status_use');
+Route::get('admin/edit_product_age/{id}', 'Admin\ProductAgeController@edit');
+Route::post('admin/update_product_age', 'Admin\ProductAgeController@update');
+Route::post('admin/delete_age', 'Admin\ProductAgeController@destroy');
+Route::post('admin/search-product_age', 'Admin\ProductAgeController@search');
+Route::get('admin/view_product_age_detail/{id}', 'Admin\ProductAgeController@view_detail');
+
+
+// Product MTO
+Route::get('admin/product_mto', 'Admin\ProductMtoController@index');
+Route::post('admin/create_product_mto', 'Admin\ProductMtoController@store');
+Route::get('admin/update-productMto-status-use/{id}', 'Admin\ProductMtoController@update_status_use');
+Route::get('admin/edit_product_mto/{id}', 'Admin\ProductMtoController@edit');
+Route::post('admin/update_product_mto', 'Admin\ProductMtoController@update');
+Route::post('admin/delete_mto', 'Admin\ProductMtoController@destroy');
+Route::post('admin/search-product_mto', 'Admin\ProductMtoController@search');
+Route::get('admin/view_product_mto_detail/{id}', 'Admin\ProductMtoController@view_detail');
+
+
+// Product Cancel
+Route::get('admin/product_cancel', 'Admin\ProductCancelController@index');
+Route::post('admin/create_product_cancel', 'Admin\ProductCancelController@store');
+Route::get('admin/update-productCancel-status-use/{id}', 'Admin\ProductCancelController@update_status_use');
+Route::get('admin/edit_product_cancel/{id}', 'Admin\ProductCancelController@edit');
+Route::post('admin/update_product_cancel', 'Admin\ProductCancelController@update');
+Route::post('admin/delete_cancel', 'Admin\ProductCancelController@destroy');
+Route::post('admin/search-product_cancel', 'Admin\ProductCancelController@search');
+Route::get('admin/view_product_cancel_detail/{id}', 'Admin\ProductCancelController@view_detail');
+
+
+// Product Price
+Route::get('admin/product_price', 'Admin\ProductPriceController@index');
+Route::post('admin/create_product_price', 'Admin\ProductPriceController@store');
+Route::get('admin/update-productPrice-status-use/{id}', 'Admin\ProductPriceController@update_status_use');
+Route::get('admin/edit_product_price/{id}', 'Admin\ProductPriceController@edit');
+Route::post('admin/update_product_price', 'Admin\ProductPriceController@update');
+Route::post('admin/delete_price', 'Admin\ProductPriceController@destroy');
+Route::post('admin/search-product_price', 'Admin\ProductPriceController@search');
+Route::get('admin/view_product_price_detail/{id}', 'Admin\ProductPriceController@view_detail');
+
+Route::get('admin/productPrice-gallery/{id}', 'Admin\ProductPriceController@gallery');
+Route::post('admin/create_product_price_gallery', 'Admin\ProductPriceController@gallery_store');
+Route::get('admin/edit_product_price_gallery/{id}', 'Admin\ProductPriceController@gallery_edit');
+Route::post('admin/update_product_price_gallery', 'Admin\ProductPriceController@gallery_update');
+Route::post('admin/delete_product_price_gallery', 'Admin\ProductPriceController@gallery_destroy');
 
 
 // Product Property
