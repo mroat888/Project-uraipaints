@@ -14,18 +14,15 @@
     <div class="container-fluid px-xxl-65 px-xl-20">
         <!-- Title -->
         <div class="hk-pg-header mb-10">
-            <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                    data-feather="gift"></i></span></span>รายละเอียดกลุ่มและทีม</h4>
-            </div>
-            <div class="d-flex">
-                <a href="{{ url('admin/teamSales')}}" type="button" class="btn btn-secondary btn-sm btn-rounded px-3"> ย้อนกลับ </a>
+            <div class="topichead-bgred"><i data-feather="clipboard"></i> รายละเอียดกลุ่มและทีม</div>
+            <div class="content-right d-flex">
+                <a href="{{ url('admin/teamSales')}}" type="button" class="btn btn-secondary btn-rounded"> ย้อนกลับ</a>
             </div>
         </div>
         <!-- /Title -->
 
             <section class="hk-sec-wrapper">
-                <h5 class="hk-sec-title">ตารางรายละเอียดกลุ่มและทีม</h5>
+                <div class="topic-secondgery">รายการรายละเอียดกลุ่มและทีม</div>
                 <div class="row">
                     <div class="col-sm">
                         <div class="table-wrap">
@@ -33,7 +30,7 @@
                                 <div>
                                 </div>
                             </div>
-                            <div class="table-responsive col-md-12">
+                            <div class="table-responsive col-md-12 table-color">
                                 <table id="datable_1" class="table table-hover">
                                 <thead>
                                     <tr>

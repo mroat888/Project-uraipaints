@@ -1,4 +1,4 @@
-@extends('layouts.masterAdmin')
+{{-- @extends('layouts.masterAdmin')
 
 @section('content')
  <!-- Breadcrumb -->
@@ -8,7 +8,7 @@
         <li class="breadcrumb-item active">รายละเอียดสินค้าใหม่</li>
     </ol>
 </nav>
-<!-- /Breadcrumb -->
+<!-- /Breadcrumb --> --}}
 
 <style>
     .img_1 {
@@ -129,8 +129,6 @@
 
 </style>
 
-    <!-- Container -->
-    <div class="container-fluid px-xxl-65 px-xl-20">
          <!-- Title -->
          <div class="hk-pg-header mb-10">
             <div class="topichead-bgred"><i data-feather="clipboard"></i> รายละเอียดสินค้าใหม่</div>
@@ -195,10 +193,4 @@
                     @endforeach
                 </div>
             </section>
-    </div>
-    <!-- /Container -->
 
-@section('footer')
-@include('layouts.footer')
-@endsection
-@endsection

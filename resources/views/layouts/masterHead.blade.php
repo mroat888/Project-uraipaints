@@ -176,7 +176,7 @@ License: You must have a valid license purchased only from themeforest to legall
         foreach($auth_team_id as $value){
             $auth_team[] = $value;
         }
-        
+
         $monthly_plan = DB::table('monthly_plans')
             ->join('users', 'users.id', 'monthly_plans.created_by')
             ->where('monthly_plans.status_approve', 1)
@@ -274,7 +274,7 @@ License: You must have a valid license purchased only from themeforest to legall
                                         <li class="nav-item {{ (request()->is('head/approval-customer-except')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('head/approval-customer-except') }}">
                                                 <i class="ion ion-md-checkbox"></i>
-                                                <span class="nav-link-text">ลูกค้าใหม่</span> 
+                                                <span class="nav-link-text">ลูกค้าใหม่</span>
                                                 <span class="badge badge-danger badge-pill">{{$customers}}</span>
                                             </a>
                                         </li>
@@ -326,9 +326,14 @@ License: You must have a valid license purchased only from themeforest to legall
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link {{ (request()->is('head/product_new')) ? 'btn2' : '' }}"
+                            <a class="nav-link {{ (request()->is('head/product_new')) ? 'btn2' : '' }} {{ (request()->is('head/catalog')) ? 'btn2' : '' }}
+                                {{ (request()->is('head/search-productCatalog')) ? 'btn2' : '' }} {{ (request()->is('head/product_age')) ? 'btn2' : '' }}
+                                {{ (request()->is('head/search-product_age')) ? 'btn2' : '' }} {{ (request()->is('head/product_mto')) ? 'btn2' : '' }}
+                                {{ (request()->is('head/search-product_mto')) ? 'btn2' : '' }} {{ (request()->is('head/product_cancel')) ? 'btn2' : '' }}
+                                {{ (request()->is('head/search-product_cancel')) ? 'btn2' : '' }} {{ (request()->is('head/product_price')) ? 'btn2' : '' }}
+                                {{ (request()->is('head/search-product_price')) ? 'btn2' : '' }}"
                                 href="javascript:void(0);" data-toggle="collapse" data-target="#products_dropdwon">
-                                <i class="ion ion-md-globe" style="color: #044067;"></i>
+                                <i class="ion ion-md-cube" style="color: #044067;"></i>
                                 <span class="nav-link-text">สินค้า</span>
                             </a>
                             <ul id="products_dropdwon" class="nav flex-column collapse collapse-level-1">
@@ -336,47 +341,47 @@ License: You must have a valid license purchased only from themeforest to legall
                                     <ul class="nav flex-column">
                                         <li class="nav-item ">
                                             <a class="nav-link" href="{{ url('head/product_new') }}">
-                                                <i class="ion ion-md-cube" style="color: #044067;"></i>สินค้าใหม่</a>
+                                                <i class="ion ion-md-star" style="color: #044067;"></i>สินค้าใหม่</a>
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item {{ (request()->is('head/catalog')) ? 'btn2' : '' }} {{ (request()->is('head/search-productCatalog')) ? 'btn2' : '' }}">
                                     <ul class="nav flex-column">
                                         <li class="nav-item ">
-                                            <a class="nav-link" href="javascript:void(0)">
-                                                <i class="ion ion-md-cube" style="color: #044067;"></i>แคตตาล๊อคสินค้า</a>
+                                            <a class="nav-link" href="{{ url('head/catalog') }}">
+                                                <i class="ion ion-md-grid" style="color: #044067;"></i>แคตตาล๊อคสินค้า</a>
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item {{ (request()->is('head/product_age')) ? 'btn2' : '' }} {{ (request()->is('head/search-product_age')) ? 'btn2' : '' }}">
                                     <ul class="nav flex-column">
                                         <li class="nav-item ">
-                                            <a class="nav-link" href="javascript:void(0)">
-                                                <i class="ion ion-md-cube" style="color: #044067;"></i>อายุจัดเก็บ</a>
+                                            <a class="nav-link" href="{{ url('head/product_age') }}">
+                                                <i class="material-icons">work_history</i> อายุจัดเก็บ</a>
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item {{ (request()->is('head/product_mto')) ? 'btn2' : '' }} {{ (request()->is('head/search-product_mto')) ? 'btn2' : '' }}">
                                     <ul class="nav flex-column">
                                         <li class="nav-item ">
-                                            <a class="nav-link" href="javascript:void(0)">
-                                                <i class="ion ion-md-cube" style="color: #044067;"></i>รายการสั่งผลิต (MTO)</a>
+                                            <a class="nav-link" href="{{ url('head/product_mto') }}">
+                                                <i class="material-icons">inventory</i> รายการสั่งผลิต (MTO)</a>
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item {{ (request()->is('head/product_cancel')) ? 'btn2' : '' }} {{ (request()->is('head/search-product_cancel')) ? 'btn2' : '' }}">
                                     <ul class="nav flex-column">
                                         <li class="nav-item ">
-                                            <a class="nav-link" href="javascript:void(0)">
-                                                <i class="ion ion-md-cube" style="color: #044067;"></i>รายการสินค้ายกเลิก</a>
+                                            <a class="nav-link" href="{{ url('head/product_cancel') }}">
+                                                <i class="material-icons">restart_alt</i> รายการสินค้ายกเลิก</a>
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item {{ (request()->is('head/product_price')) ? 'btn2' : '' }} {{ (request()->is('head/search-product_price')) ? 'btn2' : '' }}">
                                     <ul class="nav flex-column">
                                         <li class="nav-item ">
-                                            <a class="nav-link" href="javascript:void(0)">
-                                                <i class="ion ion-md-cube" style="color: #044067;"></i>ใบราคา</a>
+                                            <a class="nav-link" href="{{ url('head/product_price') }}">
+                                                <i class="material-icons">receipt_long</i> ใบราคา</a>
                                         </li>
                                     </ul>
                                 </li>

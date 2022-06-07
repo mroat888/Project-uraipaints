@@ -339,9 +339,14 @@ License: You must have a valid license purchased only from themeforest to legall
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link {{ (request()->is('product_new')) ? 'btn2' : '' }}"
+                            <a class="nav-link {{ (request()->is('lead/product_new')) ? 'btn2' : '' }} {{ (request()->is('lead/catalog')) ? 'btn2' : '' }}
+                                {{ (request()->is('lead/search-productCatalog')) ? 'btn2' : '' }} {{ (request()->is('lead/product_age')) ? 'btn2' : '' }}
+                                {{ (request()->is('lead/search-product_age')) ? 'btn2' : '' }} {{ (request()->is('lead/product_mto')) ? 'btn2' : '' }}
+                                {{ (request()->is('lead/search-product_mto')) ? 'btn2' : '' }} {{ (request()->is('lead/product_cancel')) ? 'btn2' : '' }}
+                                {{ (request()->is('lead/search-product_cancel')) ? 'btn2' : '' }} {{ (request()->is('lead/product_price')) ? 'btn2' : '' }}
+                                {{ (request()->is('lead/search-product_price')) ? 'btn2' : '' }}"
                                 href="javascript:void(0);" data-toggle="collapse" data-target="#products_dropdwon">
-                                <i class="ion ion-md-globe" style="color: #044067;"></i>
+                                <i class="ion ion-md-cube" style="color: #044067;"></i>
                                 <span class="nav-link-text">สินค้า</span>
                             </a>
                             <ul id="products_dropdwon" class="nav flex-column collapse collapse-level-1">
@@ -349,47 +354,47 @@ License: You must have a valid license purchased only from themeforest to legall
                                     <ul class="nav flex-column">
                                         <li class="nav-item ">
                                             <a class="nav-link" href="{{ url('lead/product_new') }}">
-                                                <i class="ion ion-md-cube" style="color: #044067;"></i>สินค้าใหม่</a>
+                                                <i class="ion ion-md-star" style="color: #044067;"></i>สินค้าใหม่</a>
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item {{ (request()->is('lead/catalog')) ? 'btn2' : '' }} {{ (request()->is('lead/search-productCatalog')) ? 'btn2' : '' }}">
                                     <ul class="nav flex-column">
                                         <li class="nav-item ">
-                                            <a class="nav-link" href="javascript:void(0)">
-                                                <i class="ion ion-md-cube" style="color: #044067;"></i>แคตตาล๊อคสินค้า</a>
+                                            <a class="nav-link" href="{{ url('lead/catalog') }}">
+                                                <i class="ion ion-md-grid" style="color: #044067;"></i>แคตตาล๊อคสินค้า</a>
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item {{ (request()->is('lead/product_age')) ? 'btn2' : '' }} {{ (request()->is('lead/search-product_age')) ? 'btn2' : '' }}">
                                     <ul class="nav flex-column">
                                         <li class="nav-item ">
-                                            <a class="nav-link" href="javascript:void(0)">
-                                                <i class="ion ion-md-cube" style="color: #044067;"></i>อายุจัดเก็บ</a>
+                                            <a class="nav-link" href="{{ url('lead/product_age') }}">
+                                                <i class="material-icons">work_history</i> อายุจัดเก็บ</a>
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item {{ (request()->is('lead/product_mto')) ? 'btn2' : '' }} {{ (request()->is('lead/search-product_mto')) ? 'btn2' : '' }}">
                                     <ul class="nav flex-column">
                                         <li class="nav-item ">
-                                            <a class="nav-link" href="javascript:void(0)">
-                                                <i class="ion ion-md-cube" style="color: #044067;"></i>รายการสั่งผลิต (MTO)</a>
+                                            <a class="nav-link" href="{{ url('lead/product_mto') }}">
+                                                <i class="material-icons">inventory</i> รายการสั่งผลิต (MTO)</a>
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item {{ (request()->is('lead/product_cancel')) ? 'btn2' : '' }} {{ (request()->is('lead/search-product_cancel')) ? 'btn2' : '' }}">
                                     <ul class="nav flex-column">
                                         <li class="nav-item ">
-                                            <a class="nav-link" href="javascript:void(0)">
-                                                <i class="ion ion-md-cube" style="color: #044067;"></i>รายการสินค้ายกเลิก</a>
+                                            <a class="nav-link" href="{{ url('lead/product_cancel') }}">
+                                                <i class="material-icons">restart_alt</i> รายการสินค้ายกเลิก</a>
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item {{ (request()->is('lead/product_price')) ? 'btn2' : '' }} {{ (request()->is('lead/search-product_price')) ? 'btn2' : '' }}">
                                     <ul class="nav flex-column">
                                         <li class="nav-item ">
-                                            <a class="nav-link" href="javascript:void(0)">
-                                                <i class="ion ion-md-cube" style="color: #044067;"></i>ใบราคา</a>
+                                            <a class="nav-link" href="{{ url('lead/product_price') }}">
+                                                <i class="material-icons">receipt_long</i> ใบราคา</a>
                                         </li>
                                     </ul>
                                 </li>

@@ -15,11 +15,9 @@
     <div class="container-fluid px-xxl-65 px-xl-20">
         <!-- Title -->
         <div class="hk-pg-header mb-10">
-            <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-person"></i></span>ลูกค้าใหม่</h4>
-            </div>
-            <div class="d-flex">
-                <button class="btn btn-green btn-sm" data-toggle="modal" data-target="#addCustomer"> + เพิ่มใหม่ </button>
+            <div class="topichead-bgred"><i data-feather="user"></i> ลูกค้าใหม่</div>
+            <div class="content-right d-flex">
+                <button type="button" class="btn btn-green" data-toggle="modal" data-target="#addCustomer"> + เพิ่มใหม่ </button>
             </div>
         </div>
         <!-- /Title -->
@@ -28,7 +26,7 @@
         <div class="row">
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
-                    <div class="topichead-bggreen" style="margin-bottom: 30px;">รายชื่อลูกค้าใหม่</div>
+                    <div class="topic-secondgery">รายชื่อลูกค้าใหม่</div>
                     <div class="row">
                         <div class="col-sm">
                             <div class="table-wrap">

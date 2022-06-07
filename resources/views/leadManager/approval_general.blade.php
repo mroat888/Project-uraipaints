@@ -450,7 +450,7 @@ function edit_modal(id) {
                     $('#ModalSaleplanApprove').modal('hide');
                     $('#shop_status_name_lead').text('ยืนยันการอนุมัติเรียบร้อย');
                     // $('#btn_saleplan_restrospective').prop('disabled', true);
-                   // location.reload();
+                   location.reload();
                 }else{
                     Swal.fire({
                         icon: 'error',

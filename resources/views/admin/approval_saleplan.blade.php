@@ -31,9 +31,7 @@
 
          <!-- Title -->
         <div class="hk-pg-header mb-10">
-            <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-analytics"></i></span>ปิด Sale Plan</h4>
-            </div>
+            <div class="topichead-bgred"><i class="ion ion-md-analytics"></i> ปิด Sale Plan</div>
         </div>
         <!-- /Title -->
 
@@ -41,9 +39,7 @@
         <div class="row">
                 <div class="col-xl-12">
                     <section class="hk-sec-wrapper">
-                        <div class="row mb-2">
-                            <div class="col-sm-12 col-md-6">
-                                @php 
+                        @php
                                     if(isset($search_month) && isset($search_year)){
                                         $search_date = $search_year.'-'.$search_month;
                                         $search_date_thai = thaidate('F Y', $search_date);
@@ -52,12 +48,13 @@
                                         $search_date_thai = "";
                                     }
                                 @endphp
-                                <h5 class="hk-sec-title">รายการแผนประจำเดือน {{ $search_date_thai }}</h5>
+                        <div class="topic-secondgery">รายการแผนประจำเดือน {{ $search_date_thai }}</div>
+                        <div class="row" style="margin-bottom: 30px;">
+                            <div class="col-sm-12 col-md-6">
                             </div>
                             <div class="col-sm-12 col-md-6">
                                 <!-- ------ -->
                                 <span class="form-inline pull-right">
-                                    <!-- <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เงื่อนไขค้นหา</button> -->
                                     <form action="{{ url('admin/approvalsaleplan/search') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <span id="selectdate" >
@@ -71,11 +68,10 @@
                                                     @endif
                                                 @endforeach
                                             </select>
-                                            <input type="month" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" 
+                                            <input type="month" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;"
                                             id="selectdateTo" name ="selectdateTo" value="{{ $search_date }}"/>
 
-                                            <!-- <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-success btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button> -->
-                                            <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-success btn-sm" id="submit_request">ค้นหา</button>
+                                            <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm" id="submit_request">ค้นหา</button>
                                         </span>
                                     </form>
                                     </span>
@@ -85,7 +81,7 @@
 
                         <div class="row">
                             <div class="col-sm">
-                                <div class="table-responsive-sm">
+                                <div class="table-responsive-sm table-color">
                                     <table id="datable_1" class="table table-sm table-hover">
                                         <thead>
                                             <tr>
@@ -190,7 +186,7 @@
                                                         <a href="{{ url('admin/approvalsaleplan_close', $value->id) }}" type="button" class="btn btn-icon btn-purple pt-5">
                                                             <i data-feather="check-circle"></i>
                                                         </a>
-                                                        <a href="{{ url('admin/approvalsaleplan_detail', $value->id) }}" type="button" class="btn btn-icon btn-primary pt-5">
+                                                        <a href="{{ url('admin/approvalsaleplan_detail', $value->id) }}" type="button" class="btn btn-icon btn-view pt-5">
                                                             <i data-feather="file-text"></i>
                                                         </a>
                                                         {{-- <button id="btn_saleplan_restrospective" type="button" class="btn btn-icon btn-warning ml-2" value="{{ $value->id }}">
