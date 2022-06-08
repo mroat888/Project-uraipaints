@@ -47,7 +47,7 @@
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
                         <div class="col-sm-12 col-md-6">
-                            <h5 class="hk-sec-title mb-10">ตารางแผนประจำเดือน <?php echo thaidate('F Y', $month_date); ?></h5>
+                            <h5 class="hk-sec-title mb-10">Sale Plan (นำเสนอสินค้า)</h5>
                         </div>
                     </div>
 
@@ -59,10 +59,11 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>เรื่อง</th>
+                                            <th>วัตถุประสงค์</th>
                                             <th>ลูกค้า</th>
                                             <th>อำเภอ,จังหวัด</th>
                                             <th>การอนุมัติ</th>
+                                            <th>จำนวนรายการนำเสนอ</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -90,12 +91,13 @@
                                             </td>
                                             <td>
                                                 @if ($value->sale_plans_status == 2)
-                                                <span class="badge badge-soft-success" style="font-size: 12px;">Approve</span></td>
+                                                <span class="badge badge-soft-success" style="font-size: 12px;">Approve</span>
 
                                                 @elseif ($value->sale_plans_status == 3)
-                                                <span class="badge badge-soft-danger" style="font-size: 12px;">Reject</span></td>
+                                                <span class="badge badge-soft-danger" style="font-size: 12px;">Reject</span>
                                                 @endif
-
+                                            </td>
+                                            <td></td>
                                             <td>
                                                 <a href="{{ url('comment_saleplan', [$value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
                                                     <h4 class="btn-icon-wrap" style="color: white;">
@@ -125,7 +127,9 @@
                                             @endforeach
                                             </td>
                                             <td><span class="badge badge-soft-warning"
-                                                    style="font-size: 12px;">Pending</span></td>
+                                                    style="font-size: 12px;">Pending</span>
+                                            </td>
+                                            <td></td>
                                             <td>
                                                 <a href="{{ url('comment_saleplan', [$value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
                                                     <h4 class="btn-icon-wrap" style="color: white;">

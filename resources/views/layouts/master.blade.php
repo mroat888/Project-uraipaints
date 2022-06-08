@@ -612,6 +612,7 @@ License: You must have a valid license purchased only from themeforest to legall
     </div>
     <!-- /HK Wrapper -->
 
+
     <!-- Select2 JavaScript -->
     <script src="{{ asset('public/template/vendors/select2/dist/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('public/template/dist/js/select2-data.js') }}"></script>
@@ -649,6 +650,7 @@ License: You must have a valid license purchased only from themeforest to legall
     <!-- Toggles JavaScript -->
     <script src="{{ asset('public/template/vendors/jquery-toggles/toggles.min.js') }}"></script>
     <script src="{{ asset('public/template/dist/js/toggle-data.js') }}"></script>
+
 
     <!-- Counter Animation JavaScript -->
     <script src="{{ asset('public/template/vendors/waypoints/lib/jquery.waypoints.min.js') }}"></script>
