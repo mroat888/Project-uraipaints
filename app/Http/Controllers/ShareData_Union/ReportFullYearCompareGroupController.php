@@ -164,8 +164,8 @@ class ReportFullYearCompareGroupController extends Controller
                 $data['pdggroup_compare'][] = [
                     'pdgroup_id' => $pdgroup_id,
                     'pdgroup_name' => $pdgroup_name,
-                    'sales_1' => $pdg_compare['sales_th'],
-                    'sales_2' => $compare_sales_th,
+                    'sales_1' => $pdg_compare['sales'],
+                    'sales_2' => $compare_sales,
                     'sale_diff' => $sale_diff,
                     'persent_diff' => $persent_diff,
                 ];
@@ -346,8 +346,8 @@ class ReportFullYearCompareGroupController extends Controller
                 $data['pdggroup_compare'][] = [
                     'pdgroup_id' => $pdgroup_id,
                     'pdgroup_name' => $pdgroup_name,
-                    'sales_1' => $pdg_compare['sales_th'],
-                    'sales_2' => $compare_sales_th,
+                    'sales_1' => $pdg_compare['sales'],
+                    'sales_2' => $compare_sales,
                     'sale_diff' => $sale_diff,
                     'persent_diff' => $persent_diff,
                 ];

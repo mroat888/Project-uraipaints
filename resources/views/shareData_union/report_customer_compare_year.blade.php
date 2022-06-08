@@ -121,30 +121,43 @@
                                 @if(isset($customer_compare_api))
                                 <tbody>
                                     @foreach($customer_compare_api as $key => $customer)
+                                        @php
+                                            if($customer['customer_diff'] < 0){
+                                                $text_color = "text-danger";
+                                            }else{
+                                                $text_color = "text-success";
+                                            }
+                                        @endphp
                                     <tr style="text-align:center">
                                         <td>{{ ++$key }}</td>
                                         <td>{{ $customer['identify'] }}</td>
                                         <td style="text-align:left">{{ $customer['name'] }}</td>
-                                        <td>{{ $customer['sales_th'] }}</td>
-                                        <td>{{ $customer['compare_sales_th'] }}</td>
-                                        <td style="text-align:right">{{ number_format($customer['customer_diff'],2) }}</td>
-                                        <td style="text-align:right">{{ number_format($customer['persent_diff'],2) }}</td>
+                                        <td style="text-align:right">{{ number_format($customer['sales'],2) }}</td>
+                                        <td style="text-align:right">{{ number_format($customer['compare_sales'],2) }}</td>
+                                        <td style="text-align:right" class="{{ $text_color }}">{{ number_format($customer['customer_diff'],2) }}</td>
+                                        <td style="text-align:right" class="{{ $text_color }}">{{ number_format($customer['persent_diff'],2) }}</td>
                                     </tr>
                                     @endforeach
                                 </tbody>
-                                <tfoot style="font-weight: bold; text-align:center">
+                                <tfoot style="font-weight: bold; text-align:right">
                                     <tr>
                                         @php 
-                                            $sum_sales = $summary_customer_compare_api['sum_sales']/1000000;
-                                            $sum_compare_sale = $summary_customer_compare_api['sum_compare_sale']/1000000;
-                                            $sum_customer_diff = $summary_customer_compare_api['sum_customer_diff']/1000000;
+                                            $sum_sales = $summary_customer_compare_api['sum_sales'];
+                                            $sum_compare_sale = $summary_customer_compare_api['sum_compare_sale'];
+                                            $sum_customer_diff = $summary_customer_compare_api['sum_customer_diff'];
                                             $sum_persent_diff = $summary_customer_compare_api['sum_persent_diff'];
+
+                                            if($sum_customer_diff< 0){
+                                                $text_color = "text-danger";
+                                            }else{
+                                                $text_color = "text-success";
+                                            }
                                         @endphp
-                                        <td colspan = "3">รวม</td>
-                                        <td>{{ number_format($sum_sales,2) }} ล้าน</td>
-                                        <td>{{ number_format($sum_compare_sale,2) }} ล้าน</td>
-                                        <td style="text-align:right">{{ number_format($sum_customer_diff,2) }} ล้าน</td>
-                                        <td style="text-align:right">{{ number_format($sum_persent_diff,2) }}</td>
+                                        <td colspan = "3" style="text-align:center" >รวม</td>
+                                        <td >{{ number_format($sum_sales,2) }} </td>
+                                        <td>{{ number_format($sum_compare_sale,2) }} </td>
+                                        <td class="{{ $text_color }}">{{ number_format($sum_customer_diff,2) }} </td>
+                                        <td class="{{ $text_color }}">{{ number_format($sum_persent_diff,2) }}</td>
                                     </tr>
                                 </tfoot>
                                 @endif

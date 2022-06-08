@@ -132,19 +132,23 @@ class ReportCustomerCompareYearController extends Controller
                 $year1_sales_th = 0;
                 $year2_sales_th = 0;
 
-                foreach($customer_api[$year_1] as $year1_value){
-                    if($year1_value['identify'] == $identify_array[$i]){
-                        $customer_name = $year1_value['name'];
-                        $year1_sales_th = $year1_value['sales_th'];
-                        $year1_sales = $year1_value['sales'];
+                if(isset($customer_api[$year_1])){
+                    foreach($customer_api[$year_1] as $year1_value){
+                        if($year1_value['identify'] == $identify_array[$i]){
+                            $customer_name = $year1_value['name'];
+                            $year1_sales_th = $year1_value['sales_th'];
+                            $year1_sales = $year1_value['sales'];
+                        }
                     }
                 }
 
-                foreach($customer_api[$year_2] as $year2_value){
-                    if($year2_value['identify'] == $identify_array[$i]){
-                        $customer_name = $year2_value['name'];
-                        $year2_sales_th = $year2_value['sales_th'];
-                        $year2_sales = $year2_value['sales'];
+                if(isset($customer_api[$year_2])){
+                    foreach($customer_api[$year_2] as $year2_value){
+                        if($year2_value['identify'] == $identify_array[$i]){
+                            $customer_name = $year2_value['name'];
+                            $year2_sales_th = $year2_value['sales_th'];
+                            $year2_sales = $year2_value['sales'];
+                        }
                     }
                 }
 
@@ -152,12 +156,16 @@ class ReportCustomerCompareYearController extends Controller
 
                 if($year2_sales != 0){
                     $persent_diff = ($customer_diff*100)/$year2_sales;
+                }else{
+                    $persent_diff = -100;
                 }
 
 
                 $data['customer_compare_api'][] = [
                     'identify' => $identify_array[$i],
                     'name' => $customer_name,
+                    'sales' => $year1_sales,
+                    'compare_sales' => $year2_sales,
                     'sales_th' => $year1_sales_th,
                     'compare_sales_th' => $year2_sales_th,
                     'customer_diff' => $customer_diff,
@@ -320,19 +328,23 @@ class ReportCustomerCompareYearController extends Controller
                 $year1_sales_th = 0;
                 $year2_sales_th = 0;
 
-                foreach($customer_api[$year_1] as $year1_value){
-                    if($year1_value['identify'] == $identify_array[$i]){
-                        $customer_name = $year1_value['name'];
-                        $year1_sales_th = $year1_value['sales_th'];
-                        $year1_sales = $year1_value['sales'];
+                if(isset($customer_api[$year_1])){
+                    foreach($customer_api[$year_1] as $year1_value){
+                        if($year1_value['identify'] == $identify_array[$i]){
+                            $customer_name = $year1_value['name'];
+                            $year1_sales_th = $year1_value['sales_th'];
+                            $year1_sales = $year1_value['sales'];
+                        }
                     }
                 }
 
-                foreach($customer_api[$year_2] as $year2_value){
-                    if($year2_value['identify'] == $identify_array[$i]){
-                        $customer_name = $year2_value['name'];
-                        $year2_sales_th = $year2_value['sales_th'];
-                        $year2_sales = $year2_value['sales'];
+                if(isset($customer_api[$year_2])){
+                    foreach($customer_api[$year_2] as $year2_value){
+                        if($year2_value['identify'] == $identify_array[$i]){
+                            $customer_name = $year2_value['name'];
+                            $year2_sales_th = $year2_value['sales_th'];
+                            $year2_sales = $year2_value['sales'];
+                        }
                     }
                 }
 
@@ -340,12 +352,16 @@ class ReportCustomerCompareYearController extends Controller
 
                 if($year2_sales != 0){
                     $persent_diff = ($customer_diff*100)/$year2_sales;
+                }else{
+                    $persent_diff = -100;
                 }
 
 
                 $data['customer_compare_api'][] = [
                     'identify' => $identify_array[$i],
                     'name' => $customer_name,
+                    'sales' => $year1_sales,
+                    'compare_sales' => $year2_sales,
                     'sales_th' => $year1_sales_th,
                     'compare_sales_th' => $year2_sales_th,
                     'customer_diff' => $customer_diff,

@@ -134,12 +134,12 @@
                                         ?>
                                             @php 
                                                 $key = $i-1;
-                                                $sales_th = 0;
+                                                $sales = 0;
                                                 $credits = 0;
                                                 $persent_credit = 0;
 
-                                                if(isset($monthadmin_api[$key]['sales_th'])){
-                                                    $sales_th = $monthadmin_api[$key]['sales_th'];
+                                                if(isset($monthadmin_api[$key]['sales'])){
+                                                    $sales = $monthadmin_api[$key]['sales'];
                                                 }
                                                 if(isset($monthadmin_api[$key]['credits'])){
                                                     $credits = $monthadmin_api[$key]['credits'];
@@ -151,7 +151,7 @@
                                             <tr style="text-align:center">
                                                 <td>{{ $i }}</td>
                                                 <td>{{ $month_thai[$i] }}</td>
-                                                <td>{{ $sales_th }}</td>
+                                                <td>{{ number_format($sales,2) }}</td>
                                                 <td>{{ number_format($credits,2) }}</td>
                                                 <td>{{ number_format($persent_credit,2) }}</td>
                                             </tr>
