@@ -75,13 +75,13 @@ class ApprovalSalePlanController extends Controller
     public function search(Request $request)
     {
         // dd($request);
-        
+
         $auth_team_id = explode(',',Auth::user()->team_id);
         $auth_team = array();
         foreach($auth_team_id as $value){
             $auth_team[] = $value;
         }
-        
+
         $monthly_plan = DB::table('monthly_plans')
             ->leftJoin('users', 'users.id', 'monthly_plans.created_by')
             ->leftJoin('monthly_plan_result', 'monthly_plan_result.monthly_plan_id', 'monthly_plans.id')
@@ -91,7 +91,7 @@ class ApprovalSalePlanController extends Controller
                 'monthly_plan_result.*',
                 'monthly_plans.*'
             );
-            
+
             if(!is_null($request->selectdateFrom)){ //-- วันที่
                 list($year,$month) = explode('-', $request->selectdateFrom);
                 $monthly_plan = $monthly_plan->whereYear('monthly_plans.month_date',$year)
@@ -119,8 +119,8 @@ class ApprovalSalePlanController extends Controller
                 });
             }
 
-            $monthly_plan = $monthly_plan->get();       
-            
+            $monthly_plan = $monthly_plan->get();
+
             $data['monthly_plan'] = $monthly_plan;
 
             $data['team_sales'] = DB::table('master_team_sales')
@@ -132,7 +132,7 @@ class ApprovalSalePlanController extends Controller
                 }
             })
             ->get();
-            
+
 
         return view('headManager.approval_saleplan', $data);
     }
@@ -196,10 +196,11 @@ class ApprovalSalePlanController extends Controller
         // return $id;
 
         // ข้อมูล Sale plan
-        $data['list_saleplan'] = DB::table('sale_plans')
-            ->where('monthly_plan_id', $id)
-            ->whereIn('sale_plans_status', [1, 2, 3])
-            ->orderBy('id', 'desc')->get();
+        $data['list_saleplan'] = DB::table('sale_plans')->join('master_objective_saleplans', 'sale_plans.sale_plans_objective', 'master_objective_saleplans.id')
+        ->where('sale_plans.monthly_plan_id', $id)
+        // ->where('sale_plans.created_by', Auth::user()->id)
+        ->whereIn('sale_plans.sale_plans_status', [1, 2, 3])->select('sale_plans.*', 'master_objective_saleplans.masobj_title')
+        ->orderBy('sale_plans.id', 'desc')->get();
 
         // -----  API Login ----------- //
         $api_token = $this->apicontroller->apiToken(); // API Login

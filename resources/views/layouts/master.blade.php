@@ -612,13 +612,6 @@ License: You must have a valid license purchased only from themeforest to legall
     </div>
     <!-- /HK Wrapper -->
 
-<<<<<<< HEAD
-
-    <!-- Select2 JavaScript -->
-    <script src="{{ asset('public/template/vendors/select2/dist/js/select2.full.min.js') }}"></script>
-    <script src="{{ asset('public/template/dist/js/select2-data.js') }}"></script>
-=======
->>>>>>> 2f32830abcfba5447214e398f1be4cfddd31f917
 
 
     @if(isset($disable_jquery))
@@ -628,7 +621,7 @@ License: You must have a valid license purchased only from themeforest to legall
 
         <!-- jQuery -->
         <script src="{{ asset('public/template/vendors/jquery/dist/jquery.min.js') }}"></script>
-    @else 
+    @else
         <!-- jQuery -->
         <script src="{{ asset('public/template/vendors/jquery/dist/jquery.min.js') }}"></script>
 

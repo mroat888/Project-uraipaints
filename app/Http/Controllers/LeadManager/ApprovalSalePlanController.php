@@ -254,11 +254,11 @@ class ApprovalSalePlanController extends Controller
     {
 
         // ข้อมูล Sale plan
-        $data['list_saleplan'] = DB::table('sale_plans')
-        ->where('monthly_plan_id', $id)
+        $data['list_saleplan'] = DB::table('sale_plans')->join('master_objective_saleplans', 'sale_plans.sale_plans_objective', 'master_objective_saleplans.id')
+        ->where('sale_plans.monthly_plan_id', $id)
         // ->where('sale_plans.created_by', Auth::user()->id)
-        ->whereIn('sale_plans_status', [1, 2, 3])
-        ->orderBy('id', 'desc')->get();
+        ->whereIn('sale_plans.sale_plans_status', [1, 2, 3])->select('sale_plans.*', 'master_objective_saleplans.masobj_title')
+        ->orderBy('sale_plans.id', 'desc')->get();
 
         // -----  API  //
         $api_token = $this->apicontroller->apiToken(); // API Login
@@ -284,13 +284,15 @@ class ApprovalSalePlanController extends Controller
         $data['customer_new'] = DB::table('customer_shops_saleplan')
         ->join('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
         ->join('master_customer_new', 'customer_shops_saleplan.customer_shop_objective', 'master_customer_new.id')
-        ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
+        ->leftjoin('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
+        ->leftjoin('amphur', 'amphur.AMPHUR_ID', 'customer_shops.shop_amphur_id')
         ->where('customer_shops.shop_status', 0) // 0 = ลูกค้าใหม่ , 1 = ลูกค้าเป้าหมาย , 2 = ทะเบียนลูกค้า , 3 = ลบ
         ->whereIn('customer_shops_saleplan.shop_aprove_status', [1, 2, 3])
         // ->where('customer_shops.created_by', Auth::user()->id)
         ->where('customer_shops_saleplan.monthly_plan_id', $id)
         ->select(
             'province.PROVINCE_NAME',
+            'amphur.AMPHUR_NAME',
             'customer_shops.*',
             'customer_shops.id as custid',
             'customer_shops_saleplan.*',
@@ -300,37 +302,36 @@ class ApprovalSalePlanController extends Controller
         ->get();
 
         // เยี่ยมลูกค้า
-        $customer_visits = DB::table('customer_visits')
-            ->where('monthly_plan_id', $id)
-            ->select('customer_visits.*')
-            ->orderBy('id', 'desc')->get();
+        // $customer_visits = DB::table('customer_visits')
+        //     ->where('monthly_plan_id', $id)
+        //     ->select('customer_visits.*')
+        //     ->orderBy('id', 'desc')->get();
 
-        $data['customer_visit_api'] = array();
+        // $data['customer_visit_api'] = array();
 
-        foreach($customer_visits as $key => $cus_visit){
+        // foreach($customer_visits as $key => $cus_visit){
 
-            $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/customers/'.$cus_visit->customer_shop_id);
-            $res_visit_api = $response->json();
-            // dd($res_visit_api);
-            if($res_visit_api['code'] == 200){
-                foreach ($res_visit_api['data'] as $key_api => $value_api) {
-                    $res_visit_api = $res_visit_api['data'][$key_api];
-                    $data['customer_visit_api'][] =
-                    [
-                        'id' => $cus_visit->id,
-                        'identify' => $res_visit_api['identify'],
-                        'shop_name' => $res_visit_api['title']." ".$res_visit_api['name'],
-                        'shop_address' => $res_visit_api['amphoe_name']." , ".$res_visit_api['province_name'],
-                        'shop_phone' => $res_visit_api['telephone'],
-                        'shop_mobile' => $res_visit_api['mobile'],
-                        'focusdate' => $res_visit_api['focusdate'],
-                        'monthly_plan_id' => $cus_visit->monthly_plan_id,
-                    ];
-                }
-            }
-        }
+        //     $response = Http::withToken($api_token)->get(env("API_LINK").'api/v1/customers/'.$cus_visit->customer_shop_id);
+        //     $res_visit_api = $response->json();
+        //     // dd($res_visit_api);
+        //     if($res_visit_api['code'] == 200){
+        //         foreach ($res_visit_api['data'] as $key_api => $value_api) {
+        //             $res_visit_api = $res_visit_api['data'][$key_api];
+        //             $data['customer_visit_api'][] =
+        //             [
+        //                 'id' => $cus_visit->id,
+        //                 'identify' => $res_visit_api['identify'],
+        //                 'shop_name' => $res_visit_api['title']." ".$res_visit_api['name'],
+        //                 'shop_address' => $res_visit_api['amphoe_name']." , ".$res_visit_api['province_name'],
+        //                 'shop_phone' => $res_visit_api['telephone'],
+        //                 'shop_mobile' => $res_visit_api['mobile'],
+        //                 'focusdate' => $res_visit_api['focusdate'],
+        //                 'monthly_plan_id' => $cus_visit->monthly_plan_id,
+        //             ];
+        //         }
+        //     }
+        // }
 
-        // dd($data['customer_new']);
 
         return view('leadManager.approval_saleplan_detail', $data);
     }
