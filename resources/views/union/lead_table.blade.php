@@ -13,6 +13,9 @@
             </tr>
         </thead>
         <tbody>
+            @php 
+                // dd($customer_shops);
+            @endphp
             @foreach ($customer_shops as $key => $shop)
             <tr>
                 <td>{{$key + 1}}</td>
@@ -30,7 +33,7 @@
                         </div>
                     </div>
                 </td>
-                <td>{{ $shop->shop_name }}</td>
+                <td>{{ $shop->shop_name }} ( {{ $shop->monthly_plans_id }} ) {{ $shop->month_date }} ({{ $shop->saleplan_monthly_plans_id}})</td>
                 <td>{{ $shop->PROVINCE_NAME }}</td>
                     @php
                         $customer_contact_name = "";
