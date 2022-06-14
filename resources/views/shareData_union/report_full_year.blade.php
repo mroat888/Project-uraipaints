@@ -55,7 +55,7 @@
                                         @endphp
 
                                         @for($i = 0; $i<3; $i++)
-                                            @php 
+                                            @php
                                                 $year_thai = $year-$i + 543;
                                             @endphp
                                             <option value="{{ $year-$i}}">{{ $year_thai}}</option>
@@ -96,9 +96,9 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
-                    </form>  
+                    </form>
                 </section>
             </div>
         </div>
@@ -135,13 +135,13 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                  
+
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-                    
+
                 </section>
             </div>
         </div> -->
@@ -184,11 +184,11 @@
                                         </thead>
                                         <tbody>
                                         @if($grouptop_api['code'] == 200)
-                                            @php 
+                                            @php
                                                 // dd($grouptop_api);
-                                            @endphp 
+                                            @endphp
                                             @foreach($grouptop_api['data'] as $key => $value)
-                                                @php 
+                                                @php
                                                     $sum_group_sales = $summary_group_api['sum_group_sales'];
                                                     $sale = $value['sales'];
                                                     $persent_sale = ($sale*100)/$sum_group_sales;
@@ -234,7 +234,7 @@
                                                         </td>
                                                     </tr>
                                                     @endif
-                                                
+
                                                     <tr class="underten" rel="1">
                                                         <td style="text-align:center;">{{ ++$key }}</td>
                                                         <td style="text-align:center;">{{ $pdgroup_id }}</td>
@@ -283,7 +283,7 @@
                                         <tbody>
                                         @if($subgrouptop_api['code'] == 200)
                                             @foreach($subgrouptop_api['data'] as $key => $value)
-                                                @php 
+                                                @php
                                                     $sum_subgroup_sales = $summary_subgroup_api['sum_subgroup_sales'];
                                                     $sale = $value['sales'];
                                                     $persent_sale = ($sale*100)/$sum_subgroup_sales;
@@ -378,7 +378,7 @@
                                         <tbody>
                                         @if($pdlisttop_api['code'] == 200)
                                             @foreach($pdlisttop_api['data'] as $key => $value)
-                                                @php 
+                                                @php
                                                     $sum_pdlist_sales = $summary_pdlist_api['sum_pdlist_sales'];
                                                     $sale = $value['sales'];
                                                     $persent_sale = ($sale*100)/$sum_pdlist_sales;
@@ -477,7 +477,7 @@
         // var group_id = $(e.target).val(); //-- multi
         // $('.sel_subgroup').children().remove().end();
         // $('.sel_productlist').children().remove().end();
-        console.log(group_id);  
+        console.log(group_id);
         $.ajax({
             method: 'GET',
             url: '{{ url("/fetch_subgroups") }}/'+group_id,
@@ -485,7 +485,7 @@
             success: function(response){
                 //alert(response.AMPHUR_NAME);
                 if(response.status == 200){
-                    console.log(response);                
+                    console.log(response);
                     // $('.sel_subgroup').append('<option selected value="">--Subgroup--</option>');
                     // $('.sel_productlist').append('<option selected value="">--Product List--</option>');
 
@@ -508,7 +508,7 @@
             datatype: 'json',
             success: function(response){
                 // console.log(response);
-                if(response.status == 200){            
+                if(response.status == 200){
                     // $('.sel_productlist').append('<option selected value="">--Product List--</option>');
 
                     $.each(response.pdglists, function(key, value){

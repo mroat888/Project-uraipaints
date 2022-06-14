@@ -450,6 +450,12 @@ License: You must have a valid license purchased only from themeforest to legall
                                 <span class="badge badge-danger badge-pill">{{$count_note->count()}}</span>
                             </a>
                         </li>
+                        <li class="nav-item {{ (request()->is('lead/delivery_status')) ? 'btn2' : '' }}">
+                            <a class="nav-link link-with-badge" href="{{ url('lead/delivery_status') }}">
+                                <i class="ion ion-md-basket" style="color: #044067;"></i>
+                                <span class="nav-link-text"> สถานะจัดส่ง</span>
+                            </a>
+                        </li>
 
                         <li class="nav-item">
                             <a class="nav-link {{ (request()->is('leadManage/data_name_store')) ? 'btn2' : '' }} {{ (request()->is('leadManage/data_search_product')) ? 'btn2' : '' }}
@@ -701,7 +707,7 @@ License: You must have a valid license purchased only from themeforest to legall
 
         <!-- jQuery -->
         <script src="{{ asset('public/template/vendors/jquery/dist/jquery.min.js') }}"></script>
-    @else 
+    @else
         <!-- jQuery -->
         <script src="{{ asset('public/template/vendors/jquery/dist/jquery.min.js') }}"></script>
 

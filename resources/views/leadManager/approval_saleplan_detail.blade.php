@@ -26,17 +26,15 @@
             </div>
         @endif
 
+        @php
+            $month_date = Carbon\Carbon::parse($mon_plan->month_date)->format('Y-m');
+        @endphp
+
         <!-- Title -->
         <div class="hk-pg-header mb-10">
-            <div>
-                @php
-                   $month_date = Carbon\Carbon::parse($mon_plan->month_date)->format('Y-m');
-                @endphp
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><i
-                            class="ion ion-md-analytics"></i></span>รายละเอียดแผนประจำเดือน <?php echo thaidate('F Y', $month_date); ?> ({{ $sale_name->name }})</h4>
-            </div>
-            <div class="d-flex">
-                <a href="{{ url('approvalsaleplan')}}" type="button" class="btn btn-secondary btn-sm btn-rounded px-3 mr-10"> ย้อนกลับ </a>
+            <div class="topichead-bgred"><i data-feather="file-text"></i> รายละเอียดแผนประจำเดือน <?php echo thaidate('F Y', $month_date); ?> ({{ $sale_name->name }})</div>
+            <div class="content-right d-flex">
+                <a href="{{ url('approvalsaleplan')}}" type="button" class="btn btn-secondary btn-rounded"> ย้อนกลับ </a>
             </div>
         </div>
         <!-- /Title -->
@@ -45,24 +43,22 @@
         <div class="row">
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
-                    <div class="row mb-2">
-                        <div class="col-sm-12 col-md-6">
-                            <h5 class="hk-sec-title mb-10">ตารางแผนประจำเดือน <?php echo thaidate('F Y', $month_date); ?></h5>
-                        </div>
+                    <div class="hk-pg-header mb-10">
+                            <div class="topichead-bggreen">Sale Plan (นำเสนอสินค้า)</div>
                     </div>
 
                     <div class="row">
                         <div class="col-sm">
-                            <div class="table-responsive-sm">
-
+                            <div class="table-responsive-sm table-color">
                                 <table class="table table-sm table-hover">
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>เรื่อง</th>
+                                            <th>วัตถุประสงค์</th>
                                             <th>ลูกค้า</th>
                                             <th>อำเภอ,จังหวัด</th>
                                             <th>การอนุมัติ</th>
+                                            <th>จำนวนรายการนำเสนอ</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -72,8 +68,7 @@
                                         @if ($value->sale_plans_status != 1)
                                         <tr style="background-color: rgb(219, 219, 219);">
                                             <td>{{ $key + 1 }}</td>
-                                            <td>{{ $value->sale_plans_title }}</td>
-                                            {{-- <td>{{$value->customer_shop_id}}</td> --}}
+                                            <td>{{ $value->masobj_title }}</td>
                                             <td>
                                                 @foreach($customer_api as $key_api => $value_api)
                                                             @if($customer_api[$key_api]['id'] == $value->customer_shop_id)
@@ -90,14 +85,20 @@
                                             </td>
                                             <td>
                                                 @if ($value->sale_plans_status == 2)
-                                                <span class="badge badge-soft-success" style="font-size: 12px;">Approve</span></td>
+                                                <span class="badge badge-soft-success" style="font-size: 12px;">Approve</span>
 
                                                 @elseif ($value->sale_plans_status == 3)
-                                                <span class="badge badge-soft-danger" style="font-size: 12px;">Reject</span></td>
+                                                <span class="badge badge-soft-danger" style="font-size: 12px;">Reject</span>
                                                 @endif
-
+                                            </td>
                                             <td>
-                                                <a href="{{ url('comment_saleplan', [$value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
+                                                @php
+                                                    $tags = explode(",", $value->sale_plans_tags);
+                                                @endphp
+                                                {{ count($tags) }}
+                                            </td>
+                                            <td>
+                                                <a href="{{ url('comment_saleplan', [$value->id, $value->monthly_plan_id]) }}" class="btn btn-icon mr-10" style="background-color: rgb(2, 119, 144);">
                                                     <h4 class="btn-icon-wrap" style="color: white;">
                                                         <i data-feather="message-square"></i>
                                                     </h4>
@@ -108,8 +109,7 @@
                                         @else
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
-                                            <td>{{ $value->sale_plans_title }}</td>
-                                            {{-- <td>{{$value->customer_shop_id}}</td> --}}
+                                            <td>{{ $value->masobj_title }}</td>
                                             <td>
                                                 @foreach($customer_api as $key_api => $value_api)
                                                             @if($customer_api[$key_api]['id'] == $value->customer_shop_id)
@@ -124,10 +124,17 @@
                                                 @endif
                                             @endforeach
                                             </td>
-                                            <td><span class="badge badge-soft-warning"
-                                                    style="font-size: 12px;">Pending</span></td>
                                             <td>
-                                                <a href="{{ url('comment_saleplan', [$value->id, $value->monthly_plan_id]) }}" class="btn btn-icon btn-info mr-10">
+                                                <span class="btn-pending" style="font-size: 12px;">Pending</span>
+                                            </td>
+                                            <td>
+                                                @php
+                                                    $tags = explode(",", $value->sale_plans_tags);
+                                                @endphp
+                                                {{ count($tags) }}
+                                            </td>
+                                            <td>
+                                                <a href="{{ url('comment_saleplan', [$value->id, $value->monthly_plan_id]) }}" class="btn btn-icon mr-10" style="background-color: rgb(2, 119, 144);">
                                                     <h4 class="btn-icon-wrap" style="color: white;">
                                                         <i data-feather="message-square"></i>
                                                     </h4>
@@ -148,18 +155,12 @@
             <div class="col-md-12">
                 <section class="hk-sec-wrapper">
                     <div class="hk-pg-header mb-10">
-                        <div>
-                            <h5 class="hk-sec-title">ตารางพบลูกค้าใหม่</h5>
-                        </div>
+                        <div class="topichead-blue">Sale Plan (เปิดลูกค้าใหม่)</div>
                     </div>
                     <div class="row">
                         <div class="col-sm">
                             <div class="table-wrap">
-                                <div class="hk-pg-header mb-10 mt-10">
-                                    <div>
-                                    </div>
-                                </div>
-                                <div class="table-responsive col-md-12">
+                                <div class="table-responsive col-md-12 table-color">
                                     <table id="datable_1_2" class="table table-hover">
                                         <thead>
                                             <tr>
@@ -177,7 +178,7 @@
                                             <tr style="background-color: rgb(219, 219, 219);">
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $value->shop_name }}</td>
-                                                <td>{{ $value->PROVINCE_NAME }}</td>
+                                                <td>{{$value->AMPHUR_NAME}}, {{ $value->PROVINCE_NAME }}</td>
                                                 <td>{{ $value->cust_name }}</td>
                                                 <td>
                                                     @if ($value->shop_aprove_status == 2)
@@ -188,7 +189,7 @@
                                                     @endif
                                                 </td>
                                                 <td style="text-align:center">
-                                                    <a href="{{ url('comment_customer_new', [$value->custid, $value->id]) }}" class="btn btn-icon btn-info mr-10">
+                                                    <a href="{{ url('comment_customer_new', [$value->custid, $value->id]) }}" class="btn btn-icon mr-10" style="background-color: rgb(2, 119, 144);">
                                                         <h4 class="btn-icon-wrap" style="color: white;">
                                                             <i data-feather="message-square"></i>
                                                         </h4>
@@ -199,15 +200,14 @@
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
                                                     <td>{{ $value->shop_name }}</td>
-                                                    <td>{{ $value->PROVINCE_NAME }}</td>
+                                                    <td>{{$value->AMPHUR_NAME}}, {{ $value->PROVINCE_NAME }}</td>
                                                     <td>{{ $value->cust_name }}</td>
                                                     <td>
-                                                        <span class="badge badge-soft-warning mt-15 mr-10"
-                                                            style="font-size: 12px;">Pending</span>
+                                                        <span class="btn-pending" style="font-size: 12px;">Pending</span>
                                                     </td>
 
                                                     <td style="text-align:center">
-                                                        <a href="{{ url('comment_customer_new', [$value->custid, $value->id]) }}" class="btn btn-icon btn-info mr-10">
+                                                        <a href="{{ url('comment_customer_new', [$value->custid, $value->id]) }}" class="btn btn-icon mr-10" style="background-color: rgb(2, 119, 144);">
                                                             <h4 class="btn-icon-wrap" style="color: white;">
                                                                 <i data-feather="message-square"></i>
                                                             </h4>
@@ -223,7 +223,7 @@
                         </div>
                 </section>
             </div>
-
+{{--
             <div class="col-md-12">
                 <section class="hk-sec-wrapper">
                     <div class="hk-pg-header mb-10">
@@ -266,7 +266,7 @@
                             </div>
                         </div>
                 </section>
-            </div>
+            </div> --}}
 
         </div>
         <!-- /Row -->

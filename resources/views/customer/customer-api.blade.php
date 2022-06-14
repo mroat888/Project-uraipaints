@@ -75,7 +75,7 @@
                                             </tr>
                                         </thead>
                                         <tbody id="table_body">
-                                            @php 
+                                            @php
                                                 @$row = count($customer_api)
                                             @endphp
 
@@ -98,7 +98,7 @@
                                                         <a href="{{ $pathurl }}" class="btn btn-icon btn-success mr-10">
                                                         <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></a>
                                                     </td>
-                                                
+
                                                 </tr>
                                             @endforeach
                                         </tbody>

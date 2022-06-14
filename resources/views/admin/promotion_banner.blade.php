@@ -24,7 +24,7 @@
         <!-- /Title -->
 
             <section class="hk-sec-wrapper">
-                <h5 class="hk-sec-title">รายการรูปภาพแบนเนอร์</h5>
+                <div class="topic-secondgery">รายการรูปภาพแบนเนอร์</div>
                 <div class="row">
                     <div class="col-sm">
                         <div class="table-wrap">
@@ -50,8 +50,8 @@
                                         <td>{{$key + 1}}</td>
                                         <td><img src="{{ isset($value->banner) ? asset('public/upload/NewsBanner/' . $value->banner) : '' }}" width="200"></td>
                                         <td>{{$value->detail}}</td>
-                                        <td>{{$value->date}}</td>
-                                        <td>{{$value->date_last}}</td>
+                                        <td>{{ Carbon\Carbon::parse($value->date)->addYear(543)->format('d/m/Y')}}</td>
+                                        <td>{{ Carbon\Carbon::parse($value->date_last)->addYear(543)->format('d/m/Y')}}</td>
                                         <td>
                                             <div class="button-list">
                                                     <button onclick="edit_modal({{ $value->id }})"

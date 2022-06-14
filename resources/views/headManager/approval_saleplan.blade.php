@@ -29,11 +29,9 @@
      <!-- Container -->
     <div class="container-fluid px-xxl-65 px-xl-20">
 
-         <!-- Title -->
+        <!-- Title -->
         <div class="hk-pg-header mb-10">
-            <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-analytics"></i></span>ให้ความเห็นแผนประจำเดือน</h4>
-            </div>
+            <div class="topichead-bgred"><i data-feather="message-square"></i> ให้ความเห็นแผนประจำเดือน</div>
         </div>
         <!-- /Title -->
 
@@ -41,9 +39,7 @@
         <div class="row">
                 <div class="col-xl-12">
                     <section class="hk-sec-wrapper">
-                        <div class="row mb-2">
-                            <div class="col-sm-12 col-md-6">
-                                @php 
+                        @php
                                     $action_search = "head/approvalsaleplan/search"; //-- action form
                                     if(isset($date_filter)){ //-- สำหรับ แสดงวันที่ค้นหา
                                         $date_search = $date_filter;
@@ -52,24 +48,24 @@
                                     }
                                 @endphp
 
-                                <h5 class="hk-sec-title">รายการแผนประจำเดือน 
-                                    <?php 
+                                <div class="topic-secondgery">รายการแผนประจำเดือน
+                                    <?php
                                         if(isset($date_filter)){ //-- สำหรับ แสดงวันที่ค้นหา
-                                            echo thaidate('F Y', $date_search); 
-                                        } 
+                                            echo thaidate('F Y', $date_search);
+                                        }
                                     ?>
-                                </h5>
-                            </div>
-                            <div class="col-sm-12 col-md-6">
+                                </div>
+                        <div class="row" style="margin-bottom: 30px;">
+                            <div class="col-sm-12 col-md-12">
                                 <!-- ------ -->
-                                
+
                                 <span class="form-inline pull-right pull-sm-center">
                                     <form action="{{ url($action_search) }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <span id="selectdate">
                                         <select name="selectteam_sales" class="form-control form-control-sm" aria-label=".form-select-lg example">
                                             <option value="" selected>เลือกทีม</option>
-                                            @php 
+                                            @php
                                                 $checkteam_sales = "";
                                                 if(isset($selectteam_sales)){
                                                     $checkteam_sales = $selectteam_sales;
@@ -84,10 +80,10 @@
                                             @endforeach
                                         </select>
                                         <!-- ปี/เดือน :  -->
-                                        <input type="month" id="selectdateFrom" name="selectdateFrom" 
-                                        value="{{ $date_search }}" class="form-control form-control-sm" 
+                                        <input type="month" id="selectdateFrom" name="selectdateFrom"
+                                        value="{{ $date_search }}" class="form-control form-control-sm"
                                         style="margin-left:10px; margin-right:10px;"/>
-                                        <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm" id="submit_request">ค้นหา</button>
+                                        <button style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm" id="submit_request">ค้นหา</button>
                                     </span>
                                     </form>
                                 </span>
@@ -97,7 +93,7 @@
 
                         <div class="row">
                             <div class="col-sm">
-                                <div class="table-responsive-sm">
+                                <div class="table-responsive-sm table-color">
                                     <table id="datable_1" class="table table-sm table-hover">
                                         <thead>
                                             <tr>
@@ -116,7 +112,7 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($monthly_plan as $key => $value)
-                                                @php 
+                                                @php
                                                     $sale_plans_count = DB::table('sale_plans')
                                                         ->where('monthly_plan_id', $value->id)
                                                         ->whereIn('sale_plans_status',[1,2])
@@ -170,7 +166,7 @@
                                                         </a>
                                                         @endif
 
-                                                        <a href="{{ url('head/approvalsaleplan_detail', $value->id) }}" type="button" class="btn btn-icon btn-primary pt-5">
+                                                        <a href="{{ url('head/approvalsaleplan_detail', $value->id) }}" type="button" class="btn btn-icon btn-view pt-5">
                                                             <i data-feather="file-text"></i>
                                                         </a>
 

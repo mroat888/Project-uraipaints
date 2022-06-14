@@ -178,7 +178,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ (request()->is('admin/approvalsaleplan')) ? 'btn2' : '' }}" href="javascript:void(0);" data-toggle="collapse"
+                            <a class="nav-link {{ (request()->is('admin/approvalsaleplan')) ? 'btn2' : '' }}"
+                                href="javascript:void(0);" data-toggle="collapse"
                                 data-target="#planMonth_dropdwon">
                                 <i class="ion ion-md-time" style="color: #044067;"></i>
                                 <span class="nav-link-text">แผนประจำเดือน</span>
@@ -197,7 +198,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link {{ (request()->is('admin/data_name_store')) ? 'btn2' : '' }} {{ (request()->is('lead')) ? 'btn2' : '' }}" href="javascript:void(0);"
+                            <a class="nav-link {{ (request()->is('admin/data_name_store')) ? 'btn2' : '' }} {{ (request()->is('admin/change_customer_status')) ? 'btn2' : '' }} {{ (request()->is('lead')) ? 'btn2' : '' }}" href="javascript:void(0);"
                                 data-toggle="collapse" data-target="#customer_dropdwon">
                                 <i class="ion ion-md-person" style="color: #044067;"></i>
                                 <span class="nav-link-text">ลูกค้า</span>
@@ -342,7 +343,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link {{ (request()->is('admin/approvalsaleplan')) ? 'btn2' : '' }} {{ (request()->is('admin/approvalgeneral')) ? 'btn2' : '' }}
+                            <a class="nav-link {{ (request()->is('admin/approvalgeneral')) ? 'btn2' : '' }}
                                 {{ (request()->is('admin/approval-customer-except')) ? 'btn2' : '' }} {{ (request()->is('admin/assignment-add')) ? 'btn2' : '' }}" href="javascript:void(0);" data-toggle="collapse"
                                 data-target="#charts_drp2">
                                 <i class="ion ion-md-create" style="color: #044067;"></i>
@@ -351,17 +352,6 @@
                             <ul id="charts_drp2" class="nav flex-column collapse collapse-level-1">
                                 <li class="nav-item">
                                     <ul class="nav flex-column">
-                                        <!-- <li class="nav-item {{ (request()->is('admin/approvalsaleplan')) ? 'btn2' : '' }}">
-                                            <a class="nav-link" href="{{ url('admin/approvalsaleplan') }}">
-                                                <i class="ion ion-md-today" style="color: #044067;"></i>
-                                                อนุมัติ sale plan</a>
-                                        </li>
-                                        <li class="nav-item {{ (request()->is('admin/approvalgeneral')) ? 'btn2' : '' }}">
-                                            <a class="nav-link" href="{{ url('admin/approvalgeneral') }}">
-                                                <i class="ion ion-md-checkbox"></i>
-                                                <span class="nav-link-text">อนุมัติคำขออนุมัติ</span>
-                                            </a>
-                                        </li> -->
                                         <li class="nav-item {{ (request()->is('admin/assignment-add')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('admin/assignment-add') }}">
                                                 <i class="ion ion-md-folder-open" style="color: #044067;"></i>
@@ -376,6 +366,12 @@
                                 <i class="ion ion-md-document" style="color: #044067;"></i>
                                 <span class="nav-link-text">บันทึกโน้ต</span>
                                 <span class="badge badge-danger badge-pill">{{$count_note->count()}}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ (request()->is('admin/delivery_status')) ? 'btn2' : '' }}">
+                            <a class="nav-link link-with-badge" href="{{ url('admin/delivery_status') }}">
+                                <i class="ion ion-md-basket" style="color: #044067;"></i>
+                                <span class="nav-link-text"> สถานะจัดส่ง</span>
                             </a>
                         </li>
 
@@ -790,7 +786,7 @@
 
         <!-- jQuery -->
         <script src="{{ asset('public/template/vendors/jquery/dist/jquery.min.js') }}"></script>
-    @else 
+    @else
         <!-- jQuery -->
         <script src="{{ asset('public/template/vendors/jquery/dist/jquery.min.js') }}"></script>
 

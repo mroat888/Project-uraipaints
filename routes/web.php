@@ -123,6 +123,11 @@ Route::get('delete_note/{id}', 'NoteController@destroy');
 Route::post('search_month_note', 'NoteController@search_month_note');
 
 
+// Delivery
+Route::get('delivery_status', 'DeliveryController@index');
+Route::post('search_delivery_status', 'DeliveryController@search_delivery_status');
+
+
 Route::get('news', 'NewsController@frontend_news');
 Route::post('search_news', 'NewsController@search_news');
 Route::get('news_detail/{id}', 'NewsController@news_detail');
@@ -193,7 +198,7 @@ Route::post('data_report_full-year_compare_group/search', 'ShareData_Union\Repor
 
 
 // Route::get('data_report_historical-year', 'ShareData\ReportHistoricalYearController@index'); //-- OAT เปลี่ยนอันล่าง ไปใช้ Controller เดียวกัน
-// Route::post('data_report_historical-year/search', 'ShareData\ReportHistoricalYearController@search'); //-- OAT เปลี่ยนอันล่าง ไปใช้ Controller เดียวกัน 
+// Route::post('data_report_historical-year/search', 'ShareData\ReportHistoricalYearController@search'); //-- OAT เปลี่ยนอันล่าง ไปใช้ Controller เดียวกัน
 Route::get('data_report_historical-year', 'ShareData_Union\ReportHistoricalYearController@index');
 Route::post('data_report_historical-year/search', 'ShareData_Union\ReportHistoricalYearController@search');
 Route::get('data_report_historical-quarter', 'ShareData\ReportHistoricalQuarterController@index');
@@ -307,6 +312,10 @@ Route::post('lead/update_note', 'NoteController@update');
 Route::get('lead/delete_note/{id}', 'NoteController@destroy');
 Route::post('lead/search_month_note', 'NoteController@lead_search_month_note');
 
+// Delivery
+Route::get('lead/delivery_status', 'DeliveryController@index');
+Route::post('lead/search_delivery_status', 'DeliveryController@search_delivery_status');
+
 Route::get('lead/news', 'NewsController@lead_frontend_news');
 Route::post('lead/search_news', 'NewsController@search_news');
 Route::get('lead/promotions', 'PromotionController@lead_frontend_promotion');
@@ -364,7 +373,7 @@ Route::post('leadManage/data_search_product/search', 'ShareData_LeadManager\Sear
 // Route::get('leadManage/data_report_product-new', 'ShareData_LeadManager\ProductNewController@index'); //-- OAT เปลี่ยนไปใช้อันล่าง
 Route::get('leadManage/data_report_product-new', 'ShareData_Union\ProductNewController@index');
 
-// Route::get('leadManage/data_report_full-year', 'ShareData_LeadManager\ReportFullYearController@index'); //-- OAT เปลี่ยนมาใช้อันล่าง 
+// Route::get('leadManage/data_report_full-year', 'ShareData_LeadManager\ReportFullYearController@index'); //-- OAT เปลี่ยนมาใช้อันล่าง
 // Route::post('leadManage/data_report_full-year/search', 'ShareData_LeadManager\ReportFullYearController@search');
 
 Route::get('leadManage/data_report_full-year', 'ShareData_Union\ReportFullYearController@index');
@@ -462,6 +471,10 @@ Route::post('head/update_note', 'NoteController@update');
 Route::get('head/delete_note/{id}', 'NoteController@destroy');
 Route::post('head/search_month_note', 'NoteController@head_search_month_note');
 Route::get('head/status_pin_update/{id}', 'NoteController@status_pin_update');
+
+// Delivery
+Route::get('head/delivery_status', 'DeliveryController@index');
+Route::post('head/search_delivery_status', 'DeliveryController@search_delivery_status');
 
 Route::get('head/news', 'NewsController@head_frontend_news');
 Route::post('head/search_news', 'NewsController@search_news');
@@ -619,6 +632,10 @@ Route::post('admin/update_note', 'NoteController@update');
 Route::get('admin/delete_note/{id}', 'NoteController@destroy');
 Route::post('admin/search_month_note', 'NoteController@admin_search_month_note');
 Route::get('admin/status_pin_update/{id}', 'NoteController@status_pin_update');
+
+// Delivery
+Route::get('admin/delivery_status', 'DeliveryController@index');
+Route::post('admin/search_delivery_status', 'DeliveryController@search_delivery_status');
 
 // News
 Route::get('admin/fontendNews', 'NewsController@admin_frontend_news');

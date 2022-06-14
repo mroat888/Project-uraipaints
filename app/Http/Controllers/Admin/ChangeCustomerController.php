@@ -14,31 +14,31 @@ class ChangeCustomerController extends Controller
 
     public function index(){
 
-        // $sql_query = "select `monthly_plans`.*, `province`.`PROVINCE_NAME`, `customer_shops_saleplan_result`.*, 
-        // `customer_shops_saleplan`.*, `customer_shops_saleplan`.`shop_aprove_status` as `saleplan_shop_aprove_status`, 
-        // `customer_shops`.* from `customer_shops_saleplan` 
-        // join `customer_shops` on `customer_shops`.`id` = `customer_shops_saleplan`.`customer_shop_id` 
-        // left join `customer_shops_saleplan_result` on `customer_shops_saleplan_result`.`customer_shops_saleplan_id` = `customer_shops_saleplan`.`id` 
-        // left join `monthly_plans` on `monthly_plans`.`id` = `customer_shops_saleplan`.`monthly_plan_id` 
-        // left join `province` on `province`.`PROVINCE_ID` = `customer_shops`.`shop_province_id` 
+        // $sql_query = "select `monthly_plans`.*, `province`.`PROVINCE_NAME`, `customer_shops_saleplan_result`.*,
+        // `customer_shops_saleplan`.*, `customer_shops_saleplan`.`shop_aprove_status` as `saleplan_shop_aprove_status`,
+        // `customer_shops`.* from `customer_shops_saleplan`
+        // join `customer_shops` on `customer_shops`.`id` = `customer_shops_saleplan`.`customer_shop_id`
+        // left join `customer_shops_saleplan_result` on `customer_shops_saleplan_result`.`customer_shops_saleplan_id` = `customer_shops_saleplan`.`id`
+        // left join `monthly_plans` on `monthly_plans`.`id` = `customer_shops_saleplan`.`monthly_plan_id`
+        // left join `province` on `province`.`PROVINCE_ID` = `customer_shops`.`shop_province_id`
         // left join `users` on `customer_shops_saleplan`.`created_by` = `users`.`id`";
 
-        $sql_query = "select `monthly_plans`.*, `province`.`PROVINCE_NAME`, `customer_shops_saleplan_result`.*, 
-        `customer_shops_saleplan`.*, `customer_shops_saleplan`.`shop_aprove_status` as `saleplan_shop_aprove_status`, 
-        `customer_shops`.* from `customer_shops` 
-        left join `customer_shops_saleplan` on `customer_shops`.`id` = `customer_shops_saleplan`.`customer_shop_id` 
-        left join `customer_shops_saleplan_result` on `customer_shops_saleplan_result`.`customer_shops_saleplan_id` = `customer_shops_saleplan`.`id` 
-        left join `monthly_plans` on `monthly_plans`.`id` = `customer_shops_saleplan`.`monthly_plan_id` 
-        left join `province` on `province`.`PROVINCE_ID` = `customer_shops`.`shop_province_id` 
+        $sql_query = "select `monthly_plans`.*, `province`.`PROVINCE_NAME`, `customer_shops_saleplan_result`.*,
+        `customer_shops_saleplan`.*, `customer_shops_saleplan`.`shop_aprove_status` as `saleplan_shop_aprove_status`,
+        `customer_shops`.* from `customer_shops`
+        left join `customer_shops_saleplan` on `customer_shops`.`id` = `customer_shops_saleplan`.`customer_shop_id`
+        left join `customer_shops_saleplan_result` on `customer_shops_saleplan_result`.`customer_shops_saleplan_id` = `customer_shops_saleplan`.`id`
+        left join `monthly_plans` on `monthly_plans`.`id` = `customer_shops_saleplan`.`monthly_plan_id`
+        left join `province` on `province`.`PROVINCE_ID` = `customer_shops`.`shop_province_id`
         left join `users` on `customer_shops_saleplan`.`created_by` = `users`.`id`";
 
         $sql_query .= "where `customer_shops`.`shop_status` != ? "; // 0 = ลูกค้าใหม่ , 1 = ทะเบียนลูกค้า , -> 2 = ลบ
         $sql_query .= "and `users`.`status` = ? "; // สถานะ ->1 = salemam, 2 = lead , 3 = head , 4 = admin
         $parameter = [2, 1];
 
-        // $sql_query_orderby = "order by `customer_shops_saleplan`.`id` desc, 
+        // $sql_query_orderby = "order by `customer_shops_saleplan`.`id` desc,
         // `customer_shops_saleplan`.`monthly_plan_id` desc";
-        $sql_query_orderby = "GROUP BY customer_shops.id order by `customer_shops_saleplan`.`id` desc, 
+        $sql_query_orderby = "GROUP BY customer_shops.id order by `customer_shops_saleplan`.`id` desc,
         `customer_shops_saleplan`.`monthly_plan_id` desc ";
 
         $customer_shops = DB::select( $sql_query.$sql_query_orderby, $parameter);
@@ -47,7 +47,7 @@ class ChangeCustomerController extends Controller
         $data['customer_contacts'] = DB::table('customer_contacts')->orderBy('id', 'desc')->get();
 
         // -- นับจำนวนร้านค้า ทั้งหมด
-        $data['count_customer_all'] = count($customer_shops); 
+        $data['count_customer_all'] = count($customer_shops);
 
         // -- นับ จำนวนร้านค้า สถานะสำเร็จ
         $parameter_count_customer_success = $parameter;
@@ -88,13 +88,13 @@ class ChangeCustomerController extends Controller
 
         $parameter = array();
 
-        $sql_query = "select `monthly_plans`.*, `province`.`PROVINCE_NAME`, `customer_shops_saleplan_result`.*, 
-        `customer_shops_saleplan`.*, `customer_shops_saleplan`.`shop_aprove_status` as `saleplan_shop_aprove_status`, 
-        `customer_shops`.* from `customer_shops_saleplan` 
-        left join `customer_shops` on `customer_shops`.`id` = `customer_shops_saleplan`.`customer_shop_id` 
-        left join `customer_shops_saleplan_result` on `customer_shops_saleplan_result`.`customer_shops_saleplan_id` = `customer_shops_saleplan`.`id` 
-        left join `monthly_plans` on `monthly_plans`.`id` = `customer_shops_saleplan`.`monthly_plan_id` 
-        left join `province` on `province`.`PROVINCE_ID` = `customer_shops`.`shop_province_id` 
+        $sql_query = "select `monthly_plans`.*, `province`.`PROVINCE_NAME`, `customer_shops_saleplan_result`.*,
+        `customer_shops_saleplan`.*, `customer_shops_saleplan`.`shop_aprove_status` as `saleplan_shop_aprove_status`,
+        `customer_shops`.* from `customer_shops_saleplan`
+        left join `customer_shops` on `customer_shops`.`id` = `customer_shops_saleplan`.`customer_shop_id`
+        left join `customer_shops_saleplan_result` on `customer_shops_saleplan_result`.`customer_shops_saleplan_id` = `customer_shops_saleplan`.`id`
+        left join `monthly_plans` on `monthly_plans`.`id` = `customer_shops_saleplan`.`monthly_plan_id`
+        left join `province` on `province`.`PROVINCE_ID` = `customer_shops`.`shop_province_id`
         left join `users` on `customer_shops_saleplan`.`created_by` = `users`.`id`";
         $sql_query .= "where `customer_shops`.`shop_status` != ? "; // 0 = ลูกค้าใหม่ , 1 = ทะเบียนลูกค้า , -> 2 = ลบ
         $sql_query .= "and `users`.`status` = ? "; // สถานะ ->1 = salemam, 2 = lead , 3 = head , 4 = admin
@@ -102,7 +102,7 @@ class ChangeCustomerController extends Controller
         $parameter = [2, 1];
         $sql_query_where_team = "";
 
-        $sql_query_orderby = "order by `customer_shops_saleplan`.`id` desc, 
+        $sql_query_orderby = "order by `customer_shops_saleplan`.`id` desc,
         `customer_shops_saleplan`.`monthly_plan_id` desc";
 
         if(!is_null($request->selectteam_sales)){ //-- ทีมขาย
@@ -110,18 +110,18 @@ class ChangeCustomerController extends Controller
 
             $sql_query_where_team .= "and `users`.`team_id` = ? ";
             $parameter[] = $team;
-            
+
             $sql_query .= $sql_query_where_team;
             $data['selectteam_sales'] = $request->selectteam_sales;
         }
 
         if(!is_null($request->selectdateFrom)){ //-- วันที่
             list($year,$month) = explode('-', $request->selectdateFrom);
-            $sql_query = $sql_query." and `monthly_plans`.`month_date` LIKE ? 
+            $sql_query = $sql_query." and `monthly_plans`.`month_date` LIKE ?
             and `monthly_plans`.`month_date` LIKE ? ";
             $parameter[] = $year.'%';
             $parameter[] = '%'.$month.'%';
-            $data['date_filter'] = $request->selectdateFrom;      
+            $data['date_filter'] = $request->selectdateFrom;
         }
 
         // dd($request->selectdateFrom, $sql_query);
@@ -138,7 +138,7 @@ class ChangeCustomerController extends Controller
         $customer_shops_all = DB::select( $sql_query_count, $parameter);
 
         // -- นับจำนวนร้านค้า ทั้งหมด
-        $data['count_customer_all'] = count($customer_shops_all); 
+        $data['count_customer_all'] = count($customer_shops_all);
 
         // -- นับ จำนวนร้านค้า สถานะสำเร็จ
         $parameter_count_customer_success = $parameter;
@@ -169,7 +169,7 @@ class ChangeCustomerController extends Controller
         $data['count_customer_result_3'] = count($count_customer_result_3);
 
         // --------- จบ การ นับจำนวน แสดงในกล่องสถานะ ----------------
-        
+
 
         if(!is_null($request->slugradio)){
             if($request->slugradio == "สำเร็จ"){
@@ -471,7 +471,7 @@ class ChangeCustomerController extends Controller
             ->where('customer_shop_id', $data['customer_shops']->id)
             ->orderBy('monthly_plan_id', 'asc')
             ->get();
-            
+
         return view('admin.approval_customer_except_detail', $data);
     }
 }

@@ -22,7 +22,7 @@
         <!-- /Title -->
 
             <section class="hk-sec-wrapper">
-                <h5 class="hk-sec-title">รายการแจ้งโปรโมชั่น</h5>
+                <div class="topic-secondgery">รายการแจ้งโปรโมชั่น</div>
                 <div class="row">
                     <div class="col-sm">
                         <div class="table-wrap">
@@ -65,8 +65,8 @@
                                             <img src="{{ isset($value->news_image) ? asset('public/upload/PromotionImage/' . $value->news_image) : '' }}" width="100">
                                             </a>
                                         </td>
-                                        <td>{{$value->news_date}}</td>
-                                        <td>{{$value->news_date_last}}</td>
+                                        <td>{{ Carbon\Carbon::parse($value->news_date)->addYear(543)->format('d/m/Y')}}</td>
+                                        <td>{{ Carbon\Carbon::parse($value->news_date_last)->addYear(543)->format('d/m/Y')}}</td>
                                         <td>
                                             @if ($value->status_usage == 1)
                                             <span class='badge badge-soft-success mx-1' style='font-size: 14px;'>ใช้งาน</span>

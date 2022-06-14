@@ -107,7 +107,7 @@
                             $users_comment = DB::table('users')->where('id', $value->created_by)->first();
                         @endphp
                         {{ $users_comment->name }}
-                        <cite title="Source Title">{{ $value->created_at }}</cite>
+                        <cite title="Source Title">{{ Carbon\Carbon::parse($value->created_at)->addYear(543)->format('d/m/Y') }}</cite>
                     </footer>
                     </blockquote>
                 </div>
