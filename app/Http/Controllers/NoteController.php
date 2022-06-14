@@ -95,11 +95,21 @@ class NoteController extends Controller
         // echo ("<script>alert('แก้ไขข้อมูลสำเร็จ'); location.href='note'; </script>");
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-       Note::where('id', $id)->delete();
-        return back();
-        // echo ("<script>alert('ลบข้อมูลสำเร็จ'); location.href='note'; </script>");
+        DB::beginTransaction();
+        try {
+
+        Note::where('id', $request->note_id_delete)->delete();
+        DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+        }
+
+        return response()->json([
+            'status' => 200,
+        ]);
     }
 
     public function status_pin_update($id)

@@ -4,7 +4,7 @@
 
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">สรุปผลงานที่ได้รับมอบหมาย</h5>
+                    <h5 class="modal-title">บันทึกส่งผลดำเนินการ</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -13,7 +13,7 @@
 
                     <div class="card">
                         <div class="card-body">
-                            <h5 id="header_title_history" class="card-title"></h5>
+                            <h5 class="card-title">สั่งงานเรื่อง : <span id="header_title_history"></span></h5>
                             <div class="my-3"><span>ผู้สั่งงาน : </span><span id="get_assign_approve_id_history"></span></div>
                             <div class="my-3"><span>วันที่ปฎิบัติ : </span><span id="get_assign_work_date_history"></span></div>
 
@@ -78,8 +78,13 @@ function assignment_show_result(id) {
 
             $('#get_detail_history').text(data.dataResult.assign_detail);
             $('#header_title_history').text(data.dataResult.assign_title);
-            $('#get_assign_work_date_history').text(data.dataResult.assign_work_date);
             $('#get_assign_approve_id_history').text(data.emp_approve.name);
+
+            let work_date_history = data.dataResult.assign_work_date.split("-");
+            let year_th_history = parseInt(work_date_history[0])+543;
+            let date_work_history = work_date_history[2]+"/"+work_date_history[1]+"/"+year_th_history;
+
+            $('#get_assign_work_date_history').text(date_work_history);
 
             let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataResult.assign_fileupload;
             if(data.dataResult.assign_fileupload != ""){

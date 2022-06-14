@@ -15,9 +15,10 @@ class AssignmentController extends Controller
 
     public function index()
     {
-        $assignments = Assignment::where('assign_emp_id', Auth::user()->id)
-        ->where('assign_status', 3)
-        ->orderBy('id', 'desc')
+        $assignments = Assignment::join('users', 'assignments.assign_emp_id', 'users.id')
+        ->where('assignments.assign_emp_id', Auth::user()->id)
+        ->where('assignments.assign_status', 3)->select('assignments.*', 'users.name')
+        ->orderBy('assignments.id', 'desc')
         ->get();
 
         return view('saleman.assignment', compact('assignments'));
@@ -35,5 +36,5 @@ class AssignmentController extends Controller
 
         return view('saleman.assignment', compact('assignments'));
     }
-    
+
 }

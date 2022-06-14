@@ -140,7 +140,7 @@ class DeliveryController extends Controller
                 $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/reports/delivery-status',[
                     'seller_id' => Auth::user()->api_identify,
                     'customer_id' => $request->customer,
-                    'provine_id' => $request->province,
+                    'province_id' => $request->province,
                     'delivery_date' => $request->date,
                     'delivery_status' => $request->status
                 ]);
