@@ -1066,6 +1066,38 @@ class ApiController extends Controller
         }
     }
 
+
+    public function fetch_customer_province_api($pid){ //-- ดึง ลูกค้าอ้างอิงที่จังหวัด (ใช้ในระบบทริป)
+
+        switch  (Auth::user()->status){
+            case 1 :    $path_search = 'sellers/'.Auth::user()->api_identify.'/customers';
+                break;
+            case 2 :    $path_search = 'saleleaders/'.Auth::user()->api_identify.'/customers';
+                break;
+            case 3 :    $path_search = 'saleheaders/'.Auth::user()->api_identify.'/customers';
+                break;
+            case 4 :    $path_search = 'customers';
+                break;
+        }
+
+        $api_token = $this->apiToken();
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search,[
+            'sortorder' => 'DESC',
+            'province_id' => $pid
+        ]);
+        $res_api = $response->json();
+
+        if($res_api['code'] == 200){
+            $customer_api = $res_api['data'];
+        }
+        return response()->json([
+            'status' => 200,
+            'customer_api' => $customer_api
+        ]);
+        
+    }
+    
+
     public function api_fetch_customers(){ //-- ดึง ลูกค้า
         DB::beginTransaction();
         try {

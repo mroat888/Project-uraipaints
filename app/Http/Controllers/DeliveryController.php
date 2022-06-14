@@ -20,20 +20,15 @@ class DeliveryController extends Controller
         $api_token = $this->apicontroller->apiToken(); // API Login
         $data['api_token'] = $api_token;
 
-        switch (Auth::user()->status) {
-            case '1':
-                $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/reports/delivery-status?seller_id='.Auth::user()->api_identify);
-                break;
-            case '2':
-                $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/reports/delivery-status?saleleaders_id='.Auth::user()->api_identify);
-                break;
-            case '3':
-                $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/reports/delivery-status?saleheaders_id='.Auth::user()->api_identify);
-                break;
-            case '4':
-                $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/reports/delivery-status');
-                break;
+        if(Auth::user()->status == 1){
+            $seller_id = Auth::user()->api_identify;
+        }else{
+            $seller_id = "";
         }
+
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/reports/delivery-status',[
+            'seller_id' => $seller_id,
+        ]);
 
         $res_api = $response->json();
 
@@ -135,6 +130,7 @@ class DeliveryController extends Controller
         $api_token = $this->apicontroller->apiToken(); // API Login
         $data['api_token'] = $api_token;
 
+<<<<<<< HEAD
         switch (Auth::user()->status) {
             case '1':
                 $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/reports/delivery-status',[
@@ -171,7 +167,21 @@ class DeliveryController extends Controller
                     'delivery_status' => $request->status
                 ]);
                 break;
+=======
+        if(Auth::user()->status == 1){
+            $seller_id = Auth::user()->api_identify;
+        }else{
+            $seller_id = "";
+>>>>>>> b32540200a5c171ea2dd2b9f470b74265ba138a7
         }
+
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/reports/delivery-status',[
+            'seller_id' => $seller_id,
+            'customer_id' => $request->customer,
+            'province_id' => $request->province,
+            'delivery_date' => $request->date,
+            'delivery_status' => $request->status
+        ]);
 
         $res_api = $response->json();
 

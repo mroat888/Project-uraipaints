@@ -245,6 +245,18 @@ License: You must have a valid license purchased only from themeforest to legall
                             <ul id="planMonth_dropdwon" class="nav flex-column collapse collapse-level-1">
                                 <li class="nav-item">
                                     <ul class="nav flex-column">
+                                        <li class="nav-item {{ (request()->is('head/trip')) ? 'btn2' : '' }}">
+                                            <a class="nav-link link-with-badge" href="{{ url('head/trip') }}">
+                                                <i class="ion ion-md-clipboard" style="color: #044067;"></i>
+                                                <span class="nav-link-text">ทริปเดินทาง</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item {{ (request()->is('head/approve_trip')) ? 'btn2' : '' }}">
+                                            <a class="nav-link link-with-badge" href="{{ url('head/approve_trip') }}">
+                                                <i class="ion ion-md-clipboard" style="color: #044067;"></i>
+                                                <span class="nav-link-text">อนุมัติทริปเดินทาง</span>
+                                            </a>
+                                        </li>
                                         <li class="nav-item {{ (request()->is('head/approvalsaleplan')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('head/approvalsaleplan') }}">
                                                 <i class="ion ion-md-today" style="color: #044067;"></i>

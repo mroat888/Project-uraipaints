@@ -46,22 +46,52 @@ class CustomerController extends Controller
 
     public function customerLead()
     {
+        // $sql_query = "select `monthly_plans`.*, `province`.`PROVINCE_NAME`, `customer_shops_saleplan_result`.*,
+        // `customer_shops_saleplan`.*, `customer_shops_saleplan`.`shop_aprove_status` as `saleplan_shop_aprove_status`,
+        // `customer_shops_saleplan`.`id` as `customer_shops_saleplan_id`,
+        // `monthly_plans`.`id` as `monthly_plans_id`,
+        // `customer_shops`.* from `customer_shops_saleplan`
+        // left join `customer_shops` on `customer_shops`.`id` = `customer_shops_saleplan`.`customer_shop_id`
+        // left join `customer_shops_saleplan_result` on `customer_shops_saleplan_result`.`customer_shops_saleplan_id` = `customer_shops_saleplan`.`id`
+        // left join `monthly_plans` on `monthly_plans`.`id` = `customer_shops_saleplan`.`monthly_plan_id`
+        // left join `province` on `province`.`PROVINCE_ID` = `customer_shops`.`shop_province_id`
+        // where `customer_shops`.`shop_status` != ? and `customer_shops`.`created_by` = ? ";
+
+
+
+        // $sql_query = "select DISTINCT `customer_shops_saleplan`.`customer_shop_id`, `monthly_plans`.*, `province`.`PROVINCE_NAME`, `customer_shops_saleplan_result`.*,
+        // `customer_shops_saleplan`.*, `customer_shops_saleplan`.`shop_aprove_status` as `saleplan_shop_aprove_status`,
+        // `customer_shops_saleplan`.`id` as `customer_shops_saleplan_id`,
+        // `monthly_plans`.`id` as `monthly_plans_id`,
+        // `customer_shops_saleplan`.`monthly_plan_id` as`saleplan_monthly_plans_id`, 
+        // `customer_shops`.* from `customer_shops_saleplan`
+        // left join `customer_shops` on `customer_shops`.`id` = `customer_shops_saleplan`.`customer_shop_id`
+        // left join `customer_shops_saleplan_result` on `customer_shops_saleplan_result`.`customer_shops_saleplan_id` = `customer_shops_saleplan`.`id`
+        // left join `monthly_plans` on `monthly_plans`.`id` = `customer_shops_saleplan`.`monthly_plan_id`
+        // left join `province` on `province`.`PROVINCE_ID` = `customer_shops`.`shop_province_id`
+        // where `customer_shops`.`shop_status` != ? and `customer_shops`.`created_by` = ? ";
+
         $sql_query = "select `monthly_plans`.*, `province`.`PROVINCE_NAME`, `customer_shops_saleplan_result`.*,
         `customer_shops_saleplan`.*, `customer_shops_saleplan`.`shop_aprove_status` as `saleplan_shop_aprove_status`,
         `customer_shops_saleplan`.`id` as `customer_shops_saleplan_id`,
         `monthly_plans`.`id` as `monthly_plans_id`,
+        `customer_shops_saleplan`.`monthly_plan_id` as`saleplan_monthly_plans_id`, 
         `customer_shops`.* from `customer_shops_saleplan`
-        left join `customer_shops` on `customer_shops`.`id` = `customer_shops_saleplan`.`customer_shop_id`
-        left join `customer_shops_saleplan_result` on `customer_shops_saleplan_result`.`customer_shops_saleplan_id` = `customer_shops_saleplan`.`id`
-        left join `monthly_plans` on `monthly_plans`.`id` = `customer_shops_saleplan`.`monthly_plan_id`
-        left join `province` on `province`.`PROVINCE_ID` = `customer_shops`.`shop_province_id`
-        where `customer_shops`.`shop_status` != ? and `customer_shops`.`created_by` = ?";
+        join (select * from customer_shops group by id ) customer_shops on `customer_shops`.`id` = `customer_shops_saleplan`.`customer_shop_id`
+        join `customer_shops_saleplan_result` on `customer_shops_saleplan_result`.`customer_shops_saleplan_id` = `customer_shops_saleplan`.`id`
+        join `monthly_plans` on `monthly_plans`.`id` = `customer_shops_saleplan`.`monthly_plan_id`
+        join `province` on `province`.`PROVINCE_ID` = `customer_shops`.`shop_province_id`
+        where `customer_shops`.`shop_status` != ? and `customer_shops`.`created_by` = ? ";
 
         $sql_query_orderby = "order by `customer_shops_saleplan`.`id` desc,
         `customer_shops_saleplan`.`monthly_plan_id` desc";
 
+        
         $customer_shops = $sql_query.$sql_query_orderby;
-        $customer_shops = DB::select( $sql_query, [2,Auth::user()->id]);
+       // dd($customer_shops);
+        $customer_shops = DB::select($customer_shops, [2,Auth::user()->id]);
+        // dd($customer_shops);
+        
 
         // -- นับจำนวนร้านค้า ทั้งหมด
         $data['count_customer_all'] = count($customer_shops);

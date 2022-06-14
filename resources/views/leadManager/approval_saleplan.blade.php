@@ -243,10 +243,10 @@
                                                             ?>
 
                                                             @if ($status_customer == 0 && $status_saleplan == 0)
-                                                            <button id="btn_saleplan_restrospective" type="button" class="btn btn-icon btn-edit" value="{{ $value->id }}">
-                                                                <i data-feather="refresh-ccw"></i>
-                                                            </button>
-                                                          @endif
+                                                                <button id="btn_saleplan_restrospective" type="button" class="btn btn-icon btn-edit" value="{{ $value->id }}">
+                                                                    <i data-feather="refresh-ccw"></i>
+                                                                </button>
+                                                             @endif
                                                             </div>
                                                         </td>
                                                     </tr>
