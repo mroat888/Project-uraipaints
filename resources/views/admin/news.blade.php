@@ -63,7 +63,7 @@
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ $value->news_title }}</td>
                                             <td>{{ $value->ref_number }}</td>
-                                            <td>{{ $value->news_date }}</td>
+                                            <td>{{ Carbon\Carbon::parse($value->news_date)->addYear(543)->format('d/m/Y') }}</td>
                                             <td>
                                                 <?php
                                                  $masterNews = App\MasterNews::get();
@@ -112,7 +112,7 @@
                                                 @endswitch
                                             </td>
                                             <td><a href="{{ $value->url }}"
-                                                    style="color: rgb(11, 8, 141);">{!! Str::limit($value->url, 20) !!}</a></td>
+                                                    style="color: rgb(11, 8, 141);">{!! Str::limit($value->url, 10) !!}</a></td>
                                             <td>
                                                 <div class="button-list">
                                                     <a href="{{ url('admin/update-news-status-use', $value->id) }}"

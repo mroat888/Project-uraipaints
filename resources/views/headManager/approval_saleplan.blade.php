@@ -166,7 +166,7 @@
                                                         </a>
                                                         @endif
 
-                                                        <a href="{{ url('head/approvalsaleplan_detail', $value->id) }}" type="button" class="btn btn-icon btn-primary pt-5">
+                                                        <a href="{{ url('head/approvalsaleplan_detail', $value->id) }}" type="button" class="btn btn-icon btn-view pt-5">
                                                             <i data-feather="file-text"></i>
                                                         </a>
 

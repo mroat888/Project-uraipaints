@@ -191,10 +191,12 @@
                                             <tr>
                                                 <th style="font-weight: bold;">#</th>
                                                 <th style="font-weight: bold;">รูปภาพ</th>
+                                                <th style="font-weight: bold;">วันที่บันทึกลูกค้าใหม่</th>
+                                                <th style="font-weight: bold;">วันที่อนุมัติลูกค้าใหม่</th>
+                                                <th style="font-weight: bold;">ผู้แทนขาย</th>
                                                 <th style="font-weight: bold;">ชื่อร้าน</th>
-                                                <th style="font-weight: bold;">ที่อยู่</th>
-                                                <th style="font-weight: bold;">ชื่อผู้ติดต่อ</th>
-                                                <th style="font-weight: bold;">เบอร์โทรศัพท์</th>
+                                                <th style="font-weight: bold;">อำเภอ, จังหวัด</th>
+                                                <th style="font-weight: bold;">การอนุมัติ</th>
                                                 <th style="font-weight: bold;">สถานะลูกค้า</th>
                                                 <th style="font-weight: bold;" class="text-center">Action</th>
                                             </tr>
@@ -218,6 +220,9 @@
                                                             </div>
                                                         </div>
                                                     </td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>{{ $shop->approve_at }}</td>
                                                     <td>{{ $shop->shop_name }}</td>
                                                     <td>{{ $shop->PROVINCE_NAME }}</td>
                                                     @php
@@ -236,7 +241,6 @@
                                                         }
                                                     @endphp
                                                     <td>{{ $customer_contact_name }}</td>
-                                                    <td>{{ $customer_contact_phone }}</td>
                                                     <td>
                                                         @if ($shop->shop_status == 1)
                                                             <span class="badge badge-soft-success"
