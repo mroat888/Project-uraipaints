@@ -65,7 +65,6 @@
                                                     <td>{{ $key + 1 }}</td>
                                                     <td>{{ $value->note_title }}
                                                         @if ($value->status_pin == 1)
-                                                        {{-- <span class="badge badge-danger badge-indicator" style="width: 10px; height: 10px;"></span> --}}
                                                         <span class="material-icons" style="color: rgb(180, 33, 33);">push_pin</span>
                                                         @endif
                                                     </td>

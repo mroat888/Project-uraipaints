@@ -368,6 +368,12 @@
                                 <span class="badge badge-danger badge-pill">{{$count_note->count()}}</span>
                             </a>
                         </li>
+                        <li class="nav-item {{ (request()->is('admin/delivery_status')) ? 'btn2' : '' }}">
+                            <a class="nav-link link-with-badge" href="{{ url('admin/delivery_status') }}">
+                                <i class="ion ion-md-basket" style="color: #044067;"></i>
+                                <span class="nav-link-text"> สถานะจัดส่ง</span>
+                            </a>
+                        </li>
 
                         <li class="nav-item">
                             <a class="nav-link {{ (request()->is('admin/data_name_store')) ? 'btn2' : '' }} {{ (request()->is('admin/data_search_product')) ? 'btn2' : '' }}

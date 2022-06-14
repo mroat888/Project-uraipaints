@@ -534,8 +534,5 @@
         $(rel).fadeIn();
     }
 </script>
-<<<<<<< HEAD
-=======
 
 
->>>>>>> 2f32830abcfba5447214e398f1be4cfddd31f917
