@@ -106,18 +106,11 @@
 
                     <div class="row">
                         <div class="col-sm">
-                            <div class="table-responsive-sm">
-                                <table class="table table-sm table-hover">
+                            <div class="table-responsive table-color col-md-12">
+                                <table id="datable_1" class="table table-hover">
                                     <thead>
                                         <tr style="text-align:center;">
-                                            <th>
-                                                <div class="custom-control custom-checkbox checkbox-info">
-                                                    <input type="checkbox" class="custom-control-input"
-                                                        id="customCheck4" onclick="chkAll(this);" name="CheckAll" value="Y">
-                                                    <label class="custom-control-label"
-                                                        for="customCheck4">ทั้งหมด</label>
-                                                </div>
-                                            </th>
+                                            <th>#</th>
                                             <th>วันที่ขออนุมัติ</th>
                                             <th style="text-align:left;">ผู้แทนขาย</th>
                                             <th>จำนวนวัน</th>
@@ -135,13 +128,7 @@
                                                 $approve_at = $day_at."/".$month_at."/".$year_at_thai;
                                             @endphp
                                         <tr style="text-align:center;">
-                                            <td>
-                                                <div class="custom-control custom-checkbox checkbox-info">
-                                                    <input type="checkbox" class="custom-control-input checkapprove"
-                                                        name="checkapprove[]" id="customCheck{{$key + 1}}" value="{{$value->id}}">
-                                                    <label class="custom-control-label" for="customCheck{{$key + 1}}"></label>
-                                                </div>
-                                            </td>
+                                            <td>{{ ++$key }}</td>
                                             <td>{{ $approve_at }}</td>
                                             <td style="text-align:left;">{{ $value->name }}</td>
                                             <td>{{ $value->trip_day }}</td>
