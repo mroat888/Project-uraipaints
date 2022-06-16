@@ -4,11 +4,11 @@
     
     @php 
         $url_approve_trip = "lead/approve_trip";
-        $action_search = "lead/approve_trip/search";
+        $action_search = "lead/approve_trip/history/search";
         $url_approve_trip_history = "lead/approve_trip/history";
     @endphp
 
-    @include('union.approval_trip')
+    @include('union.approval_trip_history')
 
 @endsection('content')
 
