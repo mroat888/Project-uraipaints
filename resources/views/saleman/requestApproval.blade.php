@@ -14,12 +14,9 @@
     <div class="container-fluid px-xxl-65 px-xl-20">
         <!-- Title -->
         <div class="hk-pg-header mb-10">
-            <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                    data-feather="clipboard"></i></span></span>บันทึกขออนุมัติ</h4>
-            </div>
-            <div class="d-flex">
-                <button type="button" class="btn btn-teal btn-sm btn-rounded px-3" data-toggle="modal" data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button>
+            <div class="topichead-bgred"><i data-feather="clipboard"></i> บันทึกขออนุมัติ</div>
+            <div class="content-right d-flex">
+                <button type="button" class="btn btn-green" data-toggle="modal" data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button>
             </div>
         </div>
         <!-- /Title -->
@@ -28,13 +25,7 @@
         <div class="row">
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
-                    <div class="row mb-2">
-                        <div class="col-sm-12 col-md-3">
-                            <h5 class="hk-sec-title">รายการขออนุมัติ</h5>
-                        </div>
-
-                    </div>
-
+                    <div class="topic-secondgery">รายการขออนุมัติ</div>
                     <div class="row">
                         <div class="col-sm">
                             <div class="table-wrap">
@@ -43,21 +34,17 @@
                                     </div>
                                     <div class="col-sm-12 col-md-9">
                                         <!-- ------ -->
-
                                         <span class="form-inline pull-right pull-sm-center">
-                                            <!-- <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</button> -->
-                                            <!-- <form action="{{ url('search_month_requestApprove') }}" method="post" enctype="multipart/form-data"> -->
                                             <form id="form_search" enctype="multipart/form-data">
-                                                
+
                                                 <span id="selectdate">
 
                                                     จาก : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateFrom" name="fromMonth"/>
 
                                                     ถึง : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name="toMonth"/>
 
-                                                <button type="submit"style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm">ค้นหา</button>
+                                                <button type="submit"style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm">ค้นหา</button>
 
-                                                {{-- <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button> --}}
                                                 </span>
                                             </form>
                                         </span>
@@ -67,7 +54,7 @@
 
 
                                 <div id="table_product">
-                                    <div class="table-responsive-sm">
+                                    <div class="table-responsive-sm table-color">
                                         <table id="datable_1" class="table table-sm table-hover">
                                             <thead>
                                                 <tr>
@@ -83,7 +70,7 @@
                                             </thead>
                                             <tbody>
                                                 @foreach($list_approval as $key => $value)
-                                                    @php 
+                                                    @php
                                                         list($aswork_year, $aswork_month, $aswork_day) = explode("-", $value->assign_work_date);
                                                         $aswork_year_thai = $aswork_year + 543;
                                                         $assign_work_date = $aswork_day."/".$aswork_month."/".$aswork_year_thai;
@@ -113,7 +100,7 @@
                                                                 case 4 :    $badge_status = "badge-soft-info";
                                                                             $status = "Re-write";
                                                                     break;
-                                                                default:    $status = ""; 
+                                                                default:    $status = "";
                                                                             $badge_status = "";
                                                             }
                                                         @endphp
@@ -133,14 +120,14 @@
                                                         <button onclick="approval_comment({{ $value->id }})"
                                                         class="btn btn-icon btn-purple mr-10" data-toggle="modal" data-target="#ApprovalComment">
                                                         <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></button>
-                                                        
+
                                                         @if ($value->assign_status == 4) <!-- สถานะให้แก้ไข -->
                                                             <button onclick="edit_modal({{ $value->id }})" class="btn btn-icon btn-warning mr-10" data-toggle="modal"
                                                                 data-target="#editApproval">
                                                                 <span class="btn-icon-wrap"><i class="ion ion-md-create" style="font-size: 18px;"></i></span>
                                                             </button>
                                                         @endif
-                                                        
+
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -182,6 +169,10 @@
                                     <option value="{{$value->id}}">{{$value->masassign_title}}</option>
                                     @endforeach
                                 </select>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="firstName">วันที่ขออนุมัติ</label>
+                            <input class="form-control" name="" type="text" value="{{ Carbon\Carbon::now()->addYear(543)->format('d/m/Y')}}" readonly>
                         </div>
                     </div>
                         <div class="row">
@@ -255,6 +246,10 @@
                                     <option value="{{$value->id}}">{{$value->masassign_title}}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">วันที่ขออนุมัติ</label>
+                                <input class="form-control" name="" type="text" id="get_request_date" readonly>
                             </div>
                         </div>
                         <div class="row">
@@ -388,12 +383,18 @@
                 $('#get_for').val(data.dataEdit.approved_for);
                 $('#get_xx').val(data.dataEdit.assign_is_hot);
 
+                let get_request_date = data.dataEdit.assign_request_date.split(" ");
+                let get_request_date2 = get_request_date[0].split("-");
+                let year_th = parseInt(get_request_date2[0])+543;
+                let date_request = get_request_date2[2]+"/"+get_request_date2[1]+"/"+year_th;
+                $('#get_request_date').val(date_request);
+
                 if (data.dataEdit.assign_is_hot == 1) {
                     $('#customCheck6').append("<input type='checkbox' class='custom-control-input' id='customCheck7' name='assign_is_hot' value='1' checked><label class='custom-control-label' for='customCheck7'>ขออนุมัติด่วน</label>");
                 }else{
                     $('#customCheck6').append("<input type='checkbox' class='custom-control-input' id='customCheck8' name='assign_is_hot' value='0'><label class='custom-control-label' for='customCheck8'>ขออนุมัติด่วน</label>");
                 }
-                
+
                 $.each(data.customer_api, function(key, value){
                     if(data.customer_api[key]['id'] == data.dataEdit.assign_shop){
                         $('#sel_searchShopEdit').append('<option value='+data.customer_api[key]['id']+' selected>'+data.customer_api[key]['shop_name']+'</option>');
@@ -424,7 +425,7 @@
                 $('#div_comment').children().remove().end();
                 $('#div_assign_status').children().remove().end();
                 $("#assign_parent").hide();
-                
+
 
                 switch(data['dataassign'].assign_status) {
                     case 0 : div_assign_status = '<span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>';
@@ -436,20 +437,33 @@
                     default: $div_assign_status = '<span class="badge badge-soft-warning" style="font-size: 12px;">ไม่มี</span>'
                 }
                 let get_assign_request_date = data['dataassign'].assign_request_date.split(" ");
+                let get_request_date2 = get_assign_request_date[0].split("-");
+                let year_th = parseInt(get_request_date2[0])+543;
+                let date_request = get_request_date2[2]+"/"+get_request_date2[1]+"/"+year_th;
+
+                let assign_work_date = data['dataassign'].assign_work_date.split(" ");
+                let assign_work_date2 = assign_work_date[0].split("-");
+                let work_year_th = parseInt(assign_work_date2[0])+543;
+                let date_work = assign_work_date2[2]+"/"+assign_work_date2[1]+"/"+work_year_th;
 
                 $('#assign_detail_comment').text(data['dataassign'].assign_detail);
                 $('#header_title_comment').text('เรื่อง : '+data['dataassign'].assign_title);
                 $('#header_approved_for_comment').text(data['dataassign'].masassign_title);
-                $('#get_assign_request_date').text(get_assign_request_date[0]);
-                $('#get_assign_work_date_comment').text(data['dataassign'].assign_work_date);
+                $('#get_assign_request_date').text(date_request);
+                $('#get_assign_work_date_comment').text(date_work);
                 $('#div_assign_status').append('<span>การอนุมัติ : </span>'+div_assign_status);
 
                 $.each(data['comment'], function(key, value){
-                    
-                    $('#div_comment').append('<div>Comment by: '+value.user_comment+' Date: '+value.created_at+'</div>');
+
+                // let get_assign_request_date = data['dataassign'].assign_request_date.split(" ");
+                let created_comment = value.created_at.split("-");
+                let year_th_comment = parseInt(get_request_date2[0])+543;
+                let date_comment = created_comment[2]+"/"+created_comment[1]+"/"+year_th_comment;
+
+                    $('#div_comment').append('<div>Comment by: '+value.user_comment+' Date: '+date_comment+'</div>');
                     $('#div_comment').append('<div class="alert alert-primary py-20" role="alert">'+value.assign_comment_detail+'</div>');
                 });
-                
+
                 if(data['dataassign_parent']){
                     let count_parent = Object.keys(data['dataassign_parent']).length;
                     // console.log(count_parent);
@@ -483,7 +497,7 @@
         if(toMonth === ""){
             toMonth = "00";
         }
-        
+
         var content = "<div class='table-responsive col-md-12'>";
                 content += "<table id='datable_request' class='table table-hover'>";
                     content += "<thead>";
@@ -518,8 +532,8 @@
                     {data: 'key', name: 'key'},
                     {data: 'assign_is_hot', name: 'assign_is_hot'},
                     {data: 'assign_title', name: 'assign_title'},
-                    {data: 'assign_work_date', name: 'assign_work_date'},
                     {data: 'assign_shop_name', name: 'assign_shop_name'},
+                    {data: 'assign_work_date', name: 'assign_work_date'},
                     {data: 'assign_status', name: 'assign_status'},
                     {data: 'assign_status_approve', name: 'assign_status_approve'},
                     {data: 'action', name: 'action'},

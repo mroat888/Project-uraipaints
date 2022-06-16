@@ -24,7 +24,7 @@
         <div class="row">
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
-                    <div class="topic-secondgery">รายการโน๊ตส่วนตัว</div>
+                    <div class="topic-secondgery">รายการบันทึกโน๊ต</div>
                     <div class="row">
                         <div class="col-sm">
                             <div class="table-wrap">
@@ -92,14 +92,11 @@
                                                         @endif
                                                         <?php  }
                                                         }
-
                                                         }
-
                                                         ?>
 
                                                     </td>
-                                                    <?php $date = new Carbon\Carbon($value->note_date); ?>
-                                                    <td>{{ $date->format('d/m/Y') }}</td>
+                                                    <td>{{ Carbon\Carbon::parse($value->note_date)->addYear(543)->format('d/m/Y') }}</td>
                                                     <td>
                                                         <div class="button-list">
                                                             @if ($value->status_pin == 1)
@@ -119,10 +116,10 @@
                                                                 data-target="#editNote"><h4 class="btn-icon-wrap" style="color: white;"><span
                                                                     class="material-icons">drive_file_rename_outline</span></h4>
                                                             </button>
-                                                            <a href="{{url('delete_note', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
-                                                                <h4 class="btn-icon-wrap" style="color: white;"><span
+                                                            <button id="btn_note_delete" class="btn btn-icon btn-danger" value="{{ $value->id }}">
+                                                            <h4 class="btn-icon-wrap" style="color: white;"><span
                                                                     class="material-icons">delete_outline</span></h4>
-                                                            </a>
+                                                        </button>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -130,11 +127,6 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                {{-- <nav class="pagination-wrap d-inline-block mt-30 float-right" aria-label="Page navigation example">
-                                    <ul class="pagination custom-pagination">
-                                        {{ $data->links() }}
-                                    </ul>
-                                </nav> --}}
                             </div>
                         </div>
                 </section>
@@ -149,7 +141,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">ฟอร์มบันทึกโน๊ตส่วนตัว</h5>
+                    <h5 class="modal-title">เพิ่มบันทึกโน๊ต</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -203,7 +195,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">ฟอร์มแก้ไขโน๊ตส่วนตัว</h5>
+                    <h5 class="modal-title">แก้ไขบันทึกโน๊ต</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -226,16 +218,11 @@
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ป้ายกำกับ</label>
                                 <select class="select2 select2-multiple form-control" multiple="multiple" name="note_tags[]"  id="get_tags">
-                                    {{-- <optgroup id="get_tags">
-                                        <option value="1">เพิ่มเติม</option>
-                                        <option value="2">เข้าพบลูกค้า</option>
-                                        <option value="3">งานใหม่</option>
-                                    </optgroup> --}}
                                 </select>
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="firstName">วันที่แจ้งเตือน</label>
-                                <input type="date" class="form-control" id="get_date" name="note_date" min="<?= date('Y-m-d') ?>">
+                                <input type="date" class="form-control" id="get_date" name="note_date">
                             </div>
                         </div>
                         <input type="hidden" name="id" id="get_id">
@@ -249,8 +236,72 @@
         </div>
     </div>
 
+    <!-- Modal Delete note -->
+    <div class="modal fade" id="ModalNoteDelete" tabindex="-1" role="dialog" aria-labelledby="ModalNoteDelete"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form id="from_note_delete" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">คุณต้องการลบข้อมูลโน๊ตใช่หรือไม่</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="text-align:center;">
+                        <h3>คุณต้องการลบข้อมูลโน๊ตใช่หรือไม่ ?</h3>
+                        <input class="form-control" id="note_id_delete" name="note_id_delete" type="hidden" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                        <button type="submit" class="btn btn-primary" id="btn_save_edit">ยืนยัน</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script> --}}
     <script>
+         $(document).on('click', '#btn_note_delete', function() { // ปุ่มลบ Slaplan
+            let note_id_delete = $(this).val();
+            $('#note_id_delete').val(note_id_delete);
+            $('#ModalNoteDelete').modal('show');
+        });
+
+        $("#from_note_delete").on("submit", function(e) {
+            e.preventDefault();
+            //var formData = $(this).serialize();
+            var formData = new FormData(this);
+            console.log(formData);
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('delete_note') }}',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    console.log(response);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Deleted!',
+                        text: "ลบข้อมูลโน๊ตเรียบร้อยแล้ว",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    $('#ModalNoteDelete').modal('hide');
+                    $('#btn_note_delete').prop('disabled', true);
+                    location.reload();
+                },
+                error: function(response) {
+                    console.log("error");
+                    console.log(response);
+                }
+            });
+        });
+
         //Edit
         function edit_modal(id) {
             $.ajax({
@@ -264,14 +315,6 @@
                     $('#get_title').val(data.dataEdit.note_title);
                     $('#get_detail').val(data.dataEdit.note_detail);
                     $('#get_tags').children().remove().end();
-                    // $('#get_tags').val(data.dataEdit.note_tags);
-                    // $('#get_tags').html(
-                    //                 "<optgroup label='กรุณาเลือก'>"+
-                    //                     "<option value='"+data.dataEdit.note_tags+"' selected>"+ data.dataEdit.name_tag +"</option>"+
-                    //                     "@foreach ($master as $value)"+
-                    //                     "<option value='"+{{$value->id}}+"'>{{$value->name_tag}}</option>"+
-                    //                     "@endforeach"+
-                    //                 "</optgroup>");
 
                     let rows_tags = data.dataEdit.note_tags.split(",");
                     let count_tags = rows_tags.length;

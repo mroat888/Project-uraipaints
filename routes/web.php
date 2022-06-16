@@ -119,7 +119,7 @@ Route::get('status_pin_update/{id}', 'NoteController@status_pin_update');
 Route::post('create_note', 'NoteController@store');
 Route::get('edit_note/{id}', 'NoteController@edit');
 Route::post('update_note', 'NoteController@update');
-Route::get('delete_note/{id}', 'NoteController@destroy');
+Route::post('delete_note', 'NoteController@destroy');
 Route::post('search_month_note', 'NoteController@search_month_note');
 
 

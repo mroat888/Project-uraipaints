@@ -10,14 +10,9 @@
 
      <!-- Container -->
      <div class="container-fluid px-xxl-65 px-xl-20">
-         <!-- Title -->
+        <!-- Title -->
         <div class="hk-pg-header mb-10">
-            <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-clipboard"></i></span>รายการสั่งงาน</h4>
-            </div>
-            <div class="d-flex">
-                {{-- <button type="button" class="btn btn-primary btn-sm btn-rounded px-3" data-toggle="modal" data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button> --}}
-            </div>
+            <div class="topichead-bgred"><i data-feather="clipboard"></i> รายการสั่งงาน</div>
         </div>
         <!-- /Title -->
 
@@ -25,13 +20,7 @@
         <div class="row">
                 <div class="col-xl-12">
                     <section class="hk-sec-wrapper">
-
-                        <!-- <div class="row mb-2">
-                            <div class="col-sm-12 col-md-3">
-                                <h5 class="hk-sec-title">ตารางรายการสั่งงาน</h5>
-                            </div>
-                        </div> -->
-
+                        <div class="topic-secondgery">รายการสั่งงาน</div>
                         <div class="row">
                             <div class="col-sm">
                                 <div class="table-wrap">
@@ -42,7 +31,6 @@
                                             <!-- ------ -->
 
                                             <span class="form-inline pull-right pull-sm-center">
-                                                <!-- <button style="margin-left:5px; margin-right:5px;" id="bt_showdate" class="btn btn-light btn-sm" onclick="showselectdate()">เลือกเดือน</button> -->
                                                 <form action="{{ url($action_search) }}" method="post" enctype="multipart/form-data">
                                                     @csrf
                                                 <span id="selectdate" >
@@ -51,9 +39,7 @@
 
                                                     ถึง : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name="toMonth"/>
 
-                                                <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm">ค้นหา</button>
-
-                                                {{-- <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm" id="submit_request" onclick="hidetdate()">ค้นหา</button> --}}
+                                                <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm">ค้นหา</button>
                                                 </span>
                                             </form>
                                             </span>
@@ -61,13 +47,14 @@
                                         </div>
                                         </div>
                                     </div>
-                                    <div class="table-responsive col-md-12">
+                                    <div class="table-responsive col-md-12 table-color">
                                         <table id="datable_1" class="table table-hover">
                                         <thead style="text-align:center;">
                                             <tr>
                                                 <th>#</th>
-                                                <th style="width:10%">ไฟล์แนบ</th>
                                                 <th style="text-align:left">เรื่อง</th>
+                                                <th style="width:10%">รูปภาพ</th>
+                                                <th>ผู้แทนขาย</th>
                                                 <th>วันกำหนดส่ง</th>
                                                 <th>สถานะ</th>
                                                 <th>ประเมินผล</th>
@@ -78,17 +65,17 @@
                                             @foreach ($assignments as $key => $value)
                                         <tr>
                                             <td>{{$key + 1}}</td>
+                                            <td style="text-align:left">{{$value->assign_title}}</td>
                                             <td>
                                                 @if ($value->assign_fileupload)
                                                     <img class="card-img"
                                                     src="{{ isset($value->assign_fileupload) ? asset('public/upload/AssignmentFile/' . $value->assign_fileupload) : '' }}"
                                                     alt="{{ $value->assign_title }}"
                                                     style="max-width:80%;">
-                                                <!-- <span class="badge badge-soft-secondary" style="font-size: 12px;">ไม่มี</span> -->
                                                 @endif
                                             </td>
-                                            <td style="text-align:left">{{$value->assign_title}}</td>
-                                            <td>{{$value->assign_work_date}}</td>
+                                            <td>{{$value->name}}</td>
+                                            <td>{{Carbon\Carbon::parse($value->assign_work_date)->addYear(543)->format('d/m/Y')}}</td>
                                             <td>
                                                 @if ($value->assign_result_status == 0)
                                                     <span class="badge badge-soft-secondary" style="font-size: 12px;">รอดำเนินการ</span>
@@ -116,14 +103,14 @@
                                                             $btn_result_show_hidden = "hidden='hidden'";
                                                         }
                                                     @endphp
-                                                    <button class="btn btn-icon btn-teal mr-10" data-toggle="modal" 
-                                                        data-target="#ModalResult" 
+                                                    <button class="btn btn-icon btn-teal mr-10" data-toggle="modal"
+                                                        data-target="#ModalResult"
                                                         onclick="assignment_result({{$value->id}})" {{ $btn_result_hidden }}>
                                                         <h4 class="btn-icon-wrap" style="color: white;">
                                                         <i class="ion ion-md-book"></i></h4>
                                                     </button>
                                                     <div class="button-list">
-                                                        <button class="btn btn-icon btn-neon" data-toggle="modal"
+                                                        <button class="btn btn-icon btn-view" data-toggle="modal"
                                                         data-target="#ModalResult_show"
                                                         onclick="assignment_show_result({{$value->id}})" {{ $btn_result_show_hidden }}>
                                                         <h4 class="btn-icon-wrap" style="color: white;"><i
