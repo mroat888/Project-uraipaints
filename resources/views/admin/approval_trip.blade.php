@@ -284,26 +284,26 @@
                 success: function(response) {
                     // console.log(response);
                     if(response.status == 200){
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'เรียบร้อย!',
-                        text: "ปิดทริปเดินทางเรียบร้อยแล้วค่ะ",
-                        showConfirmButton: false,
-                        timer: 1500,
-                    });
-                    $('#ModalSaleplanApprove').modal('hide');
-                    $('#shop_status_name_lead').text('ปิดทริปเดินทางเรียบร้อย')
-                    location.reload();
-                }else{
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'ไม่สามารถบันทึกข้อมูลได้',
-                        text: response.message,
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                    $('#ModalSaleplanApprove').modal('hide');
-                }
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'เรียบร้อย!',
+                            text: "ปิดทริปเดินทางเรียบร้อยแล้วค่ะ",
+                            showConfirmButton: false,
+                            timer: 1500,
+                        });
+                        $('#ModalSaleplanApprove').modal('hide');
+                        $('#shop_status_name_lead').text('ปิดทริปเดินทางเรียบร้อย')
+                        location.reload();
+                    }else{
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'ไม่สามารถบันทึกข้อมูลได้',
+                            text: response.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        $('#ModalSaleplanApprove').modal('hide');
+                    }
                 }
             });
         }else if(approve == "pdf"){
@@ -315,8 +315,7 @@
 
             // $.post({{ url('trip_pdf') }},   // url
 			//    { myData: params }, // data to be submit
-            // );
-            
+            // );      
         }
     });
 
