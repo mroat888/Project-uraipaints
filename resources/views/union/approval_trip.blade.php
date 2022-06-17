@@ -54,7 +54,7 @@
                     </div>
                     <div class="row mb-2">
                         <div class="col-sm-12 col-md-6">
-                            <h5 class="hk-sec-title">รายการ Sale Plan ประจำเดือน
+                            <h5 class="hk-sec-title">รายการ ทริปเดินทาง
                                 <?php
                                     if(isset($date_filter)){ //-- สำหรับ แสดงวันที่ค้นหา
                                         echo thaidate('F Y', $date_filter);
@@ -109,24 +109,30 @@
                             <div class="mb-20">
                             <form id="from_trip_approve" enctype="multipart/form-data">
                                 @csrf
+                                @if(Auth::user()->status == 2)
                                 <button type="button" id="btn_saleplan_approve" class="btn btn_purple btn-green btn-sm" name="approve" value="approve">อนุมัติ</button>
 
                                 <button type="button" id="btn_saleplan_approve2" class="btn btn_purple btn-reject btn-sm ml-5" name="failed" value="failed">ไม่อนุมัติ</button>
+                                @endif
                             </div>
                                 <div class="table-responsive-sm">
                                 <table class="table table-sm table-hover">
                                     <thead>
                                         <tr style="text-align:center;">
-                                            <th>
-                                                <div class="custom-control custom-checkbox checkbox-info">
-                                                    <input type="checkbox" class="custom-control-input"
-                                                        id="customCheck4" onclick="chkAll(this);" name="CheckAll" value="Y">
-                                                    <label class="custom-control-label"
-                                                        for="customCheck4">ทั้งหมด</label>
-                                                </div>
-                                            </th>
+                                            @if(Auth::user()->status == 2)
+                                                <th>
+                                                    <div class="custom-control custom-checkbox checkbox-info">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="customCheck4" onclick="chkAll(this);" name="CheckAll" value="Y">
+                                                        <label class="custom-control-label"
+                                                            for="customCheck4">ทั้งหมด</label>
+                                                    </div>
+                                                </th>
+                                            @else 
+                                                <th>#</th>
+                                            @endif
                                             <th>วันที่ขออนุมัติ</th>
-                                            <th style="text-align:left;">ผู้แทนขาย</th>
+                                            <th style="text-align:left;">รายชื่อ</th>
                                             <th>จำนวนวัน</th>
                                             <th>ค่าเบี้ยเลื้ยง</th>
                                             <th>การอนุมัติ</th>
@@ -142,13 +148,17 @@
                                                 $approve_at = $day_at."/".$month_at."/".$year_at_thai;
                                             @endphp
                                         <tr style="text-align:center;">
-                                            <td>
-                                                <div class="custom-control custom-checkbox checkbox-info">
-                                                    <input type="checkbox" class="custom-control-input checkapprove"
-                                                        name="checkapprove[]" id="customCheck{{$key + 1}}" value="{{$value->id}}">
-                                                    <label class="custom-control-label" for="customCheck{{$key + 1}}"></label>
-                                                </div>
-                                            </td>
+                                            @if(Auth::user()->status == 2)
+                                                <td>
+                                                    <div class="custom-control custom-checkbox checkbox-info">
+                                                        <input type="checkbox" class="custom-control-input checkapprove"
+                                                            name="checkapprove[]" id="customCheck{{$key + 1}}" value="{{$value->id}}">
+                                                        <label class="custom-control-label" for="customCheck{{$key + 1}}"></label>
+                                                    </div>
+                                                </td>
+                                            @else 
+                                                <td>{{ ++$key }}</td>
+                                            @endif
                                             <td>{{ $approve_at }}</td>
                                             <td style="text-align:left;">{{ $value->name }}</td>
                                             <td>{{ $value->trip_day }}</td>
@@ -173,15 +183,16 @@
                                                     <i data-feather="refresh-ccw"></i>
                                                 </button> --> --}}
                                                 
-
+                                                @if(Auth::user()->status == 2)
                                                 <a href="{{ url('lead/approve_trip/edit') }}/{{ $value->id }}" 
                                                     class="btn btn-icon btn-edit">
                                                     <h4 class="btn-icon-wrap" style="color: white;">
                                                         <i class="ion ion-md-create"></i>
                                                     </h4>
                                                 </a>
+                                                @endif
 
-                                                <a href="{{ url('lead/approve_trip/detail') }}/{{ $value->id }}" 
+                                                <a href="{{ url($url_showdetail) }}/{{ $value->id }}" 
                                                     class="btn btn-icon btn-warning">
                                                     <h4 class="btn-icon-wrap" style="color: white;">
                                                         <i class="ion ion-md-map"></i>

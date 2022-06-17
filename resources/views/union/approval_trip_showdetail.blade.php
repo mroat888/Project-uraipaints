@@ -176,7 +176,11 @@
                                     </div>
                                     <div class="col-md-12 mt-15">
                                         @php
-                                            list($sale_date, $sale_time) = explode(' ',$comment->created_at);
+                                            if(is_null($comment->updated_at)){
+                                                list($sale_date, $sale_time) = explode(' ',$comment->created_at);
+                                            }else{
+                                                list($sale_date, $sale_time) = explode(' ',$comment->updated_at);
+                                            }
                                         @endphp
                                         วันที่ : {{ thaidate('d F Y',$sale_date) }} เวลา : {{ $sale_time }}
                                     </div>
@@ -190,7 +194,7 @@
             <!-- Row -->
         @else
             @php 
-                $check_menager_comment = "ํY"; //-- มีค่าคอมเม้นต์แล้ว
+                $check_menager_comment = "ํY"; //-- มีการคอมเม้นต์แล้ว
             @endphp
             <!-- Row Create Comment -->
             <div class="row">
@@ -214,7 +218,11 @@
 
                                         <div class="col-md-12">
                                             @php
-                                                list($sale_date, $sale_time) = explode(' ',$comment->created_at);
+                                                if(is_null($comment->updated_at)){
+                                                    list($sale_date, $sale_time) = explode(' ',$comment->created_at);
+                                                }else{
+                                                    list($sale_date, $sale_time) = explode(' ',$comment->updated_at);
+                                                }
                                             @endphp
                                             วันที่ : {{ thaidate('d F Y',$sale_date) }} เวลา : {{ $sale_time }}
                                         </div>

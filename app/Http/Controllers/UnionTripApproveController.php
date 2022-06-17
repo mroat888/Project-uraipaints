@@ -25,8 +25,6 @@ class UnionTripApproveController extends Controller
                 break;
             case 3 :    return view('headManager.approval_trip', $data); 
                 break;
-            case 4 :   
-                break;
         }
     }
 
@@ -39,8 +37,6 @@ class UnionTripApproveController extends Controller
             case 2 :    return view('leadManager.approval_trip_history', $data); 
                 break;
             case 3 :    return view('headManager.approval_trip_history', $data); 
-                break;
-            case 4 :   
                 break;
         }
     }
@@ -368,9 +364,9 @@ class UnionTripApproveController extends Controller
         switch  (Auth::user()->status){
             case 2 :    return view('leadManager.approval_trip_editdetail', $data); 
                 break;
-            case 3 :    return view('headManager.approval_trip_editdetail', $data); 
+            case 3 :    
                 break;
-            case 4 :    return view('admin.approval_trip_editdetail', $data); 
+            case 4 :    
                 break;
         }
     }
@@ -417,7 +413,6 @@ class UnionTripApproveController extends Controller
 
     public function trip_comment(Request $request)
     {
-        // dd($request->trip_comment_id);
         if(is_null($request->trip_comment_id)){
             DB::table('trip_comments')
             ->insert([

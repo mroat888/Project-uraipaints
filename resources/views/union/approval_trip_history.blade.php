@@ -112,7 +112,7 @@
                                         <tr style="text-align:center;">
                                             <th>#</th>
                                             <th>วันที่ขออนุมัติ</th>
-                                            <th style="text-align:left;">ผู้แทนขาย</th>
+                                            <th style="text-align:left;">รายชื่อ</th>
                                             <th>จำนวนวัน</th>
                                             <th>ค่าเบี้ยเลื้ยง</th>
                                             <th>การอนุมัติ</th>
@@ -147,7 +147,7 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <a href="{{ url('lead/approve_trip/detail') }}/{{ $value->id }}" 
+                                                <a href="{{ url($url_trip_history_detail) }}/{{ $value->id }}" 
                                                     class="btn btn-icon btn-warning">
                                                     <h4 class="btn-icon-wrap" style="color: white;">
                                                         <i class="ion ion-md-map"></i>

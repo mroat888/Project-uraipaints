@@ -439,6 +439,12 @@ Route::post('head/approvalsaleplan/search', 'HeadManager\ApprovalSalePlanControl
 Route::get('head/trip', 'UnionTripController@index');
 Route::get('head/trip/detail/{id}', 'UnionTripController@trip_detail');
 
+Route::get('head/approve_trip', 'UnionTripApproveController@index');
+Route::post('head/approve_trip/search', 'UnionTripApproveController@search');
+Route::get('head/approve_trip/history', 'UnionTripApproveController@trip_history');
+Route::post('head/approve_trip/history/search', 'UnionTripApproveController@trip_history_search');
+Route::get('head/approve_trip/detail/{id}', 'UnionTripApproveController@trip_showdetail');
+
 
 Route::get('head/approvalgeneral', 'HeadManager\ApprovalController@index');
 Route::get('head/approvalgeneral/history', 'HeadManager\ApprovalController@approval_history');
@@ -630,6 +636,13 @@ Route::get('admin/approval_customer_except_detail/{id}', 'Admin\ChangeCustomerCo
 Route::get('admin/edit_customerLead/{id}', 'Admin\ChangeCustomerController@edit');
 Route::post('admin/update_customerLead', 'Admin\ChangeCustomerController@update');
 // Route::post('delete_customer', 'Customer\CustomerController@destroy');
+
+
+// Trip 
+Route::get('admin/approve_trip', 'Admin\UnionTripAdminController@index');
+Route::post('admin/approve_trip/search', 'Admin\UnionTripAdminController@search');
+Route::post('admin/approval_trip_confirm_all', 'Admin\UnionTripAdminController@approval_trip_confirm_all');
+
 
 
 // Note
