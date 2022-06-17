@@ -84,16 +84,24 @@ class UnionTripAdminController extends Controller
             $count_checkapprove = count($request->checkapprove);
 
             if(!is_null($request->approve)){
-                $trip_status = 4; // ปิดทริป
-            }
 
-            for($i=0;$i<$count_checkapprove; $i++){
-                DB::table('trip_header')->where('id', $request->checkapprove[$i])
-                ->update([
-                    'trip_status' => $trip_status,
-                    'end_approve_at' => date('Y-m-d H:i:s'),
-                    'end_approve_id' => Auth::user()->id,
-                ]);
+                if($request->approve == "complate"){ // ปิดทริป
+                    for($i=0;$i<$count_checkapprove; $i++){
+                        DB::table('trip_header')->where('id', $request->checkapprove[$i])
+                        ->update([
+                            'trip_status' => 4,
+                            'end_approve_at' => date('Y-m-d H:i:s'),
+                            'end_approve_id' => Auth::user()->id,
+                        ]);
+                    }
+                }else if($request->approve == "pdf"){ // สร้าง pdf
+                    dd("PDF");
+                }else if($request->approve == "excle"){ // สร้าง excle
+                    dd("excle");
+                }else if($request->approve == "seandmail"){ // ส่งอีเมล
+                    dd("seandmail");
+                }
+
             }
 
             DB::commit();

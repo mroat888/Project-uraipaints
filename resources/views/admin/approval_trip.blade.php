@@ -99,11 +99,10 @@
                         <div class="col-sm">
                             <div class="mb-20">
    
-                                <button type="button" id="btn_saleplan_approve" class="btn btn_purple btn-green btn-sm" value="approve">Complate</button>
-
-                                <button type="button" id="btn_pdf" class="btn btn_purple btn-reject btn-sm ml-5" name="pdf" value="pdf">ดาวโหลด PDF</button>
-                                <button type="button" id="btn_pdf" class="btn btn_purple btn-reject btn-sm ml-5" name="pdf" value="pdf">ดาวโหลด Excle</button>
-                                <button type="button" id="btn_pdf" class="btn btn_purple btn-reject btn-sm ml-5" name="pdf" value="pdf">ส่งเมล</button>
+                                <button type="button" class="btn btn_purple btn-green btn-sm btn_approve" value="complate">Complate</button>
+                                <button type="button" class="btn btn_purple btn-reject btn-sm ml-5 btn_approve" value="pdf">ดาวโหลด PDF</button>
+                                <button type="button" class="btn btn_purple btn-reject btn-sm ml-5 btn_approve" value="excle">ดาวโหลด Excle</button>
+                                <button type="button" class="btn btn_purple btn-reject btn-sm ml-5 btn_approve" value="seandmail">ส่งเมล</button>
                                 
                             </div>
 
@@ -206,7 +205,7 @@
                                             </div>
                                             <div class="modal-body" style="text-align:center;">
                                                 <h3>ยืนยัน ปิดทริปเดินทาง ใช่หรือไม่?</h3>
-                                                <input class="form-control" id="approve" name="approve" type="hidden" />
+                                                <input class="form-control" id="approve" name="approve" type="text" />
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
@@ -261,7 +260,7 @@
         }
     }
     
-    $(document).on('click', '#btn_saleplan_approve', function() {
+    $(document).on('click', '.btn_approve', function() {
         let approve = $(this).val();
         $('#approve').val(approve);
         $('#ModalSaleplanApprove').modal('show');
