@@ -308,14 +308,14 @@
             });
         }else if(approve == "pdf"){
             console.log("PDF---Con");
-            // var http = new XMLHttpRequest();
-            // var url = 'trip_pdf';
-            var params = formData;
-            console.log(params);
 
-            // $.post({{ url('trip_pdf') }},   // url
-			//    { myData: params }, // data to be submit
-            // );      
+            $("#from_trip_approve").attr("action", "{{ url('trip_pdf') }}");
+            $("#from_trip_approve").attr("method", "post");
+            $("#from_trip_approve").attr("target", "_blank");
+            $("#from_trip_approve").submit();
+            $("#from_trip_approve").removeAttr("action").removeAttr("method").removeAttr("target");
+            
+            $('#ModalSaleplanApprove').modal('hide');
         }
     });
 

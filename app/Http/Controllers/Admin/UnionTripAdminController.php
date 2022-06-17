@@ -16,8 +16,8 @@ class UnionTripAdminController extends Controller
         $this->api_token = new ApiController();
     }
 
-    public function pdf(){
-        dd('asdasdsad');
+    public function pdf(Request $request){
+        dd($request);
     }
 
     public function index()
