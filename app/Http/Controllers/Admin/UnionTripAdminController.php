@@ -16,6 +16,10 @@ class UnionTripAdminController extends Controller
         $this->api_token = new ApiController();
     }
 
+    public function pdf(){
+        dd('asdasdsad');
+    }
+
     public function index()
     {
         $trip_header = DB::table('trip_header')

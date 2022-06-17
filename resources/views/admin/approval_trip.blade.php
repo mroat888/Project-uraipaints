@@ -273,39 +273,51 @@
         //var formData = $(this).serialize();
         var formData = new FormData(this);
         var approve = $("#approve").val();
-        console.log(approve);
-        $.ajax({
-            type: 'POST',
-            url: '{{ url('admin/approval_trip_confirm_all') }}',
-            data: formData,
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: function(response) {
-                // console.log(response);
-                if(response.status == 200){
-                Swal.fire({
-                    icon: 'success',
-                    title: 'เรียบร้อย!',
-                    text: "ปิดทริปเดินทางเรียบร้อยแล้วค่ะ",
-                    showConfirmButton: false,
-                    timer: 1500,
-                });
-                $('#ModalSaleplanApprove').modal('hide');
-                $('#shop_status_name_lead').text('ปิดทริปเดินทางเรียบร้อย')
-                location.reload();
-            }else{
-                Swal.fire({
-                    icon: 'error',
-                    title: 'ไม่สามารถบันทึกข้อมูลได้',
-                    text: response.message,
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-                $('#ModalSaleplanApprove').modal('hide');
-            }
-            }
-        });
+        if(approve == "complate"){
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('admin/approval_trip_confirm_all') }}',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    // console.log(response);
+                    if(response.status == 200){
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'เรียบร้อย!',
+                        text: "ปิดทริปเดินทางเรียบร้อยแล้วค่ะ",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    $('#ModalSaleplanApprove').modal('hide');
+                    $('#shop_status_name_lead').text('ปิดทริปเดินทางเรียบร้อย')
+                    location.reload();
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'ไม่สามารถบันทึกข้อมูลได้',
+                        text: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    $('#ModalSaleplanApprove').modal('hide');
+                }
+                }
+            });
+        }else if(approve == "pdf"){
+            console.log("PDF---Con");
+            // var http = new XMLHttpRequest();
+            // var url = 'trip_pdf';
+            var params = formData;
+            console.log(params);
+
+            // $.post({{ url('trip_pdf') }},   // url
+			//    { myData: params }, // data to be submit
+            // );
+            
+        }
     });
 
 
