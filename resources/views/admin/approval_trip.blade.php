@@ -306,7 +306,9 @@
                     }
                 }
             });
+
         }else if(approve == "pdf"){
+
             console.log("PDF---Con");
 
             $("#from_trip_approve").attr("action", "{{ url('trip_pdf') }}");
@@ -314,8 +316,33 @@
             $("#from_trip_approve").attr("target", "_blank");
             $("#from_trip_approve").submit();
             $("#from_trip_approve").removeAttr("action").removeAttr("method").removeAttr("target");
+
+            $('#ModalSaleplanApprove').modal('hide');
+
+        }else if(approve == "excle"){
+
+            console.log("Excle---Con");
+
+            // $("#from_trip_approve").attr("action", "{{ url('trip_excel') }}");
+            // $("#from_trip_approve").attr("method", "post");
+            // $("#from_trip_approve").attr("target", "_blank");
+            // $("#from_trip_approve").submit();
+            // $("#from_trip_approve").removeAttr("action").removeAttr("method").removeAttr("target");
             
             $('#ModalSaleplanApprove').modal('hide');
+            
+        }else if(approve == "seandmail"){
+
+            console.log("seandmail---Con");
+
+            // $("#from_trip_approve").attr("action", "{{ url('trip_excel') }}");
+            // $("#from_trip_approve").attr("method", "post");
+            // $("#from_trip_approve").attr("target", "_blank");
+            // $("#from_trip_approve").submit();
+            // $("#from_trip_approve").removeAttr("action").removeAttr("method").removeAttr("target");
+
+            $('#ModalSaleplanApprove').modal('hide');
+
         }
     });
 

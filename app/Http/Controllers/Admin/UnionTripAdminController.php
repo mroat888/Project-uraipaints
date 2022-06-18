@@ -16,10 +16,6 @@ class UnionTripAdminController extends Controller
         $this->api_token = new ApiController();
     }
 
-    public function pdf(Request $request){
-        dd($request);
-    }
-
     public function index()
     {
         $trip_header = DB::table('trip_header')
@@ -122,6 +118,15 @@ class UnionTripAdminController extends Controller
                 'message' => 'ไม่สามารถบันทึกข้อมูลได้',
             ]);
         }
+    }
+
+    public function pdf(Request $request)
+    {
+        $data['trip_header'] = DB::table('trip_header')->get();
+        dd($request, $data);
+        
+        $pdf = PDF::loadView('/pdf.trip_report',$data);
+        return $pdf->stream();
     }
 
 
