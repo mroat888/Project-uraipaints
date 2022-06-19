@@ -1002,13 +1002,18 @@ Route::get('fetch_datatable_customer_admin/{ampid}', 'Api\ApiController@fetch_da
 Route::get('fetch_datatable_customer_admin_pdglist_pvid/{pvid}', 'Api\ApiController@fetch_datatable_customer_admin_pdglist_pvid');
 Route::get('fetch_datatable_customer_admin_pdglist/{pdgid}', 'Api\ApiController@fetch_datatable_customer_admin_pdglist');
 
+
+// Report
 Route::post('trip_pdf', 'Admin\UnionTripAdminController@pdf');
+
+
 
 Auth::routes();
 // Route::get('/', function () { return view('saleman.dashboard'); });
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/', 'HomeController@index')->name('home');
+
 
 
 // Route::get('/clear-cache', function() {

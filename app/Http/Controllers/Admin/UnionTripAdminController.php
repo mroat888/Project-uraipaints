@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Api\ApiController;
+use PDF;
 
 class UnionTripAdminController extends Controller
 {
@@ -122,10 +123,24 @@ class UnionTripAdminController extends Controller
 
     public function pdf(Request $request)
     {
-        $data['trip_header'] = DB::table('trip_header')->get();
-        dd($request, $data);
-        
-        $pdf = PDF::loadView('/pdf.trip_report',$data);
+
+        $triph_id = $request->checkapprove;
+
+        $data['trip_header'] = DB::table('trip_header')
+        ->join('users', 'trip_header.created_by', '=', 'users.id')
+            ->select(
+                'trip_header.*',
+                'users.name',
+                'users.status',
+            )
+        ->where(function($query) use ($triph_id) {
+            for ($i = 0; $i < count($triph_id); $i++){
+                $query->orWhere('trip_header.id', $triph_id[$i]);
+            }
+        })
+        ->get();
+
+        $pdf = PDF::loadView('pdf.trip_report',$data);
         return $pdf->stream();
     }
 
