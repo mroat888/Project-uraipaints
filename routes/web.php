@@ -1007,7 +1007,8 @@ Route::get('fetch_datatable_customer_admin_pdglist/{pdgid}', 'Api\ApiController@
 Route::post('trip_pdf', 'UnionTripReportPDFController@pdf');
 Route::get('trip_user_pdf/{id}', 'UnionTripReportPDFController@userpdf');
 
-
+Route::post('trip_excel', 'UnionTripReportExportContoller@excel');
+Route::get('trip_user_excel/{id}', 'UnionTripReportExportContoller@userexcel');
 
 Auth::routes();
 // Route::get('/', function () { return view('saleman.dashboard'); });

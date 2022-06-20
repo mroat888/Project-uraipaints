@@ -187,9 +187,14 @@
                                                         </h4>
                                                     </a>
                                                     <a href="{{ url('trip_user_pdf') }}/{{ $value->id }}" 
-                                                        class="btn btn-icon btn-warning">
+                                                        class="btn btn-icon btn-danger">
                                                         <h4 class="btn-icon-wrap" style="color: white;">
-                                                            <i class="ion ion-md-map"></i>
+                                                            <i class="ion ion-md-document"></i>                                                      </h4>
+                                                    </a>
+                                                    <a href="{{ url('trip_user_excel') }}/{{ $value->id }}" 
+                                                        class="btn btn-icon btn-danger">
+                                                        <h4 class="btn-icon-wrap" style="color: white;">
+                                                            <i class="ion ion-md-download"></i>
                                                         </h4>
                                                     </a>
                                                 </td>
@@ -329,11 +334,11 @@
 
             console.log("Excle---Con");
 
-            // $("#from_trip_approve").attr("action", "{{ url('trip_excel') }}");
-            // $("#from_trip_approve").attr("method", "post");
-            // $("#from_trip_approve").attr("target", "_blank");
-            // $("#from_trip_approve").submit();
-            // $("#from_trip_approve").removeAttr("action").removeAttr("method").removeAttr("target");
+            $("#from_trip_approve").attr("action", "{{ url('trip_excel') }}");
+            $("#from_trip_approve").attr("method", "post");
+            $("#from_trip_approve").attr("target", "_blank");
+            $("#from_trip_approve").submit();
+            $("#from_trip_approve").removeAttr("action").removeAttr("method").removeAttr("target");
             
             $('#ModalSaleplanApprove').modal('hide');
             
