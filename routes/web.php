@@ -1004,7 +1004,8 @@ Route::get('fetch_datatable_customer_admin_pdglist/{pdgid}', 'Api\ApiController@
 
 
 // Report
-Route::post('trip_pdf', 'Admin\UnionTripAdminController@pdf');
+Route::post('trip_pdf', 'UnionTripReportPDFController@pdf');
+Route::get('trip_user_pdf/{id}', 'UnionTripReportPDFController@userpdf');
 
 
 

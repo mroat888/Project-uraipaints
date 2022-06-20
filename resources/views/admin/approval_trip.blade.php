@@ -186,6 +186,12 @@
                                                             <i class="ion ion-md-map"></i>
                                                         </h4>
                                                     </a>
+                                                    <a href="{{ url('trip_user_pdf') }}/{{ $value->id }}" 
+                                                        class="btn btn-icon btn-warning">
+                                                        <h4 class="btn-icon-wrap" style="color: white;">
+                                                            <i class="ion ion-md-map"></i>
+                                                        </h4>
+                                                    </a>
                                                 </td>
                                             </tr>  
                                             @endforeach
