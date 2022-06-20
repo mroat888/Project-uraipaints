@@ -87,6 +87,21 @@
                                             @endphp
                                             <form action="{{ url($url_request, $value->id) }}" method="GET">
 
+                                            @if($value->trip_status > 1) <!-- ตั้งแต่อนุมัติ -->
+                                                <!-- Report -->
+                                                <a href="{{ url('trip_user_pdf') }}/{{ $value->id }}" 
+                                                    class="btn btn-icon btn-danger" target="_blank">
+                                                    <h4 class="btn-icon-wrap" style="color: white;">
+                                                        <i class="ion ion-md-document"></i>                                                      </h4>
+                                                </a>
+                                                <a href="{{ url('trip_user_excel') }}/{{ $value->id }}" 
+                                                    class="btn btn-icon btn-danger">
+                                                    <h4 class="btn-icon-wrap" style="color: white;">
+                                                        <i class="ion ion-md-download"></i>
+                                                    </h4>
+                                                </a>
+                                                <!-- Report -->
+                                            @else
                                                 <button class="btn btn-icon btn-info btn_request" {{ $btn_disable }}>
                                                     <h4 class="btn-icon-wrap" style="color: white;">
                                                         <i class="ion ion-md-send"></i>
@@ -113,6 +128,7 @@
                                                         <i class="ion ion-md-trash"></i>
                                                     </h4>
                                                 </button>
+                                            @endif
 
                                             </form>
                                         </td>

@@ -87,15 +87,37 @@
             <td colspan="3">ชื่อผู้เบิก : {{ $trip_header->name }}</td>
             <td>รหัสพนักงาน : {{ $trip_header->api_identify }}</td>
             <td>ตำแหน่ง : {{ $trip_header->status }}</td>
-            <td>วัน / Date : {{ $trip_header->request_approve_at }}</td>
+            <td>วัน / Date : 
+                @php 
+                    list($date_approve_at, $time_approve_at) = explode(' ', $trip_header->request_approve_at);
+                    list($year_at, $month_at, $day_at) = explode('-', $date_approve_at);
+                    $year_at_thai = $year_at+543;
+                    $approve_at = $day_at."/".$month_at."/".$year_at_thai;
+                @endphp
+                {{ $approve_at }}
+            </td>
         </tr>
         <tr>
             <td>ค่าเบี้ยเลื้ยง</td>
-            <td>จากวันที่ : {{ $trip_header->trip_start }}</td>
-            <td>ถึงวันที่ : {{ $trip_header->trip_end }}</td>
-            <td>อัตราเบี้ยเลี้ยง/วัน : {{ $trip_header->allowance }}</td>
+            <td>จากวันที่ : 
+                @php 
+                    list($year_start, $month_start, $day_start) = explode('-', $trip_header->trip_start);
+                    $year_start_thai = $year_start+543;
+                    $trip_start = $day_start."/".$month_start."/".$year_start_thai;
+                @endphp
+                {{ $trip_start }}
+            </td>
+            <td>ถึงวันที่ : 
+                @php 
+                    list($year_end, $month_end, $day_end) = explode('-', $trip_header->trip_end);
+                    $year_end_thai = $year_end+543;
+                    $trip_end = $day_end."/".$month_end."/".$year_end_thai;
+                @endphp
+                {{ $trip_end }}
+            </td>
+            <td>อัตราเบี้ยเลี้ยง/วัน : {{ number_format($trip_header->allowance) }}</td>
             <td>จำนวนวัน : {{ $trip_header->trip_day }}</td>
-            <td>รวมค่าเบี้ยเลี้ยง : {{ $trip_header->sum_allowance }}</td>
+            <td>รวมค่าเบี้ยเลี้ยง : {{ number_format($trip_header->sum_allowance) }}</td>
         </tr>
     </table>
 

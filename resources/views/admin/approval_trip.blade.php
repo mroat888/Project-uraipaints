@@ -187,7 +187,7 @@
                                                         </h4>
                                                     </a>
                                                     <a href="{{ url('trip_user_pdf') }}/{{ $value->id }}" 
-                                                        class="btn btn-icon btn-danger">
+                                                        class="btn btn-icon btn-danger" target="_blank">
                                                         <h4 class="btn-icon-wrap" style="color: white;">
                                                             <i class="ion ion-md-document"></i>                                                      </h4>
                                                     </a>
