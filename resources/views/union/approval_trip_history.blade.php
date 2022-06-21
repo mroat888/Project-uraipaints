@@ -35,14 +35,14 @@
                 <section class="hk-sec-wrapper">
                     <div class="row">
                         <div class="col-sm">
-                            <a href="{{ url($url_approve_trip) }}" type="button" class="btn btn-purple btn-wth-icon icon-wthot-bg btn-sm text-white">
+                            <a href="{{ url($url_approve_trip) }}" type="button" class="btn btn-secondary btn-wth-icon icon-wthot-bg btn-sm text-white">
                                 <span class="icon-label">
                                     <i class="fa fa-file"></i>
                                 </span>
                                 <span class="btn-text">รออนุมัติ</span>
                             </a>
 
-                            <a href="{{ url($url_approve_trip_history) }}" type="button" class="btn btn-secondary btn-wth-icon icon-wthot-bg btn-sm text-white">
+                            <a href="{{ url($url_approve_trip_history) }}" type="button" class="btn btn-purple btn-wth-icon icon-wthot-bg btn-sm text-white">
                                 <span class="icon-label">
                                     <i class="fa fa-list"></i>
                                 </span>
@@ -106,31 +106,11 @@
 
                     <div class="row">
                         <div class="col-sm">
-                            <div class="mb-20">
-                            <form id="from_trip_approve" enctype="multipart/form-data">
-                                @csrf
-                                @if(Auth::user()->status == 2)
-                                <button type="button" id="btn_saleplan_approve" class="btn btn_purple btn-green btn-sm" name="approve" value="approve">อนุมัติ</button>
-
-                                <button type="button" id="btn_saleplan_approve2" class="btn btn_purple btn-reject btn-sm ml-5" name="failed" value="failed">ไม่อนุมัติ</button>
-                                @endif
-                            </div>
-                                <div class="table-responsive-sm">
-                                <table class="table table-sm table-hover">
+                            <div class="table-responsive table-color col-md-12">
+                                <table id="datable_1" class="table table-hover">
                                     <thead>
                                         <tr style="text-align:center;">
-                                            @if(Auth::user()->status == 2)
-                                                <th>
-                                                    <div class="custom-control custom-checkbox checkbox-info">
-                                                        <input type="checkbox" class="custom-control-input"
-                                                            id="customCheck4" onclick="chkAll(this);" name="CheckAll" value="Y">
-                                                        <label class="custom-control-label"
-                                                            for="customCheck4">ทั้งหมด</label>
-                                                    </div>
-                                                </th>
-                                            @else 
-                                                <th>#</th>
-                                            @endif
+                                            <th>#</th>
                                             <th>วันที่ขออนุมัติ</th>
                                             <th style="text-align:left;">รายชื่อ</th>
                                             <th>จำนวนวัน</th>
@@ -148,17 +128,7 @@
                                                 $approve_at = $day_at."/".$month_at."/".$year_at_thai;
                                             @endphp
                                         <tr style="text-align:center;">
-                                            @if(Auth::user()->status == 2)
-                                                <td>
-                                                    <div class="custom-control custom-checkbox checkbox-info">
-                                                        <input type="checkbox" class="custom-control-input checkapprove"
-                                                            name="checkapprove[]" id="customCheck{{$key + 1}}" value="{{$value->id}}">
-                                                        <label class="custom-control-label" for="customCheck{{$key + 1}}"></label>
-                                                    </div>
-                                                </td>
-                                            @else 
-                                                <td>{{ ++$key }}</td>
-                                            @endif
+                                            <td>{{ ++$key }}</td>
                                             <td>{{ $approve_at }}</td>
                                             <td style="text-align:left;">{{ $value->name }}</td>
                                             <td>{{ $value->trip_day }}</td>
@@ -177,22 +147,7 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                
-                                                {{-- <!-- <button id="btn_saleplan_restrospective" type="button" 
-                                                    class="btn btn-icon btn-edit" value="{{ $value->id }}">
-                                                    <i data-feather="refresh-ccw"></i>
-                                                </button> --> --}}
-                                                
-                                                @if(Auth::user()->status == 2)
-                                                <a href="{{ url('lead/approve_trip/edit') }}/{{ $value->id }}" 
-                                                    class="btn btn-icon btn-edit">
-                                                    <h4 class="btn-icon-wrap" style="color: white;">
-                                                        <i class="ion ion-md-create"></i>
-                                                    </h4>
-                                                </a>
-                                                @endif
-
-                                                <a href="{{ url($url_showdetail) }}/{{ $value->id }}" 
+                                                <a href="{{ url($url_trip_history_detail) }}/{{ $value->id }}" 
                                                     class="btn btn-icon btn-warning">
                                                     <h4 class="btn-icon-wrap" style="color: white;">
                                                         <i class="ion ion-md-map"></i>
@@ -204,34 +159,6 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div style="float:right;">
-
-                            </div>
-
-                            <!-- ModalSaleplanApprove -->
-                            <div class="modal fade" id="ModalSaleplanApprove" tabindex="-1" role="dialog" aria-labelledby="ModalSaleplanApprove" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">ยืนยันการอนุมัติแผนงานประจำเดือน ใช่หรือไม่?</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body" style="text-align:center;">
-                                                <h3>ยืนยันการอนุมัติแผนงานประจำเดือน ใช่หรือไม่?</h3>
-                                                <input class="form-control" id="approve" name="approve" type="hidden" />
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-                                                <button type="submit" class="btn btn-primary" id="btn_save_edit">ยืนยัน</button>
-                                            </div>
-                                        </div>
-                                </div>
-                            </div>
-                            <!-- End ModalSaleplanApprove -->
-
-                        </form>
                         </div>
                     </div>
                 </section>

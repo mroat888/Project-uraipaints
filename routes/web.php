@@ -238,9 +238,17 @@ Route::get('lead/trip', 'UnionTripController@index');
 Route::get('lead/trip/detail/{id}', 'UnionTripController@trip_detail');
 
 Route::get('lead/approve_trip', 'UnionTripApproveController@index');
+Route::post('lead/approve_trip/search', 'UnionTripApproveController@search');
 Route::post('lead/approval_trip_confirm_all', 'UnionTripApproveController@approval_trip_confirm_all');
 Route::post('lead/trip_retrospective', 'UnionTripApproveController@trip_retrospective');
+
+Route::get('lead/approve_trip/history', 'UnionTripApproveController@trip_history');
+Route::post('lead/approve_trip/history/search', 'UnionTripApproveController@trip_history_search');
+
 Route::get('lead/approve_trip/detail/{id}', 'UnionTripApproveController@trip_showdetail');
+Route::get('lead/approve_trip/edit/{id}', 'UnionTripApproveController@trip_editdetail');
+Route::post('lead/approve_trip/update', 'UnionTripApproveController@trip_updatedetail');
+
 
 
 
@@ -430,6 +438,12 @@ Route::post('head/approvalsaleplan/search', 'HeadManager\ApprovalSalePlanControl
 // Trip
 Route::get('head/trip', 'UnionTripController@index');
 Route::get('head/trip/detail/{id}', 'UnionTripController@trip_detail');
+
+Route::get('head/approve_trip', 'UnionTripApproveController@index');
+Route::post('head/approve_trip/search', 'UnionTripApproveController@search');
+Route::get('head/approve_trip/history', 'UnionTripApproveController@trip_history');
+Route::post('head/approve_trip/history/search', 'UnionTripApproveController@trip_history_search');
+Route::get('head/approve_trip/detail/{id}', 'UnionTripApproveController@trip_showdetail');
 
 
 Route::get('head/approvalgeneral', 'HeadManager\ApprovalController@index');
@@ -622,6 +636,13 @@ Route::get('admin/approval_customer_except_detail/{id}', 'Admin\ChangeCustomerCo
 Route::get('admin/edit_customerLead/{id}', 'Admin\ChangeCustomerController@edit');
 Route::post('admin/update_customerLead', 'Admin\ChangeCustomerController@update');
 // Route::post('delete_customer', 'Customer\CustomerController@destroy');
+
+
+// Trip 
+Route::get('admin/approve_trip', 'Admin\UnionTripAdminController@index');
+Route::post('admin/approve_trip/search', 'Admin\UnionTripAdminController@search');
+Route::post('admin/approval_trip_confirm_all', 'Admin\UnionTripAdminController@approval_trip_confirm_all');
+
 
 
 // Note
@@ -946,6 +967,9 @@ Route::post('trip/detail/insert', 'UnionTripController@trip_detail_store');
 Route::get('trip/detail/edit/{id}', 'UnionTripController@trip_detail_edit');
 Route::post('trip/detail/update', 'UnionTripController@trip_detail_update');
 Route::post('trip/detail/delete', 'UnionTripController@trip_detail_destroy');
+
+
+Route::post('manager/trip/comment/create', 'UnionTripApproveController@trip_comment');
 // จบ trip ---ใช้งานร่วมกัน
 
 
@@ -978,11 +1002,20 @@ Route::get('fetch_datatable_customer_admin/{ampid}', 'Api\ApiController@fetch_da
 Route::get('fetch_datatable_customer_admin_pdglist_pvid/{pvid}', 'Api\ApiController@fetch_datatable_customer_admin_pdglist_pvid');
 Route::get('fetch_datatable_customer_admin_pdglist/{pdgid}', 'Api\ApiController@fetch_datatable_customer_admin_pdglist');
 
+
+// Report
+Route::post('trip_pdf', 'UnionTripReportPDFController@pdf');
+Route::get('trip_user_pdf/{id}', 'UnionTripReportPDFController@userpdf');
+
+Route::post('trip_excel', 'UnionTripReportExportContoller@excel');
+Route::get('trip_user_excel/{id}', 'UnionTripReportExportContoller@userexcel');
+
 Auth::routes();
 // Route::get('/', function () { return view('saleman.dashboard'); });
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/', 'HomeController@index')->name('home');
+
 
 
 // Route::get('/clear-cache', function() {
