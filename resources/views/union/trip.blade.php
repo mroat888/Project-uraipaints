@@ -73,13 +73,17 @@
                                         <td>{{ $date_thai }}</td>
                                         <td>
                                             @if(!is_null($trip_revision))
-                                                <span style="text-decoration: line-through;" class="text-red">{{ $trip_revision->trip_day_history }}</span>
+                                                @if($trip_revision->trip_day_history != $value->trip_day)
+                                                    <span style="text-decoration: line-through;" class="text-red">{{ $trip_revision->trip_day_history }}</span>
+                                                @endif
                                             @endif
                                             {{ $value->trip_day }}
                                         </td>
                                         <td>
                                             @if(!is_null($trip_revision))
-                                                <span style="text-decoration: line-through;" class="text-red">{{ number_format($trip_revision->sum_allowance_history) }}</span>
+                                                @if($trip_revision->sum_allowance_history != $value->sum_allowance)
+                                                    <span style="text-decoration: line-through;" class="text-red">{{ number_format($trip_revision->sum_allowance_history) }}</span>
+                                                @endif
                                             @endif
                                             {{ number_format($value->sum_allowance) }}
                                         </td>
