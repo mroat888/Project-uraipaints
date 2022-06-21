@@ -122,9 +122,12 @@
                                                     <button onclick="edit_modal({{ $value->id }})" class="btn btn-icon btn-edit" data-toggle="modal" data-target="#modalEdit">
                                                         <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">drive_file_rename_outline</span></h4>
                                                     </button>
-                                                    <a href="{{url('head/delete_assignment', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
+                                                    {{-- <a href="{{url('head/delete_assignment', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
                                                         <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">delete_outline</span></h4>
-                                                    </a>
+                                                    </a> --}}
+                                                    <button id="btn_assign_delete" class="btn btn-icon btn-danger" value="{{ $value->id }}">
+                                                        <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">delete_outline</span></h4>
+                                                    </button>
 
                                                 @else
                                                 <div class="button-list">
@@ -163,9 +166,27 @@
                 {{-- <form action="{{url('/lead/create_assignment')}}" method="POST" enctype="multipart/form-data"> --}}
                     @csrf
                 <div class="modal-body">
-                        <div class="form-group">
-                            <label for="firstName">เรื่อง</label>
-                            <input class="form-control" name="assign_title" placeholder="กรุณาใส่ชื่อเรื่อง" type="text">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">เรื่อง</label>
+                                <input class="form-control" name="assign_title" placeholder="กรุณาใส่ชื่อเรื่อง" type="text">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">วันที่กำหนดส่ง</label>
+                                <input class="form-control" type="date" name="date" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <label for="firstName">สั่งงานให้</label>
+                                <select class="select2 select2-multiple form-control" multiple="multiple" data-placeholder="Choose" name="assign_emp_id[]" required>
+                                    <optgroup label="เลือกข้อมูล">
+                                        @foreach($users as $value)
+                                        <option value="{{ $value->id }}">{{ $value->name }}</option>
+                                    @endforeach
+                                    </optgroup>
+                                </select>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12 form-group">
@@ -176,25 +197,8 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
-                                <label for="firstName">วันที่</label>
-                                <input class="form-control" type="date" name="date" />
-                            </div>
-                            <div class="col-md-6 form-group">
                                 <label for="firstName">ไฟล์เอกสาร</label>
                                 <input type="file" name="assignment_fileupload" id="assignment_fileupload" class="form-control">
-                            </div>
-                        </div>
-                        <div class="row">
-
-                            <div class="col-md-12 form-group">
-                                <label for="firstName">สั่งงานให้</label>
-                                <select class="select2 select2-multiple form-control" multiple="multiple" data-placeholder="Choose" name="assign_emp_id[]" required>
-                                    <optgroup label="เลือกข้อมูล">
-                                        @foreach($users as $value)
-                                        <option value="{{ $value->id }}">{{ $value->name }}</option>
-                                    @endforeach
-                                    </optgroup>
-                                </select>
                             </div>
                         </div>
                 </div>
@@ -213,7 +217,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">ฟอร์มแก้ไขข้อมูลการสั่งงาน</h5>
+                    <h5 class="modal-title">แก้ไขบันทึกการสั่งงาน</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -223,9 +227,21 @@
                 @csrf
                 <div class="modal-body">
                     <input type="hidden" name="id" id="get_id">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">เรื่อง</label>
+                                <input class="form-control" name="assign_title" id="get_title" type="text">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">วันที่</label>
+                                <input class="form-control" type="date" name="date" id="get_date"/>
+                            </div>
+                        </div>
                         <div class="form-group">
-                            <label for="firstName">เรื่อง</label>
-                            <input class="form-control" name="assign_title" id="get_title" type="text">
+                            <label for="firstName">สั่งงานให้</label>
+                            <select class="form-control custom-select select2" name="assign_emp_id_edit" id="get_emp" required>
+                                <option value="" disabled>กรุณาเลือก</option>
+                            </select>
                         </div>
                         <div class="row">
                             <div class="col-md-12 form-group">
@@ -234,23 +250,11 @@
                                     type="text" required> </textarea>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label for="firstName">วันที่</label>
-                                <input class="form-control" type="date" name="date" id="get_date"/>
-                            </div>
-                        </div>
+                        <div id="img_show" class="mt-5"></div>
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ไฟล์เอกสาร</label>
                                 <input type="file" name="assignment_fileupload_update" id="assignment_fileupload_update" class="form-control">
-                                <div id="img_show" class="mt-5"></div>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label for="firstName">สั่งงานให้</label>
-                                <select class="form-control custom-select select2" name="assign_emp_id_edit" id="get_emp" required>
-                                    <option value="" disabled>กรุณาเลือก</option>
-                                </select>
                             </div>
                         </div>
                 </div>
@@ -356,7 +360,71 @@
         </div>
     </div>
 
+    <!-- Modal Delete Saleplan -->
+    <div class="modal fade" id="ModalAssignDelete" tabindex="-1" role="dialog" aria-labelledby="ModalAssignDelete"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form id="from_assign_delete" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">คุณต้องการลบข้อมูลการสั่งงานใช่หรือไม่</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="text-align:center;">
+                        <h3>คุณต้องการลบข้อมูลการสั่งงานใช่หรือไม่ ?</h3>
+                        <input class="form-control" id="assign_id_delete" name="assign_id_delete" type="hidden" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                        <button type="submit" class="btn btn-primary" id="btn_save_edit">ยืนยัน</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
+        $(document).on('click', '#btn_assign_delete', function() { // ปุ่มลบ Slaplan
+            let assign_id_delete = $(this).val();
+            $('#assign_id_delete').val(assign_id_delete);
+            $('#ModalAssignDelete').modal('show');
+        });
+
+        $("#from_assign_delete").on("submit", function(e) {
+            e.preventDefault();
+            //var formData = $(this).serialize();
+            var formData = new FormData(this);
+            console.log(formData);
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('head/delete_assignment') }}',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    console.log(response);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Deleted!',
+                        text: "ลบข้อมูลสั่งงานเรียบร้อยแล้ว",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    $('#ModalAssignDelete').modal('hide');
+                    $('#btn_assign_delete').prop('disabled', true);
+                    location.reload();
+                },
+                error: function(response) {
+                    console.log("error");
+                    console.log(response);
+                }
+            });
+        });
+
         //Show
         function show_result(id){
             $.ajax({

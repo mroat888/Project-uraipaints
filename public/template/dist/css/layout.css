@@ -737,6 +737,15 @@ background: linear-gradient(90deg, rgba(121,218,97,1) 0%, rgba(37,140,20,1) 100%
     transition: 0.5s;
 }
 
+.btn-excel{
+    background: rgb(5, 90, 97);
+    /* border-radius: 50px; */
+    color: #fff;
+    padding: 8px 30px;
+    border: 0;
+    transition: 0.5s;
+}
+
 .content-right{
     width: 100%;
     justify-content: flex-end;

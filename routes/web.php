@@ -460,7 +460,8 @@ Route::get('head/assignment/add', 'AssignmentController@assignIndex');
 Route::post('head/create_assignment', 'AssignmentController@store_head');
 Route::get('head/edit_assignment/{id}', 'AssignmentController@edit');
 Route::post('head/update_assignment', 'AssignmentController@update');
-Route::get('head/delete_assignment/{id}', 'AssignmentController@destroy');
+// Route::get('head/delete_assignment/{id}', 'AssignmentController@destroy');
+Route::post('head/delete_assignment', 'AssignmentController@destroy');
 Route::post('head/search_month_add-assignment', 'AssignmentController@head_search_month_add_assignment');
 Route::post('head/update_assignment_status_result', 'AssignmentController@update_status_result');
 Route::get('head/get_assignment', 'AssignmentController@get_assign');
@@ -482,7 +483,8 @@ Route::get('head/note', 'NoteController@note_head');
 Route::post('head/create_note', 'NoteController@store');
 Route::get('head/edit_note/{id}', 'NoteController@edit');
 Route::post('head/update_note', 'NoteController@update');
-Route::get('head/delete_note/{id}', 'NoteController@destroy');
+// Route::get('head/delete_note/{id}', 'NoteController@destroy');
+Route::post('head/delete_note', 'NoteController@destroy');
 Route::post('head/search_month_note', 'NoteController@head_search_month_note');
 Route::get('head/status_pin_update/{id}', 'NoteController@status_pin_update');
 
@@ -638,7 +640,7 @@ Route::post('admin/update_customerLead', 'Admin\ChangeCustomerController@update'
 // Route::post('delete_customer', 'Customer\CustomerController@destroy');
 
 
-// Trip 
+// Trip
 Route::get('admin/approve_trip', 'Admin\UnionTripAdminController@index');
 Route::post('admin/approve_trip/search', 'Admin\UnionTripAdminController@search');
 Route::post('admin/approval_trip_confirm_all', 'Admin\UnionTripAdminController@approval_trip_confirm_all');
@@ -650,7 +652,8 @@ Route::get('admin/note', 'NoteController@note_admin');
 Route::post('admin/create_note', 'NoteController@store');
 Route::get('admin/edit_note/{id}', 'NoteController@edit');
 Route::post('admin/update_note', 'NoteController@update');
-Route::get('admin/delete_note/{id}', 'NoteController@destroy');
+// Route::get('admin/delete_note/{id}', 'NoteController@destroy');
+Route::post('admin/delete_note', 'NoteController@destroy');
 Route::post('admin/search_month_note', 'NoteController@admin_search_month_note');
 Route::get('admin/status_pin_update/{id}', 'NoteController@status_pin_update');
 

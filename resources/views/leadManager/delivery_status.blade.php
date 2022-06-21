@@ -37,7 +37,7 @@
                                     <select class="form-control custom-select mt-15" name="province">
                                         <option selected disabled>เลือกจังหวัด</option>
                                         @foreach ($province_api as $key => $value)
-                                            <option value="{{$province_api[$key]['name_thai']}}">{{$province_api[$key]['name_thai']}}</option>
+                                            <option value="{{$province_api[$key]['identify']}}">{{$province_api[$key]['name_thai']}}</option>
                                         @endforeach
                                     </select>
                                 </div>

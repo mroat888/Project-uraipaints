@@ -12,13 +12,9 @@
 <div class="container-fluid px-xxl-65 px-xl-20">
     <!-- Title -->
     <div class="hk-pg-header mb-10">
-        <div>
-            <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-people"></i></span>รายการทริปเดินทาง</h4>
-        </div>
-        <div class="d-flex">
-            <div class="d-flex">
-                <a href="{{ url($url_back) }}" type="button" class="btn btn-secondary btn-sm btn-rounded px-3 mr-10"> ย้อนกลับ </a>
-            </div>
+        <div class="topichead-bgred"><i data-feather="file-text"></i> รายการทริปเดินทาง</div>
+        <div class="content-right d-flex">
+            <a href="{{ url($url_back) }}" type="button" class="btn btn-secondary btn-rounded"> ย้อนกลับ </a>
         </div>
     </div>
     <!-- /Title -->
@@ -28,13 +24,7 @@
         <div class="col-xl-12">
 
             <section class="hk-sec-wrapper">
-                <div class="row mb-2">
-                    <div class="col-sm-12 col-md-3">
-                        <h5 class="hk-sec-title">ตาราง ทริปเดินทาง</h5>
-                    </div>
-                    <div class="col-sm-12 col-md-9">
-                    </div>
-                </div>
+                <div class="topic-secondgery">ตารางทริปเดินทาง</div>
                 <form id="form_trip_update" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" class="form-control" name="trip_header_id" id="trip_header_id" value="{{ $trip_header->id }}">
@@ -46,8 +36,8 @@
                             <label for="namesale">ชื่อพนักงาน : {{ $users->name }}</label>
                         </div>
                         <div class="col-md-4">
-                            <label for="inputPassword4">วันที่สร้าง : 
-                                @php 
+                            <label for="inputPassword4">วันที่สร้าง :
+                                @php
                                     list($date_create, $time_create) = explode(" ", $trip_header->created_at);
                                     list($year_create, $monht_create, $day_create) = explode("-", $date_create);
                                     $year_create_thai = $year_create+543;
@@ -59,8 +49,8 @@
                     </div>
                     <div class="row">
                         <div class="col-md-4">
-                            <label for="api_identify">จากวันที่ : 
-                                @php 
+                            <label for="api_identify">จากวันที่ :
+                                @php
                                     list($year_start, $month_start, $day_start) = explode("-", $trip_header->trip_start);
                                     $year_start_thai = $year_start+543;
                                     $trip_start_thai = $day_start."/".$month_start."/".$year_start_thai;
@@ -69,8 +59,8 @@
                                     $year_end_thai = $year_end+543;
                                     $trip_end_thai = $day_end."/".$month_end."/".$year_end_thai;
                                 @endphp
-                                {{ $trip_start_thai }} ถึง 
-                                {{ $trip_end_thai }} 
+                                {{ $trip_start_thai }} ถึง
+                                {{ $trip_end_thai }}
                             </label>
                         </div>
                         <div class="col-md-4">
@@ -107,7 +97,7 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <button type="submit" class="btn btn-primary">บันทึกแก้ไข & อนุมัติ</button>
+                            <button type="submit" class="btn btn-green">บันทึกแก้ไข & อนุมัติ</button>
                         </div>
                     </div>
                 </form>
@@ -126,12 +116,12 @@
                         รายการทริปเดินทาง
                     </div>
                     <div class="content-right d-flex">
-                        
+
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="table-responsive col-md-12">
+                        <div class="table-responsive col-md-12 table-color">
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
@@ -145,7 +135,7 @@
                                 <tbody>
                                 @if(isset($trip_detail))
                                     @foreach($trip_detail as $key => $value)
-                                        @php 
+                                        @php
                                             list($year_date, $month_date, $day_date) = explode("-", $value['trip_detail_date']);
                                             $year_date_thai = $year_date+543;
                                             $trip_detail_date = $day_date."/".$month_date."/".$year_date_thai;
@@ -169,7 +159,7 @@
     </div>
     <!-- Row -->
 
-    @php 
+    @php
         $check_menager_comment = "N"; //-- ใช้เช็คค่ามีการคอมเม้นต์แล้วหรือไม่
     @endphp
 
@@ -190,7 +180,7 @@
                                         <p class="detail_listcus">
                                             <i class="ion ion-md-calendar"></i>
                                             <span> เดือน</span> :
-                                            
+
                                         </p>
                                     </div> -->
                                     <div class="col-md-12">
@@ -218,7 +208,7 @@
             </div>
             <!-- Row -->
         @else
-            @php 
+            @php
                 $check_menager_comment = "ํY"; //-- มีค่าคอมเม้นต์แล้ว
             @endphp
             <!-- Row Create Comment -->
@@ -237,7 +227,7 @@
                                         <input type="hidden" name="trip_header_id" value="{{ $comment->trip_header_id }}">
                                         <input type="hidden" name="trip_comment_id" value="{{ $comment->id }}">
                                         <div class="card-body">
-                                            <textarea class="form-control" name="comment_detail" cols="30" rows="5" 
+                                            <textarea class="form-control" name="comment_detail" cols="30" rows="5"
                                             placeholder="เพิ่มความคิดเห็น" value=""type="text">{{ $comment->trip_comment_detail	}}</textarea>
                                         </div>
 
@@ -263,7 +253,7 @@
 
     @endforeach
 
-    @if($check_menager_comment == "N") 
+    @if($check_menager_comment == "N")
 
         <!-- Row Create Comment -->
         <div class="row">
@@ -281,7 +271,7 @@
                                     <input type="hidden" name="trip_header_id" value="{{ $trip_header->id }}">
                                     <input type="hidden" name="trip_comment_id" value="">
                                     <div class="card-body">
-                                        <textarea class="form-control" name="comment_detail" cols="30" rows="5" 
+                                        <textarea class="form-control" name="comment_detail" cols="30" rows="5"
                                         placeholder="เพิ่มความคิดเห็น" value=""type="text"></textarea>
                                     </div>
                                 </div>
@@ -298,7 +288,7 @@
         <!-- End Row Create Comment -->
 
     @endif
-    
+
 
 
 </div>

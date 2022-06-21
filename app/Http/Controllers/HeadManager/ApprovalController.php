@@ -27,7 +27,7 @@ class ApprovalController extends Controller
         ->leftJoin('assignments_comments', 'assignments.id', 'assignments_comments.assign_id')
         ->leftJoin('api_customers', 'api_customers.identify', 'assignments.assign_shop')
         ->join('users', 'assignments.created_by', 'users.id')
-        ->whereIn('assignments.assign_status', [0, 4]) // สถานะอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน, 4=แก้ไขงาน))	
+        ->whereIn('assignments.assign_status', [0]) // สถานะอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน, 4=แก้ไขงาน))
         ->where(function($query) use ($auth_team) {
             for ($i = 0; $i < count($auth_team); $i++){
                 $query->orWhere('users.team_id', $auth_team[$i])
@@ -67,7 +67,7 @@ class ApprovalController extends Controller
                 }
             })
             ->get();
-        
+
         return view('headManager.approval_general', $data);
 
         // $auth_team_id = explode(',',Auth::user()->team_id);
@@ -87,7 +87,7 @@ class ApprovalController extends Controller
         //     })
         //     ->select('assignments.created_by')
         //     ->distinct()->get();
-        
+
         // dd($data['request_approval']);
 
     }
@@ -211,7 +211,7 @@ class ApprovalController extends Controller
         ->leftJoin('assignments_comments', 'assignments.id', 'assignments_comments.assign_id')
         ->leftJoin('api_customers', 'api_customers.identify', 'assignments.assign_shop')
         ->join('users', 'assignments.created_by', 'users.id')
-        ->whereNotIn('assignments.assign_status', [0, 3]) // สถานะอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน, 4=แก้ไขงาน))	
+        ->whereNotIn('assignments.assign_status', [0, 3]) // สถานะอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน, 4=แก้ไขงาน))
         ->where(function($query) use ($auth_team) {
             for ($i = 0; $i < count($auth_team); $i++){
                 $query->orWhere('users.team_id', $auth_team[$i])
@@ -340,7 +340,7 @@ class ApprovalController extends Controller
 
         // dd($data);
 
-        return view('headManager.approval_general_history', $data); 
+        return view('headManager.approval_general_history', $data);
     }
 
     public function approval_general_history_detail($id)
@@ -396,7 +396,7 @@ class ApprovalController extends Controller
             ->whereNotIn('assignments_comments.created_by', [Auth::user()->id])
             ->orderBy('assignments_comments.created_at', 'desc')
             ->get();
-        
+
         if(count($request_comment) > 0){
             foreach ($request_comment as $key => $value) {
                 $users = DB::table('users')->where('id', $value->created_by)->first();
@@ -408,7 +408,7 @@ class ApprovalController extends Controller
                         'created_at' => $date_comment,
                     ];
             }
-           
+
         }else{
             $dataEdit_comment = null;
         }
@@ -419,7 +419,7 @@ class ApprovalController extends Controller
             'dataEdit_comment_edit' => $dataEdit_comment_edit,
             'dataEdit_comment' => $dataEdit_comment,
         ]);
-        
+
     }
 
     public function comment_approval($id, $createID)
@@ -444,7 +444,7 @@ class ApprovalController extends Controller
         try {
 
             $data = AssignmentComment::where('assign_id', $request->id)->where('created_by', Auth::user()->id)->first();
-            
+
             if ($data) {
                 DB::table('assignments_comments')
                 ->where('assign_id', $request->id)

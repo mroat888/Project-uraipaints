@@ -12,13 +12,9 @@
 <div class="container-fluid px-xxl-65 px-xl-20">
     <!-- Title -->
     <div class="hk-pg-header mb-10">
-        <div>
-            <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-people"></i></span>รายการทริปเดินทาง</h4>
-        </div>
-        <div class="d-flex">
-            <div class="d-flex">
-                <a href="{{ url($url_back) }}" type="button" class="btn btn-secondary btn-sm btn-rounded px-3 mr-10"> ย้อนกลับ </a>
-            </div>
+        <div class="topichead-bgred"><i data-feather="file-text"></i> รายการทริปเดินทาง</div>
+        <div class="content-right d-flex">
+            <a href="{{ url($url_back) }}" type="button" class="btn btn-secondary btn-rounded"> ย้อนกลับ </a>
         </div>
     </div>
     <!-- /Title -->
@@ -28,13 +24,7 @@
         <div class="col-xl-12">
 
             <section class="hk-sec-wrapper">
-                <div class="row mb-2">
-                    <div class="col-sm-12 col-md-3">
-                        <h5 class="hk-sec-title">ตาราง ทริปเดินทาง</h5>
-                    </div>
-                    <div class="col-sm-12 col-md-9">
-                    </div>
-                </div>
+                <div class="topic-secondgery">ตารางทริปเดินทาง</div>
                 <div class="row">
                     <div class="col-md-4">
                         <label for="api_identify">รหัสพนักงาน : {{ $users->api_identify }} </label>
@@ -43,8 +33,8 @@
                         <label for="namesale">ชื่อพนักงาน : {{ $users->name }}</label>
                     </div>
                     <div class="col-md-4">
-                        <label for="inputPassword4">วันที่สร้าง : 
-                            @php 
+                        <label for="inputPassword4">วันที่สร้าง :
+                            @php
                                 list($date_create, $time_create) = explode(" ", $trip_header->created_at);
                                 list($year_create, $monht_create, $day_create) = explode("-", $date_create);
                                 $year_create_thai = $year_create+543;
@@ -56,8 +46,8 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4">
-                        <label for="api_identify">จากวันที่ : 
-                            @php 
+                        <label for="api_identify">จากวันที่ :
+                            @php
                                 list($year_start, $month_start, $day_start) = explode("-", $trip_header->trip_start);
                                 $year_start_thai = $year_start+543;
                                 $trip_start_thai = $day_start."/".$month_start."/".$year_start_thai;
@@ -66,8 +56,8 @@
                                 $year_end_thai = $year_end+543;
                                 $trip_end_thai = $day_end."/".$month_end."/".$year_end_thai;
                             @endphp
-                            {{ $trip_start_thai }} ถึง 
-                            {{ $trip_end_thai }} 
+                            {{ $trip_start_thai }} ถึง
+                            {{ $trip_end_thai }}
                         </label>
                     </div>
                     <div class="col-md-4">
@@ -102,7 +92,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="table-responsive col-md-12">
+                        <div class="table-responsive col-md-12 table-color">
                             <table id="datable_1" class="table table-hover">
                                 <thead>
                                     <tr>
@@ -117,7 +107,7 @@
                                 <tbody>
                                 @if(isset($trip_detail))
                                     @foreach($trip_detail as $key => $value)
-                                        @php 
+                                        @php
                                             list($year_date, $month_date, $day_date) = explode("-", $value['trip_detail_date']);
                                             $year_date_thai = $year_date+543;
                                             $trip_detail_date = $day_date."/".$month_date."/".$year_date_thai;
@@ -176,14 +166,14 @@
                     <input type="hidden" class="form-control" name="trip_header_id" value="{{ $trip_header->id }}">
                     <div class="form-group col-md-4">
                         <label for="inputEmail4">วันที่ทริป</label>
-                        <input type="date" class="form-control" name="trip_detail_date" id="trip_detail_date" 
+                        <input type="date" class="form-control" name="trip_detail_date" id="trip_detail_date"
                         min="{{ $trip_header->trip_start }}" max="{{ $trip_header->trip_end }}" required>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-4">
                         <label for="namesale">จากจังหวัด</label>
-                        <select name="formprovince" id="formprovince" class="form-control formprovince" 
+                        <select name="formprovince" id="formprovince" class="form-control formprovince"
                             style="margin-left:5px; margin-right:5px;" required>
                             <option value="" selected>เลือกจังหวัด</option>
                             @if(isset($provinces) && !is_null($provinces))
@@ -198,7 +188,7 @@
                     </div>
                     <div class="form-group col-md-4">
                         <label for="inputPassword4">ถึงจังหวัด</label>
-                        <select name="toprovince" id="toprovince" class="form-control toprovince" 
+                        <select name="toprovince" id="toprovince" class="form-control toprovince"
                             style="margin-left:5px; margin-right:5px;" required>
                             <option value="" selected>เลือกจังหวัด</option>
                             @if(isset($provinces) && !is_null($provinces))
@@ -212,7 +202,7 @@
                     </div>
                     <div class="form-group col-md-4">
                         <label for="inputEmail4">ร้านค้า</label>
-                        <select name="customer_id" id="customer_id" class="form-control customer_id" 
+                        <select name="customer_id" id="customer_id" class="form-control customer_id"
                             style="margin-left:5px; margin-right:5px;" required>
                             <option value="" selected>เลือกร้านค้า</option>
                         </select>
@@ -249,28 +239,28 @@
                     <input type="hidden" class="form-control" id="trip_detail_id" name="trip_detail_id">
                     <div class="form-group col-md-4">
                         <label for="inputEmail4">วันที่ทริป</label>
-                        <input type="date" class="form-control" name="trip_detail_date_edit" id="trip_detail_date_edit" 
+                        <input type="date" class="form-control" name="trip_detail_date_edit" id="trip_detail_date_edit"
                         min="{{ $trip_header->trip_start }}" max="{{ $trip_header->trip_end }}" required>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-4">
                         <label for="namesale">จากจังหวัด</label>
-                        <select name="formprovince_edit" id="formprovince_edit" class="form-control formprovince_edit" 
+                        <select name="formprovince_edit" id="formprovince_edit" class="form-control formprovince_edit"
                             style="margin-left:5px; margin-right:5px;" required>
                             <option value="" selected>เลือกจังหวัด</option>
                         </select>
                     </div>
                     <div class="form-group col-md-4">
                         <label for="inputPassword4">ถึงจังหวัด</label>
-                        <select name="toprovince_edit" id="toprovince_edit" class="form-control toprovince_edit" 
+                        <select name="toprovince_edit" id="toprovince_edit" class="form-control toprovince_edit"
                             style="margin-left:5px; margin-right:5px;" required>
                             <option value="" selected>เลือกจังหวัด</option>
                         </select>
                     </div>
                     <div class="form-group col-md-4">
                         <label for="inputEmail4">ร้านค้า</label>
-                        <select name="customer_id_edit" id="customer_id_edit" class="form-control customer_id_edit" 
+                        <select name="customer_id_edit" id="customer_id_edit" class="form-control customer_id_edit"
                             style="margin-left:5px; margin-right:5px;" required>
                             <option value="" selected>เลือกร้านค้า</option>
                         </select>
@@ -347,14 +337,14 @@
                 $('.toprovince_edit').children().remove().end();
                 $('.toprovince_edit').append('<option selected value="">เลือกจังหวัด</option>');
                 for(let i=0 ;i<rows_provinces; i++){
-                    if(response.provinces[i]['identify'] == response.trip_detail.trip_from){ 
+                    if(response.provinces[i]['identify'] == response.trip_detail.trip_from){
                         $('.formprovince_edit').append('<option value="'+response.provinces[i]['identify']+'" selected>'+
                         response.provinces[i]['name_thai']+'</option>');
                     }else{
                         $('.formprovince_edit').append('<option value="'+response.provinces[i]['identify']+'">'+
                         response.provinces[i]['name_thai']+'</option>');
                     }
-                    if(response.provinces[i]['identify'] == response.trip_detail.trip_to){ 
+                    if(response.provinces[i]['identify'] == response.trip_detail.trip_to){
                         $('.toprovince_edit').append('<option value="'+response.provinces[i]['identify']+'" selected>'+
                         response.provinces[i]['name_thai']+'</option>');
                     }else{
@@ -367,7 +357,7 @@
                 $('.customer_id_edit').children().remove().end();
                 $('.customer_id_edit').append('<option selected value="">เลือกร้านค้า</option>');
                 for(let i=0 ;i<rows_cus; i++){
-                    if(response.customer_api[i]['identify'] == response.trip_detail.customer_id){ 
+                    if(response.customer_api[i]['identify'] == response.trip_detail.customer_id){
                         $('.customer_id_edit').append('<option value="'+response.customer_api[i]['identify']+'" selected>'+
                         response.customer_api[i]['title']+response.customer_api[i]['name']+'</option>');
                     }else{
@@ -427,7 +417,7 @@
                 }
             }
         });
-    });   
+    });
 
     $("#form_insert").on("submit", function (e) {
         e.preventDefault();
@@ -547,6 +537,6 @@
         });
     });
 
-    
+
 
 </script>

@@ -1,8 +1,8 @@
 @extends('layouts.masterAdmin')
 
 @section('content')
-    
-    @php 
+
+    @php
         $url_approve_trip = "admin/approve_trip";
         $url_showdetail = "admin/approve_trip/detail";
     @endphp
@@ -29,7 +29,7 @@
     @endif
         <!-- Title -->
         <div class="hk-pg-header mb-10">
-        <div class="topichead-bgred"><i class="ion ion-md-analytics"></i> ปิด ทริปเดินทาง</div>
+        <div class="topichead-bgred"><i class="ion ion-md-clipboard"></i> ปิดทริปเดินทาง</div>
         <div class="content-right d-flex"></div>
     </div>
     <!-- /Title -->
@@ -38,9 +38,10 @@
     <div class="row">
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
+                    <div class="topic-secondgery">รายการทริปเดินทาง</div>
                     <div class="row mb-2">
                         <div class="col-sm-12 col-md-4">
-                            <h5 class="hk-sec-title">รายการ ทริปเดินทาง
+                            <h5 class="hk-sec-title">
                                 <?php
                                     if(isset($date_filter)){ //-- สำหรับ แสดงวันที่ค้นหา
                                         echo thaidate('F Y', $date_filter);
@@ -61,12 +62,12 @@
                                 <form action="{{ url('admin/approve_trip/search') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <span id="selectdate">
-                                        <select name="selectstatus_trip" class="form-control form-control-sm" aria-label=".form-select-lg example"  style="margin-left:10px; margin-right:10px;">
+                                        <select name="selectstatus_trip" class="form-control" aria-label=".form-select-lg example"  style="margin-left:10px; margin-right:10px;">
                                             <option value="" selected>เลือกสถานะ</option>
                                             <option value="2">อนุมัติ, ยืนยัน</option>
                                             <option value="4">Complate</option>
                                         </select>
-                                        <select name="selectteam_sales" class="form-control form-control-sm" aria-label=".form-select-lg example">
+                                        <select name="selectteam_sales" class="form-control" aria-label=".form-select-lg example">
                                             <option value="" selected>เลือกทีม</option>
                                             @php
                                                 $checkteam_sales = "";
@@ -85,8 +86,7 @@
                                             @endif
                                         </select>
                                         <!-- ปี/เดือน :  -->
-                                        <input type="month" id="selectdateFrom" name="selectdateFrom"
-                                        value="{{ $date_search }}" class="form-control form-control-sm"
+                                        <input type="month" id="selectdateFrom" name="selectdateFrom" value="{{ $date_search }}" class="form-control"
                                         style="margin-left:10px; margin-right:10px;"/>
                                         <button style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm" id="submit_request">ค้นหา</button>
                                     </span>
@@ -97,13 +97,13 @@
 
                     <div class="row">
                         <div class="col-sm">
-                            <div class="mb-20">
-   
+                            <div class="mb-20 mt-20">
+
                                 <button type="button" class="btn btn_purple btn-green btn-sm btn_approve" value="complate">Complate</button>
                                 <button type="button" class="btn btn_purple btn-reject btn-sm ml-5 btn_approve" value="pdf">ดาวโหลด PDF</button>
                                 <button type="button" class="btn btn_purple btn-reject btn-sm ml-5 btn_approve" value="excle">ดาวโหลด Excle</button>
                                 <button type="button" class="btn btn_purple btn-reject btn-sm ml-5 btn_approve" value="seandmail">ส่งเมล</button>
-                                
+
                             </div>
 
                             <form id="from_trip_approve" enctype="multipart/form-data">
@@ -121,7 +121,7 @@
                                                             for="customCheck4">ทั้งหมด</label>
                                                     </div>
                                                 </th>
-            
+
                                                 <th>วันที่ขออนุมัติ</th>
                                                 <th style="text-align:left;">รายชื่อ</th>
                                                 <th>ระดับสิทธิ์</th>
@@ -133,7 +133,7 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($trip_header as $key => $value)
-                                                @php 
+                                                @php
                                                     list($date_at, $time_at) = explode(" ", $value->request_approve_at);
                                                     list($year_at, $month_at, $day_at) = explode("-", $date_at);
                                                     $year_at_thai = $year_at + 543;
@@ -150,7 +150,7 @@
                                                 <td>{{ $approve_at }}</td>
                                                 <td style="text-align:left;">{{ $value->name }}</td>
                                                 <td>
-                                                    @php 
+                                                    @php
                                                         switch($value->status){
                                                             case 1 : $user_level = "ผู้แทนขาย";
                                                                 break;
@@ -160,7 +160,7 @@
                                                                 break;
                                                         }
                                                     @endphp
-        
+
                                                     {{ $user_level }}
 
                                                 </td>
@@ -180,25 +180,26 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <a href="{{ url($url_showdetail) }}/{{ $value->id }}" 
+                                                    <a href="{{ url($url_showdetail) }}/{{ $value->id }}"
                                                         class="btn btn-icon btn-warning">
                                                         <h4 class="btn-icon-wrap" style="color: white;">
                                                             <i class="ion ion-md-map"></i>
                                                         </h4>
                                                     </a>
-                                                    <a href="{{ url('trip_user_pdf') }}/{{ $value->id }}" 
+                                                    <a href="{{ url('trip_user_pdf') }}/{{ $value->id }}"
                                                         class="btn btn-icon btn-danger" target="_blank">
                                                         <h4 class="btn-icon-wrap" style="color: white;">
-                                                            <i class="ion ion-md-document"></i>                                                      </h4>
+                                                            <span class="material-icons">picture_as_pdf</span>
+                                                        </h4>
                                                     </a>
-                                                    <a href="{{ url('trip_user_excel') }}/{{ $value->id }}" 
-                                                        class="btn btn-icon btn-danger">
+                                                    <a href="{{ url('trip_user_excel') }}/{{ $value->id }}"
+                                                        class="btn btn-icon btn-excel">
                                                         <h4 class="btn-icon-wrap" style="color: white;">
-                                                            <i class="ion ion-md-download"></i>
+                                                            <span class="material-icons">table_view</span>
                                                         </h4>
                                                     </a>
                                                 </td>
-                                            </tr>  
+                                            </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -270,7 +271,7 @@
             }
         }
     }
-    
+
     $(document).on('click', '.btn_approve', function() {
         let approve = $(this).val();
         $('#approve').val(approve);
@@ -339,9 +340,9 @@
             $("#from_trip_approve").attr("target", "_blank");
             $("#from_trip_approve").submit();
             $("#from_trip_approve").removeAttr("action").removeAttr("method").removeAttr("target");
-            
+
             $('#ModalSaleplanApprove').modal('hide');
-            
+
         }else if(approve == "seandmail"){
 
             console.log("seandmail---Con");
