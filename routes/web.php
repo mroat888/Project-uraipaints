@@ -970,6 +970,7 @@ Route::post('trip/detail/delete', 'UnionTripController@trip_detail_destroy');
 
 
 Route::post('manager/trip/comment/create', 'UnionTripApproveController@trip_comment');
+
 // จบ trip ---ใช้งานร่วมกัน
 
 
@@ -1003,12 +1004,14 @@ Route::get('fetch_datatable_customer_admin_pdglist_pvid/{pvid}', 'Api\ApiControl
 Route::get('fetch_datatable_customer_admin_pdglist/{pdgid}', 'Api\ApiController@fetch_datatable_customer_admin_pdglist');
 
 
-// Report
+// Report PDF & Excel
 Route::post('trip_pdf', 'UnionTripReportPDFController@pdf');
 Route::get('trip_user_pdf/{id}', 'UnionTripReportPDFController@userpdf');
 
 Route::post('trip_excel', 'UnionTripReportExportContoller@excel');
 Route::get('trip_user_excel/{id}', 'UnionTripReportExportContoller@userexcel');
+
+Route::get('trip_mail/{id}', 'UnionTripReportPDFController@mail');
 
 Auth::routes();
 // Route::get('/', function () { return view('saleman.dashboard'); });

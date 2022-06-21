@@ -216,7 +216,7 @@
                                             </div>
                                             <div class="modal-body" style="text-align:center;">
                                                 <h3>ยืนยัน ปิดทริปเดินทาง ใช่หรือไม่?</h3>
-                                                <input class="form-control" id="approve" name="approve" type="text" />
+                                                <input class="form-control" id="approve" name="approve" type="hidden" />
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
