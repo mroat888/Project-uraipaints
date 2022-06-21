@@ -642,7 +642,7 @@ Route::post('admin/update_customerLead', 'Admin\ChangeCustomerController@update'
 Route::get('admin/approve_trip', 'Admin\UnionTripAdminController@index');
 Route::post('admin/approve_trip/search', 'Admin\UnionTripAdminController@search');
 Route::post('admin/approval_trip_confirm_all', 'Admin\UnionTripAdminController@approval_trip_confirm_all');
-
+Route::get('admin/approve_trip/detail/{id}', 'UnionTripApproveController@trip_showdetail');
 
 
 // Note
