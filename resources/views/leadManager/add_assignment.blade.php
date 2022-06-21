@@ -47,9 +47,9 @@
                                 <form action="{{ url('lead/search_month_add-assignment') }}" method="post" enctype="multipart/form-data">
                                     @csrf
                                 <span id="selectdate">
-                                @if (count($team_sales) > 1)
-                                    <select name="selectteam_sales" class="form-control form-control-sm mr-2"
-                                        aria-label=".form-select-lg example">
+                                {{-- @if (count($team_sales) > 1)
+                                    <select name="selectteam_sales" class="form-control mr-2"
+                                       >
                                         <option value="" selected>เลือกทีม</option>
                                         @php
                                             $checkteam_sales = '';
@@ -67,9 +67,8 @@
                                             @endif
                                         @endforeach
                                     </select>
-                                @endif
-                                <select name="selectusers" class="form-control form-control-sm"
-                                    aria-label=".form-select-lg example">
+                                @endif --}}
+                                {{-- <select name="selectusers" class="form-control">
                                     <option value="" selected>ผู้แทนขาย</option>
                                     @php
                                         $checkusers = '';
@@ -86,10 +85,10 @@
                                             </option>
                                         @endif
                                     @endforeach
-                                </select>
+                                </select> --}}
 
                                     @if(count($team_sales) >= 1)
-                                    <select name="selectteam_sales" class="form-control form-control-sm" aria-label=".form-select-lg example">
+                                    <select name="selectteam_sales" class="form-control">
                                         <option value="" selected>เลือกทีม</option>
                                             @foreach($team_sales as $team)
                                                     <option value="{{ $team->id }}">{{ $team->team_name }}</option>
@@ -97,14 +96,14 @@
                                     </select>
                                     @endif
 
-                                    <select name="selectusers" class="form-control form-control-sm" aria-label=".form-select-lg example">
+                                    <select name="selectusers" class="form-control">
                                         <option value="" selected>ผู้แทนขาย</option>
                                         @foreach($users as $user)
                                                 <option value="{{ $user->id }}">{{ $user->name }}</option>
                                         @endforeach
                                     </select>
-                                    <input type="month" value="" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="" name="selectdateTo"/>
-                                <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm">ค้นหา</button>
+                                    <input type="month" value="" class="form-control" style="margin-left:10px; margin-right:10px;" id="" name="selectdateTo"/>
+                                <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-green">ค้นหา</button>
 
                                 </span>
                             </form>
@@ -135,8 +134,8 @@
                                             <td>{{$key + 1}}</td>
                                             <td>{{$value->assign_title}}</td>
                                             <td><img src="{{ isset($value->assign_fileupload) ? asset('public/upload/AssignmentFile/' . $value->assign_fileupload) : '' }}" width="50"></td>
-                                            <td>{{Carbon\Carbon::parse($value->assign_work_date)->addYear(543)->format('d/m/Y')}}</td>
                                             <td>{{$value->name}}</td>
+                                            <td>{{Carbon\Carbon::parse($value->assign_work_date)->addYear(543)->format('d/m/Y')}}</td>
                                             <td>
                                                 @if ($value->assign_result_status == 0)
                                                     @if ($value->assign_work_date < Carbon\Carbon::today()->format('Y-m-d'))
@@ -163,9 +162,12 @@
                                                 <button onclick="edit_modal({{ $value->id }})" class="btn btn-icon btn-edit mr-10" data-toggle="modal" data-target="#modalEdit">
                                                     <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">drive_file_rename_outline</span></h4>
                                                 </button>
-                                                <a href="{{url('lead/delete_assignment', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
+                                                <button id="btn_assign_delete" class="btn btn-icon btn-danger" value="{{ $value->id }}">
                                                     <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">delete_outline</span></h4>
-                                                </a>
+                                                </button>
+                                                {{-- <a href="{{url('lead/delete_assignment', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
+                                                    <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">delete_outline</span></h4>
+                                                </a> --}}
 
                                                 @else
                                                 <button class="btn btn-icon btn-summarize" data-toggle="modal" data-target="#ModalResult" onclick="show_result({{$value->id}})">
@@ -194,7 +196,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">ฟอร์มบันทึกการสั่งงาน</h5>
+                    <h5 class="modal-title">เพิ่มบันทึกการสั่งงาน</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -209,7 +211,7 @@
                             <input class="form-control" name="assign_title" placeholder="กรุณาใส่ชื่อเรื่อง" type="text">
                         </div>
                         <div class="col-md-6 form-group">
-                            <label for="firstName">วันที่</label>
+                            <label for="firstName">วันที่กำหนดส่ง</label>
                             <input class="form-control" type="date" name="date" min="{{date('Y-m-d')}}" />
                         </div>
                     </div>
@@ -261,7 +263,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">ฟอร์มแก้ไขข้อมูลการสั่งงาน</h5>
+                    <h5 class="modal-title">แก้ไขบันทึกการสั่งงาน</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -404,7 +406,71 @@
         </div>
     </div>
 
+    <!-- Modal Delete Saleplan -->
+    <div class="modal fade" id="ModalAssignDelete" tabindex="-1" role="dialog" aria-labelledby="ModalAssignDelete"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form id="from_assign_delete" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">คุณต้องการลบข้อมูลการสั่งงานใช่หรือไม่</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="text-align:center;">
+                        <h3>คุณต้องการลบข้อมูลการสั่งงานใช่หรือไม่ ?</h3>
+                        <input class="form-control" id="assign_id_delete" name="assign_id_delete" type="hidden" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                        <button type="submit" class="btn btn-primary" id="btn_save_edit">ยืนยัน</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
+        $(document).on('click', '#btn_assign_delete', function() { // ปุ่มลบ Slaplan
+            let assign_id_delete = $(this).val();
+            $('#assign_id_delete').val(assign_id_delete);
+            $('#ModalAssignDelete').modal('show');
+        });
+
+        $("#from_assign_delete").on("submit", function(e) {
+            e.preventDefault();
+            //var formData = $(this).serialize();
+            var formData = new FormData(this);
+            console.log(formData);
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('lead/delete_assignment') }}',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    console.log(response);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Deleted!',
+                        text: "ลบข้อมูลสั่งงานเรียบร้อยแล้ว",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    $('#ModalAssignDelete').modal('hide');
+                    $('#btn_assign_delete').prop('disabled', true);
+                    location.reload();
+                },
+                error: function(response) {
+                    console.log("error");
+                    console.log(response);
+                }
+            });
+        });
+
         //Show
         function show_result(id){
             $.ajax({

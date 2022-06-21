@@ -2,9 +2,7 @@
                             <div class="col-sm">
                                 <div class="table-wrap">
                                     <div class="hk-pg-header mb-10">
-                                        <div>
-                                        </div>
-                                        <div class="col-sm-12 col-md-9">
+                                        <div class="col-sm-12 col-md-12">
                                             <!-- ------ -->
 
                                             <span class="form-inline pull-right pull-sm-center">
@@ -13,9 +11,9 @@
                                                     @csrf
                                                 <span id="selectdate" >
 
-                                                    เดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateFrom" name="fromMonth"/>
+                                                    เดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control" style="margin-left:10px; margin-right:10px;" id="selectdateFrom" name="fromMonth"/>
 
-                                                    ถึง : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name="toMonth"/>
+                                                    ถึง : <input type="month" value="{{ date('Y-m') }}" class="form-control" style="margin-left:10px; margin-right:10px;" id="selectdateTo" name="toMonth"/>
 
                                                 <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm">ค้นหา</button>
 
@@ -32,8 +30,8 @@
                                         <thead style="text-align:center;">
                                             <tr>
                                                 <th>#</th>
-                                                <th style="width:10%">ไฟล์แนบ</th>
                                                 <th style="text-align:left">เรื่อง</th>
+                                                <th style="width:10%">ไฟล์แนบ</th>
                                                 <th>วันกำหนดส่ง</th>
                                                 <th>สถานะ</th>
                                                 <th>ประเมินผล</th>
@@ -44,6 +42,7 @@
                                             @foreach ($assignments as $key => $value)
                                         <tr>
                                             <td>{{$key + 1}}</td>
+                                            <td style="text-align:left">{{$value->assign_title}}</td>
                                             <td>
                                                 @if ($value->assign_fileupload)
                                                     <img class="card-img"
@@ -53,12 +52,11 @@
                                                 <!-- <span class="badge badge-soft-secondary" style="font-size: 12px;">ไม่มี</span> -->
                                                 @endif
                                             </td>
-                                            <td style="text-align:left">{{$value->assign_title}}</td>
                                             <td>{{Carbon\Carbon::parse($value->assign_work_date)->addYear(543)->format('d/m/Y')}}</td>
                                             <td>
                                                 @if ($value->assign_result_status == 0)
                                                 <span class="btn-draf" style="font-size: 12px;">รอดำเนินการ</span>
-                                                @elseif ($value->assign_result_status == 3)
+                                                @elseif ($value->assign_result_status == 1 || $value->assign_result_status == 2 || $value->assign_result_status == 3)
                                                 <span class="btn-approve" style="font-size: 12px;">ดำเนินการแล้ว</span>
                                                 @endif
                                             </td>

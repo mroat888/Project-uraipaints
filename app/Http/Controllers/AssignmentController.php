@@ -344,29 +344,29 @@ class AssignmentController extends Controller
 
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $data = Assignment::where('id', $id)->first();
+        DB::beginTransaction();
+        try {
+
+            $data = Assignment::where('id', $request->assign_id_delete)->first();
             if (!empty($data->assign_fileupload)) {
                 $path2 = 'public/upload/AssignmentFile/';
                 unlink($path2 . $data->assign_fileupload);
             }
 
-        Assignment::where('id', $id)->delete();
-        return back();
+        Assignment::where('id', $request->assign_id_delete)->delete();
+        DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+        }
+
+        return response()->json([
+            'status' => 200,
+        ]);
+
     }
-
-    // public function assignment_result_get($id)
-    // {
-    //     $dataResult = Assignment::where('id', $id)->first();
-
-
-    // $data = array(
-    //     'dataResult'     => $dataResult,
-    // );
-    // echo json_encode($data);
-
-    // }
 
     public function lead_search_month_add_assignment(Request $request)
     {

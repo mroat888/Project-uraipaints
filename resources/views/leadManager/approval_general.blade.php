@@ -58,11 +58,11 @@
                             </ul>
                         </div>
                     </div>
+                    <div class="col-sm-12 col-md-12" style="margin-bottom: 30px;">
+                        <h5 class="hk-sec-title">รายการคำขออนุมัติ</h5>
+                    </div>
                     <div class="row mb-2">
-                            <div class="col-md-3">
-                                <h5 class="hk-sec-title">รายการคำขออนุมัติ</h5>
-                            </div>
-                            <div class="col-md-9">
+                            <div class="col-md-12">
                             <span class="form-inline pull-right">
                                 <!-- เงื่อนไขการค้นหา -->
                                 @php
@@ -95,7 +95,7 @@
                                 @csrf
                                 <span id="selectdate" >
                                     @if(count($team_sales) > 1)
-                                    <select name="selectteam_sales" class="form-control form-control-sm" aria-label=".form-select-lg example">
+                                    <select name="selectteam_sales" class="form-control">
                                         <option value="" selected>เลือกทีม</option>
                                             @foreach($team_sales as $team)
                                                 @if($checkteam_sales == $team->id)
@@ -106,7 +106,7 @@
                                             @endforeach
                                     </select>
                                     @endif
-                                    <select name="selectusers" class="form-control form-control-sm" aria-label=".form-select-lg example">
+                                    <select name="selectusers" class="form-control">
                                         <option value="" selected>ผู้แทนขาย</option>
                                         @foreach($users as $user)
                                             @if($checkusers == $user->id)
@@ -116,13 +116,13 @@
                                             @endif
                                         @endforeach
                                     </select>
-                                    <input type="date" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;"
+                                    <input type="date" class="form-control" style="margin-left:10px; margin-right:10px;"
                                     id="selectdateFrom" name="selectdateFrom" value="{{ $checkdateFrom }}" />
 
-                                    ถึง <input type="date" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;"
+                                    ถึง <input type="date" class="form-control" style="margin-left:10px; margin-right:10px;"
                                     id="selectdateTo" name="selectdateTo" value="{{ $checkdateTo }}" />
 
-                                    <button style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm" id="submit_request">ค้นหา</button>
+                                    <button style="margin-left:5px; margin-right:5px;" class="btn btn-green" id="submit_request">ค้นหา</button>
                                 </span>
 
                                 </form>
@@ -264,15 +264,19 @@
                                     @endforeach
                                     </select>
                             </div>
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">วันที่ขออนุมัติ</label>
+                                <input class="form-control" type="text" name="assign_request_date" id="get_request_date" readonly>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">หัวข้อ / เรื่อง</label>
-                                <input class="form-control" placeholder="กรุณาใส่หัวข้อ / เรื่อง" name="assign_title" id="get_title" type="text" readonly>
+                                <input class="form-control" name="assign_title" id="get_title" type="text" readonly>
                             </div>
                             <div class="col-md-6 form-group">
-                                <label for="firstName">วันที่ / Date</label>
-                                <input class="form-control" type="date" name="assign_work_date" id="get_work_date" min="<?= date('Y-m-d') ?>" readonly>
+                                <label for="firstName">วันที่ต้องการ</label>
+                                <input class="form-control" type="text" name="assign_work_date" id="get_work_date" readonly>
                             </div>
                         </div>
                         <div class="row">
@@ -349,11 +353,21 @@ function edit_modal(id) {
                 $('#comment').val('');
 
                 $('#get_id').val(data.dataEdit.id);
-                $('#get_work_date').val(data.dataEdit.assign_work_date);
                 $('#get_title').val(data.dataEdit.assign_title);
                 $('#get_detail').val(data.dataEdit.assign_detail);
                 $('#get_for').val(data.dataEdit.approved_for);
                 $('#get_xx').val(data.dataEdit.assign_is_hot);
+
+                let get_request_date = data.dataEdit.assign_request_date.split(" ");
+                let get_request_date2 = get_request_date[0].split("-");
+                let year_th_request = parseInt(get_request_date2[0])+543;
+                let date_request = get_request_date2[2]+"/"+get_request_date2[1]+"/"+year_th_request;
+                $('#get_request_date').val(date_request);
+
+                let get_work_date = data.dataEdit.assign_work_date.split("-");
+                let year_th_work = parseInt(get_work_date[0])+543;
+                let date_work = get_work_date[2]+"/"+get_work_date[1]+"/"+year_th_work;
+                $('#get_work_date').val(date_work);
 
                 if(data.dataEdit_comment_edit){
                     $('#comment').val(data.dataEdit_comment_edit.assign_comment_detail);
