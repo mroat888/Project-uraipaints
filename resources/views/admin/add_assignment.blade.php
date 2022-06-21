@@ -26,23 +26,21 @@
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
                     <div class="topic-secondgery">รายการสั่งงาน</div>
-                    <div class="row mb-2">
-                        <div class="col-sm-12 col-md-3">
-                        </div>
-                        <div class="col-sm-12 col-md-9">
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="col-sm-12 col-md-12">
                             <!-- ------ -->
                             <span class="form-inline pull-right">
                                 <form action="{{ url('admin/search_month_add-assignment') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
 
-                                    <select name="select_status" class="form-control form-control-sm" aria-label=".form-select-lg example">
+                                    <select name="select_status" class="form-control" aria-label=".form-select-lg example">
                                         <option value="" selected>เลือกสถานะ</option>
                                         <option value="0">รอดำเนินการ</option>
                                         <option value="1">ส่งงาน</option>
                                     </select>
 
                                     @if(count($team_sales) >= 1)
-                                    <select name="selectteam_sales" class="form-control form-control-sm" aria-label=".form-select-lg example">
+                                    <select name="selectteam_sales" class="form-control" aria-label=".form-select-lg example">
                                         <option value="" selected>เลือกทีม</option>
                                             @foreach($team_sales as $team)
                                                     <option value="{{ $team->id }}">{{ $team->team_name }}</option>
@@ -50,14 +48,14 @@
                                     </select>
                                     @endif
 
-                                    <select name="selectusers" class="form-control form-control-sm" aria-label=".form-select-lg example">
+                                    <select name="selectusers" class="form-control" aria-label=".form-select-lg example">
                                         <option value="" selected>ผู้แทนขาย</option>
                                         @foreach($users as $user)
                                                 <option value="{{ $user->id }}">{{ $user->name }}</option>
                                         @endforeach
                                     </select>
 
-                                         <input type="month" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" name ="selectdateTo" value="<?= date('Y-m-d'); ?>"/>
+                                         <input type="month" class="form-control" style="margin-left:10px; margin-right:10px;" name ="selectdateTo" value="<?= date('Y-m-d'); ?>"/>
 
                                         <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm" id="submit_request">ค้นหา</button>
                                 </form>
@@ -73,10 +71,10 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>รูปภาพ</th>
                                             <th>เรื่อง</th>
-                                            <th>วันกำหนดส่ง</th>
+                                            <th>รูปภาพ</th>
                                             <th>ชื่อผู้แทนขาย/ผจก</th>
+                                            <th>วันกำหนดส่ง</th>
                                             <th>สถานะ</th>
                                             <th>การประเมิน</th>
                                             <th>Action</th>
@@ -86,10 +84,10 @@
                                         @foreach ($assignments as $key => $value)
                                         <tr>
                                             <td>{{$key + 1}}</td>
-                                            <td><img src="{{ isset($value->assign_fileupload) ? asset('public/upload/AssignmentFile/' . $value->assign_fileupload) : '' }}" width="30"></td>
                                             <td>{{$value->assign_title}}</td>
-                                            <td>{{Carbon\Carbon::parse($value->assign_work_date)->addYear(543)->format('d/m/Y')}}</td>
+                                            <td><img src="{{ isset($value->assign_fileupload) ? asset('public/upload/AssignmentFile/' . $value->assign_fileupload) : '' }}" width="30"></td>
                                             <td>{{$value->name}}</td>
+                                            <td>{{Carbon\Carbon::parse($value->assign_work_date)->addYear(543)->format('d/m/Y')}}</td>
                                             <td>
                                                 @if ($value->assign_result_status == 0)
                                                         @if ($value->assign_work_date < Carbon\Carbon::today()->format('Y-m-d'))
@@ -146,7 +144,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">ฟอร์มบันทึกการสั่งงาน</h5>
+                    <h5 class="modal-title">เพิ่มบันทึกการสั่งงาน</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -154,10 +152,22 @@
             <form id="from_createassign" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
-                        <div class="form-group">
-                            <label for="firstName">เรื่อง</label>
-                            <input class="form-control" name="assign_title" placeholder="กรุณาใส่ชื่อเรื่อง" type="text" required>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">เรื่อง</label>
+                                <input class="form-control" name="assign_title" placeholder="กรุณาใส่ชื่อเรื่อง" type="text" required>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">วันที่กำหนดส่ง</label>
+                                <input class="form-control" type="date" name="date" required/>
+                            </div>
                         </div>
+                            <div class="form-group">
+                                <label for="firstName">สั่งงานให้</label>
+                                <select id="sel_saleman" class="select2 select2-multiple form-control" multiple="multiple" data-placeholder="Choose" name="assign_emp_id[]" required>
+
+                                </select>
+                            </div>
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label for="username">รายละเอียด</label>
@@ -167,35 +177,11 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
-                                <label for="firstName">วันที่</label>
-                                <input class="form-control" type="date" name="date" required/>
-                            </div>
-                            <div class="col-md-6 form-group">
                                 <label for="firstName">ไฟล์เอกสาร</label>
                                 <input type="file" name="assignment_fileupload" id="assignment_fileupload" class="form-control">
                             </div>
                         </div>
-                        {{-- <div class="row">
-                            <div class="form-group col-md-6">
-                                <label for="username">เลือกชื่อผู้จัดการเขต</label>
-                                <!-- <input class="form-control" name="visit_result_status" id="searchTeam" type="text"> -->
-                                <select id="sel_manager" class="form-control custom-select select2 " name="assign_manager" required>
-                                    <option selected>-- กรุณาเลือก --</option>
-                                    @foreach ($managers as $value)
-                                    <option value="{{$value->id}}">{{$value->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div> --}}
                         <input type="hidden" name="assignmentID" id="assignmentID" value="{{Auth::user()->id}}">
-                        <div class="row">
-                            <div class="col-md-12 form-group">
-                                <label for="firstName">สั่งงานให้</label>
-                                <select id="sel_saleman" class="select2 select2-multiple form-control" multiple="multiple" data-placeholder="Choose" name="assign_emp_id[]" required>
-
-                                </select>
-                            </div>
-                        </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
@@ -212,7 +198,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">ฟอร์มแก้ไขข้อมูลการสั่งงาน</h5>
+                    <h5 class="modal-title">แก้ไขบันทึกการสั่งงาน</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -221,9 +207,21 @@
                 @csrf
                 <div class="modal-body">
                     <input type="hidden" name="id" id="get_id">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">เรื่อง</label>
+                                <input class="form-control" name="assign_title" id="get_title" type="text">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">วันที่กำหนดส่ง</label>
+                                <input class="form-control" type="date" name="date" id="get_date"/>
+                            </div>
+                        </div>
                         <div class="form-group">
-                            <label for="firstName">เรื่อง</label>
-                            <input class="form-control" name="assign_title" id="get_title" type="text">
+                            <label for="firstName">สั่งงานให้</label>
+                            <select class="form-control custom-select select2" name="assign_emp_id_edit" id="get_emp" required>
+                                <option value="" disabled>กรุณาเลือก</option>
+                            </select>
                         </div>
                         <div class="row">
                             <div class="col-md-12 form-group">
@@ -234,28 +232,9 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
-                                <label for="firstName">วันที่</label>
-                                <input class="form-control" type="date" name="date" id="get_date"/>
-                            </div>
-                            <div class="col-md-6 form-group">
                                 <label for="firstName">ไฟล์เอกสาร</label>
                                 <input type="file" name="assignment_fileupload_update" id="assignment_fileupload_update" class="form-control">
                                 <div id="img_show" class="mt-5"></div>
-                            </div>
-                        </div>
-                        {{-- <div class="row">
-                            <div class="form-group col-md-6">
-                                <label for="username">เลือกชื่อผู้จัดการเขต</label>
-                                <select id="get_manager" class="form-control custom-select select2 " name="get_manager" required>
-                                </select>
-                            </div>
-                        </div> --}}
-                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label for="firstName">สั่งงานให้</label>
-                                <select class="form-control custom-select select2" name="assign_emp_id_edit" id="get_emp" required>
-                                    <option value="" disabled>กรุณาเลือก</option>
-                                </select>
                             </div>
                         </div>
                 </div>
@@ -468,13 +447,23 @@
 
 
                 $('#get_id_send').val(data.dataEdit.id);
-                $('#get_date_text').text(data.dataEdit.assign_work_date);
+                // $('#get_date_text').text(data.dataEdit.assign_work_date);
                 $('#get_title_text').text(data.dataEdit.assign_title);
                 $('#get_detail_text').text(data.dataEdit.assign_detail);
 
-                $('#get_date_text_send').text(data.dataEdit.assign_work_date);
+                let get_date = data.dataEdit.assign_work_date.split("-");
+                let year_th_date = parseInt(get_date[0])+543;
+                let date_work = get_date[2]+"/"+get_date[1]+"/"+year_th_date;
+                $('#get_date_text').text(date_work);
+
                 $('#get_title_text_send').text(data.dataEdit.assign_title);
                 $('#get_detail_text_send').text(data.dataEdit.assign_result_detail);
+
+                let get_date2 = data.dataEdit.assign_work_date.split("-");
+                let year_th_date2 = parseInt(get_date2[0])+543;
+                let date_work2 = get_date2[2]+"/"+get_date2[1]+"/"+year_th_date2;
+                $('#get_date_text_send').text(date_work2);
+
 
                 let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataEdit.assign_fileupload;
                 if(data.dataEdit.assign_fileupload != ""){

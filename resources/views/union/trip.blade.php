@@ -1,6 +1,6 @@
 <!-- Breadcrumb -->
 <nav class="hk-breadcrumb" aria-label="breadcrumb">
-    <ol class="breadcrumb breadcrumb-light bg-transparent">
+    <ol class="breadcrumb breadcrumb-light bg-transparent" style="margin-top: -15px;">
         <li class="breadcrumb-item"><a href="#">Page</a></li>
         <li class="breadcrumb-item active">แผนงานประจำเดือน</li>
         <li class="breadcrumb-item active" aria-current="page">ทริปเดินทาง</li>
@@ -12,15 +12,21 @@
 <div class="container-fluid px-xxl-65 px-xl-20">
     <!-- Title -->
     <div class="hk-pg-header mb-10">
+        <div class="topichead-bgred"><i data-feather="clipboard"></i> รายการทริปเดินทาง</div>
+        <div class="content-right d-flex">
+            <button type="button" class="btn btn-green" data-toggle="modal" id="createmodal"> + เพิ่มใหม่ </button>
+        </div>
+    </div>
+    <!-- /Title -->
+    <!-- Title -->
+    {{-- <div class="hk-pg-header mb-10">
         <div>
             <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-people"></i></span>รายการทริปเดินทาง</h4>
         </div>
         <div class="d-flex">
             <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10" data-toggle="modal" id="createmodal"> + เพิ่มใหม่ </button>
-            <!-- <a href="{{url('trip/create')}}" type="button" 
-            class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10" id="btn_approve">+ เพิ่มใหม่</a> -->
         </div>
-    </div>
+    </div> --}}
     <!-- /Title -->
 
     <!-- Row -->
@@ -29,15 +35,15 @@
 
             <section class="hk-sec-wrapper">
                 <div class="row mb-2">
-                    <div class="col-sm-12 col-md-3">
-                        <h5 class="hk-sec-title">ตาราง ทริปเดินทาง</h5>
+                    <div class="col-sm-12 col-md-12">
+                        <div class="topic-secondgery">ตารางทริปเดินทาง</div>
                     </div>
                     <div class="col-sm-12 col-md-9">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="table-responsive col-md-12">
+                        <div class="table-responsive col-md-12 table-color">
                             <table id="datable_1" class="table table-hover">
                                 <thead>
                                     <tr style="text-align:center;">
@@ -52,7 +58,7 @@
                                 <tbody>
                                 @if(count($trips) > 0)
                                     @foreach($trips as $key => $value)
-                                        @php 
+                                        @php
                                             list($date, $time) = explode(" ", $value->created_at);
                                             list($year, $month, $day) = explode("-", $date);
                                             $year_thai = $year+543;
@@ -77,7 +83,7 @@
                                             @endif
                                         </td>
                                         <td style="text-align:center;">
-                                            @php 
+                                            @php
                                                 $btn_disable = "";
                                                 $a_disable = "";
                                                 if($value->trip_status != 0){
@@ -89,15 +95,16 @@
 
                                             @if($value->trip_status > 1) <!-- ตั้งแต่อนุมัติ -->
                                                 <!-- Report -->
-                                                <a href="{{ url('trip_user_pdf') }}/{{ $value->id }}" 
+                                                <a href="{{ url('trip_user_pdf') }}/{{ $value->id }}"
                                                     class="btn btn-icon btn-danger" target="_blank">
                                                     <h4 class="btn-icon-wrap" style="color: white;">
-                                                        <i class="ion ion-md-document"></i>                                                      </h4>
+                                                        <span class="material-icons">picture_as_pdf</span>
+                                                    </h4>
                                                 </a>
-                                                <a href="{{ url('trip_user_excel') }}/{{ $value->id }}" 
-                                                    class="btn btn-icon btn-danger">
+                                                <a href="{{ url('trip_user_excel') }}/{{ $value->id }}"
+                                                    class="btn btn-icon btn-excel">
                                                     <h4 class="btn-icon-wrap" style="color: white;">
-                                                        <i class="ion ion-md-download"></i>
+                                                        <span class="material-icons">table_view</span>
                                                     </h4>
                                                 </a>
                                                 <!-- Report -->
@@ -107,7 +114,7 @@
                                                         <i class="ion ion-md-send"></i>
                                                     </h4>
                                                 </button>
-                                            
+
                                                 <button class="btn btn-icon btn-edit btn_edittrip"
                                                     value="{{ $value->id }}" {{ $btn_disable }}>
                                                     <h4 class="btn-icon-wrap" style="color: white;">
@@ -115,7 +122,7 @@
                                                     </h4>
                                                 </button>
 
-                                                <a href="{{ url($url_trip_detail) }}/{{ $value->id }}" 
+                                                <a href="{{ url($url_trip_detail) }}/{{ $value->id }}"
                                                     class="btn btn-icon btn-warning" style="{{ $a_disable }}">
                                                     <h4 class="btn-icon-wrap" style="color: white;">
                                                         <i class="ion ion-md-map"></i>
@@ -340,10 +347,10 @@
                 $("#trip_day_edit").val(response.trip_header.trip_day);
                 $("#allowance_edit").val(response.trip_header.allowance);
                 $("#sum_allowance_edit").val(response.trip_header.sum_allowance);
-                
+
                 $("#Modaledit").modal('show');
             }
-        });  
+        });
     });
 
     $(document).on('click', '.btn_deletetrip', function(e){

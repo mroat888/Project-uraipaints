@@ -35,21 +35,14 @@
                 <section class="hk-sec-wrapper">
                     <div class="row">
                         <div class="col-sm">
-                            <a href="{{ url($url_approve_trip) }}" type="button" class="btn btn-purple btn-wth-icon icon-wthot-bg btn-sm text-white">
-                                <span class="icon-label">
-                                    <i class="fa fa-file"></i>
-                                </span>
-                                <span class="btn-text">รออนุมัติ</span>
-                            </a>
-
-                            <a href="{{ url($url_approve_trip_history) }}" type="button" class="btn btn-secondary btn-wth-icon icon-wthot-bg btn-sm text-white">
-                                <span class="icon-label">
-                                    <i class="fa fa-list"></i>
-                                </span>
-                                <span class="btn-text">ประวัติ</span>
-                            </a>
-                            <hr>
-                            <div id="calendar"></div>
+                            <ul class="nav nav-pills nav-fill bg-light pa-10 mb-40" role="tablist">
+                                <li class="nav-item">
+                                    <a href="{{ url($url_approve_trip) }}" class="nav-link" style="background: rgb(5, 90, 97); color:rgb(255, 255, 255);">รายการรออนุมัติ</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url($url_approve_trip_history) }}" class="nav-link" style="color: rgb(22, 21, 21);">ประวัติการอนุมัติ</a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                     <div class="row mb-2">
@@ -75,7 +68,7 @@
                                 <form action="{{ url($action_search) }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <span id="selectdate">
-                                        <select name="selectteam_sales" class="form-control form-control-sm" aria-label=".form-select-lg example">
+                                        <select name="selectteam_sales" class="form-control" aria-label=".form-select-lg example">
                                             <option value="" selected>เลือกทีม</option>
                                             @php
                                                 $checkteam_sales = "";
@@ -94,8 +87,7 @@
                                             @endif
                                         </select>
                                         <!-- ปี/เดือน :  -->
-                                        <input type="month" id="selectdateFrom" name="selectdateFrom"
-                                        value="{{ $date_search }}" class="form-control form-control-sm"
+                                        <input type="month" id="selectdateFrom" name="selectdateFrom" value="{{ $date_search }}" class="form-control"
                                         style="margin-left:10px; margin-right:10px;"/>
                                         <button style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm" id="submit_request">ค้นหา</button>
                                     </span>
@@ -115,7 +107,7 @@
                                 <button type="button" id="btn_saleplan_approve2" class="btn btn_purple btn-reject btn-sm ml-5" name="failed" value="failed">ไม่อนุมัติ</button>
                                 @endif
                             </div>
-                                <div class="table-responsive-sm">
+                                <div class="table-responsive-sm table-color">
                                 <table class="table table-sm table-hover">
                                     <thead>
                                         <tr style="text-align:center;">
@@ -124,11 +116,11 @@
                                                     <div class="custom-control custom-checkbox checkbox-info">
                                                         <input type="checkbox" class="custom-control-input"
                                                             id="customCheck4" onclick="chkAll(this);" name="CheckAll" value="Y">
-                                                        <label class="custom-control-label"
+                                                        <label class="custom-control-label text-white"
                                                             for="customCheck4">ทั้งหมด</label>
                                                     </div>
                                                 </th>
-                                            @else 
+                                            @else
                                                 <th>#</th>
                                             @endif
                                             <th>วันที่ขออนุมัติ</th>
@@ -141,7 +133,7 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($trip_header as $key => $value)
-                                            @php 
+                                            @php
                                                 list($date_at, $time_at) = explode(" ", $value->request_approve_at);
                                                 list($year_at, $month_at, $day_at) = explode("-", $date_at);
                                                 $year_at_thai = $year_at + 543;
@@ -156,7 +148,7 @@
                                                         <label class="custom-control-label" for="customCheck{{$key + 1}}"></label>
                                                     </div>
                                                 </td>
-                                            @else 
+                                            @else
                                                 <td>{{ ++$key }}</td>
                                             @endif
                                             <td>{{ $approve_at }}</td>
@@ -177,14 +169,14 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                
-                                                {{-- <!-- <button id="btn_saleplan_restrospective" type="button" 
+
+                                                {{-- <!-- <button id="btn_saleplan_restrospective" type="button"
                                                     class="btn btn-icon btn-edit" value="{{ $value->id }}">
                                                     <i data-feather="refresh-ccw"></i>
                                                 </button> --> --}}
-                                                
+
                                                 @if(Auth::user()->status == 2)
-                                                <a href="{{ url('lead/approve_trip/edit') }}/{{ $value->id }}" 
+                                                <a href="{{ url('lead/approve_trip/edit') }}/{{ $value->id }}"
                                                     class="btn btn-icon btn-edit">
                                                     <h4 class="btn-icon-wrap" style="color: white;">
                                                         <i class="ion ion-md-create"></i>
@@ -192,14 +184,14 @@
                                                 </a>
                                                 @endif
 
-                                                <a href="{{ url($url_showdetail) }}/{{ $value->id }}" 
+                                                <a href="{{ url($url_showdetail) }}/{{ $value->id }}"
                                                     class="btn btn-icon btn-warning">
                                                     <h4 class="btn-icon-wrap" style="color: white;">
                                                         <i class="ion ion-md-map"></i>
                                                     </h4>
                                                 </a>
                                             </td>
-                                        </tr>  
+                                        </tr>
                                         @endforeach
                                     </tbody>
                                 </table>

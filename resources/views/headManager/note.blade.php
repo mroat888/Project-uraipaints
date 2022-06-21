@@ -37,9 +37,9 @@
                                             <form action="{{ url('head/search_month_note') }}" method="post" enctype="multipart/form-data">
                                                 @csrf
                                             <span>
-                                                เดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" name="fromMonth"/>
+                                                เดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control" style="margin-left:10px; margin-right:10px;" name="fromMonth"/>
 
-                                                ถึงเดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control form-control-sm" style="margin-left:10px; margin-right:10px;" name="toMonth"/>
+                                                ถึงเดือน : <input type="month" value="{{ date('Y-m') }}" class="form-control" style="margin-left:10px; margin-right:10px;" name="toMonth"/>
 
                                             <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm">ค้นหา</button>
                                             </span>
@@ -118,10 +118,14 @@
                                                                 data-target="#editNote"><h4 class="btn-icon-wrap" style="color: white;"><span
                                                                     class="material-icons">drive_file_rename_outline</span></h4>
                                                             </button>
-                                                            <a href="{{url('head/delete_note', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
+                                                            {{-- <a href="{{url('head/delete_note', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
                                                                 <h4 class="btn-icon-wrap" style="color: white;"><span
                                                                     class="material-icons">delete_outline</span></h4>
-                                                            </a>
+                                                            </a> --}}
+                                                            <button id="btn_note_delete" class="btn btn-icon btn-danger" value="{{ $value->id }}">
+                                                                <h4 class="btn-icon-wrap" style="color: white;"><span
+                                                                        class="material-icons">delete_outline</span></h4>
+                                                            </button>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -143,7 +147,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">ฟอร์มบันทึกโน๊ตส่วนตัว</h5>
+                    <h5 class="modal-title">เพิ่มบันทึกโน๊ต</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -197,7 +201,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">ฟอร์มแก้ไขโน๊ตส่วนตัว</h5>
+                    <h5 class="modal-title">แก้ไขบันทึกโน๊ต</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -243,8 +247,72 @@
         </div>
     </div>
 
+    <!-- Modal Delete note -->
+    <div class="modal fade" id="ModalNoteDelete" tabindex="-1" role="dialog" aria-labelledby="ModalNoteDelete"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form id="from_note_delete" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">คุณต้องการลบข้อมูลโน๊ตใช่หรือไม่</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="text-align:center;">
+                        <h3>คุณต้องการลบข้อมูลโน๊ตใช่หรือไม่ ?</h3>
+                        <input class="form-control" id="note_id_delete" name="note_id_delete" type="hidden" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                        <button type="submit" class="btn btn-primary" id="btn_save_edit">ยืนยัน</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script> --}}
     <script>
+        $(document).on('click', '#btn_note_delete', function() { // ปุ่มลบ Slaplan
+            let note_id_delete = $(this).val();
+            $('#note_id_delete').val(note_id_delete);
+            $('#ModalNoteDelete').modal('show');
+        });
+
+        $("#from_note_delete").on("submit", function(e) {
+            e.preventDefault();
+            //var formData = $(this).serialize();
+            var formData = new FormData(this);
+            console.log(formData);
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('head/delete_note') }}',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    console.log(response);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Deleted!',
+                        text: "ลบข้อมูลโน๊ตเรียบร้อยแล้ว",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    $('#ModalNoteDelete').modal('hide');
+                    $('#btn_note_delete').prop('disabled', true);
+                    location.reload();
+                },
+                error: function(response) {
+                    console.log("error");
+                    console.log(response);
+                }
+            });
+        });
+
         //Edit
         function edit_modal(id) {
             $.ajax({
