@@ -41,8 +41,8 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-6">
-                                    <select class="form-control custom-select mt-15" name="customer">
+                                <div class="col-md-6" style="margin-top: 15px;">
+                                    <select class="form-control custom-select select2" name="customer">
                                         <option selected disabled>เลือกร้านค้า</option>
                                         @foreach ($customer_api as $key => $value)
                                             <option value="{{$customer_api[$key]['identify']}}">{{$customer_api[$key]['title']}} {{$customer_api[$key]['name']}}</option>
