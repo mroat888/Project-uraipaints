@@ -185,23 +185,23 @@
                 <div class="form-row">
                     <div class="form-group col-md-3">
                         <label for="inputEmail4">จากวันที่</label>
-                        <input type="date" class="form-control" name="trip_start" id="trip_start" required>
+                        <input type="date" class="form-control" name="trip_start" id="trip_start" placeholder="จากวันที่" disabled>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="inputPassword4">ถึงวันที่</label>
-                        <input type="date" class="form-control" name="trip_end" id="inputPassword4" required>
+                        <input type="date" class="form-control" name="trip_end" id="inputPassword4" placeholder="ถึงวันที่" disabled>
                     </div>
                     <div class="form-group col-md-2">
                         <label for="inputPassword4">จำนวนวัน</label>
-                        <input type="number" class="form-control" name="trip_day" id="trip_day" required>
+                        <input type="number" class="form-control" name="trip_day" id="trip_day" placeholder="จำนวนวัน" disabled>
                     </div>
                     <div class="form-group col-md-2">
-                        <label for="inputPassword4">อัตราเบี้ยเลี้ยง/วัน</label>
+                        <label for="inputPassword4">อัตราเบี้ยเลี้ยง/วัน *</label>
                         <input type="number" class="form-control" name="allowance" id="allowance" required>
                     </div>
                     <div class="form-group col-md-2">
                         <label for="inputPassword4">รวมค่าเบี้ยเลี้ยง</label>
-                        <input type="number" class="form-control" name="sum_allowance" id="sum_allowance" required>
+                        <input type="number" class="form-control" name="sum_allowance" id="sum_allowance" placeholder="รวมค่าเบี้ยเลี้ยง" disabled>
                     </div>
                 </div>
             </div>
@@ -249,15 +249,15 @@
                 <div class="form-row">
                     <div class="form-group col-md-3">
                         <label for="inputEmail4">จากวันที่</label>
-                        <input type="date" class="form-control" name="trip_start_edit" id="trip_start_edit" required>
+                        <input type="date" class="form-control" name="trip_start_edit" id="trip_start_edit" readonly>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="inputPassword4">ถึงวันที่</label>
-                        <input type="date" class="form-control" name="trip_end_edit" id="trip_end_edit" required>
+                        <input type="date" class="form-control" name="trip_end_edit" id="trip_end_edit" readonly>
                     </div>
                     <div class="form-group col-md-2">
                         <label for="inputPassword4">จำนวนวัน</label>
-                        <input type="number" class="form-control" name="trip_day_edit" id="trip_day_edit" required>
+                        <input type="number" class="form-control" name="trip_day_edit" id="trip_day_edit" readonly>
                     </div>
                     <div class="form-group col-md-2">
                         <label for="inputPassword4">อัตราเบี้ยเลี้ยง/วัน</label>
@@ -265,7 +265,7 @@
                     </div>
                     <div class="form-group col-md-2">
                         <label for="inputPassword4">รวมค่าเบี้ยเลี้ยง</label>
-                        <input type="number" class="form-control" name="sum_allowance_edit" id="sum_allowance_edit" required>
+                        <input type="number" class="form-control" name="sum_allowance_edit" id="sum_allowance_edit" readonly>
                     </div>
                 </div>
             </div>

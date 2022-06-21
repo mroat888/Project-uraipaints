@@ -48,13 +48,20 @@
                     <div class="col-md-4">
                         <label for="api_identify">จากวันที่ :
                             @php
-                                list($year_start, $month_start, $day_start) = explode("-", $trip_header->trip_start);
-                                $year_start_thai = $year_start+543;
-                                $trip_start_thai = $day_start."/".$month_start."/".$year_start_thai;
-
-                                list($year_end, $month_end, $day_end) = explode("-", $trip_header->trip_end);
-                                $year_end_thai = $year_end+543;
-                                $trip_end_thai = $day_end."/".$month_end."/".$year_end_thai;
+                                if(!is_null($trip_header->trip_start)){
+                                    list($year_start, $month_start, $day_start) = explode("-", $trip_header->trip_start);
+                                    $year_start_thai = $year_start+543;
+                                    $trip_start_thai = $day_start."/".$month_start."/".$year_start_thai;
+                                }else{
+                                    $trip_start_thai = "-";
+                                }
+                                if(!is_null($trip_header->trip_end)){
+                                    list($year_end, $month_end, $day_end) = explode("-", $trip_header->trip_end);
+                                    $year_end_thai = $year_end+543;
+                                    $trip_end_thai = $day_end."/".$month_end."/".$year_end_thai;
+                                }else{
+                                    $trip_end_thai = "-";
+                                }
                             @endphp
                             {{ $trip_start_thai }} ถึง
                             {{ $trip_end_thai }}
@@ -117,7 +124,9 @@
                                         <td>{{ $trip_detail_date }}</td>
                                         <td>{{ $value['trip_from'] }}</td>
                                         <td>{{ $value['trip_to'] }}</td>
-                                        <td>{{ $value['customer_id'] }}</td>
+                                        <td>
+                                            <?php echo nl2br($value['customer_id']); ?>
+                                        </td>
                                         <td style="text-align:center;">
                                             <button class="btn btn-icon btn-edit btn_edittrip"
                                                 value="{{ $value['id'] }}">
@@ -166,8 +175,7 @@
                     <input type="hidden" class="form-control" name="trip_header_id" value="{{ $trip_header->id }}">
                     <div class="form-group col-md-4">
                         <label for="inputEmail4">วันที่ทริป</label>
-                        <input type="date" class="form-control" name="trip_detail_date" id="trip_detail_date"
-                        min="{{ $trip_header->trip_start }}" max="{{ $trip_header->trip_end }}" required>
+                        <input type="date" class="form-control" name="trip_detail_date" id="trip_detail_date" required>
                     </div>
                 </div>
                 <div class="form-row">
@@ -201,10 +209,16 @@
                         </select>
                     </div>
                     <div class="form-group col-md-4">
+                        @php 
+                            if(Auth::user()->status == 1){
+                                $cust_required = "required"; //-- ผู้แทนขายต้องกรอกร้านค้า
+                            }else{
+                                $cust_required = "";
+                            }
+                        @endphp
                         <label for="inputEmail4">ร้านค้า</label>
-                        <select name="customer_id" id="customer_id" class="form-control customer_id"
-                            style="margin-left:5px; margin-right:5px;" required>
-                            <option value="" selected>เลือกร้านค้า</option>
+                        <select class="select2 select2-multiple form-control customer_id" multiple="multiple" id="customer_id"
+                        data-placeholder="Choose" name="customer_id[]" {{ $cust_required }}>
                         </select>
                     </div>
                 </div>
@@ -239,8 +253,7 @@
                     <input type="hidden" class="form-control" id="trip_detail_id" name="trip_detail_id">
                     <div class="form-group col-md-4">
                         <label for="inputEmail4">วันที่ทริป</label>
-                        <input type="date" class="form-control" name="trip_detail_date_edit" id="trip_detail_date_edit"
-                        min="{{ $trip_header->trip_start }}" max="{{ $trip_header->trip_end }}" required>
+                        <input type="date" class="form-control" name="trip_detail_date_edit" id="trip_detail_date_edit" required>
                     </div>
                 </div>
                 <div class="form-row">
@@ -259,10 +272,16 @@
                         </select>
                     </div>
                     <div class="form-group col-md-4">
+                        @php 
+                            if(Auth::user()->status == 1){ //-- ผู้แทนขายต้องกรอกร้านค้า
+                                $cust_required = "required";
+                            }else{
+                                $cust_required = "";
+                            }
+                        @endphp
                         <label for="inputEmail4">ร้านค้า</label>
-                        <select name="customer_id_edit" id="customer_id_edit" class="form-control customer_id_edit"
-                            style="margin-left:5px; margin-right:5px;" required>
-                            <option value="" selected>เลือกร้านค้า</option>
+                        <select class="select2 select2-multiple form-control customer_id_edit" multiple="multiple" id="customer_id_edit"
+                            data-placeholder="Choose" name="customer_id_edit[]" {{ $cust_required }}>
                         </select>
                     </div>
                 </div>
@@ -353,18 +372,19 @@
                     }
                 }
 
-                let rows_cus = response.customer_api.length;
                 $('.customer_id_edit').children().remove().end();
-                $('.customer_id_edit').append('<option selected value="">เลือกร้านค้า</option>');
-                for(let i=0 ;i<rows_cus; i++){
-                    if(response.customer_api[i]['identify'] == response.trip_detail.customer_id){
-                        $('.customer_id_edit').append('<option value="'+response.customer_api[i]['identify']+'" selected>'+
-                        response.customer_api[i]['title']+response.customer_api[i]['name']+'</option>');
-                    }else{
-                        $('.customer_id_edit').append('<option value="'+response.customer_api[i]['identify']+'">'+
-                        response.customer_api[i]['title']+response.customer_api[i]['name']+'</option>');
-                    }
-                }
+                let rows_tags = response.trip_detail.customer_id.split(",");
+                $.each(rows_tags, function(tkey, tvalue){
+                    $.each(response.customer_api, function(key, value){
+                        if(response.customer_api[key]['identify'] == rows_tags[tkey]){
+                            $('#customer_id_edit').append('<option value='+response.customer_api[key]['identify']+' selected>'+
+                            response.customer_api[key]['title']+response.customer_api[key]['name']+'</option>');
+                        }else{
+                            $('#customer_id_edit').append('<option value='+response.customer_api[key]['identify']+'>'+
+                            response.customer_api[key]['title']+response.customer_api[key]['name']+'</option>');
+                        }
+                    });
+                });
 
                 $("#Modaledit").modal('show');
             }
@@ -385,10 +405,9 @@
                 if(response.status == 200){
                     console.log(response.customer_api);
                     $('.customer_id').children().remove().end();
-                    $('.customer_id').append('<option selected value="">เลือกร้านค้า</option>');
                     let rows = response.customer_api.length;
                     for(let i=0 ;i<rows; i++){
-                        $('.customer_id').append('<option value="'+response.customer_api[i]['identify']+'">'+response.customer_api[i]['title']+response.customer_api[i]['name']+'</option>');
+                        $('.customer_id').append('<option value="'+response.customer_api[i]['identify']+'">'+response.customer_api[i]['title']+' '+response.customer_api[i]['name']+'</option>');
                     }
                 }
             }
@@ -409,10 +428,9 @@
                 if(response.status == 200){
                     console.log(response.customer_api);
                     $('.customer_id_edit').children().remove().end();
-                    $('.customer_id_edit').append('<option selected value="">เลือกร้านค้า</option>');
                     let rows = response.customer_api.length;
                     for(let i=0 ;i<rows; i++){
-                        $('.customer_id_edit').append('<option value="'+response.customer_api[i]['identify']+'">'+response.customer_api[i]['title']+response.customer_api[i]['name']+'</option>');
+                        $('.customer_id_edit').append('<option value="'+response.customer_api[i]['identify']+'">'+response.customer_api[i]['title']+' '+response.customer_api[i]['name']+'</option>');
                     }
                 }
             }
