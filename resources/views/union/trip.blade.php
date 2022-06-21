@@ -59,6 +59,10 @@
                                 @if(count($trips) > 0)
                                     @foreach($trips as $key => $value)
                                         @php
+                                            $trip_revision = DB::table('trip_header_revision_history')
+                                                ->where('trip_header_id', $value->id)
+                                                ->first();
+
                                             list($date, $time) = explode(" ", $value->created_at);
                                             list($year, $month, $day) = explode("-", $date);
                                             $year_thai = $year+543;
@@ -67,8 +71,18 @@
                                     <tr style="text-align:center;">
                                         <td>{{ ++$key }}</td>
                                         <td>{{ $date_thai }}</td>
-                                        <td>{{ $value->trip_day }}</td>
-                                        <td>{{ number_format($value->sum_allowance) }}</td>
+                                        <td>
+                                            @if(!is_null($trip_revision))
+                                                <span style="text-decoration: line-through;" class="text-red">{{ $trip_revision->trip_day_history }}</span>
+                                            @endif
+                                            {{ $value->trip_day }}
+                                        </td>
+                                        <td>
+                                            @if(!is_null($trip_revision))
+                                                <span style="text-decoration: line-through;" class="text-red">{{ number_format($trip_revision->sum_allowance_history) }}</span>
+                                            @endif
+                                            {{ number_format($value->sum_allowance) }}
+                                        </td>
                                         <td>
                                             @if ($value->trip_status == 0)
                                                 <span class="badge badge-soft-secondary" style="font-size: 12px;">Darf</span>
