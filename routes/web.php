@@ -304,7 +304,7 @@ Route::get('add_assignment', 'AssignmentController@index');
 Route::post('lead/create_assignment', 'AssignmentController@store');
 Route::get('lead/edit_assignment/{id}', 'AssignmentController@edit');
 Route::post('lead/update_assignment', 'AssignmentController@update');
-Route::get('lead/delete_assignment/{id}', 'AssignmentController@destroy');
+Route::post('lead/delete_assignment', 'AssignmentController@destroy');
 Route::get('lead/assignment_result_get/{id}', 'AssignmentController@assignment_result_get');
 Route::post('lead/search_month_add-assignment', 'AssignmentController@lead_search_month_add_assignment');
 Route::post('lead/update_assignment_status_result', 'AssignmentController@update_status_result');
@@ -317,7 +317,7 @@ Route::get('lead/status_pin_update/{id}', 'NoteController@status_pin_update');
 Route::post('lead/create_note', 'NoteController@store');
 Route::get('lead/edit_note/{id}', 'NoteController@edit');
 Route::post('lead/update_note', 'NoteController@update');
-Route::get('lead/delete_note/{id}', 'NoteController@destroy');
+Route::post('lead/delete_note', 'NoteController@destroy');
 Route::post('lead/search_month_note', 'NoteController@lead_search_month_note');
 
 // Delivery

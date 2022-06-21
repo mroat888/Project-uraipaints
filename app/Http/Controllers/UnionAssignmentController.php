@@ -27,6 +27,7 @@ class UnionAssignmentController extends Controller
             'assign_work_date' => $dataResult->assign_work_date,
             'masassign_title' => $dataResult->masassign_title,
             'assign_status' => $dataResult->assign_status,
+            'assign_request_date' => $dataResult->assign_request_date,
         ];
 
         $comment = array();

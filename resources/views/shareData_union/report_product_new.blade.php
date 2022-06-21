@@ -11,9 +11,7 @@
     <div class="container-fluid px-xxl-65 px-xl-20">
         <!-- Title -->
         <div class="hk-pg-header mb-10">
-            <div>
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-document"></i></span>รายงานยอดขายสินค้าใหม่</h4>
-            </div>
+            <div class="topichead-bgred"><i data-feather="file-text"></i> รายงานยอดขายสินค้าใหม่</div>
         </div>
         <!-- /Title -->
 
@@ -21,9 +19,8 @@
         <div class="row">
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
-                    <div class="row mb-2">
+                    <div class="row" style="margin-bottom: 30px;">
                         <div class="col-sm-12 col-md-6">
-                            <h5 class="hk-sec-title">ตารางรายงานยอดขายสินค้าใหม่</h5>
                         </div>
                         <div class="col-sm-12 col-md-6">
                             <!-- ------ -->
@@ -38,7 +35,7 @@
                                         @endphp
                                         @if(isset($year_form_search))
                                             @foreach($year_form_search as $value_year)
-                                                @php 
+                                                @php
                                                     $year_thai = $value_year+543;
                                                 @endphp
                                                 @if((isset($year_search)) && ($year_search == $value_year))
@@ -58,10 +55,10 @@
                     </div>
 
                     @include('shareData_union.report_product_new_table')
-                    
+
                 </section>
             </div>
 
         </div>
         <!-- /Row -->
-    </div>  
+    </div>

@@ -6,7 +6,7 @@
             @csrf
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">สรุปผลงานที่ได้รับมอบหมาย</h5>
+                    <h5 class="modal-title">บันทึกส่งผลการดำเนินการ</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -15,7 +15,7 @@
 
                     <div class="card">
                         <div class="card-body">
-                            <h5 id="header_title" class="card-title"></h5>
+                            <h5 class="card-title">สั่งงานเรื่อง : <span id="header_title"></span></h5>
                             <div class="my-3"><span>ผู้สั่งงาน : </span><span id="get_assign_approve_id"></span></div>
                             <div class="my-3"><span>วันที่ปฎิบัติ : </span><span id="get_assign_work_date"></span></div>
 
@@ -107,8 +107,13 @@ function assignment_result(id) {
             $('#get_assign_id').val(data.dataResult.id);
             $('#get_detail').text(data.dataResult.assign_detail);
             $('#header_title').text(data.dataResult.assign_title);
-            $('#get_assign_work_date').text(data.dataResult.assign_work_date);
             $('#get_assign_approve_id').text(data.emp_approve.name);
+
+                let assign_work_date = data.dataResult.assign_work_date.split(" ");
+                let assign_work_date2 = assign_work_date[0].split("-");
+                let work_year_th = parseInt(assign_work_date2[0])+543;
+                let date_work = assign_work_date2[2]+"/"+assign_work_date2[1]+"/"+work_year_th;
+                $('#get_assign_work_date').text(date_work);
 
             let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataResult.assign_fileupload;
             if(data.dataResult.assign_fileupload != ""){

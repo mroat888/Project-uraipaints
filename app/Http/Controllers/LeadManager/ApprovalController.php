@@ -41,7 +41,7 @@ class ApprovalController extends Controller
         ->leftJoin('assignments_comments', 'assignments.id', 'assignments_comments.assign_id')
         ->leftJoin('api_customers', 'api_customers.identify', 'assignments.assign_shop')
         ->join('users', 'assignments.created_by', 'users.id')
-        ->whereIn('assignments.assign_status', [0, 4]) // สถานะอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน, 4=แก้ไขงาน))
+        ->whereIn('assignments.assign_status', [0]) // สถานะอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน, 4=แก้ไขงาน))
         ->where(function($query) use ($auth_team) {
             for ($i = 0; $i < count($auth_team); $i++){
                 $query->orWhere('users.team_id', $auth_team[$i])
@@ -199,43 +199,6 @@ class ApprovalController extends Controller
     public function approval_history()
     {
 
-        // $auth_team_id = explode(',',Auth::user()->team_id);
-        // $auth_team = array();
-        // foreach($auth_team_id as $value){
-        //     $auth_team[] = $value;
-        // }
-
-        // $data['approval_history'] = DB::table('assignments')
-        //     ->join('users', 'assignments.created_by', '=', 'users.id')
-        //     ->whereNotIn('assignments.assign_status', [0, 3])
-        //     ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
-        //     ->where(function($query) use ($auth_team) {
-        //         for ($i = 0; $i < count($auth_team); $i++){
-        //             $query->orWhere('users.team_id', $auth_team[$i])
-        //                 ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
-        //                 ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
-        //         }
-        //     })
-        //     ->select(
-        //         'users.name',
-        //         'assignments.*')
-        //     ->groupBy('assignments.created_by')
-        //     ->get();
-
-        // $data['request_approval'] = DB::table('assignments')
-        //     ->join('users', 'assignments.created_by', '=', 'users.id')
-        //     ->where('assignments.assign_status', 0)
-        //     ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
-        //     ->where(function($query) use ($auth_team) {
-        //         for ($i = 0; $i < count($auth_team); $i++){
-        //             $query->orWhere('users.team_id', $auth_team[$i])
-        //                 ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
-        //                 ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
-        //         }
-        //     })
-        //     ->select('assignments.created_by')
-        //     ->distinct()->get();
-
         $auth_team_id = explode(',',Auth::user()->team_id);
         $auth_team = array();
         foreach($auth_team_id as $value){
@@ -390,30 +353,6 @@ class ApprovalController extends Controller
             ->get();
 
 
-        // $auth_team_id = explode(',',Auth::user()->team_id);
-        // $auth_team = array();
-        // foreach($auth_team_id as $value){
-        //     $auth_team[] = $value;
-        // }
-
-        // $data['approval_history'] = DB::table('assignments')
-        //     ->join('users', 'assignments.created_by', '=', 'users.id')
-        //     ->whereNotIn('assignments.assign_status', [0, 3])
-        //     ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
-        //     ->where('assignments.assign_approve_date', $request->selectdateTo)
-        //     ->where(function($query) use ($auth_team) {
-        //         for ($i = 0; $i < count($auth_team); $i++){
-        //             $query->orWhere('users.team_id', $auth_team[$i])
-        //                 ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
-        //                 ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
-        //         }
-        //     })
-        //     ->select(
-        //         'users.name',
-        //         'assignments.*')
-        //     ->groupBy('assignments.created_by')
-        //     ->get();
-
         return view('leadManager.approval_general_history', $data);
     }
 
@@ -536,26 +475,6 @@ class ApprovalController extends Controller
 
     public function create_comment_request_approval(Request $request)
     {
-        // dd($request);
-
-            // $data = AssignmentComment::where('assign_id', $request->id)->where('created_by', Auth::user()->id)->first();
-            // // return $request->id;
-            // if ($data) {
-            //    $dataEdit = AssignmentComment::where('assign_id', $request->id)->update([
-            //         'assign_comment_detail' => $request->comment,
-            //         'updated_by' => Auth::user()->id,
-            //     ]);
-
-            // } else {
-            //     AssignmentComment::create([
-            //         'assign_id' => $request->id,
-            //         'assign_comment_detail' => $request->comment,
-            //         'created_by' => Auth::user()->id,
-            //     ]);
-            // }
-
-            // return redirect(url('lead/approval_general_detail', $request->createID));
-
             DB::beginTransaction();
         try {
 
@@ -574,6 +493,7 @@ class ApprovalController extends Controller
                 DB::table('assignments')->where('id', $request->id)
                 ->update([
                     'assign_status' => $request->approval_send,
+                    'assign_approve_date' => date('Y-m-d H:i:s'),
                     'assign_approve_id' => Auth::user()->id,
                     'updated_at' => date('Y-m-d H:i:s'),
                 ]);
@@ -590,6 +510,7 @@ class ApprovalController extends Controller
                 DB::table('assignments')->where('id', $request->id)
                 ->update([
                     'assign_status' => $request->approval_send,
+                    'assign_approve_date' => date('Y-m-d H:i:s'),
                     'assign_approve_id' => Auth::user()->id,
                     'updated_at' => date('Y-m-d H:i:s'),
                 ]);
@@ -724,74 +645,4 @@ class ApprovalController extends Controller
     }
     }
 
-    // public function approval_confirm_detail(Request $request)
-    // {
-    //     // dd($request);
-
-    //     if ($request->checkapprove) {
-    //         if ($request->approve) {
-    //         $data = Assignment::get();
-    //         if ($request->CheckAll == "Y") {
-    //             // return "yy";
-    //             // foreach ($data as $value) {
-    //                 foreach ($request->checkapprove as $key => $chk) {
-    //                     Assignment::where('id', $chk)->update([
-    //                         'assign_status' => 1,
-    //                         'assign_status_actoin' => 0,
-    //                         'assign_approve_date' => Carbon::now(),
-    //                         'assign_approve_id' => Auth::user()->id,
-    //                         'updated_by' => Auth::user()->id,
-    //                     ]);
-    //                 }
-    //             // }
-    //         } else {
-    //             // foreach ($data as $value) {
-    //                 foreach ($request->checkapprove as $key => $chk) {
-    //                     Assignment::where('id', $chk)->update([
-    //                         'assign_status' => 1,
-    //                         'assign_status_actoin' => 0,
-    //                         'assign_approve_date' => Carbon::now(),
-    //                         'assign_approve_id' => Auth::user()->id,
-    //                         'updated_by' => Auth::user()->id,
-    //                     ]);
-    //                 }
-    //             // }
-    //         }
-    //     }else {
-    //         $data = Assignment::get();
-    //             if ($request->CheckAll == "Y") {
-    //                 // return "yy";
-    //                 // foreach ($data as $value) {
-    //                     foreach ($request->checkapprove as $key => $chk) {
-    //                         Assignment::where('id', $chk)->update([
-    //                             'assign_status' => 2,
-    //                             'assign_status_actoin' => 0,
-    //                             'assign_approve_date' => Carbon::now(),
-    //                             'assign_approve_id' => Auth::user()->id,
-    //                             'updated_by' => Auth::user()->id,
-    //                         ]);
-    //                     }
-    //                 // }
-    //                 return back();
-    //             } else {
-    //                 // foreach ($data as $value) {
-    //                     foreach ($request->checkapprove as $key => $chk) {
-    //                         Assignment::where('id', $chk)->update([
-    //                             'assign_status' => 2,
-    //                             'assign_status_actoin' => 0,
-    //                             'assign_approve_date' => Carbon::now(),
-    //                             'assign_approve_id' => Auth::user()->id,
-    //                             'updated_by' => Auth::user()->id,
-    //                         ]);
-    //                     }
-    //                 // }
-    //                 return back();
-    //             }
-    //     }
-    //     } else {
-    //         return back()->with('error', "กรุณาเลือกรายการอนุมัติ");
-    //     }
-
-    //     return back();
-    // }
 }
