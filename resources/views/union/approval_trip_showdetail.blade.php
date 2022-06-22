@@ -118,7 +118,7 @@
                                         <td>{{ $trip_detail_date }}</td>
                                         <td>{{ $value['trip_from'] }}</td>
                                         <td>{{ $value['trip_to'] }}</td>
-                                        <td>{{ $value['customer_id'] }}</td>
+                                        <td><?php echo nl2br($value['customer_id']); ?></td>
                                     </tr>
                                     @endforeach
                                 @endif

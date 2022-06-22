@@ -67,7 +67,9 @@
                             <div class="form-group row">
                                 <label for="staticEmail" class="col-sm-4 col-form-label">จำนวนวัน</label>
                                 <div class="col-sm-4">
-                                <input type="number" class="form-control" name="trip_day" id="trip_day" value="{{ $trip_header->trip_day }}" required>
+                                <input type="number" class="form-control" name="trip_day" id="trip_day" 
+                                value="{{ $trip_header->trip_day }}" onkeyup="calculator_allowance();" 
+                                onchange="calculator_allowance();" onclick="calculator_allowance();" required>
                                 </div>
                             </div>
                         </div>
@@ -84,7 +86,9 @@
                             <div class="form-group row">
                                 <label for="staticEmail" class="col-sm-4 col-form-label">อัตราเบี้ยเลี้ยง</label>
                                 <div class="col-sm-4">
-                                <input type="number" class="form-control" name="allowance" id="allowance" value="{{ $trip_header->allowance }}" required>
+                                <input type="number" class="form-control" name="allowance" id="allowance" 
+                                value="{{ $trip_header->allowance }}" onkeyup="calculator_allowance()" 
+                                onchange="calculator_allowance();" onclick="calculator_allowance();" required>
                                 </div>
                             </div>
                         </div>
@@ -92,7 +96,8 @@
                             <div class="form-group row">
                                 <label for="staticEmail" class="col-sm-4 col-form-label">รวมค่าเบี้ยเลี้ยง</label>
                                 <div class="col-sm-4">
-                                <input type="number" class="form-control" name="sum_allowance" id="sum_allowance" value="{{ $trip_header->sum_allowance }}" required>
+                                <input type="number" class="form-control" name="sum_allowance" id="sum_allowance" 
+                                value="{{ $trip_header->sum_allowance }}" readonly>
                                 </div>
                             </div>
                         </div>
@@ -145,7 +150,7 @@
                                         <td>{{ $trip_detail_date }}</td>
                                         <td>{{ $value['trip_from'] }}</td>
                                         <td>{{ $value['trip_to'] }}</td>
-                                        <td>{{ $value['customer_id'] }}</td>
+                                        <td><?php echo  nl2br($value['customer_id']); ?></td>
                                     </tr>
                                     @endforeach
                                 @endif
@@ -296,6 +301,15 @@
 <!-- /Container -->
 
 <script>
+
+    function calculator_allowance(){
+        let trip_day = parseInt($('#trip_day').val());
+        let allowance = parseInt($('#allowance').val());
+
+        let sum_allowance = trip_day*allowance;
+
+        $('#sum_allowance').val(sum_allowance);
+    }
 
      $("#form_trip_update").on("submit", function (e) {
         e.preventDefault();
