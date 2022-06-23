@@ -150,6 +150,22 @@ class UnionTripController extends Controller
 
     public function trip_detail($id)
     {
+        $data = $this->trip_fetchshowdetail($id);
+
+        switch  (Auth::user()->status){
+            case 1 :    return view('saleman.tripdetail', $data); 
+                break;
+            case 2 :    return view('leadManager.tripdetail', $data); 
+                break;
+            case 3 :    return view('headManager.tripdetail', $data); 
+                break;
+            case 4 :   
+                break;
+        }
+    }
+
+    public function trip_fetchshowdetail($id)
+    {
         $api_token = $this->api_token->apiToken();  
         
         $data['trip_header'] = DB::table('trip_header')->where('id', $id)->first();
@@ -232,16 +248,7 @@ class UnionTripController extends Controller
             }
         }
 
-        switch  (Auth::user()->status){
-            case 1 :    return view('saleman.tripdetail', $data); 
-                break;
-            case 2 :    return view('leadManager.tripdetail', $data); 
-                break;
-            case 3 :    return view('headManager.tripdetail', $data); 
-                break;
-            case 4 :   
-                break;
-        }
+        return $data;
     }
 
     public function trip_detail_store(Request $request){

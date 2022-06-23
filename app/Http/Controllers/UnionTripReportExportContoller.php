@@ -114,9 +114,13 @@ class UnionTripReportExportContoller extends Controller
                     }
                 }
 
-                foreach($customer_api as $customer){
-                    if($value->customer_id == $customer['identify']){
-                        $customer_name = $customer['title']." ".$customer['name'];
+                $customer_name = "";
+                $customers = explode(',', $value->customer_id);
+                foreach($customers as $customer_id){
+                    foreach($customer_api as $customer){
+                        if($customer_id == $customer['identify']){
+                            $customer_name .= $customer['title']." ".$customer['name']."<br />";
+                        }
                     }
                 }
 

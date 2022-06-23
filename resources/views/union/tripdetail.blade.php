@@ -93,9 +93,11 @@
                     <div class="topichead-bggreen">
                         รายการทริปเดินทาง
                     </div>
-                    <div class="content-right d-flex">
-                        <button type="button" class="btn-green" data-toggle="modal" id="createmodal"> + เพิ่มใหม่ </button>
-                    </div>
+                    @if($trip_header->trip_status == '0')
+                        <div class="content-right d-flex">
+                            <button type="button" class="btn-green" data-toggle="modal" id="createmodal"> + เพิ่มใหม่ </button>
+                        </div>   
+                    @endif
                 </div>
                 <div class="row">
                     <div class="col-md-12">
@@ -108,7 +110,9 @@
                                         <th>จากจังหวัด</th>
                                         <th>ถึงจังหวัด</th>
                                         <th>ร้านค้า</th>
+                                        @if($trip_header->trip_status == '0')
                                         <th class="text-center">Action</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -127,6 +131,7 @@
                                         <td>
                                             <?php echo nl2br($value['customer_id']); ?>
                                         </td>
+                                        @if($trip_header->trip_status == '0')
                                         <td style="text-align:center;">
                                             <button class="btn btn-icon btn-edit btn_edittrip"
                                                 value="{{ $value['id'] }}">
@@ -140,6 +145,7 @@
                                                         class="ion ion-md-trash"></i></h4>
                                             </button>
                                         </td>
+                                        @endif
                                     </tr>
                                     @endforeach
                                 @endif

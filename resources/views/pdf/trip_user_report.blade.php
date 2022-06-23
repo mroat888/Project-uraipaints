@@ -124,12 +124,12 @@
     <table>
         <thead>
             <tr>
-                <th>#</th>
-                <th>วันที่</th>
-                <th>จากจังหวัด</th>
-                <th>ถึงจังหวัด</th>
-                <th>ร้านค้า</th>
-                <th>หมายเหตุ</th>
+                <th style="width:8%;">#</th>
+                <th style="width:15%;">วันที่</th>
+                <th style="width:15%;">จากจังหวัด</th>
+                <th style="width:15%;">ถึงจังหวัด</th>
+                <th style="width:32%;">ร้านค้า</th>
+                <th style="width:15%;">หมายเหตุ</th>
             </tr>
         </thead>
         <tbody>
@@ -141,12 +141,12 @@
                     $trip_detail_date = $day_date."/".$month_date."/".$year_date_thai;
                 @endphp
             <tr style="text-align:center;">
-                <td>{{ ++$key }}</td>
-                <td>{{ $trip_detail_date }}</td>
-                <td>{{ $value['trip_from'] }}</td>
-                <td>{{ $value['trip_to'] }}</td>
-                <td>{{ $value['customer_id'] }}</td>
-                <td></td>
+                <td style="vertical-align: top;">{{ ++$key }}</td>
+                <td style="vertical-align: top;">{{ $trip_detail_date }}</td>
+                <td style="vertical-align: top;">{{ $value['trip_from'] }}</td>
+                <td style="vertical-align: top;">{{ $value['trip_to'] }}</td>
+                <td style="text-align:left; vertical-align: top;"><?php echo nl2br($value['customer_id']); ?></td>
+                <td style="vertical-align: top;"></td>
             </tr>
             @endforeach
         @endif
