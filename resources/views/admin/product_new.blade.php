@@ -79,7 +79,15 @@
                                                         @break
                                             @endswitch
                                         </td>
-                                        <td><a href="{{$value->product_url	}}" style="color: rgb(11, 8, 141);">{!! Str::limit($value->product_url,20) !!}</a></td>
+                                        <td>
+                                            @if ($value->product_url)
+                                                <a href="{{$value->product_url}}" target="_bank" class="btn btn-icon btn-view">
+                                                    <h4 class="btn-icon-wrap" style="color: white;">
+                                                        <span class="material-icons">dataset_linked</span>
+                                                    </h4>
+                                                </a>
+                                            @endif
+                                        </td>
                                         <td>
                                             <form action="{{url('admin/delete_product_new', $value->id)}}" method="get">
                                                 @csrf

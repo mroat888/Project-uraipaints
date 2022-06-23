@@ -118,8 +118,6 @@
 
 </style>
 
-    <!-- Container -->
-    <div class="container-fluid px-xxl-65 px-xl-20">
          <!-- Title -->
          <div class="hk-pg-header mb-10">
             <div class="topichead-bgred"><i class="ion ion-md-clipboard"></i> รายละเอียดใบราคา</div>
@@ -148,10 +146,31 @@
 
                 <div class="col-md-6">
                     <div class="row">
-                        <div class="col-md-12"><div class="boxnews-date">
-                            <h6>{{$data_product->name}}</h6>
-                            <p class="mt-2">{{$data_product->description}}</p>
+                        <div class="col-md-6">
+                            <div class="boxnews-date">
+                                <p style="font-size: 16px;"><span style="font-weight: bold;">หมวด : </span>
+                                    @foreach ($dataGroups as $key => $group)
+                                    @if ($dataGroups[$key]['id'] == $data_product->category_id)
+                                        {{$dataGroups[$key]['group_name']}}
+                                    @endif
+                                    @endforeach
+                                </p>
+                            </div>
+                    </div>
+                        <div class="col-md-6">
+                            <div class="boxnews-date">
+                                <p style="font-size: 16px;"><span style="font-weight: bold;">ชื่อใบราคา : </span>{{$data_product->name}}</p>
                         </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="boxnews-date">
+                            <p style="font-size: 16px;"><span style="font-weight: bold;">รายละเอียด : </span>{{$data_product->description}}</p>
+                    </div>
+                </div>
+                    <div class="boxnews-date col-md-12">
+                        @if ($data_product->url)
+                            <a href="{{$data_product->url}}" target="_bank" class="btn-morenews">ดูรายละเอียดเพิ่มเติม</a>
+                            @endif
                     </div>
                     </div>
                 </div>
@@ -173,5 +192,3 @@
                     @endforeach
                 </div>
             </section>
-    </div>
-    <!-- /Container -->

@@ -22,45 +22,4 @@
     </div>
     <!-- /Container -->
 
-    <script>
-        //Edit
-        function view_modal(id) {
-            $.ajax({
-                type: "GET",
-                url: "{!! url('lead/view_product_mto_detail/"+id+"') !!}",
-                dataType: "JSON",
-                async: false,
-                success: function(data) {
-                    $('#view_img_show').children().remove().end();
-
-                    $('#view_date').text(data.dataEdit.updated_at);
-                    $('#view_description').text(data.dataEdit.description);
-                    $('#view_url').text(data.dataEdit.url);
-
-                    $.each(data.editGroups, function(key, value){
-                        if(data.editGroups[key]['id'] == data.dataEdit.category_id){
-                            $('#view_category_id').text(data.editGroups[key]['group_name']);
-                        }
-                    });
-
-                    $.each(data.editBrands, function(key, value){
-                        if(data.editBrands[key]['id'] == data.dataEdit.brand_id){
-                            $('#view_brand_id').text(data.editBrands[key]['brand_name']);
-                        }
-                    });
-
-                    let img_name = '{{ asset('/public/upload/ProductMTO') }}/' + data.dataEdit.image;
-                    if (data.dataEdit.image != "") {
-                        ext = data.dataEdit.image.split('.').pop().toLowerCase();
-                        console.log(img_name);
-                        if (img_name) {
-                            $('#view_img_show').append('<img class="img_1" src = "' + img_name + '" style="max-width:100%;">');
-                        }
-                    }
-
-                    $('#viewProductMto').modal('toggle');
-                }
-            });
-        }
-    </script>
 @endsection

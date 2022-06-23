@@ -31,7 +31,14 @@
                                             <td>{{ $delivery_api[$key]['total_quan'] }}</td>
                                             <td>{{ $delivery_api[$key]['delivery_type'] }}</td>
                                             <td>{{ $delivery_api[$key]['delivery_status'] }}</td>
-                                            <td>{{ $delivery_api[$key]['delivery_date'] }}</td>
+                                            <td>
+                                                @php
+                                                    list($day, $month, $year) = explode("/", $delivery_api[$key]['delivery_date']);
+                                                    $year_create_thai = $year+543;
+                                                    $created_at_thai = $day."/".$month."/".$year_create_thai;
+                                                @endphp
+                                                {{$created_at_thai}}
+                                            </td>
                                             <td>{{ $delivery_api[$key]['remark'] }}</td>
                                         </tr>
                                     @endforeach

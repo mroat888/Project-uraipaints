@@ -292,15 +292,15 @@ class ProductCancelController extends Controller
 
     public function view_detail($id)
     {
-        $dataEdit = ProductCancel::find($id);
+        $data_product = ProductCancel::find($id);
 
         $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/groups');
         $res_api = $response->json();
 
-        $editGroups = array();
+        $dataGroups = array();
         foreach ($res_api['data'] as $key => $value) {
-            $editGroups[$key] =
+            $dataGroups[$key] =
             [
                 'id' => $value['identify'],
                 'group_name' => $value['name'],
@@ -310,9 +310,9 @@ class ProductCancelController extends Controller
         $response2 = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/brands');
         $res_api2 = $response2->json();
 
-        $editBrands = array();
+        $dataBrands = array();
         foreach ($res_api2['data'] as $key => $value) {
-            $editBrands[$key] =
+            $dataBrands[$key] =
             [
                 'id' => $value['identify'],
                 'brand_name' => $value['name'],
@@ -320,10 +320,10 @@ class ProductCancelController extends Controller
         }
 
         $data = array(
-            'dataEdit'  => $dataEdit,
-            'editGroups'  => $editGroups,
-            'editBrands'  => $editBrands,
+            'data_product'  => $data_product,
+            'dataGroups'  => $dataGroups,
+            'dataBrands'  => $dataBrands,
         );
-        echo json_encode($data);
+        return view('admin.product_cancel_view_detail', $data);
     }
 }

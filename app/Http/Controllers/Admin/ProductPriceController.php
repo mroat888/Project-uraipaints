@@ -263,9 +263,9 @@ class ProductPriceController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/groups');
         $res_api = $response->json();
 
-        $data['groups'] = array();
+        $data['dataGroups'] = array();
         foreach ($res_api['data'] as $key => $value) {
-            $data['groups'][$key] =
+            $data['dataGroups'][$key] =
             [
                 'id' => $value['identify'],
                 'group_name' => $value['name'],

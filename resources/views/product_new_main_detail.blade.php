@@ -1,15 +1,3 @@
-{{-- @extends('layouts.masterAdmin')
-
-@section('content')
- <!-- Breadcrumb -->
- <nav class="hk-breadcrumb" aria-label="breadcrumb">
-    <ol class="breadcrumb breadcrumb-light bg-transparent">
-        <li class="breadcrumb-item">สินค้าใหม่</li>
-        <li class="breadcrumb-item active">รายละเอียดสินค้าใหม่</li>
-    </ol>
-</nav>
-<!-- /Breadcrumb --> --}}
-
 <style>
     .img_1 {
   border: 1px solid #ddd;
@@ -161,6 +149,11 @@
                             <h6>{{$data_product->product_title}}</h6>
                             <p class="mt-2">{{$data_product->product_detail}}</p>
                         </div>
+                    </div>
+                    <div class="boxnews-date col-md-12">
+                        @if ($data_product->product_url)
+                            <a href="{{$data_product->product_url}}" target="_bank" class="btn-morenews">ดูรายละเอียดเพิ่มเติม</a>
+                            @endif
                     </div>
                     </div>
                     @if ($data_product->status_share == 1)

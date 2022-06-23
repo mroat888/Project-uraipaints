@@ -48,12 +48,25 @@ class ProductPriceController extends Controller
         $data_product = ProductPrice::where('id', $id)->first();
         $gallerys = ProductPriceGallery::where('product_price_id', $id)->orderBy('id', 'desc')->get();
 
+        $api_token = $this->api_token->apiToken();
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/groups');
+        $res_api = $response->json();
+
+        $dataGroups = array();
+        foreach ($res_api['data'] as $key => $value) {
+            $dataGroups[$key] =
+            [
+                'id' => $value['identify'],
+                'group_name' => $value['name'],
+            ];
+        }
+
         if (Auth::user()->status == 1) {
-            return view('saleman.product_price_detail', compact('data_product', 'gallerys'));
+            return view('saleman.product_price_detail', compact('data_product', 'gallerys', 'dataGroups'));
         }elseif (Auth::user()->status == 2) {
-            return view('leadManager.product_price_detail', compact('data_product', 'gallerys'));
+            return view('leadManager.product_price_detail', compact('data_product', 'gallerys', 'dataGroups'));
         }elseif (Auth::user()->status == 3) {
-            return view('headManager.product_price_detail', compact('data_product', 'gallerys'));
+            return view('headManager.product_price_detail', compact('data_product', 'gallerys', 'dataGroups'));
         }
     }
 

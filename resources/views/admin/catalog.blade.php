@@ -89,7 +89,7 @@
                                         </td>
                                         <td>{{$date}}</td>
                                         <td>
-                                            <a href="#" onclick="view_modal({{ $value->id }})" data-toggle="modal" data-target="#viewCatalog">
+                                            <a href="{{url('admin/view_product_catalog_detail', $value->id)}}">
                                                 <img src="{{ isset($value->image) ? asset('public/upload/Catalog/' . $value->image) : '' }}" width="100">
                                             </a>
                                         </td>
@@ -103,7 +103,15 @@
                                                         @break
                                             @endswitch
                                         </td>
-                                        <td><a href="{{$value->url	}}" style="color: rgb(11, 8, 141);">{!! Str::limit($value->url,20) !!}</a></td>
+                                        <td>
+                                            @if ($value->url)
+                                                <a href="{{$value->url}}" target="_bank" class="btn btn-icon btn-view">
+                                                    <h4 class="btn-icon-wrap" style="color: white;">
+                                                        <span class="material-icons">dataset_linked</span>
+                                                    </h4>
+                                                </a>
+                                            @endif
+                                        </td>
                                         <td>
                                             {{-- <form action="{{url('admin/delete_catalog', $value->id)}}" method="get">
                                                 @csrf --}}
@@ -279,65 +287,6 @@
         </div>
     </div>
 
-
-    <div class="modal fade" id="viewCatalog" tabindex="-1" role="dialog" aria-labelledby="viewCatalog" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">รายละเอียดแคตตาล็อกสินค้า</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" style="color: black;">
-                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label for="category" style="font-weight: bold;">หมวด : </label>
-                                <span id="view_category_id"></span>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label for="date" style="font-weight: bold;">วันที่อัพเดตล่าสุด : </label>
-                                <span id="view_date"></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label for="brand" style="font-weight: bold;">ตราสินค้า : </label>
-                                <span id="view_brand_id"></span>
-                            </div>
-                                <div class="col-md-6 form-group">
-                                    <label for="ProductList" style="font-weight: bold;">Product List : </label>
-                                    <span id="view_product_list"></span>
-                                </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="description" style="font-weight: bold;">รายละเอียด : </label>
-                            <span id="view_description"></span>
-                        </div>
-                        <div class="form-group">
-                            <label for="url" style="font-weight: bold;">Link URL : </label>
-                            <span id="view_url"></span>
-                        </div>
-                        <hr>
-                        <div class="form-group">
-                            <label for="image" style="font-weight: bold;">รูปภาพ</label>
-                        </div>
-                        <div>
-                            <div class="form-group">
-                                <center>
-                                    <span id="view_img_show" class=""></span>
-                                </center>
-                            </div>
-                        </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
     <!-- Modal Delete -->
     <div class="modal fade" id="ModalCatalogDelete" tabindex="-1" role="dialog" aria-labelledby="ModalCatalogDelete"
         aria-hidden="true">
@@ -371,55 +320,6 @@
       padding: 5px;
         }
     </style>
-
-    <script>
-        //Edit
-        function view_modal(id) {
-            $.ajax({
-                type: "GET",
-                url: "{!! url('admin/view_product_catalog_detail/"+id+"') !!}",
-                dataType: "JSON",
-                async: false,
-                success: function(data) {
-                    $('#view_img_show').children().remove().end();
-
-                    // $('#get_id').val(data.dataEdit.id);
-                    $('#view_date').text(data.dataEdit.updated_at);
-                    $('#view_description').text(data.dataEdit.description);
-                    $('#view_url').text(data.dataEdit.url);
-
-                    $.each(data.editGroups, function(key, value){
-                        if(data.editGroups[key]['id'] == data.dataEdit.category_id){
-                            $('#view_category_id').text(data.editGroups[key]['group_name']);
-                        }
-                    });
-
-                    $.each(data.editBrands, function(key, value){
-                        if(data.editBrands[key]['id'] == data.dataEdit.brand_id){
-                            $('#view_brand_id').text(data.editBrands[key]['brand_name']);
-                        }
-                    });
-
-                    $.each(data.editPdglists, function(key, value){
-                        if(data.editPdglists[key]['id'] == data.dataEdit.product_list){
-                            $('#view_product_list').text(data.editPdglists[key]['pdglist_name']);
-                        }
-                    });
-
-                    let img_name = '{{ asset('/public/upload/Catalog') }}/' + data.dataEdit.image;
-                    if (data.dataEdit.image != "") {
-                        ext = data.dataEdit.image.split('.').pop().toLowerCase();
-                        console.log(img_name);
-                        if (img_name) {
-                            $('#view_img_show').append('<img class="img_1" src = "' + img_name + '" style="max-width:100%;">');
-                        }
-                    }
-
-                    $('#viewCatalog').modal('toggle');
-                }
-            });
-        }
-    </script>
 
     <script>
         $("#form_insert_product_catalog").on("submit", function (e) {
