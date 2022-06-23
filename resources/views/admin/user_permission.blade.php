@@ -76,7 +76,9 @@
                                     <td>
                                         <div class="button-list">
                                             <a href="{{ url('admin/update-status-use', $value->id)}}" class="btn btn-icon btn-view">
-                                                <span class="btn-icon-wrap"><i data-feather="power"></i></span>
+                                                <h4 class="btn-icon-wrap" style="color: white;"><span
+                                                    class="material-icons">settings_power</span>
+                                                </h4>
                                             </a>
                                             <button class="btn btn-icon btn-edit btn_edit" value="{{ $value->id }}">
                                                 <h4 class="btn-icon-wrap" style="color: white;"><span
@@ -166,10 +168,16 @@
 
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="firstName">รูปภาพ (ลายเซ็นต์) </label>
+                                <input type="file" name="image" class="form-control">
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                        <button type="submit" class="btn btn-primary">บันทึก</button>
                     </div>
                 </form>
 
@@ -197,6 +205,7 @@
             success: function(response){
                 console.log(response);
                 if(response.status == 200){
+                    $('#img_show').children().remove().end();
                     $('#edit_sel_status').children().remove().end();
                     $('#edit_sel_api_identify').children().remove().end();
                     $('#edit_sel_team').children().remove().end();
@@ -204,6 +213,14 @@
                     $('#edit_tname').val(response.dataUser.name);
                     $('#edit_temail').val(response.dataUser.email);
                     $("#modaledit").modal('show');
+
+                    let img_name = '{{ asset('/public/upload/UserSignature') }}/' + response.dataUser.signature;
+                    if (response.dataUser.signature != "") {
+                        // console.log(img_name);
+                        if (img_name) {
+                            $('#img_show').append('<img src = "' + img_name + '" style="max-width:20%;">');
+                        }
+                    }
 
                     $.each(response.master_permission, function(key, value){
                         if(value.id == response.dataUser.status){

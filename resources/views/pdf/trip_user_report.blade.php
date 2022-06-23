@@ -123,21 +123,12 @@
     <table>
         <thead>
             <tr>
-<<<<<<< HEAD
-                <th style="border: 1px solid;">#</th>
-                <th style="border: 1px solid;">วันที่</th>
-                <th style="border: 1px solid;">จากจังหวัด</th>
-                <th style="border: 1px solid;">ถึงจังหวัด</th>
-                <th style="border: 1px solid;">ร้านค้า</th>
-                <th style="border: 1px solid;">หมายเหตุ</th>
-=======
                 <th style="width:8%;">#</th>
                 <th style="width:15%;">วันที่</th>
                 <th style="width:15%;">จากจังหวัด</th>
                 <th style="width:15%;">ถึงจังหวัด</th>
                 <th style="width:32%;">ร้านค้า</th>
                 <th style="width:15%;">หมายเหตุ</th>
->>>>>>> 871067175eeace621685acc3ffe0e1e95a924e42
             </tr>
         </thead>
         <tbody>
@@ -149,21 +140,12 @@
                     $trip_detail_date = $day_date."/".$month_date."/".$year_date_thai;
                 @endphp
             <tr style="text-align:center;">
-<<<<<<< HEAD
-                <td style="border: 1px solid;">{{ ++$key }}</td>
-                <td style="border: 1px solid;">{{ $trip_detail_date }}</td>
-                <td style="border: 1px solid;">{{ $value['trip_from'] }}</td>
-                <td style="border: 1px solid;">{{ $value['trip_to'] }}</td>
-                <td style="border: 1px solid;">{{ $value['customer_id'] }}</td>
-                <td style="border: 1px solid;"></td>
-=======
                 <td style="vertical-align: top;">{{ ++$key }}</td>
                 <td style="vertical-align: top;">{{ $trip_detail_date }}</td>
                 <td style="vertical-align: top;">{{ $value['trip_from'] }}</td>
                 <td style="vertical-align: top;">{{ $value['trip_to'] }}</td>
                 <td style="text-align:left; vertical-align: top;"><?php echo nl2br($value['customer_id']); ?></td>
                 <td style="vertical-align: top;"></td>
->>>>>>> 871067175eeace621685acc3ffe0e1e95a924e42
             </tr>
             @endforeach
         @endif
