@@ -16,7 +16,7 @@
 </nav>
 <!-- /Breadcrumb -->
 
-    <!-- Container -->
+<!-- Container -->
 <div class="container-fluid px-xxl-65 px-xl-20">
     @if (session('error'))
         <div class="alert alert-inv alert-inv-warning alert-wth-icon alert-dismissible fade show" role="alert">
@@ -30,7 +30,9 @@
         <!-- Title -->
         <div class="hk-pg-header mb-10">
         <div class="topichead-bgred"><i class="ion ion-md-clipboard"></i> ปิดทริปเดินทาง</div>
-        <div class="content-right d-flex"></div>
+        <div class="content-right d-flex">
+            <button type="button" class="btn btn-reject btn-sm ml-5 btn_seandmail">ส่งอีเมล ทริปเดินทาง</button>
+        </div>
     </div>
     <!-- /Title -->
 
@@ -102,7 +104,7 @@
                                 <button type="button" class="btn btn_purple btn-green btn-sm btn_approve" value="complate">Complate</button>
                                 <button type="button" class="btn btn_purple btn-reject btn-sm ml-5 btn_approve" value="pdf">ดาวโหลด PDF</button>
                                 <button type="button" class="btn btn_purple btn-reject btn-sm ml-5 btn_approve" value="excle">ดาวโหลด Excle</button>
-                                <button type="button" class="btn btn_purple btn-reject btn-sm ml-5 btn_approve" value="seandmail">ส่งเมล</button>
+                                <!-- <button type="button" class="btn btn_purple btn-reject btn-sm ml-5 btn_approve" value="seandmail">ส่งเมล</button> -->
 
                             </div>
 
@@ -234,7 +236,58 @@
                 </section>
             </div>
         </div>
-        <!-- /Row -->
+        <!-- /Row --> 
+
+        <!-- Modalfromemail -->
+        <div class="modal fade" id="Modalfromemail" tabindex="-1" role="dialog" aria-labelledby="Modalfromemail" aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document">
+                <form id="fromemail" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">ส่งอีเมล ทริปเดินทาง ประจำเดือน</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="row">
+                            <div class="col-md-4 form-group">
+                                <label for="selectdateEmail">เดือน/ปี</label>
+                                <input type="month" id="selectdateEmail" name="selectdateEmail"
+                                value="{{ date('Y-m') }}" class="form-control form-control-lg" required/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <label for="subject">หัวข้อ</label>
+                                <input type="text" id="subject" name="subject" placeholder="ใบเบิกเบี้ยเลี้ยง ประจำเดือน"
+                                value="" class="form-control form-control-lg" required/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <label for="tosend">ถึง</label>
+                                <select name="tosend[]" class="select2 select2-multiple form-control tosend" multiple="multiple" id="tosend" data-placeholder="Choose" required>
+                                    <optgroup label="เลือกข้อมูล">
+                                        @foreach ($users as $user)
+                                        <option value="{{ $user->email }}">{{ $user->name }}</option>
+                                        @endforeach
+                                    </optgroup> 
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                        <button type="submit" class="btn btn-primary" id="btn_save_edit">ส่งอีเมล</button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+        <!-- End Modalfromemail -->
 </div>
 
 
@@ -272,13 +325,15 @@
         }
     }
 
+    $(document).on('click', '.btn_seandmail', function(){
+        $('#Modalfromemail').modal('show');
+    });
+
     $(document).on('click', '.btn_approve', function() {
         let approve = $(this).val();
         $('#approve').val(approve);
         $('#ModalSaleplanApprove').modal('show');
     });
-
-
 
     $("#from_trip_approve").on("submit", function(e) {
         e.preventDefault();
