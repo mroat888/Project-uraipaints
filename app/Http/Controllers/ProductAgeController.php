@@ -109,15 +109,15 @@ class ProductAgeController extends Controller
 
     public function view_detail($id)
     {
-        $dataEdit = ProductAge::find($id);
+        $data_product = ProductAge::find($id);
 
         $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/groups');
         $res_api = $response->json();
 
-        $editGroups = array();
+        $dataGroups = array();
         foreach ($res_api['data'] as $key => $value) {
-            $editGroups[$key] =
+            $dataGroups[$key] =
             [
                 'id' => $value['identify'],
                 'group_name' => $value['name'],
@@ -127,9 +127,9 @@ class ProductAgeController extends Controller
         $response2 = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/brands');
         $res_api2 = $response2->json();
 
-        $editBrands = array();
+        $dataBrands = array();
         foreach ($res_api2['data'] as $key => $value) {
-            $editBrands[$key] =
+            $dataBrands[$key] =
             [
                 'id' => $value['identify'],
                 'brand_name' => $value['name'],
@@ -137,10 +137,16 @@ class ProductAgeController extends Controller
         }
 
         $data = array(
-            'dataEdit'  => $dataEdit,
-            'editGroups'  => $editGroups,
-            'editBrands'  => $editBrands,
+            'data_product'  => $data_product,
+            'dataGroups'  => $dataGroups,
+            'dataBrands'  => $dataBrands,
         );
-        echo json_encode($data);
+        if (Auth::user()->status == 1) {
+            return view('saleman.product_age_view_detail', $data);
+        }elseif (Auth::user()->status == 2) {
+            return view('leadManager.product_age_view_detail', $data);
+        }elseif (Auth::user()->status == 3) {
+            return view('headManager.product_age_view_detail', $data);
+        }
     }
 }

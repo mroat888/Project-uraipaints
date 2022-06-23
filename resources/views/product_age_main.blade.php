@@ -38,7 +38,16 @@
                             <div class="row">
                                 @foreach ($product_age as $value)
                                 <div class="col-lg-4 col-md-4 col-sm-12">
-                                    <a href="#" onclick="view_modal({{ $value->id }})" data-toggle="modal" data-target="#viewProductAge">
+                                    @if (Auth::user()->status == 1)
+                                    <a href="{{url('view_product_age_detail', $value->id)}}">
+
+                                    @elseif (Auth::user()->status == 2)
+                                    <a href="{{url('lead/view_product_age_detail', $value->id)}}">
+
+                                        @elseif (Auth::user()->status == 3)
+                                        <a href="{{url('head/view_product_age_detail', $value->id)}}">
+                                    @endif
+
                                     <div class="card mb-20">
                                         <center>
                                             <img class="" src="{{ isset($value->image) ? asset('public/upload/ProductAge/' . $value->image) : '' }}" alt="{{ $value->image}}" width="250">

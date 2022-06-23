@@ -1,15 +1,3 @@
-@extends('layouts.masterAdmin')
-
-@section('content')
- <!-- Breadcrumb -->
- <nav class="hk-breadcrumb" aria-label="breadcrumb">
-    <ol class="breadcrumb breadcrumb-light bg-transparent">
-        <li class="breadcrumb-item">ใบราคา</li>
-        <li class="breadcrumb-item active">รายละเอียดใบราคา</li>
-    </ol>
-</nav>
-<!-- /Breadcrumb -->
-
 <style>
     .img_1 {
   border: 1px solid #ddd;
@@ -129,13 +117,20 @@
 
 </style>
 
-    <!-- Container -->
-    <div class="container-fluid px-xxl-65 px-xl-20">
          <!-- Title -->
          <div class="hk-pg-header mb-10">
-            <div class="topichead-bgred"><i data-feather="clipboard"></i> รายละเอียดใบราคา</div>
+            <div class="topichead-bgred"><i data-feather="clipboard"></i> รายละเอียดแคตตาล็อกสินค้า</div>
             <div class="content-right d-flex">
-                <a href="{{url('admin/product_price')}}" type="button" class="btn btn-secondary btn-rounded ml-2"> ย้อนกลับ</a>
+                @if (Auth::user()->status == 1)
+                    <a href="{{url('catalog')}}" type="button" class="btn btn-secondary btn-rounded ml-2"> ย้อนกลับ</a>
+                @elseif (Auth::user()->status == 2)
+                    <a href="{{url('lead/catalog')}}" type="button" class="btn btn-secondary btn-rounded ml-2"> ย้อนกลับ</a>
+                @elseif (Auth::user()->status == 3)
+                <a href="{{url('head/catalog')}}" type="button" class="btn btn-secondary btn-rounded ml-2"> ย้อนกลับ</a>
+                @elseif (Auth::user()->status == 4)
+                <a href="{{url('admin/catalog')}}" type="button" class="btn btn-secondary btn-rounded ml-2"> ย้อนกลับ</a>
+                @endif
+
             </div>
         </div>
         <!-- /Title -->
@@ -145,7 +140,7 @@
                 <div class="col-md-6">
                     <div class="partnerGal-slide detail_slide" style="border: 1px solid #ddd;">
                         <div id="big" class="owl-carousel owl-theme big-img slider">
-                            <a class="item" data-fancybox="gallery" href="{{ asset('public/upload/ProductPrice/' . $product_price->image)}}"><img src="{{ asset('public/upload/ProductPrice/' . $product_price->image)}}"></a>
+                            <a class="item" data-fancybox="gallery" href="{{ asset('public/upload/Catalog/' . $data_product->image)}}"><img src="{{ asset('public/upload/Catalog/' . $data_product->image)}}"></a>
                         </div>
                     </div>
                 </div>
@@ -156,52 +151,55 @@
                             <div class="boxnews-date">
                                 <p style="font-size: 16px;"><span style="font-weight: bold;">หมวด : </span>
                                     @foreach ($dataGroups as $key => $group)
-                                    @if ($dataGroups[$key]['id'] == $product_price->category_id)
+                                    @if ($dataGroups[$key]['id'] == $data_product->category_id)
                                         {{$dataGroups[$key]['group_name']}}
                                     @endif
                                     @endforeach
                                 </p>
                             </div>
                     </div>
-                        <div class="col-md-6">
-                            <div class="boxnews-date">
-                                <p style="font-size: 16px;"><span style="font-weight: bold;">ชื่อใบราคา : </span>{{$product_price->name}}</p>
-                        </div>
+                    <div class="boxnews-date col-md-6">
+                        <p style="font-size: 16px;"><span style="font-weight: bold;">วันที่อัพเดตล่าสุด : </span>{{Carbon\Carbon::parse($data_product->updated_at)->addYear(543)->format('d/m/Y')}}</p>
                     </div>
-                    <div class="col-md-12">
-                        <div class="boxnews-date">
-                            <p style="font-size: 16px;"><span style="font-weight: bold;">รายละเอียด : </span>{{$product_price->description}}</p>
+                    <div class="boxnews-date col-md-6">
+                        <p style="font-size: 16px;"><span style="font-weight: bold;">แบรนด์สินค้า : </span>
+                            @foreach ($dataBrands as $key => $group)
+                                @if ($dataBrands[$key]['id'] == $data_product->brand_id)
+                                    {{$dataBrands[$key]['brand_name']}}
+                                @endif
+                            @endforeach
+                        </p>
                     </div>
-                </div>
+                    <div class="boxnews-date col-md-6">
+                        <p style="font-size: 16px;"><span style="font-weight: bold;">Product List : </span>
+                            @foreach ($dataPdglists as $key => $pdglist)
+                                @if ($dataPdglists[$key]['id'] == $data_product->product_list)
+                                    {{$dataPdglists[$key]['pdglist_name']}}
+                                @endif
+                            @endforeach
+                        </p>
+                    </div>
                     <div class="boxnews-date col-md-12">
-                        @if ($product_price->url)
-                            <a href="{{$product_price->url}}" target="_bank" class="btn-morenews">ดูรายละเอียดเพิ่มเติม</a>
+                        <p style="font-size: 16px;"><span style="font-weight: bold;">รายละเอียด : </span>{{$data_product->description}}</p>
+                    </div>
+                    <div class="boxnews-date col-md-12">
+                        @if ($data_product->url)
+                            <a href="{{$data_product->url}}" target="_bank" class="btn-morenews">ดูรายละเอียดเพิ่มเติม</a>
                             @endif
                     </div>
                     </div>
-                </div>
-                <div class="col-md-12 text-right" style="font-size: 14px;">อัพเดตวันที่ : {{Carbon\Carbon::parse($product_price->updated_at)->addYear(543)->format('d/m/Y')}}</div>
-                </div>
-            </section>
+                    @if ($data_product->status_share == 1)
+                            <div class="col-md-12 mt-5 text-right"><p>แชร์ข้อมูลไปที่</p>
+                                <a href="http://www.facebook.com/sharer.php?u={{$data_product->url}}" target="_blank" class="btn btn-icon btn-icon-circle btn-indigo btn-icon-style-2 mt-2"><span class="btn-icon-wrap"><i class="fa fa-facebook"></i></span></a>
+                                <a href="https://social-plugins.line.me/lineit/share?url={{$data_product->url}}" class="btn btn-icon btn-icon-circle btn-success btn-icon-style-2 mt-2" target="_blank">
+                                    <span class="btn-icon-wrap"><img src="{{ asset('public/images/icon/icon-lineWH.svg')}}" width="20"></span>
 
-            <section class="hk-sec-wrapper">
-                <div class="topic-secondgery">อัลบั้ม</div>
-                <div class="row">
-                    @foreach ($gallerys as $value)
-                        <div class="col-lg-2 col-md-4 col-sm-4 col-6 mb-10">
-                            <div class="partnerGal-slide detail_slide" style="border: 1px solid #ddd;">
-                                <div id="big" class="owl-carousel owl-theme big-img slider">
-                                    <a class="item" data-fancybox="gallery" href="{{ isset($value->image) ? asset('public/upload/ProductPriceGallery/' . $value->image) : '' }}"><img src="{{ isset($value->image) ? asset('public/upload/ProductPriceGallery/' . $value->image) : '' }}"></a>
-                                </div>
+                                </a>
                             </div>
-                        </div>
-                    @endforeach
+                            @endif
+
+                </div>
+                <div class="col-md-12 text-right" style="font-size: 14px;">อัพเดตวันที่ : {{Carbon\Carbon::parse($data_product->updated_at)->addYear(543)->format('d/m/Y')}}</div>
                 </div>
             </section>
-    </div>
-    <!-- /Container -->
 
-@section('footer')
-@include('layouts.footer')
-@endsection
-@endsection

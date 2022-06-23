@@ -38,7 +38,15 @@
                             <div class="row">
                                 @foreach ($product_mto as $value)
                                 <div class="col-lg-4 col-md-4 col-sm-12">
-                                    <a href="#" onclick="view_modal({{ $value->id }})" data-toggle="modal" data-target="#viewProductMto">
+                                    @if (Auth::user()->status == 1)
+                                    <a href="{{url('view_product_mto_detail', $value->id)}}">
+
+                                    @elseif (Auth::user()->status == 2)
+                                    <a href="{{url('lead/view_product_mto_detail', $value->id)}}">
+
+                                        @elseif (Auth::user()->status == 3)
+                                        <a href="{{url('head/view_product_mto_detail', $value->id)}}">
+                                    @endif
                                     <div class="card mb-20">
                                         <center>
                                             <img class="" src="{{ isset($value->image) ? asset('public/upload/ProductMTO/' . $value->image) : '' }}" alt="{{ $value->image}}" width="250">
@@ -56,60 +64,6 @@
                 </div>
             </section>
     <!-- /Container -->
-
-
-    <div class="modal fade" id="viewProductMto" tabindex="-1" role="dialog" aria-labelledby="viewProductMto" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">รายละเอียดสินค้าสั่งผลิต (MTO)</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" style="color: black;">
-                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label for="category" style="font-weight: bold;">หมวด : </label>
-                                <span id="view_category_id"></span>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label for="date" style="font-weight: bold;">วันที่อัพเดตล่าสุด : </label>
-                                <span id="view_date"></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label for="brand" style="font-weight: bold;">ตราสินค้า : </label>
-                                <span id="view_brand_id"></span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="description" style="font-weight: bold;">รายละเอียด : </label>
-                            <span id="view_description"></span>
-                        </div>
-                        <div class="form-group">
-                            <label for="url" style="font-weight: bold;">Link URL : </label>
-                            <span id="view_url"></span>
-                        </div>
-                        <hr>
-                        <div class="form-group">
-                            <label for="image" style="font-weight: bold;">รูปภาพ</label>
-                        </div>
-                        <div>
-                            <div class="form-group">
-                                <center>
-                                <span id="view_img_show" class=""></span>
-                                </center>
-                            </div>
-                        </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <style>
         .img_1 {

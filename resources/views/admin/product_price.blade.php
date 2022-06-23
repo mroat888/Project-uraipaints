@@ -86,7 +86,15 @@
                                                         @break
                                             @endswitch
                                         </td>
-                                        <td><a href="{{$value->url	}}" style="color: rgb(11, 8, 141);">{!! Str::limit($value->url,20) !!}</a></td>
+                                        <td>
+                                            @if ($value->url)
+                                                <a href="{{$value->url}}" target="_bank" class="btn btn-icon btn-view">
+                                                    <h4 class="btn-icon-wrap" style="color: white;">
+                                                        <span class="material-icons">dataset_linked</span>
+                                                    </h4>
+                                                </a>
+                                            @endif
+                                        </td>
                                         <td>
                                                 <a href="{{ url('admin/update-productPrice-status-use', $value->id)}}" class="btn btn-icon btn-teal">
                                                     <h4 class="btn-icon-wrap" style="color: white;"><span

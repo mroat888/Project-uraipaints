@@ -4,7 +4,7 @@
  <!-- Breadcrumb -->
  <nav class="hk-breadcrumb" aria-label="breadcrumb">
     <ol class="breadcrumb breadcrumb-light bg-transparent">
-        <li class="breadcrumb-item">ข่าวสาร</li>
+        <li class="breadcrumb-item">สินค้า</li>
         <li class="breadcrumb-item">บันทึกแจ้งสินค้าใหม่</li>
         <li class="breadcrumb-item active">รายละเอียดสินค้าใหม่</li>
     </ol>
@@ -153,9 +153,13 @@
 
                 <div class="col-md-6">
                     <div class="row">
-                        <div class="col-md-12"><div class="boxnews-date">
+                        <div class="col-md-12">
+                        <div class="boxnews-date">
                             <h6>{{$data_product->product_title}}</h6>
                             <p class="mt-2">{{$data_product->product_detail}}</p>
+                            @if ($data_product->product_url)
+                            <a href="{{$data_product->product_url}}" target="_bank" class="btn-morenews">ดูรายละเอียดเพิ่มเติม</a>
+                            @endif
                         </div>
                     </div>
                     </div>
