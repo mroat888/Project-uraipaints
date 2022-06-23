@@ -112,6 +112,12 @@
                                             <form action="{{ url($url_request, $value->id) }}" method="GET">
 
                                             @if($value->trip_status > 1) <!-- ตั้งแต่อนุมัติ -->
+                                                <a href="{{ url('trip/approve_trip/detail') }}/{{ $value->id }}"
+                                                    class="btn btn-icon btn-warning">
+                                                    <h4 class="btn-icon-wrap" style="color: white;">
+                                                        <i class="ion ion-md-map"></i>
+                                                    </h4>
+                                                </a>
                                                 <!-- Report -->
                                                 <a href="{{ url('trip_user_pdf') }}/{{ $value->id }}"
                                                     class="btn btn-icon btn-danger" target="_blank">

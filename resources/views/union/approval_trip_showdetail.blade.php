@@ -235,7 +235,7 @@
     @endforeach
 
     @if($check_menager_comment == "N")
-
+        @if(Auth::user()->status != 1)     
         <!-- Row Create Comment -->
         <div class="row">
             <div class="col-xl-12">
@@ -266,6 +266,7 @@
 
             </div>
         </div>
+        @endif
         <!-- End Row Create Comment -->
 
     @endif

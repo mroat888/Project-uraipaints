@@ -97,6 +97,8 @@ Route::post('saleplan_Result', 'SaleMan\SalePlanController@saleplan_Result');
 // Trip
 Route::get('trip', 'UnionTripController@index');
 Route::get('trip/detail/{id}', 'UnionTripController@trip_detail');
+Route::get('trip/show_detail/{id}', 'UnionTripController@trip_detail');
+Route::get('trip/approve_trip/detail/{id}', 'UnionTripApproveController@trip_showdetail');
 
 
 // Request Approval

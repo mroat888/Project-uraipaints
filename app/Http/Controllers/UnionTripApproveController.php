@@ -352,6 +352,8 @@ class UnionTripApproveController extends Controller
         $data = $this->trip_fetchshowdetail($id);
 
         switch  (Auth::user()->status){
+            case 1 :    return view('saleman.approval_trip_showdetail', $data); 
+                break;
             case 2 :    return view('leadManager.approval_trip_showdetail', $data); 
                 break;
             case 3 :    return view('headManager.approval_trip_showdetail', $data); 
