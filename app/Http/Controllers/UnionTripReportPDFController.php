@@ -18,8 +18,8 @@ class UnionTripReportPDFController extends Controller
     }
 
     public function mail($id){
-        $api_token = $this->api_token->apiToken();  
-        
+        $api_token = $this->api_token->apiToken();
+
         $data['trip_header'] = DB::table('trip_header')
         ->join('users', 'trip_header.created_by', '=', 'users.id')
             ->select(
@@ -29,7 +29,7 @@ class UnionTripReportPDFController extends Controller
         ->where('trip_header.id', $id)
         ->first();
 
-        //-- trip detail 
+        //-- trip detail
         $trip_detail = DB::table('trip_detail')->where('trip_header_id', $id)->get();
 
         // ดึงจังหวัด -- API
@@ -103,7 +103,7 @@ class UnionTripReportPDFController extends Controller
                 ];
             }
         }
-        //-- จบ trip detail 
+        //-- จบ trip detail
 
         $pdf = PDF::loadView('pdf.trip_user_report',$data);
 
@@ -138,7 +138,7 @@ class UnionTripReportPDFController extends Controller
             ->get();
 
             $pdf = PDF::loadView('pdf.trip_report',$data);
-            
+
         }else{
             $pdf = PDF::loadView('pdf.trip_report');
         }
@@ -148,8 +148,8 @@ class UnionTripReportPDFController extends Controller
 
     public function userpdf($id)
     {
-        $api_token = $this->api_token->apiToken();  
-        
+        $api_token = $this->api_token->apiToken();
+
         $data['trip_header'] = DB::table('trip_header')
         ->join('users', 'trip_header.created_by', '=', 'users.id')
             ->select(
@@ -159,7 +159,7 @@ class UnionTripReportPDFController extends Controller
         ->where('trip_header.id', $id)
         ->first();
 
-        //-- trip detail 
+        //-- trip detail
         $trip_detail = DB::table('trip_detail')->where('trip_header_id', $id)->get();
 
         // ดึงจังหวัด -- API
@@ -237,12 +237,20 @@ class UnionTripReportPDFController extends Controller
                 ];
             }
         }
-        //-- จบ trip detail 
+        //-- จบ trip detail
 
         $pdf = PDF::loadView('pdf.trip_user_report',$data);
         return $pdf->stream();
     }
 
-    
+
+    public function report_email()
+    {
+
+        $pdf = PDF::loadView('pdf.trip_report_email');
+        return $pdf->stream();
+    }
+
+
 
 }
