@@ -16,7 +16,17 @@ class UnionTripController extends Controller
     }
 
     public function index()
-    {
+    {   
+        $month_now = date('m');
+        $year_now = date('Y');
+
+        $data['trips_now'] = DB::table('trip_header')
+            ->where('created_by', Auth::user()->id)
+            ->whereMonth('created_at', $month_now)
+            ->whereYear('created_at', $year_now)
+            ->orderBy('id', 'desc')
+            ->first();
+
         $data['trips'] = DB::table('trip_header')->where('created_by', Auth::user()->id)->orderBy('id', 'desc')->get();
 
         switch  (Auth::user()->status){
@@ -378,7 +388,12 @@ class UnionTripController extends Controller
 
     public function trip_detail_destroy(Request $request)
     {
+        $sql_header_id = DB::table('trip_detail')->where('id', $request->trip_detail_id_delete)->first();
+        $trip_header_id = $sql_header_id->trip_header_id;
+
         DB::table('trip_detail')->where('id', $request->trip_detail_id_delete)->delete();
+        
+        $this->improve_trip_header($trip_header_id);
 
         return response()->json([
             'status' => 200,
@@ -409,9 +424,16 @@ class UnionTripController extends Controller
             ->select('allowance')
             ->first();
 
-        $trip_start = $trip_start->trip_detail_date;
-        $trip_end = $trip_end->trip_detail_date;
-        $sum_allowance = ($trip_day * $trip_header->allowance);
+        if(!is_null($trip_start)){ //-- ตรวจสอบมีข้อมูลอยู่ไหม
+            $trip_start = $trip_start->trip_detail_date;
+            $trip_end = $trip_end->trip_detail_date;
+            $sum_allowance = ($trip_day * $trip_header->allowance);
+        }else{
+            $trip_start = null;
+            $trip_end = null;
+            $trip_day = null;
+            $sum_allowance = null;
+        }
 
         DB::table('trip_header')->where('id', $id)
         ->update([
@@ -420,6 +442,7 @@ class UnionTripController extends Controller
             'trip_day' => $trip_day,
             'sum_allowance' => $sum_allowance,
         ]);
+        
     }
 
 }
