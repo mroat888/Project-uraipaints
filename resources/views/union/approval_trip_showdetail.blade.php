@@ -63,15 +63,36 @@
                         </label>
                     </div>
                     <div class="col-md-4">
-                        <label for="namesale">จำนวนวัน : {{ $trip_header->trip_day }}</label>
+                        <label for="namesale">จำนวนวัน :
+                            @if(!is_null($trip_revision))
+                                @if($trip_revision->trip_day_history != $trip_header->trip_day)
+                                    <span style="text-decoration: line-through;" class="text-red">{{ $trip_revision->trip_day_history }}</span>
+                                @endif
+                            @endif
+                            {{ $trip_header->trip_day }}
+                        </label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4">
-                        <label for="inputPassword4">อัตราเบี้ยเลี้ยง/วัน : {{ number_format($trip_header->allowance) }}</label>
+                        <label for="inputPassword4">อัตราเบี้ยเลี้ยง/วัน : 
+                            @if(!is_null($trip_revision))
+                                @if($trip_revision->allowance_history != $trip_header->allowance)
+                                    <span style="text-decoration: line-through;" class="text-red">{{ $trip_revision->allowance_history }}</span>
+                                @endif
+                            @endif
+                            {{ number_format($trip_header->allowance) }}
+                        </label>
                     </div>
                     <div class="col-md-4">
-                        <label for="inputPassword4">รวมค่าเบี้ยเลี้ยง : {{ number_format($trip_header->sum_allowance) }}</label>
+                        <label for="inputPassword4">รวมค่าเบี้ยเลี้ยง : 
+                            @if(!is_null($trip_revision))
+                                @if($trip_revision->sum_allowance_history != $trip_header->sum_allowance)
+                                    <span style="text-decoration: line-through;" class="text-red">{{ $trip_revision->sum_allowance_history }}</span>
+                                @endif
+                            @endif
+                            {{ number_format($trip_header->sum_allowance) }}
+                        </label>
                     </div>
                 </div>
             </section>

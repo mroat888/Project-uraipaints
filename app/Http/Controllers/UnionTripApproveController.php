@@ -256,6 +256,7 @@ class UnionTripApproveController extends Controller
         
         $data['trip_header'] = DB::table('trip_header')->where('id', $id)->first();
         $data['users'] = DB::table('users')->where('id', $data['trip_header']->created_by)->first();
+        $data['trip_revision'] = DB::table('trip_header_revision_history')->where('trip_header_id', $id)->orderBy('id','desc')->first();
 
         $data['trip_comments'] = DB::table('trip_comments')
             ->leftJoin('users', 'users.id', 'trip_comments.created_by')

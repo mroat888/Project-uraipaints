@@ -61,6 +61,7 @@
                                         @php
                                             $trip_revision = DB::table('trip_header_revision_history')
                                                 ->where('trip_header_id', $value->id)
+                                                ->orderBy('id','desc')
                                                 ->first();
 
                                             list($date, $time) = explode(" ", $value->created_at);
@@ -119,7 +120,7 @@
                                                     </h4>
                                                 </a>
                                                 <!-- Report -->
-                                                <a href="{{ url('trip_user_pdf') }}/{{ $value->id }}"
+                                                <!-- <a href="{{ url('trip_user_pdf') }}/{{ $value->id }}"
                                                     class="btn btn-icon btn-danger" target="_blank">
                                                     <h4 class="btn-icon-wrap" style="color: white;">
                                                         <span class="material-icons">picture_as_pdf</span>
@@ -130,7 +131,7 @@
                                                     <h4 class="btn-icon-wrap" style="color: white;">
                                                         <span class="material-icons">table_view</span>
                                                     </h4>
-                                                </a>
+                                                </a> -->
                                                 <!-- Report -->
                                             @else
                                                 <button class="btn btn-icon btn-info btn_request" {{ $btn_disable }}>
