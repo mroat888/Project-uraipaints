@@ -424,9 +424,16 @@ class UnionTripController extends Controller
             ->select('allowance')
             ->first();
 
-        $trip_start = $trip_start->trip_detail_date;
-        $trip_end = $trip_end->trip_detail_date;
-        $sum_allowance = ($trip_day * $trip_header->allowance);
+        if(!is_null($trip_start)){ //-- ตรวจสอบมีข้อมูลอยู่ไหม
+            $trip_start = $trip_start->trip_detail_date;
+            $trip_end = $trip_end->trip_detail_date;
+            $sum_allowance = ($trip_day * $trip_header->allowance);
+        }else{
+            $trip_start = null;
+            $trip_end = null;
+            $trip_day = null;
+            $sum_allowance = null;
+        }
 
         DB::table('trip_header')->where('id', $id)
         ->update([
@@ -435,6 +442,7 @@ class UnionTripController extends Controller
             'trip_day' => $trip_day,
             'sum_allowance' => $sum_allowance,
         ]);
+        
     }
 
 }

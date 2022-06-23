@@ -14,23 +14,12 @@
     <div class="hk-pg-header mb-10">
         <div class="topichead-bgred"><i data-feather="clipboard"></i> รายการทริปเดินทาง</div>
         <div class="content-right d-flex">
-            <button type="button" class="btn btn-green" data-toggle="modal" id="createmodal"> + เพิ่มใหม่ </button>
+            @if(is_null($trips_now))
+                <button type="button" class="btn btn-green" data-toggle="modal" id="createmodal"> + เพิ่มใหม่ </button>
+            @endif
         </div>
     </div>
     <!-- /Title -->
-    <!-- Title -->
-    {{-- <div class="hk-pg-header mb-10">
-        <div>
-            <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="ion ion-md-people"></i></span>รายการทริปเดินทาง</h4>
-        </div>
-        <div class="d-flex">
-            @if(!is_null($trips_now))
-                <button type="button" class="btn btn_green btn-teal btn-sm btn-rounded px-3 mr-10" data-toggle="modal" id="createmodal"> + เพิ่มใหม่ </button>
-            @endif
-        </div>
-    </div> --}}
-    <!-- /Title -->
-
     <!-- Row -->
     <div class="row">
         <div class="col-xl-12">
