@@ -16,7 +16,17 @@ class UnionTripController extends Controller
     }
 
     public function index()
-    {
+    {   
+        $month_now = date('m');
+        $year_now = date('Y');
+
+        $data['trips_now'] = DB::table('trip_header')
+            ->where('created_by', Auth::user()->id)
+            ->whereMonth('created_at', $month_now)
+            ->whereYear('created_at', $year_now)
+            ->orderBy('id', 'desc')
+            ->first();
+
         $data['trips'] = DB::table('trip_header')->where('created_by', Auth::user()->id)->orderBy('id', 'desc')->get();
 
         switch  (Auth::user()->status){
@@ -378,7 +388,12 @@ class UnionTripController extends Controller
 
     public function trip_detail_destroy(Request $request)
     {
+        $sql_header_id = DB::table('trip_detail')->where('id', $request->trip_detail_id_delete)->first();
+        $trip_header_id = $sql_header_id->trip_header_id;
+
         DB::table('trip_detail')->where('id', $request->trip_detail_id_delete)->delete();
+        
+        $this->improve_trip_header($trip_header_id);
 
         return response()->json([
             'status' => 200,
