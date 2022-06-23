@@ -256,6 +256,7 @@ class UnionTripApproveController extends Controller
         
         $data['trip_header'] = DB::table('trip_header')->where('id', $id)->first();
         $data['users'] = DB::table('users')->where('id', $data['trip_header']->created_by)->first();
+        $data['trip_revision'] = DB::table('trip_header_revision_history')->where('trip_header_id', $id)->orderBy('id','desc')->first();
 
         $data['trip_comments'] = DB::table('trip_comments')
             ->leftJoin('users', 'users.id', 'trip_comments.created_by')
@@ -323,9 +324,13 @@ class UnionTripApproveController extends Controller
                     }
                 }
 
-                foreach($customer_api as $customer){
-                    if($value->customer_id == $customer['identify']){
-                        $customer_name = $customer['title']." ".$customer['name'];
+                $customer_name = "";
+                $customers = explode(',', $value->customer_id);
+                foreach($customers as $customer_id){
+                    foreach($customer_api as $customer){
+                        if($customer_id == $customer['identify']){
+                            $customer_name .= $customer['title']." ".$customer['name']."<br />";
+                        }
                     }
                 }
 
@@ -348,6 +353,8 @@ class UnionTripApproveController extends Controller
         $data = $this->trip_fetchshowdetail($id);
 
         switch  (Auth::user()->status){
+            case 1 :    return view('saleman.approval_trip_showdetail', $data); 
+                break;
             case 2 :    return view('leadManager.approval_trip_showdetail', $data); 
                 break;
             case 3 :    return view('headManager.approval_trip_showdetail', $data); 

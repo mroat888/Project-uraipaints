@@ -59,6 +59,11 @@
                                 @if(count($trips) > 0)
                                     @foreach($trips as $key => $value)
                                         @php
+                                            $trip_revision = DB::table('trip_header_revision_history')
+                                                ->where('trip_header_id', $value->id)
+                                                ->orderBy('id','desc')
+                                                ->first();
+
                                             list($date, $time) = explode(" ", $value->created_at);
                                             list($year, $month, $day) = explode("-", $date);
                                             $year_thai = $year+543;
@@ -67,8 +72,22 @@
                                     <tr style="text-align:center;">
                                         <td>{{ ++$key }}</td>
                                         <td>{{ $date_thai }}</td>
-                                        <td>{{ $value->trip_day }}</td>
-                                        <td>{{ number_format($value->sum_allowance) }}</td>
+                                        <td>
+                                            @if(!is_null($trip_revision))
+                                                @if($trip_revision->trip_day_history != $value->trip_day)
+                                                    <span style="text-decoration: line-through;" class="text-red">{{ $trip_revision->trip_day_history }}</span>
+                                                @endif
+                                            @endif
+                                            {{ $value->trip_day }}
+                                        </td>
+                                        <td>
+                                            @if(!is_null($trip_revision))
+                                                @if($trip_revision->sum_allowance_history != $value->sum_allowance)
+                                                    <span style="text-decoration: line-through;" class="text-red">{{ number_format($trip_revision->sum_allowance_history) }}</span>
+                                                @endif
+                                            @endif
+                                            {{ number_format($value->sum_allowance) }}
+                                        </td>
                                         <td>
                                             @if ($value->trip_status == 0)
                                                 <span class="badge badge-soft-secondary" style="font-size: 12px;">Darf</span>
@@ -94,8 +113,14 @@
                                             <form action="{{ url($url_request, $value->id) }}" method="GET">
 
                                             @if($value->trip_status > 1) <!-- ตั้งแต่อนุมัติ -->
+                                                <a href="{{ url($url_trip_detail) }}/{{ $value->id }}"
+                                                    class="btn btn-icon btn-warning">
+                                                    <h4 class="btn-icon-wrap" style="color: white;">
+                                                        <i class="ion ion-md-map"></i>
+                                                    </h4>
+                                                </a>
                                                 <!-- Report -->
-                                                <a href="{{ url('trip_user_pdf') }}/{{ $value->id }}"
+                                                <!-- <a href="{{ url('trip_user_pdf') }}/{{ $value->id }}"
                                                     class="btn btn-icon btn-danger" target="_blank">
                                                     <h4 class="btn-icon-wrap" style="color: white;">
                                                         <span class="material-icons">picture_as_pdf</span>
@@ -106,7 +131,7 @@
                                                     <h4 class="btn-icon-wrap" style="color: white;">
                                                         <span class="material-icons">table_view</span>
                                                     </h4>
-                                                </a>
+                                                </a> -->
                                                 <!-- Report -->
                                             @else
                                                 <button class="btn btn-icon btn-info btn_request" {{ $btn_disable }}>
@@ -185,23 +210,23 @@
                 <div class="form-row">
                     <div class="form-group col-md-3">
                         <label for="inputEmail4">จากวันที่</label>
-                        <input type="date" class="form-control" name="trip_start" id="trip_start" required>
+                        <input type="date" class="form-control" name="trip_start" id="trip_start" placeholder="จากวันที่" disabled>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="inputPassword4">ถึงวันที่</label>
-                        <input type="date" class="form-control" name="trip_end" id="inputPassword4" required>
+                        <input type="date" class="form-control" name="trip_end" id="inputPassword4" placeholder="ถึงวันที่" disabled>
                     </div>
                     <div class="form-group col-md-2">
                         <label for="inputPassword4">จำนวนวัน</label>
-                        <input type="number" class="form-control" name="trip_day" id="trip_day" required>
+                        <input type="number" class="form-control" name="trip_day" id="trip_day" placeholder="จำนวนวัน" disabled>
                     </div>
                     <div class="form-group col-md-2">
-                        <label for="inputPassword4">อัตราเบี้ยเลี้ยง/วัน</label>
+                        <label for="inputPassword4">อัตราเบี้ยเลี้ยง/วัน *</label>
                         <input type="number" class="form-control" name="allowance" id="allowance" required>
                     </div>
                     <div class="form-group col-md-2">
                         <label for="inputPassword4">รวมค่าเบี้ยเลี้ยง</label>
-                        <input type="number" class="form-control" name="sum_allowance" id="sum_allowance" required>
+                        <input type="number" class="form-control" name="sum_allowance" id="sum_allowance" placeholder="รวมค่าเบี้ยเลี้ยง" disabled>
                     </div>
                 </div>
             </div>
@@ -249,15 +274,15 @@
                 <div class="form-row">
                     <div class="form-group col-md-3">
                         <label for="inputEmail4">จากวันที่</label>
-                        <input type="date" class="form-control" name="trip_start_edit" id="trip_start_edit" required>
+                        <input type="date" class="form-control" name="trip_start_edit" id="trip_start_edit" readonly>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="inputPassword4">ถึงวันที่</label>
-                        <input type="date" class="form-control" name="trip_end_edit" id="trip_end_edit" required>
+                        <input type="date" class="form-control" name="trip_end_edit" id="trip_end_edit" readonly>
                     </div>
                     <div class="form-group col-md-2">
                         <label for="inputPassword4">จำนวนวัน</label>
-                        <input type="number" class="form-control" name="trip_day_edit" id="trip_day_edit" required>
+                        <input type="number" class="form-control" name="trip_day_edit" id="trip_day_edit" readonly>
                     </div>
                     <div class="form-group col-md-2">
                         <label for="inputPassword4">อัตราเบี้ยเลี้ยง/วัน</label>
@@ -265,7 +290,7 @@
                     </div>
                     <div class="form-group col-md-2">
                         <label for="inputPassword4">รวมค่าเบี้ยเลี้ยง</label>
-                        <input type="number" class="form-control" name="sum_allowance_edit" id="sum_allowance_edit" required>
+                        <input type="number" class="form-control" name="sum_allowance_edit" id="sum_allowance_edit" readonly>
                     </div>
                 </div>
             </div>

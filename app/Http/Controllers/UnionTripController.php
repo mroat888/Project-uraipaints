@@ -150,11 +150,27 @@ class UnionTripController extends Controller
 
     public function trip_detail($id)
     {
+        $data = $this->trip_fetchshowdetail($id);
+
+        switch  (Auth::user()->status){
+            case 1 :    return view('saleman.tripdetail', $data); 
+                break;
+            case 2 :    return view('leadManager.tripdetail', $data); 
+                break;
+            case 3 :    return view('headManager.tripdetail', $data); 
+                break;
+            case 4 :   
+                break;
+        }
+    }
+
+    public function trip_fetchshowdetail($id)
+    {
         $api_token = $this->api_token->apiToken();  
         
         $data['trip_header'] = DB::table('trip_header')->where('id', $id)->first();
         $data['users'] = DB::table('users')->where('id', $data['trip_header']->created_by)->first();
-        $trip_detail = DB::table('trip_detail')->where('trip_header_id', $id)->get();
+        $trip_detail = DB::table('trip_detail')->where('trip_header_id', $id)->orderBy('trip_detail_date', 'desc')->get();
 
         // ดึงจังหวัด -- API
         switch  (Auth::user()->status){
@@ -211,12 +227,16 @@ class UnionTripController extends Controller
                     }
                 }
 
-                foreach($customer_api as $customer){
-                    if($value->customer_id == $customer['identify']){
-                        $customer_name = $customer['title']." ".$customer['name'];
+                $customer_name = "";
+                $customers = explode(',', $value->customer_id);
+                foreach($customers as $customer_id){
+                    foreach($customer_api as $customer){
+                        if($customer_id == $customer['identify']){
+                            $customer_name .= $customer['title']." ".$customer['name']."<br />";
+                        }
                     }
                 }
-
+ 
                 $data['trip_detail'][] = [
                     'id' => $value->id,
                     'trip_header_id' => $value->trip_header_id,
@@ -228,29 +248,34 @@ class UnionTripController extends Controller
             }
         }
 
-        switch  (Auth::user()->status){
-            case 1 :    return view('saleman.tripdetail', $data); 
-                break;
-            case 2 :    return view('leadManager.tripdetail', $data); 
-                break;
-            case 3 :    return view('headManager.tripdetail', $data); 
-                break;
-            case 4 :   
-                break;
-        }
+        return $data;
     }
 
     public function trip_detail_store(Request $request){
 
-        DB::table('trip_detail')->insert([
-            'trip_header_id' => $request->trip_header_id,
-            'trip_detail_date' => $request->trip_detail_date,
-            'trip_from' => $request->formprovince,
-            'trip_to' => $request->toprovince,
-            'customer_id' => $request->customer_id,
-            'created_by' => Auth::user()->id,
-            'created_at' => date('Y-m-d H:i:s'),
-        ]);
+        if(!is_null($request->customer_id)){
+            DB::table('trip_detail')->insert([
+                'trip_header_id' => $request->trip_header_id,
+                'trip_detail_date' => $request->trip_detail_date,
+                'trip_from' => $request->formprovince,
+                'trip_to' => $request->toprovince,
+                // 'customer_id' => $request->customer_id,
+                'customer_id' => implode( ',', $request->customer_id),
+                'created_by' => Auth::user()->id,
+                'created_at' => date('Y-m-d H:i:s'),
+            ]);
+        }else{
+            DB::table('trip_detail')->insert([
+                'trip_header_id' => $request->trip_header_id,
+                'trip_detail_date' => $request->trip_detail_date,
+                'trip_from' => $request->formprovince,
+                'trip_to' => $request->toprovince,
+                'created_by' => Auth::user()->id,
+                'created_at' => date('Y-m-d H:i:s'),
+            ]);
+        }
+
+        $this->improve_trip_header($request->trip_header_id);
 
         return response()->json([
             'status' => 200,
@@ -319,15 +344,31 @@ class UnionTripController extends Controller
 
     public function trip_detail_update(Request $request)
     {
-        DB::table('trip_detail')->where('id', $request->trip_detail_id)
-        ->update([
-            'trip_detail_date' => $request->trip_detail_date_edit,
-            'trip_from' => $request->formprovince_edit,
-            'trip_to' => $request->toprovince_edit,
-            'customer_id' => $request->customer_id_edit,
-            'updated_by' => Auth::user()->id,
-            'updated_at' => date('Y-m-d H:i:s'),
-        ]);
+        if(!is_null($request->customer_id_edit)){
+            DB::table('trip_detail')->where('id', $request->trip_detail_id)
+            ->update([
+                'trip_detail_date' => $request->trip_detail_date_edit,
+                'trip_from' => $request->formprovince_edit,
+                'trip_to' => $request->toprovince_edit,
+                // 'customer_id' => $request->customer_id_edit,
+                'customer_id' => implode( ',', $request->customer_id_edit),
+                'updated_by' => Auth::user()->id,
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+        }else{
+            DB::table('trip_detail')->where('id', $request->trip_detail_id)
+            ->update([
+                'trip_detail_date' => $request->trip_detail_date_edit,
+                'trip_from' => $request->formprovince_edit,
+                'trip_to' => $request->toprovince_edit,
+                'customer_id' => null,
+                'updated_by' => Auth::user()->id,
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+        }
+
+        $sql_header_id = DB::table('trip_detail')->where('id', $request->trip_detail_id)->first();
+        $this->improve_trip_header($sql_header_id->trip_header_id);
 
         return response()->json([
             'status' => 200,
@@ -342,6 +383,42 @@ class UnionTripController extends Controller
         return response()->json([
             'status' => 200,
             'message' => 'ลบข้อมูลสำเร็จ',
+        ]);
+    }
+
+    public function improve_trip_header($id)
+    {
+        $trip_start = DB::table('trip_detail')
+            ->where('trip_header_id', $id)
+            ->orderBy('trip_detail_date', 'asc')
+            ->first();
+
+        $trip_end = DB::table('trip_detail')
+            ->where('trip_header_id', $id)
+            ->orderBy('trip_detail_date', 'desc')
+            ->first();
+
+        $trip_detail_day = DB::table('trip_detail')
+            ->where('trip_header_id', $id)
+            ->groupBy('trip_detail_date')
+            ->get();
+        $trip_day = count($trip_detail_day);
+
+        $trip_header = DB::table('trip_header')
+            ->where('id',$id)
+            ->select('allowance')
+            ->first();
+
+        $trip_start = $trip_start->trip_detail_date;
+        $trip_end = $trip_end->trip_detail_date;
+        $sum_allowance = ($trip_day * $trip_header->allowance);
+
+        DB::table('trip_header')->where('id', $id)
+        ->update([
+            'trip_start' => $trip_start,
+            'trip_end' => $trip_end,
+            'trip_day' => $trip_day,
+            'sum_allowance' => $sum_allowance,
         ]);
     }
 

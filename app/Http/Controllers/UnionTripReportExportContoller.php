@@ -20,22 +20,24 @@ class UnionTripReportExportContoller extends Controller
 
     public function excel(Request $request)
     {
-        $triph_id = $request->checkapprove;
+        $trip_header = "";
+        if(isset($request->checkapprove)){
+            $triph_id = $request->checkapprove;
 
-        $trip_header = DB::table('trip_header')
-        ->join('users', 'trip_header.created_by', '=', 'users.id')
-            ->select(
-                'trip_header.*',
-                'users.name',
-                'users.status',
-            )
-        ->where(function($query) use ($triph_id) {
-            for ($i = 0; $i < count($triph_id); $i++){
-                $query->orWhere('trip_header.id', $triph_id[$i]);
-            }
-        })
-        ->get();
-        
+            $trip_header = DB::table('trip_header')
+            ->join('users', 'trip_header.created_by', '=', 'users.id')
+                ->select(
+                    'trip_header.*',
+                    'users.name',
+                    'users.status',
+                )
+            ->where(function($query) use ($triph_id) {
+                for ($i = 0; $i < count($triph_id); $i++){
+                    $query->orWhere('trip_header.id', $triph_id[$i]);
+                }
+            })
+            ->get();  
+        }
         $date = date('Y-m-d');
         $excel_name = "tripexport";
         return Excel::download(new TripExport($trip_header), $excel_name.'_'.$date.'.xlsx');
@@ -112,9 +114,13 @@ class UnionTripReportExportContoller extends Controller
                     }
                 }
 
-                foreach($customer_api as $customer){
-                    if($value->customer_id == $customer['identify']){
-                        $customer_name = $customer['title']." ".$customer['name'];
+                $customer_name = "";
+                $customers = explode(',', $value->customer_id);
+                foreach($customers as $customer_id){
+                    foreach($customer_api as $customer){
+                        if($customer_id == $customer['identify']){
+                            $customer_name .= $customer['title']." ".$customer['name']."<br />";
+                        }
                     }
                 }
 
