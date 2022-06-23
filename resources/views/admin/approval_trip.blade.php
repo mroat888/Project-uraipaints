@@ -105,6 +105,7 @@
                                 <button type="button" class="btn btn_purple btn-reject btn-sm ml-5 btn_approve" value="pdf">ดาวโหลด PDF</button>
                                 <button type="button" class="btn btn_purple btn-reject btn-sm ml-5 btn_approve" value="excle">ดาวโหลด Excle</button>
                                 <!-- <button type="button" class="btn btn_purple btn-reject btn-sm ml-5 btn_approve" value="seandmail">ส่งเมล</button> -->
+                                <a href="{{url('admin/report_email')}}" class="ml-2">ตัวอย่าง PDF (Email)</a>
 
                             </div>
 

@@ -19,11 +19,11 @@ class UnionTripApproveController extends Controller
     {
         $page = "index";
         $data = $this->fetch_approve_trip($page);
-        
+
         switch  (Auth::user()->status){
-            case 2 :    return view('leadManager.approval_trip', $data); 
+            case 2 :    return view('leadManager.approval_trip', $data);
                 break;
-            case 3 :    return view('headManager.approval_trip', $data); 
+            case 3 :    return view('headManager.approval_trip', $data);
                 break;
         }
     }
@@ -32,11 +32,11 @@ class UnionTripApproveController extends Controller
     {
         $page = "history";
         $data = $this->fetch_approve_trip($page);
-        
+
         switch  (Auth::user()->status){
-            case 2 :    return view('leadManager.approval_trip_history', $data); 
+            case 2 :    return view('leadManager.approval_trip_history', $data);
                 break;
-            case 3 :    return view('headManager.approval_trip_history', $data); 
+            case 3 :    return view('headManager.approval_trip_history', $data);
                 break;
         }
     }
@@ -71,10 +71,10 @@ class UnionTripApproveController extends Controller
             if($page == "history"){
                 $trip_header = $trip_header->whereNotIn('trip_header.trip_status', [0,1]); // ไม่ดึง แบบร่าง และขออนุมัติ
             }
-            
+
             $trip_header = $trip_header->orderBy('trip_header.id', 'desc')->get();
 
-        $data['trip_header'] = $trip_header; 
+        $data['trip_header'] = $trip_header;
 
         $data['team_sales'] = DB::table('master_team_sales')
             ->where(function($query) use ($auth_team) {
@@ -85,21 +85,21 @@ class UnionTripApproveController extends Controller
                 }
             })
             ->get();
-            
+
         return $data;
     }
 
     public function search(Request $request)
-    {    
+    {
         $page = "index";
         $data = $this->search_fetch($request, $page);
 
         switch  (Auth::user()->status){
-            case 2 :    return view('leadManager.approval_trip', $data); 
+            case 2 :    return view('leadManager.approval_trip', $data);
                 break;
-            case 3 :    return view('headManager.approval_trip', $data); 
+            case 3 :    return view('headManager.approval_trip', $data);
                 break;
-            case 4 :   
+            case 4 :
                 break;
         }
     }
@@ -110,11 +110,11 @@ class UnionTripApproveController extends Controller
         $data = $this->search_fetch($request, $page);
 
         switch  (Auth::user()->status){
-            case 2 :    return view('leadManager.approval_trip_history', $data); 
+            case 2 :    return view('leadManager.approval_trip_history', $data);
                 break;
-            case 3 :    return view('headManager.approval_trip_history', $data); 
+            case 3 :    return view('headManager.approval_trip_history', $data);
                 break;
-            case 4 :   
+            case 4 :
                 break;
         }
     }
@@ -143,7 +143,7 @@ class UnionTripApproveController extends Controller
             if($page == "history"){
                 $trip_header = $trip_header->whereNotIn('trip_header.trip_status', [0,1]); // ไม่ดึง แบบร่าง และขออนุมัติ
             }
-        
+
         if(!is_null($request->selectteam_sales)){
             $team = $request->selectteam_sales;
             $trip_header = $trip_header->where(function($query) use ($team) {
@@ -166,7 +166,7 @@ class UnionTripApproveController extends Controller
             $trip_header =  $trip_header->whereMonth('trip_header.request_approve_at', $month)
                 ->whereYear('trip_header.request_approve_at', $year);
         }
-            
+
             $trip_header =  $trip_header->orderBy('trip_header.id', 'desc')
             ->get();
 
@@ -184,7 +184,7 @@ class UnionTripApproveController extends Controller
 
         return $data;
     }
-   
+
     public function approval_trip_confirm_all(Request $request)
     {
         DB::beginTransaction();
@@ -252,8 +252,8 @@ class UnionTripApproveController extends Controller
 
     public function trip_fetchshowdetail($id)
     {
-        $api_token = $this->api_token->apiToken();  
-        
+        $api_token = $this->api_token->apiToken();
+
         $data['trip_header'] = DB::table('trip_header')->where('id', $id)->first();
         $data['users'] = DB::table('users')->where('id', $data['trip_header']->created_by)->first();
         $data['trip_revision'] = DB::table('trip_header_revision_history')->where('trip_header_id', $id)->orderBy('id','desc')->first();
@@ -353,13 +353,13 @@ class UnionTripApproveController extends Controller
         $data = $this->trip_fetchshowdetail($id);
 
         switch  (Auth::user()->status){
-            case 1 :    return view('saleman.approval_trip_showdetail', $data); 
+            case 1 :    return view('saleman.approval_trip_showdetail', $data);
                 break;
-            case 2 :    return view('leadManager.approval_trip_showdetail', $data); 
+            case 2 :    return view('leadManager.approval_trip_showdetail', $data);
                 break;
-            case 3 :    return view('headManager.approval_trip_showdetail', $data); 
+            case 3 :    return view('headManager.approval_trip_showdetail', $data);
                 break;
-            case 4 :    return view('admin.approval_trip_showdetail', $data); 
+            case 4 :    return view('admin.approval_trip_showdetail', $data);
                 break;
         }
     }
@@ -369,11 +369,11 @@ class UnionTripApproveController extends Controller
         $data = $this->trip_fetchshowdetail($id);
 
         switch  (Auth::user()->status){
-            case 2 :    return view('leadManager.approval_trip_editdetail', $data); 
+            case 2 :    return view('leadManager.approval_trip_editdetail', $data);
                 break;
-            case 3 :    
+            case 3 :
                 break;
-            case 4 :    
+            case 4 :
                 break;
         }
     }
@@ -444,6 +444,22 @@ class UnionTripApproveController extends Controller
             'message' => 'บันทึกข้อมูลสำเร็จ',
         ]);
 
+    }
+
+    public function report_email($id)
+    {
+        $data = $this->trip_fetchshowdetail($id);
+
+        switch  (Auth::user()->status){
+            case 1 :    return view('saleman.approval_trip_showdetail', $data);
+                break;
+            case 2 :    return view('leadManager.approval_trip_showdetail', $data);
+                break;
+            case 3 :    return view('headManager.approval_trip_showdetail', $data);
+                break;
+            case 4 :    return view('admin.approval_trip_showdetail', $data);
+                break;
+        }
     }
 
 }

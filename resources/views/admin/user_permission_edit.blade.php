@@ -50,10 +50,21 @@
                         </select>
                     </div>
                 </div>
+                <div>
+                    <div class="form-group">
+                        <span id="img_show" class="mt-5"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label for="firstName">รูปภาพ (ลายเซ็นต์) </label>
+                        <input type="file" name="image" class="form-control">
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                <button type="submit" class="btn btn-primary">บันทึก</button>
             </div>
         </form>
 
