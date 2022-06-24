@@ -117,6 +117,7 @@
                 <td style="background-color: #FFFFFF; border: none;">
                     <strong style="font-size: 18px;">ผู้จัดทำ</strong> <br><br>
                     <strong style="font-size: 18px;"> ...................................................
+                    {{-- <strong style="font-size: 18px;"> <img src="{{ asset('public/upload/UserSignature/img-1655970853.jpg') }}" alt="" width="30%"> --}}
                     <br>(พัชรภ อัศวจารุพันธุ์)
                     <br>
                     <br>......./....../............
