@@ -185,6 +185,7 @@ class UserPermissionController extends Controller
                     'status' => $request->edit_sel_status,
                     // 'team_id' => $request->edit_sel_team,
                     'team_id' => implode( ',', $request->edit_sel_team),
+                    'api_employee_id' => $emp_id,
                     'signature' => $image,
                     'updated_at' => date('Y-m-d H:i:s'),
                     'updated_by' =>  Auth::user()->id,
@@ -199,6 +200,7 @@ class UserPermissionController extends Controller
                 'status' => $request->edit_sel_status,
                 // 'team_id' => $request->edit_sel_team,
                 'team_id' => implode( ',', $request->edit_sel_team),
+                'api_employee_id' => $emp_id,
                 'updated_at' => date('Y-m-d H:i:s'),
                 'updated_by' =>  Auth::user()->id,
             ]);
