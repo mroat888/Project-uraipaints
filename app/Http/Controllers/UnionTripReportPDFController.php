@@ -7,14 +7,56 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Api\ApiController;
+use Illuminate\Support\Facades\Mail;
 use PDF;
-use Mail;
+// use App\Mail\TripMail;
 
 class UnionTripReportPDFController extends Controller
 {
     public function __construct()
     {
         $this->api_token = new ApiController();
+    }
+
+    public function sandmail(Request $request)
+    {
+        $api_token = $this->api_token->apiToken();
+
+        $data['trip_header'] = DB::table('trip_header')
+        ->join('users', 'trip_header.created_by', '=', 'users.id')
+            ->select(
+                'users.*',
+                'trip_header.*',
+            );
+        
+        if(!is_null($request->selectdateEmail)){
+            list($sel_year, $sel_month) = explode("-", $request->selectdateEmail);
+            $data['trip_header'] = $data['trip_header']
+                ->whereMonth('trip_header.created_at', $sel_month)
+                ->whereYear('trip_header.created_at', $sel_year);
+        }
+
+        $data['trip_sel_date'] = $request->selectdateEmail;
+        $data['trip_header'] = $data['trip_header']->get();
+
+
+        $pdf = PDF::loadView('pdf.trip_report_email', $data);
+
+
+        $data["email"] = "mroat07@gmail.com";
+        $data["title"] = $request->subject." From UR-PRINT";
+        $data["body"] = "ใบเบิกเบี้ยเลี้ยงประจำเดือน";
+
+        Mail::send('mail.trip_user_mail', $data, function($message)use($data, $pdf) {
+            $message->to($data["email"])
+                    ->subject($data["title"])
+                    ->attachData($pdf->output(), "text.pdf");
+        });
+        
+        return response()->json([
+            'status' => 200,
+            'message' => 'ส่งข้อมูลสำเร็จ',
+        ]);
     }
 
     public function mail($id){
@@ -87,9 +129,13 @@ class UnionTripReportPDFController extends Controller
                     }
                 }
 
-                foreach($customer_api as $customer){
-                    if($value->customer_id == $customer['identify']){
-                        $customer_name = $customer['title']." ".$customer['name'];
+                $customer_name = "";
+                $customers = explode(',', $value->customer_id);
+                foreach($customers as $customer_id){
+                    foreach($customer_api as $customer){
+                        if($customer_id == $customer['identify']){
+                            $customer_name .= $customer['title']." ".$customer['name']."<br />";
+                        }
                     }
                 }
 
@@ -107,15 +153,27 @@ class UnionTripReportPDFController extends Controller
 
         $pdf = PDF::loadView('pdf.trip_user_report',$data);
 
-        $data["email"] = "mroat07@gmail.com";
+        $data["email"] = "mroat07@gmail";
         $data["title"] = "From URPRINT.com";
         $data["body"] = "This is Demo";
 
         Mail::send('mail.trip_user_mail', $data, function($message)use($data, $pdf) {
-            $message->to($data["email"], $data["email"])
+            $message->to($data["email"])
+                    // ->cc($moreUsers)
+                    // ->bcc($evenMoreUsers)
                     ->subject($data["title"])
                     ->attachData($pdf->output(), "text.pdf");
         });
+
+        // if (Mail::failures()) {
+        //     dd('Not Sent');
+        // }  
+        dd('Mail sent successfully');
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'ส่งข้อมูลสำเร็จ',
+        ]);
     }
 
     public function pdf(Request $request)
@@ -246,7 +304,6 @@ class UnionTripReportPDFController extends Controller
 
     public function report_email()
     {
-
         $pdf = PDF::loadView('pdf.trip_report_email');
         return $pdf->stream();
     }

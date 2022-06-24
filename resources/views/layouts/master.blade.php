@@ -74,6 +74,9 @@ License: You must have a valid license purchased only from themeforest to legall
     <!-- sweetalert2 -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <!-- waitMe -->
+    <link href="{{ asset('public/waitme/waitMe.css') }}" rel="stylesheet" type="text/css">
+
 </head>
 
 <body>
@@ -721,6 +724,9 @@ License: You must have a valid license purchased only from themeforest to legall
 
     <!-- FANCYBOX -->
     <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+    <!-- waitMe -->
+    <script src="{{ asset('public/waitme/waitMe.js') }}"></script>
 
 <script type="text/javascript">
     $('.detail_slide').each(function(){

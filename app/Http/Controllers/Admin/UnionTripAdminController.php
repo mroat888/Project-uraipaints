@@ -74,6 +74,7 @@ class UnionTripAdminController extends Controller
         $data['trip_header'] = $trip_header; 
 
         $data['team_sales'] = DB::table('master_team_sales')->get();
+        $data['users'] = DB::table('users')->where('status', 3)->get(); // เฉพาะผู้จัดการฝ่าย
 
         return view('admin.approval_trip', $data); 
     }

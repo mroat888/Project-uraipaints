@@ -37,7 +37,7 @@
     <!-- /Title -->
 
     <!-- Row -->
-    <div class="row">
+    <div id="conainer" class="row">
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
                     <div class="topic-secondgery">รายการทริปเดินทาง</div>
@@ -105,7 +105,7 @@
                                 <button type="button" class="btn btn_purple btn-reject btn-sm ml-5 btn_approve" value="pdf">ดาวโหลด PDF</button>
                                 <button type="button" class="btn btn_purple btn-reject btn-sm ml-5 btn_approve" value="excle">ดาวโหลด Excle</button>
                                 <!-- <button type="button" class="btn btn_purple btn-reject btn-sm ml-5 btn_approve" value="seandmail">ส่งเมล</button> -->
-                                <a href="{{url('admin/report_email')}}" class="ml-2">ตัวอย่าง PDF (Email)</a>
+                                <!-- <a href="{{url('admin/report_email')}}" target = "_blank" class="ml-2">ตัวอย่าง PDF (Email)</a> -->
 
                             </div>
 
@@ -239,10 +239,10 @@
         </div>
         <!-- /Row --> 
 
-        <!-- Modalfromemail -->
-        <div class="modal fade" id="Modalfromemail" tabindex="-1" role="dialog" aria-labelledby="Modalfromemail" aria-hidden="true">
+        <!-- Modalformemail -->
+        <div class="modal fade" id="Modalformemail" tabindex="-1" role="dialog" aria-labelledby="Modalformemail" aria-hidden="true">
             <div class="modal-dialog modal-xl" role="document">
-                <form id="fromemail" enctype="multipart/form-data">
+                <form id="formemail" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
@@ -288,8 +288,9 @@
                 </form>
             </div>
         </div>
-        <!-- End Modalfromemail -->
+        <!-- End Modalformemail -->
 </div>
+
 
 
 <script type="text/javascript">
@@ -326,9 +327,75 @@
         }
     }
 
+    var month_thai = ['มกราคม','กุมภามพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+
     $(document).on('click', '.btn_seandmail', function(){
-        $('#Modalfromemail').modal('show');
+        $('#Modalformemail').modal('show');
+        let sel_date = $('#selectdateEmail').val().split('-');
+        let sel_year = parseInt(sel_date[0]);
+        let sel_year_thai = sel_year+543
+        let month_key =  (parseInt(sel_date[1]) * 1) - 1;
+
+        let subject = 'ใบเบิกค่าเบี้ยเลี้ยง ประจำเดือน '+ month_thai[month_key] + ' ' + sel_year_thai;
+        $('#subject').val(subject);
     });
+
+    $(document).on('change', '#selectdateEmail', function(){
+        let sel_date = $(this).val().split('-');
+        let sel_year = parseInt(sel_date[0]);
+        let sel_year_thai = sel_year+543
+        let month_key =  (parseInt(sel_date[1]) * 1) - 1;
+
+        let subject = 'ใบเบิกค่าเบี้ยเลี้ยง ประจำเดือน '+ month_thai[month_key] + ' ' + sel_year_thai;
+        $('#subject').val(subject);
+    });
+
+    $("#formemail").on("submit", function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        console.log(formData);
+
+        $('body').waitMe({
+                    effect : 'bounce',
+                    text : '',
+                    // bg : rgba(255,255,255,0.7),
+                    // color : '#000'
+                });
+
+        $.ajax({
+            type: 'POST',
+            url: '{{ url('trip_mail') }}',
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                // console.log(response);
+                if(response.status == 200){
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'เรียบร้อย!',
+                        text: "ส่งอีเมลเรียบร้อยแล้วค่ะ",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    $('#Modalformemail').modal('hide');
+                    // location.reload();
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'ไม่สามารถส่งอีเมลได้',
+                        text: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    $('#Modalformemail').modal('hide');
+                }
+
+                $('body').waitMe("hide");
+            }
+        });
+     });
 
     $(document).on('click', '.btn_approve', function() {
         let approve = $(this).val();
