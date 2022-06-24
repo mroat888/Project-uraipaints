@@ -36,7 +36,7 @@ class UnionTripReportPDFController extends Controller
      
             $data['trip_header'] = DB::table('trip_header')
             ->join('users', 'trip_header.created_by', '=', 'users.id')
-            ->where('trip_status', 4) // ปิดทริปแล้ว
+            ->where('trip_header.trip_status', 4) // ปิดทริปแล้ว
                 ->select(
                     'users.*',
                     'trip_header.*',
@@ -66,11 +66,12 @@ class UnionTripReportPDFController extends Controller
             $data["email"] = $data['user_head']->email;
             $data["title"] = $request->subject." From UR-PRINT";
             $data["body"] = "ใบเบิกเบี้ยเลี้ยงประจำเดือน";
-
+            $data["pdf_name"] = "ReportTrip-[".$request->selectdateEmail."].pdf";
+            // dd($pdf_name);
             Mail::send('mail.trip_user_mail', $data, function($message)use($data, $pdf) {
                 $message->to($data["email"])
                         ->subject($data["title"])
-                        ->attachData($pdf->output(), "text.pdf");
+                        ->attachData($pdf->output(), $data["pdf_name"]);
             });
         }
        
