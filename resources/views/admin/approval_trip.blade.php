@@ -273,7 +273,7 @@
                                 <select name="tosend[]" class="select2 select2-multiple form-control tosend" multiple="multiple" id="tosend" data-placeholder="Choose" required>
                                     <optgroup label="เลือกข้อมูล">
                                         @foreach ($users as $user)
-                                        <option value="{{ $user->email }}">{{ $user->name }}</option>
+                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
                                         @endforeach
                                     </optgroup> 
                                 </select>

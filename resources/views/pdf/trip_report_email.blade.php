@@ -127,12 +127,21 @@
                 <td style="background-color: #FFFFFF; border: none;">
                     <strong style="font-size: 18px;">ผู้อนุมัติ</strong><br><br>
                     <strong style="font-size: 18px;"> ...................................................
-                        <br>(คุณธนิต กมลจรรยาเลิศ)
+                        <br>({{ $user_head->name }})
                         <br>ผู้จัดการฝ่าย
                         <br>......./....../............
                         </strong>
                     <br>
                 </td>
+                <!-- <td style="background-color: #FFFFFF; border: none;">
+                    <strong style="font-size: 18px;">ผู้อนุมัติ</strong><br><br>
+                    <strong style="font-size: 18px;"> ...................................................
+                        <br>(คุณธนิต กมลจรรยาเลิศ)
+                        <br>ผู้จัดการฝ่าย
+                        <br>......./....../............
+                        </strong>
+                    <br>
+                </td> -->
             </tr>
         </table>
     </div>

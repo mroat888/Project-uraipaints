@@ -22,37 +22,57 @@ class UnionTripReportPDFController extends Controller
     {
         $api_token = $this->api_token->apiToken();
 
-        $data['trip_header'] = DB::table('trip_header')
-        ->join('users', 'trip_header.created_by', '=', 'users.id')
-            ->select(
-                'users.*',
-                'trip_header.*',
-            );
-        
-        if(!is_null($request->selectdateEmail)){
-            list($sel_year, $sel_month) = explode("-", $request->selectdateEmail);
+        $tosend = $request->tosend;
+
+        for($i=0; $i<count($tosend); $i++){
+
+            $data['user_head'] = DB::table('users')->where('id', $tosend[$i])->first();
+
+            $auth_team_id = explode(',',$data['user_head']->team_id);
+            $auth_team = array();
+            foreach($auth_team_id as $value){
+                $auth_team[] = $value;
+            }
+     
+            $data['trip_header'] = DB::table('trip_header')
+            ->join('users', 'trip_header.created_by', '=', 'users.id')
+                ->select(
+                    'users.*',
+                    'trip_header.*',
+                );
+            
+            if(!is_null($request->selectdateEmail)){
+                list($sel_year, $sel_month) = explode("-", $request->selectdateEmail);
+                $data['trip_header'] = $data['trip_header']
+                    ->whereMonth('trip_header.created_at', $sel_month)
+                    ->whereYear('trip_header.created_at', $sel_year);
+            }
+
             $data['trip_header'] = $data['trip_header']
-                ->whereMonth('trip_header.created_at', $sel_month)
-                ->whereYear('trip_header.created_at', $sel_year);
-        }
-
-        $data['trip_sel_date'] = $request->selectdateEmail;
-        $data['trip_header'] = $data['trip_header']->get();
-
-
-        $pdf = PDF::loadView('pdf.trip_report_email', $data);
-
-
-        $data["email"] = "mroat07@gmail.com";
-        $data["title"] = $request->subject." From UR-PRINT";
-        $data["body"] = "ใบเบิกเบี้ยเลี้ยงประจำเดือน";
-
-        Mail::send('mail.trip_user_mail', $data, function($message)use($data, $pdf) {
-            $message->to($data["email"])
-                    ->subject($data["title"])
-                    ->attachData($pdf->output(), "text.pdf");
-        });
+                ->where(function($query) use ($auth_team) {
+                    for ($i = 0; $i < count($auth_team); $i++){
+                        $query->orWhere('users.team_id', $auth_team[$i])
+                            ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                            ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+                    }
+                });
+            
+            $data['trip_sel_date'] = $request->selectdateEmail;
+            $data['trip_header'] = $data['trip_header']->get();
         
+            $pdf = PDF::loadView('pdf.trip_report_email', $data);
+
+            $data["email"] = $data['user_head']->email;
+            $data["title"] = $request->subject." From UR-PRINT";
+            $data["body"] = "ใบเบิกเบี้ยเลี้ยงประจำเดือน";
+
+            Mail::send('mail.trip_user_mail', $data, function($message)use($data, $pdf) {
+                $message->to($data["email"])
+                        ->subject($data["title"])
+                        ->attachData($pdf->output(), "text.pdf");
+            });
+        }
+       
         return response()->json([
             'status' => 200,
             'message' => 'ส่งข้อมูลสำเร็จ',
