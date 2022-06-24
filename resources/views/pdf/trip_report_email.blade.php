@@ -83,24 +83,36 @@
             <th style="border: 1px solid rgb(182, 182, 182);">ยอดโอนเข้าบัญชี</th>
             <th style="border: 1px solid rgb(182, 182, 182);">หมายเหตุ</th>
         </tr>
+        
         @php 
             $total_sum_allowance = 0;
         @endphp
         @foreach($trip_header as $key => $value)
             @php 
-                $total_sum_allowance += $value->sum_allowance;
+                $allowance = 0; 
+                $sum_allowance = 0;
+                if($value->sum_allowance > 0){
+                    $total_sum_allowance += $value->sum_allowance;
+                    $sum_allowance = $value->sum_allowance;
+                }
+                
+                if($value->allowance > 0){
+                    $allowance = $value->allowance;
+                }
             @endphp
+
             <tr style="text-align:center;">
                 <td style="border: 1px solid rgb(182, 182, 182);">{{ ++$key }}</td>
                 <td style="border: 1px solid rgb(182, 182, 182);">{{ $value->api_employee_id }}</td>
                 <td style="border: 1px solid rgb(182, 182, 182);">{{ $value->name }}</td>
-                <td style="border: 1px solid rgb(182, 182, 182);">{{ number_format($value->allowance) }}</td>
+                <td style="border: 1px solid rgb(182, 182, 182);">{{ number_format($allowance) }}</td>
                 <td style="border: 1px solid rgb(182, 182, 182);">{{ $value->trip_day }}</td>
-                <td style="border: 1px solid rgb(182, 182, 182);">{{ number_format($value->sum_allowance) }}</td>
-                <td style="border: 1px solid rgb(182, 182, 182);">{{ number_format($value->sum_allowance) }}</td>
+                <td style="border: 1px solid rgb(182, 182, 182);">{{ number_format($sum_allowance) }}</td>
+                <td style="border: 1px solid rgb(182, 182, 182);">{{ number_format($sum_allowance) }}</td>
                 <td style="border: 1px solid rgb(182, 182, 182);"></td>
             </tr>
         @endforeach
+
         <tfoot>
             <tr style="text-align:center;">
                 <td style="border: 1px solid rgb(182, 182, 182);" colspan="5">ยอดรวม</td>
@@ -109,6 +121,8 @@
                 <td style="border: 1px solid rgb(182, 182, 182);"></td>
             </tr>
         </tfoot>
+
+
     </table>
 
     <div class="mt-5">
@@ -124,6 +138,7 @@
                     </strong>
                     <br>
                 </td>
+                
                 <td style="background-color: #FFFFFF; border: none;">
                     <strong style="font-size: 18px;">ผู้อนุมัติ</strong><br><br>
                     <strong style="font-size: 18px;"> ...................................................
@@ -133,6 +148,7 @@
                         </strong>
                     <br>
                 </td>
+                
                 <!-- <td style="background-color: #FFFFFF; border: none;">
                     <strong style="font-size: 18px;">ผู้อนุมัติ</strong><br><br>
                     <strong style="font-size: 18px;"> ...................................................

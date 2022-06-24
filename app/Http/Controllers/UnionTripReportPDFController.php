@@ -24,6 +24,7 @@ class UnionTripReportPDFController extends Controller
 
         $tosend = $request->tosend;
 
+
         for($i=0; $i<count($tosend); $i++){
 
             $data['user_head'] = DB::table('users')->where('id', $tosend[$i])->first();
