@@ -85,7 +85,12 @@
                                         <tr>
                                             <td>{{$key + 1}}</td>
                                             <td>{{$value->assign_title}}</td>
-                                            <td><img src="{{ isset($value->assign_fileupload) ? asset('public/upload/AssignmentFile/' . $value->assign_fileupload) : '' }}" width="30"></td>
+                                            <td>
+                                                @php
+                                                    $assign_file = App\Assignment_gallery::where('assignment_id', $value->id)->where('status', 0)->first();
+                                                @endphp
+                                                <img src="{{ isset($assign_file->image) ? asset('public/upload/AssignmentFile/' . $assign_file->image) : '' }}" width="50">
+                                            </td>
                                             <td>{{$value->name}}</td>
                                             <td>{{Carbon\Carbon::parse($value->assign_work_date)->addYear(543)->format('d/m/Y')}}</td>
                                             <td>
@@ -109,20 +114,29 @@
                                                 @endif
                                             </td>
                                             <td>
+                                            <div class="button-list">
                                                 @if ($value->assign_result_status == 0)
                                                     <button onclick="edit_modal({{ $value->id }})"
                                                         class="btn btn-icon btn-edit" data-toggle="modal" data-target="#modalEdit">
                                                         <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">drive_file_rename_outline</span></h4>
                                                     </button>
-                                                    <a href="{{url('admin/delete_assignment', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
-                                                        <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">delete_outline</span></h4>
+                                                    <a href="{{url('admin/assignment_file', $value->id)}}" class="btn btn-icon btn-purple" value="{{ $value->id }}">
+                                                        <h4 class="btn-icon-wrap" style="color: white;"><span
+                                                            class="material-icons">collections</span></h4>
                                                     </a>
+                                                    <button id="btn_assign_delete" class="btn btn-icon btn-danger" value="{{ $value->id }}">
+                                                        <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">delete_outline</span></h4>
+                                                    </button>
+                                                    {{-- <a href="{{url('admin/delete_assignment', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
+                                                        <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">delete_outline</span></h4>
+                                                    </a> --}}
                                                 @else
                                                     <button  onclick="show_result({{ $value->id }})"
                                                         class="btn btn-icon btn-summarize" data-toggle="modal" data-target="#ModalResult" >
                                                         <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">library_books</span></h4>
                                                     </button>
                                                 @endif
+                                            </div>
                                             </td>
                                         </tr>
                                         @endforeach
@@ -178,7 +192,7 @@
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ไฟล์เอกสาร</label>
-                                <input type="file" name="assignment_fileupload" id="assignment_fileupload" class="form-control">
+                                <input type="file" name="assignment_fileupload[]"  class="form-control" multiple>
                             </div>
                         </div>
                         <input type="hidden" name="assignmentID" id="assignmentID" value="{{Auth::user()->id}}">
@@ -352,29 +366,71 @@
         </div>
     </div>
 
+    <!-- Modal Delete Saleplan -->
+    <div class="modal fade" id="ModalAssignDelete" tabindex="-1" role="dialog" aria-labelledby="ModalAssignDelete"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form id="from_assign_delete" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">คุณต้องการลบข้อมูลการสั่งงานใช่หรือไม่</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="text-align:center;">
+                        <h3>คุณต้องการลบข้อมูลการสั่งงานใช่หรือไม่ ?</h3>
+                        <input class="form-control" id="assign_id_delete" name="assign_id_delete" type="hidden" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                        <button type="submit" class="btn btn-primary" id="btn_save_edit">ยืนยัน</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
 <script>
 
-    // $(document).ready(function() {
-    //     $( "#sel_manager" ).change(function(e) {
-    //         e.preventDefault();
-    //         let umanager = $(this).val();
-    //         console.log(umanager);
-    //         $.ajax({
-    //             method: 'GET',
-    //             url: '{{ url("/admin/fetch_user") }}/'+umanager,
-    //             datatype: 'json',
-    //             success: function(response){
-    //                 if(response.status == 200){
-    //                     console.log(response)
-    //                     $('#sel_saleman').children().remove().end();
-    //                     $.each(response.saleman, function(key, value){
-    //                         $('#sel_saleman').append('<option value='+value.id+'>'+value.name+'</option>')	;
-    //                     });
-    //                 }
-    //             }
-    //         });
-    //     });
-    // });
+$(document).on('click', '#btn_assign_delete', function() { // ปุ่มลบ Slaplan
+            let assign_id_delete = $(this).val();
+            $('#assign_id_delete').val(assign_id_delete);
+            $('#ModalAssignDelete').modal('show');
+        });
+
+        $("#from_assign_delete").on("submit", function(e) {
+            e.preventDefault();
+            //var formData = $(this).serialize();
+            var formData = new FormData(this);
+            console.log(formData);
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('admin/delete_assignment') }}',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    console.log(response);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Deleted!',
+                        text: "ลบข้อมูลสั่งงานเรียบร้อยแล้ว",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    $('#ModalAssignDelete').modal('hide');
+                    $('#btn_assign_delete').prop('disabled', true);
+                    location.reload();
+                },
+                error: function(response) {
+                    console.log("error");
+                    console.log(response);
+                }
+            });
+        });
 
     $(document).ready(function() {
             $.ajax({

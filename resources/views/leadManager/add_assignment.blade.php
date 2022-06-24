@@ -133,7 +133,12 @@
                                         <tr>
                                             <td>{{$key + 1}}</td>
                                             <td>{{$value->assign_title}}</td>
-                                            <td><img src="{{ isset($value->assign_fileupload) ? asset('public/upload/AssignmentFile/' . $value->assign_fileupload) : '' }}" width="50"></td>
+                                            <td>
+                                                @php
+                                                    $assign_file = App\Assignment_gallery::where('assignment_id', $value->id)->where('status', 0)->first();
+                                                @endphp
+                                                <img src="{{ isset($assign_file->image) ? asset('public/upload/AssignmentFile/' . $assign_file->image) : '' }}" width="50">
+                                            </td>
                                             <td>{{$value->name}}</td>
                                             <td>{{Carbon\Carbon::parse($value->assign_work_date)->addYear(543)->format('d/m/Y')}}</td>
                                             <td>
@@ -162,12 +167,13 @@
                                                 <button onclick="edit_modal({{ $value->id }})" class="btn btn-icon btn-edit mr-10" data-toggle="modal" data-target="#modalEdit">
                                                     <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">drive_file_rename_outline</span></h4>
                                                 </button>
+                                                <a href="{{url('lead/assignment_file', $value->id)}}" class="btn btn-icon btn-purple" value="{{ $value->id }}">
+                                                    <h4 class="btn-icon-wrap" style="color: white;"><span
+                                                        class="material-icons">collections</span></h4>
+                                                </a>
                                                 <button id="btn_assign_delete" class="btn btn-icon btn-danger" value="{{ $value->id }}">
                                                     <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">delete_outline</span></h4>
                                                 </button>
-                                                {{-- <a href="{{url('lead/delete_assignment', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
-                                                    <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">delete_outline</span></h4>
-                                                </a> --}}
 
                                                 @else
                                                 <button class="btn btn-icon btn-summarize" data-toggle="modal" data-target="#ModalResult" onclick="show_result({{$value->id}})">
@@ -244,7 +250,7 @@
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ไฟล์เอกสาร</label>
-                                <input type="file" name="assignment_fileupload" id="assignment_fileupload" class="form-control">
+                                <input type="file" name="assignment_fileupload[]" class="form-control" multiple>
                             </div>
                         </div>
                 </div>

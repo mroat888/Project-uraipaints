@@ -85,7 +85,7 @@
                                                     class="material-icons">drive_file_rename_outline</span></h4>
                                             </button>
                                                 @if ($value->status_use == 0)
-                                                <button class="btn btn-icon btn-danger">
+                                                <button id="btn_permission_delete" class="btn btn-icon btn-danger" value="{{ $value->id }}">
                                                     <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">delete_outline</span></h4>
                                                 </button>
                                             @endif
@@ -190,9 +190,73 @@
         @include('admin.user_permission_edit')
     </div>
 
+    <!-- Modal Delete note -->
+    <div class="modal fade" id="ModalNoteDelete" tabindex="-1" role="dialog" aria-labelledby="ModalNoteDelete"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form id="from_note_delete" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">คุณต้องการลบข้อมูลโน๊ตใช่หรือไม่</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="text-align:center;">
+                        <h3>คุณต้องการลบข้อมูลโน๊ตใช่หรือไม่ ?</h3>
+                        <input class="form-control" id="permission_id_delete" name="permission_id_delete" type="hidden" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                        <button type="submit" class="btn btn-primary" id="btn_save_edit">ยืนยัน</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
 
 
 <script>
+
+$(document).on('click', '#btn_permission_delete', function() { // ปุ่มลบ Slaplan
+            let permission_id_delete = $(this).val();
+            $('#permission_id_delete').val(permission_id_delete);
+            $('#ModalNoteDelete').modal('show');
+        });
+
+        $("#from_note_delete").on("submit", function(e) {
+            e.preventDefault();
+            //var formData = $(this).serialize();
+            var formData = new FormData(this);
+            console.log(formData);
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('admin/delete_user_permission') }}',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    console.log(response);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Deleted!',
+                        text: "ลบข้อมูลโน๊ตเรียบร้อยแล้ว",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    $('#ModalNoteDelete').modal('hide');
+                    $('#btn_permission_delete').prop('disabled', true);
+                    location.reload();
+                },
+                error: function(response) {
+                    console.log("error");
+                    console.log(response);
+                }
+            });
+        });
 
     $(".btn_edit").on("click", function(e){
         e.preventDefault();

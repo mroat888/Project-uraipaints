@@ -422,4 +422,27 @@ class UserPermissionController extends Controller
         }
         return back();
     }
+
+    public function delete(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+
+            $data = DB::table('users')->where('id', $request->permission_id_delete)->first();
+            if (!empty($data->signature)) {
+                $path2 = 'public/upload/UserSignature/';
+                unlink($path2 . $data->signature);
+            }
+
+            DB::table('users')->where('id', $request->permission_id_delete)->delete();
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+        }
+
+        return response()->json([
+            'status' => 200,
+        ]);
+    }
 }
