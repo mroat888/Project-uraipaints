@@ -799,6 +799,7 @@ Route::post('/admin/userPermissionCreate', 'Admin\UserPermissionController@store
 Route::get('/admin/userPermissionEdit/{id}', 'Admin\UserPermissionController@edit');
 Route::post('/admin/userPermissionUpdate', 'Admin\UserPermissionController@update');
 Route::get('admin/update-status-use/{id}', 'Admin\UserPermissionController@update_status_use');
+Route::post('admin/delete_user_permission', 'Admin\UserPermissionController@delete');
 
 
 Route::get('admin/checkHistory', 'Admin\UsageHistoryController@index');
