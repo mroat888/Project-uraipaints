@@ -36,6 +36,7 @@ class UnionTripReportPDFController extends Controller
      
             $data['trip_header'] = DB::table('trip_header')
             ->join('users', 'trip_header.created_by', '=', 'users.id')
+            ->where('trip_status', 4) // ปิดทริปแล้ว
                 ->select(
                     'users.*',
                     'trip_header.*',
