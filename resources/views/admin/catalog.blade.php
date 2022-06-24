@@ -40,7 +40,7 @@
                                         </select>
 
                                         <select name="brand" class="form-control" aria-label=".form-select-lg example">
-                                            <option value="" selected>ชื่อตราสินค้า</option>
+                                            <option value="" selected>ชื่อแบรนด์สินค้า</option>
                                             @foreach ($brands as $key => $value)
                                                 <option value="{{$brands[$key]['id']}}">{{$brands[$key]['brand_name']}}</option>
                                             @endforeach
@@ -178,9 +178,9 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
-                                <label for="firstName">ตราสินค้า</label>
+                                <label for="firstName">แบรนด์สินค้า</label>
                                 <select name="brand_id" class="form-control custom-select select2" required>
-                                    <option value="" selected disabled>กรุณาเลือกตราสินค้า</option>
+                                    <option value="" selected disabled>กรุณาเลือกแบรนด์สินค้า</option>
                                     @foreach ($brands as $key => $value)
                                         <option value="{{$brands[$key]['id']}}">{{$brands[$key]['brand_name']}}</option>
                                     @endforeach
@@ -247,7 +247,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
-                                <label for="firstName">ตราสินค้า</label>
+                                <label for="firstName">แบรนด์สินค้า</label>
                                 <select name="brand_id" id="brand_id" class="form-control custom-select select2">
                                 </select>
                             </div>

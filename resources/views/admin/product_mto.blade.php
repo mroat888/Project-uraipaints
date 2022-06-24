@@ -39,7 +39,7 @@
                                         </select>
 
                                         <select name="brand" class="form-control" aria-label=".form-select-lg example">
-                                            <option value="" selected>ชื่อตราสินค้า</option>
+                                            <option value="" selected>ชื่อแบรนด์สินค้า</option>
                                             @foreach ($brands as $key => $value)
                                                 <option value="{{$brands[$key]['id']}}">{{$brands[$key]['brand_name']}}</option>
                                             @endforeach
@@ -136,7 +136,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">เพิ่มอายุจัดเก็บสินค้า</h5>
+                    <h5 class="modal-title">เพิ่มสินค้าสั่งผลิต (MTO)</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -165,9 +165,9 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
-                                <label for="firstName">ตราสินค้า</label>
+                                <label for="firstName">แบรนด์สินค้า</label>
                                 <select name="brand_id" class="form-control custom-select select2" required>
-                                    <option value="" selected disabled>กรุณาเลือกตราสินค้า</option>
+                                    <option value="" selected disabled>กรุณาเลือกแบรนด์สินค้า</option>
                                     @foreach ($brands as $key => $value)
                                         <option value="{{$brands[$key]['id']}}">{{$brands[$key]['brand_name']}}</option>
                                     @endforeach
@@ -203,7 +203,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">แก้ไขอายุจัดเก็บสินค้า</h5>
+                    <h5 class="modal-title">แก้ไขสินค้าสั่งผลิต (MTO)</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -225,7 +225,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
-                                <label for="firstName">ตราสินค้า</label>
+                                <label for="firstName">แบรนด์สินค้า</label>
                                 <select name="brand_id" id="brand_id" class="form-control custom-select select2">
                                 </select>
                             </div>
