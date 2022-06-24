@@ -16,7 +16,7 @@
 </nav>
 <!-- /Breadcrumb -->
 
-    <!-- Container -->
+<!-- Container -->
 <div class="container-fluid px-xxl-65 px-xl-20">
     @if (session('error'))
         <div class="alert alert-inv alert-inv-warning alert-wth-icon alert-dismissible fade show" role="alert">
@@ -30,12 +30,14 @@
         <!-- Title -->
         <div class="hk-pg-header mb-10">
         <div class="topichead-bgred"><i class="ion ion-md-clipboard"></i> ปิดทริปเดินทาง</div>
-        <div class="content-right d-flex"></div>
+        <div class="content-right d-flex">
+            <button type="button" class="btn btn-reject btn-sm ml-5 btn_seandmail">ส่งอีเมล ทริปเดินทาง</button>
+        </div>
     </div>
     <!-- /Title -->
 
     <!-- Row -->
-    <div class="row">
+    <div id="conainer" class="row">
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
                     <div class="topic-secondgery">รายการทริปเดินทาง</div>
@@ -102,8 +104,8 @@
                                 <button type="button" class="btn btn_purple btn-green btn-sm btn_approve" value="complate">Complate</button>
                                 <button type="button" class="btn btn_purple btn-reject btn-sm ml-5 btn_approve" value="pdf">ดาวโหลด PDF</button>
                                 <button type="button" class="btn btn_purple btn-reject btn-sm ml-5 btn_approve" value="excle">ดาวโหลด Excle</button>
-                                <button type="button" class="btn btn_purple btn-reject btn-sm ml-5 btn_approve" value="seandmail">ส่งเมล</button>
-                                <a href="{{url('admin/report_email')}}" class="ml-2">ตัวอย่าง PDF (Email)</a>
+                                <!-- <button type="button" class="btn btn_purple btn-reject btn-sm ml-5 btn_approve" value="seandmail">ส่งเมล</button> -->
+                                <!-- <a href="{{url('admin/report_email')}}" target = "_blank" class="ml-2">ตัวอย่าง PDF (Email)</a> -->
 
                             </div>
 
@@ -235,8 +237,60 @@
                 </section>
             </div>
         </div>
-        <!-- /Row -->
+        <!-- /Row --> 
+
+        <!-- Modalformemail -->
+        <div class="modal fade" id="Modalformemail" tabindex="-1" role="dialog" aria-labelledby="Modalformemail" aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document">
+                <form id="formemail" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">ส่งอีเมล ทริปเดินทาง ประจำเดือน</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="row">
+                            <div class="col-md-4 form-group">
+                                <label for="selectdateEmail">เดือน/ปี</label>
+                                <input type="month" id="selectdateEmail" name="selectdateEmail"
+                                value="{{ date('Y-m') }}" class="form-control form-control-lg" required/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <label for="subject">หัวข้อ</label>
+                                <input type="text" id="subject" name="subject" placeholder="ใบเบิกเบี้ยเลี้ยง ประจำเดือน"
+                                value="" class="form-control form-control-lg" required/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <label for="tosend">ถึง</label>
+                                <select name="tosend[]" class="select2 select2-multiple form-control tosend" multiple="multiple" id="tosend" data-placeholder="Choose" required>
+                                    <optgroup label="เลือกข้อมูล">
+                                        @foreach ($users as $user)
+                                        <option value="{{ $user->email }}">{{ $user->name }}</option>
+                                        @endforeach
+                                    </optgroup> 
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                        <button type="submit" class="btn btn-primary" id="btn_save_edit">ส่งอีเมล</button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+        <!-- End Modalformemail -->
 </div>
+
 
 
 <script type="text/javascript">
@@ -273,13 +327,81 @@
         }
     }
 
+    var month_thai = ['มกราคม','กุมภามพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+
+    $(document).on('click', '.btn_seandmail', function(){
+        $('#Modalformemail').modal('show');
+        let sel_date = $('#selectdateEmail').val().split('-');
+        let sel_year = parseInt(sel_date[0]);
+        let sel_year_thai = sel_year+543
+        let month_key =  (parseInt(sel_date[1]) * 1) - 1;
+
+        let subject = 'ใบเบิกค่าเบี้ยเลี้ยง ประจำเดือน '+ month_thai[month_key] + ' ' + sel_year_thai;
+        $('#subject').val(subject);
+    });
+
+    $(document).on('change', '#selectdateEmail', function(){
+        let sel_date = $(this).val().split('-');
+        let sel_year = parseInt(sel_date[0]);
+        let sel_year_thai = sel_year+543
+        let month_key =  (parseInt(sel_date[1]) * 1) - 1;
+
+        let subject = 'ใบเบิกค่าเบี้ยเลี้ยง ประจำเดือน '+ month_thai[month_key] + ' ' + sel_year_thai;
+        $('#subject').val(subject);
+    });
+
+    $("#formemail").on("submit", function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        console.log(formData);
+
+        $('body').waitMe({
+                    effect : 'bounce',
+                    text : '',
+                    // bg : rgba(255,255,255,0.7),
+                    // color : '#000'
+                });
+
+        $.ajax({
+            type: 'POST',
+            url: '{{ url('trip_mail') }}',
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                // console.log(response);
+                if(response.status == 200){
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'เรียบร้อย!',
+                        text: "ส่งอีเมลเรียบร้อยแล้วค่ะ",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    $('#Modalformemail').modal('hide');
+                    // location.reload();
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'ไม่สามารถส่งอีเมลได้',
+                        text: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    $('#Modalformemail').modal('hide');
+                }
+
+                $('body').waitMe("hide");
+            }
+        });
+     });
+
     $(document).on('click', '.btn_approve', function() {
         let approve = $(this).val();
         $('#approve').val(approve);
         $('#ModalSaleplanApprove').modal('show');
     });
-
-
 
     $("#from_trip_approve").on("submit", function(e) {
         e.preventDefault();

@@ -67,7 +67,7 @@
         <tr>
             <td style="width:20%"></td>
             <td style="text-align:center;">
-                <span style="font-size:22px;"><strong>ใบเบิกค่าเบี้ยเลี้ยง ประจำเดือน {{date('M-Y')}}</strong></span>
+                <span style="font-size:22px;"><strong>ใบเบิกค่าเบี้ยเลี้ยง ประจำเดือน <?php echo thaidate('F Y', $trip_sel_date); ?></strong></span>
             </td>
             <td style="width:20%"></td>
         </tr>
@@ -77,30 +77,38 @@
         <tr style="text-align:center;">
             <th style="border: 1px solid rgb(182, 182, 182);" colspan="2">รหัสพนักงาน</th>
             <th style="border: 1px solid rgb(182, 182, 182);">ชื่อ-นามสกุล</th>
-            <th style="border: 1px solid rgb(182, 182, 182);">อัตราเบี้ยเลี้ยงต่อวัน</th>
+            <th style="border: 1px solid rgb(182, 182, 182);">เบี้ยเลี้ยง/วัน</th>
             <th style="border: 1px solid rgb(182, 182, 182);">จำนวนวันทำงาน</th>
-            <th style="border: 1px solid rgb(182, 182, 182);">ค่าเบี้ยเลี้ยง (เบี้ยเลี้ยงคำนวนภาษีจำนวนวัน)</th>
+            <th style="border: 1px solid rgb(182, 182, 182);">รวมค่าเบี้ยเลี้ยง</th>
             <th style="border: 1px solid rgb(182, 182, 182);">ยอดโอนเข้าบัญชี</th>
             <th style="border: 1px solid rgb(182, 182, 182);">หมายเหตุ</th>
         </tr>
+        @php 
+            $total_sum_allowance = 0;
+        @endphp
+        @foreach($trip_header as $key => $value)
+            @php 
+                $total_sum_allowance += $value->sum_allowance;
+            @endphp
             <tr style="text-align:center;">
-                <td style="border: 1px solid rgb(182, 182, 182);">1</td>
-                <td style="border: 1px solid rgb(182, 182, 182);">4401</td>
-                <td style="border: 1px solid rgb(182, 182, 182);">คุณธนิต กมลจรรยาเลิศ</td>
-                <td style="border: 1px solid rgb(182, 182, 182);">950</td>
-                <td style="border: 1px solid rgb(182, 182, 182);">15</td>
-                <td style="border: 1px solid rgb(182, 182, 182);">14,250</td>
-                <td style="border: 1px solid rgb(182, 182, 182);">14,250</td>
+                <td style="border: 1px solid rgb(182, 182, 182);">{{ ++$key }}</td>
+                <td style="border: 1px solid rgb(182, 182, 182);">{{ $value->name }}</td>
+                <td style="border: 1px solid rgb(182, 182, 182);">{{ $value->api_employee_id }}</td>
+                <td style="border: 1px solid rgb(182, 182, 182);">{{ number_format($value->allowance) }}</td>
+                <td style="border: 1px solid rgb(182, 182, 182);">{{ $value->trip_day }}</td>
+                <td style="border: 1px solid rgb(182, 182, 182);">{{ number_format($value->sum_allowance) }}</td>
+                <td style="border: 1px solid rgb(182, 182, 182);">{{ number_format($value->sum_allowance) }}</td>
                 <td style="border: 1px solid rgb(182, 182, 182);"></td>
             </tr>
-            <tfoot>
-                <tr style="text-align:center;">
-                    <td style="border: 1px solid rgb(182, 182, 182);" colspan="5">ยอดรวม</td>
-                    <td style="border: 1px solid rgb(182, 182, 182);">409,800</td>
-                    <td style="border: 1px solid rgb(182, 182, 182);">409,800</td>
-                    <td style="border: 1px solid rgb(182, 182, 182);"></td>
-                </tr>
-            </tfoot>
+        @endforeach
+        <tfoot>
+            <tr style="text-align:center;">
+                <td style="border: 1px solid rgb(182, 182, 182);" colspan="5">ยอดรวม</td>
+                <td style="border: 1px solid rgb(182, 182, 182);">{{ number_format($total_sum_allowance) }}</td>
+                <td style="border: 1px solid rgb(182, 182, 182);">{{ number_format($total_sum_allowance) }}</td>
+                <td style="border: 1px solid rgb(182, 182, 182);"></td>
+            </tr>
+        </tfoot>
     </table>
 
     <div class="mt-5">

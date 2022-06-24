@@ -39,5 +39,6 @@ class TripMail extends Mailable
                         'trip_header' => $this->trip_header,
                         'trip_detail' => $this->trip_detail,
                     ]);
+
     }
 }

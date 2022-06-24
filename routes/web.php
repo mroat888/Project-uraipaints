@@ -1035,6 +1035,7 @@ Route::post('trip_excel', 'UnionTripReportExportContoller@excel');
 Route::get('trip_user_excel/{id}', 'UnionTripReportExportContoller@userexcel');
 
 Route::get('trip_mail/{id}', 'UnionTripReportPDFController@mail');
+Route::post('trip_mail', 'UnionTripReportPDFController@sandmail');
 
 Auth::routes();
 // Route::get('/', function () { return view('saleman.dashboard'); });
