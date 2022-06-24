@@ -92,8 +92,8 @@
             @endphp
             <tr style="text-align:center;">
                 <td style="border: 1px solid rgb(182, 182, 182);">{{ ++$key }}</td>
-                <td style="border: 1px solid rgb(182, 182, 182);">{{ $value->name }}</td>
                 <td style="border: 1px solid rgb(182, 182, 182);">{{ $value->api_employee_id }}</td>
+                <td style="border: 1px solid rgb(182, 182, 182);">{{ $value->name }}</td>
                 <td style="border: 1px solid rgb(182, 182, 182);">{{ number_format($value->allowance) }}</td>
                 <td style="border: 1px solid rgb(182, 182, 182);">{{ $value->trip_day }}</td>
                 <td style="border: 1px solid rgb(182, 182, 182);">{{ number_format($value->sum_allowance) }}</td>
