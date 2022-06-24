@@ -140,7 +140,33 @@ class ProductNewController extends Controller
             $data['campaign_api_diff'] = $campaign_api_diff;
         }
 
-      // dd($data['campaign_api'], $data['campaign_api_target']);
+        // dd($data['campaign_api'], $data['campaign_api_target']);
+      
+        // -- ดึง ผู้จัดการเขต
+        if(Auth::user()->status == 3){
+            $auth_team_id = explode(',',Auth::user()->team_id);
+            $auth_team = array();
+            foreach($auth_team_id as $value){
+                $auth_team[] = $value;
+            }
+
+            $data['users_lead'] = DB::table('users')
+                ->where('status', 2)
+                ->where(function($query) use ($auth_team) {
+                    for ($i = 0; $i < count($auth_team); $i++){
+                        $query->orWhere('users.team_id', $auth_team[$i])
+                            ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                            ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+                    }
+                })
+                ->get();
+        }
+
+        if(Auth::user()->status == 4){
+            $data['users_lead'] = DB::table('users')->where('status', 2)->get();
+            $data['users_head'] = DB::table('users')->where('status', 3)->get();
+        }
+        // -- จบ ดึง ผู้จัดการเขต
 
         switch  (Auth::user()->status){
             case 2 :    $return = "shareData_leadManager.report_product_new"; //-- Lead
@@ -159,26 +185,66 @@ class ProductNewController extends Controller
     public function search(Request $request){
 
         $year_now = $request->year_search;
+        $sel_campaign = $request->sel_campaign;
+
         $data['year_search'] = $request->year_search;
         
         $api_token = $this->api_token->apiToken();
 
         switch  (Auth::user()->status){
-            case 2 :    $patch_search = "campaignpromotes/*/sellertargets"; //-- Lead
+            case 2 :   if(!is_null($sel_campaign)){  //-- Lead
+                            $patch_search = "campaignpromotes/".$sel_campaign."/sellertargets";
+                        }else{
+                            $patch_search = "campaignpromotes/*/sellertargets";
+                        }   
                         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$patch_search,[
                             'years' => $year_now, 
                             'saleleader_id' => Auth::user()->api_identify,
                         ]);
             break;
-            case 3 :    $patch_search = "campaignpromotes/*/sellertargets"; //-- Head
-                        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$patch_search,[
-                            'years' => $year_now, 
-                            'saleheader_id' => Auth::user()->api_identify,
-                        ]);
+            case 3 :    if(!is_null($request->sel_lead)){
+                            if(!is_null($sel_campaign)){  //-- Lead
+                                $patch_search = "campaignpromotes/".$sel_campaign."/sellertargets";
+                            }else{
+                                $patch_search = "campaignpromotes/*/sellertargets";
+                            }  
+                            $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$patch_search,[
+                                'years' => $year_now, 
+                                'saleleader_id' => $request->sel_lead,
+                            ]);
+                        }else{
+                            if(!is_null($sel_campaign)){  //-- Head
+                                $patch_search = "campaignpromotes/".$sel_campaign."/sellertargets"; 
+                            }else{
+                                $patch_search = "campaignpromotes/*/sellertargets"; 
+                            } 
+                            $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$patch_search,[
+                                'years' => $year_now, 
+                                'saleheader_id' => Auth::user()->api_identify,
+                            ]);
+                        } 
             break;
-            case 4 :    $patch_search = "campaignpromotes/*/sellertargets"; //-- Admin
+            case 4 :    if(!is_null($sel_campaign)){  //-- Admin
+                            $patch_search = "campaignpromotes/".$sel_campaign."/sellertargets";
+                        }else{
+                            $patch_search = "campaignpromotes/*/sellertargets";
+                        }   
+
+                        $sel_lead = "";
+                        $sel_head = "";
+
+                        if(!is_null($request->sel_lead)){
+                            $sel_lead = $request->sel_lead;
+                        }
+
+                        if(!is_null($request->sel_head)){
+                            $sel_head = $request->sel_head;
+                        }
+                
                         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$patch_search,[
                             'years' => $year_now, 
+                            'saleleader_id' => $sel_lead,
+                            'saleheader_id' => $sel_head,
                         ]);
             break;
         }
@@ -194,7 +260,7 @@ class ProductNewController extends Controller
 
         $sellers_api = array();
         $summary_sellers_api = array();
-
+    
         if($res_api['code'] == 200){
 
             $sum_target = 0;
@@ -283,6 +349,32 @@ class ProductNewController extends Controller
         }
 
       // dd($data['campaign_api'], $data['campaign_api_target']);
+
+    // -- ดึง ผู้จัดการเขต
+    if(Auth::user()->status == 3){ //-- ใช้ในระบบ ผู้จัดการฝ่าย
+        $auth_team_id = explode(',',Auth::user()->team_id);
+        $auth_team = array();
+        foreach($auth_team_id as $value){
+            $auth_team[] = $value;
+        }
+
+        $data['users_lead'] = DB::table('users')
+            ->where('status', 2)
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('users.team_id', $auth_team[$i])
+                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+                }
+            })
+            ->get();
+    }
+    // -- จบ ดึง ผู้จัดการเขต
+
+    if(Auth::user()->status == 4){ //-- ใช้ในระบบ admin
+        $data['users_lead'] = DB::table('users')->where('status', 2)->get();
+        $data['users_head'] = DB::table('users')->where('status', 3)->get();
+    }
 
       switch  (Auth::user()->status){
         case 2 :    return view('shareData_leadManager.report_product_new', $data); //-- Lead
