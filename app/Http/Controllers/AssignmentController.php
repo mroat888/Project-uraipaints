@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Assignment;
+use App\Assignment_gallery;
 use App\Customer;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -124,14 +125,12 @@ class AssignmentController extends Controller
         }
 
 
-            $pathFle = 'upload/AssignmentFile';
-            $uploadfile = '';
-            if (!empty($request->file('assignment_fileupload'))) {
-                $uploadF = $request->file('assignment_fileupload');
-                $file_name = 'file-' . time() . '.' . $uploadF->getClientOriginalExtension();
-                $uploadF->move(public_path($pathFle), $file_name);
-                $uploadfile = $file_name;
-            }
+            // if (!empty($request->file('assignment_fileupload'))) {
+            //     $uploadF = $request->file('assignment_fileupload');
+            //     $file_name = 'file-' . time() . '.' . $uploadF->getClientOriginalExtension();
+            //     $uploadF->move(public_path($pathFle), $file_name);
+            //     $uploadfile = $file_name;
+            // }
 
             if ($request->CheckAll) {
             $data['users'] = DB::table('users')
@@ -146,48 +145,120 @@ class AssignmentController extends Controller
             ->get();
 
             foreach ($data['users'] as $key => $emp_id) {
-                DB::table('assignments')
-                ->insert([
+             $data = Assignment::create(
+                [
                     'assign_work_date' => $request->date,
                     // 'assign_request_date' => Carbon::now(), // วันขอนุมัติ
                     'assign_approve_date' => Carbon::now(), // วันที่อนุมัติ
                     'assign_title' => $request->assign_title,
                     'assign_detail' => $request->assign_detail,
-                    'assign_fileupload' => $uploadfile,
                     'assign_emp_id' => $emp_id->id,
                     'assign_status' => 3,
                     'assign_approve_id' => Auth::user()->id,
                     'assign_result_status' => 0,
                     'created_by' => Auth::user()->id,
                     'created_at' => Carbon::now(),
-                ]);
+                ])->id;
+
+                $assignments_id[$key] = [
+                    'id' => $data,
+                ];
+
+            }
+
+            $gallery = array();
+            foreach ($request->assignment_fileupload as $key => $gallery) {
+                $pathFle = 'upload/AssignmentFile';
+                $uploadfile = '';
+                if (!empty($request->assignment_fileupload[$key])) {
+                    $img = $request->assignment_fileupload[$key];
+                    $img_name = 'file-' . time(). $key. '.' . $img->getClientOriginalExtension();
+                    $save_path = $img->move(public_path($pathFle), $img_name);
+                    $uploadfile = $img_name;
+
+                }
+                $gallery_file[$key] = [
+                    'img' => $uploadfile,
+                ];
+            }
+
+            // dd($gallery_file);
+
+            foreach ($assignments_id as $keyID => $a)
+            {
+                foreach ($gallery_file as $keyG => $g)
+                {
+                    Assignment_gallery::insert([
+                        'assignment_id' => $assignments_id[$keyID]['id'],
+                        'image' => $gallery_file[$keyG]['img'],
+                        'status' => $keyG,
+                        'created_by'   => Auth::user()->id,
+                    ]);
+                }
             }
 
             }else{
+                $assignments_id = array();
                 foreach ($request->assign_emp_id as $key => $emp_id) {
-                    DB::table('assignments')
-                    ->insert([
+                  $data = Assignment::create([
                         'assign_work_date' => $request->date,
                         // 'assign_request_date' => Carbon::now(), // วันขอนุมัติ
                         'assign_approve_date' => Carbon::now(), // วันที่อนุมัติ
                         'assign_title' => $request->assign_title,
                         'assign_detail' => $request->assign_detail,
-                        'assign_fileupload' => $uploadfile,
                         'assign_emp_id' => $emp_id,
                         'assign_status' => 3,
                         'assign_approve_id' => Auth::user()->id,
                         'assign_result_status' => 0,
                         'created_by' => Auth::user()->id,
                         'created_at' => Carbon::now(),
-                    ]);
+                    ])->id;
+
+                    $assignments_id[$key] = [
+                        'id' => $data,
+                    ];
+
                 }
+
+                $gallery = array();
+                    foreach ($request->assignment_fileupload as $key => $gallery) {
+                        $pathFle = 'upload/AssignmentFile';
+                        $uploadfile = '';
+                        if (!empty($request->assignment_fileupload[$key])) {
+                            $img = $request->assignment_fileupload[$key];
+                            $img_name = 'file-' . time(). $key. '.' . $img->getClientOriginalExtension();
+                            $save_path = $img->move(public_path($pathFle), $img_name);
+                            $uploadfile = $img_name;
+
+                        }
+                        $gallery_file[$key] = [
+                            'img' => $uploadfile,
+                        ];
+                    }
+
+                    // dd($gallery_file);
+
+                    foreach ($assignments_id as $keyID => $a)
+                    {
+                        foreach ($gallery_file as $keyG => $g)
+                        {
+                            Assignment_gallery::insert([
+                                'assignment_id' => $assignments_id[$keyID]['id'],
+                                'image' => $gallery_file[$keyG]['img'],
+                                'status' => $keyG,
+                                'created_by'   => Auth::user()->id,
+                            ]);
+                        }
+                    }
+
+
             }
 
             DB::commit();
             return response()->json([
                 'status' => 200,
                 'message' => 'บันทึกข้อมูลสำเร็จ',
-                'data' => $uploadfile,
+                'data' => $request,
             ]);
 
         } catch (\Exception $e) {
@@ -204,42 +275,150 @@ class AssignmentController extends Controller
 
     public function store_head(Request $request)
     {
-        // dd($request);
         DB::beginTransaction();
         try {
 
-            $pathFle = 'upload/AssignmentFile';
-            $uploadfile = '';
-            if (!empty($request->file('assignment_fileupload'))) {
-                $uploadF = $request->file('assignment_fileupload');
-                $file_name = 'file-' . time() . '.' . $uploadF->getClientOriginalExtension();
-                $uploadF->move(public_path($pathFle), $file_name);
-                $uploadfile = $file_name;
-            }
+        $auth_team_id = explode(',',Auth::user()->team_id);
+        $auth_team = array();
+        foreach($auth_team_id as $value){
+            $auth_team[] = $value;
+        }
 
-            foreach ($request->assign_emp_id as $key => $emp_id) {
-                DB::table('assignments')
-                ->insert([
+
+            // if (!empty($request->file('assignment_fileupload'))) {
+            //     $uploadF = $request->file('assignment_fileupload');
+            //     $file_name = 'file-' . time() . '.' . $uploadF->getClientOriginalExtension();
+            //     $uploadF->move(public_path($pathFle), $file_name);
+            //     $uploadfile = $file_name;
+            // }
+
+            if ($request->CheckAll) {
+            $data['users'] = DB::table('users')
+            ->where('status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('team_id', $auth_team[$i])
+                        ->orWhere('team_id', 'like', $auth_team[$i].',%')
+                        ->orWhere('team_id', 'like', '%,'.$auth_team[$i]);
+                }
+            })
+            ->get();
+
+            foreach ($data['users'] as $key => $emp_id) {
+             $data = Assignment::create(
+                [
                     'assign_work_date' => $request->date,
                     // 'assign_request_date' => Carbon::now(), // วันขอนุมัติ
                     'assign_approve_date' => Carbon::now(), // วันที่อนุมัติ
                     'assign_title' => $request->assign_title,
                     'assign_detail' => $request->assign_detail,
-                    'assign_fileupload' => $uploadfile,
-                    'assign_emp_id' => $emp_id,
+                    'assign_emp_id' => $emp_id->id,
                     'assign_status' => 3,
                     'assign_approve_id' => Auth::user()->id,
                     'assign_result_status' => 0,
                     'created_by' => Auth::user()->id,
                     'created_at' => Carbon::now(),
-                ]);
+                ])->id;
+
+                $assignments_id[$key] = [
+                    'id' => $data,
+                ];
+
+            }
+
+            $gallery = array();
+            foreach ($request->assignment_fileupload as $key => $gallery) {
+                $pathFle = 'upload/AssignmentFile';
+                $uploadfile = '';
+                if (!empty($request->assignment_fileupload[$key])) {
+                    $img = $request->assignment_fileupload[$key];
+                    $img_name = 'file-' . time(). $key. '.' . $img->getClientOriginalExtension();
+                    $save_path = $img->move(public_path($pathFle), $img_name);
+                    $uploadfile = $img_name;
+
+                }
+                $gallery_file[$key] = [
+                    'img' => $uploadfile,
+                ];
+            }
+
+            // dd($gallery_file);
+
+            foreach ($assignments_id as $keyID => $a)
+            {
+                foreach ($gallery_file as $keyG => $g)
+                {
+                    Assignment_gallery::insert([
+                        'assignment_id' => $assignments_id[$keyID]['id'],
+                        'image' => $gallery_file[$keyG]['img'],
+                        'status' => $keyG,
+                        'created_by'   => Auth::user()->id,
+                    ]);
+                }
+            }
+
+            }else{
+                $assignments_id = array();
+                foreach ($request->assign_emp_id as $key => $emp_id) {
+                  $data = Assignment::create([
+                        'assign_work_date' => $request->date,
+                        // 'assign_request_date' => Carbon::now(), // วันขอนุมัติ
+                        'assign_approve_date' => Carbon::now(), // วันที่อนุมัติ
+                        'assign_title' => $request->assign_title,
+                        'assign_detail' => $request->assign_detail,
+                        'assign_emp_id' => $emp_id,
+                        'assign_status' => 3,
+                        'assign_approve_id' => Auth::user()->id,
+                        'assign_result_status' => 0,
+                        'created_by' => Auth::user()->id,
+                        'created_at' => Carbon::now(),
+                    ])->id;
+
+                    $assignments_id[$key] = [
+                        'id' => $data,
+                    ];
+
+                }
+
+                $gallery = array();
+                    foreach ($request->assignment_fileupload as $key => $gallery) {
+                        $pathFle = 'upload/AssignmentFile';
+                        $uploadfile = '';
+                        if (!empty($request->assignment_fileupload[$key])) {
+                            $img = $request->assignment_fileupload[$key];
+                            $img_name = 'file-' . time(). $key. '.' . $img->getClientOriginalExtension();
+                            $save_path = $img->move(public_path($pathFle), $img_name);
+                            $uploadfile = $img_name;
+
+                        }
+                        $gallery_file[$key] = [
+                            'img' => $uploadfile,
+                        ];
+                    }
+
+                    // dd($gallery_file);
+
+                    foreach ($assignments_id as $keyID => $a)
+                    {
+                        foreach ($gallery_file as $keyG => $g)
+                        {
+                            Assignment_gallery::insert([
+                                'assignment_id' => $assignments_id[$keyID]['id'],
+                                'image' => $gallery_file[$keyG]['img'],
+                                'status' => $keyG,
+                                'created_by'   => Auth::user()->id,
+                            ]);
+                        }
+                    }
+
+
             }
 
             DB::commit();
             return response()->json([
                 'status' => 200,
                 'message' => 'บันทึกข้อมูลสำเร็จ',
-                'data' => $uploadfile,
+                'data' => $request,
             ]);
 
         } catch (\Exception $e) {
@@ -354,6 +533,16 @@ class AssignmentController extends Controller
                 $path2 = 'public/upload/AssignmentFile/';
                 unlink($path2 . $data->assign_fileupload);
             }
+
+            $data2 = Assignment_gallery::where('assignment_id', $request->assign_id_delete)->first();
+            if (!empty($data2->image)) {
+                $path1 = 'public/upload/AssignmentFile/';
+                unlink($path1 . $data2->image);
+
+            Assignment_gallery::where('assignment_id', $data->id)->delete();
+
+            }
+
 
         Assignment::where('id', $request->assign_id_delete)->delete();
         DB::commit();
@@ -566,6 +755,131 @@ class AssignmentController extends Controller
                 'message' => 'ไม่สามารถบันทึกข้อมูลได้',
             ]);
         }
+    }
+
+    public function assign_file($id)
+    {
+        $assign_gallery = Assignment_gallery::where('assignment_id', $id)->orderBy('id', 'desc')->get();
+
+        if (Auth::user()->status == 2) {
+            return view('leadManager.add_assignment_file', compact('assign_gallery', 'id'));
+        }elseif (Auth::user()->status == 3) {
+            return view('headManager.add_assignment_file', compact('assign_gallery', 'id'));
+        }elseif (Auth::user()->status == 4) {
+            return view('admin.add_assignment_file', compact('assign_gallery', 'id'));
+        }
+    }
+
+    public function file_store(Request $request)
+    {
+        // dd($request->assignment_gallery);
+        DB::beginTransaction();
+        try {
+
+        foreach ($request->assignment_gallery as $key => $gallery) {
+
+            $path = 'upload/AssignmentFile';
+            $image = '';
+            $img_name = '';
+            $img = '';
+            if (!empty($request->assignment_gallery[$key])) {
+                $img = $request->assignment_gallery[$key];
+                $img_name = 'file-' . time(). $key. '.' . $img->getClientOriginalExtension();
+                $save_path = $img->move(public_path($path), $img_name);
+                $image = $img_name;
+
+            }
+
+            Assignment_gallery::insert([
+                'assignment_id' => $request->assignment_id,
+                'image' => $image,
+                'status' => $key,
+                'created_by'   => Auth::user()->id,
+            ]);
+
+        }
+        // return back();
+
+            DB::commit();
+            return response()->json([
+                'status' => 200,
+                'message' => 'บันทึกข้อมูลสำเร็จ',
+                // 'data' => $img_name,
+            ]);
+
+        } catch (\Exception $e) {
+
+            DB::rollback();
+
+            return response()->json([
+                'status' => 404,
+                'message' => 'ไม่สามารถบันทึกข้อมูลได้',
+                // 'data' => $request,
+            ]);
+        }
+    }
+
+    public function file_edit($id)
+    {
+        $dataEdit = Assignment_gallery::find($id);
+
+        $data = array(
+            'dataEdit'     => $dataEdit,
+        );
+        echo json_encode($data);
+    }
+
+    public function file_update(Request $request)
+    {
+            $path = 'upload/AssignmentFile';
+            $image = '';
+            $data = Assignment_gallery::find($request->id);
+
+            if (!empty($request->file('assignment_gallery'))) {
+                //ลบรูปเก่าเพื่ออัพโหลดรูปใหม่แทน
+                if (!empty($data->image)) {
+                    $path2 = 'upload/AssignmentFile/';
+                    unlink(public_path($path2) . $data->image);
+                }
+
+                $img = $request->file('assignment_gallery');
+                $img_name = 'file-' . time() . '.' . $img->getClientOriginalExtension();
+                $save_path = $img->move(public_path($path), $img_name);
+                $image = $img_name;
+
+
+                $data2 = Assignment_gallery::find($request->id);
+                $data2->image             = $image;
+                $data2->updated_by        = Auth::user()->id;
+                $data2->updated_at        = Carbon::now();
+                $data2->update();
+                DB::commit();
+            }
+
+        return back();
+    }
+
+    public function file_destroy(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+
+            $data = Assignment_gallery::find($request->assignment_id_delete);
+            if (!empty($data->image)) {
+                $path1 = 'public/upload/AssignmentFile/';
+                unlink($path1 . $data->image);
+            }
+
+            Assignment_gallery::find($request->assignment_id_delete)->delete();
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+        }
+
+        return response()->json([
+            'status' => 200,
+        ]);
     }
 
 }

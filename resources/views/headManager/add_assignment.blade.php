@@ -94,7 +94,12 @@
                                         <tr>
                                             <td>{{$key + 1}}</td>
                                             <td style="text-align:left;">{{$value->assign_title}}</td>
-                                            <td><img src="{{ isset($value->assign_fileupload) ? asset('public/upload/AssignmentFile/' . $value->assign_fileupload) : '' }}" width="50"></td>
+                                            <td>
+                                                @php
+                                                    $assign_file = App\Assignment_gallery::where('assignment_id', $value->id)->where('status', 0)->first();
+                                                @endphp
+                                                <img src="{{ isset($assign_file->image) ? asset('public/upload/AssignmentFile/' . $assign_file->image) : '' }}" width="50">
+                                            </td>
                                             <td>{{$value->name}}</td>
                                             <td>{{Carbon\Carbon::parse($value->assign_work_date)->addYear(543)->format('d/m/Y')}}</td>
                                             <td>
@@ -118,10 +123,15 @@
                                                 @endif
                                             </td>
                                             <td>
+                                                <div class="button-list">
                                                 @if ($value->assign_result_status == 0 && $value->assign_work_date >= Carbon\Carbon::today()->format('Y-m-d'))
                                                     <button onclick="edit_modal({{ $value->id }})" class="btn btn-icon btn-edit" data-toggle="modal" data-target="#modalEdit">
                                                         <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">drive_file_rename_outline</span></h4>
                                                     </button>
+                                                    <a href="{{url('head/assignment_file', $value->id)}}" class="btn btn-icon btn-purple" value="{{ $value->id }}">
+                                                        <h4 class="btn-icon-wrap" style="color: white;"><span
+                                                            class="material-icons">collections</span></h4>
+                                                    </a>
                                                     {{-- <a href="{{url('head/delete_assignment', $value->id)}}" class="btn btn-icon btn-danger mr-10" onclick="return confirm('ต้องการลบข้อมูลนี้ใช่หรือไม่ ?')">
                                                         <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">delete_outline</span></h4>
                                                     </a> --}}
@@ -130,12 +140,11 @@
                                                     </button>
 
                                                 @else
-                                                <div class="button-list">
                                                         <button class="btn btn-icon btn-summarize" data-toggle="modal" data-target="#ModalResult" onclick="show_result({{$value->id}})">
                                                         <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">library_books</span></h4>
                                                     </button>
-                                                        </div>
                                                 @endif
+                                            </div>
                                             </td>
                                         </tr>
                                         @endforeach
@@ -198,7 +207,7 @@
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ไฟล์เอกสาร</label>
-                                <input type="file" name="assignment_fileupload" id="assignment_fileupload" class="form-control">
+                                <input type="file" name="assignment_fileupload[]" class="form-control" multiple>
                             </div>
                         </div>
                 </div>

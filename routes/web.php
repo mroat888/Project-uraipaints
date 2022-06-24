@@ -312,6 +312,11 @@ Route::post('lead/search_month_add-assignment', 'AssignmentController@lead_searc
 Route::post('lead/update_assignment_status_result', 'AssignmentController@update_status_result');
 Route::get('lead/get_assignment', 'AssignmentController@get_assign');
 Route::post('lead/search_month_get-assignment', 'AssignmentController@lead_search_month_get_assignment');
+Route::get('lead/assignment_file/{id}', 'AssignmentController@assign_file');
+Route::post('lead/create_assignment_gallery', 'AssignmentController@file_store');
+Route::get('lead/edit_assignment_file/{id}', 'AssignmentController@file_edit');
+Route::post('lead/update_assignment_file', 'AssignmentController@file_update');
+Route::post('lead/delete_assignment_file', 'AssignmentController@file_destroy');
 
 // NOTE Lead Manage
 Route::get('/leadManage/note', 'NoteController@note_lead');
@@ -468,6 +473,11 @@ Route::post('head/search_month_add-assignment', 'AssignmentController@head_searc
 Route::post('head/update_assignment_status_result', 'AssignmentController@update_status_result');
 Route::get('head/get_assignment', 'AssignmentController@get_assign');
 Route::post('head/search_month_get-assignment', 'AssignmentController@head_search_month_get_assignment');
+Route::get('head/assignment_file/{id}', 'AssignmentController@assign_file');
+Route::post('head/create_assignment_gallery', 'AssignmentController@file_store');
+Route::get('head/edit_assignment_file/{id}', 'AssignmentController@file_edit');
+Route::post('head/update_assignment_file', 'AssignmentController@file_update');
+Route::post('head/delete_assignment_file', 'AssignmentController@file_destroy');
 
 
 // อนุมัติลูกค้าใหม่นอกแผน
@@ -625,8 +635,14 @@ Route::post('admin/create_assignment', 'Admin\AssignmentController@store');
 Route::get('admin/edit_assignment/{id}', 'Admin\AssignmentController@edit');
 Route::post('admin/update_assignment', 'Admin\AssignmentController@update');
 Route::post('admin/update_assignment_status_result', 'Admin\AssignmentController@update_status_result');
-Route::get('admin/delete_assignment/{id}', 'Admin\AssignmentController@destroy');
+// Route::get('admin/delete_assignment/{id}', 'Admin\AssignmentController@destroy');
+Route::post('admin/delete_assignment', 'Admin\AssignmentController@destroy');
 Route::post('admin/search_month_add-assignment', 'Admin\AssignmentController@search');
+Route::get('admin/assignment_file/{id}', 'AssignmentController@assign_file');
+Route::post('admin/create_assignment_gallery', 'Admin\AssignmentController@file_store');
+Route::get('admin/edit_assignment_file/{id}', 'Admin\AssignmentController@file_edit');
+Route::post('admin/update_assignment_file', 'Admin\AssignmentController@file_update');
+Route::post('admin/delete_assignment_file', 'Admin\AssignmentController@file_destroy');
 
 // Customer Change Status
 Route::get('admin/change_customer_status', 'Admin\ChangeCustomerController@index');
