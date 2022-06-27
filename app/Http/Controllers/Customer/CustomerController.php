@@ -111,6 +111,7 @@ class CustomerController extends Controller
         `customer_shops_saleplan`.*, `customer_shops_saleplan`.`shop_aprove_status` as `saleplan_shop_aprove_status`,
         `customer_shops_saleplan`.`id` as `customer_shops_saleplan_id`,
         `monthly_plans`.`id` as `monthly_plans_id`,
+        `customer_shops_saleplan`.`monthly_plan_id` as`saleplan_monthly_plans_id`, 
         `customer_shops`.* from `customer_shops_saleplan`
         left join `customer_shops` on `customer_shops`.`id` = `customer_shops_saleplan`.`customer_shop_id`
         left join `customer_shops_saleplan_result` on `customer_shops_saleplan_result`.`customer_shops_saleplan_id` = `customer_shops_saleplan`.`id`

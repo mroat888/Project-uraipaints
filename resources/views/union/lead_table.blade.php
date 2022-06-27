@@ -33,7 +33,7 @@
                         </div>
                     </div>
                 </td>
-                <td>{{ $shop->shop_name }} ( {{ $shop->monthly_plans_id }} ) {{ $shop->month_date }} ({{ $shop->saleplan_monthly_plans_id}})</td>
+                <td>{{ $shop->shop_name }} ( {{ $shop->monthly_plans_id }} ) {{ $shop->month_date }} ( {{ $shop->saleplan_monthly_plans_id }} )</td>
                 <td>{{ $shop->PROVINCE_NAME }}</td>
                     @php
                         $customer_contact_name = "";
