@@ -46,31 +46,6 @@ class CustomerController extends Controller
 
     public function customerLead()
     {
-        // $sql_query = "select `monthly_plans`.*, `province`.`PROVINCE_NAME`, `customer_shops_saleplan_result`.*,
-        // `customer_shops_saleplan`.*, `customer_shops_saleplan`.`shop_aprove_status` as `saleplan_shop_aprove_status`,
-        // `customer_shops_saleplan`.`id` as `customer_shops_saleplan_id`,
-        // `monthly_plans`.`id` as `monthly_plans_id`,
-        // `customer_shops`.* from `customer_shops_saleplan`
-        // left join `customer_shops` on `customer_shops`.`id` = `customer_shops_saleplan`.`customer_shop_id`
-        // left join `customer_shops_saleplan_result` on `customer_shops_saleplan_result`.`customer_shops_saleplan_id` = `customer_shops_saleplan`.`id`
-        // left join `monthly_plans` on `monthly_plans`.`id` = `customer_shops_saleplan`.`monthly_plan_id`
-        // left join `province` on `province`.`PROVINCE_ID` = `customer_shops`.`shop_province_id`
-        // where `customer_shops`.`shop_status` != ? and `customer_shops`.`created_by` = ? ";
-
-
-
-        // $sql_query = "select DISTINCT `customer_shops_saleplan`.`customer_shop_id`, `monthly_plans`.*, `province`.`PROVINCE_NAME`, `customer_shops_saleplan_result`.*,
-        // `customer_shops_saleplan`.*, `customer_shops_saleplan`.`shop_aprove_status` as `saleplan_shop_aprove_status`,
-        // `customer_shops_saleplan`.`id` as `customer_shops_saleplan_id`,
-        // `monthly_plans`.`id` as `monthly_plans_id`,
-        // `customer_shops_saleplan`.`monthly_plan_id` as`saleplan_monthly_plans_id`, 
-        // `customer_shops`.* from `customer_shops_saleplan`
-        // left join `customer_shops` on `customer_shops`.`id` = `customer_shops_saleplan`.`customer_shop_id`
-        // left join `customer_shops_saleplan_result` on `customer_shops_saleplan_result`.`customer_shops_saleplan_id` = `customer_shops_saleplan`.`id`
-        // left join `monthly_plans` on `monthly_plans`.`id` = `customer_shops_saleplan`.`monthly_plan_id`
-        // left join `province` on `province`.`PROVINCE_ID` = `customer_shops`.`shop_province_id`
-        // where `customer_shops`.`shop_status` != ? and `customer_shops`.`created_by` = ? ";
-
         $sql_query = "select `monthly_plans`.*, `province`.`PROVINCE_NAME`, `customer_shops_saleplan_result`.*,
         `customer_shops_saleplan`.*, `customer_shops_saleplan`.`shop_aprove_status` as `saleplan_shop_aprove_status`,
         `customer_shops_saleplan`.`id` as `customer_shops_saleplan_id`,
@@ -859,7 +834,6 @@ class CustomerController extends Controller
                     'created_at' => Carbon::now()
                 ]);
                 }
-
 
                 // $cust_shops_saleplan_result = DB::table('customer_shops_saleplan_result')->where('id', $request->cust_result_id)->first();
                 $cust_shops_saleplan = DB::table('customer_shops_saleplan')->where('id', $request->saleplan_id)->first();
