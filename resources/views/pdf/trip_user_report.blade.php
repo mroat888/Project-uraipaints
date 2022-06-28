@@ -92,13 +92,11 @@
             <td>ตำแหน่ง : 
                 @php 
                     $master_permission = DB::table('master_permission')->where('id', $trip_header->status)->first();
-                    $user_status = "ผู้แทนขาย";
                     if(!is_null($master_permission)){
                         $user_status = $master_permission->permission_name;
                     }else{
                         $user_status = "-";
                     }
-
                 @endphp
                 {{ $user_status }}
             </td>

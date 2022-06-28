@@ -163,13 +163,11 @@
                                                 <td style="text-align:left;">{{ $value->name }}</td>
                                                 <td>
                                                     @php
-                                                        switch($value->status){
-                                                            case 1 : $user_level = "ผู้แทนขาย";
-                                                                break;
-                                                            case 2 : $user_level = "ผู้จัดการเขต";
-                                                                break;
-                                                            case 3 : $user_level = "ผู้จัดการฝ่าย";
-                                                                break;
+                                                        $master_permission = DB::table('master_permission')->where('id', $value->status)->first();
+                                                        if(!is_null($master_permission)){
+                                                            $user_level = $master_permission->permission_name;
+                                                        }else{
+                                                            $user_level = "-";
                                                         }
                                                     @endphp
 
