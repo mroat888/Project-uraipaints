@@ -91,15 +91,14 @@
             <td>รหัสพนักงาน : {{ $trip_header->api_identify }}</td>
             <td>ตำแหน่ง : 
                 @php 
-                    switch ($trip_header->status){
-                        case 1 : $user_status = "ผู้แทนขาย";
-                            break;
-                        case 2 : $user_status = "ผู้จัดการเขต";
-                            break;
-                        case 3 : $user_status = "ผู้จัการฝ่าย";
-                            break;
-                        default : $user_status = "-";
+                    $master_permission = DB::table('master_permission')->where('id', $trip_header->status)->first();
+                    $user_status = "ผู้แทนขาย";
+                    if(!is_null($master_permission)){
+                        $user_status = $master_permission->permission_name;
+                    }else{
+                        $user_status = "-";
                     }
+
                 @endphp
                 {{ $user_status }}
             </td>
