@@ -1027,15 +1027,15 @@ Route::get('fetch_datatable_customer_admin_pdglist/{pdgid}', 'Api\ApiController@
 
 
 // Report PDF & Excel
-Route::post('trip_pdf', 'UnionTripReportPDFController@pdf');
+// Route::post('trip_pdf', 'UnionTripReportPDFController@pdf');
 Route::get('trip_user_pdf/{id}', 'UnionTripReportPDFController@userpdf');
-Route::get('admin/report_email', 'UnionTripReportPDFController@report_email');
+
 
 Route::post('trip_excel', 'UnionTripReportExportContoller@excel');
 Route::get('trip_user_excel/{id}', 'UnionTripReportExportContoller@userexcel');
 
-Route::get('trip_mail/{id}', 'UnionTripReportPDFController@mail');
 Route::post('trip_mail', 'UnionTripReportPDFController@sandmail');
+Route::post('trip_report', 'UnionTripReportPDFController@trip_report_month');
 
 Auth::routes();
 // Route::get('/', function () { return view('saleman.dashboard'); });

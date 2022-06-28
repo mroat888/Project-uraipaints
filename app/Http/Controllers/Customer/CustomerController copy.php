@@ -46,45 +46,50 @@ class CustomerController extends Controller
 
     public function customerLead()
     {
-        $sql_query = "select `customer_shops`.* from `customer_shops`
+        $sql_query = "select `monthly_plans`.*, `province`.`PROVINCE_NAME`, `customer_shops_saleplan_result`.*,
+        `customer_shops_saleplan`.*, `customer_shops_saleplan`.`shop_aprove_status` as `saleplan_shop_aprove_status`,
+        `customer_shops_saleplan`.`id` as `customer_shops_saleplan_id`,
+        `monthly_plans`.`id` as `monthly_plans_id`,
+        `customer_shops_saleplan`.`monthly_plan_id` as`saleplan_monthly_plans_id`, 
+        `customer_shops`.* from `customer_shops_saleplan`
+        join (select * from customer_shops group by id ) customer_shops on `customer_shops`.`id` = `customer_shops_saleplan`.`customer_shop_id`
+        join `customer_shops_saleplan_result` on `customer_shops_saleplan_result`.`customer_shops_saleplan_id` = `customer_shops_saleplan`.`id`
+        join `monthly_plans` on `monthly_plans`.`id` = `customer_shops_saleplan`.`monthly_plan_id`
+        join `province` on `province`.`PROVINCE_ID` = `customer_shops`.`shop_province_id`
         where `customer_shops`.`shop_status` != ? and `customer_shops`.`created_by` = ? ";
 
-        $sql_query_orderby = "order by `customer_shops`.`id` desc";
+        $sql_query_orderby = "order by `customer_shops_saleplan`.`id` desc,
+        `customer_shops_saleplan`.`monthly_plan_id` desc";
+
         
         $customer_shops = $sql_query.$sql_query_orderby;
-
+       // dd($customer_shops);
         $customer_shops = DB::select($customer_shops, [2,Auth::user()->id]);
-        // dd($customer_shops); 
+        // dd($customer_shops);
+        
 
         // -- นับจำนวนร้านค้า ทั้งหมด
         $data['count_customer_all'] = count($customer_shops);
-        
+
         // -- นับ จำนวนร้านค้า สถานะสำเร็จ
         $sql_query_success = $sql_query." and `customer_shops`.`shop_status` = ? ".$sql_query_orderby;
-        $customer_shops_success = DB::select( $sql_query_success, [2, Auth::user()->id, 1]);
+        $customer_shops_success = DB::select( $sql_query_success, [2,Auth::user()->id, 1]);
         $data['count_customer_success'] = count($customer_shops_success);
 
-        // dd($customer_shops, $data['count_customer_all'], $data['count_customer_success']);
+        // -- นับ จำนวนร้านค้า สถานะสนใจ
+        $customer_shops_result_1 = $sql_query." and `customer_shops_saleplan_result`.`cust_result_status` = ? ".$sql_query_orderby;
+        $customer_shops_result_1 = DB::select( $customer_shops_result_1, [2,Auth::user()->id,2]);
+        $data['count_customer_result_1'] = count($customer_shops_result_1);
 
-        // // -- นับ จำนวนร้านค้า สถานะสนใจ
-        // $customer_shops_result_1 = $sql_query." and `customer_shops_saleplan_result`.`cust_result_status` = ? ".$sql_query_orderby;
-        // $customer_shops_result_1 = DB::select( $customer_shops_result_1, [2,Auth::user()->id,2]);
-        // $data['count_customer_result_1'] = count($customer_shops_result_1);
+        // -- นับ จำนวนร้านค้า สถานะรอตัดสินใจ
+        $customer_shops_result_2 = $sql_query." and `customer_shops_saleplan_result`.`cust_result_status` = ? ".$sql_query_orderby;
+        $customer_shops_result_2 = DB::select( $customer_shops_result_2, [2,Auth::user()->id,1]);
+        $data['count_customer_result_2'] = count($customer_shops_result_2);
 
-        // // -- นับ จำนวนร้านค้า สถานะรอตัดสินใจ
-        // $customer_shops_result_2 = $sql_query." and `customer_shops_saleplan_result`.`cust_result_status` = ? ".$sql_query_orderby;
-        // $customer_shops_result_2 = DB::select( $customer_shops_result_2, [2,Auth::user()->id,1]);
-        // $data['count_customer_result_2'] = count($customer_shops_result_2);
-
-        // // -- นับ จำนวนร้านค้า สถานะไม่สนใจ
-        // $customer_shops_result_3 = $sql_query." and `customer_shops_saleplan_result`.`cust_result_status` = ? ".$sql_query_orderby;
-        // $customer_shops_result_3 = DB::select( $customer_shops_result_3, [2,Auth::user()->id,0]);
-        // $data['count_customer_result_3'] = count($customer_shops_result_3);
-
-
-        $data['count_customer_result_1'] = 0;
-        $data['count_customer_result_2'] = 0;
-        $data['count_customer_result_3'] = 0;
+        // -- นับ จำนวนร้านค้า สถานะไม่สนใจ
+        $customer_shops_result_3 = $sql_query." and `customer_shops_saleplan_result`.`cust_result_status` = ? ".$sql_query_orderby;
+        $customer_shops_result_3 = DB::select( $customer_shops_result_3, [2,Auth::user()->id,0]);
+        $data['count_customer_result_3'] = count($customer_shops_result_3);
 
         $data['customer_shops'] = $customer_shops;
         $data['province'] = DB::table('province')->get();

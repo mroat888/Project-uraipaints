@@ -46,6 +46,10 @@
         table{
             width:100%;
             border: 1px solid;
+            border-left: 0px;
+            border-right: 0px;
+            border-bottom: 0px;
+            padding-bottom:25px;
         }
 
         th {
@@ -66,6 +70,7 @@
 </head>
 <body>
 
+
     <img class="brand-img d-inline-block" src="{{ asset('public/images/logo.png') }}" alt="Uraipaint" style="max-height:30px;" />
     <table>
         <tr>
@@ -75,7 +80,7 @@
         </tr>
 
         <tr>
-            <td style="text-align:center; border: 1px solid;" colspan="6">
+            <td style="text-align:center;" colspan="6">
                 <span>สรุปใบเบิกค่าเบี้ยเลี้ยง</span>
             </td>
         </tr>
@@ -84,13 +89,30 @@
              <td>ชื่อผู้เบิก : {{ $trip_header->name }}</td>
             <td></td>
             <td>รหัสพนักงาน : {{ $trip_header->api_identify }}</td>
-            <td>ตำแหน่ง : {{ $trip_header->status }}</td>
-            <td colspan="2">วัน / Date :
+            <td>ตำแหน่ง : 
+                @php 
+                    switch ($trip_header->status){
+                        case 1 : $user_status = "ผู้แทนขาย";
+                            break;
+                        case 2 : $user_status = "ผู้จัดการเขต";
+                            break;
+                        case 3 : $user_status = "ผู้จัการฝ่าย";
+                            break;
+                        default : $user_status = "-";
+                    }
+                @endphp
+                {{ $user_status }}
+            </td>
+            <td colspan="2">ทริปเดือน :
                 @php
-                    list($date_approve_at, $time_approve_at) = explode(' ', $trip_header->request_approve_at);
-                    list($year_at, $month_at, $day_at) = explode('-', $date_approve_at);
-                    $year_at_thai = $year_at+543;
-                    $approve_at = $day_at."/".$month_at."/".$year_at_thai;
+                    // list($date_approve_at, $time_approve_at) = explode(' ', $trip_header->request_approve_at);
+                    if(!is_null($trip_header->trip_date)){
+                        list($year_at, $month_at, $day_at) = explode('-', $trip_header->trip_date);
+                        $year_at_thai = $year_at+543;
+                        $approve_at = $month_at."/".$year_at_thai;
+                    }else{
+                        $approve_at = "-";
+                    }
                 @endphp
                 {{ $approve_at }}
             </td>
@@ -153,19 +175,22 @@
 
         <tfoot>
             <tr>
-                <td colspan="6" style="border: 1px solid;">
+                <td colspan="6">
                     <span>หมายเหตุ : แบบฟอร์มนี้ใช้สำหรับเบิกค่าเบี้ยเลี้ยง</span>
                 </td>
             </tr>
-            <tr>
-                <td colspan="3"><span>ผู้ขอเบิก</span></td>
-                <td colspan="3"><span>ผู้อนุมัติ</span></td>
-            </tr>
-            <tr>
-                <td colspan="3"><span>ลงชื่อ .......................................................... วันที่ ...............................</span></td>
-                <td colspan="3"><span>ลงชื่อ .......................................................... วันที่ ...............................</span></td>
-            </tr>
+            
         </tfoot>
+    </table>
+    <table>
+        <tr>
+            <td><span>ผู้ขอเบิก</span></td>
+            <td><span>ผู้อนุมัติ</span></td>
+        </tr>
+        <tr>
+            <td><span>ลงชื่อ .......................................................... วันที่ ...............................</span></td>
+            <td><span>ลงชื่อ .......................................................... วันที่ ...............................</span></td>
+        </tr>
     </table>
 
 

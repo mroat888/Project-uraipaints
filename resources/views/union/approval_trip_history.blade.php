@@ -35,21 +35,14 @@
                 <section class="hk-sec-wrapper">
                     <div class="row">
                         <div class="col-sm">
-                            <a href="{{ url($url_approve_trip) }}" type="button" class="btn btn-secondary btn-wth-icon icon-wthot-bg btn-sm text-white">
-                                <span class="icon-label">
-                                    <i class="fa fa-file"></i>
-                                </span>
-                                <span class="btn-text">รออนุมัติ</span>
-                            </a>
-
-                            <a href="{{ url($url_approve_trip_history) }}" type="button" class="btn btn-purple btn-wth-icon icon-wthot-bg btn-sm text-white">
-                                <span class="icon-label">
-                                    <i class="fa fa-list"></i>
-                                </span>
-                                <span class="btn-text">ประวัติ</span>
-                            </a>
-                            <hr>
-                            <div id="calendar"></div>
+                            <ul class="nav nav-pills nav-fill bg-light pa-10 mb-40" role="tablist">
+                                <li class="nav-item">
+                                    <a href="{{ url($url_approve_trip) }}" class="nav-link" style="color: rgb(22, 21, 21);">รายการรออนุมัติ</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url($url_approve_trip_history) }}" class="nav-link" style="background: rgb(5, 90, 97); color:rgb(255, 255, 255);">ประวัติการอนุมัติ</a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                     <div class="row mb-2">
@@ -111,6 +104,7 @@
                                     <thead>
                                         <tr style="text-align:center;">
                                             <th>#</th>
+                                            <th>ทริปเดือน</th>
                                             <th>วันที่ขออนุมัติ</th>
                                             <th style="text-align:left;">รายชื่อ</th>
                                             <th>จำนวนวัน</th>
@@ -126,9 +120,18 @@
                                                 list($year_at, $month_at, $day_at) = explode("-", $date_at);
                                                 $year_at_thai = $year_at + 543;
                                                 $approve_at = $day_at."/".$month_at."/".$year_at_thai;
+
+                                                if(!is_null($value->trip_date)){
+                                                    list($year, $month, $day) = explode("-", $value->trip_date);
+                                                    $year_thai = $year+543;
+                                                    $date_thai = $month."/".$year_thai;
+                                                }else{
+                                                    $date_thai = "-";
+                                                }
                                             @endphp
                                         <tr style="text-align:center;">
                                             <td>{{ ++$key }}</td>
+                                            <td>{{ $date_thai }}</td>
                                             <td>{{ $approve_at }}</td>
                                             <td style="text-align:left;">{{ $value->name }}</td>
                                             <td>{{ $value->trip_day }}</td>

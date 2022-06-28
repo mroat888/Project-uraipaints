@@ -123,6 +123,7 @@
                                             @else
                                                 <th>#</th>
                                             @endif
+                                            <th>ทริปเดือน</th>
                                             <th>วันที่ขออนุมัติ</th>
                                             <th style="text-align:left;">รายชื่อ</th>
                                             <th>จำนวนวัน</th>
@@ -138,6 +139,14 @@
                                                 list($year_at, $month_at, $day_at) = explode("-", $date_at);
                                                 $year_at_thai = $year_at + 543;
                                                 $approve_at = $day_at."/".$month_at."/".$year_at_thai;
+
+                                                if(!is_null($value->trip_date)){
+                                                    list($year, $month, $day) = explode("-", $value->trip_date);
+                                                    $year_thai = $year+543;
+                                                    $date_thai = $month."/".$year_thai;
+                                                }else{
+                                                    $date_thai = "-";
+                                                }
                                             @endphp
                                         <tr style="text-align:center;">
                                             @if(Auth::user()->status == 2)
@@ -151,6 +160,7 @@
                                             @else
                                                 <td>{{ ++$key }}</td>
                                             @endif
+                                            <td>{{ $date_thai }}</td>
                                             <td>{{ $approve_at }}</td>
                                             <td style="text-align:left;">{{ $value->name }}</td>
                                             <td>{{ $value->trip_day }}</td>

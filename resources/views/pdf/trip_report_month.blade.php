@@ -125,42 +125,32 @@
 
     </table>
 
-    <div class="mt-5">
-        <table style="border: none; text-align: center;">
-            <tr>
-                <td style="background-color: #FFFFFF; border: none;">
-                    <strong style="font-size: 18px;">ผู้จัดทำ</strong> <br><br>
-                    <strong style="font-size: 18px;"> ...................................................
-                    {{-- <strong style="font-size: 18px;"> <img src="{{ asset('public/upload/UserSignature/img-1655970853.jpg') }}" alt="" width="30%"> --}}
-                    <br>(พัชรภ อัศวจารุพันธุ์)
-                    <br>
+    <table style="border: none; text-align: center;">
+        <tr>
+            <td style="background-color: #FFFFFF; border: none;">
+                <strong style="font-size: 18px;">ผู้จัดทำ</strong> <br><br>
+                <strong style="font-size: 18px;"> ...................................................
+                {{-- <strong style="font-size: 18px;"> <img src="{{ asset('public/upload/UserSignature/img-1655970853.jpg') }}" alt="" width="30%"> --}}
+                <br>(พัชรภ อัศวจารุพันธุ์)
+                <br>
+                <br>......./....../............
+                </strong>
+                <br>
+            </td>
+            
+            <td style="background-color: #FFFFFF; border: none;">
+                <strong style="font-size: 18px;">ผู้อนุมัติ</strong><br><br>
+                <strong style="font-size: 18px;"> ...................................................
+                    <br>({{ $user_head->name }})
+                    <br>ผู้จัดการฝ่าย
                     <br>......./....../............
                     </strong>
-                    <br>
-                </td>
-                
-                <td style="background-color: #FFFFFF; border: none;">
-                    <strong style="font-size: 18px;">ผู้อนุมัติ</strong><br><br>
-                    <strong style="font-size: 18px;"> ...................................................
-                        <br>({{ $user_head->name }})
-                        <br>ผู้จัดการฝ่าย
-                        <br>......./....../............
-                        </strong>
-                    <br>
-                </td>
-                
-                <!-- <td style="background-color: #FFFFFF; border: none;">
-                    <strong style="font-size: 18px;">ผู้อนุมัติ</strong><br><br>
-                    <strong style="font-size: 18px;"> ...................................................
-                        <br>(คุณธนิต กมลจรรยาเลิศ)
-                        <br>ผู้จัดการฝ่าย
-                        <br>......./....../............
-                        </strong>
-                    <br>
-                </td> -->
-            </tr>
-        </table>
-    </div>
+                <br>
+            </td>
+            
+        </tr>
+    </table>
+
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>

@@ -14,9 +14,7 @@
     <div class="hk-pg-header mb-10">
         <div class="topichead-bgred"><i data-feather="clipboard"></i> รายการทริปเดินทาง</div>
         <div class="content-right d-flex">
-            @if(is_null($trips_now))
-                <button type="button" class="btn btn-green" data-toggle="modal" id="createmodal"> + เพิ่มใหม่ </button>
-            @endif
+            <button type="button" class="btn btn-green" data-toggle="modal" id="createmodal"> + เพิ่มใหม่ </button>
         </div>
     </div>
     <!-- /Title -->
@@ -39,7 +37,7 @@
                                 <thead>
                                     <tr style="text-align:center;">
                                         <th>#</th>
-                                        <th>วันที่</th>
+                                        <th>ทริปเดือน</th>
                                         <th>จำนวนวัน</th>
                                         <th>ค่าเบี้ยเลื้ยง</th>
                                         <th>การอนุมัติ</th>
@@ -54,11 +52,13 @@
                                                 ->where('trip_header_id', $value->id)
                                                 ->orderBy('id','desc')
                                                 ->first();
-
-                                            list($date, $time) = explode(" ", $value->created_at);
-                                            list($year, $month, $day) = explode("-", $date);
-                                            $year_thai = $year+543;
-                                            $date_thai = $day."/".$month."/".$year_thai;
+                                            if(!is_null($value->trip_date)){
+                                                list($year, $month, $day) = explode("-", $value->trip_date);
+                                                $year_thai = $year+543;
+                                                $date_thai = $month."/".$year_thai;
+                                            }else{
+                                                $date_thai = "-";
+                                            }
                                         @endphp
                                     <tr style="text-align:center;">
                                         <td>{{ ++$key }}</td>
@@ -194,8 +194,23 @@
                         <input type="text" class="form-control" name="namesale" id="namesale" readonly>
                     </div>
                     <div class="form-group col-md-4">
-                        <label for="inputPassword4">วันที่สร้าง</label>
-                        <input type="text" class="form-control" name="created_at" id="created_at" value="{{ date('Y-m-d') }}" readonly>
+                        <label for="inputPassword4">ทริปของเดือน</label>
+                        @php 
+                            if(!is_null($trips_last)){
+                                if(!is_null($trips_last->trip_date)){
+                                    $tripdate = strtotime($trips_last->trip_date);
+                                    $trip_last = date('Y-m-d', strtotime(' + 1 month', $tripdate));
+                                    list($year, $month, $day) = explode('-', $trip_last );
+                                    $trip_last = $year."-".$month;
+                                }else{
+                                    $trip_last = null;
+                                }
+                            }else{
+                                $trip_last = null ;
+                            }                         
+                        @endphp
+                        <input type="month" class="form-control" name="trip_date" id="trip_date" 
+                        min="{{ $trip_last }}" value="{{ $trip_last }}" required>
                     </div>
                 </div>
                 <div class="form-row">
@@ -258,8 +273,8 @@
                     <input type="text" class="form-control" name="namesale_edit" id="namesale_edit" readonly>
                     </div>
                     <div class="form-group col-md-4">
-                    <label for="inputPassword4">วันที่สร้าง</label>
-                    <input type="text" class="form-control" name="created_at_edit" id="created_at_edit"  readonly>
+                    <label for="inputPassword4">ทริปของเดือน</label>
+                    <input type="month" class="form-control" name="trip_date_edit" id="trip_date_edit" required>
                     </div>
                 </div>
                 <div class="form-row">
@@ -353,11 +368,12 @@
             processData: false,
             success:function(response){
                 console.log(response);
-                let date_create = response.trip_header.created_at.split(" ");
+                let trip_date = response.trip_header.trip_date.split("-");
+                trip_date = trip_date[0]+"-"+trip_date[1];
                 $("#api_identify_edit").val(response.api_identify);
                 $("#namesale_edit").val(response.namesale);
                 $("#trip_header_id").val(response.trip_header.id);
-                $("#created_at_edit").val(date_create[0]);
+                $("#trip_date_edit").val(trip_date);
                 $("#trip_start_edit").val(response.trip_header.trip_start);
                 $("#trip_end_edit").val(response.trip_header.trip_end);
                 $("#trip_day_edit").val(response.trip_header.trip_day);

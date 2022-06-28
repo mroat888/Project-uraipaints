@@ -20,27 +20,57 @@ class UnionTripReportExportContoller extends Controller
 
     public function excel(Request $request)
     {
-        $trip_header = "";
-        if(isset($request->checkapprove)){
-            $triph_id = $request->checkapprove;
+        
+        // if(isset($request->checkapprove)){
+        //     $triph_id = $request->checkapprove;
 
-            $trip_header = DB::table('trip_header')
-            ->join('users', 'trip_header.created_by', '=', 'users.id')
-                ->select(
-                    'trip_header.*',
-                    'users.name',
-                    'users.status',
-                )
-            ->where(function($query) use ($triph_id) {
-                for ($i = 0; $i < count($triph_id); $i++){
-                    $query->orWhere('trip_header.id', $triph_id[$i]);
-                }
-            })
-            ->get();  
+        //     $trip_header = DB::table('trip_header')
+        //     ->join('users', 'trip_header.created_by', '=', 'users.id')
+        //         ->select(
+        //             'trip_header.*',
+        //             'users.name',
+        //             'users.status',
+        //         )
+        //     ->where(function($query) use ($triph_id) {
+        //         for ($i = 0; $i < count($triph_id); $i++){
+        //             $query->orWhere('trip_header.id', $triph_id[$i]);
+        //         }
+        //     })
+        //     ->get();  
+        // }
+
+        // $trip_header = "";
+        // $trip_header = DB::table('trip_header')
+        // ->join('users', 'trip_header.created_by', '=', 'users.id')
+        //     ->select(
+        //         'trip_header.*',
+        //         'users.name',
+        //         'users.status',
+        //     )
+        // ->get();  
+
+        $trip_header = DB::table('trip_header')
+        ->join('users', 'trip_header.created_by', '=', 'users.id')
+        ->where('trip_header.trip_status', 4) // ปิดทริปแล้ว
+            ->select(
+                'users.*',
+                'trip_header.*',
+            );
+        
+        if(!is_null($request->selectdateEmail)){
+            list($sel_year, $sel_month) = explode("-", $request->selectdateEmail);
+            $trip_header = $trip_header
+                ->whereMonth('trip_header.trip_date', $sel_month)
+                ->whereYear('trip_header.trip_date', $sel_year);
         }
+        
+        $trip_header = $trip_header->get();
+        $trip_sel_date = $request->selectdateEmail;
+        $user_head = DB::table('users')->where('status',3)->orderBy('id')->first();
+
         $date = date('Y-m-d');
         $excel_name = "tripexport";
-        return Excel::download(new TripExport($trip_header), $excel_name.'_'.$date.'.xlsx');
+        return Excel::download(new TripExport($trip_header, $trip_sel_date, $user_head), $excel_name.'_'.$date.'.xlsx');
     }
 
     public function userexcel($id)

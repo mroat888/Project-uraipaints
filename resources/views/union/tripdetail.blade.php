@@ -181,6 +181,11 @@
                     <input type="hidden" class="form-control" name="trip_header_id" value="{{ $trip_header->id }}">
                     <div class="form-group col-md-4">
                         <label for="inputEmail4">วันที่ทริป</label>
+                        @php 
+                            $trip_date = strtotime($trip_header->trip_date);
+                            $trip_lastday = date('Y-m-t',$trip_date);
+                            // echo $trip_range;
+                        @endphp 
                         <input type="date" class="form-control" name="trip_detail_date" id="trip_detail_date" required>
                     </div>
                 </div>
