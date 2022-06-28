@@ -34,6 +34,12 @@
                         @php 
                             ++$camp_no;
                             $campaign_api_persent_sale = round($campaign_api_sales[$key]*100/$campaign_api_target[$key]);
+
+                            if($campaign_api_persent_sale >= 100){
+                                $text_status = "text-success";
+                            }else{
+                                $text_status = "text-danger";
+                            }
                         @endphp
                         <tr class="tb_camp" rel="{{ $key }}" style="text-align:center;">
                             <td>{{ $camp_no }}</td>
@@ -41,8 +47,8 @@
                             <td>{{ $campaign_api_datetime[$key] }}</td>
                             <td>{{ number_format($campaign_api_target[$key]) }}</td>
                             <td>{{ number_format($campaign_api_sales[$key]) }}</td>
-                            <td>{{ number_format($campaign_api_persent_sale,2) }}</td>
-                            <td>{{ number_format($campaign_api_diff[$key]) }}</td>
+                            <td class="{{ $text_status }}">{{ number_format($campaign_api_persent_sale,2) }}</td>
+                            <td class="{{ $text_status }}">{{ number_format($campaign_api_diff[$key]) }}</td>
                             <td style="text-align:center">
                                 <a class="btn btn-icon btn-purple tb_camp" rel="{{ $key }}">
                                     <h4 class="btn-icon-wrap tb_camp" style="color: white;" rel="{{ $key }}"><i class="ion ion-md-pie"></i></h4>
@@ -69,13 +75,21 @@
                                         </thead>
                                         <tbody>
                                             @foreach($sellers_api[$key] as $key_seller => $sellers)  
+
+                                            @php 
+                                                if($sellers['persent_sale'] >= 100){
+                                                    $text_status = "text-success";
+                                                }else{
+                                                    $text_status = "text-danger";
+                                                }
+                                            @endphp
                                             <tr style="text-align:center">
                                                 <td>{{ ++$key_seller }}</td>
                                                 <td style="text-align:left">{{ $sellers['identify'] }}&nbsp;&nbsp;{{ $sellers['name'] }}</td>
                                                 <td>{{ number_format($sellers['Target']) }}</td>
                                                 <td>{{ number_format($sellers['Sales']) }}</td>
-                                                <td>{{ number_format($sellers['Diff']) }}</td>
-                                                <td>{{ number_format($sellers['persent_sale'],2) }}</td>
+                                                <td class="{{ $text_status }}">{{ number_format($sellers['Diff']) }}</td>
+                                                <td class="{{ $text_status }}">{{ number_format($sellers['persent_sale'],2) }}</td>
                                             </tr>
                                             @endforeach
                                         </tbody>

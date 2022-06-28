@@ -348,41 +348,41 @@ class ProductNewController extends Controller
             $data['campaign_api_diff'] = $campaign_api_diff;
         }
 
-      // dd($data['campaign_api'], $data['campaign_api_target']);
+        // dd($data['campaign_api'], $data['campaign_api_target']);
 
-    // -- ดึง ผู้จัดการเขต
-    if(Auth::user()->status == 3){ //-- ใช้ในระบบ ผู้จัดการฝ่าย
-        $auth_team_id = explode(',',Auth::user()->team_id);
-        $auth_team = array();
-        foreach($auth_team_id as $value){
-            $auth_team[] = $value;
+        // -- ดึง ผู้จัดการเขต
+        if(Auth::user()->status == 3){ //-- ใช้ในระบบ ผู้จัดการฝ่าย
+            $auth_team_id = explode(',',Auth::user()->team_id);
+            $auth_team = array();
+            foreach($auth_team_id as $value){
+                $auth_team[] = $value;
+            }
+
+            $data['users_lead'] = DB::table('users')
+                ->where('status', 2)
+                ->where(function($query) use ($auth_team) {
+                    for ($i = 0; $i < count($auth_team); $i++){
+                        $query->orWhere('users.team_id', $auth_team[$i])
+                            ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                            ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+                    }
+                })
+                ->get();
+        }
+        // -- จบ ดึง ผู้จัดการเขต
+
+        if(Auth::user()->status == 4){ //-- ใช้ในระบบ admin
+            $data['users_lead'] = DB::table('users')->where('status', 2)->get();
+            $data['users_head'] = DB::table('users')->where('status', 3)->get();
         }
 
-        $data['users_lead'] = DB::table('users')
-            ->where('status', 2)
-            ->where(function($query) use ($auth_team) {
-                for ($i = 0; $i < count($auth_team); $i++){
-                    $query->orWhere('users.team_id', $auth_team[$i])
-                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
-                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
-                }
-            })
-            ->get();
-    }
-    // -- จบ ดึง ผู้จัดการเขต
-
-    if(Auth::user()->status == 4){ //-- ใช้ในระบบ admin
-        $data['users_lead'] = DB::table('users')->where('status', 2)->get();
-        $data['users_head'] = DB::table('users')->where('status', 3)->get();
-    }
-
-      switch  (Auth::user()->status){
-        case 2 :    return view('shareData_leadManager.report_product_new', $data); //-- Lead
-            break;
-        case 3 :    return view('shareData_headManager.report_product_new', $data); //-- Head
-            break;
-        case 4 :    return view('shareData_admin.report_product_new', $data); //-- Admin
-            break;
+        switch  (Auth::user()->status){
+            case 2 :    return view('shareData_leadManager.report_product_new', $data); //-- Lead
+                break;
+            case 3 :    return view('shareData_headManager.report_product_new', $data); //-- Head
+                break;
+            case 4 :    return view('shareData_admin.report_product_new', $data); //-- Admin
+                break;
         }
     }
 

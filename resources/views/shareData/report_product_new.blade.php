@@ -98,6 +98,12 @@
                                             list($tyear,$tmonth,$tday) = explode("-",$sellers_api[$i]['todate']);
                                             $tyear_thai = $tyear+543;
                                             $todate = $tday."/".$tmonth."/".$tyear_thai;
+
+                                            if($sellers_api[$i]['persent_sale'] >= 100){
+                                                $text_status = "text-success";
+                                            }else{
+                                                $text_status = "text-danger";
+                                            }
                                     ?>
 
                                         <tr style="text-align:center">
@@ -106,8 +112,8 @@
                                             <td>{{ $fromdate }} - {{ $todate }}</td>
                                             <td>{{ number_format($sellers_api[$i]['Target'],0) }}</td>
                                             <td>{{ number_format($sellers_api[$i]['Sales'],0) }}</td>
-                                            <td>{{ number_format($sellers_api[$i]['persent_sale'],2)}}%</td>
-                                            <td>{{ number_format($sellers_api[$i]['Diff'],0) }}</td>
+                                            <td class="{{ $text_status }}">{{ number_format($sellers_api[$i]['persent_sale'],2)}}%</td>
+                                            <td class="{{ $text_status }}">{{ number_format($sellers_api[$i]['Diff'],0) }}</td>
                                         </tr>
                                         
                                     <?php
@@ -115,11 +121,18 @@
                                     ?>
                                     </tbody>
                                     <tfoot style="font-weight: bold; text-align:center">
-                                        <td colspan="3" align="center">ทั้งหมด</td>
+                                        @php 
+                                            if($summary_sellers_api['sum_persent_sale'] >= 100){
+                                                $text_status = "text-success";
+                                            }else{
+                                                $text_status = "text-danger";
+                                            }
+                                        @endphp
+                                        <td colspan="3" style="text-align:center;">ทั้งหมด</td>
                                         <td class="text-success">{{ number_format($summary_sellers_api['sum_target'],0) }}</td>
                                         <td class="text-success">{{ number_format($summary_sellers_api['sum_sales'],0) }}</td>
-                                        <td class="text-success">{{ number_format($summary_sellers_api['sum_persent_sale'],2) }}%</td>
-                                        <td class="text-danger">{{ number_format($summary_sellers_api['sum_diff'],0) }}</td>
+                                        <td class="{{ $text_status }}">{{ number_format($summary_sellers_api['sum_persent_sale'],2) }}%</td>
+                                        <td class="{{ $text_status }}">{{ number_format($summary_sellers_api['sum_diff'],0) }}</td>
                                     </tfoot>
                                 </table>
                             </div>
