@@ -33,9 +33,15 @@
                                             <td>{{ $delivery_api[$key]['delivery_status'] }}</td>
                                             <td>
                                                 @php
-                                                    list($day, $month, $year) = explode("/", $delivery_api[$key]['delivery_date']);
+                                                $created_at_thai = "";
+                                                    if ($delivery_api[$key]['delivery_date'] != "-") {
+                                                        list($day, $month, $year) = explode("/", $delivery_api[$key]['delivery_date']);
                                                     $year_create_thai = $year+543;
                                                     $created_at_thai = $day."/".$month."/".$year_create_thai;
+                                                    }else {
+                                                        $created_at_thai = "-";
+                                                    }
+
                                                 @endphp
                                                 {{$created_at_thai}}
                                             </td>
