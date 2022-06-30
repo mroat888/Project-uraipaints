@@ -32,7 +32,7 @@
                                             <input type="hidden" class="form-control" id="set_id[]" name="set_id[]" value="{{ $value->id }}">
                                             <label for="staticEmail" class="col-sm-2 col-form-label" style="text-align:right;">{{ $value->name }} :</label>
                                             <div class="col-sm-2">
-                                                <input type="number" class="form-control" id="stipulate[]" name="stipulate[]" value="{{ $value->stipulate }}" max="31">
+                                                <input type="text" class="form-control" id="stipulate[]" name="stipulate[]" value="{{ $value->stipulate }}" max="31">
                                             </div>
                                             <label for="staticEmail" class="col-sm-8 col-form-label" style="text-align:left;">{{ $value->comment }}</label>
                                         </div>

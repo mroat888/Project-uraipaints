@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Api\ApiController;
+use Illuminate\Support\Facades\DB;
 
 class ProductNewController extends Controller
 {
@@ -86,7 +87,7 @@ class ProductNewController extends Controller
                 $sum_target += $value['Target'];
                 $sum_sales += $value['Sales'];
                 $sum_diff += $value['Diff'];
-                
+
             }
 
             list($year,$month,$day) = explode("-", $res_api['trans_last_date']);
@@ -105,11 +106,15 @@ class ProductNewController extends Controller
             'sum_persent_diff' => $sum_persent_diff,
         ];
 
+<<<<<<< HEAD
         $data['sellers_api'] = $sellers_api;
         $data['summary_sellers_api'] = $summary_sellers_api;
         $data['trans_last_date'] = $trans_last_date;
 
         return $data;
+=======
+        return view('shareData.report_product_new', compact('sellers_api', 'summary_sellers_api', 'trans_last_date'));
+>>>>>>> d7689b096c38c9323b01673085c58b65051cda43
     }
 
 }
