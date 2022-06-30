@@ -36,19 +36,19 @@
                                     @csrf
                                     <span id="selectdate">
 
-                                        เป้า : 
+                                        เป้า :
                                         <select class="form-control form-control-sm mr-5" name="sel_campaign" id="sel_campaign">
                                             <option value="">เลือกแคมเปญ</option>
                                         </select>
-                                        
+
                                         ปี :
                                         <select class="form-control form-control-sm mr-5" name="sel_year" id="sel_year">
-                                            @php 
+                                            @php
                                                 $year_now = date("Y");
                                                 $year_now_thai = $year_now+543;
                                              @endphp
                                             @for($i=0; $i < 2; $i++)
-                                                @php 
+                                                @php
                                                     $year = $year_now-$i;
                                                     $year_thai = $year_now_thai-$i;
                                                 @endphp
@@ -109,7 +109,7 @@
                                             <td>{{ number_format($sellers_api[$i]['persent_sale'],2)}}%</td>
                                             <td>{{ number_format($sellers_api[$i]['Diff'],0) }}</td>
                                         </tr>
-                                        
+
                                     <?php
                                         }
                                     ?>
@@ -128,7 +128,7 @@
 
                     <div class="row">
                         <div class="col-sm">
-                            หน่วย หมายถึง ...................
+                            หน่วย หมายถึง {{$unit->stipulate}}
                         </div>
                     </div>
                     <div class="row">
@@ -152,7 +152,7 @@
         console.log(sel_year);
         $.ajax({
             method: 'GET',
-            url: '{{ url("/fetch_campaignpromotes") }}/'+sel_year, 
+            url: '{{ url("/fetch_campaignpromotes") }}/'+sel_year,
             datatype: 'json',
             success: function(response){
                 if(response.status == 200){

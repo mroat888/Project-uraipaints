@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Api\ApiController;
+use Illuminate\Support\Facades\DB;
 
 class ProductNewController extends Controller
 {
@@ -59,7 +60,7 @@ class ProductNewController extends Controller
                 $sum_target += $value['Target'];
                 $sum_sales += $value['Sales'];
                 $sum_diff += $value['Diff'];
-                
+
             }
 
             list($year,$month,$day) = explode("-", $res_api['trans_last_date']);
@@ -79,8 +80,9 @@ class ProductNewController extends Controller
         }
 
         // dd($sellers_api);
+        $unit = DB::table('master_setting')->where('id', 3)->first();
 
-        return view('shareData.report_product_new', compact('sellers_api', 'summary_sellers_api', 'trans_last_date'));
+        return view('shareData.report_product_new', compact('sellers_api', 'summary_sellers_api', 'trans_last_date', 'unit'));
     }
 
     public function search(Request $request){
@@ -135,7 +137,7 @@ class ProductNewController extends Controller
                 $sum_target += $value['Target'];
                 $sum_sales += $value['Sales'];
                 $sum_diff += $value['Diff'];
-                
+
             }
 
             list($year,$month,$day) = explode("-", $res_api['trans_last_date']);
@@ -153,7 +155,7 @@ class ProductNewController extends Controller
             'sum_persent_sale' => $sum_persent_sale,
             'sum_persent_diff' => $sum_persent_diff,
         ];
-        
+
         return view('shareData.report_product_new', compact('sellers_api', 'summary_sellers_api', 'trans_last_date'));
     }
 
