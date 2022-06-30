@@ -94,6 +94,28 @@
 
 
 <script>
+     $( document ).ready(function() {
+        let sel_year = $('#year_form_search').val();
+        console.log(sel_year);
+        $.ajax({
+            method: 'GET',
+            url: '{{ url("/fetch_campaignpromotes") }}/'+sel_year, 
+            datatype: 'json',
+            success: function(response){
+                if(response.status == 200){
+                    console.log(response.campaignpromotes);
+                    $('#sel_campaign').children().remove().end();
+                    $('#sel_campaign').append('<option selected value="">เลือกแคมเปญ</option>');
+                    let rows = response.campaignpromotes.length;
+                    for(let i=0 ;i<rows; i++){
+                        $('#sel_campaign').append('<option value="'+response.campaignpromotes[i]['campaign_id']+'">'+response.campaignpromotes[i]['description']+'</option>');
+                    }
+                }else{
+                    console.log("ไม่พบ จังหวัด สินค้า");
+                }
+            }
+        });
+    });
 
     $(document).on('change','#year_form_search', function(e){
         e.preventDefault();

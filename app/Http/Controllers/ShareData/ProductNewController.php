@@ -109,6 +109,7 @@ class ProductNewController extends Controller
         $data['sellers_api'] = $sellers_api;
         $data['summary_sellers_api'] = $summary_sellers_api;
         $data['trans_last_date'] = $trans_last_date;
+        $data['unit'] = DB::table('master_setting')->where('id', 3)->first();
 
         return $data;
     }
