@@ -106,15 +106,11 @@ class ProductNewController extends Controller
             'sum_persent_diff' => $sum_persent_diff,
         ];
 
-<<<<<<< HEAD
         $data['sellers_api'] = $sellers_api;
         $data['summary_sellers_api'] = $summary_sellers_api;
         $data['trans_last_date'] = $trans_last_date;
 
         return $data;
-=======
-        return view('shareData.report_product_new', compact('sellers_api', 'summary_sellers_api', 'trans_last_date'));
->>>>>>> d7689b096c38c9323b01673085c58b65051cda43
     }
 
 }
