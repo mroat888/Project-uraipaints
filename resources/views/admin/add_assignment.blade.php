@@ -599,14 +599,16 @@ $(document).on('click', '#btn_assign_delete', function() { // ปุ่มลบ
                 $('#get_title').val(data.dataEdit.assign_title);
                 $('#get_detail').val(data.dataEdit.assign_detail);
 
-                let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataEdit.assign_fileupload;
-                if(data.dataEdit.assign_fileupload != ""){
-                    ext = data.dataEdit.assign_fileupload.split('.').pop().toLowerCase();
-                    console.log(img_name);
-                    if(ext == "pdf"){
-                        $('#img_show').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');
-                    }else{
-                        $('#img_show').append('<img src = "'+img_name+'" style="max-width:20%;">');
+                if(data.dataEdit.assign_fileupload){
+                    let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataEdit.assign_fileupload;
+                    if(data.dataEdit.assign_fileupload != ""){
+                        ext = data.dataEdit.assign_fileupload.split('.').pop().toLowerCase();
+                        console.log(img_name);
+                        if(ext == "pdf"){
+                            $('#img_show').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');
+                        }else{
+                            $('#img_show').append('<img src = "'+img_name+'" style="max-width:20%;">');
+                        }
                     }
                 }
 

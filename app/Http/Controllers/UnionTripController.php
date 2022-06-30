@@ -51,6 +51,7 @@ class UnionTripController extends Controller
             return response()->json([
                 'status' => 200,
                 'api_identify' => Auth::user()->api_identify,
+                'api_employee_id' => Auth::user()->api_employee_id,
                 'namesale' => Auth::user()->name,
             ]);
             
@@ -59,6 +60,7 @@ class UnionTripController extends Controller
                 'status' => 404,
                 'trip_header' => $trips,
                 'api_identify' => Auth::user()->api_identify,
+                'api_employee_id' => Auth::user()->api_employee_id,
                 'namesale' => Auth::user()->name,
             ]);
         }
@@ -72,6 +74,7 @@ class UnionTripController extends Controller
             'message' => 'ดึงข้อมูลสำเร็จ',
             'trip_header' => $trip_header,
             'api_identify' => Auth::user()->api_identify,
+            'api_employee_id' => Auth::user()->api_employee_id,
             'namesale' => Auth::user()->name,
         ]);
     }

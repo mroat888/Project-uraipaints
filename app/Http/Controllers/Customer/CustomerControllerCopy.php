@@ -18,7 +18,7 @@ use App\Http\Controllers\Api\ApiController;
 
 // use DataTables;
 
-class CustomerController extends Controller
+class CustomerControllerCopy extends Controller
 {
 
     public function __construct()
@@ -46,227 +46,152 @@ class CustomerController extends Controller
 
     public function customerLead()
     {
-        $request = "";
-        $data = $this->fetch_customer_lead($request);
+        $sql_query = "select `monthly_plans`.*, `province`.`PROVINCE_NAME`, `customer_shops_saleplan_result`.*,
+        `customer_shops_saleplan`.*, `customer_shops_saleplan`.`shop_aprove_status` as `saleplan_shop_aprove_status`,
+        `customer_shops_saleplan`.`id` as `customer_shops_saleplan_id`,
+        `monthly_plans`.`id` as `monthly_plans_id`,
+        `customer_shops_saleplan`.`monthly_plan_id` as`saleplan_monthly_plans_id`, 
+        `customer_shops`.* from `customer_shops_saleplan`
+        join (select * from customer_shops group by id ) customer_shops on `customer_shops`.`id` = `customer_shops_saleplan`.`customer_shop_id`
+        join `customer_shops_saleplan_result` on `customer_shops_saleplan_result`.`customer_shops_saleplan_id` = `customer_shops_saleplan`.`id`
+        join `monthly_plans` on `monthly_plans`.`id` = `customer_shops_saleplan`.`monthly_plan_id`
+        join `province` on `province`.`PROVINCE_ID` = `customer_shops`.`shop_province_id`
+        where `customer_shops`.`shop_status` != ? and `customer_shops`.`created_by` = ? ";
 
+        $sql_query_orderby = "order by `customer_shops_saleplan`.`id` desc,
+        `customer_shops_saleplan`.`monthly_plan_id` desc";
+
+        
+        $customer_shops = $sql_query.$sql_query_orderby;
+       // dd($customer_shops);
+        $customer_shops = DB::select($customer_shops, [2,Auth::user()->id]);
+        // dd($customer_shops);
+        
+
+        // -- นับจำนวนร้านค้า ทั้งหมด
+        $data['count_customer_all'] = count($customer_shops);
+
+        // -- นับ จำนวนร้านค้า สถานะสำเร็จ
+        $sql_query_success = $sql_query." and `customer_shops`.`shop_status` = ? ".$sql_query_orderby;
+        $customer_shops_success = DB::select( $sql_query_success, [2,Auth::user()->id, 1]);
+        $data['count_customer_success'] = count($customer_shops_success);
+
+        // -- นับ จำนวนร้านค้า สถานะสนใจ
+        $customer_shops_result_1 = $sql_query." and `customer_shops_saleplan_result`.`cust_result_status` = ? ".$sql_query_orderby;
+        $customer_shops_result_1 = DB::select( $customer_shops_result_1, [2,Auth::user()->id,2]);
+        $data['count_customer_result_1'] = count($customer_shops_result_1);
+
+        // -- นับ จำนวนร้านค้า สถานะรอตัดสินใจ
+        $customer_shops_result_2 = $sql_query." and `customer_shops_saleplan_result`.`cust_result_status` = ? ".$sql_query_orderby;
+        $customer_shops_result_2 = DB::select( $customer_shops_result_2, [2,Auth::user()->id,1]);
+        $data['count_customer_result_2'] = count($customer_shops_result_2);
+
+        // -- นับ จำนวนร้านค้า สถานะไม่สนใจ
+        $customer_shops_result_3 = $sql_query." and `customer_shops_saleplan_result`.`cust_result_status` = ? ".$sql_query_orderby;
+        $customer_shops_result_3 = DB::select( $customer_shops_result_3, [2,Auth::user()->id,0]);
+        $data['count_customer_result_3'] = count($customer_shops_result_3);
+
+        $data['customer_shops'] = $customer_shops;
         $data['province'] = DB::table('province')->get();
         $data['customer_contacts'] = DB::table('customer_contacts')->orderBy('id', 'desc')->get();
+
 
         return view('customer.lead', $data);
     }
 
-    public function customerLeadSearch(Request $request)
-    {
-        if(!is_null($request->selectdateFrom)){
-            $data = $this->fetch_customer_lead($request);
-        }elseif(!is_null($request->slugradio)){
-            $data = $this->fetch_customer_lead($request);
-            if($request->slugradio == "สำเร็จ"){
-                if(isset($data['customer_shops_success_table'])){
-                    $data['customer_shops_table'] = $data['customer_shops_success_table'];
-                }else{
-                    $data['customer_shops_table'] = null;
-                }
-            }elseif($request->slugradio  == "สนใจ"){
-                if(isset($data['customer_shops_result_1_table'])){
-                    $data['customer_shops_table'] = $data['customer_shops_result_1_table'];
-                }else{
-                    $data['customer_shops_table'] = null;
-                }
-            }elseif($request->slugradio  == "รอตัดสินใจ"){
-                if(isset($data['customer_shops_result_2_table'])){
-                    $data['customer_shops_table'] = $data['customer_shops_result_2_table'];
-                }else{
-                    $data['customer_shops_table'] = null;
-                }
-            }elseif($request->slugradio  == "ไม่สนใจ"){
-                if(isset($data['customer_shops_result_3_table'])){
-                    $data['customer_shops_table'] = $data['customer_shops_result_3_table'];
-                }else{
-                    $data['customer_shops_table'] = null;
-                }
-            }elseif($request->slugradio  == "รอดำเนินการ"){
-                if(isset($data['customer_shops_pending_table'])){
-                    $data['customer_shops_table'] = $data['customer_shops_pending_table'];
-                }else{
-                    $data['customer_shops_table'] = null;
-                }
-            }
-        }else{
-            $request = "";
-            $data = $this->fetch_customer_lead($request);
-        }
-        
+    public function customerLeadSearch(Request $request){
+
         $data['count_customer_all'] = $request->count_customer_all;
         $data['count_customer_success'] = $request->count_customer_success;
         $data['count_customer_result_1'] = $request->count_customer_result_1;
         $data['count_customer_result_2'] = $request->count_customer_result_2;
         $data['count_customer_result_3'] = $request->count_customer_result_3;
-        $data['count_customer_pending'] = $request->count_customer_pending;
+
+        $sql_query = "select `monthly_plans`.*, `province`.`PROVINCE_NAME`, `customer_shops_saleplan_result`.*,
+        `customer_shops_saleplan`.*, `customer_shops_saleplan`.`shop_aprove_status` as `saleplan_shop_aprove_status`,
+        `customer_shops_saleplan`.`id` as `customer_shops_saleplan_id`,
+        `monthly_plans`.`id` as `monthly_plans_id`,
+        `customer_shops_saleplan`.`monthly_plan_id` as`saleplan_monthly_plans_id`, 
+        `customer_shops`.* from `customer_shops_saleplan`
+        left join `customer_shops` on `customer_shops`.`id` = `customer_shops_saleplan`.`customer_shop_id`
+        left join `customer_shops_saleplan_result` on `customer_shops_saleplan_result`.`customer_shops_saleplan_id` = `customer_shops_saleplan`.`id`
+        left join `monthly_plans` on `monthly_plans`.`id` = `customer_shops_saleplan`.`monthly_plan_id`
+        left join `province` on `province`.`PROVINCE_ID` = `customer_shops`.`shop_province_id`
+        where `customer_shops`.`shop_status` != ? and `customer_shops`.`created_by` = ? ";
+
+        $sql_query_orderby = "order by `customer_shops_saleplan`.`id` desc,
+        `customer_shops_saleplan`.`monthly_plan_id` desc";
+
+        $parameter = [2,Auth::user()->id];
+
+        if(!is_null($request->selectdateFrom)){
+            list($year,$month) = explode('-', $request->selectdateFrom);
+            $sql_query = $sql_query." and `monthly_plans`.`month_date` LIKE ?
+            and `monthly_plans`.`month_date` LIKE ? ";
+            $parameter[] = $year.'%';
+            $parameter[] = '%'.$month.'%';
+            $data['date_filter'] = $request->selectdateFrom;
+
+            // -- นับ จำนวนร้านค้า ทั้งหมด
+            $parameter_count_customer_all = $parameter;
+            $count_customer_all = $sql_query;
+            $count_customer_all = DB::select( $count_customer_all, $parameter_count_customer_all);
+            $data['count_customer_all'] = count($count_customer_all);
+
+            // -- นับ จำนวนร้านค้า สถานะสำเร็จ
+            $parameter_count_customer_success = $parameter;
+            $count_customer_success = $sql_query." and `customer_shops`.`shop_status` = ? ";
+            $parameter_count_customer_success[] = 1 ;
+            $count_customer_success = DB::select( $count_customer_success, $parameter_count_customer_success);
+            $data['count_customer_success'] = count($count_customer_success);
+
+            // -- นับ จำนวนร้านค้า สถานะสนใจ
+            $parameter_count_customer_result_1 = $parameter;
+            $count_customer_result_1 = $sql_query." and `customer_shops_saleplan_result`.`cust_result_status` = ? ";
+            $parameter_count_customer_result_1[] = 2 ;
+            $count_customer_result_1 = DB::select( $count_customer_result_1, $parameter_count_customer_result_1);
+            $data['count_customer_result_1'] = count($count_customer_result_1);
+
+           // -- นับ จำนวนร้านค้า สถานะรอตัดสินใจ
+           $parameter_count_customer_result_2 = $parameter;
+           $count_customer_result_2 = $sql_query." and `customer_shops_saleplan_result`.`cust_result_status` = ? ";
+           $parameter_count_customer_result_2[] = 1 ;
+           $count_customer_result_2 = DB::select( $count_customer_result_2, $parameter_count_customer_result_2);
+           $data['count_customer_result_2'] = count($count_customer_result_2);
+
+           // -- นับ จำนวนร้านค้า สถานะไม่สนใจ
+           $parameter_count_customer_result_3 = $parameter;
+           $count_customer_result_3 = $sql_query." and `customer_shops_saleplan_result`.`cust_result_status` = ? ";
+           $parameter_count_customer_result_3[] = 0 ;
+           $count_customer_result_3 = DB::select( $count_customer_result_3, $parameter_count_customer_result_3);
+           $data['count_customer_result_3'] = count($count_customer_result_3);
+        }
+
+        if(!is_null($request->slugradio)){
+            if($request->slugradio == "สำเร็จ"){
+                $sql_query = $sql_query." and `customer_shops`.`shop_status` = ? ";
+                $parameter[] = 1 ;
+            }elseif($request->slugradio  == "สนใจ"){
+                $sql_query = $sql_query." and `customer_shops_saleplan_result`.`cust_result_status` = ? ";
+                $parameter[] = 2 ;
+            }elseif($request->slugradio  == "รอตัดสินใจ"){
+                $sql_query = $sql_query." and `customer_shops_saleplan_result`.`cust_result_status` = ? ";
+                $parameter[] = 1 ;
+            }elseif($request->slugradio  == "ไม่สนใจ"){
+                $sql_query = $sql_query." and `customer_shops_saleplan_result`.`cust_result_status` = ? ";
+                $parameter[] = 0 ;
+            }
+            $data['slugradio_filter'] = $request->slugradio;
+        }
+
+        $sql_query = $sql_query.$sql_query_orderby;
+        $customer_shops = DB::select( $sql_query, $parameter);
+        $data['customer_shops'] = $customer_shops;
 
         $data['province'] = DB::table('province')->get();
         $data['customer_contacts'] = DB::table('customer_contacts')->orderBy('id', 'desc')->get();
 
         return view('customer.lead', $data);
-    }
-
-    public function fetch_customer_lead($request)
-    {
-        $customer_shops = DB::table('customer_shops')
-            ->select(
-                'customer_shops.*',
-                'province.PROVINCE_NAME'
-            )
-            ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
-            ->where('customer_shops.shop_status', '!=' ,2)
-            ->where('customer_shops.created_by',Auth::user()->id);
-        
-            if(!empty($request)){
-                if(!is_null($request->selectdateFrom)){
-                    list($year, $month) = explode('-', $request->selectdateFrom);
-                    $customer_shops = $customer_shops
-                        ->whereMonth('customer_shops.created_at', $month)
-                        ->whereYear('customer_shops.created_at', $year);
-                }
-            }
-
-        $customer_shops = $customer_shops->orderby('customer_shops.id', 'desc')->get();
-
-        // -- นับจำนวนร้านค้า ทั้งหมด
-        $data['count_customer_all'] = count($customer_shops);
-
-    
-        $data['count_customer_success'] = 0;
-        $data['count_customer_result_1'] = 0;
-        $data['count_customer_result_2'] = 0;
-
-        $data['count_customer_result_3'] = 0;
-        $data['count_customer_pending'] = 0;
-
-        //-- นับจำนวนสถานะต่างๆ
-        foreach($customer_shops as $key => $value){
-
-            $customer_shops_saleplan = DB::table('customer_shops_saleplan')
-                ->select(
-                    'customer_shops_saleplan.*', 
-                    'monthly_plans.id as monthly_plans_id',
-                    'monthly_plans.month_date',
-                    'customer_shops_saleplan_result.id as result_id',
-                    'customer_shops_saleplan_result.cust_result_status as cust_result_status'
-                )
-                ->leftJoin('customer_shops_saleplan_result', 'customer_shops_saleplan_result.customer_shops_saleplan_id', 'customer_shops_saleplan.id')
-                ->join('monthly_plans', 'monthly_plans.id', 'customer_shops_saleplan.monthly_plan_id')
-                ->where('customer_shops_saleplan.customer_shop_id', $value->id)
-                ->orderby('customer_shops_saleplan.id', 'desc')
-                ->first();
-
-
-            $data['customer_shops_table'][] = [
-                'id' => $value->id,
-                'shop_name' => $value->shop_name,
-                'PROVINCE_NAME' => $value->PROVINCE_NAME,
-                'shop_profile_image' => $value->shop_profile_image,
-                'shops_saleplan_id' => $customer_shops_saleplan->id,
-                'monthly_plans_id' => $customer_shops_saleplan->monthly_plans_id,
-                'month_date' => $customer_shops_saleplan->month_date,
-                'result_id' => $customer_shops_saleplan->result_id,
-                'shop_status' => $value->shop_status,
-                'cust_result_status' => $customer_shops_saleplan->cust_result_status,
-            ];
-
-            if($value->shop_status == 1){
-                $data['count_customer_success']++;
-                $data['customer_shops_success_table'][] = [
-                    'id' => $value->id,
-                    'shop_name' => $value->shop_name,
-                    'PROVINCE_NAME' => $value->PROVINCE_NAME,
-                    'shop_profile_image' => $value->shop_profile_image,
-                    'shops_saleplan_id' => $customer_shops_saleplan->id,
-                    'monthly_plans_id' => $customer_shops_saleplan->monthly_plans_id,
-                    'month_date' => $customer_shops_saleplan->month_date,
-                    'result_id' => $customer_shops_saleplan->result_id,
-                    'shop_status' => $value->shop_status,
-                    'cust_result_status' => $customer_shops_saleplan->cust_result_status,
-                ];
-            }else{
-                if(!is_null($customer_shops_saleplan->cust_result_status)){
-                    if($customer_shops_saleplan->cust_result_status == 2){ /*  สนใจ	 */
-                        $data['count_customer_result_1']++;
-                        $data['customer_shops_result_1_table'][] = [
-                            'id' => $value->id,
-                            'shop_name' => $value->shop_name,
-                            'PROVINCE_NAME' => $value->PROVINCE_NAME,
-                            'shop_profile_image' => $value->shop_profile_image,
-                            'shops_saleplan_id' => $customer_shops_saleplan->id,
-                            'monthly_plans_id' => $customer_shops_saleplan->monthly_plans_id,
-                            'month_date' => $customer_shops_saleplan->month_date,
-                            'result_id' => $customer_shops_saleplan->result_id,
-                            'shop_status' => $value->shop_status,
-                            'cust_result_status' => $customer_shops_saleplan->cust_result_status,
-                        ];
-                    }elseif($customer_shops_saleplan->cust_result_status == 1){ /* รอตัดสินใจ */
-                        $data['count_customer_result_2']++;
-                        $data['customer_shops_result_2_table'][] = [
-                            'id' => $value->id,
-                            'shop_name' => $value->shop_name,
-                            'PROVINCE_NAME' => $value->PROVINCE_NAME,
-                            'shop_profile_image' => $value->shop_profile_image,
-                            'shops_saleplan_id' => $customer_shops_saleplan->id,
-                            'monthly_plans_id' => $customer_shops_saleplan->monthly_plans_id,
-                            'month_date' => $customer_shops_saleplan->month_date,
-                            'result_id' => $customer_shops_saleplan->result_id,
-                            'shop_status' => $value->shop_status,
-                            'cust_result_status' => $customer_shops_saleplan->cust_result_status,
-                        ];
-                    }elseif($customer_shops_saleplan->cust_result_status == 0){ /* ไม่สนใจ */
-                        $data['count_customer_result_3']++;
-                        $data['customer_shops_result_3_table'][] = [
-                            'id' => $value->id,
-                            'shop_name' => $value->shop_name,
-                            'PROVINCE_NAME' => $value->PROVINCE_NAME,
-                            'shop_profile_image' => $value->shop_profile_image,
-                            'shops_saleplan_id' => $customer_shops_saleplan->id,
-                            'monthly_plans_id' => $customer_shops_saleplan->monthly_plans_id,
-                            'month_date' => $customer_shops_saleplan->month_date,
-                            'result_id' => $customer_shops_saleplan->result_id,
-                            'shop_status' => $value->shop_status,
-                            'cust_result_status' => $customer_shops_saleplan->cust_result_status,
-                        ];
-                    }
-                }else{
-                    $data['count_customer_pending']++; /* รอดำเนินการ */
-                    $data['customer_shops_pending_table'][] = [
-                        'id' => $value->id,
-                        'shop_name' => $value->shop_name,
-                        'PROVINCE_NAME' => $value->PROVINCE_NAME,
-                        'shop_profile_image' => $value->shop_profile_image,
-                        'shops_saleplan_id' => $customer_shops_saleplan->id,
-                        'monthly_plans_id' => $customer_shops_saleplan->monthly_plans_id,
-                        'month_date' => $customer_shops_saleplan->month_date,
-                        'result_id' => $customer_shops_saleplan->result_id,
-                        'shop_status' => $value->shop_status,
-                        'cust_result_status' => $customer_shops_saleplan->cust_result_status,
-                    ];
-                }
-            }
-
-        }
-        //-- จบ นับจำนวนสถานะต่างๆ
-
-        //-- ใช้ในส่วน Insert ดึงทะเบียนลูกค้า
-        $data['customer_shops'] = DB::table('customer_shops')
-            ->select(
-                'customer_shops.*',
-                'province.PROVINCE_NAME'
-            )
-            ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
-            ->where('customer_shops.shop_status', '=' ,0) //-- ลูกค้าใหม่ยังไม่ได้เปลี่ยนเป็นทะเบียนลูกค้า
-            ->where('customer_shops.created_by',Auth::user()->id)
-            ->orderby('customer_shops.id', 'desc')
-            ->get();
-
-        return $data;
-
     }
 
     public function store(Request $request)

@@ -35,12 +35,6 @@
                                 <form action="{{ url('data_report_product-new/search') }}" method="post" enctype="multipart/form-data">
                                     @csrf
                                     <span id="selectdate">
-
-                                        เป้า : 
-                                        <select class="form-control form-control-sm mr-5" name="sel_campaign" id="sel_campaign">
-                                            <option value="">เลือกแคมเปญ</option>
-                                        </select>
-                                        
                                         ปี :
                                         <select class="form-control form-control-sm mr-5" name="sel_year" id="sel_year">
                                             @php 
@@ -54,6 +48,10 @@
                                                 @endphp
                                                 <option value="{{ $year }}">{{ $year_thai }}</option>
                                             @endfor
+                                        </select>
+                                        เป้า : 
+                                        <select class="form-control form-control-sm mr-5" name="sel_campaign" id="sel_campaign">
+                                            <option value="">เลือกแคมเปญ</option>
                                         </select>
 
                                     <button type="submit" style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm">ค้นหา</button>
@@ -158,6 +156,28 @@
 
 
 <script>
+    $( document ).ready(function() {
+        let sel_year = $('#sel_year').val();
+        console.log(sel_year);
+        $.ajax({
+            method: 'GET',
+            url: '{{ url("/fetch_campaignpromotes") }}/'+sel_year, 
+            datatype: 'json',
+            success: function(response){
+                if(response.status == 200){
+                    console.log(response.campaignpromotes);
+                    $('#sel_campaign').children().remove().end();
+                    $('#sel_campaign').append('<option selected value="">เลือกแคมเปญ</option>');
+                    let rows = response.campaignpromotes.length;
+                    for(let i=0 ;i<rows; i++){
+                        $('#sel_campaign').append('<option value="'+response.campaignpromotes[i]['campaign_id']+'">'+response.campaignpromotes[i]['description']+'</option>');
+                    }
+                }else{
+                    console.log("ไม่พบ จังหวัด สินค้า");
+                }
+            }
+        });
+    });
 
     $(document).on('change','#sel_year', function(e){
         e.preventDefault();

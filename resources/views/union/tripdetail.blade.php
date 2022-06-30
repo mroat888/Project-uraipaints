@@ -27,7 +27,7 @@
                 <div class="topic-secondgery">ตารางทริปเดินทาง</div>
                 <div class="row">
                     <div class="col-md-4">
-                        <label for="api_identify">รหัสพนักงาน : {{ $users->api_identify }} </label>
+                        <label for="api_identify">รหัสพนักงาน : {{ $users->api_employee_id }} </label>
                     </div>
                     <div class="col-md-4">
                         <label for="namesale">ชื่อพนักงาน : {{ $users->name }}</label>

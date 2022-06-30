@@ -1275,7 +1275,7 @@ class ApiController extends Controller
 
         $path_search = "campaignpromotes";
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search,[
-            'year' => $year
+            'years' => $year
         ]);
         $res_api = $response->json();
 

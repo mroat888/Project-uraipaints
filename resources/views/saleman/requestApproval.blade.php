@@ -62,7 +62,7 @@
                                                     <th>เรื่องด่วน</th>
                                                     <th>เรื่อง</th>
                                                     <th>ชื่อร้าน</th>
-                                                    <th>วันที่ปฎิบัติงาน</th>
+                                                    <th>วันที่ต้องการ</th>
                                                     <th>การอนุมัติ</th>
                                                     <th>สถานะ</th>
                                                     <th>Action</th>
@@ -258,7 +258,7 @@
                                 <input class="form-control" placeholder="กรุณาใส่หัวข้อ / เรื่อง" name="assign_title" id="get_title" type="text">
                             </div>
                             <div class="col-md-6 form-group">
-                                <label for="firstName">วันที่ / Date</label>
+                                <label for="firstName">วันที่ต้องการ</label>
                                 <input class="form-control" type="date" name="assign_work_date" id="get_work_date" min="<?= date('Y-m-d') ?>" >
                             </div>
                         </div>
@@ -506,7 +506,7 @@
                             content += "<th>เรื่องด่วน</th>";
                             content += "<th>เรื่อง</th>";
                             content += "<th>ชื่อร้าน</th>";
-                            content += "<th>วันที่ปฎิบัติงาน</th>";
+                            content += "<th>วันที่ต้องการ</th>";
                             content += "<th>การอนุมัติ</th>";
                             content += "<th>สถานะ</th>";
                             content += "<th>Action</th>";

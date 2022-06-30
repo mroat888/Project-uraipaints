@@ -99,51 +99,102 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @if(isset($monthly_plan))
-                                                @foreach ($monthly_plan as $key => $value)
-                                                    <tr style="text-align:center;">
-                                                        <td>{{ $key + 1 }}</td>
-                                                        <td style="text-align:left;">{{ $value['name'] }}</td>
-                                                        <td>{{ $value['sale_plan_amount'] }}</td>
-                                                        <td>{{ $value['cust_new_amount'] }}</td>
-                                                        <td>{{ $value['total_plan'] }}</td>
-                                                        <td>{{ $value['bills'] }}</td>
-                                                        <td>{{ number_format($value['sales'],2) }}</td>
-                                                        <td>{{ number_format($value['not_bills']) }}</td>
-                                                        <td style="text-aligm:right;">{{ number_format($value['customer_update_count']) }}</td>
-                                                        <td>
-                                                            @if($value['status_approve'] == 1)
-                                                                <span class="badge badge-soft-warning" style="font-size: 12px;">
-                                                                    Pending
-                                                                </span>
-                                                            @elseif($value['status_approve'] == 2)
-                                                                <span class="badge badge-soft-success"style="font-size: 12px;">
-                                                                    Approve
-                                                                </span>
-                                                            @elseif($value['status_approve'] == 3)
-                                                                <span class="badge badge-soft-purple" style="font-size: 12px;">
-                                                                    Reject
-                                                                </span>
-                                                            @elseif($value['status_approve'] == 4)
-                                                                <span class="badge badge-soft-info"style="font-size: 12px;">
-                                                                    Close
-                                                                </span>
-                                                            @endif
-                                                        </td>
-                                                        <td>
-                                                            <a href="{{ url('admin/approvalsaleplan_close', $value['id']) }}" type="button" class="btn btn-icon btn-purple pt-5">
-                                                                <i data-feather="check-circle"></i>
-                                                            </a>
-                                                            <a href="{{ url('admin/approvalsaleplan_detail', $value['id']) }}" type="button" class="btn btn-icon btn-view pt-5">
-                                                                <i data-feather="file-text"></i>
-                                                            </a>
-                                                            {{-- <button id="btn_saleplan_restrospective" type="button" class="btn btn-icon btn-warning ml-2" value="{{ $value->id }}">
-                                                                <i data-feather="refresh-ccw"></i>
-                                                            </button> --}}
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            @endif
+                                            @foreach ($monthly_plan as $key => $value)
+                                                @php
+                                                    $sale_plans = DB::table('sale_plans')
+                                                        ->where('monthly_plan_id',$value->id)
+                                                        ->get();
+                                                    $sale_plan_amount = $sale_plans->count();
+
+                                                    $customer_shops_saleplan = DB::table('customer_shops_saleplan')
+                                                        ->where('monthly_plan_id', $value->id)
+                                                        ->where('shop_aprove_status', 2)
+                                                        ->get();
+                                                    $cust_new_amount = $customer_shops_saleplan->count();
+
+                                                    $total_plan = $sale_plan_amount + $cust_new_amount;
+
+                                                    //--  API ------//
+                                                    $user_api = DB::table('users')->where('id',$value->created_by)->first();
+                                                    list($year,$month,$day) = explode('-', $value->month_date);
+                                                    $month = $month + 0;
+
+                                                    $path_search = "reports/sellers/".$user_api->api_identify."/closesaleplans?years=".$year."&months=".$month;
+                                                    $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+                                                    $res_api = $response->json();
+
+                                                    $bills = 0;
+                                                    $sales = 0;
+                                                    if($res_api['code'] == 200){
+                                                        $saleplan_api = $res_api['data'];
+
+                                                        foreach($saleplan_api as $key_api => $value_api){
+                                                            $bills += $saleplan_api[$key_api]['bills'];
+                                                            $sales += $saleplan_api[$key_api]['sales'];
+                                                        }
+                                                    }
+
+                                                    $total_pglistpresent = 0; // เก็บจำนวนสินค้าค้านำเสนอ
+                                                    foreach($sale_plans as $pglist_value){
+                                                        $listpresent = explode(',',$pglist_value->sale_plans_tags);
+                                                        foreach($listpresent as $value_list ){
+                                                            $total_pglistpresent += 1;
+                                                        }
+                                                    }
+
+                                                    $not_bills = $total_pglistpresent - $bills;
+
+                                                    list($year,$month) = explode('-', $value->month_date);
+                                                    $customer_update_count = DB::table('customer_shops')
+                                                        ->join('customer_shops_saleplan', 'customer_shops_saleplan.customer_shop_id', 'customer_shops.id')
+                                                        ->where('customer_shops_saleplan.monthly_plan_id', $value->id)
+                                                        ->whereYear('customer_shops.shop_status_at', $year)
+                                                        ->whereMonth('customer_shops.shop_status_at', $month)
+                                                        ->count();
+
+                                                @endphp
+                                                <tr style="text-align:center;">
+                                                    <td>{{ $key + 1 }}</td>
+                                                    <td style="text-align:left;">{{ $value->name }}</td>
+                                                    <td>{{ $sale_plan_amount }}</td>
+                                                    <td>{{ $cust_new_amount }}</td>
+                                                    <td>{{ $total_plan }}</td>
+                                                    <td>{{ $bills }}</td>
+                                                    <td>{{ number_format($sales,2) }}</td>
+                                                    <td>{{ number_format($not_bills) }}</td>
+                                                    <td style="text-aligm:right;">{{ number_format($customer_update_count) }}</td>
+                                                    <td>
+                                                        @if($value->status_approve == 1)
+                                                            <span class="badge badge-soft-warning" style="font-size: 12px;">
+                                                                Pending
+                                                            </span>
+                                                        @elseif($value->status_approve == 2)
+                                                            <span class="badge badge-soft-success"style="font-size: 12px;">
+                                                                Approve
+                                                            </span>
+                                                        @elseif($value->status_approve == 3)
+                                                            <span class="badge badge-soft-purple" style="font-size: 12px;">
+                                                                Reject
+                                                            </span>
+                                                        @elseif($value->status_approve == 4)
+                                                            <span class="badge badge-soft-info"style="font-size: 12px;">
+                                                                Close
+                                                            </span>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        <a href="{{ url('admin/approvalsaleplan_close', $value->id) }}" type="button" class="btn btn-icon btn-purple pt-5">
+                                                            <i data-feather="check-circle"></i>
+                                                        </a>
+                                                        <a href="{{ url('admin/approvalsaleplan_detail', $value->id) }}" type="button" class="btn btn-icon btn-view pt-5">
+                                                            <i data-feather="file-text"></i>
+                                                        </a>
+                                                        {{-- <button id="btn_saleplan_restrospective" type="button" class="btn btn-icon btn-warning ml-2" value="{{ $value->id }}">
+                                                            <i data-feather="refresh-ccw"></i>
+                                                        </button> --}}
+                                                    </td>
+                                                </tr>
+                                            @endforeach
 
                                         </tbody>
                                     </table>

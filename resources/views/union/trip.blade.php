@@ -187,7 +187,8 @@
                 <div class="form-row">
                     <div class="form-group col-md-4">
                         <label for="api_identify">รหัสพนักงาน</label>
-                        <input type="text" class="form-control" name="api_identify" id="api_identify" readonly>
+                        <input type="text" class="form-control" name="api_employee_id" id="api_employee_id" readonly>
+                        <input type="hidden" class="form-control" name="api_identify" id="api_identify">
                     </div>
                     <div class="form-group col-md-4">
                         <label for="namesale">ชื่อพนักงาน</label>
@@ -266,7 +267,8 @@
                 <div class="form-row">
                     <div class="form-group col-md-4">
                     <label for="api_identify">รหัสพนักงาน</label>
-                    <input type="text" class="form-control" name="api_identify_edit" id="api_identify_edit" readonly>
+                    <input type="text" class="form-control" name="api_employee_id_edit" id="api_employee_id_edit" readonly>
+                    <input type="hidden" class="form-control" name="api_identify_edit" id="api_identify_edit" readonly>
                     </div>
                     <div class="form-group col-md-4">
                     <label for="namesale">ชื่อพนักงาน</label>
@@ -351,6 +353,7 @@
             success:function(response){
                 console.log(response);
                 $("#api_identify").val(response.api_identify);
+                $("#api_employee_id").val(response.api_employee_id);
                 $("#namesale").val(response.namesale);
                 $("#Modalcreate").modal('show');
             }
@@ -371,6 +374,7 @@
                 let trip_date = response.trip_header.trip_date.split("-");
                 trip_date = trip_date[0]+"-"+trip_date[1];
                 $("#api_identify_edit").val(response.api_identify);
+                $("#api_employee_id_edit").val(response.api_employee_id);
                 $("#namesale_edit").val(response.namesale);
                 $("#trip_header_id").val(response.trip_header.id);
                 $("#trip_date_edit").val(trip_date);

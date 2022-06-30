@@ -60,6 +60,11 @@ Route::get('edit_customerLead/{id}', 'Customer\CustomerController@edit');
 Route::post('update_customerLead', 'Customer\CustomerController@update');
 Route::post('delete_customer', 'Customer\CustomerController@destroy');
 
+
+// Route::get('/lead','Customer\CustomerControllerCopy@customerLead');
+// Route::post('/lead/search','Customer\CustomerControllerCopy@customerLeadSearch');
+
+
 // Customer shop saleplan customer_shops_saleplan
 Route::get('/edit_shopsaleplan/{id}', 'Customer\CustomerShopSaleplanController@edit_shopsaleplan');
 Route::post('/update_shopsaleplan', 'Customer\CustomerShopSaleplanController@update_shopsaleplan');
