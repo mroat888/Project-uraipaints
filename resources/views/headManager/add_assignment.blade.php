@@ -166,7 +166,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">ฟอร์มบันทึกการสั่งงาน</h5>
+                    <h5 class="modal-title">เพิ่มบันทึการสั่งงาน</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -182,7 +182,7 @@
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="firstName">วันที่กำหนดส่ง</label>
-                                <input class="form-control" type="date" name="date" />
+                                <input class="form-control" type="date" name="date" required/>
                             </div>
                         </div>
                         <div class="row">
@@ -524,8 +524,9 @@
                     $('#get_title').val(data.dataEdit.assign_title);
                     $('#get_detail').val(data.dataEdit.assign_detail);
 
-                    let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataEdit.assign_fileupload;
-                    if(data.dataEdit.assign_fileupload != ""){
+                    if(data.dataEdit.assign_fileupload){
+                        let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataEdit.assign_fileupload;
+
                         ext = data.dataEdit.assign_fileupload.split('.').pop().toLowerCase();
                         console.log(img_name);
                         if(ext == "pdf"){

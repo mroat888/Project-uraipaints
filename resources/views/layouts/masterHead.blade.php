@@ -257,7 +257,7 @@ License: You must have a valid license purchased only from themeforest to legall
                                         <li class="nav-item {{ (request()->is('head/approve_trip')) ? 'btn2' : '' }}">
                                             <a class="nav-link link-with-badge" href="{{ url('head/approve_trip') }}">
                                                 <i class="ion ion-md-clipboard" style="color: #044067;"></i>
-                                                <span class="nav-link-text">อนุมัติทริปเดินทาง</span>
+                                                <span class="nav-link-text">ให้ความเห็นทริปเดินทาง</span>
                                             </a>
                                         </li>
                                         <li class="nav-item {{ (request()->is('head/approvalsaleplan')) ? 'btn2' : '' }}">

@@ -17,8 +17,7 @@ class ProductNewController extends Controller
 
     public function index()
     {
-        // $year_now = date("Y");
-        $year_now = "2021";
+        $year_now = date("Y");
         $api_token = $this->api_token->apiToken();
 
         switch  (Auth::user()->status){

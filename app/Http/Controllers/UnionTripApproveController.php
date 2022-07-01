@@ -133,7 +133,8 @@ class UnionTripApproveController extends Controller
             ->join('users', 'trip_header.created_by', '=', 'users.id')
             ->select(
                 'trip_header.*',
-                'users.name'
+                'users.name',
+                'users.api_identify'
             )
             ->where('users.status', '1'); // เฉพาะ saleman
 

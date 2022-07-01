@@ -134,7 +134,6 @@ class CustomerController extends Controller
 
         // -- นับจำนวนร้านค้า ทั้งหมด
         $data['count_customer_all'] = count($customer_shops);
-
     
         $data['count_customer_success'] = 0;
         $data['count_customer_result_1'] = 0;
