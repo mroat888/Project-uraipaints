@@ -125,7 +125,7 @@
                                             @endif
                                             <th>ทริปเดือน</th>
                                             <th>วันที่ขออนุมัติ</th>
-                                            <th style="text-align:left;">รายชื่อ</th>
+                                            <th style="text-align:left;">ผู้แทนขาย</th>
                                             <th>จำนวนวัน</th>
                                             <th>ค่าเบี้ยเลื้ยง</th>
                                             <th>การอนุมัติ</th>
@@ -162,7 +162,7 @@
                                             @endif
                                             <td>{{ $date_thai }}</td>
                                             <td>{{ $approve_at }}</td>
-                                            <td style="text-align:left;">{{ $value->name }}</td>
+                                            <td style="text-align:left;">{{ $value->api_identify }} {{ $value->name }}</td>
                                             <td>{{ $value->trip_day }}</td>
                                             <td>{{ number_format($value->sum_allowance) }}</td>
                                             <td>

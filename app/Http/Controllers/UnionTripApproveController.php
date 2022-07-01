@@ -53,7 +53,8 @@ class UnionTripApproveController extends Controller
             ->join('users', 'trip_header.created_by', '=', 'users.id')
             ->select(
                 'trip_header.*',
-                'users.name'
+                'users.name',
+                'users.api_identify'
             )
             ->where(function($query) use ($auth_team) {
                 for ($i = 0; $i < count($auth_team); $i++){
@@ -311,6 +312,7 @@ class UnionTripApproveController extends Controller
         // --- จบ ดึงข้อมูลร้านค้า
 
         $data['trip_detail'] = array();
+        $formprovince = "";
         if(count($trip_detail) > 0){
             foreach($trip_detail as $value){
 
