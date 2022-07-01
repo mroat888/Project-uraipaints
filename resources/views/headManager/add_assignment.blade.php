@@ -504,7 +504,7 @@
                         $('#result_send').append('<option value="" selected>เลือกข้อมูล</option> <option value="2">ไม่สำเร็จ</option> <option value="1">สำเร็จ</option>');
                     }
 
-                        $('#ModalResult').modal('toggle');
+                    $('#ModalResult').modal('toggle');
                 }
             });
         }
