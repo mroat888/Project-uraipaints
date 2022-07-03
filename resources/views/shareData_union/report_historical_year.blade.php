@@ -384,12 +384,31 @@
         <!-- Row -->
         <div class="row">
             <div class="col-xl-12">
-                <section class="hk-sec-wrapper">
+                <section class="hk-sec-wrapper mt-0">
+                    <!-- Title -->
+                    <div class="hk-pg-header mb-0">
+                        <div class="topichead-bgred"><i data-feather="file-text"></i> กราฟยอดขายเทียบปี</div>
+                    </div>
+                    <!-- /Title -->
                     <div class="row mb-2">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <canvas id="myChart" style="height: 294px"></canvas>
                         </div>
-                        <div class="col-md-6">
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-12">
+                <section class="hk-sec-wrapper">
+                    <!-- Title -->
+                    <div class="hk-pg-header mb-0">
+                        <div class="topichead-bgred"><i data-feather="file-text"></i> กราฟยอดขายเทียบไตรมาส</div>
+                    </div>
+                    <!-- /Title -->
+                    <div class="row mb-2">
+                        <div class="col-md-12">
                             <canvas id="myChart_2" style="height: 294px"></canvas>
                         </div>
                     </div>
@@ -437,9 +456,7 @@
     var newDataset =[];
     newDataset[0] = {
         label: 'ยอดขายปี {{ $lable_thai[0] }}',
-        borderColor: [
-            'rgba(255, 99, 132, 1)'
-        ],
+        borderColor: 'rgba(206,30,40,1)',
         fill: false,
         data: [<?=$data_text[0]?>],
         borderWidth: 2,
@@ -447,9 +464,7 @@
     };
     newDataset[1] = {
         label: 'ยอดขายปี {{ $lable_thai[1] }}',
-        borderColor: [
-            'rgba(255, 153, 51, 1)'
-        ],
+        borderColor: 'rgba(2, 119, 144,1)',
         fill: false,
         data: [<?=$data_text[1]?>],
         borderWidth: 2,
@@ -515,9 +530,7 @@ for($i=0;$i<2;$i++){
     var newDataset =[];
     newDataset[0] = {
         label: 'ยอดขายปี {{ $lable_thai[0] }}',
-        borderColor: [
-            'rgba(255, 99, 132, 1)'
-        ],
+        borderColor: 'rgba(206,30,40,1)',
         fill: false,
         data: [<?=$data_text_quarter[0]?>],
         borderWidth: 2,
@@ -525,9 +538,7 @@ for($i=0;$i<2;$i++){
     };
     newDataset[1] = {
         label: 'ยอดขายปี {{ $lable_thai[1] }}',
-        borderColor: [
-            'rgba(255, 153, 51, 1)'
-        ],
+        borderColor: 'rgba(2, 119, 144,1)',
         fill: false,
         data: [<?=$data_text_quarter[1]?>],
         borderWidth: 2,
