@@ -40,35 +40,47 @@ class UserPermissionController extends Controller
         return view('admin.user_permission', compact('users', 'master_permission', 'sellers_api', 'master_team'));
     }
 
-    public function store(Request $request){
-
-        $user_check_email = DB::table('users')
-        ->where('email', $request->temail)
-        ->orWhere('api_identify', $request->sel_api_identify)
-        ->first();
-
-        $res_api = $this->apicontroller->getAllSellers();
-        foreach ($res_api['data'] as $key => $value) {
-            if ($request->sel_api_identify == $value['identify']) {
-                $emp_id = $value['employee_id'];
+    public function store(Request $request)
+    {
+        if(isset($request->sel_api_identify) && !is_null($request->sel_api_identify)){
+            $user_check_email = DB::table('users')
+            ->where('email', $request->temail)
+            ->orWhere('api_identify', $request->sel_api_identify)
+            ->first();
+        
+            $res_api = $this->apicontroller->getAllSellers();
+            foreach ($res_api['data'] as $key => $value) {
+                if ($request->sel_api_identify == $value['identify']) {
+                    $emp_id = $value['employee_id'];
+                }
             }
+            $sel_api_identify = $request->sel_api_identify;
+        }else{
+            $user_check_email = 'visitor';
+            $sel_api_identify = null;
+            $emp_id = null;
         }
 
-        if($user_check_email != null){
+        if($user_check_email != null && $user_check_email != "visitor"){
             $message = "อีเมลหรือชื่อพนักงานซ้ำค่ะ";
             return response()->json([
                 'status' => 404,
                 'message' => $message,
             ]);
         }else{
-
             DB::beginTransaction();
             try{
                 if($request->tpassword != ""){
                     $password_staff = Hash::make($request->tpassword);
+                }else{
+                    $password_staff = "";
                 }
-                // $team_id = implode( ',', $request->sel_team);
-                // dd($team_id);
+                if(!is_null($request->sel_team)){
+                    $sel_team = implode( ',', $request->sel_team);
+                }else{
+                    $sel_team = null;
+                }
+                // dd($sel_team, $password_staff);
                 if ($request->image != '') {
                         $path = 'upload/UserSignature';
                         $image = '';
@@ -78,28 +90,28 @@ class UserPermissionController extends Controller
                         $save_path = $img->move(public_path($path), $img_name);
                         $image = $img_name;
 
-                        DB::table('users')->insert([
+                    DB::table('users')->insert([
                         'name' => $request->tname,
                         'email' => $request->temail,
                         'password' => $password_staff,
-                        'api_identify' => $request->sel_api_identify,
+                        'api_identify' => $sel_api_identify,
                         'api_employee_id' => $emp_id,
                         'status' => $request->sel_status,
-                        'team_id' => implode( ',', $request->sel_team),
+                        'team_id' => $sel_team,
                         'signature' => $image,
                         'created_at' => date('Y-m-d H:i:s'),
                         'created_by' => Auth::user()->id,
                     ]);
                 }
             }else {
-                        DB::table('users')->insert([
+                    DB::table('users')->insert([
                         'name' => $request->tname,
                         'email' => $request->temail,
                         'password' => $password_staff,
-                        'api_identify' => $request->sel_api_identify,
+                        'api_identify' => $sel_api_identify,
                         'api_employee_id' => $emp_id,
                         'status' => $request->sel_status,
-                        'team_id' => implode( ',', $request->sel_team),
+                        'team_id' => $sel_team,
                         'created_at' => date('Y-m-d H:i:s'),
                         'created_by' => Auth::user()->id,
                     ]);
