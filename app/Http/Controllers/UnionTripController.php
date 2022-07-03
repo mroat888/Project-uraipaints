@@ -17,12 +17,8 @@ class UnionTripController extends Controller
 
     public function index()
     {   
-        $data['trips_last'] = DB::table('trip_header')
-            ->where('created_by', Auth::user()->id)
-            ->orderBy('trip_date', 'desc')
-            ->first();
-
-        $data['trips'] = DB::table('trip_header')->where('created_by', Auth::user()->id)->orderBy('id', 'desc')->get();
+        $request = "";
+        $data = $this->fetch_trip($request);
 
         switch  (Auth::user()->status){
             case 1 :    return view('saleman.trip', $data); 
@@ -34,6 +30,44 @@ class UnionTripController extends Controller
             case 4 :   
                 break;
         }
+    }
+
+    public function search(Request $request)
+    {
+        $data = $this->fetch_trip($request);
+        switch  (Auth::user()->status){
+            case 1 :    return view('saleman.trip', $data); 
+                break;
+            case 2 :    return view('leadManager.trip', $data); 
+                break;
+            case 3 :    return view('headManager.trip', $data); 
+                break;
+            case 4 :   
+                break;
+        }
+    }
+
+    public function fetch_trip($request)
+    {
+        if($request != ""){
+            $year = $request->selectyear;
+            $data['date_filter'] = $request->selectyear;
+        }else{
+            $year = date('Y');
+        }
+        
+        $data['trips_last'] = DB::table('trip_header')
+            ->where('created_by', Auth::user()->id)
+            ->orderBy('trip_date', 'desc')
+            ->first();
+
+        $data['trips'] = DB::table('trip_header')
+            ->where('created_by', Auth::user()->id)
+            ->whereYear('trip_date',$year)
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return $data;
     }
 
     public function create()

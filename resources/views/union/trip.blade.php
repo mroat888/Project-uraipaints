@@ -27,7 +27,38 @@
                     <div class="col-sm-12 col-md-12">
                         <div class="topic-secondgery">ตารางทริปเดินทาง</div>
                     </div>
-                    <div class="col-sm-12 col-md-9">
+                    <div class="col-sm-12 col-md-12">
+                        <span class="form-inline pull-right pull-sm-center">
+                            <form action="{{ url($action_search) }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <span id="selectdate">
+                                    <!-- ปี :  -->
+                                    <select name="selectyear" class="form-control" aria-label=".form-select-lg example">
+                                            @php
+                                                $date_search = "";
+                                                if(isset($date_filter)){
+                                                    $date_search = $date_filter;
+                                                }
+                                            @endphp
+                                            <?php
+                                                $year_now = date('Y');
+                                                for($i=0;$i<3;$i++){
+                                                    $year_thai = $year_now+543;
+                                            ?>
+                                                @if($date_search == $year_now)
+                                                    <option value="{{ $year_now }}" selected>{{ $year_thai }}</option>
+                                                @else
+                                                    <option value="{{ $year_now }}">{{ $year_thai }}</option>
+                                                @endif
+                                            <?php
+                                                    $year_now = $year_now-1;
+                                                }
+                                            ?>
+                                        </select>
+                                    <button style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm" id="submit_request">ค้นหา</button>
+                                </span>
+                            </form>
+                        </span>
                     </div>
                 </div>
                 <div class="row">

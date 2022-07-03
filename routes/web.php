@@ -101,6 +101,7 @@ Route::post('saleplan_Result', 'SaleMan\SalePlanController@saleplan_Result');
 
 // Trip
 Route::get('trip', 'UnionTripController@index');
+Route::post('trip/search', 'UnionTripController@search');
 Route::get('trip/detail/{id}', 'UnionTripController@trip_detail');
 Route::get('trip/show_detail/{id}', 'UnionTripController@trip_detail');
 Route::get('trip/approve_trip/detail/{id}', 'UnionTripApproveController@trip_showdetail');
@@ -242,6 +243,7 @@ Route::get('lead/viewAssignmentDetail', function () { return view('leadManager.v
 
 // Trip
 Route::get('lead/trip', 'UnionTripController@index');
+Route::post('lead/trip/search', 'UnionTripController@search');
 Route::get('lead/trip/detail/{id}', 'UnionTripController@trip_detail');
 
 Route::get('lead/approve_trip', 'UnionTripApproveController@index');
@@ -449,6 +451,7 @@ Route::post('head/approvalsaleplan/search', 'HeadManager\ApprovalSalePlanControl
 
 // Trip
 Route::get('head/trip', 'UnionTripController@index');
+Route::post('head/trip/search', 'UnionTripController@search');
 Route::get('head/trip/detail/{id}', 'UnionTripController@trip_detail');
 
 Route::get('head/approve_trip', 'UnionTripApproveController@index');
