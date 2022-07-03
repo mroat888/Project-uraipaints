@@ -11,17 +11,104 @@ use DataTables;
 
 class ApiController extends Controller
 {
-    public function apiToken(){
-        // -----  API
-        // dd(env("API_LINK"));
+    private $expire_time;
+    private $api_token;
+
+    private function keepAPIToken($token)
+    {
+        $pathToken = storage_path("/api");
+
+        if ($token != '') {
+            $data = ['token' => $token];
+
+            if (!file_exists($pathToken)) {
+                mkdir(storage_path("/api"), 0777, true);
+            }
+
+            file_put_contents($pathToken."/token.json", json_encode($data));
+        }
+    }
+
+    private function loginAPI()
+    {
         $response = Http::post(env("API_LINK").'api/auth/login', [
             'username' => env("API_USER"),
             'password' => env("API_PASS"),
         ]);
         $res = $response->json();
-        $api_token = $res['data'][0]['access_token'];
 
-        return $api_token;
+        $this->api_token = $res['data'][0]['access_token'];
+        $this->expire_time = $res["data"][0]["expire_time"];
+
+        $this->keepAPIToken($this->api_token);
+    }
+
+    private function checkTokenValid($token)
+    {
+        $response = Http::withToken($token)->get(env("API_LINK").'api/auth/token-expired');
+        $res = $response->json();
+        $code = $res["code"];
+
+        if ($code == 200) {
+            //token can be uses and keep datatime token for check refresh
+            $this->expire_time = $res["data"][0]["expire_time"]; 
+            $this->api_token = $token;
+
+            $diffM = (strtotime($this->expire_time) -time()) / 60;
+            
+            //Age token less than 15 minute refresh new token
+            if ($diffM < 15) {
+                $response = Http::withToken($token)->post(env("API_LINK").'api/auth/refresh');
+                $res = $response->json();
+                $code = $res["code"];
+
+                if ($code == 200) {
+                    $this->expire_time = $res["data"][0]["expire_time"];
+                    $this->api_token = $res["data"][0]["access_token"]; 
+
+                    $this->keepAPIToken($this->api_token);
+                    return true;
+                } else {
+                    return false;
+                } 
+            }
+        } else {
+            $this->loginAPI();
+            
+            return true;
+        }
+    }
+
+    public function getAPIToken()
+    {
+        $pathToken = storage_path("api/token.json");
+
+        if ($this->api_token == '') {
+            if (file_exists($pathToken)) {
+                $result = json_decode(file_get_contents($pathToken, true));
+
+                $this->checkTokenValid($result->token);
+            } else {
+                $this->loginAPI();
+            }
+        } else {
+            $this->checkTokenValid($this->api_token);
+        }
+    }
+    
+    public function apiToken(){
+        // -----  API
+        // dd(env("API_LINK"));
+        // $response = Http::post(env("API_LINK").'api/auth/login', [
+        //     'username' => env("API_USER"),
+        //     'password' => env("API_PASS"),
+        // ]);
+        // $res = $response->json();
+        // $api_token = $res['data'][0]['access_token'];
+
+        $this->getAPIToken();
+
+        return $this->api_token;
     }
 
     public function getAllSellers(){
