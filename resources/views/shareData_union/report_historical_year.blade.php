@@ -404,7 +404,7 @@
                 <section class="hk-sec-wrapper">
                     <!-- Title -->
                     <div class="hk-pg-header mb-0">
-                        <div class="topichead-bgred"><i data-feather="file-text"></i> กราฟยอดขายเทียบไตรมาส</div>
+                        <div class="topichead-bggreen"><i data-feather="file-text"></i> กราฟยอดขายเทียบไตรมาส</div>
                     </div>
                     <!-- /Title -->
                     <div class="row mb-2">
