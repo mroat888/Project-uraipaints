@@ -295,13 +295,13 @@
                                 <label for="firstName">วันที่</label>
                                 <input class="form-control" type="date" name="date" id="get_date" min="{{date('Y-m-d')}}"/>
                             </div>
-                        </div>
+                        {{-- </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ไฟล์เอกสาร</label>
                                 <input type="file" name="assignment_fileupload_update" id="assignment_fileupload_update" class="form-control">
                                 <div id="img_show" class="mt-5"></div>
-                            </div>
+                            </div> --}}
                             <div class="col-md-6 form-group">
                                 <label for="firstName">สั่งงานให้</label>
                                 <select class="form-control custom-select select2" name="assign_emp_id_edit" id="get_emp" required>

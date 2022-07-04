@@ -134,7 +134,7 @@
                         <div class="col-md-12"><h5><strong>{{$data->news_title}}</strong></h5></div>
                         <div class="col-md-12 mt-2">
                             <span style="font-size:16px;">
-                              @php 
+                              @php
                                   list($year,$month,$day) = explode("-", $data->news_date);
                                   $news_date = $day."/".$month."/".$year;
                               @endphp

@@ -21,6 +21,7 @@ class AssignmentController extends Controller
         ->orderBy('assignments.id', 'desc')
         ->get();
 
+
         return view('saleman.assignment', compact('assignments'));
     }
 

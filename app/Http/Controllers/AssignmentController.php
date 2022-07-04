@@ -778,6 +778,8 @@ class AssignmentController extends Controller
 
         foreach ($request->assignment_gallery as $key => $gallery) {
 
+            $data = Assignment_gallery::where('assignment_id', $request->assignment_id)->count();
+
             $path = 'upload/AssignmentFile';
             $image = '';
             $img_name = '';
@@ -790,12 +792,22 @@ class AssignmentController extends Controller
 
             }
 
-            Assignment_gallery::insert([
-                'assignment_id' => $request->assignment_id,
-                'image' => $image,
-                'status' => $key,
-                'created_by'   => Auth::user()->id,
-            ]);
+            if ($data == 0) {
+                Assignment_gallery::insert([
+                    'assignment_id' => $request->assignment_id,
+                    'image' => $image,
+                    'status' => $key,
+                    'created_by'   => Auth::user()->id,
+                ]);
+            }else {
+                Assignment_gallery::insert([
+                    'assignment_id' => $request->assignment_id,
+                    'image' => $image,
+                    'status' => $data,
+                    'created_by'   => Auth::user()->id,
+                ]);
+            }
+
 
         }
         // return back();
