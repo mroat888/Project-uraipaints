@@ -617,6 +617,7 @@ Route::get('admin/viewVisitDetail', function () { return view('admin.view_vist_c
 Route::get('admin/viewAssignmentDetail', function () { return view('admin.view_assignment'); });
 
 Route::get('admin/approvalsaleplan', 'Admin\ApprovalSalePlanController@index');
+Route::post('admin/approvalsaleplan/search', 'Admin\ApprovalSalePlanController@search');
 Route::get('admin/approvalsaleplan_detail/{id}', 'Admin\ApprovalSalePlanController@approvalsaleplan_detail');
 Route::get('admin/approvalsaleplan_close/{id}', 'Admin\ApprovalSalePlanController@approvalsaleplan_close');
 Route::post('admin/approvalsaleplan_close', 'Admin\ApprovalSalePlanController@approvalsaleplan_close_update');
@@ -626,7 +627,6 @@ Route::get('admin/comment_customer_new/{id}/{custsaleplanID}/{createID}', 'Admin
 Route::post('admin/create_comment_customer_new', 'Admin\ApprovalSalePlanController@create_comment_customer_new');
 // Route::get('admin/retrospective/{id}', 'Admin\ApprovalSalePlanController@retrospective');
 Route::post('admin/retrospective', 'Admin\ApprovalSalePlanController@retrospective');
-Route::post('admin/approvalsaleplan/search', 'Admin\ApprovalSalePlanController@search');
 
 Route::get('admin/approvalgeneral', 'Admin\ApprovalController@index');
 Route::get('admin/approval_general_detail/{id}', 'Admin\ApprovalController@approval_general_detail');
