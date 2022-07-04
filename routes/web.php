@@ -1056,7 +1056,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/', 'HomeController@index')->name('home');
 
 
-
 // Route::get('/clear-cache', function() {
     Route::get('/clc', function() {
         Artisan::call('cache:clear');
@@ -1068,7 +1067,6 @@ Route::get('/', 'HomeController@index')->name('home');
 
 
 // Route ดึงข้อมูล APi ลงฐานข้อมูล
-
 Route::get('/api_fetch_provinces', 'Api\ApiController@api_fetch_provinces');
 Route::get('/api_fetch_amphures', 'Api\ApiController@api_fetch_amphures');
 Route::get('/api_fetch_customers', 'Api\ApiController@api_fetch_customers');
