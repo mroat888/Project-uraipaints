@@ -70,8 +70,7 @@
                                                 @if ($value->assign_fileupload)
                                                     <img class="card-img"
                                                     src="{{ isset($value->assign_fileupload) ? asset('public/upload/AssignmentFile/' . $value->assign_fileupload) : '' }}"
-                                                    alt="{{ $value->assign_title }}"
-                                                    style="max-width:80%;">
+                                                    alt="{{ $value->assign_title }}" style="max-width:80%;">
                                                 @endif
                                             </td>
                                             <td>{{$value->name}}</td>
