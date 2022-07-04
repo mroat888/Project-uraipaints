@@ -636,7 +636,11 @@ Route::get('admin/approvalgeneral', 'Admin\ApprovalController@index');
 Route::get('admin/approval_general_detail/{id}', 'Admin\ApprovalController@approval_general_detail');
 Route::get('admin/comment_approval/{id}/{createID}', 'Admin\ApprovalController@comment_approval');
 Route::post('admin/create_comment_request_approval', 'Admin\ApprovalController@create_comment_request_approval');
-Route::get('admin/approvalgeneral/history', function () { return view('admin.approval_general_history'); });
+
+// Route::get('admin/approvalgeneral/history', function () { return view('admin.approval_general_history'); });
+Route::get('admin/approvalgeneral/history', 'Admin\ApprovalController@approval_history');
+Route::post('admin/approvalgeneral/history/search', 'Admin\ApprovalController@approval_history_search');
+
 Route::post('admin/approvalgeneral/search', 'Admin\ApprovalController@search');
 Route::get('admin/view_approval/{id}', 'Admin\ApprovalController@view_approval');
 

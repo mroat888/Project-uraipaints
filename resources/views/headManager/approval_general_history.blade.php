@@ -212,6 +212,7 @@
                 $('#div_comment').children().remove().end();
                 $('#div_assign_status').children().remove().end();
                 console.log(data['dataassign']);
+
                 switch(data['dataassign'].assign_status) {
                     case 0 : div_assign_status = '<span class="badge badge-soft-warning" style="font-size: 12px;">Pending</span>';
                         break;
@@ -219,16 +220,17 @@
                         break;
                     case 2 : div_assign_status = '<span class="badge badge-soft-secondary" style="font-size: 12px;">Reject</span>';
                         break;
-                    default: $div_assign_status = '<span class="badge badge-soft-warning" style="font-size: 12px;">ไม่มี</span>'
+                    default: $div_assign_status = '<span class="badge badge-soft-warning" style="font-size: 12px;">ไม่มี</span>';
                 }
-
 
                 $('#assign_detail_comment').text(data['dataassign'].assign_detail);
                 $('#header_title_comment').text('เรื่อง : '+data['dataassign'].assign_title);
                 $('#header_approved_for_comment').text(data['dataassign'].masassign_title);
-                $('#header_approved_for_comment').text(data['dataassign'].masassign_title);
+                $('#assign_request_name').text(data['dataassign'].assignments_request_name);
+                $('#get_assign_request_name').text(data['dataassign'].assignments_request_name);
 
                 $('#div_assign_status').append('<span>การอนุมัติ : </span>'+div_assign_status);
+                // $('#div_assign_approve').append('<span>ผู้อนุมัติ : </span>');
 
                 $.each(data['comment'], function(key, value){
                         let get_created_at = value.created_at.split(" ");

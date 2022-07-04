@@ -17,6 +17,10 @@
                             <div class="my-3"><span>ขออนุมัติสำหรับ : </span>
                                 <span id="approved_for_parent"></span>
                             </div>
+
+                            <div class="my-3"><span>ชื่อผู้ขอ : </span>
+                                <span id="assign_request_name"></span>
+                            </div>
                             
                             <div class="my-3"><span>วันที่ขออนุมัติ : </span>
                                 <span id="assign_request_date"></span>
@@ -42,6 +46,10 @@
                             <span id="header_approved_for_comment"></span>
                         </div>
 
+                        <div class="my-3"><span>ชื่อผู้ขอ : </span>
+                                <span id="get_assign_request_name"></span>
+                            </div>
+
                         <div class="my-3"><span>วันที่ขออนุมัติ : </span>
                             <span id="get_assign_request_date"></span>
                         </div>
@@ -59,6 +67,9 @@
                 </div>
                 <div class="my-10" id="div_assign_status">
 
+                </div>
+                <div class="my-0" id="div_assign_approve">
+   
                 </div>
 
                 <div class="form-group">

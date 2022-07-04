@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\DB;
 
 class UnionAssignmentController extends Controller
 {
-    public function commentshow ($id){
+    public function commentshow ($id)
+    {
         // $request_comment = AssignmentComment::where('assign_id', $id)->get();
         // $dataResult = Assignment::leftjoin('master_objective_assigns', 'master_objective_assigns.id', 'assignments.approved_for')
         // ->where('assignments.id', $id)
@@ -17,9 +18,26 @@ class UnionAssignmentController extends Controller
 
         $request_comment = DB::table('assignments_comments')->where('assign_id', $id)->get();
         $dataResult = DB::table('assignments')
+            ->select(
+                'master_objective_assigns.*',
+                'assignments.*',
+                'assignments.created_by as assignments_created_by'
+            )
             ->leftJoin('master_objective_assigns', 'master_objective_assigns.id', 'assignments.approved_for')
             ->where('assignments.id', $id)
             ->first();
+
+        $users = DB::table('users')->where('id', $dataResult->assignments_created_by)->first();
+        $assignments_request_name = $users->name;
+
+        $users_approve = DB::table('users')->where('id', $dataResult->assign_approve_id)->first();
+        $assignments_approve_name = $users_approve->name;
+
+        if(!is_null($dataResult->assign_approve_date)){
+            $assign_approve_date = $dataResult->assign_approve_date;
+        }else{
+            $assign_approve_date = "-";
+        }
 
         $dataassign = array();
         $dataassign = [
@@ -29,6 +47,9 @@ class UnionAssignmentController extends Controller
             'masassign_title' => $dataResult->masassign_title,
             'assign_status' => $dataResult->assign_status,
             'assign_request_date' => $dataResult->assign_request_date,
+            'assignments_request_name' => $assignments_request_name,
+            'assignments_approve_name' => $assignments_approve_name,
+            'assignments_approve_date' => $assign_approve_date,
         ];
 
         $comment = array();

@@ -413,7 +413,6 @@ License: You must have a valid license purchased only from themeforest to legall
                             <ul id="charts_drp2" class="nav flex-column collapse collapse-level-1">
                                 <li class="nav-item">
                                     <ul class="nav flex-column">
-
                                         <li class="nav-item {{ (request()->is('head/approvalgeneral')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('head/approvalgeneral') }}">
                                                 <i class="ion ion-md-checkbox"></i>
