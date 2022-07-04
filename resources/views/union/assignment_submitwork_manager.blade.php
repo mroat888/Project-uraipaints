@@ -44,13 +44,12 @@
                                             <td>{{$key + 1}}</td>
                                             <td style="text-align:left">{{$value->assign_title}}</td>
                                             <td>
-                                                @if ($value->assign_fileupload)
-                                                    <img class="card-img"
-                                                    src="{{ isset($value->assign_fileupload) ? asset('public/upload/AssignmentFile/' . $value->assign_fileupload) : '' }}"
-                                                    alt="{{ $value->assign_title }}"
-                                                    style="max-width:80%;">
-                                                <!-- <span class="badge badge-soft-secondary" style="font-size: 12px;">ไม่มี</span> -->
-                                                @endif
+                                                @php
+                                                $assign_file = App\Assignment_gallery::where('assignment_id', $value->id)->where('status', 0)->first();
+                                            @endphp
+                                            <a href="{{url('lead/get_assignment_view_image', $value->id)}}">
+                                                <img src="{{ isset($assign_file->image) ? asset('public/upload/AssignmentFile/' . $assign_file->image) : '' }}" width="50">
+                                            </a>
                                             </td>
                                             <td>{{Carbon\Carbon::parse($value->assign_work_date)->addYear(543)->format('d/m/Y')}}</td>
                                             <td>

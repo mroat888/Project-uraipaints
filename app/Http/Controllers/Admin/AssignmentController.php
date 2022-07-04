@@ -229,10 +229,12 @@ class AssignmentController extends Controller
         $users_team = DB::table('users')->where('id',$dataEdit->assign_approve_id)->first();
 
         $dataUser = DB::table('users')->whereNotIn('id', [Auth::user()->id])->get();
+        $assign_gallery = Assignment_gallery::where('assignment_id', $id)->where('status', 0)->first();
 
         $data = array(
             'dataEdit'  => $dataEdit,
             'dataUser'  => $dataUser,
+            'assign_gallery'  => $assign_gallery,
         );
         echo json_encode($data);
     }
@@ -495,4 +497,12 @@ class AssignmentController extends Controller
             'status' => 200,
         ]);
     }
+
+    public function assignment_view_image($id)
+    {
+        $gallerys = Assignment_gallery::where('assignment_id', $id)->get();
+
+            return view('admin.assignment_image_detail', compact('gallerys'));
+    }
+
 }

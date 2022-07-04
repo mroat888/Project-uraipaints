@@ -115,9 +115,9 @@ function assignment_result(id) {
                 let date_work = assign_work_date2[2]+"/"+assign_work_date2[1]+"/"+work_year_th;
                 $('#get_assign_work_date').text(date_work);
 
-            let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataResult.assign_fileupload;
-            if(data.dataResult.assign_fileupload != ""){
-                ext = data.dataResult.assign_fileupload.split('.').pop().toLowerCase();
+            let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataGallery.image;
+            if(data.dataGallery.image != ""){
+                ext = data.dataGallery.image.split('.').pop().toLowerCase();
                 console.log(img_name);
                 if(ext == "pdf"){
                     $('#img_show_text').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');

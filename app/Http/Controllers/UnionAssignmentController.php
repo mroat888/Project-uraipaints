@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Assignment_gallery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -54,10 +55,12 @@ class UnionAssignmentController extends Controller
         $emp_approve = DB::table('users')
         ->where('id', $dataResult->assign_approve_id)
         ->first();
+        $dataGallery = Assignment_gallery::where('assignment_id', $id)->where('status', 0)->first();
 
         return response()->json([
             'dataResult' => $dataResult,
-            'emp_approve' => $emp_approve
+            'emp_approve' => $emp_approve,
+            'dataGallery' => $dataGallery
         ]);
     }
 
