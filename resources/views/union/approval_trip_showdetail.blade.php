@@ -256,7 +256,7 @@
     @endforeach
 
     @if($check_menager_comment == "N")
-        @if(Auth::user()->status != 1)     
+        @if((Auth::user()->status != 1) && ($trip_header->trip_status == 1 || $trip_header->trip_status == 2))     
         <!-- Row Create Comment -->
         <div class="row">
             <div class="col-xl-12">
