@@ -358,9 +358,16 @@
                                 <i class="ion ion-md-create" style="color: #044067;"></i>
                                 <span class="nav-link-text">สั่งงาน</span>
                             </a>
+                            
                             <ul id="charts_drp2" class="nav flex-column collapse collapse-level-1">
                                 <li class="nav-item">
                                     <ul class="nav flex-column">
+                                        <li class="nav-item {{ (request()->is('admin/approvalgeneral/history')) ? 'btn2' : '' }}">
+                                            <a class="nav-link" href="{{ url('admin/approvalgeneral/history') }}">
+                                                <i class="ion ion-md-checkbox"></i>
+                                                <span class="nav-link-text">ประวัติอนุมัติคำขออนุมัติ</span>
+                                            </a>
+                                        </li>
                                         <li class="nav-item {{ (request()->is('admin/assignment-add')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('admin/assignment-add') }}">
                                                 <i class="ion ion-md-folder-open" style="color: #044067;"></i>
