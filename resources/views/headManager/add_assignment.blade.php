@@ -98,7 +98,9 @@
                                                 @php
                                                     $assign_file = App\Assignment_gallery::where('assignment_id', $value->id)->where('status', 0)->first();
                                                 @endphp
-                                                <img src="{{ isset($assign_file->image) ? asset('public/upload/AssignmentFile/' . $assign_file->image) : '' }}" width="50">
+                                                <a href="{{url('head/assignment_view_image', $value->id)}}">
+                                                    <img src="{{ isset($assign_file->image) ? asset('public/upload/AssignmentFile/' . $assign_file->image) : '' }}" width="50">
+                                                </a>
                                             </td>
                                             <td>{{$value->name}}</td>
                                             <td>{{Carbon\Carbon::parse($value->assign_work_date)->addYear(543)->format('d/m/Y')}}</td>
@@ -259,13 +261,13 @@
                                     type="text" required> </textarea>
                             </div>
                         </div>
-                        <div id="img_show" class="mt-5"></div>
+                        {{-- <div id="img_show" class="mt-5"></div>
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ไฟล์เอกสาร</label>
                                 <input type="file" name="assignment_fileupload_update" id="assignment_fileupload_update" class="form-control">
                             </div>
-                        </div>
+                        </div> --}}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
@@ -455,10 +457,10 @@
                     $('#get_title_text_send').text(data.dataEdit.assign_title);
                     $('#get_detail_text_send').text(data.dataEdit.assign_result_detail);
 
-                    if(data.dataEdit.assign_fileupload){
-                        let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataEdit.assign_fileupload;
-                        if(data.dataEdit.assign_fileupload != ""){
-                            ext = data.dataEdit.assign_fileupload.split('.').pop().toLowerCase();
+                    if(data.assign_gallery.image){
+                        let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.assign_gallery.image
+                        if(data.assign_gallery.image != ""){
+                            ext = data.assign_gallery.image.split('.').pop().toLowerCase();
                             console.log(img_name);
                             if(ext == "pdf"){
                                 $('#img_show_text').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');

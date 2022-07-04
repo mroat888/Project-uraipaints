@@ -67,10 +67,14 @@
                                             <td>{{$key + 1}}</td>
                                             <td style="text-align:left">{{$value->assign_title}}</td>
                                             <td>
-                                                @if ($value->assign_fileupload)
-                                                    <img class="card-img"
-                                                    src="{{ isset($value->assign_fileupload) ? asset('public/upload/AssignmentFile/' . $value->assign_fileupload) : '' }}"
+                                                @php
+                                                    $assign_file = App\Assignment_gallery::where('assignment_id', $value->id)->where('status', 0)->first();
+                                                @endphp
+                                                @if ($assign_file)
+                                                <a href="{{url('assignment_view_image', $value->id)}}">
+                                                    <img class="card-img" src="{{ isset($assign_file->image) ? asset('public/upload/AssignmentFile/' . $assign_file->image) : '' }}"
                                                     alt="{{ $value->assign_title }}" style="max-width:80%;">
+                                                </a>
                                                 @endif
                                             </td>
                                             <td>{{$value->name}}</td>

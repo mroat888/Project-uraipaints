@@ -37,6 +37,7 @@ Route::get('assignment', 'SaleMan\AssignmentController@index');
 // Route::get('assignment_result_get/{id}', 'SaleMan\AssignmentController@assignment_result_get'); //-- ย้ายไป utility
 // Route::post('assignment_Result', 'SaleMan\AssignmentController@saleplan_result'); //-- ย้ายไป utility
 Route::post('search_month_assignment', 'SaleMan\AssignmentController@search_month_assignment');
+Route::get('assignment_view_image/{id}', 'AssignmentController@assignment_view_image');
 
 // Visit Customer
 Route::get('visit', 'Customer\CustomerVisitController@visit');
@@ -324,6 +325,8 @@ Route::post('lead/create_assignment_gallery', 'AssignmentController@file_store')
 Route::get('lead/edit_assignment_file/{id}', 'AssignmentController@file_edit');
 Route::post('lead/update_assignment_file', 'AssignmentController@file_update');
 Route::post('lead/delete_assignment_file', 'AssignmentController@file_destroy');
+Route::get('lead/assignment_view_image/{id}', 'AssignmentController@assignment_view_image');
+Route::get('lead/get_assignment_view_image/{id}', 'AssignmentController@get_assignment_view_image');
 
 // NOTE Lead Manage
 Route::get('/leadManage/note', 'NoteController@note_lead');
@@ -486,6 +489,7 @@ Route::post('head/create_assignment_gallery', 'AssignmentController@file_store')
 Route::get('head/edit_assignment_file/{id}', 'AssignmentController@file_edit');
 Route::post('head/update_assignment_file', 'AssignmentController@file_update');
 Route::post('head/delete_assignment_file', 'AssignmentController@file_destroy');
+Route::get('head/assignment_view_image/{id}', 'AssignmentController@assignment_view_image');
 
 
 // อนุมัติลูกค้าใหม่นอกแผน
@@ -655,6 +659,7 @@ Route::post('admin/create_assignment_gallery', 'Admin\AssignmentController@file_
 Route::get('admin/edit_assignment_file/{id}', 'Admin\AssignmentController@file_edit');
 Route::post('admin/update_assignment_file', 'Admin\AssignmentController@file_update');
 Route::post('admin/delete_assignment_file', 'Admin\AssignmentController@file_destroy');
+Route::get('admin/assignment_view_image/{id}', 'Admin\AssignmentController@assignment_view_image');
 
 // Customer Change Status
 Route::get('admin/change_customer_status', 'Admin\ChangeCustomerController@index');

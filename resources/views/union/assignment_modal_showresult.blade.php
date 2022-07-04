@@ -86,9 +86,10 @@ function assignment_show_result(id) {
 
             $('#get_assign_work_date_history').text(date_work_history);
 
-            let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataResult.assign_fileupload;
-            if(data.dataResult.assign_fileupload != ""){
-                ext = data.dataResult.assign_fileupload.split('.').pop().toLowerCase();
+            let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataGallery.image;
+            if(data.dataGallery.image != ""){
+                ext = data.dataGallery.image.split('.').pop().toLowerCase();
+                console.log(img_name);
                 if(ext == "pdf"){
                     $('#img_show_text_history').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');
                 }else{

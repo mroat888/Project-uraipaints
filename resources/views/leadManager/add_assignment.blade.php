@@ -137,7 +137,9 @@
                                                 @php
                                                     $assign_file = App\Assignment_gallery::where('assignment_id', $value->id)->where('status', 0)->first();
                                                 @endphp
-                                                <img src="{{ isset($assign_file->image) ? asset('public/upload/AssignmentFile/' . $assign_file->image) : '' }}" width="50">
+                                                <a href="{{url('lead/assignment_view_image', $value->id)}}">
+                                                    <img src="{{ isset($assign_file->image) ? asset('public/upload/AssignmentFile/' . $assign_file->image) : '' }}" width="50">
+                                                </a>
                                             </td>
                                             <td>{{$value->name}}</td>
                                             <td>{{Carbon\Carbon::parse($value->assign_work_date)->addYear(543)->format('d/m/Y')}}</td>
@@ -513,9 +515,9 @@
                         }
                     });
 
-                    let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataEdit.assign_fileupload;
-                    if(data.dataEdit.assign_fileupload != ""){
-                        ext = data.dataEdit.assign_fileupload.split('.').pop().toLowerCase();
+                    let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.assign_gallery.image
+                    if(data.assign_gallery.image != ""){
+                        ext = data.assign_gallery.image.split('.').pop().toLowerCase();
                         console.log(img_name);
                         if(ext == "pdf"){
                             $('#img_show_text').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');

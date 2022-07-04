@@ -455,10 +455,13 @@ class AssignmentController extends Controller
             })
             ->get();
 
+            $assign_gallery = Assignment_gallery::where('assignment_id', $id)->where('status', 0)->first();
+
 
         $data = array(
             'dataEdit'  => $dataEdit,
             'dataUser'  => $dataUser,
+            'assign_gallery' => $assign_gallery
         );
         // dd($data);
 
@@ -892,6 +895,41 @@ class AssignmentController extends Controller
         return response()->json([
             'status' => 200,
         ]);
+    }
+
+    public function assignment_view_image($id)
+    {
+        $data = Assignment_gallery::where('assignment_id', $id)->where('status', 1)->first();
+        $gallerys = Assignment_gallery::where('assignment_id', $id)->get();
+
+        if (Auth::user()->status == 1) {
+            return view('saleman.assignment_image_detail', compact('data', 'gallerys'));
+
+        }elseif (Auth::user()->status == 2) {
+            return view('leadManager.assignment_image_detail', compact('data', 'gallerys'));
+
+        }elseif (Auth::user()->status == 3) {
+            return view('headManager.assignment_image_detail', compact('data', 'gallerys'));
+
+        }elseif (Auth::user()->status == 4) {
+            return view('admin.assignment_image_detail', compact('data', 'gallerys'));
+        }
+    }
+
+    public function get_assignment_view_image($id)
+    {
+        $data = Assignment_gallery::where('assignment_id', $id)->where('status', 1)->first();
+        $gallerys = Assignment_gallery::where('assignment_id', $id)->get();
+
+        if (Auth::user()->status == 2) {
+            return view('leadManager.get_assignment_image_detail', compact('data', 'gallerys'));
+
+        }elseif (Auth::user()->status == 3) {
+            return view('headManager.get_assignment_image_detail', compact('data', 'gallerys'));
+
+        }elseif (Auth::user()->status == 4) {
+            return view('admin.get_assignment_image_detail', compact('data', 'gallerys'));
+        }
     }
 
 }
