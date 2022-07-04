@@ -49,20 +49,44 @@
             border-left: 0px;
             border-right: 0px;
             border-bottom: 0px;
-            padding-bottom:25px;
+            /* padding-bottom:25px; */
         }
 
         th {
             /* height: 40px; */
+            border: 1px solid;
         }
 
         td {
             /* padding: 5px; */
+            border: 1px solid;
             vertical-align: middle;
+            padding-left: 20px;
         }
 
         .topic {
             padding-bottom: 15px;
+        }
+
+        label input {
+            display: none; /* Hide the default checkbox */
+            }
+
+            /* Style the artificial checkbox */
+            label span {
+            height: 10px;
+            width: 10px;
+            border: 1px solid grey;
+            display: inline-block;
+            position: relative;
+            }
+
+            /* Style its checked state...with a ticked icon */
+            [type=checkbox]:checked + span:before {
+            content: '\2714';
+            position: absolute;
+            top: -5px;
+            left: 0;
         }
 
     </style>
@@ -71,26 +95,28 @@
 <body>
 
 
-    <img class="brand-img d-inline-block" src="{{ asset('public/images/logo.png') }}" alt="Uraipaint" style="max-height:30px;" />
+
     <table>
         <tr>
             <td class="topic" style="text-align:center;" colspan="6">
+                <div style="text-align:left; position: absolute; margin-top: 20px;">
+                    <img class="brand-img d-inline-block" src="{{ asset('public/images/logo.png') }}" alt="Uraipaint" style="max-height:30px;" />
+                </div>
                 <span style="font-size:25px;"><strong>บริษัท ยู.อาร์ เคมิคอล จำกัด</strong></span>
             </td>
         </tr>
 
         <tr>
             <td style="text-align:center;" colspan="6">
-                <span>สรุปใบเบิกค่าเบี้ยเลี้ยง</span>
+                <span>ใบสรุปเบิกค่าเบี้ยเลี้ยง</span>
             </td>
         </tr>
 
         <tr>
-             <td>ชื่อผู้เบิก : {{ $trip_header->name }}</td>
-            <td></td>
-            <td>รหัสพนักงาน : {{ $trip_header->api_identify }}</td>
-            <td>ตำแหน่ง : 
-                @php 
+             <td colspan="2">ชื่อผู้เบิก : {{ $trip_header->name }}</td>
+            <td>รหัสพนักงาน : {{ $trip_header->api_employee_id }}</td>
+            <td>ตำแหน่ง :
+                @php
                     $master_permission = DB::table('master_permission')->where('id', $trip_header->status)->first();
                     if(!is_null($master_permission)){
                         $user_status = $master_permission->permission_name;
@@ -115,7 +141,6 @@
             </td>
         </tr>
         <tr>
-            {{-- <td>ค่าเบี้ยเลื้ยง</td> --}}
             <td colspan="2">ค่าเบี้ยเลื้ยง &nbsp;&nbsp;&nbsp; จากวันที่ :
                 @php
                     list($year_start, $month_start, $day_start) = explode('-', $trip_header->trip_start);
@@ -142,12 +167,14 @@
     <table>
         <thead>
             <tr>
-                <th style="width:8%;">#</th>
-                <th style="width:15%;">วันที่</th>
-                <th style="width:15%;">จากจังหวัด</th>
-                <th style="width:15%;">ถึงจังหวัด</th>
-                <th style="width:32%;">ร้านค้า</th>
-                <th style="width:15%;">หมายเหตุ</th>
+                <th rowspan="2">วันที่</th>
+                <th colspan="2">เส้นการเดินทาง</th>
+                <th rowspan="2" style="width:32%;">ชื่อร้านค้า</th>
+                <th rowspan="2" style="width:15%;">หมายเหตุ</th>
+            </tr>
+            <tr>
+                <th>จาก</th>
+                <th>ถึง</th>
             </tr>
         </thead>
         <tbody>
@@ -158,8 +185,7 @@
                     $year_date_thai = $year_date+543;
                     $trip_detail_date = $day_date."/".$month_date."/".$year_date_thai;
                 @endphp
-            <tr style="text-align:center;">
-                <td style="vertical-align: top;">{{ ++$key }}</td>
+            <tr>
                 <td style="vertical-align: top;">{{ $trip_detail_date }}</td>
                 <td style="vertical-align: top;">{{ $value['trip_from'] }}</td>
                 <td style="vertical-align: top;">{{ $value['trip_to'] }}</td>
@@ -172,21 +198,55 @@
 
         <tfoot>
             <tr>
-                <td colspan="6">
+                <td colspan="5">
                     <span>หมายเหตุ : แบบฟอร์มนี้ใช้สำหรับเบิกค่าเบี้ยเลี้ยง</span>
                 </td>
             </tr>
-            
+
         </tfoot>
     </table>
     <table>
         <tr>
-            <td><span>ผู้ขอเบิก</span></td>
-            <td><span>ผู้อนุมัติ</span></td>
+            <td>
+                <strong>ผู้ขอเบิก</strong><br>
+                <div style="position: absolute; margin-top: -2px; margin-left: 40px;">
+                    <img src="{{ isset($trip_header->signature) ? asset('public/upload/UserSignature/' . $trip_header->signature) : '' }}" alt="" width="20%">
+                </div>
+                {{-- <br> --}}
+                <span>ลงชื่อ .......................................................... วันที่ ...............................</span></td>
+            <td>
+                <strong>ผู้อนุมัติ</strong><br>
+                <span>ลงชื่อ .......................................................... วันที่ ...............................</span>
+            </td>
         </tr>
         <tr>
-            <td><span>ลงชื่อ .......................................................... วันที่ ...............................</span></td>
-            <td><span>ลงชื่อ .......................................................... วันที่ ...............................</span></td>
+            <td colspan="2">
+                <strong>สำหรับฝ่ายบัญชี/การเงิน</strong><br>
+                <label>&nbsp;&nbsp;&nbsp;จ่ายโดย &nbsp;&nbsp;&nbsp;
+                    <input type='checkbox'>
+                    <span></span>
+                    เงินสด/cash
+                  </label>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <label>
+                    <input type='checkbox'>
+                    <span></span>
+                    โอนเงิน/Wire Transfer
+                  </label>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <label>
+                    <input type='checkbox'>
+                    <span></span>
+                    เช็ค/Check
+                  </label>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <label>ธนาคาร..................................... สาขา.........................................</label>
+                  <br>
+                  <label style="padding-left: 405px;">เลขที่..................................... ลงวันที่.........................................</label>
+
+                <br>
+                <span>&nbsp;&nbsp;&nbsp;ผู้รับเงิน.................................................................................................................... ลงวันที่......................................................................................................</span>
+            </td>
         </tr>
     </table>
 

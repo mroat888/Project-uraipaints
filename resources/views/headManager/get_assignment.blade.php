@@ -37,7 +37,7 @@
                             </div>
                         </div>
                     @php
-                        $action_search = "lead/search_month_get-assignment";
+                        $action_search = "head/search_month_get-assignment";
                     @endphp
 
                     @include('union.assignment_submitwork_manager')
