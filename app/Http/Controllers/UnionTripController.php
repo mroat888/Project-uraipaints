@@ -17,17 +17,8 @@ class UnionTripController extends Controller
 
     public function index()
     {   
-        $month_now = date('m');
-        $year_now = date('Y');
-
-        $data['trips_now'] = DB::table('trip_header')
-            ->where('created_by', Auth::user()->id)
-            ->whereMonth('created_at', $month_now)
-            ->whereYear('created_at', $year_now)
-            ->orderBy('id', 'desc')
-            ->first();
-
-        $data['trips'] = DB::table('trip_header')->where('created_by', Auth::user()->id)->orderBy('id', 'desc')->get();
+        $request = "";
+        $data = $this->fetch_trip($request);
 
         switch  (Auth::user()->status){
             case 1 :    return view('saleman.trip', $data); 
@@ -39,6 +30,44 @@ class UnionTripController extends Controller
             case 4 :   
                 break;
         }
+    }
+
+    public function search(Request $request)
+    {
+        $data = $this->fetch_trip($request);
+        switch  (Auth::user()->status){
+            case 1 :    return view('saleman.trip', $data); 
+                break;
+            case 2 :    return view('leadManager.trip', $data); 
+                break;
+            case 3 :    return view('headManager.trip', $data); 
+                break;
+            case 4 :   
+                break;
+        }
+    }
+
+    public function fetch_trip($request)
+    {
+        if($request != ""){
+            $year = $request->selectyear;
+            $data['date_filter'] = $request->selectyear;
+        }else{
+            $year = date('Y');
+        }
+        
+        $data['trips_last'] = DB::table('trip_header')
+            ->where('created_by', Auth::user()->id)
+            ->orderBy('trip_date', 'desc')
+            ->first();
+
+        $data['trips'] = DB::table('trip_header')
+            ->where('created_by', Auth::user()->id)
+            ->whereYear('trip_date',$year)
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return $data;
     }
 
     public function create()
@@ -56,6 +85,7 @@ class UnionTripController extends Controller
             return response()->json([
                 'status' => 200,
                 'api_identify' => Auth::user()->api_identify,
+                'api_employee_id' => Auth::user()->api_employee_id,
                 'namesale' => Auth::user()->name,
             ]);
             
@@ -64,6 +94,7 @@ class UnionTripController extends Controller
                 'status' => 404,
                 'trip_header' => $trips,
                 'api_identify' => Auth::user()->api_identify,
+                'api_employee_id' => Auth::user()->api_employee_id,
                 'namesale' => Auth::user()->name,
             ]);
         }
@@ -77,13 +108,17 @@ class UnionTripController extends Controller
             'message' => 'ดึงข้อมูลสำเร็จ',
             'trip_header' => $trip_header,
             'api_identify' => Auth::user()->api_identify,
+            'api_employee_id' => Auth::user()->api_employee_id,
             'namesale' => Auth::user()->name,
         ]);
     }
 
     public function store(Request $request)
     {
+        $trip_date = $request->trip_date."-01";
+
         $insert = DB::table('trip_header')->insert([
+            'trip_date' => $trip_date,
             'trip_start' => $request->trip_start,
             'trip_end' => $request->trip_end,
             'trip_day' => $request->trip_day,
@@ -107,8 +142,11 @@ class UnionTripController extends Controller
 
     public function update(Request $request)
     {
+        $trip_date = $request->trip_date_edit."-01";
+
         DB::table('trip_header')->where('id', $request->trip_header_id)
         ->update([
+            'trip_date' => $trip_date,
             'trip_start' => $request->trip_start_edit,
             'trip_end' => $request->trip_end_edit,
             'trip_day' => $request->trip_day_edit,

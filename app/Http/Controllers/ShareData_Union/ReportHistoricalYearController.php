@@ -15,8 +15,8 @@ class ReportHistoricalYearController extends Controller
         $this->api_token = new ApiController();
     }
 
-    public function index(){
-
+    public function index()
+    {
         list($year,$month,$day) = explode('-',date('Y-m-d'));
         $year = $year+0;
         $year_old1 = $year-1; 
@@ -189,8 +189,8 @@ class ReportHistoricalYearController extends Controller
 
     }
 
-    public function search(Request $request){
-
+    public function search(Request $request)
+    {
         $year = $request->sel_year_form;
         $year_old1 = $request->sel_year_to; 
         $year_search = $year.",".$year_old1;

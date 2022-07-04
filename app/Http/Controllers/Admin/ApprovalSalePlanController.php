@@ -27,13 +27,68 @@ class ApprovalSalePlanController extends Controller
     {
         $year = date("Y");
         $month = date("m");
-        $data['monthly_plan'] = MonthlyPlan::join('users', 'monthly_plans.created_by', '=', 'users.id')
+        $monthly_plan = array();
+
+        $monthly_plans = MonthlyPlan::join('users', 'monthly_plans.created_by', '=', 'users.id')
             ->whereIn('monthly_plans.status_approve', [2,4]) //-- สถานะ อนุมัติ, ปิดแผน
             ->whereYear('monthly_plans.month_date', $year)
             ->whereMonth('monthly_plans.month_date', $month)
             ->select('users.name', 'monthly_plans.*')
             ->orderBy('monthly_plans.id', 'desc')
             ->get();
+        
+        foreach($monthly_plans as $key => $value){
+
+            $sale_plans = DB::table('sale_plans')
+                ->where('monthly_plan_id',$value->id)
+                ->get();
+            $sale_plan_amount = $sale_plans->count();
+
+            $customer_shops_saleplan = DB::table('customer_shops_saleplan')
+                ->where('monthly_plan_id', $value->id)
+                ->where('shop_aprove_status', 2)
+                ->get();
+            $cust_new_amount = $customer_shops_saleplan->count();
+
+            $total_plan = $sale_plan_amount + $cust_new_amount;
+
+            $bills = 0;
+            $sales = 0;
+            $total_pglistpresent = 0; // เก็บจำนวนสินค้าค้านำเสนอ
+            foreach($sale_plans as $pglist_value){
+                $listpresent = explode(',',$pglist_value->sale_plans_tags);
+                foreach($listpresent as $value_list ){
+                    $total_pglistpresent += 1;
+                }
+            }
+
+            $not_bills = $total_pglistpresent - $bills;
+
+            $customer_update_count = DB::table('customer_shops') // ลูกค้าใหม่
+                ->join('customer_shops_saleplan', 'customer_shops_saleplan.customer_shop_id', 'customer_shops.id')
+                ->where('customer_shops_saleplan.monthly_plan_id', $value->id)
+                ->whereYear('customer_shops.shop_status_at', $year)
+                ->whereMonth('customer_shops.shop_status_at', $month)
+                ->count();
+
+            $monthly_plan[] = [
+                'id' => $value->id,
+                'month_date' => $value->month_date,
+                'sale_plan_amount' => $sale_plan_amount,
+                'cust_new_amount' => $cust_new_amount,
+                'status_approve' => $value->status_approve,
+                'name' => $value->name,
+                'total_plan' => $total_plan,
+                'bills' => $bills,
+                'sales' => $sales,
+                'not_bills' => $not_bills,
+                'customer_update_count' => $customer_update_count,
+            ];
+        }
+
+        if(!empty($monthly_plan)){
+            $data['monthly_plan'] = collect($monthly_plan);
+        }
 
         $data['teams'] = DB::table('master_team_sales')->get();
 
@@ -47,7 +102,7 @@ class ApprovalSalePlanController extends Controller
 
     public function search(Request $request){
 
-        $monthly_plan = DB::table('monthly_plans')
+        $monthly_plans = DB::table('monthly_plans')
             ->join('users', 'monthly_plans.created_by', '=', 'users.id')
             ->whereIn('monthly_plans.status_approve', [2,4]); //-- สถานะ อนุมัติ, ปิดแผน
 
@@ -55,7 +110,7 @@ class ApprovalSalePlanController extends Controller
         if(!is_null($request->selectdateTo)){
             list($year,$month) = explode('-', $request->selectdateTo);
 
-            $monthly_plan = $monthly_plan
+            $monthly_plans = $monthly_plans
                 ->whereYear('monthly_plans.month_date', $year)
                 ->whereMonth('monthly_plans.month_date', $month);
 
@@ -65,17 +120,83 @@ class ApprovalSalePlanController extends Controller
 
 
         if($request->sel_team != 0){
-            $monthly_plan = $monthly_plan
+            $monthly_plans = $monthly_plans
                 ->where('users.team_id', $request->sel_team);
             $data['search_team'] = $request->sel_team;
         }
 
-        $monthly_plan = $monthly_plan
+        $monthly_plans = $monthly_plans
             ->select('users.name', 'monthly_plans.*')
             ->orderBy('monthly_plans.id', 'desc')
             ->get();
 
-        $data['monthly_plan'] = $monthly_plan;
+        
+        //--
+
+        foreach($monthly_plans as $key => $value){
+
+            $sale_plans = DB::table('sale_plans')
+                ->where('monthly_plan_id',$value->id)
+                ->get();
+            $sale_plan_amount = $sale_plans->count();
+
+            $customer_shops_saleplan = DB::table('customer_shops_saleplan')
+                ->where('monthly_plan_id', $value->id)
+                ->where('shop_aprove_status', 2)
+                ->get();
+            $cust_new_amount = $customer_shops_saleplan->count();
+
+            $total_plan = $sale_plan_amount + $cust_new_amount;
+
+            if($value->status_approve == 4){ // สถานะปิดแผน
+                $monthly_plan_result = DB::table('monthly_plan_result')
+                    ->where('monthly_plan_id', $value->id)
+                    ->first();
+                $sale_plan_amount = $monthly_plan_result->sale_plan;
+                $bills = $monthly_plan_result->bill_amount;
+                $sales = $monthly_plan_result->total_sales;
+            }else{
+                $bills = 0;
+                $sales = 0;
+            }
+            
+            $total_pglistpresent = 0; // เก็บจำนวนสินค้าค้านำเสนอ
+            foreach($sale_plans as $pglist_value){
+                $listpresent = explode(',',$pglist_value->sale_plans_tags);
+                foreach($listpresent as $value_list ){
+                    $total_pglistpresent += 1;
+                }
+            }
+
+            $not_bills = $total_pglistpresent - $bills;
+
+            $customer_update_count = DB::table('customer_shops') // ลูกค้าใหม่
+                ->join('customer_shops_saleplan', 'customer_shops_saleplan.customer_shop_id', 'customer_shops.id')
+                ->where('customer_shops_saleplan.monthly_plan_id', $value->id)
+                ->whereYear('customer_shops.shop_status_at', $year)
+                ->whereMonth('customer_shops.shop_status_at', $month)
+                ->count();
+
+            $monthly_plan[] = [
+                'id' => $value->id,
+                'month_date' => $value->month_date,
+                'sale_plan_amount' => $sale_plan_amount,
+                'cust_new_amount' => $cust_new_amount,
+                'status_approve' => $value->status_approve,
+                'name' => $value->name,
+                'total_plan' => $total_plan,
+                'bills' => $bills,
+                'sales' => $sales,
+                'not_bills' => $not_bills,
+                'customer_update_count' => $customer_update_count,
+            ];
+        }
+
+        //--
+
+        if(!empty($monthly_plan)){
+            $data['monthly_plan'] = collect($monthly_plan);
+        }
 
         $data['teams'] = DB::table('master_team_sales')->get();
 

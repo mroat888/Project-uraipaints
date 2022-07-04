@@ -24,7 +24,7 @@
     @endif
         <!-- Title -->
         <div class="hk-pg-header mb-10">
-        <div class="topichead-bgred"><i class="ion ion-md-analytics"></i> อนุมัติทริปเดินทาง</div>
+        <div class="topichead-bgred"><i class="ion ion-md-analytics"></i> {{ $text_header }}</div>
         <div class="content-right d-flex"></div>
     </div>
     <!-- /Title -->
@@ -37,10 +37,10 @@
                         <div class="col-sm">
                             <ul class="nav nav-pills nav-fill bg-light pa-10 mb-40" role="tablist">
                                 <li class="nav-item">
-                                    <a href="{{ url($url_approve_trip) }}" class="nav-link" style="background: rgb(5, 90, 97); color:rgb(255, 255, 255);">รายการรออนุมัติ</a>
+                                    <a href="{{ url($url_approve_trip) }}" class="nav-link" style="background: rgb(5, 90, 97); color:rgb(255, 255, 255);">{{ $text_sub_header }}</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url($url_approve_trip_history) }}" class="nav-link" style="color: rgb(22, 21, 21);">ประวัติการอนุมัติ</a>
+                                    <a href="{{ url($url_approve_trip_history) }}" class="nav-link" style="color: rgb(22, 21, 21);">{{ $text_sub_header_history }}</a>
                                 </li>
                             </ul>
                         </div>
@@ -87,8 +87,10 @@
                                             @endif
                                         </select>
                                         <!-- ปี/เดือน :  -->
+                                        @if(Auth::user()->status == 2)
                                         <input type="month" id="selectdateFrom" name="selectdateFrom" value="{{ $date_search }}" class="form-control"
                                         style="margin-left:10px; margin-right:10px;"/>
+                                        @endif
                                         <button style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm" id="submit_request">ค้นหา</button>
                                     </span>
                                 </form>
@@ -123,8 +125,9 @@
                                             @else
                                                 <th>#</th>
                                             @endif
+                                            <th>ทริปเดือน</th>
                                             <th>วันที่ขออนุมัติ</th>
-                                            <th style="text-align:left;">รายชื่อ</th>
+                                            <th style="text-align:left;">ผู้แทนขาย</th>
                                             <th>จำนวนวัน</th>
                                             <th>ค่าเบี้ยเลื้ยง</th>
                                             <th>การอนุมัติ</th>
@@ -138,6 +141,14 @@
                                                 list($year_at, $month_at, $day_at) = explode("-", $date_at);
                                                 $year_at_thai = $year_at + 543;
                                                 $approve_at = $day_at."/".$month_at."/".$year_at_thai;
+
+                                                if(!is_null($value->trip_date)){
+                                                    list($year, $month, $day) = explode("-", $value->trip_date);
+                                                    $year_thai = $year+543;
+                                                    $date_thai = $month."/".$year_thai;
+                                                }else{
+                                                    $date_thai = "-";
+                                                }
                                             @endphp
                                         <tr style="text-align:center;">
                                             @if(Auth::user()->status == 2)
@@ -151,8 +162,16 @@
                                             @else
                                                 <td>{{ ++$key }}</td>
                                             @endif
+                                            <td>{{ $date_thai }}</td>
                                             <td>{{ $approve_at }}</td>
-                                            <td style="text-align:left;">{{ $value->name }}</td>
+                                            @php 
+                                                if(isset($value->api_identify)){
+                                                    $api_identify = $value->api_identify;
+                                                }else{
+                                                    $api_identify = "";
+                                                }
+                                            @endphp
+                                            <td style="text-align:left;">{{ $api_identify }} {{ $value->name }}</td>
                                             <td>{{ $value->trip_day }}</td>
                                             <td>{{ number_format($value->sum_allowance) }}</td>
                                             <td>

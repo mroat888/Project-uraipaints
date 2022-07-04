@@ -60,6 +60,11 @@ Route::get('edit_customerLead/{id}', 'Customer\CustomerController@edit');
 Route::post('update_customerLead', 'Customer\CustomerController@update');
 Route::post('delete_customer', 'Customer\CustomerController@destroy');
 
+
+// Route::get('/lead','Customer\CustomerControllerCopy@customerLead');
+// Route::post('/lead/search','Customer\CustomerControllerCopy@customerLeadSearch');
+
+
 // Customer shop saleplan customer_shops_saleplan
 Route::get('/edit_shopsaleplan/{id}', 'Customer\CustomerShopSaleplanController@edit_shopsaleplan');
 Route::post('/update_shopsaleplan', 'Customer\CustomerShopSaleplanController@update_shopsaleplan');
@@ -96,6 +101,7 @@ Route::post('saleplan_Result', 'SaleMan\SalePlanController@saleplan_Result');
 
 // Trip
 Route::get('trip', 'UnionTripController@index');
+Route::post('trip/search', 'UnionTripController@search');
 Route::get('trip/detail/{id}', 'UnionTripController@trip_detail');
 Route::get('trip/show_detail/{id}', 'UnionTripController@trip_detail');
 Route::get('trip/approve_trip/detail/{id}', 'UnionTripApproveController@trip_showdetail');
@@ -237,6 +243,7 @@ Route::get('lead/viewAssignmentDetail', function () { return view('leadManager.v
 
 // Trip
 Route::get('lead/trip', 'UnionTripController@index');
+Route::post('lead/trip/search', 'UnionTripController@search');
 Route::get('lead/trip/detail/{id}', 'UnionTripController@trip_detail');
 
 Route::get('lead/approve_trip', 'UnionTripApproveController@index');
@@ -444,6 +451,7 @@ Route::post('head/approvalsaleplan/search', 'HeadManager\ApprovalSalePlanControl
 
 // Trip
 Route::get('head/trip', 'UnionTripController@index');
+Route::post('head/trip/search', 'UnionTripController@search');
 Route::get('head/trip/detail/{id}', 'UnionTripController@trip_detail');
 
 Route::get('head/approve_trip', 'UnionTripApproveController@index');
@@ -1027,15 +1035,15 @@ Route::get('fetch_datatable_customer_admin_pdglist/{pdgid}', 'Api\ApiController@
 
 
 // Report PDF & Excel
-Route::post('trip_pdf', 'UnionTripReportPDFController@pdf');
+// Route::post('trip_pdf', 'UnionTripReportPDFController@pdf');
 Route::get('trip_user_pdf/{id}', 'UnionTripReportPDFController@userpdf');
-Route::get('admin/report_email', 'UnionTripReportPDFController@report_email');
+
 
 Route::post('trip_excel', 'UnionTripReportExportContoller@excel');
 Route::get('trip_user_excel/{id}', 'UnionTripReportExportContoller@userexcel');
 
-Route::get('trip_mail/{id}', 'UnionTripReportPDFController@mail');
 Route::post('trip_mail', 'UnionTripReportPDFController@sandmail');
+Route::post('trip_report', 'UnionTripReportPDFController@trip_report_month');
 
 Auth::routes();
 // Route::get('/', function () { return view('saleman.dashboard'); });

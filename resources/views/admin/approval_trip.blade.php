@@ -102,8 +102,8 @@
                             <div class="mb-20 mt-20">
 
                                 <button type="button" class="btn btn_purple btn-green btn-sm btn_approve" value="complate">Complate</button>
-                                <button type="button" class="btn btn_purple btn-reject btn-sm ml-5 btn_approve" value="pdf">ดาวโหลด PDF</button>
-                                <button type="button" class="btn btn_purple btn-reject btn-sm ml-5 btn_approve" value="excle">ดาวโหลด Excle</button>
+                                <!-- <button type="button" class="btn btn_purple btn-reject btn-sm ml-5 btn_approve" value="pdf">ดาวโหลด PDF</button>
+                                <button type="button" class="btn btn_purple btn-reject btn-sm ml-5 btn_approve" value="excle">ดาวโหลด Excle</button> -->
                                 <!-- <button type="button" class="btn btn_purple btn-reject btn-sm ml-5 btn_approve" value="seandmail">ส่งเมล</button> -->
                                 <!-- <a href="{{url('admin/report_email')}}" target = "_blank" class="ml-2">ตัวอย่าง PDF (Email)</a> -->
 
@@ -124,8 +124,8 @@
                                                             for="customCheck4">ทั้งหมด</label>
                                                     </div>
                                                 </th>
-
-                                                <th>วันที่ขออนุมัติ</th>
+                                                <th>ทริปเดือน</th>
+                                                <!-- <th>วันที่ขออนุมัติ</th> -->
                                                 <th style="text-align:left;">รายชื่อ</th>
                                                 <th>ระดับสิทธิ์</th>
                                                 <th>จำนวนวัน</th>
@@ -141,6 +141,14 @@
                                                     list($year_at, $month_at, $day_at) = explode("-", $date_at);
                                                     $year_at_thai = $year_at + 543;
                                                     $approve_at = $day_at."/".$month_at."/".$year_at_thai;
+
+                                                    if(!is_null($value->trip_date)){
+                                                        list($year_at, $month_at, $day_at) = explode('-', $value->trip_date);
+                                                        $year_at_thai = $year_at+543;
+                                                        $trip_date = $month_at."/".$year_at_thai;
+                                                    }else{
+                                                        $trip_date = "-";
+                                                    }
                                                 @endphp
                                             <tr style="text-align:center;">
                                                 <td>
@@ -150,17 +158,16 @@
                                                         <label class="custom-control-label" for="customCheck{{$key + 1}}"></label>
                                                     </div>
                                                 </td>
-                                                <td>{{ $approve_at }}</td>
+                                                <td>{{ $trip_date }}</td>
+                                                <!-- <td>{{-- $approve_at --}}</td> -->
                                                 <td style="text-align:left;">{{ $value->name }}</td>
                                                 <td>
                                                     @php
-                                                        switch($value->status){
-                                                            case 1 : $user_level = "ผู้แทนขาย";
-                                                                break;
-                                                            case 2 : $user_level = "ผู้จัดการเขต";
-                                                                break;
-                                                            case 3 : $user_level = "ผู้จัดการฝ่าย";
-                                                                break;
+                                                        $master_permission = DB::table('master_permission')->where('id', $value->status)->first();
+                                                        if(!is_null($master_permission)){
+                                                            $user_level = $master_permission->permission_name;
+                                                        }else{
+                                                            $user_level = "-";
                                                         }
                                                     @endphp
 
@@ -258,6 +265,12 @@
                                 <label for="selectdateEmail">เดือน/ปี</label>
                                 <input type="month" id="selectdateEmail" name="selectdateEmail"
                                 value="{{ date('Y-m') }}" class="form-control form-control-lg" required/>
+                            </div>
+                            <div class="col-md-8 form-group">
+                                <div class="mt-40">
+                                    <button type="button" class="btn btn_purple btn-reject btn-sm ml-5 btn_pdf" value="pdf">ดาวโหลด PDF</button>
+                                    <button type="button" class="btn btn_purple btn-reject btn-sm ml-5 btn_excle" value="excle">ดาวโหลด Excle</button>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
@@ -395,7 +408,7 @@
                 $('body').waitMe("hide");
             }
         });
-     });
+    });
 
     $(document).on('click', '.btn_approve', function() {
         let approve = $(this).val();
@@ -458,13 +471,13 @@
 
             console.log("Excle---Con");
 
-            $("#from_trip_approve").attr("action", "{{ url('trip_excel') }}");
-            $("#from_trip_approve").attr("method", "post");
-            $("#from_trip_approve").attr("target", "_blank");
-            $("#from_trip_approve").submit();
-            $("#from_trip_approve").removeAttr("action").removeAttr("method").removeAttr("target");
+            // $("#from_trip_approve").attr("action", "{{ url('trip_excel') }}");
+            // $("#from_trip_approve").attr("method", "post");
+            // $("#from_trip_approve").attr("target", "_blank");
+            // $("#from_trip_approve").submit();
+            // $("#from_trip_approve").removeAttr("action").removeAttr("method").removeAttr("target");
 
-            $('#ModalSaleplanApprove').modal('hide');
+            // $('#ModalSaleplanApprove').modal('hide');
 
         }else if(approve == "seandmail"){
 
@@ -481,6 +494,25 @@
         }
     });
 
+
+    $(document).on('click', '.btn_pdf', function() {
+        let sel_trip = $('#selectdateEmail').val();
+        console.log(sel_trip);
+
+        $("#formemail").attr("action", "{{ url('trip_report') }}");
+        $("#formemail").attr("method", "post");
+        $("#formemail").attr("target", "_blank");
+        $("#formemail").submit();
+        $("#formemail").removeAttr("action").removeAttr("method").removeAttr("target");
+    });
+
+    $(document).on('click', '.btn_excle', function() {
+        $("#formemail").attr("action", "{{ url('trip_excel') }}");
+        $("#formemail").attr("method", "post");
+        $("#formemail").attr("target", "_blank");
+        $("#formemail").submit();
+        $("#formemail").removeAttr("action").removeAttr("method").removeAttr("target");
+    });
 
 </script>
 

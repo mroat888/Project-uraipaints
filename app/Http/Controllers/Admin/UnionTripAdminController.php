@@ -33,7 +33,7 @@ class UnionTripAdminController extends Controller
         $data['trip_header'] = $trip_header; 
 
         $data['team_sales'] = DB::table('master_team_sales')->get();
-        $data['users'] = DB::table('users')->where('status', 3)->get(); // เฉพาะผู้จัดการฝ่าย
+        $data['users'] = DB::table('users')->where('status', 5)->get(); // เฉพาะบุคคลอื่นๆ
         
         return view('admin.approval_trip', $data); 
     }
@@ -65,8 +65,8 @@ class UnionTripAdminController extends Controller
 
         if(!is_null($request->selectdateFrom)){
             list($year,$month) = explode('-', $request->selectdateFrom);
-            $trip_header =  $trip_header->whereMonth('trip_header.request_approve_at', $month)
-                ->whereYear('trip_header.request_approve_at', $year);
+            $trip_header =  $trip_header->whereMonth('trip_header.trip_date', $month)
+                ->whereYear('trip_header.trip_date', $year);
         }
 
         $trip_header =  $trip_header->orderBy('trip_header.id', 'desc')->get();
@@ -74,7 +74,7 @@ class UnionTripAdminController extends Controller
         $data['trip_header'] = $trip_header; 
 
         $data['team_sales'] = DB::table('master_team_sales')->get();
-        $data['users'] = DB::table('users')->where('status', 3)->get(); // เฉพาะผู้จัดการฝ่าย
+        $data['users'] = DB::table('users')->where('status', 5)->get(); // เฉพาะบุคคลอื่นๆ
 
         return view('admin.approval_trip', $data); 
     }

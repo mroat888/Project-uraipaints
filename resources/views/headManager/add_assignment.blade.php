@@ -166,7 +166,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">ฟอร์มบันทึกการสั่งงาน</h5>
+                    <h5 class="modal-title">เพิ่มบันทึการสั่งงาน</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -182,7 +182,7 @@
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="firstName">วันที่กำหนดส่ง</label>
-                                <input class="form-control" type="date" name="date" />
+                                <input class="form-control" type="date" name="date" required/>
                             </div>
                         </div>
                         <div class="row">
@@ -455,14 +455,16 @@
                     $('#get_title_text_send').text(data.dataEdit.assign_title);
                     $('#get_detail_text_send').text(data.dataEdit.assign_result_detail);
 
-                    let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataEdit.assign_fileupload;
-                    if(data.dataEdit.assign_fileupload != ""){
-                        ext = data.dataEdit.assign_fileupload.split('.').pop().toLowerCase();
-                        console.log(img_name);
-                        if(ext == "pdf"){
-                            $('#img_show_text').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');
-                        }else{
-                            $('#img_show_text').append('<img src = "'+img_name+'" style="max-width:100%;">');
+                    if(data.dataEdit.assign_fileupload){
+                        let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataEdit.assign_fileupload;
+                        if(data.dataEdit.assign_fileupload != ""){
+                            ext = data.dataEdit.assign_fileupload.split('.').pop().toLowerCase();
+                            console.log(img_name);
+                            if(ext == "pdf"){
+                                $('#img_show_text').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');
+                            }else{
+                                $('#img_show_text').append('<img src = "'+img_name+'" style="max-width:100%;">');
+                            }
                         }
                     }
 
@@ -502,7 +504,7 @@
                         $('#result_send').append('<option value="" selected>เลือกข้อมูล</option> <option value="2">ไม่สำเร็จ</option> <option value="1">สำเร็จ</option>');
                     }
 
-                        $('#ModalResult').modal('toggle');
+                    $('#ModalResult').modal('toggle');
                 }
             });
         }
@@ -522,8 +524,9 @@
                     $('#get_title').val(data.dataEdit.assign_title);
                     $('#get_detail').val(data.dataEdit.assign_detail);
 
-                    let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataEdit.assign_fileupload;
-                    if(data.dataEdit.assign_fileupload != ""){
+                    if(data.dataEdit.assign_fileupload){
+                        let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataEdit.assign_fileupload;
+
                         ext = data.dataEdit.assign_fileupload.split('.').pop().toLowerCase();
                         console.log(img_name);
                         if(ext == "pdf"){

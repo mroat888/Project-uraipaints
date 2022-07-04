@@ -5,6 +5,7 @@
     @php 
         $url_trip_detail = "head/trip/detail";
         $url_request = "manager/trip/request";
+        $action_search= "head/trip/search";
     @endphp
 
     @include('union.trip')

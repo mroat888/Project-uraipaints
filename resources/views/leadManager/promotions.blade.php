@@ -28,14 +28,14 @@
                                 <div class="carousel-inner">
                                     @if ($list_news_a)
                                     <div class="carousel-item active">
-                                        <img class="d-block w-100" src="{{ isset($list_news_a->banner) ? asset('public/upload/NewsBanner/' . $list_news_a->banner) : '' }}">
+                                        <img class="d-block w-100" src="{{ isset($list_news_a->banner) ? asset('public/upload/NewsBanner/' . $list_news_a->banner) : '' }}" style="max-height:200px;">
                                     </div>
                                     @endif
 
                                     @foreach ($list_banner as $value)
                                     @if ($value->banner != $list_news_a->news_image)
                                     <div class="carousel-item">
-                                        <img class="d-block w-100" src="{{ isset($value->banner) ? asset('public/upload/NewsBanner/' . $value->banner) : '' }}">
+                                        <img class="d-block w-100" src="{{ isset($value->banner) ? asset('public/upload/NewsBanner/' . $value->banner) : '' }}" style="max-height:200px;">
                                     </div>
                                     @endif
                                     @endforeach

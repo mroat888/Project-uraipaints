@@ -121,13 +121,13 @@
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label for="firstName">ชื่อผู้ใช้งาน</label>
-                                <input type="text" name="tname" id="tname" class="form-control">
+                                <input type="text" name="tname" id="tname" class="form-control" required>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
-                                <label for="firstName">อีเมล์</label>
-                                <input type="email" name="temail" id="temail" class="form-control" placeholder="อีเมล์">
+                                <label for="firstName">อีเมล์ *</label>
+                                <input type="email" name="temail" id="temail" class="form-control" placeholder="อีเมล์" required>
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="firstName">รหัสผ่าน</label>
@@ -137,8 +137,8 @@
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="username">สิทธิ์การใช้งาน</label>
-                                <select id="sel_status" name="sel_status" class="form-control custom-select" placeholder="สิทธิ์การใช้งาน">
-                                    <option selected disabled>เลือกข้อมูล</option>
+                                <select id="sel_status" name="sel_status" class="form-control custom-select" placeholder="สิทธิ์การใช้งาน" required>
+                                    <option value="" selected disabled>เลือกข้อมูล</option>
                                     @foreach($master_permission as $key => $value)
                                         <option value="{{ $value->id }}">{{ $value->permission_name }}</option>
                                     @endforeach
