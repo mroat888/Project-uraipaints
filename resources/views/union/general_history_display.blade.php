@@ -68,7 +68,7 @@
                 <div class="my-10" id="div_assign_status">
 
                 </div>
-                <div class="my-0" id="div_assign_approve">
+                <div class="my-10" id="div_assign_approve">
    
                 </div>
 

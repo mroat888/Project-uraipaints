@@ -174,90 +174,24 @@ class ApprovalController extends Controller
             })
             ->get();
 
-
-        // list($year,$month) = explode('-', $request->selectdateTo);
-        // $auth_team_id = explode(',',Auth::user()->team_id);
-        // $auth_team = array();
-        // foreach($auth_team_id as $value){
-        //     $auth_team[] = $value;
-        // }
-        // $data['request_approval'] = DB::table('assignments')
-        //     ->join('users', 'assignments.created_by', '=', 'users.id')
-        //     ->whereIn('assignments.assign_status', [0,1,2])
-        //     ->where(function($query) use ($auth_team) {
-        //         for ($i = 0; $i < count($auth_team); $i++){
-        //             $query->orWhere('users.team_id', $auth_team[$i])
-        //                 ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
-        //                 ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
-        //         }
-        //     })
-        //     ->whereYear('assignments.created_at', $year)
-        //     ->whereMonth('assignments.created_at', $month)
-        //     ->select('assignments.created_by')
-        //     ->distinct()->get();
-
         return view('headManager.approval_general', $data);
     }
 
     public function approval_history()
     {
-        $auth_team_id = explode(',',Auth::user()->team_id);
-        $auth_team = array();
-        foreach($auth_team_id as $value){
-            $auth_team[] = $value;
-        }
-
-        $data['assignments_history'] = DB::table('assignments')
-        ->leftJoin('assignments_comments', 'assignments.id', 'assignments_comments.assign_id')
-        ->leftJoin('api_customers', 'api_customers.identify', 'assignments.assign_shop')
-        ->join('users', 'assignments.created_by', 'users.id')
-        ->whereNotIn('assignments.assign_status', [0, 3]) // สถานะอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน, 4=แก้ไขงาน))
-        ->where(function($query) use ($auth_team) {
-            for ($i = 0; $i < count($auth_team); $i++){
-                $query->orWhere('users.team_id', $auth_team[$i])
-                    ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
-                    ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
-            }
-        })
-        ->select(
-            'assignments.*',
-            'assignments_comments.assign_id' ,
-            'users.name',
-            'users.id as user_id',
-            'users.api_identify',
-            'api_customers.title as api_customers_title',
-            'api_customers.name as api_customers_name',
-        )
-        ->orderBy('assignments.assign_request_date', 'desc')
-        ->groupBy('assignments.id')
-        ->get();
-
-        $data['users'] = DB::table('users')
-            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
-            ->where(function($query) use ($auth_team) {
-                for ($i = 0; $i < count($auth_team); $i++){
-                    $query->orWhere('users.team_id', $auth_team[$i])
-                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
-                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
-                }
-            })
-            ->get();
-        $data['team_sales'] = DB::table('master_team_sales')
-            ->where(function($query) use ($auth_team) {
-                for ($i = 0; $i < count($auth_team); $i++){
-                    $query->orWhere('id', $auth_team[$i])
-                        ->orWhere('id', 'like', $auth_team[$i].',%')
-                        ->orWhere('id', 'like', '%,'.$auth_team[$i]);
-                }
-            })
-            ->get();
-
+        $request = "";
+        $data = $this->fetch_approval_history($request);
         return view('headManager.approval_general_history', $data);
     }
 
-    public function approval_history_search(Request $request){
-        // dd($request);
+    public function approval_history_search(Request $request)
+    {
+        $data = $this->fetch_approval_history($request);
+        return view('headManager.approval_general_history', $data);
+    }
 
+    public function fetch_approval_history($request)
+    {
         $auth_team_id = explode(',',Auth::user()->team_id);
         $auth_team = array();
         foreach($auth_team_id as $value){
@@ -279,7 +213,7 @@ class ApprovalController extends Controller
             'api_customers.name as api_customers_name',
         );
 
-        if(!is_null($request->selectteam_sales)){
+        if(isset($request->selectteam_sales)){
             $assignments_history = $assignments_history->where('users.team_id', $request->selectteam_sales);
             $data['checkteam_sales'] = $request->selectteam_sales;
         }else{
@@ -292,19 +226,19 @@ class ApprovalController extends Controller
             });
         }
 
-        if(!is_null($request->selectusers)){
+        if(isset($request->selectusers)){
             $assignments_history = $assignments_history->where('assignments.created_by', $request->selectusers);
             $data['checkusers'] = $request->selectusers;
         }
 
-        if(!is_null($request->selectdateFrom)){
+        if(isset($request->selectdateFrom)){
             $assignments_history = $assignments_history->whereDate('assignments.assign_request_date', '>=', $request->selectdateFrom);
             $data['checkdateFrom'] = $request->selectdateFrom;
         }else{
             $data['checkdateFrom'] = "";
         }
 
-        if(!is_null($request->selectdateTo)){
+        if(isset($request->selectdateTo)){
             $assignments_history = $assignments_history->whereDate('assignments.assign_request_date', '<=', $request->selectdateTo);
             $data['checkdateTo'] = $request->selectdateTo;
         }else{
@@ -338,9 +272,7 @@ class ApprovalController extends Controller
             })
             ->get();
 
-        // dd($data);
-
-        return view('headManager.approval_general_history', $data);
+        return $data;
     }
 
     public function approval_general_history_detail($id)
