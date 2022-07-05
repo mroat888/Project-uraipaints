@@ -209,27 +209,26 @@
             @php
                 $check_menager_comment = "ํY"; //-- มีการคอมเม้นต์แล้ว
             @endphp
-            <!-- Row Create Comment -->
-            <div class="row">
-                <div class="col-xl-12">
 
-                    <section class="hk-sec-wrapper">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <form id="form_comment_update" enctype="multipart/form-data">
-                                    @csrf
-                                    <div class="modal-body">
-                                        <div class="ml-20">
-                                            <h5>แก้ไขแสดงความคิดเห็น : </h5>
-                                        </div>
-                                        <input type="hidden" name="trip_header_id" value="{{ $comment->trip_header_id }}">
-                                        <input type="hidden" name="trip_comment_id" value="{{ $comment->id }}">
-                                        <div class="card-body">
-                                            <textarea class="form-control" name="comment_detail" cols="30" rows="5"
-                                            placeholder="เพิ่มความคิดเห็น" value=""type="text">{{ $comment->trip_comment_detail	}}</textarea>
-                                        </div>
-
+            @if($trip_header->trip_status > 1) <!-- // -สถานะตั้งแต่ (2 = อนุมัติ , 3= ปฎิเสธ, 4= ปิดทริป) -->
+                <!-- Row Show Comment -->
+                <div class="row my-30">
+                    <div class="col-10">
+                        <section class="hk-sec-wrapper">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
                                         <div class="col-md-12">
+                                            <hr>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="desc_cusnote">
+                                                <blockquote class="blockquote mb-0">
+                                                    <p>{{ $comment->trip_comment_detail }}</p>
+                                                </blockquote>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 mt-15">
                                             @php
                                                 if(is_null($comment->updated_at)){
                                                     list($sale_date, $sale_time) = explode(' ',$comment->created_at);
@@ -240,17 +239,63 @@
                                             วันที่ : {{ thaidate('d F Y',$sale_date) }} เวลา : {{ $sale_time }}
                                         </div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary float-right">บันทึก</button>
-                                    </div>
-                                </form>
+                                </div>
+                                <hr>
                             </div>
-                        </div>
-                    </section>
-
+                        </section>
+                    </div>
+                    <div class="col-2" style="text-align:center;">
+                        <img src="{{ asset('/public/images/people-33.png')}}" alt="{{ $comment->name }}" style="max-width:80%;">
+                        <div>{{ $comment->name }}</div>
+                    </div>
                 </div>
-            </div>
-            <!-- End Row Create Comment -->
+                <!-- Row -->
+                                            
+            @else
+
+                <!-- Row Create Comment -->
+                <div class="row">
+                    <div class="col-xl-12">
+
+                        <section class="hk-sec-wrapper">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <form id="form_comment_update" enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="modal-body">
+                                            <div class="ml-20">
+                                                <h5>แก้ไขแสดงความคิดเห็น : </h5>
+                                            </div>
+                                            <input type="hidden" name="trip_header_id" value="{{ $comment->trip_header_id }}">
+                                            <input type="hidden" name="trip_comment_id" value="{{ $comment->id }}">
+                                            <div class="card-body">
+                                                <textarea class="form-control" name="comment_detail" cols="30" rows="5"
+                                                placeholder="เพิ่มความคิดเห็น" value=""type="text">{{ $comment->trip_comment_detail	}}</textarea>
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                @php
+                                                    if(is_null($comment->updated_at)){
+                                                        list($sale_date, $sale_time) = explode(' ',$comment->created_at);
+                                                    }else{
+                                                        list($sale_date, $sale_time) = explode(' ',$comment->updated_at);
+                                                    }
+                                                @endphp
+                                                วันที่ : {{ thaidate('d F Y',$sale_date) }} เวลา : {{ $sale_time }}
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary float-right">บันทึก</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </section>
+
+                    </div>
+                </div>
+                <!-- End Row Create Comment -->
+            @endif
         @endif
 
     @endforeach

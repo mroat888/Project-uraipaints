@@ -69,31 +69,10 @@ class ApprovalController extends Controller
             ->get();
 
         return view('headManager.approval_general', $data);
-
-        // $auth_team_id = explode(',',Auth::user()->team_id);
-        // $auth_team = array();
-        // foreach($auth_team_id as $value){
-        //     $auth_team[] = $value;
-        // }
-        // $data['request_approval'] = DB::table('assignments')
-        //     ->join('users', 'assignments.created_by', '=', 'users.id')
-        //     ->whereIn('assignments.assign_status', [0,1,2])
-        //     ->where(function($query) use ($auth_team) {
-        //         for ($i = 0; $i < count($auth_team); $i++){
-        //             $query->orWhere('users.team_id', $auth_team[$i])
-        //                 ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
-        //                 ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
-        //         }
-        //     })
-        //     ->select('assignments.created_by')
-        //     ->distinct()->get();
-
-        // dd($data['request_approval']);
-
     }
 
-    public function search(Request $request){
-
+    public function search(Request $request)
+    {
         $auth_team_id = explode(',',Auth::user()->team_id);
         $auth_team = array();
         foreach($auth_team_id as $value){
@@ -203,6 +182,10 @@ class ApprovalController extends Controller
         ->leftJoin('api_customers', 'api_customers.identify', 'assignments.assign_shop')
         ->join('users', 'assignments.created_by', 'users.id')
         ->whereNotIn('assignments.assign_status', [0, 3])
+        ->where(function($query) {
+            $query->where('assignments.parent_id', null)
+            ->orWhere('assignments.parent_id', '!=', 'parent');
+        }) 
         ->select(
             'assignments.*',
             'assignments_comments.assign_id' ,
@@ -308,11 +291,6 @@ class ApprovalController extends Controller
 
     public function view_approval($id)
     {
-        // $dataEdit = RequestApproval::find($id);
-        // $data = array(
-        //     'dataEdit'     => $dataEdit,
-        // );
-        // echo json_encode($data);
         $dataEdit = DB::table('assignments')
             ->where('assignments.id', $id)
             ->first();
@@ -356,18 +334,15 @@ class ApprovalController extends Controller
 
     public function comment_approval($id, $createID)
     {
-        // return $createID;
+        $data['comment'] = AssignmentComment::where('assign_id', $id)->where('created_by', Auth::user()->id)->first();
+        $data['assignID'] = $id;
+        $data['createID'] = $createID;
 
-            $data['comment'] = AssignmentComment::where('assign_id', $id)->where('created_by', Auth::user()->id)->first();
-            $data['assignID'] = $id;
-            $data['createID'] = $createID;
-
-            // return $data;
-            if ( $data['comment']) {
-                return view('headManager.create_comment_request_approval', $data);
-            }else {
-                return view('headManager.create_comment_request_approval', $data);
-            }
+        if ( $data['comment']) {
+            return view('headManager.create_comment_request_approval', $data);
+        }else {
+            return view('headManager.create_comment_request_approval', $data);
+        }
     }
 
     public function create_comment_request_approval(Request $request)
@@ -409,9 +384,6 @@ class ApprovalController extends Controller
                 'message' => 'ไม่สามารถบันทึกได้',
             ]);
         }
-
-            // return redirect(url('head/approval_general_detail', $request->createID));
-
     }
 
 }
