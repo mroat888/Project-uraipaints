@@ -418,7 +418,7 @@
                     $('.customer_id').children().remove().end();
                     let rows = response.customer_api.length;
                     for(let i=0 ;i<rows; i++){
-                        $('.customer_id').append('<option value="'+response.customer_api[i]['identify']+'">'+response.customer_api[i]['title']+' '+response.customer_api[i]['name']+'</option>');
+                        $('.customer_id').append('<option value="'+response.customer_api[i]['identify']+'">'+response.customer_api[i]['name']+'</option>');
                     }
                 }
             }
@@ -441,7 +441,7 @@
                     $('.customer_id_edit').children().remove().end();
                     let rows = response.customer_api.length;
                     for(let i=0 ;i<rows; i++){
-                        $('.customer_id_edit').append('<option value="'+response.customer_api[i]['identify']+'">'+response.customer_api[i]['title']+' '+response.customer_api[i]['name']+'</option>');
+                        $('.customer_id_edit').append('<option value="'+response.customer_api[i]['identify']+'">'+response.customer_api[i]['name']+'</option>');
                     }
                 }
             }

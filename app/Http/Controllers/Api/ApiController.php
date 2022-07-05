@@ -1170,6 +1170,7 @@ class ApiController extends Controller
         $api_token = $this->apiToken();
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search,[
             'sortorder' => 'DESC',
+            'sort_by' => 'cust_name',
             'province_id' => $pid
         ]);
         $res_api = $response->json();
