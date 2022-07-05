@@ -209,10 +209,13 @@
         <tr>
             <td>
                 <strong>ผู้ขอเบิก</strong><br>
-                <div style="position: absolute; margin-top: -2px; margin-left: 40px;">
+                <div style="position: absolute; margin-top: 3px; margin-left: 40px;">
                     <img src="{{ isset($trip_header->signature) ? asset('public/upload/UserSignature/' . $trip_header->signature) : '' }}" alt="" width="20%">
                 </div>
                 {{-- <br> --}}
+                <div style="position: absolute; margin-top: -2px; margin-left: 210px;">
+                    <span>{{ Carbon\Carbon::parse($trip_header->approve_at)->addYear(543)->format('d/m/Y') }}</span>
+                </div>
                 <span>ลงชื่อ .......................................................... วันที่ ...............................</span></td>
             <td>
                 <strong>ผู้อนุมัติ</strong><br>
