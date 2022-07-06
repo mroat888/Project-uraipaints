@@ -26,7 +26,6 @@ class PlanMonthController extends Controller
 
     public function index()
     {
-
         $data['monthly_plan'] = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->get();
         $data['monthly_plan_next'] = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->first();
 
@@ -465,7 +464,6 @@ class PlanMonthController extends Controller
 
     public function approvalsaleplan_close($id)
     {
-
         // ข้อมูล Sale plan
         $data['list_saleplan'] = DB::table('sale_plans')
             ->where('monthly_plan_id', $id)
@@ -489,39 +487,6 @@ class PlanMonthController extends Controller
 
         $data['mon_plan'] = $mon_plan;
         $data['sale_name'] = DB::table('users')->where('id',$mon_plan->created_by)->select('name')->first(); // ชื่อเซลล์
-
-        // $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/sellers/'.$user_api->api_identify.'/customers');
-        // $res_api = $response->json();
-
-        // $data['customer_api'] = array();
-        // foreach ($res_api['data'] as $key => $value) {
-        //     $data['customer_api'][$key] =
-        //     [
-        //         'id' => $value['identify'],
-        //         'shop_name' => $value['title']." ".$value['name'],
-        //         'shop_address' => $value['amphoe_name']." ".$value['province_name'],
-        //     ];
-        // }
-
-        // // -----  API สินค้านำเสนอ----------- //
-        // $path_search = "pdglists?sortorder=DESC";
-        // $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
-        // $res_api = $response->json();
-
-        // $data['pdglists_api'] = array();
-        // foreach ($res_api['data'] as $key => $value) {
-        //     $data['pdglists_api'][$key] =
-        //     [
-        //         'identify' => $value['identify'],
-        //         'name' => $value['name'],
-        //         'sub_code' => $value['sub_code'],
-        //     ];
-        // }
-
-        // dd($data['pdglists_api']);
-
-
-
 
         // ลูกค้าใหม่
         $data['customer_new'] = DB::table('customer_shops_saleplan')

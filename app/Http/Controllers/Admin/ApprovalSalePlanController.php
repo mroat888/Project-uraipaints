@@ -47,12 +47,12 @@ class ApprovalSalePlanController extends Controller
             $sale_plans = DB::table('sale_plans')
             ->where('monthly_plan_id',$value->id)
             ->get();
+            
             $sale_plan_amount = 0;
             foreach($sale_plans as $key_sale_plans => $value_sale_plans){
                 $sale_plans_tags_array = explode(',', $value_sale_plans->sale_plans_tags);
                 $sale_plan_amount += count($sale_plans_tags_array);
             }       
-
 
             $customer_shops_saleplan = DB::table('customer_shops_saleplan')
                 ->where('monthly_plan_id', $value->id)
