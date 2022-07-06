@@ -325,7 +325,9 @@
                     </div>
                     <div class="form-group col-md-2">
                         <label for="inputPassword4">อัตราเบี้ยเลี้ยง/วัน</label>
-                        <input type="number" class="form-control" name="allowance_edit" id="allowance_edit" required>
+                        <input type="number" class="form-control" name="allowance_edit" id="allowance_edit" 
+                        onkeyup="calculator_allowance();" onchange="calculator_allowance();" 
+                        onclick="calculator_allowance();" required>
                     </div>
                     <div class="form-group col-md-2">
                         <label for="inputPassword4">รวมค่าเบี้ยเลี้ยง</label>
@@ -373,195 +375,205 @@
 
 <script>
 
-    $(document).on('click', '#createmodal', function(e){
-        e.preventDefault();
-        $.ajax({
-            type:'GET',
-            url: '{{ url("trip/create") }}',
-            cache:false,
-            contentType: false,
-            processData: false,
-            success:function(response){
-                console.log(response);
-                $("#api_identify").val(response.api_identify);
-                $("#api_employee_id").val(response.api_employee_id);
-                $("#namesale").val(response.namesale);
-                $("#Modalcreate").modal('show');
+function calculator_allowance()
+{
+    let trip_day = parseInt($('#trip_day_edit').val());
+    let allowance = parseInt($('#allowance_edit').val());
+
+    let sum_allowance = trip_day*allowance;
+
+    $('#sum_allowance_edit').val(sum_allowance);
+}
+
+$(document).on('click', '#createmodal', function(e){
+    e.preventDefault();
+    $.ajax({
+        type:'GET',
+        url: '{{ url("trip/create") }}',
+        cache:false,
+        contentType: false,
+        processData: false,
+        success:function(response){
+            console.log(response);
+            $("#api_identify").val(response.api_identify);
+            $("#api_employee_id").val(response.api_employee_id);
+            $("#namesale").val(response.namesale);
+            $("#Modalcreate").modal('show');
+        }
+    });
+});
+
+$(document).on('click', '.btn_edittrip', function(e){
+    e.preventDefault();
+    var trip_id = $(this).val();
+    $.ajax({
+        type:'GET',
+        url: '{{ url("trip/edit") }}/' + trip_id,
+        cache:false,
+        contentType: false,
+        processData: false,
+        success:function(response){
+            console.log(response);
+            let trip_date = response.trip_header.trip_date.split("-");
+            trip_date = trip_date[0]+"-"+trip_date[1];
+            $("#api_identify_edit").val(response.api_identify);
+            $("#api_employee_id_edit").val(response.api_employee_id);
+            $("#namesale_edit").val(response.namesale);
+            $("#trip_header_id").val(response.trip_header.id);
+            $("#trip_date_edit").val(trip_date);
+            $("#trip_start_edit").val(response.trip_header.trip_start);
+            $("#trip_end_edit").val(response.trip_header.trip_end);
+            $("#trip_day_edit").val(response.trip_header.trip_day);
+            $("#allowance_edit").val(response.trip_header.allowance);
+            $("#sum_allowance_edit").val(response.trip_header.sum_allowance);
+
+            $("#Modaledit").modal('show');
+        }
+    });
+});
+
+$(document).on('click', '.btn_deletetrip', function(e){
+    e.preventDefault();
+    let trip_id_delete = $(this).val();
+    $('#trip_header_id_delete').val(trip_id_delete);
+    $('#ModalDelete').modal('show');
+});
+
+$(document).on('click', '.btn_request', function(e){
+    var form = $(this).closest("form");
+    e.preventDefault();
+
+    swal({
+        title: `ขออนุมัติทริปเดินทางใช่หรือไม่ ?`,
+        icon: "warning",
+        buttons: [
+            'ยกเลิก',
+            'ขออนุมัติ'
+        ],
+        infoMode: true
+    }).then((willDelete) => {
+        if (willDelete) {
+            form.submit();
+        }
+    })
+});
+
+$("#form_insert").on("submit", function (e) {
+    e.preventDefault();
+    var formData = new FormData(this);
+    //console.log(formData);
+    $.ajax({
+        type:'POST',
+        url: '{{ url("trip/insert") }}',
+        data:formData,
+        cache:false,
+        contentType: false,
+        processData: false,
+        success:function(response){
+            console.log(response);
+            if(response.status == 200){
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Your work has been saved',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                $("#Modalcreate").modal('hide');
+                window.location.href= '{{ url($url_trip_detail) }}/'+response.trip_id;
+                // location.reload();
+            }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Your work has been saved',
+                    text: response.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
             }
-        });
+        },
+        error: function(response){
+            console.log("error");
+            console.log(response);
+        }
     });
+});
 
-    $(document).on('click', '.btn_edittrip', function(e){
-        e.preventDefault();
-        var trip_id = $(this).val();
-        $.ajax({
-            type:'GET',
-            url: '{{ url("trip/edit") }}/' + trip_id,
-            cache:false,
-            contentType: false,
-            processData: false,
-            success:function(response){
-                console.log(response);
-                let trip_date = response.trip_header.trip_date.split("-");
-                trip_date = trip_date[0]+"-"+trip_date[1];
-                $("#api_identify_edit").val(response.api_identify);
-                $("#api_employee_id_edit").val(response.api_employee_id);
-                $("#namesale_edit").val(response.namesale);
-                $("#trip_header_id").val(response.trip_header.id);
-                $("#trip_date_edit").val(trip_date);
-                $("#trip_start_edit").val(response.trip_header.trip_start);
-                $("#trip_end_edit").val(response.trip_header.trip_end);
-                $("#trip_day_edit").val(response.trip_header.trip_day);
-                $("#allowance_edit").val(response.trip_header.allowance);
-                $("#sum_allowance_edit").val(response.trip_header.sum_allowance);
-
-                $("#Modaledit").modal('show');
+$("#form_edit").on("submit", function (e) {
+    e.preventDefault();
+    var formData = new FormData(this);
+    //console.log(formData);
+    $.ajax({
+        type:'POST',
+        url: '{{ url("trip/update") }}',
+        data:formData,
+        cache:false,
+        contentType: false,
+        processData: false,
+        success:function(response){
+            console.log(response);
+            if(response.status == 200){
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Your work has been saved',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                $("#Modaledit").modal('hide');
+                location.reload();
+            }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Your work has been saved',
+                    text: response.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
             }
-        });
+        },
+        error: function(response){
+            console.log("error");
+            console.log(response);
+        }
     });
+});
 
-    $(document).on('click', '.btn_deletetrip', function(e){
-        e.preventDefault();
-        let trip_id_delete = $(this).val();
-        $('#trip_header_id_delete').val(trip_id_delete);
-        $('#ModalDelete').modal('show');
-    });
-
-    $(document).on('click', '.btn_request', function(e){
-        var form = $(this).closest("form");
-        e.preventDefault();
-
-        swal({
-            title: `ขออนุมัติทริปเดินทางใช่หรือไม่ ?`,
-            icon: "warning",
-            buttons: [
-                'ยกเลิก',
-                'ขออนุมัติ'
-            ],
-            infoMode: true
-        }).then((willDelete) => {
-            if (willDelete) {
-                form.submit();
+$("#from_delete").on("submit", function (e) {
+    e.preventDefault();
+    var formData = new FormData(this);
+    //console.log(formData);
+    $.ajax({
+        type:'POST',
+        url: '{{ url("trip/delete") }}',
+        data:formData,
+        cache:false,
+        contentType: false,
+        processData: false,
+        success:function(response){
+            console.log(response);
+            if(response.status == 200){
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Your work has been delete',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                $('#ModalDelete').modal('hide');
+                location.reload();
+            }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Your work has been delete',
+                    text: response.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
             }
-        })
+        },
+        error: function(response){
+            console.log("error");
+            console.log(response);
+        }
     });
-
-    $("#form_insert").on("submit", function (e) {
-        e.preventDefault();
-        var formData = new FormData(this);
-        //console.log(formData);
-        $.ajax({
-            type:'POST',
-            url: '{{ url("trip/insert") }}',
-            data:formData,
-            cache:false,
-            contentType: false,
-            processData: false,
-            success:function(response){
-                console.log(response);
-                if(response.status == 200){
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Your work has been saved',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                    $("#Modalcreate").modal('hide');
-                    window.location.href= '{{ url($url_trip_detail) }}/'+response.trip_id;
-                    // location.reload();
-                }else{
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Your work has been saved',
-                        text: response.message,
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                }
-            },
-            error: function(response){
-                console.log("error");
-                console.log(response);
-            }
-        });
-    });
-
-    $("#form_edit").on("submit", function (e) {
-        e.preventDefault();
-        var formData = new FormData(this);
-        //console.log(formData);
-        $.ajax({
-            type:'POST',
-            url: '{{ url("trip/update") }}',
-            data:formData,
-            cache:false,
-            contentType: false,
-            processData: false,
-            success:function(response){
-                console.log(response);
-                if(response.status == 200){
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Your work has been saved',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                    $("#Modaledit").modal('hide');
-                    location.reload();
-                }else{
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Your work has been saved',
-                        text: response.message,
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                }
-            },
-            error: function(response){
-                console.log("error");
-                console.log(response);
-            }
-        });
-    });
-
-    $("#from_delete").on("submit", function (e) {
-        e.preventDefault();
-        var formData = new FormData(this);
-        //console.log(formData);
-        $.ajax({
-            type:'POST',
-            url: '{{ url("trip/delete") }}',
-            data:formData,
-            cache:false,
-            contentType: false,
-            processData: false,
-            success:function(response){
-                console.log(response);
-                if(response.status == 200){
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Your work has been delete',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                    $('#ModalDelete').modal('hide');
-                    location.reload();
-                }else{
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Your work has been delete',
-                        text: response.message,
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                }
-            },
-            error: function(response){
-                console.log("error");
-                console.log(response);
-            }
-        });
-    });
+});
 
 </script>
