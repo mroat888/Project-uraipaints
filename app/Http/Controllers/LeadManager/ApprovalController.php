@@ -41,7 +41,11 @@ class ApprovalController extends Controller
         ->leftJoin('assignments_comments', 'assignments.id', 'assignments_comments.assign_id')
         ->leftJoin('api_customers', 'api_customers.identify', 'assignments.assign_shop')
         ->join('users', 'assignments.created_by', 'users.id')
-        ->whereIn('assignments.assign_status', [0]) // สถานะอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน, 4=แก้ไขงาน))
+        ->whereIn('assignments.assign_status', [0, 4]) // สถานะอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน, 4=แก้ไขงาน))
+        ->where(function($query) {
+            $query->orWhere('assignments.parent_id', '!=', 'parent')
+                ->orWhere('assignments.parent_id', null);
+        })
         ->where(function($query) use ($auth_team) {
             for ($i = 0; $i < count($auth_team); $i++){
                 $query->orWhere('users.team_id', $auth_team[$i])
@@ -124,6 +128,10 @@ class ApprovalController extends Controller
         ->leftJoin('api_customers', 'api_customers.identify', 'assignments.assign_shop')
         ->join('users', 'assignments.created_by', 'users.id')
         ->whereIn('assignments.assign_status', [0, 4]) // สถานะอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน, 4=แก้ไขงาน))
+        ->where(function($query) {
+            $query->orWhere('assignments.parent_id', '!=', 'parent')
+                ->orWhere('assignments.parent_id', null);
+        })
         ->select(
             'assignments.*',
             'assignments_comments.assign_id' ,
@@ -210,6 +218,10 @@ class ApprovalController extends Controller
         ->leftJoin('api_customers', 'api_customers.identify', 'assignments.assign_shop')
         ->join('users', 'assignments.created_by', 'users.id')
         ->whereNotIn('assignments.assign_status', [0, 3])
+        ->where(function($query) {
+            $query->where('assignments.parent_id', null)
+            ->orWhere('assignments.parent_id', '!=', 'parent');
+        }) 
         ->where(function($query) use ($auth_team) {
             for ($i = 0; $i < count($auth_team); $i++){
                 $query->orWhere('users.team_id', $auth_team[$i])

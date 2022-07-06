@@ -46,6 +46,10 @@ class ApprovalController extends Controller
         ->leftJoin('api_customers', 'api_customers.identify', 'assignments.assign_shop')
         ->join('users', 'assignments.created_by', 'users.id')
         ->whereNotIn('assignments.assign_status', [0, 3])
+        ->where(function($query) {
+            $query->where('assignments.parent_id', null)
+            ->orWhere('assignments.parent_id', '!=', 'parent');
+        }) 
         ->select(
             'assignments.*',
             'assignments_comments.assign_id' ,
