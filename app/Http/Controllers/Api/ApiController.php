@@ -96,7 +96,8 @@ class ApiController extends Controller
         }
     }
     
-    public function apiToken(){
+    public function apiToken()
+    {
         // -----  API
         // dd(env("API_LINK"));
         // $response = Http::post(env("API_LINK").'api/auth/login', [
@@ -111,15 +112,16 @@ class ApiController extends Controller
         return $this->api_token;
     }
 
-    public function getAllSellers(){
+    public function getAllSellers()
+    {
         $api_token = $this->apiToken();
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/sellers');
         $res_api = $response->json();
         return $res_api;
     }
 
-    public function fetch_subgroups($id){
-
+    public function fetch_subgroups($id)
+    {
         $api_token = $this->apiToken();
 
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/subgroups/', [
@@ -146,8 +148,8 @@ class ApiController extends Controller
 
     }
 
-    public function fetch_pdglists($id){
-
+    public function fetch_pdglists($id)
+    {
         $api_token = $this->apiToken();
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/pdglists/',[
             'sortorder' => 'DESC',
@@ -172,7 +174,8 @@ class ApiController extends Controller
 
     }
 
-    public function fetch_amphur_api($path,$id){
+    public function fetch_amphur_api($path,$id)
+    {
         if($path != "admin"){
             $path_search = "/".$path."/".Auth::user()->api_identify."/amphures?province_id=".$id;
         }else{
@@ -193,8 +196,6 @@ class ApiController extends Controller
             }
         }
 
-        // dd($amphures);
-
         return response()->json([
             'status' => 200,
             'id' => $id,
@@ -202,8 +203,8 @@ class ApiController extends Controller
         ]);
     }
 
-    public function fetch_products($id){
-
+    public function fetch_products($id)
+    {
         //-- ดึงแบบ API
         $api_token = $this->apiToken();
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/products?sort_by=product_code",[
@@ -248,7 +249,8 @@ class ApiController extends Controller
     }
 
     //-- สำหรับ Seller--
-    public function fetch_provinces_products($id){
+    public function fetch_provinces_products($id)
+    {
          /**
          * ดึงแบบ API
          */
@@ -294,7 +296,8 @@ class ApiController extends Controller
         ]);
     }
 
-    public function fetch_amphur_products($pdgid, $id){
+    public function fetch_amphur_products($pdgid, $id)
+    {
         /**
          * ดึงแบบ API
          */
@@ -343,7 +346,8 @@ class ApiController extends Controller
         ]);
     }
 
-    public function fetch_datatable_customer_sellers($pdgid,$pvid,$ampid){
+    public function fetch_datatable_customer_sellers($pdgid,$pvid,$ampid)
+    {
         /**
          * ดึงแบบ API
          */
@@ -410,7 +414,8 @@ class ApiController extends Controller
         ->make(true);
     }
 
-    public function fetch_datatable_customer_sellers_pdglist($pdgid){
+    public function fetch_datatable_customer_sellers_pdglist($pdgid)
+    {
         /**
          * ดึงแบบ API
          */
@@ -473,7 +478,8 @@ class ApiController extends Controller
 
     }
 
-    public function fetch_datatable_customer_sellers_pdglist_pvid($pdgid, $pvid){
+    public function fetch_datatable_customer_sellers_pdglist_pvid($pdgid, $pvid)
+    {
         /**
          * ดึงแบบ API
          */
@@ -552,8 +558,8 @@ class ApiController extends Controller
 
     //-- สำหรับ Leader--
 
-    public function fetch_provinces_products_leaders($id){
-
+    public function fetch_provinces_products_leaders($id)
+    {
         $api_token = $this->apiToken();
         $path_search = "/saleleaders/".Auth::user()->api_identify."/pdglists/".$id."/provinces";
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
@@ -577,8 +583,8 @@ class ApiController extends Controller
         ]);
     }
 
-    public function fetch_amphur_products_leaders($pdgid, $id){
-
+    public function fetch_amphur_products_leaders($pdgid, $id)
+    {
         $api_token = $this->apiToken();
         $path_search = "/saleleaders/".Auth::user()->api_identify."/pdglists/".$pdgid."/amphures?province_id=".$id;
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
@@ -602,7 +608,8 @@ class ApiController extends Controller
         ]);
     }
 
-    public function fetch_datatable_customer_leaders($pdgid,$pvid,$ampid){
+    public function fetch_datatable_customer_leaders($pdgid,$pvid,$ampid)
+    {
         $api_token = $this->apiToken();
         $path_search = "saleleaders/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers?province_id=".$pvid."&amphoe_id=".$ampid;
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
@@ -639,7 +646,8 @@ class ApiController extends Controller
         ->make(true);
     }
 
-    public function fetch_datatable_customer_leaders_pdglist($pdgid){
+    public function fetch_datatable_customer_leaders_pdglist($pdgid)
+    {
         $api_token = $this->apiToken();
         $path_search = "saleleaders/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers";
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
@@ -677,7 +685,8 @@ class ApiController extends Controller
         ->make(true);
     }
 
-    public function fetch_datatable_customer_leaders_pdglist_pvid($pdgid, $pvid){
+    public function fetch_datatable_customer_leaders_pdglist_pvid($pdgid, $pvid)
+    {
         $api_token = $this->apiToken();
         $path_search = "saleleaders/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers";
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search,[
@@ -724,8 +733,8 @@ class ApiController extends Controller
 
     //-- สำหรับ Header--
 
-    public function fetch_provinces_products_headers($id){
-
+    public function fetch_provinces_products_headers($id)
+    {
         $api_token = $this->apiToken();
         $path_search = "/saleheaders/".Auth::user()->api_identify."/pdglists/".$id."/provinces";
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
@@ -749,8 +758,8 @@ class ApiController extends Controller
         ]);
     }
 
-    public function fetch_amphur_products_headers($pdgid, $id){
-
+    public function fetch_amphur_products_headers($pdgid, $id)
+    {
         $api_token = $this->apiToken();
         $path_search = "/saleheaders/".Auth::user()->api_identify."/pdglists/".$pdgid."/amphures?province_id=".$id;
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
@@ -774,7 +783,8 @@ class ApiController extends Controller
         ]);
     }
 
-    public function fetch_datatable_customer_headers($pdgid,$pvid,$ampid){
+    public function fetch_datatable_customer_headers($pdgid,$pvid,$ampid)
+    {
         $api_token = $this->apiToken();
         $path_search = "saleheaders/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers?province_id=".$pvid."&amphoe_id=".$ampid;
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
@@ -813,7 +823,8 @@ class ApiController extends Controller
         ->make(true);
     }
 
-    public function fetch_datatable_customer_headers_pdglist($pdgid){
+    public function fetch_datatable_customer_headers_pdglist($pdgid)
+    {
         $api_token = $this->apiToken();
         $path_search = "saleheaders/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers";
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
@@ -851,7 +862,8 @@ class ApiController extends Controller
         ->make(true);
     }
 
-    public function fetch_datatable_customer_headers_pdglist_pvid($pdgid, $pvid){
+    public function fetch_datatable_customer_headers_pdglist_pvid($pdgid, $pvid)
+    {
         $api_token = $this->apiToken();
         $path_search = "saleheaders/".Auth::user()->api_identify."/pdglists/".$pdgid."/customers";
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search,[
@@ -920,9 +932,10 @@ class ApiController extends Controller
         ]);
     }
 
-    public function fetch_amphur_products_admin($id){
-
+    public function fetch_amphur_products_admin($id)
+    {
         $api_token = $this->apiToken();
+
         $path_search = "/provinces/".$id."/amphures";
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
         $res_api = $response->json();
@@ -945,8 +958,10 @@ class ApiController extends Controller
         ]);
     }
 
-    public function fetch_datatable_customer_admin($ampid){
+    public function fetch_datatable_customer_admin($ampid)
+    {
         $api_token = $this->apiToken();
+
         $path_search = "amphures/".$ampid."/customers";
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
@@ -983,8 +998,10 @@ class ApiController extends Controller
         ->make(true);
     }
 
-    public function fetch_datatable_customer_admin_pdglist($pdgid){
+    public function fetch_datatable_customer_admin_pdglist($pdgid)
+    {
         $api_token = $this->apiToken();
+
         $path_search = "pdglists/".$pdgid."/customers";
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
@@ -1022,8 +1039,10 @@ class ApiController extends Controller
         ->make(true);
     }
 
-    public function fetch_datatable_customer_admin_pdglist_pvid($pvid){
+    public function fetch_datatable_customer_admin_pdglist_pvid($pvid)
+    {
         $api_token = $this->apiToken();
+
         $path_search = "provinces/".$pvid."/customers";
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
@@ -1064,12 +1083,12 @@ class ApiController extends Controller
     //-- จบ สำหรับ Admin--
 
 
-
     /**
      *  --- ดึงข้อมูลจาก API ลงฐานข้อมูลระบบ
      */
 
-    public function api_fetch_provinces(){ //-- ดึงจังหวัด
+    public function api_fetch_provinces() //-- ดึงจังหวัด
+    { 
         DB::beginTransaction();
         try {
             $api_token = $this->apiToken();
@@ -1111,7 +1130,8 @@ class ApiController extends Controller
         }
     }
 
-    public function api_fetch_amphures(){ //-- ดึง อำเภอ
+    public function api_fetch_amphures() //-- ดึง อำเภอ
+    { 
         DB::beginTransaction();
         try {
             $api_token = $this->apiToken();
@@ -1154,8 +1174,8 @@ class ApiController extends Controller
     }
 
 
-    public function fetch_customer_province_api($pid){ //-- ดึง ลูกค้าอ้างอิงที่จังหวัด (ใช้ในระบบทริป)
-
+    public function fetch_customer_province_api($pid) //-- ดึง ลูกค้าอ้างอิงที่จังหวัด (ใช้ในระบบทริป)
+    { 
         switch  (Auth::user()->status){
             case 1 :    $path_search = 'sellers/'.Auth::user()->api_identify.'/customers';
                 break;
@@ -1186,7 +1206,8 @@ class ApiController extends Controller
     }
     
 
-    public function api_fetch_customers(){ //-- ดึง ลูกค้า
+    public function api_fetch_customers() //-- ดึง ลูกค้า
+    { 
         DB::beginTransaction();
         try {
             $api_token = $this->apiToken();
@@ -1272,7 +1293,8 @@ class ApiController extends Controller
         }
     }
 
-    public function api_fetch_pdglists(){ // ดึงสินค้า pdglists
+    public function api_fetch_pdglists() // ดึงสินค้า pdglists
+    { 
         DB::beginTransaction();
         try {
             $api_token = $this->apiToken();
@@ -1315,7 +1337,8 @@ class ApiController extends Controller
         }
     }
 
-    public function api_customer_to_pdglist(){ // ดึง ข้อมูลลูกค้า เปรียเทียบ สินค้าที่ซื้อ
+    public function api_customer_to_pdglist() // ดึง ข้อมูลลูกค้า เปรียเทียบ สินค้าที่ซื้อ
+    { 
         DB::beginTransaction();
         try {
             $api_token = $this->apiToken();
@@ -1357,8 +1380,8 @@ class ApiController extends Controller
      */
 
 
-    public function fetch_campaignpromotes($year){
-
+    public function fetch_campaignpromotes($year)
+    {
         $api_token = $this->apiToken();
 
         $path_search = "campaignpromotes";
