@@ -24,11 +24,6 @@ class ReportVisitCustomerGoalController extends Controller
         $sum_result_success = 0;
         $sum_shop_updatestatus = 0;
 
-        // $user_team = DB::table('users')
-        // ->whereIN('status',[1,2,3])
-        // ->where('team_id', Auth::user()->team_id)
-        // ->get();
-        
         $auth_team_id = explode(',',Auth::user()->team_id);
         $auth_team = array();
         foreach($auth_team_id as $value){
@@ -46,9 +41,7 @@ class ReportVisitCustomerGoalController extends Controller
         })
         ->get();
         
-
         for($i=1; $i<=12; $i++){
-
             $sum_count_shop_month = 0;
             $sum_count_shop_noplan_month  = 0;
             $sum_inout_shop_saleplan_month = 0; // รวมตามแผนและนอกแผน
@@ -373,7 +366,6 @@ class ReportVisitCustomerGoalController extends Controller
             'sum_percent_failed' => $sum_percent_failed,
         ];
 
-       //  dd($report_detail);
         return view('reports.report_visitcustomer_goal_head', $data);
     }
 

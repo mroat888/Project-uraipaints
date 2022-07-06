@@ -20,11 +20,6 @@ class ReportSalePlanController extends Controller
         $sum_result_success = 0;
         $sum_saleplan_updatestatus = 0;
 
-        // $users_saleman = DB::table('users')
-        // ->whereIn('status', [1,2,3])
-        // ->where('team_id', Auth::user()->team_id)
-        // ->get();
-        
         $auth_team_id = explode(',',Auth::user()->team_id);
         $auth_team = array();
         foreach($auth_team_id as $value){

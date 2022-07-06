@@ -11,12 +11,9 @@ use Illuminate\Support\Facades\Http;
 
 class ReportYearController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $report = array();
-        // $users = DB::table('users')
-        // ->whereIn('status',[1,2,3])
-        // ->where('team_id', Auth::user()->team_id)
-        // ->get();
 
         $auth_team_id = explode(',',Auth::user()->team_id);
         $auth_team = array();
@@ -593,8 +590,6 @@ class ReportYearController extends Controller
             'sum_percent_saleplans_success' => $sum_percent_saleplans_success,
             'sum_percent_saleplans_failed' => $sum_percent_saleplans_failed,
         ];
-
-       //dd($report);
 
         return view('reports.report_year_head', $data);
     }

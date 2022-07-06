@@ -15,18 +15,14 @@ class ApiCustomerController extends Controller
         $this->api_token = new ApiController();
     }
 
-    public function index(){
-
-        // $users_saleman = DB::table('users')
-        // ->whereIn('status', [1,2,3])
-        // ->where('team_id', Auth::user()->team_id)
-        // ->get();
-
+    public function index()
+    {
         $auth_team_id = explode(',',Auth::user()->team_id);
         $auth_team = array();
         foreach($auth_team_id as $value){
             $auth_team[] = $value;
         }
+
         $users_saleman = DB::table('users')
             ->whereIn('status', [1,2,3])
             ->where(function($query) use ($auth_team) {
@@ -37,7 +33,6 @@ class ApiCustomerController extends Controller
                 }
             })
             ->get();
-
 
         $api_token = $this->api_token->apiToken();
         $customer_api = array();
@@ -61,15 +56,12 @@ class ApiCustomerController extends Controller
             }
             
         }
-
-        //dd($res_api);
-        
+      
         return view('reports.report_store_head', compact('customer_api'));
-
     }
 
-    public function show($id){
-
+    public function show($id)
+    {
         $api_token = $this->api_token->apiToken();
 
         //- ดึงชื่อร้านค้า ตาม ID
@@ -97,8 +89,6 @@ class ApiCustomerController extends Controller
                 ];
             }
         }
-
-        //dd($data);
 
         return view('reports.report_store_head_detail', $data);
     }

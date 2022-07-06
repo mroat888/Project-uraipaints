@@ -10,13 +10,8 @@ use Illuminate\Support\Facades\DB;
 
 class ReportVisitCustomerController extends Controller
 {
-    public function index(){
-
-        // $user_team = DB::table('users')
-        // ->whereIn('status',[1,2,3])
-        // ->where('team_id', Auth::user()->team_id)
-        // ->get();
-
+    public function index()
+    {
         $auth_team_id = explode(',',Auth::user()->team_id);
         $auth_team = array();
         foreach($auth_team_id as $value){
@@ -184,8 +179,8 @@ class ReportVisitCustomerController extends Controller
         return view('reports.report_visitcustomer_head', compact('report', 'summary_report', 'report_detail'));
     }
 
-    public function search(Request $request){
-
+    public function search(Request $request)
+    {
         $data['sel_year'] = $request->sel_year;
         $sel_year = $data['sel_year']."-01-01";
 
@@ -299,7 +294,7 @@ class ReportVisitCustomerController extends Controller
                         'percent_failed' => $percent_failed,
                     ];
                     //-- จบ รายละเอียด
-                    
+
                 }
 
             }
@@ -350,8 +345,6 @@ class ReportVisitCustomerController extends Controller
             'sum_percent_success' => $sum_percent_success,
             'sum_percent_failed' => $sum_percent_failed,
         ];
-
-        // dd($report_detail);
 
         return view('reports.report_visitcustomer_head', $data);
     }
