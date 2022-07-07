@@ -26,7 +26,6 @@ class RequestApprovalController extends Controller
 
     public function index()
     {
-
         $data['list_approval']  = DB::table('assignments')
             ->leftJoin('assignments_comments', 'assignments.id', 'assignments_comments.assign_id')
             ->leftJoin('api_customers', 'api_customers.identify', 'assignments.assign_shop')
