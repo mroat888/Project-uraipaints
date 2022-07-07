@@ -18,7 +18,8 @@ use App\Http\Controllers\Api\ApiController;
 class RequestApprovalController extends Controller
 {
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->apicontroller = new ApiController();
         $this->api_token = $this->apicontroller->apiToken(); // API Login
     }
@@ -261,8 +262,8 @@ class RequestApprovalController extends Controller
         ]);
     }
 
-    public function update(Request $request){
-
+    public function update(Request $request)
+    {
         // dd($request);
         DB::beginTransaction();
         try {
@@ -317,7 +318,6 @@ class RequestApprovalController extends Controller
 
     public function destroy(Request $request)
     {
-
         DB::beginTransaction();
         try {
 
@@ -337,7 +337,6 @@ class RequestApprovalController extends Controller
 
     public function view_comment($id)
     {
-
         $request_comment = AssignmentComment::where('assign_id', $id)->get();
         $dataResult = Assignment::leftjoin('master_objective_assigns', 'master_objective_assigns.id', 'assignments.approved_for')
         ->where('assignments.id', $id)
@@ -409,8 +408,8 @@ class RequestApprovalController extends Controller
     }
 
     // public function search_month_requestApprove(Request $request)
-    public function search_month_requestApprove($fromMonth, $toMonth){
-
+    public function search_month_requestApprove($fromMonth, $toMonth)
+    {
         $list_approval = DB::table('assignments')
             ->leftJoin('assignments_comments', 'assignments.id', 'assignments_comments.assign_id')
             ->leftJoin('api_customers', 'api_customers.identify', 'assignments.assign_shop')
