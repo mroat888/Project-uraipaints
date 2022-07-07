@@ -416,6 +416,7 @@
     //approval_comment
     function approval_comment(id) {
         console.log(id);
+        $('#div_assign_approve').children().remove().end();
         $.ajax({
             type: "GET",
             url: "{!! url('view_comment/"+id+"') !!}",
@@ -451,7 +452,11 @@
                 $('#header_approved_for_comment').text(data['dataassign'].masassign_title);
                 $('#get_assign_request_date').text(date_request);
                 $('#get_assign_work_date_comment').text(date_work);
+
                 $('#div_assign_status').append('<span>การอนุมัติ : </span>'+div_assign_status);
+
+                $('#div_assign_approve').append('<span>ผู้อนุมัติ : '+data['dataassign'].assignments_approve_name+
+                ' วันที่ : '+data['dataassign'].assignments_approve_date+'</span>');
 
                 $.each(data['comment'], function(key, value){
 
@@ -460,7 +465,7 @@
                 let year_th_comment = parseInt(get_request_date2[0])+543;
                 let date_comment = created_comment[2]+"/"+created_comment[1]+"/"+year_th_comment;
 
-                    $('#div_comment').append('<div>Comment by: '+value.user_comment+' Date: '+date_comment+'</div>');
+                    $('#div_comment').append('<div>ผู้ให้ความเห็น : '+value.user_comment+' วันที่: '+date_comment+'</div>');
                     $('#div_comment').append('<div class="alert alert-primary py-20" role="alert">'+value.assign_comment_detail+'</div>');
                 });
 

@@ -34,7 +34,8 @@ class UnionAssignmentController extends Controller
         $assignments_approve_name = $users_approve->name;
 
         if(!is_null($dataResult->assign_approve_date)){
-            $assign_approve_date = $dataResult->assign_approve_date;
+            // $assign_approve_date = $dataResult->assign_approve_date;
+            $assign_approve_date = date('d/m/Y H:i',strtotime($dataResult->assign_approve_date."+543 years"));
         }else{
             $assign_approve_date = "-";
         }

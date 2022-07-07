@@ -366,6 +366,16 @@ class RequestApprovalController extends Controller
             ];
         }
 
+        $users_approve = DB::table('users')->where('id', $dataResult->assign_approve_id)->first();
+        $assignments_approve_name = $users_approve->name;
+
+        if(!is_null($dataResult->assign_approve_date)){
+            // $assign_approve_date = $dataResult->assign_approve_date;
+            $assign_approve_date = date('d/m/Y H:i',strtotime($dataResult->assign_approve_date."+543 years"));
+        }else{
+            $assign_approve_date = "-";
+        }
+
         $dataassign = array();
         $dataassign = [
             'assign_detail' => $dataResult->assign_detail,
@@ -374,6 +384,8 @@ class RequestApprovalController extends Controller
             'assign_work_date' => $dataResult->assign_work_date,
             'masassign_title' => $dataResult->masassign_title,
             'assign_status' => $dataResult->assign_status,
+            'assignments_approve_name' => $assignments_approve_name,
+            'assignments_approve_date' => $assign_approve_date,
         ];
         
         $comment = array();

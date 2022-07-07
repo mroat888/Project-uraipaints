@@ -180,7 +180,7 @@
                 $('#div_assign_status').append('<span>การอนุมัติ : </span>'+span_assign_status);
 
                 $('#div_assign_approve').append('<span>ผู้อนุมัติ : '+data['dataassign'].assignments_approve_name+
-                ' Date : '+data['dataassign'].assignments_approve_date+'</span>');
+                ' วันที่ : '+data['dataassign'].assignments_approve_date+'</span>');
 
                 $.each(data['comment'], function(key, value){
                         let get_created_at = value.created_at.split(" ");
@@ -188,7 +188,7 @@
                         let year_th_create = parseInt(get_created_at2[0])+543;
                         let date_create = get_created_at2[2]+"/"+get_created_at2[1]+"/"+year_th_create;
 
-                    $('#div_comment').append('<div>Comment by: '+value.user_comment+' Date: '+date_create+'</div>');
+                    $('#div_comment').append('<div>ผู้ให้ความคิดเห็น: '+value.user_comment+' วันที่: '+date_create+'</div>');
                     $('#div_comment').append('<div class="alert alert-primary py-20" role="alert">'+value.assign_comment_detail+'</div>');
                 });
 
