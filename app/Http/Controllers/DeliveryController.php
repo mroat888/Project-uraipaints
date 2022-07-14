@@ -31,25 +31,29 @@ class DeliveryController extends Controller
         ]);
 
         $res_api = $response->json();
-
-        if($res_api['code'] == 200){
-            $data['delivery_api'] = array();
-            foreach ($res_api['data'] as $key => $value) {
-                $data['delivery_api'][$key] =
-                [
-                    'shop_name' => $value['name'],
-                    'province' => $value['province'],
-                    'invonce_no' => $value['invonce_no'],
-                    'total_quan' => $value['total_quan'],
-                    'delivery_type' => $value['delivery_type'],
-                    'delivery_status' => $value['delivery_status'],
-                    'delivery_date' => $value['delivery_date'],
-                    'remark' => $value['remark'],
-                ];
+        if(!is_null($res_api)){
+            if($res_api['code'] == 200){
+                $data['delivery_api'] = array();
+                foreach ($res_api['data'] as $key => $value) {
+                    $data['delivery_api'][$key] =
+                    [
+                        'shop_name' => $value['name'],
+                        'province' => $value['province'],
+                        'invonce_no' => $value['invonce_no'],
+                        'total_quan' => $value['total_quan'],
+                        'delivery_type' => $value['delivery_type'],
+                        'delivery_status' => $value['delivery_status'],
+                        'delivery_date' => $value['delivery_date'],
+                        'remark' => $value['remark'],
+                    ];
+                }
+            }else {
+                $data['delivery_api'] = "";
             }
         }else {
             $data['delivery_api'] = "";
         }
+        
 
         switch (Auth::user()->status) {
             case '1':
@@ -146,20 +150,24 @@ class DeliveryController extends Controller
 
         $res_api = $response->json();
 
-        if($res_api['code'] == 200){
-            $data['delivery_api'] = array();
-            foreach ($res_api['data'] as $key => $value) {
-                $data['delivery_api'][$key] =
-                [
-                    'shop_name' => $value['name'],
-                    'province' => $value['province'],
-                    'invonce_no' => $value['invonce_no'],
-                    'total_quan' => $value['total_quan'],
-                    'delivery_type' => $value['delivery_type'],
-                    'delivery_status' => $value['delivery_status'],
-                    'delivery_date' => $value['delivery_date'],
-                    'remark' => $value['remark'],
-                ];
+        if(!is_null($res_api)){
+            if($res_api['code'] == 200){
+                $data['delivery_api'] = array();
+                foreach ($res_api['data'] as $key => $value) {
+                    $data['delivery_api'][$key] =
+                    [
+                        'shop_name' => $value['name'],
+                        'province' => $value['province'],
+                        'invonce_no' => $value['invonce_no'],
+                        'total_quan' => $value['total_quan'],
+                        'delivery_type' => $value['delivery_type'],
+                        'delivery_status' => $value['delivery_status'],
+                        'delivery_date' => $value['delivery_date'],
+                        'remark' => $value['remark'],
+                    ];
+                }
+            }else {
+                $data['delivery_api'] = "";
             }
         }else {
             $data['delivery_api'] = "";

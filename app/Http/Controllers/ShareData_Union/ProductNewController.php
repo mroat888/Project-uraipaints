@@ -377,6 +377,8 @@ class ProductNewController extends Controller
             $data['users_head'] = DB::table('users')->where('status', 3)->get();
         }
 
+        $data['unit'] = DB::table('master_setting')->where('id', 3)->first(); //-- หน่วยท้ายตาราง
+
         switch  (Auth::user()->status){
             case 2 :    return view('shareData_leadManager.report_product_new', $data); //-- Lead
                 break;
