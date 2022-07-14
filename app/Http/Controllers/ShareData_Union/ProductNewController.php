@@ -167,6 +167,8 @@ class ProductNewController extends Controller
         }
         // -- จบ ดึง ผู้จัดการเขต
 
+        $data['unit'] = DB::table('master_setting')->where('id', 3)->first(); //-- หน่วยท้ายตาราง
+
         switch  (Auth::user()->status){
             case 2 :    $return = "shareData_leadManager.report_product_new"; //-- Lead
                         return view('shareData_leadManager.report_product_new', $data);

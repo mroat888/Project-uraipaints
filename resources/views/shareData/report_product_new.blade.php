@@ -61,21 +61,24 @@
                             <!-- ------ -->
                         </div>
                     </div>
-
+                    <style>
+                        th {
+                            border: 1px solid;
+                        }
+                    </style>
                     <div class="row mt-50">
                         <div class="col-sm">
-                            <div class="table-responsive-sm">
-                                <table class="table table-sm table-hover table-bordered">
+                            <!-- <div class="table-responsive-sm">
+                                <table class="table table-sm table-hover table-bordered"> -->
+                                <div id="table_list" class="table-responsive table-color col-md-12">
+                                    <table class="table table-hover" >
                                     <thead>
                                         <tr>
                                             <th rowspan="2">#</th>
-                                            <th colspan="3" style="text-align:center;">รายละเอียดเป้าสินค้าใหม่</th>
-                                            <th colspan="5" style="text-align:center;">ผลงาน</th>
-                                            <!-- <th colspan="3" style="text-align:center;">รายการยอดขายสินค้าใหม่</th>
-                                            <th colspan="2" style="text-align:center;">คิดเป็นเปอร์เซ็น (%)</th> -->
+                                            <th colspan="3" style="text-align:center; border: 1px solid;">รายละเอียดเป้าสินค้าใหม่</th>
+                                            <th colspan="5" style="text-align:center; border: 1px solid;">ผลงาน</th>
                                         </tr>
-
-                                        <tr style="text-align:center">
+                                        <tr style="text-align:center; border: 1px solid;">
                                             <th>ชื่อเป้า</th>
                                             <th>ระยะเวลา</th>
                                             <th>เป้าทั้งหมด<br>(หน่วย)</th>
@@ -105,7 +108,7 @@
                                     ?>
 
                                         <tr style="text-align:center">
-                                            <th scope="row">{{ ++$no }}</th>
+                                            <td>{{ ++$no }}</td>
                                             <td style="text-align:left;">{{ $sellers_api[$i]['description'] }}</td>
                                             <td>{{ $fromdate }} - {{ $todate }}</td>
                                             <td>{{ number_format($sellers_api[$i]['Target'],0) }}</td>

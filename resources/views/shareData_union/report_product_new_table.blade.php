@@ -17,10 +17,10 @@
                         <th>#</th>
                         <th style="text-align:left;">ชื่อเป้า</th>
                         <th>ระยะเวลา</th>
-                        <th>เป้าทั้งหมด</th>
-                        <th>เป้าที่ทำได้</th>
+                        <th>เป้าทั้งหมด<br>(หน่วย)</th>
+                        <th>เป้าที่ทำได้<br>(หน่วย)</th>
                         <th>คิดเป็น%</th>
-                        <th>คงเหลือ</th>
+                        <th>คงเหลือ<br>(หน่วย)</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -107,6 +107,21 @@
                 </tbody>
             </table>
             
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="ml-25">
+        <div class="row mt-30">
+            <div class="col-sm">
+                หน่วย หมายถึง {{$unit->stipulate}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                ข้อมูล ณ วันที่ {{ $trans_last_date }}
+            </div>
         </div>
     </div>
 </div>
