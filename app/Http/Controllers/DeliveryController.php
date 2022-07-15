@@ -150,6 +150,8 @@ class DeliveryController extends Controller
 
         $res_api = $response->json();
 
+        // dd($seller_id, $request, $res_api);
+
         if(!is_null($res_api)){
             if($res_api['code'] == 200){
                 $data['delivery_api'] = array();
