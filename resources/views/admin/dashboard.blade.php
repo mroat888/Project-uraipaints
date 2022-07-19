@@ -420,7 +420,9 @@
 
                                             $totalAmtSale_th = $SalesCurrent[0]["sales_th"]; // ยอดที่ทำได้ปีนี้
                                             $totalAmtSale = $SalesCurrent[0]["sales"]; // ยอดที่ทำได้ปีนี้
-                                            $percentAmtCrn = (($totalAmtSale)*100)/$totalAmtSale_Previous;
+                                            if($totalAmtSale_Previous > 0){
+                                                $percentAmtCrn = (($totalAmtSale)*100)/$totalAmtSale_Previous;
+                                            }
                                         }else{
                                             $totalAmtSale_th = "0";
                                             $totalAmtSale = 0;

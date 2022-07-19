@@ -420,8 +420,15 @@
                             <div class="mt-sumsales card card-sm">
                                 <div class="card-sumsales card-body" style="color: #fff;">
                                     @php
-                                        if(isset($res_api["data"][3]["SalesPrevious"]) && isset($res_api["data"][2]["SalesCurrent"])){
+                                        $SalesPrevious = 0;
+                                        $totalAmtSale_th_Previous = "0";
+                                        $totalAmtSale_Previous = 0; 
 
+                                        $totalAmtSale_th = "0";
+                                        $totalAmtSale = 0;
+                                        $percentAmtCrn = 0;
+                                        if(!is_null($res_api["data"][3]["SalesPrevious"]) && !is_null($res_api["data"][2]["SalesCurrent"])){
+                                            
                                             if(!empty($res_api["data"][3]["SalesPrevious"])){
                                                 $SalesPrevious = $res_api["data"][3]["SalesPrevious"];
                                                 $totalAmtSale_th_Previous = $SalesPrevious[0]["sales_th"]; // เป้ายอดขายปีที่แล้ว
@@ -435,25 +442,18 @@
                                             $percentAmtCrn =0;
                                             if(!empty($res_api["data"][2]["SalesCurrent"])){
                                                 $SalesCurrent = $res_api["data"][2]["SalesCurrent"];
-
                                                 $totalAmtSale_th = $SalesCurrent[0]["sales_th"]; // ยอดที่ทำได้ปีนี้
                                                 $totalAmtSale = $SalesCurrent[0]["sales"]; // ยอดที่ทำได้ปีนี้
-                                                $percentAmtCrn = (($totalAmtSale)*100)/$totalAmtSale_Previous;
+                                                if($totalAmtSale_Previous > 0){
+                                                    $percentAmtCrn = (($totalAmtSale)*100)/$totalAmtSale_Previous;
+                                                }
                                             }else{
                                                 $totalAmtSale_th = "0";
                                                 $totalAmtSale = 0;
                                                 $percentAmtCrn = 0;
                                             }
-
-                                        }else{
-                                            $SalesPrevious = 0;
-                                            $totalAmtSale_th_Previous = "0";
-                                            $totalAmtSale_Previous = 0; 
-
-                                            $totalAmtSale_th = "0";
-                                            $totalAmtSale = 0;
-                                            $percentAmtCrn = 0;
-                                        }    
+                                            
+                                        }
                                     @endphp
 
                                     <span class="d-block font-11 font-weight-500 text-dark text-uppercase mb-10"></span>
@@ -560,14 +560,19 @@
                                                     <div class="col-6 col-md-5 pdr-0" style="text-align:right;">
                                                         <span style="font-weight: bold; font-size: 16px;">
                                                             @php 
-                                                                if(isset($res_api["data"])){
+                                                                if(isset($res_api) && isset($res_api["data"])){
                                                                     $shop_active = $res_api["data"][0]["Customers"][0]["ActiveTotal"];
                                                                     $BillOrderTotal = $res_api["data"][0]["Customers"][0]["BillOrderTotal"];
-                                                                    $persentbill = ($BillOrderTotal*100)/$shop_active;
+                                                                    if($shop_active > 0){
+                                                                        $persentbill = ($BillOrderTotal*100)/$shop_active;
+                                                                    }else{
+                                                                        $persentbill = null;
+                                                                    }
                                                                 }else{
                                                                     $persentbill = null;
                                                                 }
                                                             @endphp
+
                                                             @if ($persentbill != null)
                                                                 {{ number_format($persentbill) }} % จากทั้งหมด
                                                             @else
@@ -582,10 +587,10 @@
                                                     </div>
                                                     <div class="col-6 col-md-5 pdr-0" style="text-align:right;">
                                                         <span style="font-weight: bold; font-size: 16px;" class="num-specialday">
-                                                            @php 
-                                                                $presentbill_no = 100-$persentbill;
-                                                            @endphp
-                                                            @if ($presentbill_no != null)
+                                                            @if ($persentbill != null)
+                                                                @php 
+                                                                    $presentbill_no = 100-$persentbill;
+                                                                @endphp
                                                                 {{ number_format($presentbill_no) }} % จากทั้งหมด
                                                             @else
                                                                 - % จากทั้งหมด
