@@ -255,7 +255,7 @@ class UnionTripController extends Controller
             'sortorder' => 'DESC',
         ]);
         $res_api = $response->json();
-
+        
         if($res_api['code'] == 200){
             $customer_api = $res_api['data'];
         }
@@ -264,7 +264,8 @@ class UnionTripController extends Controller
         $data['trip_detail'] = array();
         if(count($trip_detail) > 0){
             foreach($trip_detail as $value){
-
+                $formprovince = "";
+                $toprovince = "";
                 foreach($data['provinces'] as $provinces){
                     if($value->trip_from == $provinces['identify'] ){
                         $formprovince = $provinces['name_thai'];

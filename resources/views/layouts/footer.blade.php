@@ -1,8 +1,9 @@
 <footer class="footer">
     <div class="row">
         <div class="col-md-6 col-sm-12">
-            <!-- <p>create by<a href="https://www.orange-thailand.com/" class="text-dark"
-                    target="_blank">Orange Technology Solution</a> © 2021</p> -->
+            <!-- <p>Create by<a href="https://www.orange-thailand.com" style="text-decoration: underline;">Developed by ORANGE</a> © 2022</p> -->
+            <p><a href="https://www.orange-thailand.com" style="text-decoration: underline; color:#999; font-size:12px;">Developed by ORANGE</a></p>
+                    
         </div>
         <div class="col-md-6 col-sm-12">
             <!-- <p class="d-inline-block">Follow us</p>
