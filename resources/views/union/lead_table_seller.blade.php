@@ -21,7 +21,7 @@
                     <div class="media-img-wrap">
                         <div class="avatar avatar-sm">
                             @if ($shop['shop_profile_image'])
-                            <img src="{{ isset($shop->shop_profile_image) ? asset('/public/upload/CustomerImage/' . $shop['shop_profile_image']) : '' }}"
+                            <img src="{{ isset($shop['shop_profile_image']) ? asset('/public/upload/CustomerImage/' . $shop['shop_profile_image']) : '' }}"
                             alt="{{ $shop['shop_name'] }}" class="avatar-img">
 
                             @else

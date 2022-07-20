@@ -216,6 +216,8 @@
                 $('#amphur').attr('disabled', 'disabled');
                 $('#district').attr('disabled', 'disabled');
                 $('#postcode').attr('readonly', true);
+                $('#image').attr('disabled', 'disabled');
+                $('#shop_fileupload').attr('disabled', 'disabled');
             }else{
                 $('#customer_shops_id').val('');
                 $('#shop_name').attr('readonly', false);
@@ -226,6 +228,8 @@
                 $('#amphur').removeAttr("disabled");
                 $('#district').removeAttr("disabled");
                 $('#postcode').attr('readonly', false);
+                $('#image').removeAttr("disabled");
+                $('#shop_fileupload').removeAttr("disabled");
             }
             $.ajax({
                 method: 'GET',

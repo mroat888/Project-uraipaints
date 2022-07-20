@@ -917,17 +917,14 @@
                 $('#amphur').attr('disabled', 'disabled');
                 $('#district').attr('disabled', 'disabled');
                 $('#postcode').attr('readonly', true);
+                $('#image').attr('disabled', 'disabled');
+                $('#shop_fileupload').attr('disabled', 'disabled');
             }else{
                 $('#customer_shops_id').val('');
                 $('#shop_name').val('');
                 $('#contact_name').val('');
                 $('#shop_phone').val('');
                 $('#shop_address').val('');
-                // $('#province').val('');
-                // $('#district').val('');
-                // $('#postcode').val('');
-                // document.getElementById("shop_name").value = "";
-
                 $('#shop_name').attr('readonly', false);
                 $('#contact_name').attr('readonly', false);
                 $('#shop_phone').attr('readonly', false);
@@ -936,6 +933,8 @@
                 $('#amphur').removeAttr("disabled");
                 $('#district').removeAttr("disabled");
                 $('#postcode').attr('readonly', false);
+                $('#image').removeAttr("disabled");
+                $('#shop_fileupload').removeAttr("disabled");
             }
             $.ajax({
                 method: 'GET',

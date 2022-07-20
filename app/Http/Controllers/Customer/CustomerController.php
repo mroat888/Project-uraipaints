@@ -321,11 +321,29 @@ class CustomerController extends Controller
                 ]);
 
             }else{ // ถ้าไม่มีให้เพิ่มร้านค้าเข้าไปใหม่
-
+               
                 $path = 'upload/CustomerImage';
                 $image = '';
-                $pathFle = 'upload/CustomerFile';
+                $pathFile = 'upload/CustomerFile';
                 $uploadfile = '';
+
+                if ($request->image != '') {
+                    if (!empty($request->file('image'))) {
+                        $img = $request->file('image');
+                        $img_name = 'stores-' . time() . '.' . $img->getClientOriginalExtension();
+                        $save_path = $img->move(public_path($path), $img_name);
+                        $image = $img_name;
+                    }
+                }
+
+                if ($request->shop_fileupload != '') {
+                    if (!empty($request->file('shop_fileupload'))) {
+                        $uploadF = $request->file('shop_fileupload');
+                        $file_name = 'file-' . time() . '.' . $uploadF->getClientOriginalExtension();
+                        $save_path2 = $uploadF->move(public_path($pathFile), $file_name);
+                        $uploadfile = $file_name;
+                    }
+                }
 
                 DB::table('customer_shops')
                 ->insert([

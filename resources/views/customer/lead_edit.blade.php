@@ -73,9 +73,9 @@
                                 <input class="form-control" id="edit_image" name="edit_image" type="file">
                             </div>
                             <div class="col-md-6 form-group">
-                            <label for="firstName">เอกสารแนบ</label>
-                            <input class="form-control" id = "edit_shop_fileupload" name="edit_shop_fileupload" type="file">
-                        </div>
+                                <label for="firstName">เอกสารแนบ</label>
+                                <input class="form-control" id = "edit_shop_fileupload" name="edit_shop_fileupload" type="file">
+                            </div>
                         </div>
                         <input type="hidden" name="id" id="get_id"> <!-- ถ้าไม่ใช้ ลบได้ครับ -->
                 </div>
