@@ -167,7 +167,7 @@
                             @endif
 
                 </div>
-                <div class="col-md-12 text-right" style="font-size: 14px;">อัพเดตวันที่ : {{$data_product->updated_at->addYear(543)->format('d/m/Y')}}</div>
+                <div class="col-md-12 text-right" style="font-size: 14px;">อัพเดตวันที่ : {{ ($data_product->updated_at ? $data_product->updated_at->addYear(543)->format('d/m/Y') : $data_product->created_at->addYear(543)->format('d/m/Y')) }}</div>
                 </div>
             </section>
 

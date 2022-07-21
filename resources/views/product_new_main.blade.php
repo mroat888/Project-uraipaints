@@ -62,7 +62,7 @@
 
                     </div>
                 </div>
-                <div class="col-md-12 text-right" style="font-size: 14px;"><div class="news-update">อัพเดตวันที่ : {{$value->updated_at->format('d/m/Y')}}</div></div>
+                <div class="col-md-12 text-right" style="font-size: 14px;"><div class="news-update">อัพเดตวันที่ : {{ ($value->updated_at ? $value->updated_at->format('d/m/Y') : $value->created_at->format('d/m/Y')) }}</div></div>
             </div>
 
             @endforeach
