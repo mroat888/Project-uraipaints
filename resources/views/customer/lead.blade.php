@@ -68,8 +68,8 @@
                                                 break;
                                             case "ไม่สนใจ" : $check_Radio_4 = "checked";
                                                 break;
-                                            case "รอตัดสินใจ" : $check_Radio_5 = "checked";
-                                                break;
+                                           /* case "รอตัดสินใจ" : $check_Radio_5 = "checked";
+                                                break;*/
                                             case "รอตัดสินใจ" : $check_Radio_6 = "checked";
                                                 break;
                                             default : $check_Radio_1 = "checked";
@@ -137,7 +137,8 @@
                                                     </label>
                                                 </div>
                                             </li>
-                                            <li class="nav-item">
+                                            {{-- 
+                                            <!-- <li class="nav-item">
                                                 <div class="form-check form-check-inline">
                                                     <label>
                                                         <input class="form-check-input checkRadio" type="radio" name="slugradio" id="inlineRadio5" value="รอตัดสินใจ" {{ $check_Radio_5 }}>
@@ -147,7 +148,8 @@
                                                         </section>
                                                     </label>
                                                 </div>
-                                            </li>
+                                            </li> -->
+                                            --}}
                                         </ul>
                                     </div>
                                 </div>
