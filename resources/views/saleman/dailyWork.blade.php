@@ -431,7 +431,7 @@
                     <section class="hk-sec-wrapper">
                         <div class="hk-pg-header mb-10">
                             <div class="topichead-bggreen">
-                                Sale Plan (เปิดลูกค้าใหม่) ประจำเดือน <?php echo thaidate('F Y', date("Y-m-d")); ?>
+                                Sale Plan (เป้าหมายลูกค้าใหม่) ประจำเดือน <?php echo thaidate('F Y', date("Y-m-d")); ?>
                             </div>
                         </div>
                         <div class="row">

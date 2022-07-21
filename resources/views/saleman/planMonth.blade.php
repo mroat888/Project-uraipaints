@@ -350,7 +350,7 @@
                 <div class="col-md-12">
                     <section class="hk-sec-wrapper">
                         <div class="hk-pg-header mb-10">
-                            <div class="topichead-blue"> Sale Plan (เปิดลูกค้าใหม่) </div>
+                            <div class="topichead-blue"> Sale Plan (เป้าหมายลูกค้าใหม่) </div>
                             <div class="content-right d-flex">
                                 @if($monthly_plan_next->status_approve == 1 || $monthly_plan_next->status_approve == 2)
                                     <button type="button" class="btn-green"
