@@ -28,11 +28,20 @@ $master_present = App\MasterPresentSaleplan::orderBy('id', 'desc')->get();
                     <label for="firstName">ค้นหาชื่อร้าน</label>
                     <select name="sel_searchShop2" id="sel_searchShop2" class="form-control custom-select select2" required>
                         <option value="" selected disabled>กรุณาเลือกชื่อร้านค้า</option>
+<<<<<<< HEAD
+                        @if (isset($customer_api) && !is_null($customer_api))
+                        @foreach ($customer_api as $key => $value)
+                        <option value="{{$customer_api[$key]['id']}}">{{$customer_api[$key]['shop_name']}}</option>
+                    @endforeach
+                        @endif
+
+=======
                         @if(isset($customer_api) && !is_null($customer_api))
                             @foreach ($customer_api as $key => $value)
                                 <option value="{{$customer_api[$key]['id']}}">{{$customer_api[$key]['shop_name']}}</option>
                             @endforeach
                         @endif
+>>>>>>> 50ae01586c44fb99bce42a77e2ceb9a0d0620bbb
                     </select>
                 </div>
             </div>
