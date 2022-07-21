@@ -86,17 +86,26 @@
                                             <th>รายการ</th>
                                             <th>ปี 
                                                 @php 
-                                                    $year_thai_0 = $yearadmin_api[0]['year']+543;
-                                                    if(isset($yearadmin_api[1])){ //-- ตรวจสอบมีข้อมูลมาไหม
-                                                        $year_thai_1 = $yearadmin_api[1]['year']+543;
-                                                        $sales_1 = $yearadmin_api[1]['sales'];
-                                                        $sales_th_1 = $yearadmin_api[1]['sales_th'] ;
-                                                        $customers_1 = $yearadmin_api[1]['customers'] ;
+                                                    if(isset($yearadmin_api)){
+                                                        $year_thai_0 = $yearadmin_api[0]['year']+543;
+                                                        if(isset($yearadmin_api[1])){ //-- ตรวจสอบมีข้อมูลมาไหม
+                                                            $year_thai_1 = $yearadmin_api[1]['year']+543;
+                                                            $sales_1 = $yearadmin_api[1]['sales'];
+                                                            $sales_th_1 = $yearadmin_api[1]['sales_th'] ;
+                                                            $customers_1 = $yearadmin_api[1]['customers'] ;
+                                                        }else{
+                                                            if($year_search[0] != $yearadmin_api[0]['year']){
+                                                                $year_thai_1 = $year_search[0]+543;
+                                                            }else{
+                                                                $year_thai_1 = $year_search[1]+543;
+                                                            }
+                                                            $sales_1 = $yearadmin_api[0]['sales'];
+                                                            $sales_th_1 = $yearadmin_api[0]['sales_th'] ;
+                                                            $customers_1 = $yearadmin_api[0]['customers'] ;
+                                                        }
                                                     }else{
-                                                        $year_thai_1 = $year_thai_0;
-                                                        $sales_1 = $yearadmin_api[0]['sales'];
-                                                        $sales_th_1 = $yearadmin_api[0]['sales_th'] ;
-                                                        $customers_1 = $yearadmin_api[0]['customers'] ;
+                                                        $year_thai_0 = $year_search[0]+543;
+                                                        $year_thai_1 = $year_search[1]+543;
                                                     }
                                                 @endphp
                                                 {{ $year_thai_0 }}
@@ -109,13 +118,21 @@
                                     <tbody>
                                         <tr style="text-align:center">
                                             <td style="text-align:left">ยอดขาย(บาท)</td>
-                                            <td>{{ number_format($yearadmin_api[0]['sales'],2) }}</td>
-                                            <td>{{ number_format($sales_1,2) }}</td>
+                                            <td>{{ (isset($yearadmin_api[0]['sales']) ? number_format($yearadmin_api[0]['sales'],2) : 0) }}</td>
+                                            <td>{{ (isset($sales_1) ? number_format($sales_1,2) : 0) }}</td>
                                                 @php 
-                                                    $diff_sale = $sales_1 - $yearadmin_api[0]['sales'];
+                                                    if(isset($yearadmin_api[0]['sales'])){
+                                                        $diff_sale = $sales_1 - $yearadmin_api[0]['sales'];
+                                                    }else{
+                                                        $diff_sale = 0;
+                                                    }
                                                     $diff_sale_thai = $diff_sale/1000000;
 
-                                                    $prasent_diff = ($diff_sale*100)/$yearadmin_api[0]['sales'];
+                                                    if(isset($yearadmin_api[0]['sales']) && $yearadmin_api[0]['sales'] > 0){
+                                                        $prasent_diff = ($diff_sale*100)/$yearadmin_api[0]['sales'];
+                                                    }else{
+                                                        $prasent_diff = 0;
+                                                    }
 
                                                     if($diff_sale < 0){
                                                         $text_color = "text-danger";
@@ -129,11 +146,19 @@
                                         </tr>
                                         <tr style="text-align:center">
                                             <td style="text-align:left">จำนวนร้านค้า(ร้าน)</td>
-                                            <td>{{ number_format($yearadmin_api[0]['customers']) }}</td>
-                                            <td>{{ number_format($customers_1) }}</td>
+                                            <td>{{ (isset($yearadmin_api[0]['customers']) ? number_format($yearadmin_api[0]['customers']) : 0) }}</td>
+                                            <td>{{ (isset($customers_1) ? number_format($customers_1) : 0) }}</td>
                                                 @php 
-                                                    $diff_customers = $customers_1 - $yearadmin_api[0]['customers'];
-                                                    $prasent_customers = ($diff_customers*100)/$yearadmin_api[0]['customers'];
+                                                    if(isset($yearadmin_api[0]['customers'])){
+                                                        $diff_customers = $customers_1 - $yearadmin_api[0]['customers'];
+                                                    }else{
+                                                        $diff_customers = 0;
+                                                    }
+                                                    if(isset($yearadmin_api[0]['customers']) && $yearadmin_api[0]['customers'] > 0){
+                                                        $prasent_customers = ($diff_customers*100)/$yearadmin_api[0]['customers'];
+                                                    }else{
+                                                        $prasent_customers = 0;
+                                                    }
 
                                                     if($diff_customers < 0){
                                                         $text_color = "text-danger";
@@ -151,9 +176,13 @@
                             <div>
                                 ข้อมูลสิ้นสุด ณ วันที่ 
                                 @php 
-                                    list($tsyear,$tsmonth,$tswday) = explode("-", $trans_last_date);
-                                    $year_thai = $tsyear+543;
-                                    $trans_last_date_thai = $tswday."/".$tsmonth."/".$year_thai;
+                                    if(isset($trans_last_date)){
+                                        list($tsyear,$tsmonth,$tswday) = explode("-", $trans_last_date);
+                                        $year_thai = $tsyear+543;
+                                        $trans_last_date_thai = $tswday."/".$tsmonth."/".$year_thai;
+                                    }else{
+                                        $trans_last_date_thai = "-";
+                                    }
                                 @endphp 
                                 {{ $trans_last_date_thai }}
                             </div>
@@ -202,8 +231,15 @@
                                     <tbody>
                                         @php 
                                             $month_thai = ["เดือนไทย","มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
-                                            $year = $yearadmin_api[0]['year'];
-                                            $year_old = $yearadmin_api[1]['year'];
+                                            $year = 0;
+                                            $year_old = 0;
+                                            if(isset($yearadmin_api[0]['year'])){
+                                                $year = $yearadmin_api[0]['year'];
+                                            }
+                                            
+                                            if(isset($yearadmin_api[1]['year'])){
+                                                $year_old = $yearadmin_api[1]['year'];
+                                            }
                                         @endphp
                                         <?php 
                                             $sum_sale_0 = 0;
@@ -247,7 +283,12 @@
                                                 $sale_diff = $sales_1-$sales_0;
                                                 $sale_diff_thai = $sale_diff/1000000;
 
-                                                $persent_sale = ($sale_diff*100)/$sales_0;
+                                                if($sales_0 > 0){
+                                                    $persent_sale = ($sale_diff*100)/$sales_0;
+                                                }else{
+                                                    $persent_sale = 0;
+                                                }
+                                                
                                                 if($sale_diff < 0){
                                                     $text_color_sale = "text-danger";
                                                 }else{
@@ -305,8 +346,13 @@
                                                     $sum_sale_1_thai = $sum_sale_1/1000000;
                                                     $sum_sale_diff = $sum_sale_1 - $sum_sale_0;
                                                     $sum_sale_diff_thai = $sum_sale_diff/1000000;
-                                                    $sum_persent_sale = ($sum_sale_diff*100)/$sum_sale_0;
                                                     $sum_customers_diff = $sum_customers_1 - $sum_customers_0;
+
+                                                    if($sum_sale_0 > 0){
+                                                        $sum_persent_sale = ($sum_sale_diff*100)/$sum_sale_0;
+                                                    }else{
+                                                        $sum_persent_sale = 0;
+                                                    }
 
                                                     $total_sale_0 += $sum_sale_0;
                                                     $total_sale_1 += $sum_sale_1;
@@ -344,7 +390,11 @@
                                             <tfoot style="font-weight: bold; text-align:right">
                                             @php 
                                                 $total_sale_diff = $total_sale_1 - $total_sale_0;
-                                                $total_persent_sale = ($total_sale_diff*100)/$total_sale_0;
+                                                if($total_sale_0 > 0){
+                                                    $total_persent_sale = ($total_sale_diff*100)/$total_sale_0;
+                                                }else{
+                                                    $total_persent_sale = 0;
+                                                }
 
                                                 if($total_sale_diff < 0){
                                                     $text_color_sum = "text-danger";
