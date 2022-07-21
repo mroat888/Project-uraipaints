@@ -136,7 +136,7 @@
                                                     <input type="month" id="selectdateFrom" name="selectdateFrom"
                                                         value="{{ $date_search }}" class="form-control form-control-sm"
                                                         style="margin-left:10px; margin-right:10px;" />
-                                                    <button style="margin-left:5px; margin-right:5px;" class="btn btn-teal btn-sm" id="submit_request">ค้นหา</button>
+                                                    <button style="margin-left:5px; margin-right:5px;" class="btn btn-green btn-sm" id="submit_request">ค้นหา</button>
                                                 </span>
                                             </span>
                                         </div>
@@ -198,7 +198,7 @@
                                                 </td>
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>
-                                                    @php 
+                                                    @php
                                                         list($date,$time) = explode(" ",$value->created_at);
                                                         list($year, $month, $day) = explode("-", $date);
                                                         $created_at = $day."/".$month."/".$year;
