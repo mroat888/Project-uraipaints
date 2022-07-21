@@ -110,11 +110,11 @@
                                         <div class="desc_cusnote">
                                             <blockquote class="blockquote mb-0">
                                                 @php
-                                                    $master_objective = DB::table('master_objective_saleplans')
+                                                    $master_objective = DB::table('master_customer_new')
                                                         ->where('id', $cust_shops_saleplan->customer_shop_objective)
                                                         ->first();
                                                     if(!is_null($master_objective)){
-                                                        $customer_shop_objective = $master_objective->masobj_title;
+                                                        $customer_shop_objective = $master_objective->cust_name;
                                                     }else{
                                                         $customer_shop_objective = "ไม่ระบุ";
                                                     }
@@ -161,7 +161,7 @@
             @endphp
 
             @foreach($customer_shop_comments as $comment)
-                
+
                 <div class="row">
                     <div class="col-2" style="text-align:center;">
                         <img src="{{ asset('/public/images/people-33.png')}}" alt="{{ $comment->name }}" style="max-width:80%;">
@@ -223,7 +223,7 @@
                     ->first();
             @endphp
             @if(!is_null($customer_shops_saleplan_result)) <!-- is_null -->
-                
+
                 <div class="row">
                     <div class="col-10">
                         <section class="hk-sec-wrapper">
@@ -280,7 +280,7 @@
                         <div>{{ $customer_shops_saleplan_result->name }}</div>
                     </div>
                 </div>
-  
+
             @endif <!-- is_null -->
         @endforeach
 
