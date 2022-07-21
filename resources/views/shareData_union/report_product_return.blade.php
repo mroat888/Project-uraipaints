@@ -85,9 +85,13 @@
                         <div class="mt-3" style="text-align:left;">
                             ข้อมูลสิ้นสุด ณ วันที่
                             @php 
-                                list($lat_year, $lat_month, $lat_day) = explode("-", $trans_last_date);
-                                $lat_year_thai = $lat_year + 543;
-                                $trans_last_date = $lat_day."/".$lat_month."/".$lat_year_thai;
+                                if(isset($trans_last_date)){
+                                    list($lat_year, $lat_month, $lat_day) = explode("-", $trans_last_date);
+                                    $lat_year_thai = $lat_year + 543;
+                                    $trans_last_date = $lat_day."/".$lat_month."/".$lat_year_thai;
+                                }else{
+                                    $trans_last_date = "-";
+                                }
                             @endphp 
                             {{ $trans_last_date }}
                         </div>
