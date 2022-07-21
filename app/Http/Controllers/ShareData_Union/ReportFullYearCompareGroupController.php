@@ -91,6 +91,7 @@ class ReportFullYearCompareGroupController extends Controller
             }
 
             //-- ส่วนประมวลผล เพื่อใช้ Datatable
+            
             $count_1 = count($pdgroup_api[$year_1]);
             $count_2 = count($pdgroup_api[$year_2]);
 

@@ -353,7 +353,10 @@
                                                     <div class="col-12 col-xl-4">
                                                         <div>
                                                             @php
-                                                                $FocusDates_count = count($res_api["data"][1]["FocusDates"]);
+                                                                $FocusDates_count = 0;
+                                                                if(isset($res_api["data"][1]["FocusDates"])){
+                                                                    $FocusDates_count = count($res_api["data"][1]["FocusDates"]);
+                                                                }
                                                             @endphp
                                                             @if($FocusDates_count > 0)
                                                                 <div class="num-specialday">{{ $res_api["data"][1]["FocusDates"][0]["TotalCustomers"] }} ร้าน </div>
@@ -399,9 +402,13 @@
                             <canvas id="myChart" style="height: 294px"></canvas>
                             <span class="mt-8 ml-40 text-danger">
                                 @php
-                                    list($year,$month,$day) = explode("-", $res_api["trans_last_date"]);
-                                    $year = $year+543;
-                                    $trans_last_date = $day."/".$month."/".$year;
+                                    if(isset($res_api["trans_last_date"])){
+                                        list($year,$month,$day) = explode("-", $res_api["trans_last_date"]);
+                                        $year = $year+543;
+                                        $trans_last_date = $day."/".$month."/".$year;
+                                    }else{
+                                        $trans_last_date = "-";
+                                    }
                                 @endphp
                                 ข้อมูล ณ วันที่ {{ $trans_last_date }}
                             </span>
@@ -410,9 +417,19 @@
                             <div class="mt-sumsales card card-sm">
                                 <div class="card-sumsales card-body" style="color: #fff;">
                                     @php
-                                        $SalesPrevious = $res_api["data"][3]["SalesPrevious"];
-                                        $totalAmtSale_th_Previous = $SalesPrevious[0]["sales_th"]; // เป้ายอดขายปีที่แล้ว
-                                        $totalAmtSale_Previous = $SalesPrevious[0]["sales"]; // เป้ายอดขายปีที่แล้ว
+                                        $SalesPrevious = 0;
+                                        $totalAmtSale_th_Previous = 0; // เป้ายอดขายปีที่แล้ว
+                                        $totalAmtSale_Previous = 0; // เป้ายอดขายปีที่แล้ว
+
+                                        if(isset($res_api["data"][3]["SalesPrevious"])){
+                                            $SalesPrevious = $res_api["data"][3]["SalesPrevious"];
+                                        }
+                                        if(isset($SalesPrevious[0]["sales_th"])){ 
+                                            $totalAmtSale_th_Previous = $SalesPrevious[0]["sales_th"]; 
+                                        }
+                                        if(isset($SalesPrevious[0]["sales"])){ 
+                                            $totalAmtSale_Previous = $SalesPrevious[0]["sales"]; 
+                                        }
 
                                         $percentAmtCrn =0;
                                         if(!empty($res_api["data"][2]["SalesCurrent"])){
@@ -495,7 +512,7 @@
                                                     </div>
                                                     <div class="col-6 col-md-5 pdr-0" style="text-align:right;">
                                                         <span style="font-weight: bold; font-size: 16px;">
-                                                            @if (!is_null($res_api["data"][0]["Responsibility"]))
+                                                            @if (isset($res_api["data"][0]["Responsibility"]))
                                                                 {{ number_format($res_api["data"][0]["Responsibility"][0]["ActiveTotal"]) }} ราย
                                                             @else
                                                                 - ราย
@@ -509,7 +526,7 @@
                                                     </div>
                                                     <div class="col-6 col-md-5 pdr-0" style="text-align:right;">
                                                         <span style="font-weight: bold; font-size: 16px;">
-                                                            @if (!is_null($res_api["data"][0]["Responsibility"]))
+                                                            @if (isset($res_api["data"][0]["Responsibility"]))
                                                                 {{ number_format($res_api["data"][0]["Responsibility"][0]["BillOrderTotal"]) }} ราย
                                                             @else
                                                                 - ราย
@@ -534,7 +551,7 @@
                                                     </div>
                                                     <div class="col-6 col-md-5 pdr-0" style="text-align:right;">
                                                         <span style="font-weight: bold; font-size: 16px;">
-                                                            @if (!is_null($res_api["data"][0]["Responsibility"]))
+                                                            @if (isset($res_api["data"][0]["Responsibility"]))
                                                                 {{ $res_api["data"][0]["Responsibility"][0]["PercentBillOrder"] }} จากทั้งหมด
                                                             @else
                                                                 - % จากทั้งหมด
@@ -548,7 +565,7 @@
                                                     </div>
                                                     <div class="col-6 col-md-5 pdr-0" style="text-align:right;">
                                                         <span style="font-weight: bold; font-size: 16px;" class="num-specialday">
-                                                            @if (!is_null($res_api["data"][0]["Responsibility"]))
+                                                            @if (isset($res_api["data"][0]["Responsibility"]))
                                                                 {{ $res_api["data"][0]["Responsibility"][0]["PercentAvailable"] }} จากทั้งหมด
                                                             @else
                                                                 - % จากทั้งหมด

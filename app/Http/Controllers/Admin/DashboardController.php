@@ -136,9 +136,11 @@ class DashboardController extends Controller
             'year' => $year,
             'month' => $month
         ]);
-        $data['res_api'] = $response->json();
-        
+        $res_api = $response->json();
 
+        if(!is_null($res_api) && $res_api['code'] == 200){
+            $data['res_api'] = $res_api;
+        }
         // $response_bdates = Http::withToken($api_token)
         // ->get(env("API_LINK").env('API_PATH_VER').'/bdates/saleheaders/'.Auth::user()->api_identify.'/customers');
         // $data['res_bdates_api'] = $response_bdates->json();

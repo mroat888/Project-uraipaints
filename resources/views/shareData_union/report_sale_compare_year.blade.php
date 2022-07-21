@@ -110,89 +110,91 @@
                                                             // dd($customer_campaigns) ;
                                                         @endphp
 
-                                                        @foreach($customer_campaigns[$key] as $key_cam => $cust_campaigns_value)
-                                                            @if(($province_name_check != $cust_campaigns_value['province_name']))
+                                                        @if(isset($customer_campaigns[$key]))
+                                                            @foreach($customer_campaigns[$key] as $key_cam => $cust_campaigns_value)
+                                                                @if(($province_name_check != $cust_campaigns_value['province_name']))
 
-                                                                @if(($province_name_check != ""))
-                                                                    @php 
-                                                                        if($sum_sub_TotalAmountSale > 0 && $sum_sub_TotalLimit > 0){
-                                                                            $persent_sub_camTotalAmountSale = ($sum_sub_TotalAmountSale / $sum_sub_TotalLimit) * 100;
-                                                                        }else{
-                                                                            $persent_sub_camTotalAmountSale = 0;
-                                                                        }
-                                                                    @endphp
+                                                                    @if(($province_name_check != ""))
+                                                                        @php 
+                                                                            if($sum_sub_TotalAmountSale > 0 && $sum_sub_TotalLimit > 0){
+                                                                                $persent_sub_camTotalAmountSale = ($sum_sub_TotalAmountSale / $sum_sub_TotalLimit) * 100;
+                                                                            }else{
+                                                                                $persent_sub_camTotalAmountSale = 0;
+                                                                            }
+                                                                        @endphp
+                                                                        <tr>
+                                                                            <td colspan="4">
+                                                                                <strong>รวมจังหวัด {{ $province_name_check }}</strong>
+                                                                            </td>
+                                                                            <td style="text-align:center"><strong>{{ number_format($sum_sub_TotalPromotion) }}</strong></td>
+                                                                            <td style="text-align:center"><strong>{{ number_format($sum_sub_TotalLimit,2) }}</strong></td>
+                                                                            <td style="text-align:center"><strong>{{ number_format($sum_sub_TotalAmountSale,2) }}</strong></td>
+                                                                            <td style="text-align:center">
+                                                                                <strong>
+                                                                                    @php
+                                                                                        if($persent_sub_camTotalAmountSale > 100){
+                                                                                            $color = "color:#FF0000";
+                                                                                        }else{
+                                                                                            $color = "";
+                                                                                        }
+                                                                                    @endphp
+                                                                                    <span style="{{ $color }}">
+                                                                                        {{ number_format($persent_sub_camTotalAmountSale,2) }}
+                                                                                    </span>
+                                                                                </strong>
+                                                                            </td>
+                                                                        </tr>
+                                                                        @php 
+                                                                            $province_name_check = "";
+                                                                            $sum_sub_TotalPromotion = 0;
+                                                                            $sum_sub_TotalLimit = 0;
+                                                                            $sum_sub_TotalAmountSale = 0;
+                                                                        @endphp
+
+                                                                    @endif
                                                                     <tr>
-                                                                        <td colspan="4">
-                                                                            <strong>รวมจังหวัด {{ $province_name_check }}</strong>
-                                                                        </td>
-                                                                        <td style="text-align:center"><strong>{{ number_format($sum_sub_TotalPromotion) }}</strong></td>
-                                                                        <td style="text-align:center"><strong>{{ number_format($sum_sub_TotalLimit,2) }}</strong></td>
-                                                                        <td style="text-align:center"><strong>{{ number_format($sum_sub_TotalAmountSale,2) }}</strong></td>
-                                                                        <td style="text-align:center">
-                                                                            <strong>
-                                                                                @php
-                                                                                    if($persent_sub_camTotalAmountSale > 100){
-                                                                                        $color = "color:#FF0000";
-                                                                                    }else{
-                                                                                        $color = "";
-                                                                                    }
-                                                                                @endphp
-                                                                                <span style="{{ $color }}">
-                                                                                    {{ number_format($persent_sub_camTotalAmountSale,2) }}
-                                                                                </span>
-                                                                            </strong>
+                                                                        <td colspan="8">
+                                                                            <strong>จังหวัด {{ $cust_campaigns_value['province_name'] }}</strong>
                                                                         </td>
                                                                     </tr>
-                                                                    @php 
-                                                                        $province_name_check = "";
-                                                                        $sum_sub_TotalPromotion = 0;
-                                                                        $sum_sub_TotalLimit = 0;
-                                                                        $sum_sub_TotalAmountSale = 0;
-                                                                    @endphp
 
+                                                                    @php             
+                                                                        $province_name_check = $cust_campaigns_value['province_name']; 
+                                                                    @endphp
                                                                 @endif
                                                                 <tr>
-                                                                    <td colspan="8">
-                                                                        <strong>จังหวัด {{ $cust_campaigns_value['province_name'] }}</strong>
+
+                                                                @php
+                                                                    $sum_sub_TotalPromotion += $cust_campaigns_value['TotalPromotion'];
+                                                                    $sum_sub_TotalLimit += $cust_campaigns_value['TotalLimit'];
+                                                                    $sum_sub_TotalAmountSale += $cust_campaigns_value['TotalAmountSale'];
+
+                                                                    $persent_camTotalAmountSale = ($cust_campaigns_value['TotalAmountSale'] / $cust_campaigns_value['TotalLimit']) * 100;
+                                                                @endphp
+
+                                                                <tr>
+                                                                    <td>{{ ++$key_cam }}</td>
+                                                                    <td>{{ $cust_campaigns_value['identify'] }}</td>
+                                                                    <td>{{ $cust_campaigns_value['name'] }}</td>
+                                                                    <td>{{ $cust_campaigns_value['amphoe_name'] }}</td>
+                                                                    <td style="text-align:center">{{ number_format($cust_campaigns_value['TotalPromotion']) }}</td>
+                                                                    <td style="text-align:right">{{ number_format($cust_campaigns_value['TotalLimit'],2) }}</td>
+                                                                    <td style="text-align:right">{{ number_format($cust_campaigns_value['TotalAmountSale'],2) }}</td>
+                                                                    <td style="text-align:right">
+                                                                        @php
+                                                                            if($persent_camTotalAmountSale > 100){
+                                                                                $color = "color:#FF0000";
+                                                                            }else{
+                                                                                $color = "";
+                                                                            }
+                                                                        @endphp
+                                                                        <span style="{{ $color }}">
+                                                                            {{ number_format($persent_camTotalAmountSale,2) }}
+                                                                        </span>
                                                                     </td>
                                                                 </tr>
-
-                                                                @php             
-                                                                    $province_name_check = $cust_campaigns_value['province_name']; 
-                                                                @endphp
-                                                            @endif
-                                                            <tr>
-
-                                                            @php
-                                                                $sum_sub_TotalPromotion += $cust_campaigns_value['TotalPromotion'];
-                                                                $sum_sub_TotalLimit += $cust_campaigns_value['TotalLimit'];
-                                                                $sum_sub_TotalAmountSale += $cust_campaigns_value['TotalAmountSale'];
-
-                                                                $persent_camTotalAmountSale = ($cust_campaigns_value['TotalAmountSale'] / $cust_campaigns_value['TotalLimit']) * 100;
-                                                            @endphp
-
-                                                            <tr>
-                                                                <td>{{ ++$key_cam }}</td>
-                                                                <td>{{ $cust_campaigns_value['identify'] }}</td>
-                                                                <td>{{ $cust_campaigns_value['name'] }}</td>
-                                                                <td>{{ $cust_campaigns_value['amphoe_name'] }}</td>
-                                                                <td style="text-align:center">{{ number_format($cust_campaigns_value['TotalPromotion']) }}</td>
-                                                                <td style="text-align:right">{{ number_format($cust_campaigns_value['TotalLimit'],2) }}</td>
-                                                                <td style="text-align:right">{{ number_format($cust_campaigns_value['TotalAmountSale'],2) }}</td>
-                                                                <td style="text-align:right">
-                                                                    @php
-                                                                        if($persent_camTotalAmountSale > 100){
-                                                                            $color = "color:#FF0000";
-                                                                        }else{
-                                                                            $color = "";
-                                                                        }
-                                                                    @endphp
-                                                                    <span style="{{ $color }}">
-                                                                        {{ number_format($persent_camTotalAmountSale,2) }}
-                                                                    </span>
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
+                                                            @endforeach
+                                                        @endif
 
                                                        @if(($province_name_check != ""))
                                                             <tr>
@@ -237,7 +239,11 @@
                                     </tbody>
                                     <tfoot style="font-weight: bold; text-align:center; background: #ddd;">
                                         @php
-                                            $sum_persent_TotalAmountSale =  ($sum_TotalAmountSale / $sum_TotalLimit) * 100;
+                                            if($sum_TotalLimit > 0){
+                                                $sum_persent_TotalAmountSale =  ($sum_TotalAmountSale / $sum_TotalLimit) * 100;
+                                            }else{
+                                                $sum_persent_TotalAmountSale = 0;
+                                            }
                                         @endphp
                                         <tr style="font-weight: bold;">
                                             <td colspan="2" style=" text-align:center; font-weight: bold;">ทั้งหมด</td>
