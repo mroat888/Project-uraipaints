@@ -42,6 +42,7 @@ class ReportFullYearController extends Controller
         // กลุ่มสินค้า สำหรับค้นหา
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/groups');
         $group_api = $response->json();
+        
         $data['group_api'] = $group_api['data'];
 
         // สินค้า Top Group

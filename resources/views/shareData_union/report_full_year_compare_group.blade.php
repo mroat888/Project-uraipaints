@@ -125,24 +125,26 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                @foreach($pdggroup_compare as $key => $value)
-                                                    @php
-                                                        if($value['sale_diff'] < 0){
-                                                            $text_color = "text-danger";
-                                                        }else{
-                                                            $text_color = "text-success";
-                                                        }
-                                                    @endphp
-                                                    <tr style="text-align:center">
-                                                        <td>{{ ++$key }}</td>
-                                                        <td>{{ $value['pdgroup_id'] }}</td>
-                                                        <td style="text-align:left;">{{ $value['pdgroup_name'] }}</td>
-                                                        <td style="text-align:right">{{ number_format($value['sales_1'],2) }}</td>
-                                                        <td style="text-align:right">{{ number_format($value['sales_2'],2) }}</td>
-                                                        <td style="text-align:right" class="{{ $text_color }}">{{ number_format($value['sale_diff'],2) }}</td>
-                                                        <td class="{{ $text_color }}">{{ number_format($value['persent_diff'],2) }}</td>
-                                                    </tr>
-                                                @endforeach
+                                                @if(isset($pdggroup_compare) && !is_null($pdggroup_compare))
+                                                    @foreach($pdggroup_compare as $key => $value)
+                                                        @php
+                                                            if($value['sale_diff'] < 0){
+                                                                $text_color = "text-danger";
+                                                            }else{
+                                                                $text_color = "text-success";
+                                                            }
+                                                        @endphp
+                                                        <tr style="text-align:center">
+                                                            <td>{{ ++$key }}</td>
+                                                            <td>{{ $value['pdgroup_id'] }}</td>
+                                                            <td style="text-align:left;">{{ $value['pdgroup_name'] }}</td>
+                                                            <td style="text-align:right">{{ number_format($value['sales_1'],2) }}</td>
+                                                            <td style="text-align:right">{{ number_format($value['sales_2'],2) }}</td>
+                                                            <td style="text-align:right" class="{{ $text_color }}">{{ number_format($value['sale_diff'],2) }}</td>
+                                                            <td class="{{ $text_color }}">{{ number_format($value['persent_diff'],2) }}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
                                                 </tbody>
                                             </table>
                                         </div>

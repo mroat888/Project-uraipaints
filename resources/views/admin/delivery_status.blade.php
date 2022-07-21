@@ -36,17 +36,21 @@
                                 <div class="col-md-6">
                                     <select class="form-control custom-select mt-15" name="province">
                                         <option selected disabled>เลือกจังหวัด</option>
-                                        @foreach ($province_api as $key => $value)
-                                            <option value="{{$province_api[$key]['identify']}}">{{$province_api[$key]['name_thai']}}</option>
-                                        @endforeach
+                                        @if(isset($province_api) && !is_null($province_api))
+                                            @foreach ($province_api as $key => $value)
+                                                <option value="{{$province_api[$key]['identify']}}">{{$province_api[$key]['name_thai']}}</option>
+                                            @endforeach
+                                        @endif
                                     </select>
                                 </div>
                                 <div class="col-md-6" style="margin-top: 15px;">
                                     <select class="form-control custom-select select2" name="customer">
                                         <option selected disabled>เลือกร้านค้า</option>
-                                        @foreach ($customer_api as $key => $value)
-                                            <option value="{{$customer_api[$key]['identify']}}">{{$customer_api[$key]['title']}} {{$customer_api[$key]['name']}}</option>
-                                        @endforeach
+                                        @if(isset($customer_api) && !is_null($customer_api))
+                                            @foreach ($customer_api as $key => $value)
+                                                <option value="{{$customer_api[$key]['identify']}}">{{$customer_api[$key]['title']}} {{$customer_api[$key]['name']}}</option>
+                                            @endforeach
+                                        @endif
                                     </select>
                                 </div>
                                 <div class="col-md-12 text-right" style="margin-top: 20px;">

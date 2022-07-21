@@ -269,13 +269,14 @@
                                                     @php
                                                         $shop_name = "";
                                                         $shop_address = "";
-                                                        foreach($customer_api as $key_api => $value_api){
-                                                            if($customer_api[$key_api]['id'] == $value->customer_shop_id){
-                                                                $shop_name = $customer_api[$key_api]['shop_name'];
-                                                                $shop_address = $customer_api[$key_api]['shop_address'];
+                                                        if(isset($customer_api) && !is_null($customer_api)){
+                                                            foreach($customer_api as $key_api => $value_api){
+                                                                if($customer_api[$key_api]['id'] == $value->customer_shop_id){
+                                                                    $shop_name = $customer_api[$key_api]['shop_name'];
+                                                                    $shop_address = $customer_api[$key_api]['shop_address'];
+                                                                }
                                                             }
                                                         }
-
                                                         $pieces = explode(",", $value->sale_plans_tags);
                                                     @endphp
                                                     <tr>

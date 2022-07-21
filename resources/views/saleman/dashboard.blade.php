@@ -334,7 +334,7 @@
                                                 </div>
                                                 <div class="col-4">
                                                     <span class="txt-custotal">
-                                                        @if(isset($res_api["data"]) && count($res_api["data"]) > 0)
+                                                        @if(isset($res_api["data"]))
                                                             @if(!is_null($res_api["data"][0]["Customers"][0]["ActiveTotal"] && $res_api["data"][0]["Customers"][0]["ActiveTotal"] > 0))
                                                                 {{ number_format($res_api["data"][0]["Customers"][0]["ActiveTotal"]) }}
                                                             @endif
