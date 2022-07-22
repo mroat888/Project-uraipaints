@@ -249,7 +249,7 @@
                                                         <!-- </a> -->
                                                     </div>
                                                     <div class="col-12 col-xl-4">
-                                                        {{-- 
+                                                        {{--
                                                         <!-- <div class="num-specialday"><span>{{ $ShopInMonthDays }} ร้าน</span></div>
                                                         <div class="num-specialday"><span>{{ $InMonthDays }} วัน</span></div> -->
                                                         --}}
@@ -390,7 +390,7 @@
 
                                                                 @endphp --}}
 
-                                                                @php 
+                                                                @php
                                                                     if($monthly_plan->status_approve == 4){ //-- ถ้าปิดแผนไม่ให้กดปุ่ม
                                                                         $btn_result_disabled = "disabled";
                                                                     }else{
@@ -403,12 +403,12 @@
                                                                     <span class="btn-icon-wrap"><i data-feather="log-in"></i></span></button>
                                                                     <button class="btn btn-icon btn-pumpkin"
                                                                     data-toggle="modal" data-target="#Modalcheckin" onclick="getLocation({{ $value->id }})" {{ $btn_pumpkin_disabled }}>
-                                                                    <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button> 
+                                                                    <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
                                                                 --}}
                                                                 {{-- <button class="btn btn-icon text-white" style="background-color: rgb(73, 39, 113)">
                                                                     <span class="btn-icon-wrap"><i data-feather="file"></i></span></button> --}}
 
-                                                                <button class="btn btn-icon text-white" style="background-color: rgb(2, 119, 144)" 
+                                                                <button class="btn btn-icon text-white" style="background-color: rgb(2, 119, 144)"
                                                                     data-toggle="modal" data-target="#ModalResult" onclick="saleplan_result({{ $value->id }})" {{ $btn_result_disabled }}>
                                                                     <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
 
@@ -520,7 +520,7 @@
                                                                     $btn_neon_cusnew = "disabled";
                                                                 }
                                                             @endphp --}}
-                                                            @php 
+                                                            @php
                                                                 $btn_checkin = "";
                                                                 $btn_checkout = "";
                                                                 $btn_result = "";
@@ -538,7 +538,7 @@
                                                             <button class="btn btn-icon text-white" style="background-color: rgb(234, 105, 18)"
                                                             data-toggle="modal" data-target="#ModalcheckinCust" onclick="getLocation({{ $value->id }})" {{ $btn_checkout }}>
                                                             <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
-                                                            <button class="btn btn-icon text-white" style="background-color: rgb(2, 119, 144)" 
+                                                            <button class="btn btn-icon text-white" style="background-color: rgb(2, 119, 144)"
                                                             data-toggle="modal" data-target="#ModalCustResult" onclick="customer_new_result({{ $value->id }})" {{ $btn_result }}>
                                                             <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
                                                         </div>
@@ -563,14 +563,14 @@
                                 เยี่ยมลูกค้า
                              </div>
                              <div class="d-flex content-right">
-                                 @php 
+                                 @php
                                     $btn_add_cusvisit = "";
 
                                     if($monthly_plan->status_approve == 4){ //-- ถ้าปิดแผนไม่ให้กดปุ่ม
                                         $btn_add_cusvisit = "disabled";
                                     }
                                 @endphp
-                                <button type="button" class="btn-green" data-toggle="modal" 
+                                <button type="button" class="btn-green" data-toggle="modal"
                                     data-target="#addCustomerVisit" {{ $btn_add_cusvisit }}> + เพิ่มใหม่ </button>
                             </div>
                         </div>
@@ -588,7 +588,7 @@
                                                     <th>#</th>
                                                     <th>ชื่อร้าน</th>
                                                     <th>อำเภอ,จังหวัด</th>
-                                                    <th>วันสำคัญ</th>
+                                                    <th>วัตถุประสงค์</th>
                                                     <th>สถานะ</th>
                                                     <th class="text-center">Action</th>
                                                 </tr>
@@ -601,7 +601,7 @@
                                                         <td>{{ $no++ }}</td>
                                                         <td>{!! Str::limit($customer_visit_api[$key]['shop_name'], 20) !!}</td>
                                                         <td>{{ $customer_visit_api[$key]['shop_address'] }}</td>
-                                                        <td>{{ $customer_visit_api[$key]['focusdate'] }}</td>
+                                                        <td>{{ $customer_visit_api[$key]['visit_name'] }}</td>
                                                         <td>
                                                             @if ($customer_visit_api[$key]['visit_status'] == 0)
                                                                 <span class="badge badge-soft-secondary mt-15 mr-10"
@@ -655,11 +655,11 @@
                                                                         $btn_neon_cusvisit_disabled = "disabled";
                                                                     }
                                                                 @endphp --}}
-                                                                @php 
+                                                                @php
                                                                     $btn_checkin = "";
                                                                     $btn_checkout = "";
                                                                     $btn_result = "";
-                                                                    
+
                                                                     if($monthly_plan->status_approve == 4){ //-- ถ้าปิดแผนไม่ให้กดปุ่ม
                                                                         $btn_checkin = "disabled";
                                                                         $btn_checkout = "disabled";
@@ -673,7 +673,7 @@
                                                                 <button class="btn btn-icon text-white" style="background-color: rgb(234, 105, 18)"
                                                                     data-toggle="modal" data-target="#ModalcheckinVisit" onclick="getLocation({{ $customer_visit_api[$key]['id'] }})" {{ $btn_checkout }}>
                                                                     <span class="btn-icon-wrap"><i data-feather="log-out"></i></span></button>
-                                                                <button class="btn btn-icon text-white" style="background-color: rgb(2, 119, 144)" data-toggle="modal" 
+                                                                <button class="btn btn-icon text-white" style="background-color: rgb(2, 119, 144)" data-toggle="modal"
                                                                     data-target="#ModalVisitResult" onclick="customer_visit_result({{ $customer_visit_api[$key]['id'] }})" {{ $btn_result }}>
                                                                     <span class="btn-icon-wrap"><i data-feather="book"></i></span></button>
                                                             </div>
