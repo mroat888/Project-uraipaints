@@ -175,7 +175,7 @@
                 <section class="hk-sec-wrapper">
                     <div class="hk-pg-header mb-10">
                         <div>
-                            <h5 class="hk-sec-title">รายงานสรุป Sale Plan (ลูกค้าใหม่) ของ {{ $sale_name->name }}
+                            <h5 class="hk-sec-title">รายงานสรุป Sale Plan (เป้าหมายลูกค้าใหม่) ของ {{ $sale_name->name }}
                                 ประจำเดือน <?php echo thaidate('F Y', $mon_plan->month_date); ?></h5>
                         </div>
                     </div>

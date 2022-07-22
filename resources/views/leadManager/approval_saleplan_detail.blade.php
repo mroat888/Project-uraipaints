@@ -155,7 +155,7 @@
             <div class="col-md-12">
                 <section class="hk-sec-wrapper">
                     <div class="hk-pg-header mb-10">
-                        <div class="topichead-blue">Sale Plan (เปิดลูกค้าใหม่)</div>
+                        <div class="topichead-blue">Sale Plan (เป้าหมายลูกค้าใหม่)</div>
                     </div>
                     <div class="row">
                         <div class="col-sm">
