@@ -90,7 +90,7 @@ class DailyWorkController extends Controller
         $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/sellers/'.Auth::user()->api_identify.'/customers');
         $res_api = $response->json();
-        
+
         $api_token = $this->api_token->apiToken();
         $data['api_token'] = $api_token;
         $response = Http::withToken($api_token)
@@ -103,7 +103,7 @@ class DailyWorkController extends Controller
         $response_bdates = Http::withToken($api_token)
         ->get(env("API_LINK").env('API_PATH_VER').'/bdates/sellers/'.Auth::user()->api_identify.'/customers');
         $data['res_bdates_api'] = $response_bdates->json();
-        
+
 
         $data['customer_api'] = array();
         // $data['InMonthDays'] = 0;
@@ -130,12 +130,14 @@ class DailyWorkController extends Controller
         // ---- สร้างข้อมูล เยี่ยมลูกค้า โดย link กับ api ------- //
         $customer_visits = CustomerVisit::where('customer_visits.created_by', Auth::user()->id)
         ->leftjoin('customer_visit_results', 'customer_visits.id', '=', 'customer_visit_results.customer_visit_id')
+        ->leftjoin('master_objective_visit', 'customer_visits.customer_visit_objective', '=', 'master_objective_visit.id')
         ->select(
             'customer_visit_results.cust_visit_status',
             'customer_visit_results.cust_visit_checkin_date',
             'customer_visit_results.cust_visit_checkout_date',
             'customer_visit_results.customer_visit_id',
             'customer_visits.*',
+            'master_objective_visit.visit_name'
         )
         ->where('customer_visits.monthly_plan_id', $data['monthly_plan']->id)
         ->orderBy('customer_visits.id', 'desc')
@@ -161,6 +163,7 @@ class DailyWorkController extends Controller
                             'visit_status' => $cus_visit->cust_visit_status,
                             'visit_checkin_date' => $cus_visit->cust_visit_checkin_date,
                             'visit_checkout_date' => $cus_visit->cust_visit_checkout_date,
+                            'visit_name' => $cus_visit->visit_name,
                         ];
                     }
                 }
