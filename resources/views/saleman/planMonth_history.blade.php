@@ -226,7 +226,7 @@
                     <section class="hk-sec-wrapper">
                         <div class="hk-pg-header mb-10">
                             <div>
-                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">Sale Plan (เปิดลูกค้าใหม่)</h6>
+                                <h6 class="hk-sec-title mb-10" style="font-weight: bold;">Sale Plan (เป้าหมายลูกค้าใหม่)</h6>
                             </div>
                         </div>
                         <div class="row">
