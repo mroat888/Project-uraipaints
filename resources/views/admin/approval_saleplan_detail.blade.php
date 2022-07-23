@@ -53,11 +53,13 @@
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ $value->masobj_title }}</td>
                                             <td>
-                                                @foreach($customer_api as $key_api => $value_api)
-                                                            @if($customer_api[$key_api]['id'] == $value->customer_shop_id)
-                                                                {{ $customer_api[$key_api]['shop_name'] }}
-                                                            @endif
-                                                        @endforeach
+                                                @if(isset($customer_api))
+                                                    @foreach($customer_api as $key_api => $value_api)
+                                                        @if($customer_api[$key_api]['id'] == $value->customer_shop_id)
+                                                            {{ $customer_api[$key_api]['shop_name'] }}
+                                                        @endif
+                                                    @endforeach
+                                                @endif
                                             </td>
                                             <td>
                                                 @php
@@ -66,11 +68,13 @@
                                                 {{ count($tags) }}
                                             </td>
                                             <td>
-                                                @foreach($customer_api as $key_api => $value_api)
-                                                @if($customer_api[$key_api]['id'] == $value->customer_shop_id)
-                                                    {{ $customer_api[$key_api]['shop_address'] }}
+                                                @if(isset($customer_api))
+                                                    @foreach($customer_api as $key_api => $value_api)
+                                                        @if($customer_api[$key_api]['id'] == $value->customer_shop_id)
+                                                            {{ $customer_api[$key_api]['shop_address'] }}
+                                                        @endif
+                                                    @endforeach
                                                 @endif
-                                            @endforeach
                                             </td>
                                             <td>
                                                 <a href="{{ url('admin/comment_saleplan', [$value->id, $value->monthly_plan_id]) }}" class="btn btn-icon mr-10" style="background-color: rgb(2, 119, 144);">

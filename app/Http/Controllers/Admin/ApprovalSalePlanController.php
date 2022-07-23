@@ -242,14 +242,16 @@ class ApprovalSalePlanController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/sellers/'.$user_api->api_identify.'/customers');
         $res_api = $response->json();
 
-        $data['customer_api'] = array();
-        foreach ($res_api['data'] as $key => $value) {
-            $data['customer_api'][$key] =
-            [
-                'id' => $value['identify'],
-                'shop_name' => $value['title']." ".$value['name'],
-                'shop_address' => $value['amphoe_name']." ".$value['province_name'],
-            ];
+        if($res_api['code'] == 200){
+            $data['customer_api'] = array();
+            foreach ($res_api['data'] as $key => $value) {
+                $data['customer_api'][$key] =
+                [
+                    'id' => $value['identify'],
+                    'shop_name' => $value['title']." ".$value['name'],
+                    'shop_address' => $value['amphoe_name']." ".$value['province_name'],
+                ];
+            }
         }
 
         $data['monthly_plans'] = $mon_plan;
@@ -330,14 +332,16 @@ class ApprovalSalePlanController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/sellers/'.$user_api->api_identify.'/customers');
         $res_api = $response->json();
 
-        $data['customer_api'] = array();
-        foreach ($res_api['data'] as $key => $value) {
-            $data['customer_api'][$key] =
-            [
-                'identify' => $value['identify'],
-                'shop_name' => $value['title']." ".$value['name'],
-                'shop_address' => $value['adrress2'],
-            ];
+        if($res_api['code'] == 200){
+            $data['customer_api'] = array();
+            foreach ($res_api['data'] as $key => $value) {
+                $data['customer_api'][$key] =
+                [
+                    'identify' => $value['identify'],
+                    'shop_name' => $value['title']." ".$value['name'],
+                    'shop_address' => $value['adrress2'],
+                ];
+            }
         }
 
         // // -----  API สินค้านำเสนอ----------- //
@@ -348,14 +352,16 @@ class ApprovalSalePlanController extends Controller
 
         // dd($res_api['data']);
 
-        $data['pdglists_api'] = array();
-        foreach ($res_api['data'] as $key => $value) {
-            $data['pdglists_api'][$key] =
-            [
-                'identify' => $value['identify'],
-                'name' => $value['name'],
-                'sub_code' => $value['sub_code'],
-            ];
+        if($res_api['code'] == 200){
+            $data['pdglists_api'] = array();
+            foreach ($res_api['data'] as $key => $value) {
+                $data['pdglists_api'][$key] =
+                [
+                    'identify' => $value['identify'],
+                    'name' => $value['name'],
+                    'sub_code' => $value['sub_code'],
+                ];
+            }
         }
 
 

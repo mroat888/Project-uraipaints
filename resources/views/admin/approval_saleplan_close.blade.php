@@ -69,11 +69,13 @@
 
                                                 $customer_name = "";
                                                 $customer_address = "";
-                                                foreach($customer_api as $key_api => $value_api){
-                                                    if($customer_api[$key_api]['identify'] == $value->customer_shop_id){
-                                                        if($customer_name != $customer_api[$key_api]['shop_name']){
-                                                            $customer_name = $customer_api[$key_api]['shop_name'];
-                                                            $customer_address = $customer_api[$key_api]['shop_address'];
+                                                if(isset($customer_api)){
+                                                    foreach($customer_api as $key_api => $value_api){
+                                                        if($customer_api[$key_api]['identify'] == $value->customer_shop_id){
+                                                            if($customer_name != $customer_api[$key_api]['shop_name']){
+                                                                $customer_name = $customer_api[$key_api]['shop_name'];
+                                                                $customer_address = $customer_api[$key_api]['shop_address'];
+                                                            }
                                                         }
                                                     }
                                                 }
@@ -96,9 +98,11 @@
                                                         $listpresent = explode(',',$value->sale_plans_tags);
                                                         foreach($listpresent as $key_list => $value_list ){
                                                             $pdlist_name = "";
-                                                            foreach($pdglists_api as $key_api => $value_api){
-                                                                if($value_api['identify'] == $value_list){
-                                                                    $pdlist_name = $pdglists_api[$key_api]['name'];
+                                                            if(isset($pdglists_api)){
+                                                                foreach($pdglists_api as $key_api => $value_api){
+                                                                    if($value_api['identify'] == $value_list){
+                                                                        $pdlist_name = $pdglists_api[$key_api]['name'];
+                                                                    }
                                                                 }
                                                             }
                                                             echo $pdlist_name."<br>";
