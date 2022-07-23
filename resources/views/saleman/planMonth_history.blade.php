@@ -165,10 +165,12 @@
                                                         $tag_array = "";
                                                         $shop_name = "";
                                                         $shop_address = "";
-                                                        foreach($customer_api as $key_api => $value_api){
-                                                            if($customer_api[$key_api]['id'] == $value->customer_shop_id){
-                                                                $shop_name = $customer_api[$key_api]['shop_name'];
-                                                                $shop_address = $customer_api[$key_api]['shop_address'];
+                                                        if(isset($customer_api) && !is_null($customer_api)){
+                                                            foreach($customer_api as $key_api => $value_api){
+                                                                if($customer_api[$key_api]['id'] == $value->customer_shop_id){
+                                                                    $shop_name = $customer_api[$key_api]['shop_name'];
+                                                                    $shop_address = $customer_api[$key_api]['shop_address'];
+                                                                }
                                                             }
                                                         }
                                                     @endphp
@@ -248,7 +250,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @if(!is_null($customer_new))
+                                                @if(isset($customer_new) && !is_null($customer_new))
                                                     @foreach ($customer_new as $key => $value)
                                                         <tr>
                                                             <td>{{ $key + 1 }}</td>
@@ -310,7 +312,7 @@
                                             <tbody>
 
                                                 <?php $no = 1; ?>
-
+                                            @if(isset($customer_visit_api) && !is_null($customer_visit_api))
                                                 @foreach ($customer_visit_api as $key => $value)
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
@@ -336,6 +338,7 @@
                                                     </td>
                                                 </tr>
                                                 @endforeach
+                                            @endif
 
                                             </tbody>
                                         </table>

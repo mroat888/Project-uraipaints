@@ -76,7 +76,7 @@ class PlanMonthController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/sellers/'.Auth::user()->api_identify.'/customers');
         $res_api = $response->json();
 
-        if($res_api['code'] == 200){
+        if(!is_null($res_api) && $res_api['code'] == 200){
             $data['customer_api'] = array();
             foreach ($res_api['data'] as $key => $value) {
                 $data['customer_api'][$key] =
@@ -101,14 +101,16 @@ class PlanMonthController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
 
-        $data['pdglists_api'] = array();
-        foreach ($res_api['data'] as $key => $value) {
-            $data['pdglists_api'][$key] =
-            [
-                'identify' => $value['identify'],
-                'name' => $value['name'],
-                'sub_code' => $value['sub_code'],
-            ];
+        if(!is_null($res_api) && $res_api['code'] == 200){
+            $data['pdglists_api'] = array();
+            foreach ($res_api['data'] as $key => $value) {
+                $data['pdglists_api'][$key] =
+                [
+                    'identify' => $value['identify'],
+                    'name' => $value['name'],
+                    'sub_code' => $value['sub_code'],
+                ];
+            }
         }
 
         // dd($data['pdglists_api']);
@@ -118,7 +120,7 @@ class PlanMonthController extends Controller
             $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/customers/'.$cus_visit->customer_shop_id);
             $res_visit_api = $response->json();
             // dd($res_visit_api);
-            if($res_visit_api['code'] == 200){
+            if(!is_null($res_visit_api) && $res_visit_api['code'] == 200){
                 foreach ($res_visit_api['data'] as $key_api => $value_api) {
                     $res_visit_api = $res_visit_api['data'][$key_api];
                     $data['customer_visit_api'][] =
@@ -144,7 +146,6 @@ class PlanMonthController extends Controller
 
     public function history($id)
     {
-
         $data['monthly_plan'] = MonthlyPlan::where('created_by', Auth::user()->id)->where('id', $id)->orderBy('month_date', 'desc')->get();
         $data['monthly_plan_history'] = MonthlyPlan::where('created_by', Auth::user()->id)->where('id', $id)->orderBy('month_date', 'desc')->first();
         $data['monthly_plan_next'] = MonthlyPlan::where('created_by', Auth::user()->id)->orderBy('month_date', 'desc')->first();
@@ -196,14 +197,16 @@ class PlanMonthController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/sellers/'.Auth::user()->api_identify.'/customers');
         $res_api = $response->json();
 
-        $data['customer_api'] = array();
-        foreach ($res_api['data'] as $key => $value) {
-            $data['customer_api'][$key] =
-            [
-                'id' => $value['identify'],
-                'shop_name' => $value['title']." ".$value['name'],
-                'shop_address' => $value['amphoe_name']." , ".$value['province_name'],
-            ];
+        if(!is_null($res_api) && $res_api['code'] == 200){
+            $data['customer_api'] = array();
+            foreach ($res_api['data'] as $key => $value) {
+                $data['customer_api'][$key] =
+                [
+                    'id' => $value['identify'],
+                    'shop_name' => $value['title']." ".$value['name'],
+                    'shop_address' => $value['amphoe_name']." , ".$value['province_name'],
+                ];
+            }
         }
 
         // ---- สร้างข้อมูล เยี่ยมลูกค้า โดย link กับ api ------- //
@@ -219,14 +222,16 @@ class PlanMonthController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
 
-        $data['pdglists_api'] = array();
-        foreach ($res_api['data'] as $key => $value) {
-            $data['pdglists_api'][$key] =
-            [
-                'identify' => $value['identify'],
-                'name' => $value['name'],
-                'sub_code' => $value['sub_code'],
-            ];
+        if(!is_null($res_api) && $res_api['code'] == 200){
+            $data['pdglists_api'] = array();
+            foreach ($res_api['data'] as $key => $value) {
+                $data['pdglists_api'][$key] =
+                [
+                    'identify' => $value['identify'],
+                    'name' => $value['name'],
+                    'sub_code' => $value['sub_code'],
+                ];
+            }
         }
 
         // dd($data['pdglists_api']);
@@ -236,7 +241,7 @@ class PlanMonthController extends Controller
             $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/customers/'.$cus_visit->customer_shop_id);
             $res_visit_api = $response->json();
             // dd($res_visit_api);
-            if($res_visit_api['code'] == 200){
+            if(!is_null($res_visit_api) && $res_visit_api['code'] == 200){
                 foreach ($res_visit_api['data'] as $key_api => $value_api) {
                     $res_visit_api = $res_visit_api['data'][$key_api];
                     $data['customer_visit_api'][] =
@@ -398,14 +403,16 @@ class PlanMonthController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/sellers/'.Auth::user()->api_identify.'/customers');
         $res_api = $response->json();
 
-        $data['customer_api'] = array();
-        foreach ($res_api['data'] as $key => $value) {
-            $data['customer_api'][$key] =
-            [
-                'id' => $value['identify'],
-                'shop_name' => $value['title']." ".$value['name'],
-                'shop_address' => $value['amphoe_name']." , ".$value['province_name'],
-            ];
+        if(!is_null($res_api) && $res_api['code'] == 200){
+            $data['customer_api'] = array();
+            foreach ($res_api['data'] as $key => $value) {
+                $data['customer_api'][$key] =
+                [
+                    'id' => $value['identify'],
+                    'shop_name' => $value['title']." ".$value['name'],
+                    'shop_address' => $value['amphoe_name']." , ".$value['province_name'],
+                ];
+            }
         }
 
         // ---- สร้างข้อมูล เยี่ยมลูกค้า โดย link กับ api ------- //
@@ -421,14 +428,16 @@ class PlanMonthController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
 
-        $data['pdglists_api'] = array();
-        foreach ($res_api['data'] as $key => $value) {
-            $data['pdglists_api'][$key] =
-            [
-                'identify' => $value['identify'],
-                'name' => $value['name'],
-                'sub_code' => $value['sub_code'],
-            ];
+        if(!is_null($res_api)){
+            $data['pdglists_api'] = array();
+            foreach ($res_api['data'] as $key => $value) {
+                $data['pdglists_api'][$key] =
+                [
+                    'identify' => $value['identify'],
+                    'name' => $value['name'],
+                    'sub_code' => $value['sub_code'],
+                ];
+            }
         }
 
         // dd($data['pdglists_api']);
@@ -438,7 +447,7 @@ class PlanMonthController extends Controller
             $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/customers/'.$cus_visit->customer_shop_id);
             $res_visit_api = $response->json();
             // dd($res_visit_api);
-            if($res_visit_api['code'] == 200){
+            if(!is_null($res_visit_api) && $res_visit_api['code'] == 200){
                 foreach ($res_visit_api['data'] as $key_api => $value_api) {
                     $res_visit_api = $res_visit_api['data'][$key_api];
                     $data['customer_visit_api'][] =
@@ -482,8 +491,9 @@ class PlanMonthController extends Controller
         $path_search = "reports/sellers/B2/closesaleplans?years=".$year."&months=".$month;
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
-
-        $data['saleplan_api'] = $res_api['data'];
+        if(!is_null($res_api) && $res_api['code'] == 200){
+            $data['saleplan_api'] = $res_api['data'];
+        }
 
         $data['mon_plan'] = $mon_plan;
         $data['sale_name'] = DB::table('users')->where('id',$mon_plan->created_by)->select('name')->first(); // ชื่อเซลล์

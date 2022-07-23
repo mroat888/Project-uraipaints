@@ -108,7 +108,7 @@ class DailyWorkController extends Controller
         $data['customer_api'] = array();
         // $data['InMonthDays'] = 0;
         // $data['ShopInMonthDays'] = 0;
-        if($res_api['code'] == 200){
+        if(!is_null($res_api) && $res_api['code'] == 200){
             foreach ($res_api['data'] as $key => $value) {
                 $data['customer_api'][$key] =
                 [
