@@ -331,7 +331,7 @@
                                                 </div>
                                                 <div class="col-4">
                                                     <span class="txt-custotal">
-                                                        @if(isset($res_api["data"]) && $res_api["data"][0]["Responsibility"][0]["ActiveTotal"] > 0)
+                                                        @if(!is_null($res_api) && isset($res_api["data"]) && $res_api["data"][0]["Responsibility"][0]["ActiveTotal"] > 0)
                                                             {{ number_format($res_api["data"][0]["Responsibility"][0]["ActiveTotal"]) }}
                                                         @else
                                                             -
@@ -351,7 +351,7 @@
                                                     <div class="col-12 col-xl-4">
                                                         <div>
                                                             @php
-                                                                if(isset($res_api["data"])){
+                                                                if(!is_null($res_api) && isset($res_api["data"])){
                                                                     $FocusDates_count = count($res_api["data"][1]["FocusDates"]);
                                                                 }else{
                                                                     $FocusDates_count = 0;
@@ -386,7 +386,7 @@
                     <h6 class="topic-page hk-sec-title topic-bgorange" style="font-weight: bold;">เทียบยอดขายเดือน
                         <?php echo thaidate('F', date("M")); ?> ระหว่างปี
                         @php 
-                            if (isset($res_api["data"][2]["SalesCurrent"])){
+                            if (!is_null($res_api) && isset($res_api["data"][2]["SalesCurrent"])){
                                 $SalesCurrent_year = $res_api["data"][2]["SalesCurrent"][0]["year"] + 543;
                                 $SalesPrevious_year = $res_api["data"][3]["SalesPrevious"][0]["year"] + 543;                   
                             }else{
@@ -402,9 +402,12 @@
                             <canvas id="myChart" style="height: 294px"></canvas>
                             <span class="mt-8 ml-40 text-danger">
                                 @php 
-                                    list($year,$month,$day) = explode("-", $res_api["trans_last_date"]);
-                                    $year = $year+543;
-                                    $trans_last_date = $day."/".$month."/".$year;
+                                    $trans_last_date = "-";
+                                    if(!is_null($res_api) && isset($res_api["trans_last_date"])){
+                                        list($year,$month,$day) = explode("-", $res_api["trans_last_date"]);
+                                        $year = $year+543;
+                                        $trans_last_date = $day."/".$month."/".$year;
+                                    }
                                 @endphp
                                 ข้อมูล ณ วันที่ {{ $trans_last_date }}
                             </span>
@@ -412,8 +415,8 @@
                         <div class="col-12 col-lg-4">
                             <div class="mt-sumsales card card-sm">
                                 <div class="card-sumsales card-body" style="color: #fff;">
-                                    @php
-                                    if(!is_null($res_api["data"][3]["SalesPrevious"]) && !is_null($res_api["data"][2]["SalesCurrent"])){
+                                @php
+                                    if(!is_null($res_api) && !is_null($res_api["data"][3]["SalesPrevious"]) && !is_null($res_api["data"][2]["SalesCurrent"])){
 
                                         if(!empty($res_api["data"][3]["SalesPrevious"])){
                                             $SalesPrevious = $res_api["data"][3]["SalesPrevious"];
@@ -529,7 +532,7 @@
                                                     </div>
                                                     <div class="col-6 col-md-5 pdr-0" style="text-align:right;">
                                                         <span style="font-weight: bold; font-size: 16px;">
-                                                            @if (!is_null($res_api["data"][0]["Responsibility"]))
+                                                            @if (!is_null($res_api) && !is_null($res_api["data"][0]["Responsibility"]))
                                                                 {{ number_format($res_api["data"][0]["Responsibility"][0]["BillOrderTotal"]) }} ราย
                                                             @else
                                                                 - ราย
@@ -541,7 +544,7 @@
                                                     <div class="col-6 col-md-7 pdl-0">
                                                         <span style="font-weight: bold; font-size: 14px;">ร้านค้า เปิดบิล คิดเป็น <br> 
                                                         @php 
-                                                            if(isset($res_api["trans_last_date"])){
+                                                            if(!is_null($res_api) && isset($res_api["trans_last_date"])){
                                                                 list($year,$month,$day) = explode("-", $res_api["trans_last_date"]);
                                                                 $year = $year+543;
                                                                 $trans_last_date = $day."/".$month."/".$year;
@@ -554,7 +557,7 @@
                                                     </div>
                                                     <div class="col-6 col-md-5 pdr-0" style="text-align:right;">
                                                         <span style="font-weight: bold; font-size: 16px;">
-                                                            @if (!is_null($res_api["data"][0]["Responsibility"]))
+                                                            @if (!is_null($res_api) && !is_null($res_api["data"][0]["Responsibility"]))
                                                                 {{ $res_api["data"][0]["Responsibility"][0]["PercentBillOrder"] }} จากทั้งหมด
                                                             @else
                                                                 - % จากทั้งหมด
@@ -568,7 +571,7 @@
                                                     </div>
                                                     <div class="col-6 col-md-5 pdr-0" style="text-align:right;">
                                                         <span style="font-weight: bold; font-size: 16px;" class="num-specialday">
-                                                            @if (!is_null($res_api["data"][0]["Responsibility"]))
+                                                            @if (!is_null($res_api) && !is_null($res_api["data"][0]["Responsibility"]))
                                                                 {{ $res_api["data"][0]["Responsibility"][0]["PercentAvailable"] }} จากทั้งหมด
                                                             @else
                                                                 - % จากทั้งหมด

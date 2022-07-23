@@ -100,7 +100,6 @@ class DashboardController extends Controller
             
         }
 
-
         $data['list_approval'] = DB::table('assignments')
             ->join('users', 'assignments.created_by', '=', 'users.id')
             ->where(function($query) use ($auth_team) {
@@ -114,7 +113,6 @@ class DashboardController extends Controller
             ->whereIn('assignments.assign_status', [1,2])
             ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
             ->get();
-
 
         $data['assignments'] = DB::table('assignments')
             ->where('created_by', Auth::user()->id)
@@ -201,7 +199,7 @@ class DashboardController extends Controller
                 $data['day_month'] .= $i;
             }
 
-            if(isset($data['res_api']['data'][4]['DaysSalesCurrent'][$noc]['DayNo'])){ // ปีปัจจุบัน
+            if(!is_null($data['res_api']) && isset($data['res_api']['data'][4]['DaysSalesCurrent'][$noc]['DayNo'])){ // ปีปัจจุบัน
 
                 if($data['res_api']['data'][4]['DaysSalesCurrent'][$noc]['DayNo'] == $i){
                     // $data['amtsale_current'] .= $data['res_api']['data'][4]['DaysSalesCurrent'][$noc]['totalAmtSale'].",";
@@ -223,7 +221,7 @@ class DashboardController extends Controller
                 }
             }
 
-            if(isset($data['res_api']['data'][5]['DaysSalesPrevious'][$nop]['DayNo'])){ // ปีที่แล้ว
+            if(!is_null($data['res_api'])  && isset($data['res_api']['data'][5]['DaysSalesPrevious'][$nop]['DayNo'])){ // ปีที่แล้ว
 
                 if($data['res_api']['data'][5]['DaysSalesPrevious'][$nop]['DayNo'] == $i){
                     // $data['amtsale_previous'] .= $data['res_api']['data'][5]['DaysSalesPrevious'][$nop]['totalAmtSale'].",";
@@ -250,7 +248,7 @@ class DashboardController extends Controller
            
         }
         // -- จบ Chat
-
+        // dd($data['res_api']);
 
   
         // -- OAT คอเม้นต์ อันเดิมใช้การ คำนวณจาก 
