@@ -172,6 +172,19 @@ class CustomerController extends Controller
                     'shop_status' => $value->shop_status,
                     'cust_result_status' => $customer_shops_saleplan->cust_result_status,
                 ];
+            }else{
+                $data['customer_shops_table'][] = [
+                    'id' => $value->id,
+                    'shop_name' => $value->shop_name,
+                    'PROVINCE_NAME' => $value->PROVINCE_NAME,
+                    'shop_profile_image' => $value->shop_profile_image,
+                    'shops_saleplan_id' => '',
+                    'monthly_plans_id' => '',
+                    'month_date' => '',
+                    'result_id' => '',
+                    'shop_status' => $value->shop_status,
+                    'cust_result_status' => '',
+                ];
             }
 
             if($value->shop_status == 1){
