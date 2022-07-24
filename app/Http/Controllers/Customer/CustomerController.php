@@ -159,19 +159,20 @@ class CustomerController extends Controller
                 ->orderby('customer_shops_saleplan.id', 'desc')
                 ->first();
 
-
-            $data['customer_shops_table'][] = [
-                'id' => $value->id,
-                'shop_name' => $value->shop_name,
-                'PROVINCE_NAME' => $value->PROVINCE_NAME,
-                'shop_profile_image' => $value->shop_profile_image,
-                'shops_saleplan_id' => $customer_shops_saleplan->id,
-                'monthly_plans_id' => $customer_shops_saleplan->monthly_plans_id,
-                'month_date' => $customer_shops_saleplan->month_date,
-                'result_id' => $customer_shops_saleplan->result_id,
-                'shop_status' => $value->shop_status,
-                'cust_result_status' => $customer_shops_saleplan->cust_result_status,
-            ];
+            if(!is_null($customer_shops_saleplan)){
+                $data['customer_shops_table'][] = [
+                    'id' => $value->id,
+                    'shop_name' => $value->shop_name,
+                    'PROVINCE_NAME' => $value->PROVINCE_NAME,
+                    'shop_profile_image' => $value->shop_profile_image,
+                    'shops_saleplan_id' => $customer_shops_saleplan->id,
+                    'monthly_plans_id' => $customer_shops_saleplan->monthly_plans_id,
+                    'month_date' => $customer_shops_saleplan->month_date,
+                    'result_id' => $customer_shops_saleplan->result_id,
+                    'shop_status' => $value->shop_status,
+                    'cust_result_status' => $customer_shops_saleplan->cust_result_status,
+                ];
+            }
 
             if($value->shop_status == 1){
                 $data['count_customer_success']++;
@@ -188,38 +189,54 @@ class CustomerController extends Controller
                     'cust_result_status' => $customer_shops_saleplan->cust_result_status,
                 ];
             }else{
-                if(!is_null($customer_shops_saleplan->cust_result_status)){
-                    if($customer_shops_saleplan->cust_result_status == 2){ /*  สนใจ	 */
-                        $data['count_customer_result_1']++;
-                        $data['customer_shops_result_1_table'][] = [
-                            'id' => $value->id,
-                            'shop_name' => $value->shop_name,
-                            'PROVINCE_NAME' => $value->PROVINCE_NAME,
-                            'shop_profile_image' => $value->shop_profile_image,
-                            'shops_saleplan_id' => $customer_shops_saleplan->id,
-                            'monthly_plans_id' => $customer_shops_saleplan->monthly_plans_id,
-                            'month_date' => $customer_shops_saleplan->month_date,
-                            'result_id' => $customer_shops_saleplan->result_id,
-                            'shop_status' => $value->shop_status,
-                            'cust_result_status' => $customer_shops_saleplan->cust_result_status,
-                        ];
-                    }elseif($customer_shops_saleplan->cust_result_status == 1){ /* รอตัดสินใจ */
-                        $data['count_customer_result_2']++;
-                        $data['customer_shops_result_2_table'][] = [
-                            'id' => $value->id,
-                            'shop_name' => $value->shop_name,
-                            'PROVINCE_NAME' => $value->PROVINCE_NAME,
-                            'shop_profile_image' => $value->shop_profile_image,
-                            'shops_saleplan_id' => $customer_shops_saleplan->id,
-                            'monthly_plans_id' => $customer_shops_saleplan->monthly_plans_id,
-                            'month_date' => $customer_shops_saleplan->month_date,
-                            'result_id' => $customer_shops_saleplan->result_id,
-                            'shop_status' => $value->shop_status,
-                            'cust_result_status' => $customer_shops_saleplan->cust_result_status,
-                        ];
-                    }elseif($customer_shops_saleplan->cust_result_status == 0){ /* ไม่สนใจ */
-                        $data['count_customer_result_3']++;
-                        $data['customer_shops_result_3_table'][] = [
+                if(isset($customer_shops_saleplan->cust_result_status)){
+                    if(!is_null($customer_shops_saleplan->cust_result_status)){
+                        if($customer_shops_saleplan->cust_result_status == 2){ /*  สนใจ	 */
+                            $data['count_customer_result_1']++;
+                            $data['customer_shops_result_1_table'][] = [
+                                'id' => $value->id,
+                                'shop_name' => $value->shop_name,
+                                'PROVINCE_NAME' => $value->PROVINCE_NAME,
+                                'shop_profile_image' => $value->shop_profile_image,
+                                'shops_saleplan_id' => $customer_shops_saleplan->id,
+                                'monthly_plans_id' => $customer_shops_saleplan->monthly_plans_id,
+                                'month_date' => $customer_shops_saleplan->month_date,
+                                'result_id' => $customer_shops_saleplan->result_id,
+                                'shop_status' => $value->shop_status,
+                                'cust_result_status' => $customer_shops_saleplan->cust_result_status,
+                            ];
+                        }elseif($customer_shops_saleplan->cust_result_status == 1){ /* รอตัดสินใจ */
+                            $data['count_customer_result_2']++;
+                            $data['customer_shops_result_2_table'][] = [
+                                'id' => $value->id,
+                                'shop_name' => $value->shop_name,
+                                'PROVINCE_NAME' => $value->PROVINCE_NAME,
+                                'shop_profile_image' => $value->shop_profile_image,
+                                'shops_saleplan_id' => $customer_shops_saleplan->id,
+                                'monthly_plans_id' => $customer_shops_saleplan->monthly_plans_id,
+                                'month_date' => $customer_shops_saleplan->month_date,
+                                'result_id' => $customer_shops_saleplan->result_id,
+                                'shop_status' => $value->shop_status,
+                                'cust_result_status' => $customer_shops_saleplan->cust_result_status,
+                            ];
+                        }elseif($customer_shops_saleplan->cust_result_status == 0){ /* ไม่สนใจ */
+                            $data['count_customer_result_3']++;
+                            $data['customer_shops_result_3_table'][] = [
+                                'id' => $value->id,
+                                'shop_name' => $value->shop_name,
+                                'PROVINCE_NAME' => $value->PROVINCE_NAME,
+                                'shop_profile_image' => $value->shop_profile_image,
+                                'shops_saleplan_id' => $customer_shops_saleplan->id,
+                                'monthly_plans_id' => $customer_shops_saleplan->monthly_plans_id,
+                                'month_date' => $customer_shops_saleplan->month_date,
+                                'result_id' => $customer_shops_saleplan->result_id,
+                                'shop_status' => $value->shop_status,
+                                'cust_result_status' => $customer_shops_saleplan->cust_result_status,
+                            ];
+                        }
+                    }else{
+                        $data['count_customer_pending']++; /* รอดำเนินการ */
+                        $data['customer_shops_pending_table'][] = [
                             'id' => $value->id,
                             'shop_name' => $value->shop_name,
                             'PROVINCE_NAME' => $value->PROVINCE_NAME,
@@ -232,20 +249,6 @@ class CustomerController extends Controller
                             'cust_result_status' => $customer_shops_saleplan->cust_result_status,
                         ];
                     }
-                }else{
-                    $data['count_customer_pending']++; /* รอดำเนินการ */
-                    $data['customer_shops_pending_table'][] = [
-                        'id' => $value->id,
-                        'shop_name' => $value->shop_name,
-                        'PROVINCE_NAME' => $value->PROVINCE_NAME,
-                        'shop_profile_image' => $value->shop_profile_image,
-                        'shops_saleplan_id' => $customer_shops_saleplan->id,
-                        'monthly_plans_id' => $customer_shops_saleplan->monthly_plans_id,
-                        'month_date' => $customer_shops_saleplan->month_date,
-                        'result_id' => $customer_shops_saleplan->result_id,
-                        'shop_status' => $value->shop_status,
-                        'cust_result_status' => $customer_shops_saleplan->cust_result_status,
-                    ];
                 }
             }
 
