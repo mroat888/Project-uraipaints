@@ -191,7 +191,7 @@ class DashboardController extends Controller
                 $data['day_month'] .= $i;
             }
 
-            if(isset($data['res_api']['data'][4]['DaysSalesCurrent'][$noc]['DayNo'])){ // ปีปัจจุบัน
+            if(!is_nuisset($data['res_api']['data'][4]['DaysSalesCurrent'][$noc]['DayNo'])){ // ปีปัจจุบัน
 
                 if($data['res_api']['data'][4]['DaysSalesCurrent'][$noc]['DayNo'] == $i){
                     // $data['amtsale_current'] .= $data['res_api']['data'][4]['DaysSalesCurrent'][$noc]['totalAmtSale'].",";

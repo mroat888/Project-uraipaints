@@ -181,7 +181,7 @@ class DashboardController extends Controller
                 ]);
                 $res_api = $response->json(); 
 
-                if(!empty($res_api["data"][0]["Customers"])){
+                if(!is_null($res_api) && !empty($res_api["data"][0]["Customers"])){
                     $Customers_check_data = count($res_api["data"][0]["Customers"]);
                     if($Customers_check_data > 0){
                         $data['sum_CustTotal'] = $data['sum_CustTotal'] + $res_api["data"][0]["Customers"][0]["CustTotal"]; // ร้านค้าทั้งหมด
@@ -190,7 +190,7 @@ class DashboardController extends Controller
                     }
                 }
 
-                if(!empty($res_api["data"][1]["FocusDates"])){
+                if(!is_null($res_api) && !empty($res_api["data"][1]["FocusDates"])){
                     $FocusDates_check_data = count($res_api["data"][1]["FocusDates"]);          
                     if($FocusDates_check_data > 0){
                         $data['sum_FotalCustomers'] = $data['sum_FotalCustomers'] + $res_api["data"][1]["FocusDates"][0]["TotalCustomers"];
@@ -206,7 +206,7 @@ class DashboardController extends Controller
                 $res_api_previous = $response->json();
 
                 //-- เปรียบเทียบยอดขาย ปีที่แล้วกับปีปัจจุบัน ในเดือน
-                if(!empty($res_api_previous["data"][3]["SalesPrevious"])){
+                if(!is_null($res_api_previous) && !empty($res_api_previous["data"][3]["SalesPrevious"])){
                     $SalesPrevious_check_data = count($res_api_previous["data"][3]["SalesPrevious"]);
                     if($SalesPrevious_check_data > 0){
                         $SalesPrevious = $res_api_previous["data"][3]["SalesPrevious"];
@@ -214,7 +214,7 @@ class DashboardController extends Controller
                     }
                 }
 
-                if(!empty($res_api["data"][2]["SalesCurrent"])){
+                if(!is_null($res_api_previous) && !empty($res_api["data"][2]["SalesCurrent"])){
                     $SalesCurrent_check_data = count($res_api["data"][2]["SalesCurrent"]);
                     if($SalesCurrent_check_data > 0){
                         $SalesCurrent = $res_api["data"][2]["SalesCurrent"];
