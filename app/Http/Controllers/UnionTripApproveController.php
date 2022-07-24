@@ -313,10 +313,11 @@ class UnionTripApproveController extends Controller
         // --- จบ ดึงข้อมูลร้านค้า
 
         $data['trip_detail'] = array();
-        $formprovince = "";
+        
         if(count($trip_detail) > 0){
             foreach($trip_detail as $value){
-
+                $formprovince = "-";
+                $toprovince = "-";
                 foreach($data['provinces'] as $provinces){
                     if($value->trip_from == $provinces['identify'] ){
                         $formprovince = $provinces['name_thai'];
