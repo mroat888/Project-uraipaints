@@ -365,19 +365,28 @@ class RequestApprovalController extends Controller
         }
 
         $users_approve = DB::table('users')->where('id', $dataResult->assign_approve_id)->first();
-        $assignments_approve_name = $users_approve->name;
+        $assignments_approve_name = "-";
+        if(!is_null($users_approve)){
+            $assignments_approve_name = $users_approve->name;
+        }
 
         if(!is_null($dataResult->assign_approve_date)){
-            // $assign_approve_date = $dataResult->assign_approve_date;
             $assign_approve_date = date('d/m/Y H:i',strtotime($dataResult->assign_approve_date."+543 years"));
         }else{
             $assign_approve_date = "-";
+        }
+
+        $user_created_by = DB::table('users')->where('id', $dataResult->created_by)->first();
+        $assignments_request_name = "-";
+        if(!is_null($user_created_by)){
+            $assignments_request_name = $user_created_by->name;
         }
 
         $dataassign = array();
         $dataassign = [
             'assign_detail' => $dataResult->assign_detail,
             'assign_title' => $dataResult->assign_title,
+            'assignments_request_name' => $assignments_request_name,
             'assign_request_date' => $dataResult->assign_request_date,
             'assign_work_date' => $dataResult->assign_work_date,
             'masassign_title' => $dataResult->masassign_title,
@@ -387,15 +396,16 @@ class RequestApprovalController extends Controller
         ];
         
         $comment = array();
-        foreach ($request_comment as $key => $value) {
-            $users = DB::table('users')->where('id', $value['created_by'])->first();
-            $date_comment = substr($value->created_at, 0, 10);
-            $comment[$key] =
-                [
-                    'assign_comment_detail' => $value->assign_comment_detail,
-                    'user_comment' => $users->name,
-                    'created_at' => $date_comment,
-                ];
+        if(count($request_comment) > 0){
+            foreach ($request_comment as $key => $value) {
+                $users = DB::table('users')->where('id', $value['created_by'])->first();
+                $date_comment = substr($value->created_at, 0, 10);
+                $comment[$key] =[
+                        'assign_comment_detail' => $value->assign_comment_detail,
+                        'user_comment' => $users->name,
+                        'created_at' => $date_comment,
+                    ];
+            }
         }
 
         // echo json_encode($comment, $dataassign);

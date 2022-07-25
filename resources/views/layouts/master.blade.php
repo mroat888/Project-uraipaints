@@ -175,7 +175,7 @@ License: You must have a valid license purchased only from themeforest to legall
         <!-- /Top Navbar -->
 
         <?php
-            $count_quest = App\RequestApproval::where('assign_status_actoin', 0)
+            $count_quest = App\RequestApproval::whereNotIn('assignments.assign_status', [3])
                 ->where('created_by', Auth::user()->id)->count();
 
             $count_assign = App\RequestApproval::where('assign_status', 3)->where('assign_result_status', 0)

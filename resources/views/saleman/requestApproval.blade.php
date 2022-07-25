@@ -423,6 +423,7 @@
             dataType: "JSON",
             async: false,
             success: function(data) {
+                console.log(data);
                 $('#div_comment').children().remove().end();
                 $('#div_assign_status').children().remove().end();
                 $("#assign_parent").hide();
@@ -450,6 +451,7 @@
                 $('#assign_detail_comment').text(data['dataassign'].assign_detail);
                 $('#header_title_comment').text('เรื่อง : '+data['dataassign'].assign_title);
                 $('#header_approved_for_comment').text(data['dataassign'].masassign_title);
+                $('#get_assign_request_name').text(data['dataassign'].assignments_request_name);
                 $('#get_assign_request_date').text(date_request);
                 $('#get_assign_work_date_comment').text(date_work);
 
