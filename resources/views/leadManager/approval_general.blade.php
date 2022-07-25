@@ -184,14 +184,18 @@
                                                     </span>
                                                 @endif
                                                 {{$value->assign_title}}</td>
-                                            {{-- <td>{{$value->assign_shop}}</td> --}}
                                             <td>{{ $value->api_customers_title }} {{ $value->api_customers_name }}</td>
                                             <td>{{Carbon\Carbon::parse($value->assign_request_date)->addYear(543)->format('d/m/Y')}}</td>
                                             <td>
                                                 <span class="btn-pending" style="font-size: 12px;">Pending</span>
                                             </td>
                                             <td>
-                                                <span class="btn-approve" style="font-size: 12px;">มี</span>
+                                                @php 
+                                                    $countcomment = DB::table('assignments_comments')->where('assign_id', $value->id)->count();
+                                                @endphp
+                                                @if($countcomment > 0)
+                                                    <span class="btn-approve" style="font-size: 12px;">มี</span>
+                                                @endif
                                             </td>
                                             <td>
                                                 <div class="button-list">

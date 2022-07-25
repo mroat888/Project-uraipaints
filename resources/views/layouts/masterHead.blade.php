@@ -194,10 +194,30 @@ License: You must have a valid license purchased only from themeforest to legall
                 'users.*',
                 'monthly_plans.*')->count();
 
-            $request_approval = DB::table('assignments')
-            ->join('users', 'assignments.created_by', '=', 'users.id')
-            ->where('assignments.assign_status', 0) // สถานะการอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน)
-            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+            // $request_approval = DB::table('assignments')
+            // ->join('users', 'assignments.created_by', '=', 'users.id')
+            // ->where('assignments.assign_status', 0) // สถานะการอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน)
+            // ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+            // ->where(function($query) use ($auth_team) {
+            //     for ($i = 0; $i < count($auth_team); $i++){
+            //         $query->orWhere('users.team_id', $auth_team[$i])
+            //             ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+            //             ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+            //     }
+            // })
+            // ->select('assignments.created_by')
+            // ->distinct()->count();
+            
+            // ขออนุมัติ
+            $request_approval =  DB::table('assignments')
+            ->leftJoin('assignments_comments', 'assignments.id', 'assignments_comments.assign_id')
+            ->leftJoin('api_customers', 'api_customers.identify', 'assignments.assign_shop')
+            ->join('users', 'assignments.created_by', 'users.id')
+            ->whereIn('assignments.assign_status', [0, 4]) // สถานะอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน, 4=แก้ไขงาน))
+            ->where(function($query) {
+                $query->orWhere('assignments.parent_id', '!=', 'parent')
+                    ->orWhere('assignments.parent_id', null);
+            })
             ->where(function($query) use ($auth_team) {
                 for ($i = 0; $i < count($auth_team); $i++){
                     $query->orWhere('users.team_id', $auth_team[$i])
@@ -205,8 +225,31 @@ License: You must have a valid license purchased only from themeforest to legall
                         ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
                 }
             })
-            ->select('assignments.created_by')
-            ->distinct()->count();
+            ->orderBy('assignments.assign_request_date', 'desc')
+            ->groupBy('assignments.id')
+            ->get()
+            ->count();
+
+            // สั่งงาน
+            $users_id = Auth::user()->id;
+            $request_assign  = DB::table('assignments')
+            ->join('users', 'assignments.assign_emp_id', 'users.id')
+            ->where('assignments.assign_status', 3)
+            ->select('assignments.*', 'users.name')
+            ->orderBy('assignments.id', 'desc')
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('users.team_id', $auth_team[$i])
+                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+                }
+            })
+            ->where(function($query) use ($users_id) {
+                    $query->orWhere('assignments.created_by', $users_id)
+                        ->orWhere('assignments.assign_approve_id', $users_id);
+            })
+            ->get()
+            ->count();
 
             $customers = DB::table('customer_shops_saleplan')
             ->join('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
@@ -409,6 +452,7 @@ License: You must have a valid license purchased only from themeforest to legall
                                 data-target="#charts_drp2">
                                 <i class="ion ion-md-create" style="color: #044067;"></i>
                                 <span class="nav-link-text">ขออนุมัติ และ สั่งงาน</span>
+                                <span class="badge badge-danger badge-pill ml-2">{{$request_assign + $request_approval}}</span>
                             </a>
                             <ul id="charts_drp2" class="nav flex-column collapse collapse-level-1">
                                 <li class="nav-item">
@@ -423,7 +467,9 @@ License: You must have a valid license purchased only from themeforest to legall
                                         <li class="nav-item {{ (request()->is('head/assignment/add')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('head/assignment/add') }}">
                                                 <i class="ion ion-md-folder-open" style="color: #044067;"></i>
-                                                สั่งงานผู้แทนขาย</a>
+                                                <span class="nav-link-text">สั่งงานผู้แทนขาย</span>
+                                                <span class="badge badge-danger badge-pill">{{$request_assign}}</span>
+                                            </a>
                                         </li>
                                     </ul>
                                 </li>

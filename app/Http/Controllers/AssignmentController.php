@@ -15,17 +15,31 @@ class AssignmentController extends Controller
 
     public function index()
     {
-        $data['assignments'] = Assignment::join('users', 'assignments.assign_emp_id', 'users.id')
-        ->where('assignments.created_by', Auth::user()->id)
-        ->where('assignments.assign_status', 3)
-        ->select('assignments.*', 'users.name')
-        ->orderBy('assignments.id', 'desc')->get();
-
         $auth_team_id = explode(',',Auth::user()->team_id);
         $auth_team = array();
         foreach($auth_team_id as $value){
             $auth_team[] = $value;
         }
+
+        $users_id = Auth::user()->id;
+        $data['assignments'] = Assignment::join('users', 'assignments.assign_emp_id', 'users.id')
+        ->where('assignments.assign_status', 3)
+        ->select('assignments.*', 'users.name')
+        ->orderBy('assignments.id', 'desc')
+        ->where(function($query) use ($auth_team) {
+            for ($i = 0; $i < count($auth_team); $i++){
+                $query->orWhere('users.team_id', $auth_team[$i])
+                    ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                    ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+            }
+        })
+        ->where(function($query) use ($users_id) {
+                $query->orWhere('assignments.created_by', $users_id)
+                    ->orWhere('assignments.assign_approve_id', $users_id);
+        })
+        ->get();
+
+        // dd($data['assignments']);
 
         $data['users'] = DB::table('users')
         // ->where('team_id', Auth::user()->team_id)
@@ -38,24 +52,24 @@ class AssignmentController extends Controller
             }
         })->get();
 
-    $data['team_sales'] = DB::table('master_team_sales')
-    ->where(function($query) use ($auth_team) {
-        for ($i = 0; $i < count($auth_team); $i++){
-            $query->orWhere('id', $auth_team[$i])
-                ->orWhere('id', 'like', $auth_team[$i].',%')
-                ->orWhere('id', 'like', '%,'.$auth_team[$i]);
-        }
-    })->get();
+        $data['team_sales'] = DB::table('master_team_sales')
+        ->where(function($query) use ($auth_team) {
+            for ($i = 0; $i < count($auth_team); $i++){
+                $query->orWhere('id', $auth_team[$i])
+                    ->orWhere('id', 'like', $auth_team[$i].',%')
+                    ->orWhere('id', 'like', '%,'.$auth_team[$i]);
+            }
+        })->get();
 
-    $team_sales =  DB::table('master_team_sales')
-    ->where(function($query) use ($auth_team) {
-        for ($i = 0; $i < count($auth_team); $i++){
-            $query->orWhere('id', $auth_team[$i])
-                ->orWhere('id', 'like', $auth_team[$i].',%')
-                ->orWhere('id', 'like', '%,'.$auth_team[$i]);
-        }
-    })
-    ->get();
+        $team_sales =  DB::table('master_team_sales')
+        ->where(function($query) use ($auth_team) {
+            for ($i = 0; $i < count($auth_team); $i++){
+                $query->orWhere('id', $auth_team[$i])
+                    ->orWhere('id', 'like', $auth_team[$i].',%')
+                    ->orWhere('id', 'like', '%,'.$auth_team[$i]);
+            }
+        })
+        ->get();
 
         return view('leadManager.add_assignment', $data);
     }
