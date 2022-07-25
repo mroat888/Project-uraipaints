@@ -26,6 +26,8 @@ class RequestApprovalController extends Controller
 
     public function index()
     {
+        $api_token = $this->apicontroller->apiToken();    
+
         $data['list_approval']  = DB::table('assignments')
             ->leftJoin('assignments_comments', 'assignments.id', 'assignments_comments.assign_id')
             ->leftJoin('api_customers', 'api_customers.identify', 'assignments.assign_shop')
@@ -44,17 +46,26 @@ class RequestApprovalController extends Controller
             ->groupBy('assignments.id')
             ->get();
 
-        $api_customers = DB::table('api_customers')
-            ->where('SellerCode', Auth::user()->api_identify)
-            ->get();
-        $data['customer_api'] = array();
-        foreach ($api_customers as $key => $value) {
-            $data['customer_api'][$key] =
-            [
-                'id' => $value->identify,
-                'shop_name' => $value->title." ".$value->name,
-                'shop_address' => $value->amphoe_name." , ".$value->province_name,
-            ];
+        //-- Data ในระบบ เปลี่ยนมาใช้ api
+        // $api_customers = DB::table('api_customers')
+        //     ->where('SellerCode', Auth::user()->api_identify)
+        //     ->get();
+
+        $patch_search = "/sellers/".Auth::user()->api_identify."/customers";
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$patch_search,[
+            'limits' => env("API_CUST_LIMIT")
+        ]);
+        $res_api = $response->json();
+        if(!is_null($res_api) && $res_api['code'] == 200){
+            $data['customer_api'] = array();
+            foreach ($res_api['data'] as $key => $value) {
+                $data['customer_api'][$key] =
+                [
+                    'id' => $value['identify'],
+                    'shop_name' => $value['title']." ".$value['name'],
+                    'shop_address' => $value['amphoe_name']." , ".$value['province_name'],
+                ];
+            }
         }
 
         return view('saleman.requestApproval', $data);

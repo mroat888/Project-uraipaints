@@ -197,9 +197,11 @@
                                 <label for="firstName">ค้นหาชื่อร้าน</label>
                                 <select name="sel_searchShop2" id="sel_searchShop2" class="form-control custom-select select2">
                                     <option value="" selected disabled>กรุณาเลือกชื่อร้านค้า</option>
-                                    @foreach ($customer_api as $key => $value)
-                                        <option value="{{$customer_api[$key]['id']}}">{{$customer_api[$key]['shop_name']}}</option>
-                                    @endforeach
+                                    @if(isset($customer_api))
+                                        @foreach ($customer_api as $key => $value)
+                                            <option value="{{$customer_api[$key]['id']}}">{{$customer_api[$key]['shop_name']}}</option>
+                                        @endforeach
+                                    @endif
                                 </select>
                             </div>
                         </div>
