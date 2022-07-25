@@ -24,18 +24,28 @@ class DashboardController extends Controller
     public function index(){
         //ตรวจสอบเดือนของแผนงานประจำเดือน
 
-        // $data['list_approval'] = RequestApproval::where('created_by', Auth::user()->id)->whereMonth('assign_request_date', Carbon::now()->format('m'))->get();
-        $data['list_approval'] = DB::table('assignments')
-            ->where('created_by', Auth::user()->id)
-            ->whereMonth('assign_request_date', Carbon::now()->format('m'))
-            ->whereIn('assign_status', [0,1,2])
+        $data['list_approval']  = DB::table('assignments')
+            ->leftJoin('assignments_comments', 'assignments.id', 'assignments_comments.assign_id')
+            ->leftJoin('api_customers', 'api_customers.identify', 'assignments.assign_shop')
+            ->where('assignments.created_by', Auth::user()->id)
+            ->where(function($query) {
+                    $query->orWhere('assignments.parent_id', '!=', 'parent')
+                        ->orWhere('assignments.parent_id', null);
+            })
+            ->whereNotIn('assignments.assign_status', [3]) // สถานะการอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน, 4=ให้แก้ไขงาน)
+            ->select(
+                'assignments.*', 
+                'assignments_comments.assign_id', 
+                'api_customers.title as customer_title', 'api_customers.name as customer_name'
+            )
+            ->orderBy('assignments.assign_request_date', 'desc')
+            ->groupBy('assignments.id')
             ->get();
 
-        // $data['assignments'] = Assignment::where('assign_emp_id', Auth::user()->id)->whereMonth('assign_work_date', Carbon::now()->format('m'))->get();
-        $data['assignments'] = DB::table('assignments')
-            ->where('assign_emp_id', Auth::user()->id)
-            ->whereMonth('assign_work_date', Carbon::now()->format('m'))
-            ->where('assign_status', 3)
+        $data['assignments'] = Assignment::join('users', 'assignments.assign_emp_id', 'users.id')
+            ->where('assignments.assign_emp_id', Auth::user()->id)
+            ->where('assignments.assign_status', 3)->select('assignments.*', 'users.name')
+            ->orderBy('assignments.id', 'desc')
             ->get();
 
         $data['notes'] = Note::where('employee_id', Auth::user()->id)->whereMonth('note_date', Carbon::now()->format('m'))->get();

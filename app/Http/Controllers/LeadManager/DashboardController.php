@@ -100,8 +100,28 @@ class DashboardController extends Controller
             
         }
 
+        // $data['list_approval'] = DB::table('assignments')
+        //     ->join('users', 'assignments.created_by', '=', 'users.id')
+        //     ->where(function($query) use ($auth_team) {
+        //         for ($i = 0; $i < count($auth_team); $i++){
+        //             $query->orWhere('users.team_id', $auth_team[$i])
+        //                 ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+        //                 ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+        //         }
+        //     })
+        //     ->whereMonth('assignments.assign_request_date', Carbon::now()->format('m'))
+        //     ->whereIn('assignments.assign_status', [1,2])
+        //     ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+        //     ->get();
         $data['list_approval'] = DB::table('assignments')
-            ->join('users', 'assignments.created_by', '=', 'users.id')
+            ->leftJoin('assignments_comments', 'assignments.id', 'assignments_comments.assign_id')
+            ->leftJoin('api_customers', 'api_customers.identify', 'assignments.assign_shop')
+            ->join('users', 'assignments.created_by', 'users.id')
+            ->whereIn('assignments.assign_status', [0, 4]) // สถานะอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน, 4=แก้ไขงาน))
+            ->where(function($query) {
+                $query->orWhere('assignments.parent_id', '!=', 'parent')
+                    ->orWhere('assignments.parent_id', null);
+            })
             ->where(function($query) use ($auth_team) {
                 for ($i = 0; $i < count($auth_team); $i++){
                     $query->orWhere('users.team_id', $auth_team[$i])
@@ -109,16 +129,43 @@ class DashboardController extends Controller
                         ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
                 }
             })
-            ->whereMonth('assignments.assign_request_date', Carbon::now()->format('m'))
-            ->whereIn('assignments.assign_status', [1,2])
-            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+            ->select(
+                'assignments.*',
+                'assignments_comments.assign_id' ,
+                'users.name',
+                'users.id as user_id',
+                'users.api_identify',
+                'api_customers.title as api_customers_title',
+                'api_customers.name as api_customers_name',
+            )
+            ->orderBy('assignments.assign_request_date', 'desc')
+            ->groupBy('assignments.id')
             ->get();
 
+        // $data['assignments'] = DB::table('assignments')
+        //     ->where('created_by', Auth::user()->id)
+        //     ->whereMonth('assign_work_date', Carbon::now()->format('m'))
+        //     ->where('assign_status', 3)
+        //     ->get();
+        
+        $users_id = Auth::user()->id;
         $data['assignments'] = DB::table('assignments')
-            ->where('created_by', Auth::user()->id)
-            ->whereMonth('assign_work_date', Carbon::now()->format('m'))
-            ->where('assign_status', 3)
-            ->get();
+        ->join('users', 'assignments.assign_emp_id', 'users.id')
+        ->where('assignments.assign_status', 3)
+        ->select('assignments.*', 'users.name')
+        ->orderBy('assignments.id', 'desc')
+        ->where(function($query) use ($auth_team) {
+            for ($i = 0; $i < count($auth_team); $i++){
+                $query->orWhere('users.team_id', $auth_team[$i])
+                    ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                    ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+            }
+        })
+        ->where(function($query) use ($users_id) {
+                $query->orWhere('assignments.created_by', $users_id)
+                    ->orWhere('assignments.assign_approve_id', $users_id);
+        })
+        ->get();
         
         $data['notes'] = Note::where('employee_id', Auth::user()->id)->whereMonth('note_date', Carbon::now()->format('m'))->get();
         // $data['customer_shop'] = Customer::where('created_by', Auth::user()->team_id)->where('shop_status', 0)->whereMonth('created_at', Carbon::now()->format('m'))->get();
@@ -248,114 +295,7 @@ class DashboardController extends Controller
            
         }
         // -- จบ Chat
-        // dd($data['res_api']);
-
-  
-        // -- OAT คอเม้นต์ อันเดิมใช้การ คำนวณจาก 
-        // if(!is_null($user_teams)){
-        //     foreach($user_teams as $team){
-        //         $response = Http::withToken($api_token)
-        //         ->get(env("API_LINK").env('API_PATH_VER').'/sellers/'.$team->api_identify.'/dashboards', [
-        //             'year' => $year,
-        //             'month' => $month
-        //         ]);
-        //         $res_api = $response->json(); 
- 
-        //         if(!empty($res_api["data"][0]["Customers"])){
-        //             $Customers_check_data = count($res_api["data"][0]["Customers"]);
-        //             if($Customers_check_data > 0){
-        //                 $data['sum_CustTotal'] = $data['sum_CustTotal'] + $res_api["data"][0]["Customers"][0]["CustTotal"]; // ร้านค้าทั้งหมด
-        //                 $data['sum_ActiveTotal'] = $data['sum_ActiveTotal'] + $res_api["data"][0]["Customers"][0]["ActiveTotal"]; // ร้านที่ Active
-        //                 $data['sum_InactiveTotal'] = $data['sum_InactiveTotal'] + $res_api["data"][0]["Customers"][0]["InactiveTotal"]; // ร้านที่ Active
-        //             }
-        //         }
-
-        //         if(!empty($res_api["data"][1]["FocusDates"])){
-        //             $FocusDates_check_data = count($res_api["data"][1]["FocusDates"]);          
-        //             if($FocusDates_check_data > 0){
-        //                 // $data['sum_FotalCustomers'] = $data['sum_FotalCustomers'] + $res_api["data"][1]["FocusDates"][0]["TotalCustomers"];
-        //                 // $data['sum_TotalDays'] = $data['sum_TotalDays'] + $res_api["data"][1]["FocusDates"][0]["TotalDays"];
-        //             }
-        //         }
-                
-        //         //-- เปรียบเทียบยอดขาย ปีที่แล้วกับปีปัจจุบัน ในเดือน
-        //         if(!empty($res_api["data"][3]["SalesPrevious"])){
-        //             $SalesPrevious_check_data = count($res_api["data"][3]["SalesPrevious"]);
-        //             if($SalesPrevious_check_data > 0){
-        //                 $SalesPrevious = $res_api["data"][3]["SalesPrevious"];
-        //                 $data['sum_totalAmtSale_Previous'] = $data['sum_totalAmtSale_Previous'] + $SalesPrevious[0]["sales"]; // เป้ายอดขายปีที่แล้ว
-        //             }
-        //         }
-
-        //         if(!empty($res_api["data"][2]["SalesCurrent"])){
-        //             $SalesCurrent_check_data = count($res_api["data"][2]["SalesCurrent"]);
-        //             if($SalesCurrent_check_data > 0){
-        //                 $SalesCurrent = $res_api["data"][2]["SalesCurrent"];
-        //                 $data['sum_totalAmtSale'] = $data['sum_totalAmtSale'] + $SalesCurrent[0]["sales"]; // ยอดที่ทำได้ปีนี้
-        //             }
-        //         }
-
-        //         //-- Chat
-        //         if($check_looo_once == 'Y'){
-        //             for($i=1; $i <= $dayinmonth; $i++){
-        //                 if($i < $dayinmonth){
-        //                     $data['day_month'] .= $i.",";
-        //                 }else{
-        //                     $data['day_month'] .= $i;
-        //                 }
-        //             }
-        //         }
-        //         $noc=0;
-        //         $nop=0;
-        //         for($i=1; $i <= $dayinmonth; $i++){
-
-        //             if(empty($sum_amtsale_current[$i])){
-        //                 $sum_amtsale_current[$i] = 0;
-        //             }else{
-        //                 $sum_amtsale_current[$i] += 0;
-        //             }
-
-        //             if(empty($sum_amtsale_previous[$i])){
-        //                 $sum_amtsale_previous[$i] = 0;
-        //             }else{
-        //                 $sum_amtsale_previous[$i] += 0;
-        //             }
-
-        //             if(isset($res_api['data'][4]['DaysSalesCurrent'][$nop]['DayNo'])){ // ปีปัจจุบัน
-        //                 if($res_api['data'][4]['DaysSalesCurrent'][$nop]['DayNo'] == $i){ 
-        //                     $sum_amtsale_current[$i] +=  $res_api['data'][4]['DaysSalesCurrent'][$nop]['sales'];
-        //                 }else{
-        //                     $nop--;
-        //                 }
-        //             }
-                    
-        //             if(isset($res_api['data'][5]['DaysSalesPrevious'][$nop]['DayNo'])){ // ปีที่แล้ว
-        //                 if($res_api['data'][5]['DaysSalesPrevious'][$nop]['DayNo'] == $i){ 
-        //                     $sum_amtsale_previous[$i] +=  $res_api['data'][5]['DaysSalesPrevious'][$nop]['sales'];
-        //                 }else{
-        //                     $nop--;
-        //                 }
-        //             }
-                    
-        //             $nop++;
-        //         }
-        //         $check_looo_once = 'N';
-                
-        //     }
-        // }
-
-        // //-- Chat
-        // for($i=1; $i <= $dayinmonth; $i++){
-        //     if($i < $dayinmonth){
-        //         $data['amtsale_current'] .= $sum_amtsale_current[$i].",";
-        //         $data['amtsale_previous'] .= $sum_amtsale_previous[$i].",";
-        //     }else{
-        //         $data['amtsale_current'] .= $sum_amtsale_current[$i];
-        //         $data['amtsale_previous'] .= $sum_amtsale_previous[$i];
-        //     }
-        // }
-        // dd($data['amtsale_current'], $data['amtsale_previous']);
-
+       
         return view('leadManager.dashboard', $data);
 
     }
