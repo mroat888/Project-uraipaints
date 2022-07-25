@@ -130,6 +130,7 @@
                                     $check_Radio_3 = "";
                                     $check_Radio_4 = "";
                                     $check_Radio_5 = "";
+                                    $check_Radio_6 = "";
                                     if(isset($slugradio_filter)){
                                         switch($slugradio_filter){
                                             case "สำเร็จ" : $check_Radio_2 = "checked";
@@ -139,6 +140,8 @@
                                             case "ไม่สนใจ" : $check_Radio_4 = "checked";
                                                 break;
                                             case "รอตัดสินใจ" : $check_Radio_5 = "checked";
+                                                break;
+                                            case "รอดำเนินการ" : $check_Radio_6 = "checked";
                                                 break;
                                             default : $check_Radio_1 = "checked";
                                         }
@@ -209,8 +212,23 @@
 
                                     <div class="form-check form-check-inline">
                                     <label>
+                                        <input class="form-check-input checkRadio" type="radio" name="slugradio" id="inlineRadio6" value="รอดำเนินการ" {{ $check_Radio_6 }}>
+                                        <!-- <label class="form-check-label" for="inlineRadio5">รอดำเนินการ</label> -->
+                                        <section class="bg-purple hk-sec-wrapper mt-3">
+                                            <div class="row">
+                                                <div class="col-12 mb-topic" style="color: #fff; width:100%;">
+                                                    <input type="hidden" name="count_customer_pending" value="{{ $count_customer_pending }}" >
+                                                    <p class="mb-10"><div class="topic-numchart">รอดำเนินการ</div> <div class="red-numchart"><div class="wrap_txt-numchart txt-numchart">{{ $count_customer_pending }}</div></div>  </p>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </label>
+                                    </div>
+
+                                    <!-- <div class="form-check form-check-inline">
+                                    <label>
                                         <input class="form-check-input checkRadio" type="radio" name="slugradio" id="inlineRadio5" value="รอตัดสินใจ" {{ $check_Radio_5 }}>
-                                        <!-- <label class="form-check-label" for="inlineRadio5">รอตัดสินใจ</label> -->
+                                        <label class="form-check-label" for="inlineRadio5">รอตัดสินใจ</label>
                                         <section class="bg-purple hk-sec-wrapper mt-3">
                                             <div class="row">
                                                 <div class="col-12 mb-topic" style="color: #fff; width:100%;">
@@ -220,7 +238,7 @@
                                             </div>
                                         </section>
                                     </label>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 </form>
                                 <!-- จบเงื่อนไขการค้นหา -->
@@ -247,67 +265,53 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($customer_shops as $key => $shop)
+                                            @if(isset($customer_shops_table) && !is_null($customer_shops_table))
+                                            @foreach ($customer_shops_table as $key => $shop)
                                             <tr>
                                                 <td>{{$key + 1}}</td>
-                                                <td>
-                                                    @php 
-                                                        list($shop_date, $shop_time) = explode(' ',$shop->shop_created_at);
-                                                        list($year, $month, $day) = explode("-", $shop_date);
-                                                        $shop_date = $day."/".$month."/".$year;
-                                                    @endphp
-                                                    {{ $shop_date }}</td>
-                                                <td style="text-align:center;">
-                                                    @php 
-                                                        if(isset($shop->approve_at)){
-                                                            list($date, $approve_time) = explode(' ', $shop->approve_at);
-                                                            list($year, $month, $day) = explode("-", $date);
-                                                            $approve_date = $day."/".$month."/".$year;
-                                                        }else{
-                                                            $approve_date = "-";
-                                                        }
-                                                    @endphp
-                                                    {{ $approve_date }}
+                                                <td>{{ $shop['shop_date'] }}</td>
+                                                <td style="text-align:center;">{{ $shop['approve_date'] }}
                                                 </td>
-                                                <td>{{ $shop->saleman_name }}</td>
-                                                <td>{{ $shop->shop_name }}</td>
-                                                <td>{{ $shop->AMPHUR_NAME }}, {{ $shop->PROVINCE_NAME }}</td>
+                                                <td>{{ $shop['saleman_name'] }}</td>
+                                                <td>{{ $shop['shop_name'] }}</td>
+                                                <td>{{ $shop['shop_address'] }}</td>
 
                                                 <td>
-                                                    @if($shop->saleplan_shop_aprove_status == 2)
+                                                    @if($shop['saleplan_shop_aprove_status'] == 2)
                                                         <span class="badge badge-soft-violet" style="font-size: 12px;">อนุมัติ</span>
-                                                    @elseif($shop->saleplan_shop_aprove_status == 3)
+                                                    @elseif($shop['saleplan_shop_aprove_status'] == 3)
                                                         <span class="badge badge-soft-danger" style="font-size: 12px;">ไม่อนุมัติ</span>
                                                     @else
-                                                        {{ $shop->saleplan_shop_aprove_status }}
+                                                        {{ $shop['saleplan_shop_aprove_status'] }}
                                                     @endif
                                                 </td>
 
                                                 <td>
-                                                    @if($shop->saleplan_shop_aprove_status == 3)
+                                                    @if($shop['saleplan_shop_aprove_status'] == 3)
                                                         <span class="badge badge-soft-purple" style="font-size: 12px;">ไม่ผ่านอนุมัติ</span>
                                                     @else
-                                                        @if(!is_null($shop->cust_result_status))
-                                                            @if($shop->cust_result_status == 2) <!-- สนใจ	 -->
+                                                        @if(!is_null($shop['cust_result_status']))
+                                                            @if($shop['cust_result_status'] == 2) <!-- สนใจ	 -->
                                                                 <span class="badge badge-soft-orange" style="font-size: 12px;">สนใจ</span>
-                                                            @elseif($shop->cust_result_status == 1) <!-- รอตัดสินใจ -->
-                                                                <span class="badge badge-soft-primary" style="font-size: 12px;">รอตัดสินใจ</span>
-                                                            @elseif($shop->cust_result_status == 0) <!-- ไม่สนใจ  -->
+                                                            @elseif($shop['cust_result_status'] == 1) <!-- รอตัดสินใจ -->
+                                                                <span class="badge badge-soft-primary" style="font-size: 12px;">รอดำเนินกการ</span>
+                                                            @elseif($shop['cust_result_status'] == 0) <!-- ไม่สนใจ  -->
                                                                 <span class="badge badge-soft-danger" style="font-size: 12px;">ไม่สนใจ</span>
                                                             @endif
                                                         @else
-                                                            -
+                                                            <span class="badge badge-soft-primary" style="font-size: 12px;">รอดำเนินกการ</span>
                                                         @endif
                                                     @endif
                                                 </td>
                                                 <td>
                                                     <div class="button-list">
-                                                        <a href="{{ url($url_customer_detail, $shop->id) }}" class="btn btn-icon btn-success mr-10">
+                                                        <a href="{{ url($url_customer_detail, $shop['id']) }}" class="btn btn-icon btn-success mr-10">
                                                             <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></a>
                                                     </div>
                                                 </td>
                                             </tr>
                                             @endforeach
+                                            @endif
                                         </tbody>
                                     </table>
                                 </div>

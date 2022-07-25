@@ -101,8 +101,6 @@
                                     $check_Radio_3 = "";
                                     $check_Radio_4 = "";
                                     $check_Radio_5 = "";
-                                    $check_Radio_6 = "";
-
                                     if(isset($slugradio_filter)){
                                         switch($slugradio_filter){
                                             case "สำเร็จ" : $check_Radio_2 = "checked";
@@ -112,8 +110,6 @@
                                             case "ไม่สนใจ" : $check_Radio_4 = "checked";
                                                 break;
                                             case "รอตัดสินใจ" : $check_Radio_5 = "checked";
-                                                break;
-                                            case "รอดำเนินการ" : $check_Radio_6 = "checked";
                                                 break;
                                             default : $check_Radio_1 = "checked";
                                         }
@@ -184,23 +180,8 @@
 
                                     <div class="form-check form-check-inline">
                                     <label>
-                                        <input class="form-check-input checkRadio" type="radio" name="slugradio" id="inlineRadio6" value="รอดำเนินการ" {{ $check_Radio_6 }}>
-                                        <!-- <label class="form-check-label" for="inlineRadio5">รอดำเนินการ</label> -->
-                                        <section class="bg-purple hk-sec-wrapper mt-3">
-                                            <div class="row">
-                                                <div class="col-12 mb-topic" style="color: #fff; width:100%;">
-                                                    <input type="hidden" name="count_customer_pending" value="{{ $count_customer_pending }}" >
-                                                    <p class="mb-10"><div class="topic-numchart">รอดำเนินการ</div> <div class="red-numchart"><div class="wrap_txt-numchart txt-numchart">{{ $count_customer_pending }}</div></div>  </p>
-                                                </div>
-                                            </div>
-                                        </section>
-                                    </label>
-                                    </div>
-
-                                    <!-- <div class="form-check form-check-inline">
-                                    <label>
                                         <input class="form-check-input checkRadio" type="radio" name="slugradio" id="inlineRadio5" value="รอตัดสินใจ" {{ $check_Radio_5 }}>
-                                        <label class="form-check-label" for="inlineRadio5">รอตัดสินใจ</label>
+                                        <!-- <label class="form-check-label" for="inlineRadio5">รอตัดสินใจ</label> -->
                                         <section class="bg-purple hk-sec-wrapper mt-3">
                                             <div class="row">
                                                 <div class="col-12 mb-topic" style="color: #fff; width:100%;">
@@ -210,7 +191,7 @@
                                             </div>
                                         </section>
                                     </label>
-                                    </div> -->
+                                    </div>
                                 </div>
                                 </form>
                                 <!-- จบเงื่อนไขการค้นหา -->

@@ -402,9 +402,12 @@
                             <canvas id="myChart" style="height: 294px"></canvas>
                             <span class="mt-8 ml-40 text-danger">
                                 @php 
-                                    list($year,$month,$day) = explode("-", $res_api["trans_last_date"]);
-                                    $year = $year+543;
-                                    $trans_last_date = $day."/".$month."/".$year;
+                                    $trans_last_date = "-" ;
+                                    if(!is_null($res_api) && isset($res_api["trans_last_date"])){
+                                        list($year,$month,$day) = explode("-", $res_api["trans_last_date"]);
+                                        $year = $year+543;
+                                        $trans_last_date = $day."/".$month."/".$year;
+                                    }
                                 @endphp
                                 ข้อมูล ณ วันที่ {{ $trans_last_date }}
                             </span>
@@ -413,7 +416,7 @@
                             <div class="mt-sumsales card card-sm">
                                 <div class="card-sumsales card-body" style="color: #fff;">
                                     @php
-                                        if(!is_null($res_api["data"][3]["SalesPrevious"]) && !is_null($res_api["data"][2]["SalesCurrent"])){
+                                        if(!is_null($res_api)&& isset($res_api["data"][3]["SalesPrevious"]) && !is_null($res_api["data"][2]["SalesCurrent"])){
 
                                             if(!empty($res_api["data"][3]["SalesPrevious"])){
                                                 $SalesPrevious = $res_api["data"][3]["SalesPrevious"];
@@ -463,7 +466,7 @@
                                         <div>
                                             <span class="d-block">
                                                 <span><?php echo thaidate('F', date("M")); ?></h6><??>
-                                                        @if (isset($res_api["data"][3]["SalesPrevious"]))
+                                                        @if (!is_null($res_api) && isset($res_api["data"][3]["SalesPrevious"]))
                                                             /{{ $SalesPrevious_year }}
                                                         @endif
                                                 </span>
@@ -471,7 +474,7 @@
                                         </div>
                                         <div>
                                             <span><?php echo thaidate('F', date("M")); ?></h6>
-                                                @if (isset($res_api["data"][2]["SalesCurrent"]))
+                                                @if (!is_null($res_api) && isset($res_api["data"][2]["SalesCurrent"]))
                                                             /{{ $SalesCurrent_year }}
                                                 @endif
                                             </span>

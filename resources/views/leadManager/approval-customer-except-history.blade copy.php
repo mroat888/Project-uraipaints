@@ -247,21 +247,20 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        @if(isset($customer_shops_table))
-                                            @foreach ($customer_shops_table as $key => $shop)
+                                            @foreach ($customer_shops as $key => $shop)
                                             <tr>
                                                 <td>{{$key + 1}}</td>
                                                 <td>
                                                     @php 
-                                                        list($shop_date, $shop_time) = explode(' ',$shop['shop_created_at']);
+                                                        list($shop_date, $shop_time) = explode(' ',$shop->shop_created_at);
                                                         list($year, $month, $day) = explode("-", $shop_date);
                                                         $shop_date = $day."/".$month."/".$year;
                                                     @endphp
                                                     {{ $shop_date }}</td>
                                                 <td style="text-align:center;">
                                                     @php 
-                                                        if($shop['approve_at'] != ""){
-                                                            list($date, $approve_time) = explode(' ', $shop['approve_at']);
+                                                        if(isset($shop->approve_at)){
+                                                            list($date, $approve_time) = explode(' ', $shop->approve_at);
                                                             list($year, $month, $day) = explode("-", $date);
                                                             $approve_date = $day."/".$month."/".$year;
                                                         }else{
@@ -270,30 +269,30 @@
                                                     @endphp
                                                     {{ $approve_date }}
                                                 </td>
-                                                <td>{{ $shop['saleman_name'] }}</td>
-                                                <td>{{ $shop['shop_name'] }}</td>
-                                                <td>{{ $shop['AMPHUR_NAME'] }}, {{ $shop['PROVINCE_NAME'] }}</td>
+                                                <td>{{ $shop->saleman_name }}</td>
+                                                <td>{{ $shop->shop_name }}</td>
+                                                <td>{{ $shop->AMPHUR_NAME }}, {{ $shop->PROVINCE_NAME }}</td>
 
                                                 <td>
-                                                    @if($shop['saleplan_shop_aprove_status'] == 2)
+                                                    @if($shop->saleplan_shop_aprove_status == 2)
                                                         <span class="badge badge-soft-violet" style="font-size: 12px;">อนุมัติ</span>
-                                                    @elseif($shop['saleplan_shop_aprove_status'] == 3)
+                                                    @elseif($shop->saleplan_shop_aprove_status == 3)
                                                         <span class="badge badge-soft-danger" style="font-size: 12px;">ไม่อนุมัติ</span>
                                                     @else
-                                                        {{ $shop['saleplan_shop_aprove_status'] }}
+                                                        {{ $shop->saleplan_shop_aprove_status }}
                                                     @endif
                                                 </td>
 
                                                 <td>
-                                                    @if($shop['saleplan_shop_aprove_status'] == 3)
+                                                    @if($shop->saleplan_shop_aprove_status == 3)
                                                         <span class="badge badge-soft-purple" style="font-size: 12px;">ไม่ผ่านอนุมัติ</span>
                                                     @else
-                                                        @if(!is_null($shop['cust_result_status']))
-                                                            @if($shop['cust_result_status'] == 2) <!-- สนใจ	 -->
+                                                        @if(!is_null($shop->cust_result_status))
+                                                            @if($shop->cust_result_status == 2) <!-- สนใจ	 -->
                                                                 <span class="badge badge-soft-orange" style="font-size: 12px;">สนใจ</span>
-                                                            @elseif($shop['cust_result_status'] == 1) <!-- รอตัดสินใจ -->
+                                                            @elseif($shop->cust_result_status == 1) <!-- รอตัดสินใจ -->
                                                                 <span class="badge badge-soft-primary" style="font-size: 12px;">รอตัดสินใจ</span>
-                                                            @elseif($shop['cust_result_status'] == 0) <!-- ไม่สนใจ  -->
+                                                            @elseif($shop->cust_result_status == 0) <!-- ไม่สนใจ  -->
                                                                 <span class="badge badge-soft-danger" style="font-size: 12px;">ไม่สนใจ</span>
                                                             @endif
                                                         @else
@@ -303,13 +302,12 @@
                                                 </td>
                                                 <td>
                                                     <div class="button-list">
-                                                        <a href="{{ url($url_customer_detail, $shop['id']) }}" class="btn btn-icon btn-success mr-10">
+                                                        <a href="{{ url($url_customer_detail, $shop->id) }}" class="btn btn-icon btn-success mr-10">
                                                             <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></a>
                                                     </div>
                                                 </td>
                                             </tr>
                                             @endforeach
-                                        @endif
                                         </tbody>
                                     </table>
                                 </div>

@@ -76,11 +76,22 @@ class AssignmentController extends Controller
 
     public function assignIndex()
     {
-        $data['assignments'] = Assignment::join('users', 'assignments.assign_emp_id', 'users.id')
-        ->where('assignments.created_by', Auth::user()->id)
-        ->where('assignments.assign_status', 3)
-        ->select('assignments.*', 'users.name')
-        ->orderBy('assignments.id', 'desc')->get();
+        // $data['assignments'] = Assignment::join('users', 'assignments.assign_emp_id', 'users.id')
+        // ->where('assignments.created_by', Auth::user()->id)
+        // ->where('assignments.assign_status', 3)
+        // ->select('assignments.*', 'users.name')
+        // ->orderBy('assignments.id', 'desc')->get();
+
+        $users_id = Auth::user()->id;
+        $data['assignments'] = DB::table('assignments')
+        ->join('users', 'assignments.assign_emp_id', 'users.id')
+        ->where('assign_status', 3)
+        ->where(function($query) use ($users_id) {
+            $query->orWhere('assignments.created_by', $users_id)
+                ->orWhere('assignments.assign_approve_id', $users_id);
+        })
+        ->orderBy('assignments.created_at', 'desc')
+        ->get();
 
             $auth_team_id = explode(',',Auth::user()->team_id);
             $auth_team = array();
@@ -668,9 +679,18 @@ class AssignmentController extends Controller
             $auth_team[] = $value;
         }
 
-        $data['assignments'] = Assignment::join('users', 'assignments.assign_emp_id', 'users.id')
-        ->where('assignments.created_by', Auth::user()->id)
-        ->where('assignments.assign_status', 3);
+        // $data['assignments'] = Assignment::join('users', 'assignments.assign_emp_id', 'users.id')
+        // ->where('assignments.created_by', Auth::user()->id)
+        // ->where('assignments.assign_status', 3);
+
+        $users_id = Auth::user()->id;
+        $data['assignments'] = DB::table('assignments')
+        ->join('users', 'assignments.assign_emp_id', 'users.id')
+        ->where('assign_status', 3)
+        ->where(function($query) use ($users_id) {
+            $query->orWhere('assignments.created_by', $users_id)
+                ->orWhere('assignments.assign_approve_id', $users_id);
+        });
 
         if(!is_null($request->selectteam_sales)){ //-- ทีมขาย
             $team = $request->selectteam_sales;
@@ -696,7 +716,9 @@ class AssignmentController extends Controller
             $data['date_filter'] = $request->selectdateTo;
         }
 
-        $data['assignments'] = $data['assignments']->orderBy('assignments.id', 'desc')
+        $data['assignments'] = $data['assignments']
+            ->orderBy('assignments.created_at', 'desc')
+            ->orderBy('assignments.id', 'desc')
             ->select('assignments.*', 'users.name')->get();
 
         $data['users'] = DB::table('users')

@@ -96,26 +96,24 @@
                                         $check_Radio_3 = '';
                                         $check_Radio_4 = '';
                                         $check_Radio_5 = '';
-                                        if (isset($slugradio_filter)) {
-                                            switch ($slugradio_filter) {
-                                                case 'สำเร็จ':
-                                                    $check_Radio_2 = 'checked';
-                                                    break;
-                                                case 'สนใจ':
-                                                    $check_Radio_3 = 'checked';
-                                                    break;
-                                                case 'ไม่สนใจ':
-                                                    $check_Radio_4 = 'checked';
-                                                    break;
-                                                case 'รอตัดสินใจ':
-                                                    $check_Radio_5 = 'checked';
-                                                    break;
-                                                default:
-                                                    $check_Radio_1 = 'checked';
-                                            }
-                                        } else {
-                                            $check_Radio_1 = 'checked';
+                                        $check_Radio_6 = '';
+                                        if(isset($slugradio_filter)){
+                                        switch($slugradio_filter){
+                                            case "สำเร็จ" : $check_Radio_2 = "checked";
+                                                break;
+                                            case "สนใจ" : $check_Radio_3 = "checked";
+                                                break;
+                                            case "ไม่สนใจ" : $check_Radio_4 = "checked";
+                                                break;
+                                           /* case "รอตัดสินใจ" : $check_Radio_5 = "checked";
+                                                break;*/
+                                            case "รอตัดสินใจ" : $check_Radio_6 = "checked";
+                                                break;
+                                            default : $check_Radio_1 = "checked";
                                         }
+                                    }else{
+                                        $check_Radio_1 = "checked";
+                                    }
                                     @endphp
                                     <div class="row">
                                         <div class="col-sm">
@@ -127,6 +125,17 @@
                                                             <section class="customer-btn-green">
                                                                         <input type="hidden" name="count_customer_all" value="{{ $count_customer_all }}" >
                                                                         <div class="nav-link"><span class="customer-topic-numchart">ทั้งหมด </span> <span class="customer-numchart"><span class="customer-number txt-num">{{ $count_customer_all }}</span></span></div>
+                                                            </section>
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <div class="form-check form-check-inline">
+                                                        <label>
+                                                            <input class="form-check-input checkRadio" type="radio" name="slugradio" id="inlineRadio1" value="รอดำเนินการ" {{ $check_Radio_6 }}>
+                                                            <section class="customer-btn-green">
+                                                                        <input type="hidden" name="count_customer_pending" value="{{ $count_customer_pending }}" >
+                                                                        <div class="nav-link"><span class="customer-topic-numchart">รอดำเนินการ </span> <span class="customer-numchart"><span class="customer-number txt-num">{{ $count_customer_pending }}</span></span></div>
                                                             </section>
                                                         </label>
                                                     </div>
@@ -164,7 +173,7 @@
                                                         </label>
                                                     </div>
                                                 </li>
-                                                <li class="nav-item">
+                                                <!-- <li class="nav-item">
                                                     <div class="form-check form-check-inline">
                                                         <label>
                                                             <input class="form-check-input checkRadio" type="radio" name="slugradio" id="inlineRadio5" value="รอตัดสินใจ" {{ $check_Radio_5 }}>
@@ -174,7 +183,7 @@
                                                             </section>
                                                         </label>
                                                     </div>
-                                                </li>
+                                                </li> -->
                                             </ul>
                                         </div>
                                     </div>
@@ -202,15 +211,17 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($customer_shops as $key => $shop)
+                                        @if(isset($customer_shops_table))
+
+                                            @foreach ($customer_shops_table as $key => $shop)
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
                                                     <td>
                                                         <div class="media-img-wrap">
                                                             <div class="avatar avatar-sm">
-                                                                @if ($shop->shop_profile_image)
-                                                                    <img src="{{ isset($shop->shop_profile_image) ? asset('/public/upload/CustomerImage/' . $shop->shop_profile_image) : '' }}"
-                                                                        alt="{{ $shop->shop_name }}"
+                                                                @if ($shop['shop_profile_image'])
+                                                                    <img src="{{ isset($shop['shop_profile_image']) ? asset('/public/upload/CustomerImage/' . $shop['shop_profile_image']) : '' }}"
+                                                                        alt="{{ $shop['shop_name'] }}"
                                                                         class="avatar-img">
                                                                 @else
                                                                     <img src="{{ asset('/public/images/people-33.png') }}"
@@ -220,16 +231,16 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td>{{ $shop->approve_at }}</td>
-                                                    <td>{{ $shop->shop_name }}</td>
-                                                    <td>{{ $shop->PROVINCE_NAME }}</td>
+                                                    <td>{{ (isset($shop['shop_create_at']) ? date('d/m/Y', strtotime($shop['shop_create_at']."+543 years")) : '-') }}</td>
+                                                    <td>{{ (isset($shop['approve_at']) ? date('d/m/Y', strtotime($shop['approve_at']."+543 years")) : '-') }}</td>
+                                                    <td>{{ (isset($shop['shop_create_by']) ? $shop['shop_create_by'] : '-') }}</td>
+                                                    <td>{{ $shop['shop_name'] }}</td>
+                                                    <td>{{ $shop['PROVINCE_NAME'] }}</td>
                                                     @php
                                                         $customer_contact_name = '';
                                                         $customer_contact_phone = '';
                                                         foreach ($customer_contacts as $value) {
-                                                            if ($value->customer_shop_id == $shop->id) {
+                                                            if ($value->customer_shop_id == $shop['id']) {
                                                                 if (!empty($value->customer_contact_name)) {
                                                                     $customer_contact_name = $value->customer_contact_name;
                                                                 }
@@ -240,46 +251,57 @@
                                                             }
                                                         }
                                                     @endphp
-                                                    <td>{{ $customer_contact_name }}</td>
+                                                    <!-- <td>{{-- $customer_contact_name --}}</td> -->
                                                     <td>
-                                                        @if ($shop->shop_status == 1)
+                                                        @if($shop['saleplan_shop_aprove_status'] == 2)
+                                                            <span class="badge badge-soft-violet" style="font-size: 12px;">อนุมัติ</span>
+                                                        @elseif($shop['saleplan_shop_aprove_status'] == 3)
+                                                            <span class="badge badge-soft-danger" style="font-size: 12px;">ไม่อนุมัติ</span>
+                                                        @else
+                                                            {{ $shop['saleplan_shop_aprove_status'] }}
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if ($shop['shop_status'] == 1)
                                                             <span class="badge badge-soft-success"
                                                                 style="font-size: 12px;">สำเร็จ</span>
-                                                        @elseif($shop->saleplan_shop_aprove_status == 3)
+                                                        @elseif($shop['saleplan_shop_aprove_status'] == 3)
                                                             <span class="badge badge-soft-purple"
                                                                 style="font-size: 12px;">ไม่ผ่านอนุมัติ</span>
                                                         @else
-                                                            @if (!is_null($shop->cust_result_status))
-                                                                @if ($shop->cust_result_status == 2)
+                                                            @if (!is_null($shop['cust_result_status']))
+                                                                @if ($shop['cust_result_status'] == 2)
                                                                     <!-- สนใจ	 -->
                                                                     <span class="badge badge-soft-orange"
                                                                         style="font-size: 12px;">สนใจ</span>
-                                                                @elseif($shop->cust_result_status == 1)
+                                                                @elseif($shop['cust_result_status'] == 1)
                                                                     <!-- รอตัดสินใจ -->
                                                                     <span class="badge badge-soft-primary"
-                                                                        style="font-size: 12px;">รอตัดสินใจ</span>
-                                                                @elseif($shop->cust_result_status == 0)
+                                                                        style="font-size: 12px;">รอดำเนินการ</span>
+                                                                @elseif($shop['cust_result_status'] == 0)
                                                                     <!-- ไม่สนใจ  -->
                                                                     <span class="badge badge-soft-danger"
                                                                         style="font-size: 12px;">ไม่สนใจ</span>
                                                                 @endif
                                                             @else
-                                                                -
+                                                                <span class="badge badge-soft-primary"
+                                                                        style="font-size: 12px;">รอดำเนินการ</span>
                                                             @endif
                                                         @endif
                                                     </td>
+                                                    
                                                     <td>
                                                         <div class="button-list">
-                                                            @if ($shop->shop_status == 0)
-                                                                <button class="btn btn-icon btn-view btn_change_status_shop" value="{{ $shop->id }}">
+                                                            @if ($shop['shop_status'] == 0)
+                                                                <button class="btn btn-icon btn-view btn_change_status_shop" value="{{ $shop['id'] }}">
                                                                     <h4 class="btn-icon-wrap" style="color: white;"><span
                                                                         class="material-icons">app_registration</span></h4>
                                                                 </button>
                                                             @endif
 
-                                                            @if ($shop->shop_status == 1)
+                                                            @if ($shop['shop_status'] == 1)
                                                                 <button class="btn btn-icon btn-edit btn_editshop"
-                                                                    value="{{ $shop->id }}"><h4 class="btn-icon-wrap" style="color: white;"><span
+                                                                    value="{{ $shop['id'] }}"><h4 class="btn-icon-wrap" style="color: white;"><span
                                                                         class="material-icons">drive_file_rename_outline</span></h4>
                                                                 </button>
                                                             @endif
@@ -288,13 +310,14 @@
                                                                 $url_customer_detail = "admin/approval_customer_except_detail";
                                                             @endphp
 
-                                                            <a href="{{ url($url_customer_detail, $shop->id) }}" class="btn btn-icon btn-purple">
+                                                            <a href="{{ url($url_customer_detail, $shop['id']) }}" class="btn btn-icon btn-purple">
                                                                 <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4>
                                                             </a>
                                                         </div>
                                                     </td>
                                                 </tr>
                                             @endforeach
+                                        @endif
                                         </tbody>
                                     </table>
                                 </div>

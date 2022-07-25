@@ -95,25 +95,52 @@ class DashboardController extends Controller
             
         }
     
+        // $data['list_approval'] = DB::table('assignments')
+        //     ->join('users', 'assignments.created_by', '=', 'users.id')
+        //     ->where(function($query) use ($auth_team) {
+        //         for ($i = 0; $i < count($auth_team); $i++){
+        //             $query->orWhere('users.team_id', $auth_team[$i])
+        //                 ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+        //                 ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+        //         }
+        //     })
+        //     ->whereMonth('assignments.assign_request_date', Carbon::now()->format('m'))
+        //     ->whereIn('assignments.assign_status', [1,2])
+        //     ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+        //     ->get();
+        
         $data['list_approval'] = DB::table('assignments')
-            ->join('users', 'assignments.created_by', '=', 'users.id')
-            ->where(function($query) use ($auth_team) {
-                for ($i = 0; $i < count($auth_team); $i++){
-                    $query->orWhere('users.team_id', $auth_team[$i])
-                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
-                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
-                }
-            })
-            ->whereMonth('assignments.assign_request_date', Carbon::now()->format('m'))
-            ->whereIn('assignments.assign_status', [1,2])
-            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
-            ->get();
+        ->leftJoin('assignments_comments', 'assignments.id', 'assignments_comments.assign_id')
+        ->leftJoin('api_customers', 'api_customers.identify', 'assignments.assign_shop')
+        ->join('users', 'assignments.created_by', 'users.id')
+        ->whereIn('assignments.assign_status', [0, 4]) // สถานะอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน, 4=แก้ไขงาน))
+        ->where(function($query) {
+            $query->where('assignments.parent_id', null)
+            ->orWhere('assignments.parent_id', '!=', 'parent');
+        }) 
+        ->where(function($query) use ($auth_team) {
+            for ($i = 0; $i < count($auth_team); $i++){
+                $query->orWhere('users.team_id', $auth_team[$i])
+                    ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                    ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+            }
+        })
+        ->orderBy('assignments.assign_request_date', 'desc')
+        ->groupBy('assignments.id')
+        ->get();
 
+
+         $users_id = Auth::user()->id;
         $data['assignments'] = DB::table('assignments')
-            ->where('created_by', Auth::user()->id)
-            ->whereMonth('assign_work_date', Carbon::now()->format('m'))
-            ->where('assign_status', 3)
-            ->get();
+        ->join('users', 'assignments.assign_emp_id', 'users.id')
+        ->whereMonth('assign_work_date', Carbon::now()->format('m'))
+        ->where('assign_status', 3)
+        ->where(function($query) use ($users_id) {
+            $query->orWhere('assignments.created_by', $users_id)
+                ->orWhere('assignments.assign_approve_id', $users_id);
+        })
+        ->get();
+
         
         $data['notes'] = Note::where('employee_id', Auth::user()->id)->whereMonth('note_date', Carbon::now()->format('m'))->get();
         // $data['customer_shop'] = Customer::where('created_by', Auth::user()->team_id)->where('shop_status', 0)->whereMonth('created_at', Carbon::now()->format('m'))->get();
@@ -191,7 +218,7 @@ class DashboardController extends Controller
                 $data['day_month'] .= $i;
             }
 
-            if(!is_nuisset($data['res_api']['data'][4]['DaysSalesCurrent'][$noc]['DayNo'])){ // ปีปัจจุบัน
+            if(isset($data['res_api']['data'][4]['DaysSalesCurrent'][$noc]['DayNo'])){ // ปีปัจจุบัน
 
                 if($data['res_api']['data'][4]['DaysSalesCurrent'][$noc]['DayNo'] == $i){
                     // $data['amtsale_current'] .= $data['res_api']['data'][4]['DaysSalesCurrent'][$noc]['totalAmtSale'].",";
@@ -213,7 +240,7 @@ class DashboardController extends Controller
                 }
             }
 
-            if(isset($data['res_api']['data'][5]['DaysSalesPrevious'][$nop]['DayNo'])){ // ปีที่แล้ว
+            if(!is_null($data['res_api']) && isset($data['res_api']['data'][5]['DaysSalesPrevious'][$nop]['DayNo'])){ // ปีที่แล้ว
 
                 if($data['res_api']['data'][5]['DaysSalesPrevious'][$nop]['DayNo'] == $i){
                     // $data['amtsale_previous'] .= $data['res_api']['data'][5]['DaysSalesPrevious'][$nop]['totalAmtSale'].",";

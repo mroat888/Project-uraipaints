@@ -232,24 +232,17 @@ License: You must have a valid license purchased only from themeforest to legall
 
             // สั่งงาน
             $users_id = Auth::user()->id;
-            $request_assign  = DB::table('assignments')
+            $request_assign = DB::table('assignments')
             ->join('users', 'assignments.assign_emp_id', 'users.id')
-            ->where('assignments.assign_status', 3)
-            ->select('assignments.*', 'users.name')
-            ->orderBy('assignments.id', 'desc')
-            ->where(function($query) use ($auth_team) {
-                for ($i = 0; $i < count($auth_team); $i++){
-                    $query->orWhere('users.team_id', $auth_team[$i])
-                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
-                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
-                }
-            })
+            ->whereMonth('assign_work_date', date('m'))
+            ->where('assign_status', 3)
             ->where(function($query) use ($users_id) {
-                    $query->orWhere('assignments.created_by', $users_id)
-                        ->orWhere('assignments.assign_approve_id', $users_id);
+                $query->orWhere('assignments.created_by', $users_id)
+                    ->orWhere('assignments.assign_approve_id', $users_id);
             })
             ->get()
             ->count();
+
 
             $customers = DB::table('customer_shops_saleplan')
             ->join('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
