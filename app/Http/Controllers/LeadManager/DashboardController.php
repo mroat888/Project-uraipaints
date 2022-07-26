@@ -22,7 +22,7 @@ class DashboardController extends Controller
     }
 
     public function index(){
-        
+
         $auth_team_id = explode(',',Auth::user()->team_id);
         $auth_team = array();
         foreach($auth_team_id as $value){
@@ -50,7 +50,7 @@ class DashboardController extends Controller
         $data['count_monthly_plans'] = 0;
         $data['count_cust_new_amount'] = 0;
         $data['count_cust_visits_amount'] = 0;
-        
+
         // -- นับจำนวน slaeplans
         $data['count_sale_plans_result'] = 0;
         $data['count_shops_saleplan_result'] = 0;
@@ -65,8 +65,8 @@ class DashboardController extends Controller
             $sale_plans = DB::table('sale_plans')
                 ->where('monthly_plan_id', $monthly_plan->id)
                 ->where('sale_plans_status', 2)
-                ->get(); 
-                  
+                ->get();
+
             $data['count_monthly_plans'] = $data['count_monthly_plans'] + $sale_plans->count() ; // 	จำนวนแผนงาน
             foreach($sale_plans as $sp_value){
                 $check_result = DB::table('sale_plan_results')->where('sale_plan_id', $sp_value->id)->first();
@@ -74,7 +74,7 @@ class DashboardController extends Controller
                     $data['count_sale_plans_result'] = $data['count_sale_plans_result'] +1 ;
                 }
             }
-            
+
             // -- นับจำนวน ลูกค้าใหม่
             $customer_shops_saleplan = DB::table('customer_shops_saleplan')
                 ->where('monthly_plan_id', $monthly_plan->id)
@@ -87,7 +87,7 @@ class DashboardController extends Controller
                     $data['count_shops_saleplan_result'] = $data['count_shops_saleplan_result'] + 1;
                 }
             }
-            
+
             // -- นับจำนวน ลูกค้าเยี่ยม
             $customer_visits = DB::table('customer_visits')->where('monthly_plan_id', $monthly_plan->id)->get();
             $data['count_cust_visits_amount'] = $data['count_cust_visits_amount'] + $customer_visits->count() ;
@@ -97,7 +97,7 @@ class DashboardController extends Controller
                     $data['count_visit_results_result'] = $data['count_visit_results_result'] + 1;
                 }
             }
-            
+
         }
 
         // $data['list_approval'] = DB::table('assignments')
@@ -118,6 +118,7 @@ class DashboardController extends Controller
             ->leftJoin('api_customers', 'api_customers.identify', 'assignments.assign_shop')
             ->join('users', 'assignments.created_by', 'users.id')
             ->whereIn('assignments.assign_status', [0, 4]) // สถานะอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน, 4=แก้ไขงาน))
+            ->whereMonth('assignments.assign_request_date', date('m'))
             ->where(function($query) {
                 $query->orWhere('assignments.parent_id', '!=', 'parent')
                     ->orWhere('assignments.parent_id', null);
@@ -147,13 +148,14 @@ class DashboardController extends Controller
         //     ->whereMonth('assign_work_date', Carbon::now()->format('m'))
         //     ->where('assign_status', 3)
         //     ->get();
-        
+
         $users_id = Auth::user()->id;
         $data['assignments'] = DB::table('assignments')
         ->join('users', 'assignments.assign_emp_id', 'users.id')
         ->where('assignments.assign_status', 3)
         ->select('assignments.*', 'users.name')
         ->orderBy('assignments.id', 'desc')
+        ->whereMonth('assignments.assign_work_date', date('m'))
         ->where(function($query) use ($auth_team) {
             for ($i = 0; $i < count($auth_team); $i++){
                 $query->orWhere('users.team_id', $auth_team[$i])
@@ -166,7 +168,7 @@ class DashboardController extends Controller
                     ->orWhere('assignments.assign_approve_id', $users_id);
         })
         ->get();
-        
+
         $data['notes'] = Note::where('employee_id', Auth::user()->id)->whereMonth('note_date', Carbon::now()->format('m'))->get();
         // $data['customer_shop'] = Customer::where('created_by', Auth::user()->team_id)->where('shop_status', 0)->whereMonth('created_at', Carbon::now()->format('m'))->get();
         // dd($auth_team);
@@ -181,7 +183,7 @@ class DashboardController extends Controller
             ->whereMonth('created_at', Carbon::now()
             ->format('m'))
             ->get();
-        
+
 
         $api_token = $this->api_token->apiToken();
         $data['api_token'] = $api_token;
@@ -292,10 +294,10 @@ class DashboardController extends Controller
 
             $noc++;
             $nop++;
-           
+
         }
         // -- จบ Chat
-       
+
         return view('leadManager.dashboard', $data);
 
     }
