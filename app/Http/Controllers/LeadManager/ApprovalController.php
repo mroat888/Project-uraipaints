@@ -221,7 +221,7 @@ class ApprovalController extends Controller
         ->where(function($query) {
             $query->where('assignments.parent_id', null)
             ->orWhere('assignments.parent_id', '!=', 'parent');
-        }) 
+        })
         ->where(function($query) use ($auth_team) {
             for ($i = 0; $i < count($auth_team); $i++){
                 $query->orWhere('users.team_id', $auth_team[$i])
