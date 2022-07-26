@@ -214,10 +214,11 @@ License: You must have a valid license purchased only from themeforest to legall
             ->leftJoin('api_customers', 'api_customers.identify', 'assignments.assign_shop')
             ->join('users', 'assignments.created_by', 'users.id')
             ->whereIn('assignments.assign_status', [0, 4]) // สถานะอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน, 4=แก้ไขงาน))
+            ->whereMonth('assignments.assign_request_date', date('m'))
             ->where(function($query) {
-                $query->orWhere('assignments.parent_id', '!=', 'parent')
-                    ->orWhere('assignments.parent_id', null);
-            })
+                $query->where('assignments.parent_id', null)
+                ->orWhere('assignments.parent_id', '!=', 'parent');
+            }) 
             ->where(function($query) use ($auth_team) {
                 for ($i = 0; $i < count($auth_team); $i++){
                     $query->orWhere('users.team_id', $auth_team[$i])
@@ -227,19 +228,27 @@ License: You must have a valid license purchased only from themeforest to legall
             })
             ->orderBy('assignments.assign_request_date', 'desc')
             ->groupBy('assignments.id')
-            ->get()
+            ->get()  
             ->count();
 
             // สั่งงาน
             $users_id = Auth::user()->id;
             $request_assign = DB::table('assignments')
             ->join('users', 'assignments.assign_emp_id', 'users.id')
-            ->whereMonth('assign_work_date', date('m'))
-            ->where('assign_status', 3)
+            ->where('assignments.assign_status', 3)
+            ->whereMonth('assignments.assign_work_date', date('m'))
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('users.team_id', $auth_team[$i])
+                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+                }
+            })
             ->where(function($query) use ($users_id) {
                 $query->orWhere('assignments.created_by', $users_id)
                     ->orWhere('assignments.assign_approve_id', $users_id);
             })
+            ->orderBy('assignments.created_at', 'desc')
             ->get()
             ->count();
 

@@ -13,22 +13,25 @@ class NoteController extends Controller
 
     public function note_sale()
     {
-        $data = DB::table('notes')->join('master_note', 'notes.note_tags', 'master_note.id')
-        ->where('notes.employee_id', Auth::user()->id)
-        ->select('notes.*', 'master_note.name_tag')
-        ->orderBy('notes.status_pin', 'desc')
-        ->orderBy('notes.note_date', 'asc')->get();
-        // dd($data);
+        $data = DB::table('notes')
+            ->join('master_note', 'notes.note_tags', 'master_note.id')
+            ->where('notes.employee_id', Auth::user()->id)
+            ->select('notes.*', 'master_note.name_tag')
+            ->orderByRaw('notes.status_pin desc , notes.note_date desc')
+            // ->orderBy('notes.status_pin', 'desc')
+            // ->orderBy('notes.note_date', 'desc')
+            ->get();
         return view('saleman.note', compact('data'));
     }
 
     public function note_lead()
     {
-        $data = DB::table('notes')->join('master_note', 'notes.note_tags', 'master_note.id')
-        ->where('notes.employee_id', Auth::user()->id)
-        ->select('notes.*', 'master_note.name_tag')
-        ->orderBy('notes.status_pin', 'desc')
-        ->orderBy('notes.note_date', 'asc')->get();
+        $data = DB::table('notes')
+            ->join('master_note', 'notes.note_tags', 'master_note.id')
+            ->where('notes.employee_id', Auth::user()->id)
+            ->select('notes.*', 'master_note.name_tag')
+            ->orderBy('notes.status_pin', 'desc')
+            ->orderBy('notes.note_date', 'desc')->get();
         return view('leadManager.note', compact('data'));
     }
 
@@ -38,7 +41,7 @@ class NoteController extends Controller
         ->where('notes.employee_id', Auth::user()->id)
         ->select('notes.*', 'master_note.name_tag')
         ->orderBy('notes.status_pin', 'desc')
-        ->orderBy('notes.note_date', 'asc')->get();
+        ->orderBy('notes.note_date', 'desc')->get();
         return view('headManager.note', compact('data'));
     }
 
@@ -48,7 +51,7 @@ class NoteController extends Controller
         ->where('notes.employee_id', Auth::user()->id)
         ->select('notes.*', 'master_note.name_tag')
         ->orderBy('notes.status_pin', 'desc')
-        ->orderBy('notes.note_date', 'asc')->get();
+        ->orderBy('notes.note_date', 'desc')->get();
         return view('admin.note', compact('data'));
     }
 
@@ -143,7 +146,7 @@ class NoteController extends Controller
         ->where('notes.employee_id', Auth::user()->id)
         ->select('notes.*', 'master_note.name_tag')
         ->orderBy('notes.status_pin', 'desc')
-        ->orderBy('notes.note_date', 'asc')->get();
+        ->orderBy('notes.note_date', 'desc')->get();
 
         // return $list_approval;
 
@@ -163,7 +166,7 @@ class NoteController extends Controller
         ->where('notes.employee_id', Auth::user()->id)
         ->select('notes.*', 'master_note.name_tag')
         ->orderBy('notes.status_pin', 'desc')
-        ->orderBy('notes.note_date', 'asc')->get();
+        ->orderBy('notes.note_date', 'desc')->get();
 
 
         // return $list_approval;
@@ -184,7 +187,7 @@ class NoteController extends Controller
         ->where('notes.employee_id', Auth::user()->id)
         ->select('notes.*', 'master_note.name_tag')
         ->orderBy('notes.status_pin', 'desc')
-        ->orderBy('notes.note_date', 'asc')->get();
+        ->orderBy('notes.note_date', 'desc')->get();
 
 
         // return $list_approval;
@@ -205,7 +208,7 @@ class NoteController extends Controller
         ->where('notes.employee_id', Auth::user()->id)
         ->select('notes.*', 'master_note.name_tag')
         ->orderBy('notes.status_pin', 'desc')
-        ->orderBy('notes.note_date', 'asc')->get();
+        ->orderBy('notes.note_date', 'desc')->get();
 
 
         // return $list_approval;

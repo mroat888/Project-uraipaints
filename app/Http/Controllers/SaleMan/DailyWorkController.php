@@ -175,40 +175,41 @@ class DailyWorkController extends Controller
         // $data['list_approval'] = RequestApproval::where('created_by', Auth::user()->id)->whereMonth('assign_request_date', Carbon::now()->format('m'))->get();
 
         $data['list_approval']  = DB::table('assignments')
-        ->leftJoin('assignments_comments', 'assignments.id', 'assignments_comments.assign_id')
-        ->leftJoin('api_customers', 'api_customers.identify', 'assignments.assign_shop')
-        ->where('assignments.created_by', Auth::user()->id)
-        ->where(function($query) {
-                $query->orWhere('assignments.parent_id', '!=', 'parent')
-                    ->orWhere('assignments.parent_id', null);
-        })
-        ->whereNotIn('assignments.assign_status', [3]) // สถานะการอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน, 4=ให้แก้ไขงาน)
-        ->select(
-            'assignments.*', 
-            'assignments_comments.assign_id', 
-            'api_customers.title as customer_title', 'api_customers.name as customer_name'
-        )
-        ->orderBy('assignments.assign_request_date', 'desc')
-        ->groupBy('assignments.id')
-        ->get();
+            ->leftJoin('assignments_comments', 'assignments.id', 'assignments_comments.assign_id')
+            ->where('assignments.created_by', Auth::user()->id)
+            ->where(function($query) {
+                    $query->orWhere('assignments.parent_id', '!=', 'parent')
+                        ->orWhere('assignments.parent_id', null);
+            })
+            ->whereNotIn('assignments.assign_status', [3]) // สถานะการอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน, 4=ให้แก้ไขงาน)
+            ->select(
+                'assignments.*', 
+                'assignments_comments.assign_id', 
+            )
+            ->whereMonth('assign_work_date', date('m'))
+            ->orderBy('assignments.assign_request_date', 'desc')
+            ->groupBy('assignments.id')
+            ->get();
 
         $data['customer_shop'] = Customer::where('shop_status', 0)
-        // ->where(function($query) use ($auth_team) {
-        //     for ($i = 0; $i < count($auth_team); $i++){
-        //         $query->orWhere('created_by', $auth_team[$i])
-        //             ->orWhere('created_by', 'like', $auth_team[$i].',%')
-        //             ->orWhere('created_by', 'like', '%,'.$auth_team[$i]);
-        //     }
-        // })
-        ->whereMonth('created_at', Carbon::now()
-        ->format('m'))
-        ->get();
+            // ->where(function($query) use ($auth_team) {
+            //     for ($i = 0; $i < count($auth_team); $i++){
+            //         $query->orWhere('created_by', $auth_team[$i])
+            //             ->orWhere('created_by', 'like', $auth_team[$i].',%')
+            //             ->orWhere('created_by', 'like', '%,'.$auth_team[$i]);
+            //     }
+            // })
+            ->whereMonth('created_at', Carbon::now()
+            ->format('m'))
+            ->get();
 
         // $data['assignments'] = Assignment::where('assign_emp_id', Auth::user()->id)->whereMonth('assign_work_date', Carbon::now()->format('m'))->get();
 
         $data['assignments'] = Assignment::join('users', 'assignments.assign_emp_id', 'users.id')
             ->where('assignments.assign_emp_id', Auth::user()->id)
-            ->where('assignments.assign_status', 3)->select('assignments.*', 'users.name')
+            ->where('assignments.assign_status', 3)
+            ->whereMonth('assign_work_date', date('m'))
+            ->select('assignments.*', 'users.name')
             ->orderBy('assignments.id', 'desc')
             ->get();
             
