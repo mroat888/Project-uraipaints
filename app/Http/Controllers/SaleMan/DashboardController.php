@@ -26,7 +26,6 @@ class DashboardController extends Controller
 
         $data['list_approval']  = DB::table('assignments')
             ->leftJoin('assignments_comments', 'assignments.id', 'assignments_comments.assign_id')
-            ->leftJoin('api_customers', 'api_customers.identify', 'assignments.assign_shop')
             ->where('assignments.created_by', Auth::user()->id)
             ->where(function($query) {
                     $query->orWhere('assignments.parent_id', '!=', 'parent')
@@ -36,15 +35,17 @@ class DashboardController extends Controller
             ->select(
                 'assignments.*', 
                 'assignments_comments.assign_id', 
-                'api_customers.title as customer_title', 'api_customers.name as customer_name'
             )
+            ->whereMonth('assign_work_date', date('m'))
             ->orderBy('assignments.assign_request_date', 'desc')
             ->groupBy('assignments.id')
             ->get();
 
         $data['assignments'] = Assignment::join('users', 'assignments.assign_emp_id', 'users.id')
             ->where('assignments.assign_emp_id', Auth::user()->id)
-            ->where('assignments.assign_status', 3)->select('assignments.*', 'users.name')
+            ->where('assignments.assign_status', 3)
+            ->whereMonth('assign_work_date', date('m'))
+            ->select('assignments.*', 'users.name')
             ->orderBy('assignments.id', 'desc')
             ->get();
 

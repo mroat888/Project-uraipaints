@@ -175,12 +175,28 @@ License: You must have a valid license purchased only from themeforest to legall
         <!-- /Top Navbar -->
 
         <?php
-            $count_quest = App\RequestApproval::whereNotIn('assignments.assign_status', [3])
-                ->where('created_by', Auth::user()->id)->count();
+            $count_quest = DB::table('assignments')
+                ->leftJoin('assignments_comments', 'assignments.id', 'assignments_comments.assign_id')
+                ->where('assignments.created_by', Auth::user()->id)
+                ->where(function($query) {
+                        $query->orWhere('assignments.parent_id', '!=', 'parent')
+                            ->orWhere('assignments.parent_id', null);
+                })
+                ->whereNotIn('assignments.assign_status', [3]) // สถานะการอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน, 4=ให้แก้ไขงาน)
+                ->select(
+                    'assignments.*', 
+                    'assignments_comments.assign_id', 
+                )
+                ->whereMonth('assign_work_date', date('m'))
+                ->orderBy('assignments.assign_request_date', 'desc')
+                ->groupBy('assignments.id')
+                ->count();
 
-            $count_assign = App\RequestApproval::where('assign_status', 3)->where('assign_result_status', 0)
-                ->where('assign_emp_id', Auth::user()->id)->count();
-
+            $count_assign = App\RequestApproval::where('assign_status', 3)
+                ->where('assign_result_status', 0)
+                ->where('assign_emp_id', Auth::user()->id)
+                ->whereMonth('assign_work_date', date('m'))
+                ->count();
         ?>
 
         <!-- Vertical Nav -->

@@ -30,7 +30,6 @@ class RequestApprovalController extends Controller
 
         $data['list_approval']  = DB::table('assignments')
             ->leftJoin('assignments_comments', 'assignments.id', 'assignments_comments.assign_id')
-            ->leftJoin('api_customers', 'api_customers.identify', 'assignments.assign_shop')
             ->where('assignments.created_by', Auth::user()->id)
             ->where(function($query) {
                     $query->orWhere('assignments.parent_id', '!=', 'parent')
@@ -40,16 +39,10 @@ class RequestApprovalController extends Controller
             ->select(
                 'assignments.*', 
                 'assignments_comments.assign_id', 
-                'api_customers.title as customer_title', 'api_customers.name as customer_name'
             )
             ->orderBy('assignments.assign_request_date', 'desc')
             ->groupBy('assignments.id')
             ->get();
-
-        //-- Data ในระบบ เปลี่ยนมาใช้ api
-        // $api_customers = DB::table('api_customers')
-        //     ->where('SellerCode', Auth::user()->api_identify)
-        //     ->get();
 
         $patch_search = "/sellers/".Auth::user()->api_identify."/customers";
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$patch_search,[
@@ -432,7 +425,6 @@ class RequestApprovalController extends Controller
     {
         $list_approval = DB::table('assignments')
             ->leftJoin('assignments_comments', 'assignments.id', 'assignments_comments.assign_id')
-            ->leftJoin('api_customers', 'api_customers.identify', 'assignments.assign_shop')
             ->where('assignments.created_by', Auth::user()->id)
             ->whereNotIn('assignments.assign_status', [3]) // สถานะการอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน, 4=ให้แก้ไขงาน)
             ->where(function($query) {
@@ -442,7 +434,6 @@ class RequestApprovalController extends Controller
             ->select(
                 'assignments.*', 
                 'assignments_comments.assign_id',
-                'api_customers.title as customer_title', 'api_customers.name as customer_name',
             );
 
             if($fromMonth != "00"){
@@ -459,13 +450,40 @@ class RequestApprovalController extends Controller
             ->groupBy('assignments.id')
             ->get();
 
+            $api_token = $this->apicontroller->apiToken(); // API Login
+            $patch_search = "/sellers/".Auth::user()->api_identify."/customers";
+            $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$patch_search,[
+                'limits' => env("API_CUST_LIMIT")
+            ]);
+            $res_api = $response->json();
+            if(!is_null($res_api) && $res_api['code'] == 200){
+                $customer_api = array();
+                foreach ($res_api['data'] as $key => $value) {
+                    $customer_api[$key] =
+                    [
+                        'id' => $value['identify'],
+                        'shop_name' => $value['title']." ".$value['name'],
+                        'shop_address' => $value['amphoe_name']." , ".$value['province_name'],
+                    ];
+                }
+            }
+
             $products = array();
             foreach ($list_approval as $key => $value) {
+                $shop_name = "";
+                if(isset($customer_api)){
+                    foreach ($customer_api as $key => $cus_api_value){
+                        if($cus_api_value['id'] == $value->assign_shop){
+                            $shop_name = $cus_api_value['shop_name'];
+                        }
+                    }
+                }
                 $products[] = [
                     'key' => $key + 1,
                     'assign_title' => $value->assign_title,
-                    'customer_title' => $value->customer_title,
-                    'customer_name' => $value->customer_name,
+                    'assign_shop_name' => $shop_name,
+                    // 'customer_title' => $value->customer_title,
+                    // 'customer_name' => $value->customer_name,
                     'assign_work_date' => $value->assign_work_date,
                     'assign_status' => $value->assign_status,
                     'assign_is_hot' => $value->assign_is_hot,
@@ -491,10 +509,16 @@ class RequestApprovalController extends Controller
                 return $row['assign_title'];
             })
             ->editColumn('assign_work_date', function ($row) {
-                return $row['assign_work_date'];
+                // $assign_work_date = date('d/m/Y', strtotime($row['assign_work_date']."+543 years"));
+                // return $ssign_work_date;
+                list($year, $month, $day) =explode('-', $row['assign_work_date']);
+                $year_thai = $year+543;
+                $assign_work_date = $day."/".$month."/".$year_thai;
+                return $assign_work_date;
+                // return $row['assign_work_date'];
             })
             ->editColumn('assign_shop_name', function ($row) {
-                return $row['customer_title']." ".$row['customer_name'];
+                return $row['assign_shop_name'];
             })
             ->addColumn('assign_status', function ($row) {
                 if ($row['assign_status'] == 0) {

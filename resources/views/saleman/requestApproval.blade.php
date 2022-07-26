@@ -83,7 +83,15 @@
                                                         @endif
                                                     </td>
                                                     <td>{{ $value->assign_title }}</td>
-                                                    <td>{{ $value->customer_title }} {{ $value->customer_name }}</td>
+                                                    <td>
+                                                        @if(isset($customer_api))
+                                                            @foreach ($customer_api as $key => $cus_api_value)
+                                                               @if($cus_api_value['id'] == $value->assign_shop)
+                                                                {{ $cus_api_value['shop_name'] }}
+                                                               @endif
+                                                            @endforeach
+                                                        @endif
+                                                    </td>
                                                     <td>{{ $assign_work_date }}</td>
                                                     <td>
                                                         @php

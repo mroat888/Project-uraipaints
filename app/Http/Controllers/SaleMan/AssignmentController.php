@@ -17,7 +17,9 @@ class AssignmentController extends Controller
     {
         $assignments = Assignment::join('users', 'assignments.assign_emp_id', 'users.id')
         ->where('assignments.assign_emp_id', Auth::user()->id)
-        ->where('assignments.assign_status', 3)->select('assignments.*', 'users.name')
+        ->where('assignments.assign_status', 3)
+        ->select('assignments.*', 'users.name')
+        ->orderBy('assignments.assign_work_date', 'desc')
         ->orderBy('assignments.id', 'desc')
         ->get();
 
@@ -33,7 +35,9 @@ class AssignmentController extends Controller
         ->where('assign_status', 3)
         ->whereDate('assign_work_date', '>=', $from)
         ->whereDate('assign_work_date', '<=', $to)
-        ->orderBy('id', 'desc')->get();
+        ->orderBy('assign_work_date', 'desc')
+        ->orderBy('id', 'desc')
+        ->get();
 
         return view('saleman.assignment', compact('assignments'));
     }
