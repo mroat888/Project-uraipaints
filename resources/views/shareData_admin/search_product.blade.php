@@ -132,7 +132,8 @@ $(document).on('change','.province', function(e){
     e.preventDefault();
     let pvid = $(this).val();
     var pdglist = $("#sel_pdglists").val();
-
+    console.log(pdglist);
+    console.log(pvid);
     var content = "<div id='table_list' class='table-responsive col-md-12'>";
             content += "<table id='datable_2' class='table table-hover data-table'>";
                 content += "<thead>";
@@ -153,12 +154,12 @@ $(document).on('change','.province', function(e){
     $.fn.dataTable.ext.errMode = () => alert('Error while loading the table data. Please refresh');
 
     $('#datable_2').DataTable({
-        
+
         processing: false,
         serverSide: false,
         ajax: {
             method:"GET",
-            url:"{{url('fetch_datatable_customer_admin_pdglist_pvid')}}/"+pvid, //-- เปลี่ยน
+            url:"{{url('fetch_datatable_customer_admin_pdglist_pvid')}}/"+pdglist+"/"+pvid, //-- เปลี่ยน
             dataType: 'json',
             data:{
                     "_token": "{{ csrf_token() }}",
@@ -224,7 +225,7 @@ $(document).on('change','#amphur', function(e){
         serverSide: false,
         ajax: {
             method:"GET",
-            url:"{{url('fetch_datatable_customer_admin')}}/"+ampid,
+            url:"{{url('fetch_datatable_customer_admin')}}/"+pdgid+"/"+pvid+"/"+ampid,
             dataType: 'json',
             data:{
                     "_token": "{{ csrf_token() }}",

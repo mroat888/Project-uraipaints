@@ -1038,8 +1038,8 @@ Route::get('fetch_datatable_customer_headers_pdglist/{pdgid}', 'Api\ApiControlle
 // admin
 Route::get('fetch_provinces_products_admin/{id}', 'Api\ApiController@fetch_provinces_products_admin');
 Route::get('fetch_amphur_products_admin/{id}', 'Api\ApiController@fetch_amphur_products_admin');
-Route::get('fetch_datatable_customer_admin/{ampid}', 'Api\ApiController@fetch_datatable_customer_admin');
-Route::get('fetch_datatable_customer_admin_pdglist_pvid/{pvid}', 'Api\ApiController@fetch_datatable_customer_admin_pdglist_pvid');
+Route::get('fetch_datatable_customer_admin/{pdgid}/{pvid}/{ampid}', 'Api\ApiController@fetch_datatable_customer_admin');
+Route::get('fetch_datatable_customer_admin_pdglist_pvid/{pdgid}/{pvid}', 'Api\ApiController@fetch_datatable_customer_admin_pdglist_pvid');
 Route::get('fetch_datatable_customer_admin_pdglist/{pdgid}', 'Api\ApiController@fetch_datatable_customer_admin_pdglist');
 
 
