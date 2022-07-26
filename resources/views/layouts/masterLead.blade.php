@@ -210,6 +210,7 @@ License: You must have a valid license purchased only from themeforest to legall
             ->leftJoin('api_customers', 'api_customers.identify', 'assignments.assign_shop')
             ->join('users', 'assignments.created_by', 'users.id')
             ->whereIn('assignments.assign_status', [0, 4]) // สถานะอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน, 4=แก้ไขงาน))
+            ->whereMonth('assignments.assign_request_date', date('m'))
             ->where(function($query) {
                 $query->orWhere('assignments.parent_id', '!=', 'parent')
                     ->orWhere('assignments.parent_id', null);
@@ -240,6 +241,7 @@ License: You must have a valid license purchased only from themeforest to legall
             $request_assign  = DB::table('assignments')
             ->join('users', 'assignments.assign_emp_id', 'users.id')
             ->where('assignments.assign_status', 3)
+            ->whereMonth('assignments.assign_work_date', date('m'))
             ->select('assignments.*', 'users.name')
             ->orderBy('assignments.id', 'desc')
             ->where(function($query) use ($auth_team) {

@@ -190,7 +190,7 @@
                                                 <span class="btn-pending" style="font-size: 12px;">Pending</span>
                                             </td>
                                             <td>
-                                                @php 
+                                                @php
                                                     $countcomment = DB::table('assignments_comments')->where('assign_id', $value->id)->count();
                                                 @endphp
                                                 @if($countcomment > 0)
