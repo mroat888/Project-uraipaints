@@ -380,28 +380,28 @@
 
             <!--- ---------------------------------------------- -->
 
-           
+
             <div class="col-md-12">
                 <section class="hk-sec-wrapper">
                     <h6 class="topic-page hk-sec-title topic-bgorange" style="font-weight: bold;">เทียบยอดขายเดือน
                         <?php echo thaidate('F', date("M")); ?> ระหว่างปี
-                        @php 
+                        @php
                             if (!is_null($res_api) && isset($res_api["data"][2]["SalesCurrent"])){
                                 $SalesCurrent_year = $res_api["data"][2]["SalesCurrent"][0]["year"] + 543;
-                                $SalesPrevious_year = $res_api["data"][3]["SalesPrevious"][0]["year"] + 543;                   
+                                $SalesPrevious_year = $res_api["data"][3]["SalesPrevious"][0]["year"] + 543;
                             }else{
                                 $SalesCurrent_year = "-";
                                 $SalesPrevious_year = "-";
                             }
                         @endphp
-                        {{ $SalesCurrent_year }} กับปี  
+                        {{ $SalesCurrent_year }} กับปี
                         {{ $SalesPrevious_year }}
                     </h6>
                     <div class="row">
                         <div class="col-12 col-lg-8">
                             <canvas id="myChart" style="height: 294px"></canvas>
                             <span class="mt-8 ml-40 text-danger">
-                                @php 
+                                @php
                                     $trans_last_date = "-";
                                     if(!is_null($res_api) && isset($res_api["trans_last_date"])){
                                         list($year,$month,$day) = explode("-", $res_api["trans_last_date"]);
@@ -446,12 +446,12 @@
                                     }else{
                                         $SalesPrevious = 0;
                                         $totalAmtSale_th_Previous = "0";
-                                        $totalAmtSale_Previous = 0; 
+                                        $totalAmtSale_Previous = 0;
 
                                         $totalAmtSale_th = "0";
                                         $totalAmtSale = 0;
                                         $percentAmtCrn = 0;
-                                    } 
+                                    }
                                     @endphp
 
                                     <span class="d-block font-11 font-weight-500 text-dark text-uppercase mb-10"></span>
@@ -542,8 +542,8 @@
                                                 </div>
                                                 <div class="row box-txttotalsum">
                                                     <div class="col-6 col-md-7 pdl-0">
-                                                        <span style="font-weight: bold; font-size: 14px;">ร้านค้า เปิดบิล คิดเป็น <br> 
-                                                        @php 
+                                                        <span style="font-weight: bold; font-size: 14px;">ร้านค้า เปิดบิล คิดเป็น <br>
+                                                        @php
                                                             if(!is_null($res_api) && isset($res_api["trans_last_date"])){
                                                                 list($year,$month,$day) = explode("-", $res_api["trans_last_date"]);
                                                                 $year = $year+543;
