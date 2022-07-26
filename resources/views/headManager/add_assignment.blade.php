@@ -90,6 +90,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @php 
+                                           // dd($assignments);
+                                        @endphp
                                         @foreach ($assignments as $key => $value)
                                         <tr>
                                             <td>{{$key + 1}}</td>
@@ -103,7 +106,14 @@
                                                 </a>
                                             </td>
                                             <td>{{$value->name}}</td>
-                                            <td>{{Carbon\Carbon::parse($value->assign_work_date)->addYear(543)->format('d/m/Y')}}</td>
+                                            <td>
+                                                {{-- Carbon\Carbon::parse($value->assign_work_date)->addYear(543)->format('d/m/Y') --}}
+                                                @if($value->assign_work_date)
+                                                    {{ date('d/m/Y', strtotime($value->assign_work_date."+543 years")) }}
+                                                @else 
+                                                    -
+                                                @endif
+                                            </td>
                                             <td>
                                                 @if ($value->assign_result_status == 0)
                                                     @if ($value->assign_work_date < Carbon\Carbon::today()->format('Y-m-d'))

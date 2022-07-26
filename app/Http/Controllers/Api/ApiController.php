@@ -960,11 +960,11 @@ class ApiController extends Controller
         ]);
     }
 
-    public function fetch_datatable_customer_admin($ampid)
+    // public function fetch_datatable_customer_admin($ampid)
+    public function fetch_datatable_customer_admin($pdgid,$pvid,$ampid)
     {
         $api_token = $this->apiToken();
-
-        $path_search = "amphures/".$ampid."/customers";
+        $path_search = "pdglists/".$pdgid."/customers?province_id=".$pvid."&amphoe_id=".$ampid;
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
         $customer = array();
@@ -1007,7 +1007,7 @@ class ApiController extends Controller
         $path_search = "pdglists/".$pdgid."/customers";
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
-        $customer = array();
+
 
         if($res_api['code'] == 200){
             foreach($res_api['data'] as $key => $value){
@@ -1022,7 +1022,6 @@ class ApiController extends Controller
                 ];
             }
         }
-
 
         return Datatables::of($customer)
         ->addIndexColumn()
@@ -1041,15 +1040,15 @@ class ApiController extends Controller
         ->make(true);
     }
 
-    public function fetch_datatable_customer_admin_pdglist_pvid($pvid)
+    // public function fetch_datatable_customer_admin_pdglist_pvid($pvid)
+    public function fetch_datatable_customer_admin_pdglist_pvid($pdgid, $pvid)
     {
         $api_token = $this->apiToken();
-
-        $path_search = "provinces/".$pvid."/customers";
+        $path_search = "pdglists/".$pdgid."/customers?province_id=".$pvid;
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
         $res_api = $response->json();
         $customer = array();
-        
+
         if($res_api['code'] == 200){
             foreach($res_api['data'] as $key => $value){
                 $customer[] = [
