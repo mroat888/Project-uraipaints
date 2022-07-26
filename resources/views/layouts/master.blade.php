@@ -190,12 +190,15 @@ License: You must have a valid license purchased only from themeforest to legall
                 ->whereMonth('assign_work_date', date('m'))
                 ->orderBy('assignments.assign_request_date', 'desc')
                 ->groupBy('assignments.id')
+                ->get()
                 ->count();
+        
 
             $count_assign = App\RequestApproval::where('assign_status', 3)
                 ->where('assign_result_status', 0)
                 ->where('assign_emp_id', Auth::user()->id)
                 ->whereMonth('assign_work_date', date('m'))
+                ->get()
                 ->count();
         ?>
 
