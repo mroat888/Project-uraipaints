@@ -106,7 +106,7 @@
                                 @if(Auth::user()->status == 2)
                                 <button type="button" id="btn_saleplan_approve" class="btn btn_purple btn-green btn-sm" name="approve" value="approve">อนุมัติ</button>
 
-                                <button type="button" id="btn_saleplan_approve2" class="btn btn_purple btn-reject btn-sm ml-5" name="failed" value="failed">ไม่อนุมัติ</button>
+                                <button type="button" id="btn_saleplan_approve2" class="btn btn_purple btn-reject btn-sm ml-5" name="failed" value="failed">ให้แก้ไขใหม่</button>
                                 @endif
                             </div>
                                 <div class="table-responsive-sm table-color">

@@ -368,8 +368,13 @@ class ApprovalSalePlanController extends Controller
         list($year,$month,$day) = explode('-', $mon_plan->month_date);
         $month = $month + 0; //-- ทำให้เป็นตัวเลข เพื่อตัดเลข 0 ด้านหน้าออก
 
-        $path_search = "reports/sellers/".$user_api->api_identify."/closesaleplans?years=".$year."&months=".$month;
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+        // $path_search = "reports/sellers/".$user_api->api_identify."/closesaleplans?years=".$year."&months=".$month;
+        // $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+        $path_search = "reports/sellers/".$user_api->api_identify."/closesaleplans";
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search,[
+            'years' => $year,
+            'months' => $months,
+        ]);
         $res_api = $response->json();
 
         if($res_api['code'] == 200){

@@ -93,7 +93,7 @@
                     <div class="topichead-bggreen">
                         รายการทริปเดินทาง
                     </div>
-                    @if($trip_header->trip_status == '0')
+                    @if($trip_header->trip_status == '0' || $trip_header->trip_status == '3')
                         <div class="content-right d-flex">
                             <button type="button" class="btn-green" data-toggle="modal" id="createmodal"> + เพิ่มใหม่ </button>
                         </div>   
@@ -110,7 +110,7 @@
                                         <th>จากจังหวัด</th>
                                         <th>ถึงจังหวัด</th>
                                         <th>ร้านค้า</th>
-                                        @if($trip_header->trip_status == '0')
+                                        @if($trip_header->trip_status == '0' || $trip_header->trip_status == '3')
                                         <th class="text-center">Action</th>
                                         @endif
                                     </tr>
@@ -131,7 +131,7 @@
                                         <td>
                                             <?php echo nl2br($value['customer_id']); ?>
                                         </td>
-                                        @if($trip_header->trip_status == '0')
+                                        @if($trip_header->trip_status == '0' || $trip_header->trip_status == '3')
                                         <td style="text-align:center;">
                                             <button class="btn btn-icon btn-edit btn_edittrip"
                                                 value="{{ $value['id'] }}">

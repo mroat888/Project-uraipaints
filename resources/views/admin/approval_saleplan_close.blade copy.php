@@ -121,13 +121,14 @@
                                                                         if($saleplan_api[$key_api]['customer_id'] == $value->customer_shop_id){
                                                                             if($saleplan_api[$key_api]['pdlist_name'] != ""){
                                                                                 $bills = $saleplan_api[$key_api]['bills'];
-                                                                                $sum_bills += $bills;
-                                                                                echo $bills."<br>";
                                                                             }
                                                                         }
                                                                     }
                                                                 }
                                                             }
+
+                                                            echo $bills."<br>";
+                                                            $sum_bills += $bills;
                                                         }
                                                     @endphp
                                                 </td>
@@ -142,14 +143,15 @@
                                                                         if($saleplan_api[$key_api]['customer_id'] == $value->customer_shop_id){
                                                                             if($saleplan_api[$key_api]['pdlist_name'] != ""){
                                                                                 $sales = $saleplan_api[$key_api]['sales'];
-                                                                                $sum_sales += $sales;
-                                                                                echo number_format($sales,2)."<br>";
                                                                             }
                                                                         }
                                                                     }
                                                                 }
                                                             }
                                                         }
+
+                                                        echo $sales."<br>";
+                                                        $sum_sales += $sales;
 
                                                     @endphp
                                                 </td>

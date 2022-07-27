@@ -118,7 +118,7 @@
                                             @elseif ($value->trip_status == 2)
                                                 <span class="badge badge-soft-success"style="font-size: 12px;">Approval</span>
                                             @elseif ($value->trip_status == 3)
-                                                <span class="badge badge-soft-danger" style="font-size: 12px;">Reject</span>
+                                                <span class="badge badge-soft-danger" style="font-size: 12px;">Re-write</span>
                                             @elseif ($value->trip_status == 4)
                                                 <span class="badge badge-soft-info"style="font-size: 12px;">Close</span>
                                             @endif
@@ -127,36 +127,15 @@
                                             @php
                                                 $btn_disable = "";
                                                 $a_disable = "";
-                                                if($value->trip_status != 0){
+                                                if($value->trip_status != 0 && $value->trip_status != 3){
                                                     $btn_disable = "disabled";
                                                     $a_disable = "pointer-events: none";
                                                 }
                                             @endphp
                                             <form action="{{ url($url_request, $value->id) }}" method="GET">
 
-                                            @if($value->trip_status > 1) <!-- ตั้งแต่อนุมัติ -->
-                                                <a href="{{ url($url_trip_detail) }}/{{ $value->id }}"
-                                                    class="btn btn-icon btn-warning">
-                                                    <h4 class="btn-icon-wrap" style="color: white;">
-                                                        <i class="ion ion-md-map"></i>
-                                                    </h4>
-                                                </a>
-                                                <!-- Report -->
-                                                <!-- <a href="{{ url('trip_user_pdf') }}/{{ $value->id }}"
-                                                    class="btn btn-icon btn-danger" target="_blank">
-                                                    <h4 class="btn-icon-wrap" style="color: white;">
-                                                        <span class="material-icons">picture_as_pdf</span>
-                                                    </h4>
-                                                </a>
-                                                <a href="{{ url('trip_user_excel') }}/{{ $value->id }}"
-                                                    class="btn btn-icon btn-excel">
-                                                    <h4 class="btn-icon-wrap" style="color: white;">
-                                                        <span class="material-icons">table_view</span>
-                                                    </h4>
-                                                </a> -->
-                                                <!-- Report -->
-                                            @else
-                                                <button class="btn btn-icon btn-info btn_request" {{ $btn_disable }}>
+                                            @if($value->trip_status == 0 || $value->trip_status == 3) <!-- สถานะ draf และ re-write -->
+                                            <button class="btn btn-icon btn-info btn_request" {{ $btn_disable }}>
                                                     <h4 class="btn-icon-wrap" style="color: white;">
                                                         <i class="ion ion-md-send"></i>
                                                     </h4>
@@ -182,6 +161,28 @@
                                                         <i class="ion ion-md-trash"></i>
                                                     </h4>
                                                 </button>
+                                                
+                                            @else
+                                                <a href="{{ url($url_trip_detail) }}/{{ $value->id }}"
+                                                    class="btn btn-icon btn-warning">
+                                                    <h4 class="btn-icon-wrap" style="color: white;">
+                                                        <i class="ion ion-md-map"></i>
+                                                    </h4>
+                                                </a>
+                                                <!-- Report -->
+                                                <!-- <a href="{{ url('trip_user_pdf') }}/{{ $value->id }}"
+                                                    class="btn btn-icon btn-danger" target="_blank">
+                                                    <h4 class="btn-icon-wrap" style="color: white;">
+                                                        <span class="material-icons">picture_as_pdf</span>
+                                                    </h4>
+                                                </a>
+                                                <a href="{{ url('trip_user_excel') }}/{{ $value->id }}"
+                                                    class="btn btn-icon btn-excel">
+                                                    <h4 class="btn-icon-wrap" style="color: white;">
+                                                        <span class="material-icons">table_view</span>
+                                                    </h4>
+                                                </a> -->
+                                                <!-- Report -->
                                             @endif
 
                                             </form>
