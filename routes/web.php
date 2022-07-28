@@ -188,9 +188,9 @@ Route::get('edit-profile', 'ProfileController@index');
 Route::post('userProfileUpdate', 'ProfileController@update');
 
 // ข้อมูลที่ใช้ร่วมกัน
-Route::get('data_name_store', 'ShareData\CheckStoreController@index');
-Route::post('data_name_store/search', 'ShareData\CheckStoreController@search');
-Route::get('data_name_store/detail/{id}', 'ShareData\CheckStoreController@show');
+Route::get('data_name_store', 'ShareData_Union\CheckStoreController@index'); 
+Route::post('data_name_store/search', 'ShareData_Union\CheckStoreController@search');
+Route::get('data_name_store/detail/{id}', 'ShareData_Union\CheckStoreController@show');
 Route::get('data_search_product', 'ShareData\SearchroductController@index');
 Route::post('data_search_product/search', 'ShareData\SearchroductController@search');
 Route::get('data_report_product-new', 'ShareData\ProductNewController@index');
@@ -390,9 +390,9 @@ Route::post('/leadManage/reportYear/search', 'LeadManager\ReportYearController@s
 
 
 // ข้อมูลที่ใช้ร่วมกัน
-Route::get('leadManage/data_name_store', 'ShareData_LeadManager\CheckStoreController@index');
-Route::post('leadManage/data_name_store/search', 'ShareData_LeadManager\CheckStoreController@search');
-Route::get('leadManage/data_name_store/detail/{id}', 'ShareData_LeadManager\CheckStoreController@show');
+Route::get('leadManage/data_name_store', 'ShareData_Union\CheckStoreController@index'); 
+Route::post('leadManage/data_name_store/search', 'ShareData_Union\CheckStoreController@search');
+Route::get('leadManage/data_name_store/detail/{id}', 'ShareData_Union\CheckStoreController@show');
 Route::get('leadManage/data_search_product', 'ShareData_LeadManager\SearchroductController@index');
 Route::post('leadManage/data_search_product/search', 'ShareData_LeadManager\SearchroductController@search');
 // Route::get('leadManage/data_report_product-new', 'ShareData_LeadManager\ProductNewController@index'); //-- OAT เปลี่ยนไปใช้อันล่าง
@@ -573,9 +573,10 @@ Route::post('head/userProfileUpdate', 'ProfileController@update');
 
 
 // ข้อมูลที่ใช้ร่วมกัน
-Route::get('headManage/data_name_store', 'ShareData_HeadManager\CheckStoreController@index');
-Route::post('headManage/data_name_store/search', 'ShareData_HeadManager\CheckStoreController@search');
-Route::get('headManage/data_name_store/detail/{id}', 'ShareData_HeadManager\CheckStoreController@show');
+Route::get('headManage/data_name_store', 'ShareData_Union\CheckStoreController@index'); 
+Route::post('headManage/data_name_store/search', 'ShareData_Union\CheckStoreController@search');
+Route::get('headManage/data_name_store/detail/{id}', 'ShareData_Union\CheckStoreController@show');
+
 Route::get('headManage/data_search_product', 'ShareData_HeadManager\SearchroductController@index');
 Route::post('headManage/data_search_product/search', 'ShareData_HeadManager\SearchroductController@search');
 // Route::get('headManage/data_report_product-new', 'ShareData_HeadManager\ProductNewController@index'); //-- OAT เปลี่ยนเป็นด้านล่าง
@@ -913,9 +914,10 @@ Route::post('admin/userProfileUpdate', 'ProfileController@update');
 
 
 // ข้อมูลที่ใช้ร่วมกัน
-Route::get('admin/data_name_store', 'ShareData_Admin\CheckStoreController@index');
-Route::post('admin/data_name_store/search', 'ShareData_Admin\CheckStoreController@search');
-Route::get('admin/data_name_store/detail/{id}', 'ShareData_Admin\CheckStoreController@show');
+Route::get('admin/data_name_store', 'ShareData_Union\CheckStoreController@index'); 
+Route::post('admin/data_name_store/search', 'ShareData_Union\CheckStoreController@search');
+Route::get('admin/data_name_store/detail/{id}', 'ShareData_Union\CheckStoreController@show');
+
 Route::get('admin/data_search_product', 'ShareData_Admin\SearchroductController@index');
 Route::post('admin/data_search_product/search', 'ShareData_Admin\SearchroductController@search');
 // Route::get('admin/data_report_product-new', 'ShareData_Admin\ProductNewController@index'); //-- OAT เปลี่ยนมาใช้อันล่าง

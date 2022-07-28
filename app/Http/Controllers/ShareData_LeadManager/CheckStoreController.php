@@ -16,67 +16,6 @@ class CheckStoreController extends Controller
         $this->api_token = new ApiController();
     }
 
-    public function index()
-    {
-        $api_token = $this->api_token->apiToken();   
-
-        $patch_search = "/saleleaders/".Auth::user()->api_identify."/customers";
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$patch_search,[
-            'limits' => env("API_CUST_LIMIT")
-        ]);
-        $res_api = $response->json();
-
-
-        if(!empty($res_api)){
-            if($res_api['code'] == 200){
-                $data['customer_api'] = $res_api['data'];
-            }
-        }
-
-        // ดึงจังหวัด -- API
-        $path_search = "/saleleaders/".Auth::user()->api_identify."/provinces";
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
-        $res_api = $response->json();
-        if(!empty($res_api)){
-            if($res_api['code'] == 200){
-                $data['provinces'] = $res_api['data'];
-            }
-        }
-        
-        return view('shareData_leadManager.check_name_store', $data);
-    }
-
-
-    public function search(Request $request)
-    {
-        $api_token = $this->api_token->apiToken();
-
-        if(!is_null($request->amphur)){ 
-            $patch_search = '/saleleaders/'.Auth::user()->api_identify.'/customers?sortorder=DESC&amphoe_id='.$request->amphur;
-        }elseif(!is_null($request->province)){
-            $patch_search = '/saleleaders/'.Auth::user()->api_identify.'/customers?sortorder=DESC&province_id='.$request->province;
-        }else{
-            $patch_search = "/saleleaders/".Auth::user()->api_identify."/customers";
-        }
-        
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$patch_search,[
-            'limits' => env("API_CUST_LIMIT")
-        ]);
-        $res_api = $response->json();
-
-        if($res_api['code'] == 200){
-            $data['customer_api'] = $res_api['data'];
-        }
-
-        // ดึงจังหวัด -- API
-        $path_search = "/saleleaders/".Auth::user()->api_identify."/provinces";
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").$path_search);
-        $res_provinces_api = $response->json();
-        $data['provinces'] = $res_provinces_api['data'];
-        
-        return view('shareData_leadManager.check_name_store', $data);
-    }
-
     public function show($id)
     {
         $api_token = $this->api_token->apiToken();
@@ -145,7 +84,7 @@ class CheckStoreController extends Controller
 
         $data['year_sum'] = $year_sum;
         
-        return view('shareData_leadManager.check_name_store_detail', $data);
+        
 
     }
 
