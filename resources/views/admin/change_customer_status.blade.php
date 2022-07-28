@@ -105,9 +105,9 @@
                                                 break;
                                             case "ไม่สนใจ" : $check_Radio_4 = "checked";
                                                 break;
-                                           /* case "รอตัดสินใจ" : $check_Radio_5 = "checked";
-                                                break;*/
-                                            case "รอตัดสินใจ" : $check_Radio_6 = "checked";
+                                           case "รอตัดสินใจ" : $check_Radio_5 = "checked";
+                                                break;
+                                            case "รอดำเนินการ" : $check_Radio_6 = "checked";
                                                 break;
                                             default : $check_Radio_1 = "checked";
                                         }
@@ -132,7 +132,7 @@
                                                 <li class="nav-item">
                                                     <div class="form-check form-check-inline">
                                                         <label>
-                                                            <input class="form-check-input checkRadio" type="radio" name="slugradio" id="inlineRadio1" value="รอดำเนินการ" {{ $check_Radio_6 }}>
+                                                            <input class="form-check-input checkRadio" type="radio" name="slugradio" id="inlineRadio6" value="รอดำเนินการ" {{ $check_Radio_6 }}>
                                                             <section class="customer-btn-green">
                                                                         <input type="hidden" name="count_customer_pending" value="{{ $count_customer_pending }}" >
                                                                         <div class="nav-link"><span class="customer-topic-numchart">รอดำเนินการ </span> <span class="customer-numchart"><span class="customer-number txt-num">{{ $count_customer_pending }}</span></span></div>

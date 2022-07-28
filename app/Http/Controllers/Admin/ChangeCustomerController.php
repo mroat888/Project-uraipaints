@@ -74,6 +74,7 @@ class ChangeCustomerController extends Controller
 
     public function fetch_customer_lead($request)
     {
+
         $auth_team_id = explode(',',Auth::user()->team_id);
         $auth_team = array();
         foreach($auth_team_id as $value){
@@ -85,9 +86,11 @@ class ChangeCustomerController extends Controller
                 'customer_shops.*',
                 'users.name as shop_create_by',
                 'customer_shops.created_at as shop_create_at',
-                'province.PROVINCE_NAME'
+                'province.PROVINCE_NAME',
+                'amphur.AMPHUR_NAME'
             )
             ->join('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
+            ->join('amphur', 'amphur.AMPHUR_ID', 'customer_shops.shop_amphur_id')
             ->join('users', 'users.id', 'customer_shops.created_by')
             ->where('customer_shops.shop_status', '!=' ,2); // ไม่อยู่ในสถานะลบ
         
@@ -149,9 +152,26 @@ class ChangeCustomerController extends Controller
                 ->where('customer_shops_saleplan.customer_shop_id', $value->id)
                 ->orderby('customer_shops_saleplan.id', 'desc')
                 ->first();
-  
+
+            //-- หน้าผู้จัดการ
+            $shop_date = "";
+            list($shop_date, $shop_time) = explode(' ',$value->shop_create_at);
+            list($year, $month, $day) = explode("-", $shop_date);
+            $shop_date = $day."/".$month."/".$year;
+
             if(!is_null($customer_shops_saleplan)){
                 // $data['count_customer_all']++;
+                //-- หน้าผู้จัดการ
+                if(isset($customer_shops_saleplan->approve_at)){
+                    list($date, $approve_time) = explode(' ', $customer_shops_saleplan->approve_at);
+                    list($year, $month, $day) = explode("-", $date);
+                    $approve_date = $day."/".$month."/".$year;
+                }else{
+                    $approve_date = "";
+                }
+
+                //-- จบ //-- หน้าผู้จัดการ
+
                 $data['customer_shops_table'][] = [
                     'id' => $value->id,
                     'shop_name' => $value->shop_name,
@@ -167,6 +187,10 @@ class ChangeCustomerController extends Controller
                     'saleplan_shop_aprove_status' => $customer_shops_saleplan->saleplan_shop_aprove_status,
                     'shop_create_by' => $value->shop_create_by,
                     'shop_create_at' => $value->shop_create_at,
+                    'shop_date' => $shop_date, //-- หน้าผู้จัดการ
+                    'approve_date' => $approve_date,
+                    'saleman_name' => $value->shop_create_by,
+                    'shop_address' => $value->AMPHUR_NAME." , ".$value->PROVINCE_NAME,
                 ];
                 if($value->shop_status == 1){
                     $data['count_customer_success']++;
@@ -185,6 +209,10 @@ class ChangeCustomerController extends Controller
                         'saleplan_shop_aprove_status' => $customer_shops_saleplan->saleplan_shop_aprove_status,
                         'shop_create_by' => $value->shop_create_by,
                         'shop_create_at' => $value->shop_create_at,
+                        'shop_date' => $shop_date, //-- หน้าผู้จัดการ
+                        'approve_date' => $approve_date,
+                        'saleman_name' => $value->shop_create_by,
+                        'shop_address' => $value->AMPHUR_NAME." , ".$value->PROVINCE_NAME,
                     ];
                 }else{
                     
@@ -208,6 +236,10 @@ class ChangeCustomerController extends Controller
                                     'saleplan_shop_aprove_status' => $customer_shops_saleplan->saleplan_shop_aprove_status,
                                     'shop_create_by' => $value->shop_create_by,
                                     'shop_create_at' => $value->shop_create_at,
+                                    'shop_date' => $shop_date, //-- หน้าผู้จัดการ
+                                    'approve_date' => $approve_date,
+                                    'saleman_name' => $value->shop_create_by,
+                                    'shop_address' => $value->AMPHUR_NAME." , ".$value->PROVINCE_NAME,
                                 ];
                             }elseif($customer_shops_saleplan->cust_result_status == 1){ /* รอตัดสินใจ */
                                 $data['count_customer_result_2']++;
@@ -226,6 +258,10 @@ class ChangeCustomerController extends Controller
                                     'saleplan_shop_aprove_status' => $customer_shops_saleplan->saleplan_shop_aprove_status,
                                     'shop_create_by' => $value->shop_create_by,
                                     'shop_create_at' => $value->shop_create_at,
+                                    'shop_date' => $shop_date, //-- หน้าผู้จัดการ
+                                    'approve_date' => $approve_date,
+                                    'saleman_name' => $value->shop_create_by,
+                                    'shop_address' => $value->AMPHUR_NAME." , ".$value->PROVINCE_NAME,
                                 ];
                             }elseif($customer_shops_saleplan->cust_result_status == 0){ /* ไม่สนใจ */
                                 $data['count_customer_result_3']++;
@@ -244,6 +280,10 @@ class ChangeCustomerController extends Controller
                                     'saleplan_shop_aprove_status' => $customer_shops_saleplan->saleplan_shop_aprove_status,
                                     'shop_create_by' => $value->shop_create_by,
                                     'shop_create_at' => $value->shop_create_at,
+                                    'shop_date' => $shop_date, //-- หน้าผู้จัดการ
+                                    'approve_date' => $approve_date,
+                                    'saleman_name' => $value->shop_create_by,
+                                    'shop_address' => $value->AMPHUR_NAME." , ".$value->PROVINCE_NAME,
                                 ];
                             }
                         }else{
@@ -263,6 +303,10 @@ class ChangeCustomerController extends Controller
                                 'saleplan_shop_aprove_status' => $customer_shops_saleplan->saleplan_shop_aprove_status,
                                 'shop_create_by' => $value->shop_create_by,
                                 'shop_create_at' => $value->shop_create_at,
+                                'shop_date' => $shop_date, //-- หน้าผู้จัดการ
+                                'approve_date' => $approve_date,
+                                'saleman_name' => $value->shop_create_by,
+                                'shop_address' => $value->AMPHUR_NAME." , ".$value->PROVINCE_NAME,
                             ];
                         }
                     //}
@@ -282,6 +326,12 @@ class ChangeCustomerController extends Controller
                     'cust_result_status' => null,
                     'approve_at' => null,
                     'saleplan_shop_aprove_status' => null,
+                    'shop_create_by' => $value->shop_create_by,
+                    'shop_create_at' => $value->shop_create_at,
+                    'shop_date' => $shop_date, //-- หน้าผู้จัดการ
+                    'approve_date' => null,
+                    'saleman_name' => $value->shop_create_by,
+                    'shop_address' => $value->AMPHUR_NAME." , ".$value->PROVINCE_NAME,
                 ];
 
                 $data['count_customer_pending']++; /* รอดำเนินการ */
@@ -299,6 +349,12 @@ class ChangeCustomerController extends Controller
                     'cust_result_status' => null,
                     'approve_at' => null,
                     'saleplan_shop_aprove_status' => null,
+                    'shop_create_by' => $value->shop_create_by,
+                    'shop_create_at' => $value->shop_create_at,
+                    'shop_date' => $shop_date, //-- หน้าผู้จัดการ
+                    'approve_date' => null,
+                    'saleman_name' => $value->shop_create_by,
+                    'shop_address' => $value->AMPHUR_NAME." , ".$value->PROVINCE_NAME,
                     
                 ];
             }

@@ -10,17 +10,13 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Admin\ChangeCustomerController;
 
 class ApprovalCustomerExceptController extends Controller
 {
 
-    public function __construct(){
-        $this->ChangeCustomerController= new ChangeCustomerController();
-    }
-
     public function index()
     {
+
         $auth_team_id = explode(',',Auth::user()->team_id);
         $auth_team = array();
         foreach($auth_team_id as $value){
@@ -219,46 +215,17 @@ class ApprovalCustomerExceptController extends Controller
     public function customer_history()
     {
         $request = "";
-        // $data = $this->query_customer_except_history($request);
+        $data = $this->query_customer_except_history($request);
 
-        $data = $this->ChangeCustomerController->fetch_customer_lead($request);
-
-        $auth_team_id = explode(',',Auth::user()->team_id);
-        $auth_team = array();
-        foreach($auth_team_id as $value){
-            $auth_team[] = $value;
-        }
-
-        $data['users'] = DB::table('users')
-            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
-            ->where(function($query) use ($auth_team) {
-                for ($i = 0; $i < count($auth_team); $i++){
-                    $query->orWhere('users.team_id', $auth_team[$i])
-                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
-                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
-                }
-            })
-            ->get();
-        $data['team_sales'] = DB::table('master_team_sales')
-            ->where(function($query) use ($auth_team) {
-                for ($i = 0; $i < count($auth_team); $i++){
-                    $query->orWhere('id', $auth_team[$i])
-                        ->orWhere('id', 'like', $auth_team[$i].',%')
-                        ->orWhere('id', 'like', '%,'.$auth_team[$i]);
-                }
-            })
-            ->get();
-
-        $data['province'] = DB::table('province')->get();
-        $data['customer_contacts'] = DB::table('customer_contacts')->orderBy('id', 'desc')->get();
-        
         return view('leadManager.approval-customer-except-history', $data);
     }
 
     public function search_history(Request $request)
     {
         if(!is_null($request->slugradio)){
-            $data = $this->ChangeCustomerController->fetch_customer_lead($request);
+
+            $data = $this->query_customer_except_history($request);
+
             if($request->slugradio == "สำเร็จ"){
                 if(isset($data['customer_shops_success_table'])){
                     $data['customer_shops_table'] = $data['customer_shops_success_table'];
@@ -290,15 +257,184 @@ class ApprovalCustomerExceptController extends Controller
                     $data['customer_shops_table'] = null;
                 }
             }
+            $data['slugradio_filter'] = $request->slugradio;
         }else{
-            $data = $this->fetch_customer_lead($request);
+            $data = $this->query_customer_except_history($request);
+            $data['customer_shops_table'] = $data['customer_shops_table'];
         }
-        
+
+        // dd($data);
+
+        return view('leadManager.approval-customer-except-history', $data);
+
+    }
+
+    public function query_customer_except_history($request)
+    {
+        $parameter = array();
+
         $auth_team_id = explode(',',Auth::user()->team_id);
         $auth_team = array();
         foreach($auth_team_id as $value){
             $auth_team[] = $value;
         }
+
+        $customer_shops = DB::table('customer_shops_saleplan')
+            ->select('monthly_plans.*', 'province.PROVINCE_NAME', 'amphur.AMPHUR_NAME', 'customer_shops_saleplan_result.*', 
+            'customer_shops_saleplan.*', 'customer_shops_saleplan.shop_aprove_status as saleplan_shop_aprove_status', 
+            'users.name as saleman_name', 'customer_shops.created_at as shop_created_at', 
+            'customer_shops_saleplan.approve_at as approve_at', 'customer_shops.*')
+            ->leftjoin('customer_shops', 'customer_shops.id', 'customer_shops_saleplan.customer_shop_id')
+            ->leftjoin('customer_shops_saleplan_result', 'customer_shops_saleplan_result.customer_shops_saleplan_id', 'customer_shops_saleplan.id')
+            ->leftjoin('monthly_plans', 'monthly_plans.id', 'customer_shops_saleplan.monthly_plan_id')
+            ->leftjoin('province', 'province.PROVINCE_ID', 'customer_shops.shop_province_id')
+            ->leftjoin('amphur', 'amphur.AMPHUR_ID', 'customer_shops.shop_amphur_id')
+            ->leftjoin('users', 'users.id', 'customer_shops_saleplan.created_by')
+            ->where('customer_shops.shop_status', '!=', '2') // 0 = ลูกค้าใหม่ , 1 = ทะเบียนลูกค้า , -> 2 = ลบ
+            ->where('users.status', '1') // สถานะ ->1 = salemam, 2 = lead , 3 = head , 4 = admin
+            ->whereIn('customer_shops_saleplan.shop_aprove_status', ['2','3']);
+
+        if(isset($request->selectteam_sales) && !is_null($request->selectteam_sales)){ //-- ทีมขาย
+            $team = $request->selectteam_sales;
+            $customer_shops = $customer_shops
+                ->where(function($query) use ($team) {
+                    $query->orWhere('users.team_id', $team)
+                        ->orWhere('users.team_id', 'like', $team.',%')
+                        ->orWhere('users.team_id', 'like', '%,'.$team);
+                });
+            $data['selectteam_sales'] = $request->selectteam_sales;
+        }else{
+            $customer_shops = $customer_shops
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('users.team_id', $auth_team[$i])
+                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
+                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
+                }
+            });
+        }
+
+        if(isset($request->selectdateFrom) && !is_null($request->selectdateFrom)){ //-- วันที่
+            list($year,$month) = explode('-', $request->selectdateFrom);
+            $customer_shops = $customer_shops->whereYear('monthly_plans.month_date',$year)
+            ->whereMonth('monthly_plans.month_date', $month);
+            $data['date_filter'] = $request->selectdateFrom;
+        }
+
+        if(isset($request->selectusers) && !is_null($request->selectusers)){ //-- ผู้แทนขาย
+            $customer_shops = $customer_shops
+                ->where('customer_shops_saleplan.created_by', $request->selectusers);
+            $data['selectusers'] = $request->selectusers;
+        }
+
+        $customer_shops = $customer_shops->orderBy('customer_shops_saleplan.id', 'desc')
+        ->orderBy('customer_shops_saleplan.monthly_plan_id', 'desc')
+        ->get();
+
+        $customers_shop = $customer_shops;
+
+       // dd($customer_shops);
+
+        // --------- การ นับจำนวน แสดงในกล่องสถานะ ----------------
+        $data['count_customer_all'] = 0; // -- นับจำนวนร้านค้า ทั้งหมด
+        $data['count_customer_success'] = 0; // -- นับ จำนวนร้านค้า สถานะสำเร็จ
+        $data['count_customer_result_1'] = 0;  // -- นับ จำนวนร้านค้า สถานะสนใจ
+        $data['count_customer_result_2'] = 0; // -- นับ จำนวนร้านค้า สถานะรอตัดสินใจ
+        $data['count_customer_result_3'] = 0;  // -- นับ จำนวนร้านค้า สถานะไม่สนใจ
+
+        $data['count_customer_pending'] = 0; // -- นับ จำนวนร้านค้า รอดำเนินการ
+
+        foreach($customer_shops as $key => $shop){
+            list($shop_date, $shop_time) = explode(' ',$shop->shop_created_at);
+            list($year, $month, $day) = explode("-", $shop_date);
+            $shop_date = $day."/".$month."/".$year;
+
+            if(isset($shop->approve_at)){
+                list($date, $approve_time) = explode(' ', $shop->approve_at);
+                list($year, $month, $day) = explode("-", $date);
+                $approve_date = $day."/".$month."/".$year;
+            }else{
+                $approve_date = "-";
+            }
+
+            $data['count_customer_all']++;
+            $data['customer_shops_table'][] = [
+                'id' => $shop->id,
+                'shop_date' => $shop_date,
+                'approve_date' => $approve_date,
+                'saleman_name' => $shop->saleman_name,
+                'shop_name' => $shop->shop_name,
+                'shop_address' => $shop->AMPHUR_NAME." ".$shop->PROVINCE_NAME,
+                'saleplan_shop_aprove_status' => $shop->saleplan_shop_aprove_status,
+                'cust_result_status' => $shop->cust_result_status,
+            ];
+
+            if($shop->shop_status == 1){
+                $data['count_customer_success']++;
+                $data['customer_shops_success_table'][] = [
+                    'id' => $shop->id,
+                    'shop_date' => $shop_date,
+                    'approve_date' => $approve_date,
+                    'saleman_name' => $shop->saleman_name,
+                    'shop_name' => $shop->shop_name,
+                    'shop_address' => $shop->AMPHUR_NAME." ".$shop->PROVINCE_NAME,
+                    'saleplan_shop_aprove_status' => $shop->saleplan_shop_aprove_status,
+                    'cust_result_status' => $shop->cust_result_status,
+                ];
+            }else if(is_null($shop->shop_result_status)){
+                $data['count_customer_pending']++;
+                $data['customer_shops_pending_table'][] = [
+                    'id' => $shop->id,
+                    'shop_date' => $shop_date,
+                    'approve_date' => $approve_date,
+                    'saleman_name' => $shop->saleman_name,
+                    'shop_name' => $shop->shop_name,
+                    'shop_address' => $shop->AMPHUR_NAME." ".$shop->PROVINCE_NAME,
+                    'saleplan_shop_aprove_status' => $shop->saleplan_shop_aprove_status,
+                    'cust_result_status' => $shop->cust_result_status,
+                ];
+            }else{
+                if($shop->shop_result_status == 2){ /* สนใจ */
+                    $data['count_customer_result_1']++;
+                    $data['customer_shops_result_1_table'][] = [
+                        'id' => $shop->id,
+                        'shop_date' => $shop_date,
+                        'approve_date' => $approve_date,
+                        'saleman_name' => $shop->saleman_name,
+                        'shop_name' => $shop->shop_name,
+                        'shop_address' => $shop->AMPHUR_NAME." ".$shop->PROVINCE_NAME,
+                        'saleplan_shop_aprove_status' => $shop->saleplan_shop_aprove_status,
+                        'cust_result_status' => $shop->cust_result_status,
+                    ];
+                }else if($shop->shop_result_status == 1){ /*  รอตัดสินใจ	 */
+                    $data['count_customer_pending']++;
+                    $data['customer_shops_result_2_table'][] = [
+                        'id' => $shop->id,
+                        'shop_date' => $shop_date,
+                        'approve_date' => $approve_date,
+                        'saleman_name' => $shop->saleman_name,
+                        'shop_name' => $shop->shop_name,
+                        'shop_address' => $shop->AMPHUR_NAME." ".$shop->PROVINCE_NAME,
+                        'saleplan_shop_aprove_status' => $shop->saleplan_shop_aprove_status,
+                        'cust_result_status' => $shop->cust_result_status,
+                    ];
+                }else if($shop->shop_result_status == 0){ /*  ไม่สนใจ	 */
+                    $data['count_customer_result_3']++;
+                    $data['customer_shops_result_3_table'][] = [
+                        'id' => $shop->id,
+                        'shop_date' => $shop_date,
+                        'approve_date' => $approve_date,
+                        'saleman_name' => $shop->saleman_name,
+                        'shop_name' => $shop->shop_name,
+                        'shop_address' => $shop->AMPHUR_NAME." ".$shop->PROVINCE_NAME,
+                        'saleplan_shop_aprove_status' => $shop->saleplan_shop_aprove_status,
+                        'cust_result_status' => $shop->cust_result_status,
+                    ];
+                }
+            }
+        }
+
+        // --------- จบ การ นับจำนวน แสดงในกล่องสถานะ ----------------
 
         $data['users'] = DB::table('users')
             ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
@@ -323,9 +459,10 @@ class ApprovalCustomerExceptController extends Controller
         $data['province'] = DB::table('province')->get();
         $data['customer_contacts'] = DB::table('customer_contacts')->orderBy('id', 'desc')->get();
 
-        return view('leadManager.approval-customer-except-history', $data);
+        return $data;
+
     }
-    
+
     public function approval_customer_except_history_detail($id)
     {
         $data['customer_shops'] = DB::table('customer_shops')
