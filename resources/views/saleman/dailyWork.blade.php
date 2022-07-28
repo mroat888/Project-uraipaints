@@ -819,13 +819,13 @@
                         <div class="form-group">
                             <label for="username">สรุปรายละเอียด</label>
                             <textarea class="form-control" id="get_detail" cols="30" rows="5" placeholder="" name="saleplan_detail"
-                                type="text"> </textarea>
+                                type="text" required></textarea>
                         </div>
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="username">สรุปผลลัพธ์</label>
-                                <select class="form-control custom-select" id="get_result" name="saleplan_result">
-                                    <option selected>-- กรุณาเลือก --</option>
+                                <select class="form-control custom-select" id="get_result" name="saleplan_result" required>
+                                    <option value="" selected>-- กรุณาเลือก --</option>
                                     <option value="0">ไม่สนใจ</option>
                                     <option value="1">สนใจ/ตกลง</option>
                                 </select>
@@ -873,6 +873,7 @@
                                     <option value="" selected>-- กรุณาเลือก --</option>
                                     <option value="0">ไม่สนใจ</option>
                                     <option value="2">สนใจ/ตกลง</option>
+                                    <option value="1">รอตัดสินใจ</option>
                                 </select>
                             </div>
                         </div>
@@ -908,12 +909,12 @@
                         <div class="form-group">
                             <label for="username">รายละเอียด</label>
                             <textarea class="form-control" id="get_visit_detail" cols="30" rows="5" placeholder="" name="visit_result_detail"
-                                type="text" required></textarea>
+                                type="text"> </textarea>
                         </div>
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="username">สรุปผลลัพธ์</label>
-                                <select class="form-control custom-select" id="get_visit_result" name="visit_result_status" required>
+                                <select class="form-control custom-select" id="get_visit_result" name="visit_result_status">
                                     <option value="" selected>-- กรุณาเลือก --</option>
                                     <option value="1">สำเร็จ</option>
                                     <option value="2">ไม่สำเร็จ</option>
