@@ -664,11 +664,10 @@ Route::get('admin/assignment_view_image/{id}', 'Admin\AssignmentController@assig
 
 // Customer Change Status
 Route::get('admin/change_customer_status', 'Admin\ChangeCustomerController@index');
+Route::post('admin/change_customer_status/search','Admin\ChangeCustomerController@customerLeadSearch');
 Route::get('admin/change_customer_status_edit/{id}', 'Admin\ChangeCustomerController@show');
 Route::post('admin/change_customer_status_update', 'Admin\ChangeCustomerController@update_status');
 Route::post('admin/change_customer_status/destroy','Admin\ChangeCustomerController@destroy');
-
-Route::post('admin/change_customer_status/search','Admin\ChangeCustomerController@customerLeadSearch');
 Route::get('admin/approval_customer_except_detail/{id}', 'Admin\ChangeCustomerController@approval_customer_except_detail');
 // Route::post('create_customer', 'Customer\CustomerController@store');
 Route::get('admin/edit_customerLead/{id}', 'Admin\ChangeCustomerController@edit');

@@ -62,7 +62,7 @@
                             @if($shop['cust_result_status'] == 2) <!-- สนใจ	 -->
                                 <span class="badge badge-soft-orange" style="font-size: 12px;">สนใจ</span>
                             @elseif($shop['cust_result_status'] == 1) <!-- รอตัดสินใจ -->
-                                <span class="badge badge-soft-primary" style="font-size: 12px;">รอดำเนินการ</span>
+                                <span class="badge badge-soft-purple" style="font-size: 12px;">รอตัดสินใจ</span>
                             @elseif($shop['cust_result_status'] == 0) <!-- ไม่สนใจ  -->
                                 <span class="badge badge-soft-danger" style="font-size: 12px;">ไม่สนใจ</span>
                             @endif

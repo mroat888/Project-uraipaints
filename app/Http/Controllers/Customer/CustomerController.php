@@ -59,6 +59,7 @@ class CustomerController extends Controller
     {
         if(!is_null($request->selectdateFrom)){
             $data = $this->fetch_customer_lead($request);
+            $data['date_filter'] = $request->selectdateFrom;
         }elseif(!is_null($request->slugradio)){
             $data = $this->fetch_customer_lead($request);
             if($request->slugradio == "สำเร็จ"){
@@ -254,18 +255,31 @@ class CustomerController extends Controller
                     //}
                 }
             }else{
+                $data['customer_shops_table'][] = [ /* ทั้งหมด */
+                    'id' => $value->id,
+                    'shop_name' => $value->shop_name,
+                    'PROVINCE_NAME' => $value->PROVINCE_NAME,
+                    'shop_profile_image' => $value->shop_profile_image,
+                    'shops_saleplan_id' => null,
+                    'monthly_plans_id' => null,
+                    'month_date' => null,
+                    'result_id' => null,
+                    'shop_status' => $value->shop_status,
+                    'cust_result_status' => null,
+                ];
+
                 $data['count_customer_pending']++; /* รอดำเนินการ */
                 $data['customer_shops_pending_table'][] = [
                     'id' => $value->id,
                     'shop_name' => $value->shop_name,
                     'PROVINCE_NAME' => $value->PROVINCE_NAME,
                     'shop_profile_image' => $value->shop_profile_image,
-                    'shops_saleplan_id' => '',
-                    'monthly_plans_id' => '',
-                    'month_date' => '',
-                    'result_id' => '',
+                    'shops_saleplan_id' => null,
+                    'monthly_plans_id' => null,
+                    'month_date' => null,
+                    'result_id' => null,
                     'shop_status' => $value->shop_status,
-                    'cust_result_status' => '',
+                    'cust_result_status' => null,
                 ];
             }
 

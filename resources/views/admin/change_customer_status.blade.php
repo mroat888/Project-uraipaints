@@ -173,7 +173,7 @@
                                                         </label>
                                                     </div>
                                                 </li>
-                                                <!-- <li class="nav-item">
+                                                <li class="nav-item">
                                                     <div class="form-check form-check-inline">
                                                         <label>
                                                             <input class="form-check-input checkRadio" type="radio" name="slugradio" id="inlineRadio5" value="รอตัดสินใจ" {{ $check_Radio_5 }}>
@@ -183,7 +183,7 @@
                                                             </section>
                                                         </label>
                                                     </div>
-                                                </li> -->
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -276,12 +276,15 @@
                                                                         style="font-size: 12px;">สนใจ</span>
                                                                 @elseif($shop['cust_result_status'] == 1)
                                                                     <!-- รอตัดสินใจ -->
-                                                                    <span class="badge badge-soft-primary"
-                                                                        style="font-size: 12px;">รอดำเนินการ</span>
+                                                                    <span class="badge badge-soft-purple"
+                                                                        style="font-size: 12px;">รอตัดสินใจ</span>
                                                                 @elseif($shop['cust_result_status'] == 0)
                                                                     <!-- ไม่สนใจ  -->
                                                                     <span class="badge badge-soft-danger"
                                                                         style="font-size: 12px;">ไม่สนใจ</span>
+                                                                @else
+                                                                    <span class="badge badge-soft-primary"
+                                                                        style="font-size: 12px;">รอดำเนินการ</span>
                                                                 @endif
                                                             @else
                                                                 <span class="badge badge-soft-primary"
