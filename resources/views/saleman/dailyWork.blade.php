@@ -612,6 +612,9 @@
                                                             @elseif ($customer_visit_api[$key]['visit_status'] == 2)
                                                                 <span class="badge badge-soft-danger mt-15 mr-10"
                                                                     style="font-weight: bold; font-size: 12px;">ไม่สำเร็จ</span>
+                                                            @elseif ($customer_visit_api[$key]['visit_status'] == 4)
+                                                                <span class="badge badge-soft-violet mt-15 mr-10"
+                                                                    style="font-weight: bold; font-size: 12px;">ไม่ระบุ</span>
                                                             @endif
                                                         </td>
                                                         <td style="text-align:center;">
@@ -861,13 +864,13 @@
                         <div class="form-group">
                             <label for="username">รายละเอียด</label>
                             <textarea class="form-control" id="get_cust_detail" cols="30" rows="5" placeholder="" name="shop_result_detail"
-                                type="text" require> </textarea>
+                                type="text" required></textarea>
                         </div>
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="username">สรุปผลลัพธ์</label>
-                                <select class="form-control custom-select" id="get_cust_result" name="shop_result_status">
-                                    <option selected>-- กรุณาเลือก --</option>
+                                <select class="form-control custom-select" id="get_cust_result" name="shop_result_status" required>
+                                    <option value="" selected>-- กรุณาเลือก --</option>
                                     <option value="0">ไม่สนใจ</option>
                                     <option value="2">สนใจ/ตกลง</option>
                                 </select>
@@ -905,15 +908,16 @@
                         <div class="form-group">
                             <label for="username">รายละเอียด</label>
                             <textarea class="form-control" id="get_visit_detail" cols="30" rows="5" placeholder="" name="visit_result_detail"
-                                type="text"> </textarea>
+                                type="text" required></textarea>
                         </div>
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="username">สรุปผลลัพธ์</label>
-                                <select class="form-control custom-select" id="get_visit_result" name="visit_result_status">
-                                    {{-- <option selected>-- กรุณาเลือก --</option> --}}
+                                <select class="form-control custom-select" id="get_visit_result" name="visit_result_status" required>
+                                    <option value="" selected>-- กรุณาเลือก --</option>
                                     <option value="1">สำเร็จ</option>
                                     <option value="2">ไม่สำเร็จ</option>
+                                    <option value="4">ไม่ระบุ</option>
                                 </select>
                             </div>
                         </div>
