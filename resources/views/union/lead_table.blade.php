@@ -60,7 +60,7 @@
                             @if($shop['cust_result_status'] == 2) <!-- สนใจ	 -->
                                 <span class="badge badge-soft-orange" style="font-size: 12px;">สนใจ</span>
                             @elseif($shop['cust_result_status'] == 1) <!-- รอตัดสินใจ -->
-                                <span class="badge badge-soft-primary" style="font-size: 12px;">รอดำเนินกการ</span>
+                                <span class="badge badge-soft-purple" style="font-size: 12px;">รอตัดสินใจ</span>
                             @elseif($shop['cust_result_status'] == 0) <!-- ไม่สนใจ  -->
                                 <span class="badge badge-soft-danger" style="font-size: 12px;">ไม่สนใจ</span>
                             @endif
@@ -99,7 +99,7 @@
                         <a href="{{ url($url_customer_detail, $shop['id']) }}" class="btn btn-icon btn-purple">
                             <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></a>
 
-                        <a href="{{ url($url_comment, [$shop['id'], $shop['customer_shops_saleplan_id'], $shop['monthly_plans_id']]) }}" 
+                        <a href="{{ url($url_comment, [$shop['id'], $shop['shops_saleplan_id'], $shop['monthly_plans_id']]) }}" 
                             class="btn btn-icon btn-info mr-10" style="{{ $btn_comment_hide }}">
                             <h4 class="btn-icon-wrap" style="color: white;">
                                 <span class="material-icons">question_answer</span>

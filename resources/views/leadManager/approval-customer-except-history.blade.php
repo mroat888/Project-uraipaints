@@ -125,13 +125,13 @@
                                     </div>
                                 </div>
                                 @php
-                                        $check_Radio_1 = '';
-                                        $check_Radio_2 = '';
-                                        $check_Radio_3 = '';
-                                        $check_Radio_4 = '';
-                                        $check_Radio_5 = '';
-                                        $check_Radio_6 = '';
-                                        if(isset($slugradio_filter)){
+                                    $check_Radio_1 = '';
+                                    $check_Radio_2 = '';
+                                    $check_Radio_3 = '';
+                                    $check_Radio_4 = '';
+                                    $check_Radio_5 = '';
+                                    $check_Radio_6 = '';
+                                    if(isset($slugradio_filter)){
                                         switch($slugradio_filter){
                                             case "สำเร็จ" : $check_Radio_2 = "checked";
                                                 break;
@@ -268,7 +268,9 @@
                                                 </td>
 
                                                 <td>
-                                                    @if($shop['saleplan_shop_aprove_status'] == 3)
+                                                    @if($shop['shop_status'] == 1)
+                                                        <span class="badge badge-soft-success" style="font-size: 12px;">สำเร็จ</span>
+                                                    @elseif($shop['saleplan_shop_aprove_status'] == 3)
                                                         <span class="badge badge-soft-purple" style="font-size: 12px;">ไม่ผ่านอนุมัติ</span>
                                                     @else
                                                         @if(!is_null($shop['cust_result_status']))

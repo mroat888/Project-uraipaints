@@ -291,7 +291,8 @@ class ApprovalCustomerExceptController extends Controller
                 }
             }
         }else{
-            $data = $this->fetch_customer_lead($request);
+            $request = "";
+            $data = $this->ChangeCustomerController->fetch_customer_lead($request);
         }
         
         $auth_team_id = explode(',',Auth::user()->team_id);

@@ -10,56 +10,24 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Admin\ChangeCustomerController;
 
 class ApprovalCustomerExceptController extends Controller
 {
-    public function __construct(){
-        $this->ChangeCustomerController= new ChangeCustomerController();
-    }
 
     public function index()
     {
         $request = "";
-        // $data = $this->query_customer_except_history($request);
-        $data = $this->ChangeCustomerController->fetch_customer_lead($request);
-
-        $auth_team_id = explode(',',Auth::user()->team_id);
-        $auth_team = array();
-        foreach($auth_team_id as $value){
-            $auth_team[] = $value;
-        }
-
-        $data['users'] = DB::table('users')
-            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
-            ->where(function($query) use ($auth_team) {
-                for ($i = 0; $i < count($auth_team); $i++){
-                    $query->orWhere('users.team_id', $auth_team[$i])
-                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
-                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
-                }
-            })
-            ->get();
-        $data['team_sales'] = DB::table('master_team_sales')
-            ->where(function($query) use ($auth_team) {
-                for ($i = 0; $i < count($auth_team); $i++){
-                    $query->orWhere('id', $auth_team[$i])
-                        ->orWhere('id', 'like', $auth_team[$i].',%')
-                        ->orWhere('id', 'like', '%,'.$auth_team[$i]);
-                }
-            })
-            ->get();
-
-        $data['province'] = DB::table('province')->get();
-        $data['customer_contacts'] = DB::table('customer_contacts')->orderBy('id', 'desc')->get();
-
+        $data = $this->query_customer_except_history($request);
         return view('headManager.approval_customer_except', $data);
     }
 
     public function search(Request $request)
     {
+
         if(!is_null($request->slugradio)){
-            $data = $this->ChangeCustomerController->fetch_customer_lead($request);
+
+            $data = $this->query_customer_except_history($request);
+
             if($request->slugradio == "สำเร็จ"){
                 if(isset($data['customer_shops_success_table'])){
                     $data['customer_shops_table'] = $data['customer_shops_success_table'];
@@ -91,40 +59,12 @@ class ApprovalCustomerExceptController extends Controller
                     $data['customer_shops_table'] = null;
                 }
             }
+            $data['slugradio_filter'] = $request->slugradio;
         }else{
-            $request = "";
-            $data = $this->ChangeCustomerController->fetch_customer_lead($request);
+            $data = $this->query_customer_except_history($request);
+            $data['customer_shops_table'] = $data['customer_shops_table'];
         }
 
-        $auth_team_id = explode(',',Auth::user()->team_id);
-        $auth_team = array();
-        foreach($auth_team_id as $value){
-            $auth_team[] = $value;
-        }
-
-        $data['users'] = DB::table('users')
-            ->where('users.status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
-            ->where(function($query) use ($auth_team) {
-                for ($i = 0; $i < count($auth_team); $i++){
-                    $query->orWhere('users.team_id', $auth_team[$i])
-                        ->orWhere('users.team_id', 'like', $auth_team[$i].',%')
-                        ->orWhere('users.team_id', 'like', '%,'.$auth_team[$i]);
-                }
-            })
-            ->get();
-        $data['team_sales'] = DB::table('master_team_sales')
-            ->where(function($query) use ($auth_team) {
-                for ($i = 0; $i < count($auth_team); $i++){
-                    $query->orWhere('id', $auth_team[$i])
-                        ->orWhere('id', 'like', $auth_team[$i].',%')
-                        ->orWhere('id', 'like', '%,'.$auth_team[$i]);
-                }
-            })
-            ->get();
-
-        $data['province'] = DB::table('province')->get();
-        $data['customer_contacts'] = DB::table('customer_contacts')->orderBy('id', 'desc')->get();
-        
         return view('headManager.approval_customer_except', $data);
     }
 
