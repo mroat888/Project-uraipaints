@@ -86,7 +86,7 @@
                             }
 
                             if($user_level == "header"){ //-- ถ้ามาจากระบบ header และเป็นลูกค้ารอตัดสินใจ
-                                if($shop['shop_status'] == "0" && ($shop['cust_result_status'] == "1" || $shop['cust_result_status'] == null)){
+                                if($shop['shop_status'] == "0" && ($shop['cust_result_status'] == "1")){
                                     $btn_comment_hide = "display:block";
                                     $url_comment = "head/comment_customer_new_except";
                                 }
