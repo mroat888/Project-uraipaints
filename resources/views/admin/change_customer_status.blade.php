@@ -295,7 +295,8 @@
                                                     
                                                     <td>
                                                         <div class="button-list">
-                                                            @if ($shop['shop_status'] == 0)
+                                                            <!-- สถานะต้องเป็น ลูกค้าใหม่และสถานะสนใจเท่านั้น -->
+                                                            @if ($shop['shop_status'] == 0 && !is_null($shop['cust_result_status']) && $shop['cust_result_status'] == 2)
                                                                 <button class="btn btn-icon btn-view btn_change_status_shop" value="{{ $shop['id'] }}">
                                                                     <h4 class="btn-icon-wrap" style="color: white;"><span
                                                                         class="material-icons">app_registration</span></h4>
