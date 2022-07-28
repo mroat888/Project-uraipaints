@@ -23,37 +23,43 @@ class CatalogController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/groups');
         $res_api = $response->json();
 
-        $data['groups'] = array();
-        foreach ($res_api['data'] as $key => $value) {
-            $data['groups'][$key] =
-            [
-                'id' => $value['identify'],
-                'group_name' => $value['name'],
-            ];
+        if(!is_null($res_api)){
+            $data['groups'] = array();
+            foreach ($res_api['data'] as $key => $value) {
+                $data['groups'][$key] =
+                [
+                    'id' => $value['identify'],
+                    'group_name' => $value['name'],
+                ];
+            }
         }
 
         $response2 = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/brands');
         $res_api2 = $response2->json();
 
-        $data['brands'] = array();
-        foreach ($res_api2['data'] as $key => $value) {
-            $data['brands'][$key] =
-            [
-                'id' => $value['identify'],
-                'brand_name' => $value['name'],
-            ];
+        if(!is_null($res_api2)){
+            $data['brands'] = array();
+            foreach ($res_api2['data'] as $key => $value) {
+                $data['brands'][$key] =
+                [
+                    'id' => $value['identify'],
+                    'brand_name' => $value['name'],
+                ];
+            }
         }
 
         $response3 = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/pdglists');
         $res_api3 = $response3->json();
 
-        $data['pdglists'] = array();
-        foreach ($res_api3['data'] as $key => $value) {
-            $data['pdglists'][$key] =
-            [
-                'id' => $value['identify'],
-                'pdglist_name' => $value['name'],
-            ];
+        if(!is_null($res_api3)){
+            $data['pdglists'] = array();
+            foreach ($res_api3['data'] as $key => $value) {
+                $data['pdglists'][$key] =
+                [
+                    'id' => $value['identify'],
+                    'pdglist_name' => $value['name'],
+                ];
+            }
         }
 
         if (Auth::user()->status == 1) {
@@ -84,37 +90,43 @@ class CatalogController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/groups');
         $res_api = $response->json();
 
-        $data['groups'] = array();
-        foreach ($res_api['data'] as $key => $value) {
-            $data['groups'][$key] =
-            [
-                'id' => $value['identify'],
-                'group_name' => $value['name'],
-            ];
+        if(!is_null($res_api)){
+            $data['groups'] = array();
+            foreach ($res_api['data'] as $key => $value) {
+                $data['groups'][$key] =
+                [
+                    'id' => $value['identify'],
+                    'group_name' => $value['name'],
+                ];
+            }
         }
 
         $response2 = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/brands');
         $res_api2 = $response2->json();
 
-        $data['brands'] = array();
-        foreach ($res_api2['data'] as $key => $value) {
-            $data['brands'][$key] =
-            [
-                'id' => $value['identify'],
-                'brand_name' => $value['name'],
-            ];
+        if(!is_null($res_api2)){
+            $data['brands'] = array();
+            foreach ($res_api2['data'] as $key => $value) {
+                $data['brands'][$key] =
+                [
+                    'id' => $value['identify'],
+                    'brand_name' => $value['name'],
+                ];
+            }
         }
 
         $response3 = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/pdglists');
         $res_api3 = $response3->json();
 
-        $data['pdglists'] = array();
-        foreach ($res_api3['data'] as $key => $value) {
-            $data['pdglists'][$key] =
-            [
-                'id' => $value['identify'],
-                'pdglist_name' => $value['name'],
-            ];
+        if(!is_null($res_api3)){
+            $data['pdglists'] = array();
+            foreach ($res_api3['data'] as $key => $value) {
+                $data['pdglists'][$key] =
+                [
+                    'id' => $value['identify'],
+                    'pdglist_name' => $value['name'],
+                ];
+            }
         }
 
         if (Auth::user()->status == 1) {

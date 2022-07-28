@@ -28,9 +28,11 @@
 
                             <select name="category" class="form-control" aria-label=".form-select-lg example">
                                 <option value="" selected>หมวดสินค้า</option>
-                                @foreach ($groups as $key => $value)
-                                    <option value="{{$groups[$key]['id']}}">{{$groups[$key]['group_name']}}</option>
-                                @endforeach
+                                @if(isset($groups) && !is_null($groups))
+                                    @foreach ($groups as $key => $value)
+                                        <option value="{{$groups[$key]['id']}}">{{$groups[$key]['group_name']}}</option>
+                                    @endforeach
+                                @endif
                             </select>
 
                             <span>

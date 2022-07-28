@@ -19,16 +19,20 @@
                                         @csrf
                                         <select name="category" class="form-control" aria-label=".form-select-lg example">
                                             <option value="" selected>หมวดสินค้า</option>
-                                            @foreach ($groups as $key => $value)
-                                                <option value="{{$groups[$key]['id']}}">{{$groups[$key]['group_name']}}</option>
-                                            @endforeach
+                                            @if(isset($groups) && !is_null($groups))
+                                                @foreach ($groups as $key => $value)
+                                                    <option value="{{$groups[$key]['id']}}">{{$groups[$key]['group_name']}}</option>
+                                                @endforeach
+                                            @endif
                                         </select>
 
                                         <select name="brand" class="form-control" aria-label=".form-select-lg example">
                                             <option value="" selected>ชื่อตราสินค้า</option>
-                                            @foreach ($brands as $key => $value)
-                                                <option value="{{$brands[$key]['id']}}">{{$brands[$key]['brand_name']}}</option>
-                                            @endforeach
+                                            @if(isset($brands) && !is_null($brands))
+                                                @foreach ($brands as $key => $value)
+                                                    <option value="{{$brands[$key]['id']}}">{{$brands[$key]['brand_name']}}</option>
+                                                @endforeach
+                                            @endif
                                         </select>
                                         <button type="submit" class="btn btn-green btn-sm ml-2">ค้นหา</button>
                                 </form>

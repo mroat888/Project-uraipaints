@@ -149,11 +149,13 @@
                         <div class="col-md-6">
                             <div class="boxnews-date">
                                 <p style="font-size: 16px;"><span style="font-weight: bold;">หมวด : </span>
+                                  @if(isset($dataGroups) && !is_null($dataGroups))
                                     @foreach ($dataGroups as $key => $group)
-                                    @if ($dataGroups[$key]['id'] == $data_product->category_id)
-                                        {{$dataGroups[$key]['group_name']}}
-                                    @endif
+                                      @if ($dataGroups[$key]['id'] == $data_product->category_id)
+                                          {{$dataGroups[$key]['group_name']}}
+                                      @endif
                                     @endforeach
+                                  @endif
                                 </p>
                             </div>
                     </div>

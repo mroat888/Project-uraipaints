@@ -150,11 +150,13 @@
                         <div class="col-md-6">
                             <div class="boxnews-date">
                                 <p style="font-size: 16px;"><span style="font-weight: bold;">หมวด : </span>
-                                    @foreach ($dataGroups as $key => $group)
-                                    @if ($dataGroups[$key]['id'] == $data_product->category_id)
-                                        {{$dataGroups[$key]['group_name']}}
+                                    @if(!isset($dataGroups) && !is_null($dataGroups))
+                                      @foreach ($dataGroups as $key => $group)
+                                        @if ($dataGroups[$key]['id'] == $data_product->category_id)
+                                            {{$dataGroups[$key]['group_name']}}
+                                        @endif
+                                      @endforeach
                                     @endif
-                                    @endforeach
                                 </p>
                             </div>
                     </div>
@@ -163,11 +165,13 @@
                     </div>
                     <div class="boxnews-date col-md-6">
                         <p style="font-size: 16px;"><span style="font-weight: bold;">แบรนด์สินค้า : </span>
-                            @foreach ($dataBrands as $key => $group)
-                                @if ($dataBrands[$key]['id'] == $data_product->brand_id)
-                                    {{$dataBrands[$key]['brand_name']}}
-                                @endif
-                            @endforeach
+                            @if(isset($dataBrands) && !is_null($dataBrands))
+                              @foreach ($dataBrands as $key => $group)
+                                  @if ($dataBrands[$key]['id'] == $data_product->brand_id)
+                                      {{$dataBrands[$key]['brand_name']}}
+                                  @endif
+                              @endforeach
+                            @endif
                         </p>
                     </div>
                     <div class="boxnews-date col-md-12">

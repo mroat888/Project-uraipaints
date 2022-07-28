@@ -25,13 +25,15 @@ class ProductPriceController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/groups');
         $res_api = $response->json();
 
-        $data['groups'] = array();
-        foreach ($res_api['data'] as $key => $value) {
-            $data['groups'][$key] =
-            [
-                'id' => $value['identify'],
-                'group_name' => $value['name'],
-            ];
+        if(!is_null($res_api)){
+            $data['groups'] = array();
+            foreach ($res_api['data'] as $key => $value) {
+                $data['groups'][$key] =
+                [
+                    'id' => $value['identify'],
+                    'group_name' => $value['name'],
+                ];
+            }
         }
 
         if (Auth::user()->status == 1) {
@@ -40,33 +42,6 @@ class ProductPriceController extends Controller
             return view('leadManager.product_price', $data);
         }elseif (Auth::user()->status == 3) {
             return view('headManager.product_price', $data);
-        }
-    }
-
-    public function view_detail($id)
-    {
-        $data_product = ProductPrice::where('id', $id)->first();
-        $gallerys = ProductPriceGallery::where('product_price_id', $id)->orderBy('id', 'desc')->get();
-
-        $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/groups');
-        $res_api = $response->json();
-
-        $dataGroups = array();
-        foreach ($res_api['data'] as $key => $value) {
-            $dataGroups[$key] =
-            [
-                'id' => $value['identify'],
-                'group_name' => $value['name'],
-            ];
-        }
-
-        if (Auth::user()->status == 1) {
-            return view('saleman.product_price_detail', compact('data_product', 'gallerys', 'dataGroups'));
-        }elseif (Auth::user()->status == 2) {
-            return view('leadManager.product_price_detail', compact('data_product', 'gallerys', 'dataGroups'));
-        }elseif (Auth::user()->status == 3) {
-            return view('headManager.product_price_detail', compact('data_product', 'gallerys', 'dataGroups'));
         }
     }
 
@@ -88,13 +63,15 @@ class ProductPriceController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/groups');
         $res_api = $response->json();
 
-        $data['groups'] = array();
-        foreach ($res_api['data'] as $key => $value) {
-            $data['groups'][$key] =
-            [
-                'id' => $value['identify'],
-                'group_name' => $value['name'],
-            ];
+        if(!is_null($res_api)){
+            $data['groups'] = array();
+            foreach ($res_api['data'] as $key => $value) {
+                $data['groups'][$key] =
+                [
+                    'id' => $value['identify'],
+                    'group_name' => $value['name'],
+                ];
+            }
         }
 
         if (Auth::user()->status == 1) {
@@ -104,7 +81,35 @@ class ProductPriceController extends Controller
         }elseif (Auth::user()->status == 3) {
             return view('headManager.product_price', $data);
         }
+    }
 
+    public function view_detail($id)
+    {
+        $data_product = ProductPrice::where('id', $id)->first();
+        $gallerys = ProductPriceGallery::where('product_price_id', $id)->orderBy('id', 'desc')->get();
+
+        $api_token = $this->api_token->apiToken();
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/groups');
+        $res_api = $response->json();
+
+        if(!is_null($res_api)){
+            $dataGroups = array();
+            foreach ($res_api['data'] as $key => $value) {
+                $dataGroups[$key] =
+                [
+                    'id' => $value['identify'],
+                    'group_name' => $value['name'],
+                ];
+            }
+        }
+
+        if (Auth::user()->status == 1) {
+            return view('saleman.product_price_detail', compact('data_product', 'gallerys', 'dataGroups'));
+        }elseif (Auth::user()->status == 2) {
+            return view('leadManager.product_price_detail', compact('data_product', 'gallerys', 'dataGroups'));
+        }elseif (Auth::user()->status == 3) {
+            return view('headManager.product_price_detail', compact('data_product', 'gallerys', 'dataGroups'));
+        }
     }
 
 }
