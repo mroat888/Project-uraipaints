@@ -5,6 +5,7 @@
     @php
         $url_approve_trip = "admin/approve_trip";
         $url_showdetail = "admin/approve_trip/detail";
+        $url_updatedetail = "admin/trip/detail"
     @endphp
 
 <!-- Breadcrumb -->
@@ -200,7 +201,7 @@
                                                                 <i class="ion ion-md-create"></i>
                                                             </h4>
                                                         </button>
-                                                        <a href="{{ url($url_showdetail) }}/{{ $value->id }}"
+                                                        <a href="{{ url($url_updatedetail) }}/{{ $value->id }}"
                                                             class="btn btn-icon btn-warning">
                                                             <h4 class="btn-icon-wrap" style="color: white;">
                                                                 <i class="ion ion-md-map"></i>
@@ -364,7 +365,7 @@
                         <label for="inputPassword4">จำนวนวัน</label>
                         <input type="number" class="form-control" name="trip_day_edit" id="trip_day_edit" 
                         onkeyup="calculator_allowance();" onchange="calculator_allowance();" 
-                        onclick="calculator_allowance();"required>
+                        onclick="calculator_allowance();" readonly>
                     </div>
                     <div class="form-group col-md-2">
                         <label for="inputPassword4">อัตราเบี้ยเลี้ยง/วัน</label>

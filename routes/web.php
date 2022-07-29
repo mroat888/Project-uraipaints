@@ -678,9 +678,9 @@ Route::post('admin/update_customerLead', 'Admin\ChangeCustomerController@update'
 Route::get('admin/approve_trip', 'Admin\UnionTripAdminController@index');
 Route::post('admin/approve_trip/search', 'Admin\UnionTripAdminController@search');
 Route::post('admin/approval_trip_confirm_all', 'Admin\UnionTripAdminController@approval_trip_confirm_all');
-Route::post('admin/trip_header/request/update', 'Admin\UnionTripAdminController@trip_header_update'); //-- เพิ่มใหม่
-
 Route::get('admin/approve_trip/detail/{id}', 'UnionTripApproveController@trip_showdetail');
+Route::post('admin/trip_header/request/update', 'Admin\UnionTripAdminController@trip_header_update'); //-- เพิ่มใหม่
+Route::get('admin/trip/detail/{id}', 'UnionTripController@trip_detail'); //-- เพิ่มใหม่
 
 
 // Note

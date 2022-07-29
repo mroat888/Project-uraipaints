@@ -232,7 +232,7 @@ class UnionTripController extends Controller
                 break;
             case 3 :    return view('headManager.tripdetail', $data); 
                 break;
-            case 4 :   
+            case 4 :   return view('admin.tripdetail', $data); 
                 break;
         }
     }

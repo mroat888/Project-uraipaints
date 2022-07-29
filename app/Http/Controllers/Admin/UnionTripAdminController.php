@@ -147,6 +147,13 @@ class UnionTripAdminController extends Controller
                 'updated_by' => Auth::user()->id,
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
+        }else{
+            DB::table('trip_header')->where('id', $request->trip_header_id)
+            ->update([
+                'trip_status' => 2,
+                'updated_by' => Auth::user()->id,
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]);
         }
 
         return response()->json([
