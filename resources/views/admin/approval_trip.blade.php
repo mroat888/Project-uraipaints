@@ -194,32 +194,38 @@
                                                 </td>
                                                 <td>
                                                     @if($value->trip_status == 5)
-                                                    <a href="{{ url($url_showdetail) }}/{{ $value->id }}"
-                                                        class="btn btn-icon btn-edit">
-                                                        <h4 class="btn-icon-wrap" style="color: white;">
-                                                            <i class="ion ion-md-repeat"></i>
-                                                        </h4>
-                                                    </a>
+                                                        <button class="btn btn-icon btn-edit btn_edittrip"
+                                                            value="{{ $value->id }}">
+                                                            <h4 class="btn-icon-wrap" style="color: white;">
+                                                                <i class="ion ion-md-create"></i>
+                                                            </h4>
+                                                        </button>
+                                                        <a href="{{ url($url_showdetail) }}/{{ $value->id }}"
+                                                            class="btn btn-icon btn-warning">
+                                                            <h4 class="btn-icon-wrap" style="color: white;">
+                                                                <i class="ion ion-md-map"></i>
+                                                            </h4>
+                                                        </a>
+                                                    @else
+                                                        <a href="{{ url($url_showdetail) }}/{{ $value->id }}"
+                                                                class="btn btn-icon btn-warning">
+                                                                <h4 class="btn-icon-wrap" style="color: white;">
+                                                                    <i class="ion ion-md-map"></i>
+                                                                </h4>
+                                                            </a>
+                                                        <a href="{{ url('trip_user_pdf') }}/{{ $value->id }}"
+                                                            class="btn btn-icon btn-danger" target="_blank">
+                                                            <h4 class="btn-icon-wrap" style="color: white;">
+                                                                <span class="material-icons">picture_as_pdf</span>
+                                                            </h4>
+                                                        </a>
+                                                        <a href="{{ url('trip_user_excel') }}/{{ $value->id }}"
+                                                            class="btn btn-icon btn-excel">
+                                                            <h4 class="btn-icon-wrap" style="color: white;">
+                                                                <span class="material-icons">table_view</span>
+                                                            </h4>
+                                                        </a>
                                                     @endif
-
-                                                    <a href="{{ url($url_showdetail) }}/{{ $value->id }}"
-                                                        class="btn btn-icon btn-warning">
-                                                        <h4 class="btn-icon-wrap" style="color: white;">
-                                                            <i class="ion ion-md-map"></i>
-                                                        </h4>
-                                                    </a>
-                                                    <a href="{{ url('trip_user_pdf') }}/{{ $value->id }}"
-                                                        class="btn btn-icon btn-danger" target="_blank">
-                                                        <h4 class="btn-icon-wrap" style="color: white;">
-                                                            <span class="material-icons">picture_as_pdf</span>
-                                                        </h4>
-                                                    </a>
-                                                    <a href="{{ url('trip_user_excel') }}/{{ $value->id }}"
-                                                        class="btn btn-icon btn-excel">
-                                                        <h4 class="btn-icon-wrap" style="color: white;">
-                                                            <span class="material-icons">table_view</span>
-                                                        </h4>
-                                                    </a>
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -314,82 +320,278 @@
             </div>
         </div>
         <!-- End Modalformemail -->
+
+<!-- Modal Edit -->
+<div class="modal fade" id="Modaledit" tabindex="-1" aria-labelledby="Modaledit" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="Modaledit">ทริปเดินทาง</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+        <form id="form_edit" enctype="multipart/form-data">
+            @csrf
+            <div class="modal-body">
+                <input type="hidden" id="trip_header_id" name="trip_header_id" class="form-control">
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                    <label for="api_identify">รหัสพนักงาน</label>
+                    <input type="text" class="form-control" name="api_employee_id_edit" id="api_employee_id_edit" readonly>
+                    <input type="hidden" class="form-control" name="api_identify_edit" id="api_identify_edit" readonly>
+                    </div>
+                    <div class="form-group col-md-4">
+                    <label for="namesale">ชื่อพนักงาน</label>
+                    <input type="text" class="form-control" name="namesale_edit" id="namesale_edit" readonly>
+                    </div>
+                    <div class="form-group col-md-4">
+                    <label for="inputPassword4">ทริปของเดือน</label>
+                    <input type="month" class="form-control" name="trip_date_edit" id="trip_date_edit" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label for="inputEmail4">จากวันที่</label>
+                        <input type="date" class="form-control" name="trip_start_edit" id="trip_start_edit" readonly>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="inputPassword4">ถึงวันที่</label>
+                        <input type="date" class="form-control" name="trip_end_edit" id="trip_end_edit" readonly>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="inputPassword4">จำนวนวัน</label>
+                        <input type="number" class="form-control" name="trip_day_edit" id="trip_day_edit" 
+                        onkeyup="calculator_allowance();" onchange="calculator_allowance();" 
+                        onclick="calculator_allowance();"required>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="inputPassword4">อัตราเบี้ยเลี้ยง/วัน</label>
+                        <input type="number" class="form-control" name="allowance_edit" id="allowance_edit" 
+                        onkeyup="calculator_allowance();" onchange="calculator_allowance();" 
+                        onclick="calculator_allowance();" required>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="inputPassword4">รวมค่าเบี้ยเลี้ยง</label>
+                        <input type="number" class="form-control" name="sum_allowance_edit" id="sum_allowance_edit" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                <button type="submit" class="btn btn-primary">บันทึก</button>
+            </div>
+
+        </form>
+
+    </div>
+  </div>
+</div>
+<!-- End Modal Edit -->
+
 </div>
 
 
 
 <script type="text/javascript">
-    function showselectdate(){
-        $("#selectdate").css("display", "block");
-        $("#bt_showdate").hide();
-    }
 
-    function hidetdate(){
-        $("#selectdate").css("display", "none");
-        $("#bt_showdate").show();
-    }
+function calculator_allowance(){
+    let trip_day = parseInt($('#trip_day_edit').val());
+    let allowance = parseInt($('#allowance_edit').val());
 
-    function displayMessage(message) {
-        $(".response").html("<div class='success'>" + message + "</div>");
-        setInterval(function() {
-            $(".success").fadeOut();
-        }, 1000);
-    }
+    let sum_allowance = trip_day*allowance;
 
-    function chkAll(checkbox) {
+    $('#sum_allowance_edit').val(sum_allowance);
+}
 
-        var cboxes = document.getElementsByName('checkapprove[]');
-        var len = cboxes.length;
+$(document).on('click', '.btn_edittrip', function(e){
+    e.preventDefault();
+    var trip_id = $(this).val();
+    $.ajax({
+        type:'GET',
+        url: '{{ url("trip/edit") }}/' + trip_id,
+        cache:false,
+        contentType: false,
+        processData: false,
+        success:function(response){
+            console.log(response);
+            let trip_date = response.trip_header.trip_date.split("-");
+            trip_date = trip_date[0]+"-"+trip_date[1];
+            $("#api_identify_edit").val(response.api_identify);
+            $("#api_employee_id_edit").val(response.api_employee_id);
+            $("#namesale_edit").val(response.namesale);
+            $("#trip_header_id").val(response.trip_header.id);
+            $("#trip_date_edit").val(trip_date);
+            $("#trip_start_edit").val(response.trip_header.trip_start);
+            $("#trip_end_edit").val(response.trip_header.trip_end);
+            $("#trip_day_edit").val(response.trip_header.trip_day);
+            $("#allowance_edit").val(response.trip_header.allowance);
+            $("#sum_allowance_edit").val(response.trip_header.sum_allowance);
 
-        if (checkbox.checked == true) {
-            for (var i = 0; i < len; i++) {
-                cboxes[i].checked = true;
+            $("#Modaledit").modal('show');
+        }
+    });
+});
+
+$("#form_edit").on("submit", function (e) {
+    e.preventDefault();
+    var formData = new FormData(this);
+    //console.log(formData);
+    $.ajax({
+        type:'POST',
+        url: '{{ url("admin/trip_header/request/update") }}',
+        data:formData,
+        cache:false,
+        contentType: false,
+        processData: false,
+        success:function(response){
+            console.log(response);
+            if(response.status == 200){
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Your work has been saved',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                $("#Modaledit").modal('hide');
+                location.reload();
+            }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Your work has been saved',
+                    text: response.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
             }
-        } else {
-            for (var i = 0; i < len; i++) {
-                cboxes[i].checked = false;
-            }
+        },
+        error: function(response){
+            console.log("error");
+            console.log(response);
+        }
+    });
+});
+
+
+function showselectdate(){
+    $("#selectdate").css("display", "block");
+    $("#bt_showdate").hide();
+}
+
+function hidetdate(){
+    $("#selectdate").css("display", "none");
+    $("#bt_showdate").show();
+}
+
+function displayMessage(message) {
+    $(".response").html("<div class='success'>" + message + "</div>");
+    setInterval(function() {
+        $(".success").fadeOut();
+    }, 1000);
+}
+
+function chkAll(checkbox) {
+
+    var cboxes = document.getElementsByName('checkapprove[]');
+    var len = cboxes.length;
+
+    if (checkbox.checked == true) {
+        for (var i = 0; i < len; i++) {
+            cboxes[i].checked = true;
+        }
+    } else {
+        for (var i = 0; i < len; i++) {
+            cboxes[i].checked = false;
         }
     }
+}
 
-    var month_thai = ['มกราคม','กุมภามพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+var month_thai = ['มกราคม','กุมภามพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
 
-    $(document).on('click', '.btn_seandmail', function(){
-        $('#Modalformemail').modal('show');
-        let sel_date = $('#selectdateEmail').val().split('-');
-        let sel_year = parseInt(sel_date[0]);
-        let sel_year_thai = sel_year+543
-        let month_key =  (parseInt(sel_date[1]) * 1) - 1;
+$(document).on('click', '.btn_seandmail', function(){
+    $('#Modalformemail').modal('show');
+    let sel_date = $('#selectdateEmail').val().split('-');
+    let sel_year = parseInt(sel_date[0]);
+    let sel_year_thai = sel_year+543
+    let month_key =  (parseInt(sel_date[1]) * 1) - 1;
 
-        let subject = 'ใบเบิกค่าเบี้ยเลี้ยง ประจำเดือน '+ month_thai[month_key] + ' ' + sel_year_thai;
-        $('#subject').val(subject);
-    });
+    let subject = 'ใบเบิกค่าเบี้ยเลี้ยง ประจำเดือน '+ month_thai[month_key] + ' ' + sel_year_thai;
+    $('#subject').val(subject);
+});
 
-    $(document).on('change', '#selectdateEmail', function(){
-        let sel_date = $(this).val().split('-');
-        let sel_year = parseInt(sel_date[0]);
-        let sel_year_thai = sel_year+543
-        let month_key =  (parseInt(sel_date[1]) * 1) - 1;
+$(document).on('change', '#selectdateEmail', function(){
+    let sel_date = $(this).val().split('-');
+    let sel_year = parseInt(sel_date[0]);
+    let sel_year_thai = sel_year+543
+    let month_key =  (parseInt(sel_date[1]) * 1) - 1;
 
-        let subject = 'ใบเบิกค่าเบี้ยเลี้ยง ประจำเดือน '+ month_thai[month_key] + ' ' + sel_year_thai;
-        $('#subject').val(subject);
-    });
+    let subject = 'ใบเบิกค่าเบี้ยเลี้ยง ประจำเดือน '+ month_thai[month_key] + ' ' + sel_year_thai;
+    $('#subject').val(subject);
+});
 
-    $("#formemail").on("submit", function(e) {
-        e.preventDefault();
-        var formData = new FormData(this);
-        console.log(formData);
+$("#formemail").on("submit", function(e) {
+    e.preventDefault();
+    var formData = new FormData(this);
+    console.log(formData);
 
-        $('body').waitMe({
-                    effect : 'bounce',
-                    text : '',
-                    // bg : rgba(255,255,255,0.7),
-                    // color : '#000'
+    $('body').waitMe({
+                effect : 'bounce',
+                text : '',
+                // bg : rgba(255,255,255,0.7),
+                // color : '#000'
+            });
+
+    $.ajax({
+        type: 'POST',
+        url: '{{ url('trip_mail') }}',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+            // console.log(response);
+            if(response.status == 200){
+                Swal.fire({
+                    icon: 'success',
+                    title: 'เรียบร้อย!',
+                    text: "ส่งอีเมลเรียบร้อยแล้วค่ะ",
+                    showConfirmButton: false,
+                    timer: 1500,
                 });
+                $('#Modalformemail').modal('hide');
+                // location.reload();
+            }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ไม่สามารถส่งอีเมลได้',
+                    text: response.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                $('#Modalformemail').modal('hide');
+            }
 
+            $('body').waitMe("hide");
+        }
+    });
+});
+
+$(document).on('click', '.btn_approve', function() {
+    let approve = $(this).val();
+    $('#approve').val(approve);
+    $('#ModalSaleplanApprove').modal('show');
+});
+
+$("#from_trip_approve").on("submit", function(e) {
+    e.preventDefault();
+    //var formData = $(this).serialize();
+    var formData = new FormData(this);
+    var approve = $("#approve").val();
+    if(approve == "complate"){
         $.ajax({
             type: 'POST',
-            url: '{{ url('trip_mail') }}',
+            url: '{{ url('admin/approval_trip_confirm_all') }}',
             data: formData,
             cache: false,
             contentType: false,
@@ -400,131 +602,84 @@
                     Swal.fire({
                         icon: 'success',
                         title: 'เรียบร้อย!',
-                        text: "ส่งอีเมลเรียบร้อยแล้วค่ะ",
+                        text: "ปิดทริปเดินทางเรียบร้อยแล้วค่ะ",
                         showConfirmButton: false,
                         timer: 1500,
                     });
-                    $('#Modalformemail').modal('hide');
-                    // location.reload();
+                    $('#ModalSaleplanApprove').modal('hide');
+                    $('#shop_status_name_lead').text('ปิดทริปเดินทางเรียบร้อย')
+                    location.reload();
                 }else{
                     Swal.fire({
                         icon: 'error',
-                        title: 'ไม่สามารถส่งอีเมลได้',
+                        title: 'ไม่สามารถบันทึกข้อมูลได้',
                         text: response.message,
                         showConfirmButton: false,
                         timer: 1500
                     });
-                    $('#Modalformemail').modal('hide');
+                    $('#ModalSaleplanApprove').modal('hide');
                 }
-
-                $('body').waitMe("hide");
             }
         });
-    });
 
-    $(document).on('click', '.btn_approve', function() {
-        let approve = $(this).val();
-        $('#approve').val(approve);
-        $('#ModalSaleplanApprove').modal('show');
-    });
+    }else if(approve == "pdf"){
 
-    $("#from_trip_approve").on("submit", function(e) {
-        e.preventDefault();
-        //var formData = $(this).serialize();
-        var formData = new FormData(this);
-        var approve = $("#approve").val();
-        if(approve == "complate"){
-            $.ajax({
-                type: 'POST',
-                url: '{{ url('admin/approval_trip_confirm_all') }}',
-                data: formData,
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function(response) {
-                    // console.log(response);
-                    if(response.status == 200){
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'เรียบร้อย!',
-                            text: "ปิดทริปเดินทางเรียบร้อยแล้วค่ะ",
-                            showConfirmButton: false,
-                            timer: 1500,
-                        });
-                        $('#ModalSaleplanApprove').modal('hide');
-                        $('#shop_status_name_lead').text('ปิดทริปเดินทางเรียบร้อย')
-                        location.reload();
-                    }else{
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'ไม่สามารถบันทึกข้อมูลได้',
-                            text: response.message,
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                        $('#ModalSaleplanApprove').modal('hide');
-                    }
-                }
-            });
+        console.log("PDF---Con");
 
-        }else if(approve == "pdf"){
+        $("#from_trip_approve").attr("action", "{{ url('trip_pdf') }}");
+        $("#from_trip_approve").attr("method", "post");
+        $("#from_trip_approve").attr("target", "_blank");
+        $("#from_trip_approve").submit();
+        $("#from_trip_approve").removeAttr("action").removeAttr("method").removeAttr("target");
 
-            console.log("PDF---Con");
+        $('#ModalSaleplanApprove').modal('hide');
 
-            $("#from_trip_approve").attr("action", "{{ url('trip_pdf') }}");
-            $("#from_trip_approve").attr("method", "post");
-            $("#from_trip_approve").attr("target", "_blank");
-            $("#from_trip_approve").submit();
-            $("#from_trip_approve").removeAttr("action").removeAttr("method").removeAttr("target");
+    }else if(approve == "excle"){
 
-            $('#ModalSaleplanApprove').modal('hide');
+        console.log("Excle---Con");
 
-        }else if(approve == "excle"){
+        // $("#from_trip_approve").attr("action", "{{ url('trip_excel') }}");
+        // $("#from_trip_approve").attr("method", "post");
+        // $("#from_trip_approve").attr("target", "_blank");
+        // $("#from_trip_approve").submit();
+        // $("#from_trip_approve").removeAttr("action").removeAttr("method").removeAttr("target");
 
-            console.log("Excle---Con");
+        // $('#ModalSaleplanApprove').modal('hide');
 
-            // $("#from_trip_approve").attr("action", "{{ url('trip_excel') }}");
-            // $("#from_trip_approve").attr("method", "post");
-            // $("#from_trip_approve").attr("target", "_blank");
-            // $("#from_trip_approve").submit();
-            // $("#from_trip_approve").removeAttr("action").removeAttr("method").removeAttr("target");
+    }else if(approve == "seandmail"){
 
-            // $('#ModalSaleplanApprove').modal('hide');
+        console.log("seandmail---Con");
 
-        }else if(approve == "seandmail"){
+        // $("#from_trip_approve").attr("action", "{{ url('trip_excel') }}");
+        // $("#from_trip_approve").attr("method", "post");
+        // $("#from_trip_approve").attr("target", "_blank");
+        // $("#from_trip_approve").submit();
+        // $("#from_trip_approve").removeAttr("action").removeAttr("method").removeAttr("target");
 
-            console.log("seandmail---Con");
+        $('#ModalSaleplanApprove').modal('hide');
 
-            // $("#from_trip_approve").attr("action", "{{ url('trip_excel') }}");
-            // $("#from_trip_approve").attr("method", "post");
-            // $("#from_trip_approve").attr("target", "_blank");
-            // $("#from_trip_approve").submit();
-            // $("#from_trip_approve").removeAttr("action").removeAttr("method").removeAttr("target");
-
-            $('#ModalSaleplanApprove').modal('hide');
-
-        }
-    });
+    }
+});
 
 
-    $(document).on('click', '.btn_pdf', function() {
-        let sel_trip = $('#selectdateEmail').val();
-        console.log(sel_trip);
+$(document).on('click', '.btn_pdf', function() {
+    let sel_trip = $('#selectdateEmail').val();
+    console.log(sel_trip);
 
-        $("#formemail").attr("action", "{{ url('trip_report') }}");
-        $("#formemail").attr("method", "post");
-        $("#formemail").attr("target", "_blank");
-        $("#formemail").submit();
-        $("#formemail").removeAttr("action").removeAttr("method").removeAttr("target");
-    });
+    $("#formemail").attr("action", "{{ url('trip_report') }}");
+    $("#formemail").attr("method", "post");
+    $("#formemail").attr("target", "_blank");
+    $("#formemail").submit();
+    $("#formemail").removeAttr("action").removeAttr("method").removeAttr("target");
+});
 
-    $(document).on('click', '.btn_excle', function() {
-        $("#formemail").attr("action", "{{ url('trip_excel') }}");
-        $("#formemail").attr("method", "post");
-        $("#formemail").attr("target", "_blank");
-        $("#formemail").submit();
-        $("#formemail").removeAttr("action").removeAttr("method").removeAttr("target");
-    });
+$(document).on('click', '.btn_excle', function() {
+    $("#formemail").attr("action", "{{ url('trip_excel') }}");
+    $("#formemail").attr("method", "post");
+    $("#formemail").attr("target", "_blank");
+    $("#formemail").submit();
+    $("#formemail").removeAttr("action").removeAttr("method").removeAttr("target");
+});
 
 </script>
 

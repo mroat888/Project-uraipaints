@@ -261,7 +261,6 @@ Route::post('lead/approve_trip/update', 'UnionTripApproveController@trip_updated
 
 
 
-
 Route::get('/approvalsaleplan', 'LeadManager\ApprovalSalePlanController@index');
 Route::post('/approvalsaleplan/search', 'LeadManager\ApprovalSalePlanController@search');
 Route::post('lead/approvalsaleplan-history/search', 'LeadManager\ApprovalSalePlanController@history_search');
@@ -679,8 +678,9 @@ Route::post('admin/update_customerLead', 'Admin\ChangeCustomerController@update'
 Route::get('admin/approve_trip', 'Admin\UnionTripAdminController@index');
 Route::post('admin/approve_trip/search', 'Admin\UnionTripAdminController@search');
 Route::post('admin/approval_trip_confirm_all', 'Admin\UnionTripAdminController@approval_trip_confirm_all');
+Route::post('admin/trip_header/request/update', 'Admin\UnionTripAdminController@trip_header_update'); //-- เพิ่มใหม่
+
 Route::get('admin/approve_trip/detail/{id}', 'UnionTripApproveController@trip_showdetail');
-Route::get('admin/trip/request/detail/{id}', 'UnionTripController@trip_detail'); //-- เพิ่มใหม่
 
 
 // Note

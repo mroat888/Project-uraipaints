@@ -172,19 +172,21 @@
                                                 </button>
                                                 
                                             @else
-                                                @php 
-                                                    if($value->trip_status == 5){
-                                                        $btn_disable_manager = "disabled";
-                                                    }else{
-                                                        $btn_disable_manager = "";
-                                                    }
-                                                @endphp
-                                                <button class="btn btn-icon btn-edit btn_seadrepeat"
-                                                    value="{{ $value->id }}" {{ $btn_disable_manager }}>
-                                                    <h4 class="btn-icon-wrap" style="color: white;">
-                                                        <i class="ion ion-md-repeat"></i>
-                                                    </h4>
-                                                </button>
+                                                @if(Auth::user()->status == 2 || Auth::user()->status == 3)
+                                                    @php 
+                                                        if($value->trip_status == 5 || $value->trip_status == 4){
+                                                            $btn_disable_manager = "disabled";
+                                                        }else{
+                                                            $btn_disable_manager = "";
+                                                        }
+                                                    @endphp
+                                                    <button class="btn btn-icon btn-edit btn_seadrepeat"
+                                                        value="{{ $value->id }}" {{ $btn_disable_manager }}>
+                                                        <h4 class="btn-icon-wrap" style="color: white;">
+                                                            <i class="ion ion-md-repeat"></i>
+                                                        </h4>
+                                                    </button>
+                                                @endif
 
                                                 <a href="{{ url($url_trip_detail) }}/{{ $value->id }}"
                                                     class="btn btn-icon btn-warning">

@@ -103,13 +103,23 @@ class UnionTripController extends Controller
     public function edit($id)
     {
         $trip_header = DB::table('trip_header')->where('id', $id)->first();
+        $users = DB::table('users')->where('id', $trip_header->created_by)->first();
+        if(!is_null($users)){
+            $api_identify = $users->api_identify;
+            $api_employee_id = $users->api_employee_id;
+            $user_name = $users->name;
+        }else{
+            $api_identify = "";
+            $api_employee_id = "";
+            $user_name = "";
+        }
         return response()->json([
             'status' => 200,
             'message' => 'ดึงข้อมูลสำเร็จ',
             'trip_header' => $trip_header,
-            'api_identify' => Auth::user()->api_identify,
-            'api_employee_id' => Auth::user()->api_employee_id,
-            'namesale' => Auth::user()->name,
+            'api_identify' => $api_identify,
+            'api_employee_id' => $api_employee_id,
+            'namesale' => $user_name,
         ]);
     }
 

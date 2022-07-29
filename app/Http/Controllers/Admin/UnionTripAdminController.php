@@ -122,4 +122,37 @@ class UnionTripAdminController extends Controller
             ]);
         }
     }
+
+    public function trip_header_update(Request $request)
+    {
+        $check_trip = DB::table('trip_header')->where('id', $request->trip_header_id)->first();
+
+        if(($check_trip->trip_day != $request->trip_day_edit) || ($check_trip->allowance != $request->allowance_edit) || ($check_trip->sum_allowance != $request->sum_allowance_edit)){
+            DB::table('trip_header_revision_history')
+            ->insert([
+                'trip_header_id' => $check_trip->id,
+                'trip_day_history' => $check_trip->trip_day,
+                'allowance_history' => $check_trip->allowance,
+                'sum_allowance_history' => $check_trip->sum_allowance,
+                'created_by' => Auth::user()->id,
+                'created_at' => date('Y-m-d H:i:s'),
+            ]);
+
+            DB::table('trip_header')->where('id', $request->trip_header_id)
+            ->update([
+                'trip_day' => $request->trip_day_edit,
+                'allowance' => $request->allowance_edit,
+                'sum_allowance' => $request->sum_allowance_edit,
+                'trip_status' => 2,
+                'updated_by' => Auth::user()->id,
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+        }
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'บันทึกข้อมูลสำเร็จ',
+        ]);
+    }
+
 }
