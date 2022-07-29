@@ -28,7 +28,7 @@
                                             <td>{{ $delivery_api[$key]['shop_name'] }}</td>
                                             <td>{{ $delivery_api[$key]['province'] }}</td>
                                             <td>{{ $delivery_api[$key]['invonce_no'] }}</td>
-                                            <td>{{ $delivery_api[$key]['total_quan'] }}</td>
+                                            <td style="text-align:center;">{{ $delivery_api[$key]['total_quan'] }}</td>
                                             <td>{{ $delivery_api[$key]['delivery_type'] }}</td>
                                             <td>{{ $delivery_api[$key]['delivery_status'] }}</td>
                                             <td>

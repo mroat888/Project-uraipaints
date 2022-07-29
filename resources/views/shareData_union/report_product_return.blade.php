@@ -74,8 +74,8 @@
                                 <tbody>
                                     <tr style="text-align:center">
                                         <td>{{ $yearadmin_api[0]['year']+543 }}</td>
-                                        <td>{{ $yearadmin_api[0]['sales_th'] }}</td>
-                                        <td>{{ number_format($yearadmin_api[0]['credits'],2) }}</td>
+                                        <td>{{ number_format($yearadmin_api[0]['sales'],2) }}</td>
+                                        <td class="text-red">{{ number_format($yearadmin_api[0]['credits'],2) }}</td>
                                         <td>{{ number_format($yearadmin_api[0]['%Credit'],2) }}</td>
                                     </tr>
                                 </tbody>
@@ -151,12 +151,18 @@
                                                 if(isset($monthadmin_api[$key]['%Credit'])){
                                                     $persent_credit = $monthadmin_api[$key]['%Credit'];
                                                 }
+
+                                                if($credits != 0){
+                                                    $text_red = "text-red";
+                                                }else{
+                                                    $text_red = "";
+                                                }
                                             @endphp
                                             <tr style="text-align:center">
                                                 <td>{{ $i }}</td>
                                                 <td>{{ $month_thai[$i] }}</td>
                                                 <td>{{ number_format($sales,2) }}</td>
-                                                <td>{{ number_format($credits,2) }}</td>
+                                                <td class="{{ $text_red }}">{{ number_format($credits,2) }}</td>
                                                 <td>{{ number_format($persent_credit,2) }}</td>
                                             </tr>
                                         <?php

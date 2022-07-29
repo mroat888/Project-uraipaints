@@ -43,7 +43,7 @@ class ReportProductReturnController extends Controller
         $year_api = $response->json();
 
         // dd($year_api);
-        if($year_api['code'] == 200){
+        if(!is_null($year_api) && $year_api['code'] == 200){
 
             foreach($year_api['data'] as $value){
                 // $persent_sale =  round(($value['netSales'] * 100 ) / $sum_netSales);
@@ -86,7 +86,7 @@ class ReportProductReturnController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search);
         $month_api = $response->json();
 
-        if($month_api['code'] == 200){
+        if(!is_null($month_api) && $month_api['code'] == 200){
 
             foreach($month_api['data'] as $value){
                 $data['monthadmin_api'][] = [
@@ -146,7 +146,7 @@ class ReportProductReturnController extends Controller
         $year_api = $response->json();
 
         // dd($year_api);
-        if($year_api['code'] == 200){
+        if(!is_null($year_api) && $year_api['code'] == 200){
 
             foreach($year_api['data'] as $value){
                 // $persent_sale =  round(($value['netSales'] * 100 ) / $sum_netSales);
@@ -189,7 +189,7 @@ class ReportProductReturnController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search);
         $month_api = $response->json();
 
-        if($month_api['code'] == 200){
+        if(!is_null($month_api) && $month_api['code'] == 200){
 
             foreach($month_api['data'] as $value){
                 $data['monthadmin_api'][] = [
