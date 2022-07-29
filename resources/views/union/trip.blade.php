@@ -135,7 +135,14 @@
                                             <form action="{{ url($url_request, $value->id) }}" method="GET">
 
                                             @if($value->trip_status == 0 || $value->trip_status == 3) <!-- สถานะ draf และ re-write -->
-                                            <button class="btn btn-icon btn-info btn_request" {{ $btn_disable }}>
+                                                @php 
+                                                    if(Auth::user()->status == 1){
+                                                        $user_lavel = 1;
+                                                    }else{
+                                                        $user_lavel = 2;
+                                                    }
+                                                @endphp
+                                                <button class="btn btn-icon btn-info btn_request" {{ $btn_disable }} rel="{{ $user_lavel }}">
                                                     <h4 class="btn-icon-wrap" style="color: white;">
                                                         <i class="ion ion-md-send"></i>
                                                     </h4>
@@ -441,15 +448,27 @@ $(document).on('click', '.btn_deletetrip', function(e){
 });
 
 $(document).on('click', '.btn_request', function(e){
-    var form = $(this).closest("form");
     e.preventDefault();
-
+    var form = $(this).closest("form");
+    let user_lavel = $(this).attr('rel');
+    let title = "";
+    let btn_cancel = "";
+    let btn_confirm = "";
+    if(user_lavel == 1){
+        title = "ขออนุมัติทริปเดินทางใช่หรือไม่ ?";
+        btn_cancel = "ยกเลิก";
+        btn_confirm = "ขออนุมัติ";
+    }else{
+        title = "ยืนยันส่งทริปเดินทางใช่หรือไม่ ?";
+        btn_cancel = "ยกเลิก";
+        btn_confirm = "ยืนยัน";
+    }
     swal({
-        title: `ขออนุมัติทริปเดินทางใช่หรือไม่ ?`,
+        title: title,
         icon: "warning",
         buttons: [
-            'ยกเลิก',
-            'ขออนุมัติ'
+            btn_cancel,
+            btn_confirm
         ],
         infoMode: true
     }).then((willDelete) => {
