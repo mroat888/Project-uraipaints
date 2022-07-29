@@ -786,7 +786,7 @@
 
             <!-- Footer -->
             <div class="hk-footer-wrap container-fluid px-xxl-65 px-xl-20">
-            @yield('footer')
+            @include('layouts.footer')
             </div>
             <!-- /Footer -->
         </div>
