@@ -42,6 +42,26 @@
                                     <!-- เงื่อนไขการค้นหา -->
                                 <form action="{{ url($action_search) }}" method="post">
                                     @csrf
+                                    เดือน
+                                    @php 
+                                        $month_array = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 
+                                        'เมษายน', 'พฤษภาคม' ,'มิถุนายน', 'กรกฎาคม', 
+                                        'สิงหาคม' ,'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม']
+                                    @endphp 
+                                    <select name="sel_month_form" id="sel_month_form" class="form-control form-control-sm">
+                                        <option value="">--เลือกเดือน--</option>
+                                        <?php
+                                            $noindex = 0;
+                                            for($i = 0; $i<count($month_array); $i++){
+                                                $noindex++;
+                                        ?>
+                                                <option value="{{ $noindex }}">
+                                                    {{ $month_array[$i] }}
+                                                </option>
+                                        <?php
+                                            }
+                                        ?>
+                                    </select>
                                     <span id="selectdate" >
                                         เทียบระหว่างปี
                                         <select name="sel_year_form" id="sel_year_form" class="form-control" required>

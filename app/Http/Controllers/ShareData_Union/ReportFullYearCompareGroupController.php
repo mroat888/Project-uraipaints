@@ -19,8 +19,9 @@ class ReportFullYearCompareGroupController extends Controller
         $year = date("Y");
         $year_2 = $year+0;
         $year_1 = $year-1; 
+        $sel_month = "";
 
-        $data = $this->queryfullyearcompare($year_1, $year_2);
+        $data = $this->queryfullyearcompare($year_1, $year_2, $sel_month);
 
         switch  (Auth::user()->status){
             case 1 :    return view('shareData.report_full_year_compare_group', $data);
@@ -44,7 +45,13 @@ class ReportFullYearCompareGroupController extends Controller
             $year_1 = $request->sel_year_to; 
         }
 
-        $data = $this->queryfullyearcompare($year_1, $year_2);
+        if(isset($request->sel_month_form) && !is_null($request->sel_month_form)){
+            $sel_month = $request->sel_month_form;
+        }else{
+            $sel_month = "";
+        }
+
+        $data = $this->queryfullyearcompare($year_1, $year_2, $sel_month);
         
         if(is_null($data)){
             $data['year_search'] = array($year_2, $year_1);
@@ -62,7 +69,7 @@ class ReportFullYearCompareGroupController extends Controller
         }
     }
 
-    public function queryfullyearcompare($year_1, $year_2)
+    public function queryfullyearcompare($year_1, $year_2, $month)
     {
         $year_search = $year_1.",".$year_2;
 
@@ -82,6 +89,7 @@ class ReportFullYearCompareGroupController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search,[
             'sortorder' => 'DESC',
             'year_compare' => 'Y',
+            'month' => $month
         ]);
         $res_api = $response->json();
 
