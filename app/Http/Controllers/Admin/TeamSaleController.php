@@ -51,6 +51,7 @@ class TeamSaleController extends Controller
                 DB::table('master_team_sales')
                 ->insert([
                     'team_name' => $request->team_name,
+                    'team_api' => $request->team_api,
                     'created_at' => date('Y-m-d H:i:s'),
                 ]);
 
@@ -84,6 +85,7 @@ class TeamSaleController extends Controller
             DB::table('master_team_sales')->where('id', $request->team_id_edit)
             ->update([
                 'team_name' => $request->team_name_edit,
+                'team_api' => $request->team_api_edit,
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
 

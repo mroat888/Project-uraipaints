@@ -91,6 +91,12 @@
                                 <input type="text" name="team_name" id="team_name" class="form-control">
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <label for="firstName">รหัสกลุ่ม API</label>
+                                <input type="text" name="team_api" id="team_api" class="form-control">
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -120,6 +126,10 @@
                             <div class="col-md-12 form-group">
                                 <label for="firstName">ชื่อกลุ่มและทีม</label>
                                 <input type="text" name="team_name_edit" id="team_name_edit" class="form-control">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label for="firstName">รหัสกลุ่ม API</label>
+                                <input type="text" name="team_api_edit" id="team_api_edit" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -188,6 +198,7 @@
                     $("#team_id_edit").val(team_id);
                     $("#Modaleditteam").modal('show');
                     $("#team_name_edit").val(response.data.team_name);
+                    $("#team_api_edit").val(response.data.team_api);
                 }
             },
             error: function(response){
