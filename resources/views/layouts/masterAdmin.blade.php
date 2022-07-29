@@ -636,12 +636,12 @@
                                                 <span class="nav-link-text">จุดประสงค์พบลูกค้าใหม่</span>
                                             </a>
                                         </li>
-                                        <li class="nav-item {{ (request()->is('admin/master_teamSales')) ? 'btn2' : '' }}">
+                                        <!-- <li class="nav-item {{ (request()->is('admin/master_teamSales')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('admin/master_teamSales') }}">
                                                 <i class="ion ion-md-people" style="color: #044067;"></i>
                                                 <span class="nav-link-text">รายชื่อกลุ่มและทีม</span>
                                             </a>
-                                        </li>
+                                        </li> -->
                                         <li class="nav-item {{ (request()->is('admin/master_setting')) ? 'btn2' : '' }}">
                                             <a class="nav-link" href="{{ url('admin/master_setting') }}">
                                                 <i class="ion ion-md-people" style="color: #044067;"></i>
