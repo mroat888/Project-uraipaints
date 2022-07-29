@@ -92,13 +92,15 @@ class ReportCustomerCompareYearController extends Controller
         // --- หาจังหวัดแสดงในส่วนค้นหา --
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search_provinces);
         $api_provinces = $response->json();
-        foreach($api_provinces['data'] as $value){
-            if($value['identify'] != ""){
-                $data['provinces'][] = [
-                    'identify' => $value['identify'],
-                    'name_thai' => $value['name_thai'],
-                    'region_id' => $value['region_id']
-                ];
+        if(!is_null($api_provinces) && $api_provinces['code'] == 200){
+            foreach($api_provinces['data'] as $value){
+                if($value['identify'] != ""){
+                    $data['provinces'][] = [
+                        'identify' => $value['identify'],
+                        'name_thai' => $value['name_thai'],
+                        'region_id' => $value['region_id']
+                    ];
+                }
             }
         }
         // --- จบ หาจังหวัดแสดงในส่วนค้นหา --
@@ -113,7 +115,15 @@ class ReportCustomerCompareYearController extends Controller
             $data['keysearch_amphur'] = $request->amphur;
         }
 
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search);
+        if(isset($request->sel_month_form) && !is_null($request->sel_month_form)){
+            $month_sel = $request->sel_month_form;
+        }else{
+            $month_sel = '';
+        }
+
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$path_search,[
+            'month' => $month_sel,
+        ]);
         $api_customer = $response->json();
 
         //-- แยกข้อมูลออกเป็น 2 ชุด 
