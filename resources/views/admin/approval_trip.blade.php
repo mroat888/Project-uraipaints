@@ -67,6 +67,7 @@
                                         <select name="selectstatus_trip" class="form-control" aria-label=".form-select-lg example"  style="margin-left:10px; margin-right:10px;">
                                             <option value="" selected>เลือกสถานะ</option>
                                             <option value="2">อนุมัติ, ยืนยัน</option>
+                                            <option value="5">สั่งให้แก้ไข</option>
                                             <option value="4">Complate</option>
                                         </select>
                                         <select name="selectteam_sales" class="form-control" aria-label=".form-select-lg example">
@@ -187,9 +188,20 @@
                                                         <span class="badge badge-soft-danger" style="font-size: 12px;">Reject</span>
                                                     @elseif ($value->trip_status == 4)
                                                         <span class="badge badge-soft-info"style="font-size: 12px;">Close</span>
+                                                    @elseif ($value->trip_status == 5)
+                                                        <span class="badge badge-soft-purple"style="font-size: 12px;">Request Admin</span>
                                                     @endif
                                                 </td>
                                                 <td>
+                                                    @if($value->trip_status == 5)
+                                                    <a href="{{ url($url_showdetail) }}/{{ $value->id }}"
+                                                        class="btn btn-icon btn-edit">
+                                                        <h4 class="btn-icon-wrap" style="color: white;">
+                                                            <i class="ion ion-md-repeat"></i>
+                                                        </h4>
+                                                    </a>
+                                                    @endif
+
                                                     <a href="{{ url($url_showdetail) }}/{{ $value->id }}"
                                                         class="btn btn-icon btn-warning">
                                                         <h4 class="btn-icon-wrap" style="color: white;">

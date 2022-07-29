@@ -196,6 +196,21 @@ class UnionTripController extends Controller
         return redirect()->back(); 
     }
 
+    public function manager_request_repeatadmin($id)
+    {
+        DB::table('trip_header')->where('id', $id)
+        ->update([
+            'updated_at' => date('Y-m-d H:i:s'),
+            'updated_by' => Auth::user()->id,
+            'trip_status' => '5',
+        ]);
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'ปรับสถานะเรียบร้อยแล้ว',
+        ]);
+    }
+
     public function trip_detail($id)
     {
         $data = $this->trip_fetchshowdetail($id);

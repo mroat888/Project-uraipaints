@@ -680,6 +680,7 @@ Route::get('admin/approve_trip', 'Admin\UnionTripAdminController@index');
 Route::post('admin/approve_trip/search', 'Admin\UnionTripAdminController@search');
 Route::post('admin/approval_trip_confirm_all', 'Admin\UnionTripAdminController@approval_trip_confirm_all');
 Route::get('admin/approve_trip/detail/{id}', 'UnionTripApproveController@trip_showdetail');
+Route::get('admin/trip/request/detail/{id}', 'UnionTripController@trip_detail'); //-- เพิ่มใหม่
 
 
 // Note
@@ -1002,6 +1003,7 @@ Route::post('trip/update', 'UnionTripController@update');
 Route::post('trip/delete', 'UnionTripController@destroy');
 Route::get('trip/request/{id}', 'UnionTripController@request_approve');
 Route::get('manager/trip/request/{id}', 'UnionTripController@manager_request_approve');
+Route::get('manager/trip/request/repeatadmin/{id}', 'UnionTripController@manager_request_repeatadmin');
 
 Route::post('trip/detail/insert', 'UnionTripController@trip_detail_store');
 Route::get('trip/detail/edit/{id}', 'UnionTripController@trip_detail_edit');

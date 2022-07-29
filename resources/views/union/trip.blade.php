@@ -121,6 +121,8 @@
                                                 <span class="badge badge-soft-danger" style="font-size: 12px;">Re-write</span>
                                             @elseif ($value->trip_status == 4)
                                                 <span class="badge badge-soft-info"style="font-size: 12px;">Close</span>
+                                            @elseif ($value->trip_status == 5)
+                                                <span class="badge badge-soft-purple"style="font-size: 12px;">Request Admin</span>
                                             @endif
                                         </td>
                                         <td style="text-align:center;">
@@ -170,6 +172,20 @@
                                                 </button>
                                                 
                                             @else
+                                                @php 
+                                                    if($value->trip_status == 5){
+                                                        $btn_disable_manager = "disabled";
+                                                    }else{
+                                                        $btn_disable_manager = "";
+                                                    }
+                                                @endphp
+                                                <button class="btn btn-icon btn-edit btn_seadrepeat"
+                                                    value="{{ $value->id }}" {{ $btn_disable_manager }}>
+                                                    <h4 class="btn-icon-wrap" style="color: white;">
+                                                        <i class="ion ion-md-repeat"></i>
+                                                    </h4>
+                                                </button>
+
                                                 <a href="{{ url($url_trip_detail) }}/{{ $value->id }}"
                                                     class="btn btn-icon btn-warning">
                                                     <h4 class="btn-icon-wrap" style="color: white;">
@@ -474,6 +490,36 @@ $(document).on('click', '.btn_request', function(e){
     }).then((willDelete) => {
         if (willDelete) {
             form.submit();
+        }
+    })
+});
+
+$(document).on('click', '.btn_seadrepeat', function(e){
+    e.preventDefault();
+    var id = $(this).val();
+    swal({
+        title: "อนุญาติให้ผู้แอดมินแก้ไขทริปเดินทางใช่หรือไม่ ?",
+        icon: "warning",
+        buttons: [
+            "ยกเลิก",
+            "ยืนยัน"
+        ],
+        infoMode: true
+    }).then((willDelete) => {
+        if (willDelete) {
+            $.get("{{ url('manager/trip/request/repeatadmin') }}/" + id, function(result) {
+
+                console.log(result);
+                if(result.status == 200){
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    location.reload();
+                }
+            });
         }
     })
 });

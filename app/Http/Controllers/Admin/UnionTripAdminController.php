@@ -26,7 +26,7 @@ class UnionTripAdminController extends Controller
                 'users.name',
                 'users.status',
             )
-            ->where('trip_header.trip_status', 2) // สถานะอนุมัติ
+            ->whereIn('trip_header.trip_status', [2,5]) // สถานะอนุมัติ และ ผู้จัดการสั่งแอดมินแก้ไข
             ->orderBy('trip_header.id', 'desc')
             ->get();
 
