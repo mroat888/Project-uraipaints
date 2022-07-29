@@ -51,8 +51,8 @@ class ProductNewController extends Controller
 
         $sellers_api = array();
         $summary_sellers_api = array();
-
-        if($res_api['code'] == 200){
+        
+        if(!is_null($res_api) && $res_api['code'] == 200){
 
             $sum_target = 0;
             $sum_sales = 0;
@@ -262,7 +262,7 @@ class ProductNewController extends Controller
         $sellers_api = array();
         $summary_sellers_api = array();
     
-        if($res_api['code'] == 200){
+        if(!is_null($res_api) && $res_api['code'] == 200){
 
             $sum_target = 0;
             $sum_sales = 0;
