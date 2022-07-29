@@ -44,7 +44,34 @@
                     <form action="{{ url($action_search) }}" method="post" enctype="multipart/form-data">
                         @csrf
                     <div class="row mb-2">
-                        <div class="col-sm-12 col-md-8" style="text-align:right "></div>
+                        <div class="col-sm-12 col-md-4" style="text-align:right ">
+                        
+                        </div>
+                        <div class="col-sm-12 col-md-4" style="text-align:right ">
+                            @php 
+                                $month_array = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 
+                                'เมษายน', 'พฤษภาคม' ,'มิถุนายน', 'กรกฎาคม', 
+                                'สิงหาคม' ,'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม']
+                            @endphp 
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <select name="sel_month_form" id="sel_month_form" class="form-control">
+                                        <option value="">--เลือกเดือน--</option>
+                                        <?php
+                                            $noindex = 0;
+                                            for($i = 0; $i<count($month_array); $i++){
+                                                $noindex++;
+                                        ?>
+                                                <option value="{{ $noindex }}">
+                                                    {{ $month_array[$i] }}
+                                                </option>
+                                        <?php
+                                            }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-sm-12 col-md-4" style="text-align:right ">
                             <div class="form-row">
                                 <div class="form-group col-md-8">

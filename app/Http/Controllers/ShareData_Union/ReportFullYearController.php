@@ -129,6 +129,7 @@ class ReportFullYearController extends Controller
         $sel_group = "";
         $sel_subgroup = "";
         $sel_productlist = "";
+        $sel_month = "";
 
         if(!is_null($request->sel_year)){
             $year = $request->sel_year;
@@ -145,6 +146,9 @@ class ReportFullYearController extends Controller
         if(!is_null($request->sel_productlist)){
             $sel_productlist = implode( ',', $request->sel_productlist);
             $sel_productlist = "/".$sel_productlist;
+        }
+        if(!is_null($request->sel_month_form)){
+            $sel_month = $request->sel_month_form;
         }
 
         switch  (Auth::user()->status){
@@ -175,7 +179,8 @@ class ReportFullYearController extends Controller
 
         // สินค้า Top Group
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_group_top,[
-            'sortorder' => 'DESC'
+            'sortorder' => 'DESC',
+            'month' => $sel_month
         ]);
         $data['grouptop_api'] = $response->json();
         // dd($data['grouptop_api'] );
@@ -183,9 +188,11 @@ class ReportFullYearController extends Controller
         $sum_group_sales = 0;
         $sum_group_customers = 0;
 
-        foreach($data['grouptop_api']['data'] as $key => $value){
-            $sum_group_sales += $value['sales'];
-            $sum_group_customers += $value['customers'];
+        if(!is_null($data['grouptop_api']) && $data['grouptop_api']['code'] == 200){
+            foreach($data['grouptop_api']['data'] as $key => $value){
+                $sum_group_sales += $value['sales'];
+                $sum_group_customers += $value['customers'];
+            }
         }
 
         $data['summary_group_api'] = [
@@ -196,7 +203,8 @@ class ReportFullYearController extends Controller
 
         // สินค้า Top SubGroup
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_subgroup_top,[
-            'sortorder' => 'DESC'
+            'sortorder' => 'DESC',
+            'month' => $sel_month
         ]);
         $data['subgrouptop_api'] = $response->json();
 
@@ -205,9 +213,11 @@ class ReportFullYearController extends Controller
         $sum_subgroup_sales = 0;
         $sum_subgroup_customers = 0;
 
-        foreach($data['subgrouptop_api']['data'] as $key => $value){
-            $sum_subgroup_sales += $value['sales'];
-            $sum_subgroup_customers += $value['customers'];
+        if(!is_null($data['subgrouptop_api']) && $data['subgrouptop_api']['code'] == 200){
+            foreach($data['subgrouptop_api']['data'] as $key => $value){
+                $sum_subgroup_sales += $value['sales'];
+                $sum_subgroup_customers += $value['customers'];
+            }
         }
 
         $data['summary_subgroup_api'] = [
@@ -219,17 +229,19 @@ class ReportFullYearController extends Controller
 
         // สินค้า Top Product List   
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_pdlist_top,[
-            'sortorder' => 'DESC'
+            'sortorder' => 'DESC',
+            'month' => $sel_month
         ]);
         $data['pdlisttop_api'] = $response->json();
 
         $sum_pdlist_sales = 0;
         $sum_pdlist_customers = 0;
 
-
-        foreach($data['pdlisttop_api']['data'] as $key => $value){
-            $sum_pdlist_sales += $value['sales'];
-            $sum_pdlist_customers += $value['customers'];
+        if(!is_null($data['pdlisttop_api']) && $data['pdlisttop_api']['code'] == 200){
+            foreach($data['pdlisttop_api']['data'] as $key => $value){
+                $sum_pdlist_sales += $value['sales'];
+                $sum_pdlist_customers += $value['customers'];
+            }
         }
 
         $data['summary_pdlist_api'] = [
