@@ -137,6 +137,10 @@
                                                         class="btn btn-icon btn-summarize" data-toggle="modal" data-target="#ModalResult" >
                                                         <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">library_books</span></h4>
                                                     </button>
+                                                    <a href="{{url('admin/assignment_file', $value->id)}}" class="btn btn-icon btn-purple" value="{{ $value->id }}">
+                                                        <h4 class="btn-icon-wrap" style="color: white;"><span
+                                                            class="material-icons">collections</span></h4>
+                                                    </a>
                                                 @endif
                                             </div>
                                             </td>
@@ -298,8 +302,8 @@
                             </div>
                         </div>
                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label for="firstName">ผู้สั่งาน</label>
+                            <div class="col-md-12 form-group">
+                                <label for="firstName">ผู้สั่งงาน</label>
                                 <span id="get_approve_id"></span>
                             </div>
                             <div class="col-md-6 form-group">
@@ -334,8 +338,8 @@
                             </div>
                         </div>
                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label for="firstName">ผู้สั่งาน</label>
+                            <div class="col-md-12 form-group">
+                                <label for="firstName">ผู้สั่งงาน</label>
                                 <span id="get_approve_id_send"></span>
                             </div>
                             <div class="col-md-6 form-group">
@@ -502,6 +506,7 @@ $(document).on('click', '#btn_assign_delete', function() { // ปุ่มลบ
                 $('#img_show_text').children().remove().end();
                 $('#img_show_text_send').children().remove().end();
                 $('#result_send').children().remove().end();
+                $('#get_emp_text').children().remove().end();
 
 
                 $('#get_id_send').val(data.dataEdit.id);
@@ -522,17 +527,18 @@ $(document).on('click', '#btn_assign_delete', function() { // ปุ่มลบ
                 let date_work2 = get_date2[2]+"/"+get_date2[1]+"/"+year_th_date2;
                 $('#get_date_text_send').text(date_work2);
 
-
-                let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.assign_gallery.image
-                    if(data.assign_gallery.image != ""){
-                        ext = data.assign_gallery.image.split('.').pop().toLowerCase();
-                        console.log(img_name);
-                        if(ext == "pdf"){
-                            $('#img_show_text').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');
-                        }else{
-                            $('#img_show_text').append('<img src = "'+img_name+'" style="max-width:100%;">');
+                $.each(data.dataGallery, function(key, value){
+                        let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataGallery[key]['image'];
+                        if(data.dataGallery[key]['image'] != ""){
+                            ext = data.dataGallery[key]['image'].split('.').pop().toLowerCase();
+                            console.log(img_name);
+                            if(ext == "pdf"){
+                                $('#img_show_text').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');
+                            }else{
+                                $('#img_show_text').append('<a href="'+img_name+'" target="_blank"><img src = "'+img_name+'" style="max-width:30%;"></a>');
+                            }
                         }
-                    }
+                    });
 
                 let img_name_send = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataEdit.assign_result_fileupload;
                     if(data.dataEdit.assign_result_fileupload != ""){
@@ -541,7 +547,7 @@ $(document).on('click', '#btn_assign_delete', function() { // ปุ่มลบ
                         if(ext == "pdf"){
                             $('#img_show_text_send').append('<span><a href="'+img_name_send+'" target="_blank">เปิดไฟล์ PDF</a></span>');
                         }else{
-                            $('#img_show_text_send').append('<img src = "'+img_name_send+'" style="max-width:100%;">');
+                            $('#img_show_text_send').append('<img src = "'+img_name_send+'" style="max-width:30%;">');
                         }
                     }
 

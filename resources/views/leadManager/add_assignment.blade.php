@@ -181,6 +181,10 @@
                                                 <button class="btn btn-icon btn-summarize" data-toggle="modal" data-target="#ModalResult" onclick="show_result({{$value->id}})">
                                                     <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">library_books</span></h4>
                                                 </button>
+                                                <a href="{{url('lead/assignment_file', $value->id)}}" class="btn btn-icon btn-purple" value="{{ $value->id }}">
+                                                    <h4 class="btn-icon-wrap" style="color: white;"><span
+                                                        class="material-icons">collections</span></h4>
+                                                </a>
                                                 @endif
                                             </div>
                                             </td>
@@ -281,10 +285,16 @@
                 @csrf
                 <div class="modal-body">
                     <input type="hidden" name="id" id="get_id">
-                        <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
                             <label for="firstName">เรื่อง</label>
                             <input class="form-control" name="assign_title" id="get_title" type="text">
                         </div>
+                        <div class="col-md-6 form-group">
+                            <label for="firstName">วันที่</label>
+                            <input class="form-control" type="date" name="date" id="get_date" min="{{date('Y-m-d')}}"/>
+                        </div>
+                    </div>
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label for="username">รายละเอียด</label>
@@ -292,25 +302,20 @@
                                     type="text" required> </textarea>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label for="firstName">วันที่</label>
-                                <input class="form-control" type="date" name="date" id="get_date" min="{{date('Y-m-d')}}"/>
-                            </div>
-                        {{-- </div>
-                        <div class="row">
+
+                        {{-- <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="firstName">ไฟล์เอกสาร</label>
                                 <input type="file" name="assignment_fileupload_update" id="assignment_fileupload_update" class="form-control">
                                 <div id="img_show" class="mt-5"></div>
                             </div> --}}
-                            <div class="col-md-6 form-group">
+                            <div class="col-md-12 form-group">
                                 <label for="firstName">สั่งงานให้</label>
                                 <select class="form-control custom-select select2" name="assign_emp_id_edit" id="get_emp" required>
                                     <option value="" disabled>กรุณาเลือก</option>
                                 </select>
                             </div>
-                        </div>
+                        {{-- </div> --}}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
@@ -351,18 +356,18 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
-                                <label for="firstName">วันที่ : </label>
+                                <label for="firstName">วันที่ปฎิบัติ : </label>
                                 <span id="get_date_text"></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label for="firstName">ไฟล์เอกสาร : </label>
-                                <div id="img_show_text" class="mt-5"></div>
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="firstName">สั่งงานให้ : </label>
                                 <span id="get_emp_text"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <label for="firstName">ไฟล์เอกสาร : </label>
+                                <div id="img_show_text" class="mt-5"></div>
                             </div>
                         </div>
                     </section>
@@ -370,29 +375,29 @@
                     <section class="hk-sec-wrapper">
                         <h6><span id="get_emp_send"></span></h6><br>
                         <div class="form-group">
-                            <label for="firstName">เรื่อง</label>
+                            <label for="firstName">เรื่อง : </label>
                             <span id="get_title_text_send"></span>
                         </div>
                         <div class="row">
                             <div class="col-md-12 form-group">
-                                <label for="username">รายละเอียด</label>
+                                <label for="username">รายละเอียด : </label>
                                 <span id="get_detail_text_send"></span>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
-                                <label for="firstName">วันที่</label>
+                                <label for="firstName">วันที่ปฎิบัติ : </label>
                                 <span id="get_date_text_send"></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label for="firstName">ไฟล์เอกสาร</label>
-                                <div id="img_show_text_send" class="mt-5"></div>
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="firstName">สั่งงานให้</label>
                                 <span id="get_emp_text_send"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <label for="firstName">ไฟล์เอกสาร</label>
+                                <div id="img_show_text_send" class="mt-5"></div>
                             </div>
                         </div>
                     </section>
@@ -489,16 +494,23 @@
                 success: function(data) {
                     console.log(data);
                     $('#img_show_text').children().remove().end();
-                    $('#get_date_text').text(data.dataEdit.assign_work_date);
+                    // $('#get_date_text').text(data.dataEdit.assign_work_date);
                     $('#get_title_text').text(data.dataEdit.assign_title);
                     $('#get_detail_text').text(data.dataEdit.assign_detail);
 
                     $('#img_show_text_send').children().remove().end();
                     $('#result_send').children().remove().end();
                     $('#get_id_text_send').val(data.dataEdit.id);
-                    $('#get_date_text_send').text(data.dataEdit.assign_work_date);
+                    // $('#get_date_text_send').text(data.dataEdit.assign_work_date);
                     $('#get_title_text_send').text(data.dataEdit.assign_title);
                     $('#get_detail_text_send').text(data.dataEdit.assign_result_detail);
+
+                    let work_date = data.dataEdit.assign_work_date.split("-");
+                    let year_th = parseInt(work_date[0])+543;
+                    let date_work = work_date[2]+"/"+work_date[1]+"/"+year_th;
+
+                    $('#get_date_text').text(date_work);
+                    $('#get_date_text_send').text(date_work);
 
                     $.each(data.dataUser, function(key, value){
                         if(value.id == data.dataEdit.assign_emp_id){
@@ -515,16 +527,18 @@
                         }
                     });
 
-                    let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.assign_gallery.image
-                    if(data.assign_gallery.image != ""){
-                        ext = data.assign_gallery.image.split('.').pop().toLowerCase();
+                    $.each(data.dataGallery, function(key, value){
+                    let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataGallery[key]['image'];
+                    if(data.dataGallery[key]['image'] != ""){
+                        ext = data.dataGallery[key]['image'].split('.').pop().toLowerCase();
                         console.log(img_name);
                         if(ext == "pdf"){
                             $('#img_show_text').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');
                         }else{
-                            $('#img_show_text').append('<img src = "'+img_name+'" style="max-width:100%;">');
+                            $('#img_show_text').append('<a href="'+img_name+'" target="_blank"><img src = "'+img_name+'" style="max-width:30%;"></a>');
                         }
                     }
+                });
 
                     let img_name_send = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataEdit.assign_result_fileupload;
                     if(data.dataEdit.assign_result_fileupload != ""){
@@ -533,7 +547,7 @@
                         if(ext == "pdf"){
                             $('#img_show_text_send').append('<span><a href="'+img_name_send+'" target="_blank">เปิดไฟล์ PDF</a></span>');
                         }else{
-                            $('#img_show_text_send').append('<img src = "'+img_name_send+'" style="max-width:100%;">');
+                            $('#img_show_text_send').append('<img src = "'+img_name_send+'" style="max-width:30%;">');
                         }
                     }
 

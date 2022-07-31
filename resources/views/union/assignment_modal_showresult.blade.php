@@ -23,7 +23,7 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-md-6 form-group">
+                                <div class="col-md-12 form-group">
                                     <label for="firstName">ไฟล์เอกสาร : </label>
                                     <div id="img_show_text_history" class="mt-5"></div>
                                 </div>
@@ -40,7 +40,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6 form-group">
+                        <div class="col-md-12 form-group">
                             <label for="firstName">ไฟล์เอกสาร</label>
 
                             <div id="img_show_text_result_history" class="mt-5"></div>
@@ -86,16 +86,18 @@ function assignment_show_result(id) {
 
             $('#get_assign_work_date_history').text(date_work_history);
 
-            let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataGallery.image;
-            if(data.dataGallery.image != ""){
-                ext = data.dataGallery.image.split('.').pop().toLowerCase();
-                console.log(img_name);
-                if(ext == "pdf"){
-                    $('#img_show_text_history').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');
-                }else{
-                    $('#img_show_text_history').append('<a href="'+img_name+'" target="_blank"><img src = "'+img_name+'" style="max-width:50%;"></a>');
-                }
-            }
+            $.each(data.dataGallery, function(key, value){
+                    let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataGallery[key]['image'];
+                    if(data.dataGallery[key]['image'] != ""){
+                        ext = data.dataGallery[key]['image'].split('.').pop().toLowerCase();
+                        console.log(img_name);
+                        if(ext == "pdf"){
+                            $('#img_show_text_history').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');
+                        }else{
+                            $('#img_show_text_history').append('<a href="'+img_name+'" target="_blank"><img src = "'+img_name+'" style="max-width:20%;"></a>');
+                        }
+                    }
+                });
 
             $('#assign_result_detail_history').text(data.dataResult.assign_result_detail);
 
@@ -105,7 +107,7 @@ function assignment_show_result(id) {
                 if(ext == "pdf"){
                     $('#img_show_text_result_history').append('<span><a href="'+img_name2+'" target="_blank">เปิดไฟล์ PDF</a></span>');
                 }else{
-                    $('#img_show_text_result_history').append('<a href="'+img_name2+'" target="_blank"><img src = "'+img_name2+'" style="max-width:50%;"></a>');
+                    $('#img_show_text_result_history').append('<a href="'+img_name2+'" target="_blank"><img src = "'+img_name2+'" style="max-width:20%;"></a>');
                 }
             }
 

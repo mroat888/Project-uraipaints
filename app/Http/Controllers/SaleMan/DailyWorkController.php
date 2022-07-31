@@ -183,8 +183,8 @@ class DailyWorkController extends Controller
             })
             ->whereNotIn('assignments.assign_status', [3]) // สถานะการอนุมัติ (0=รอนุมัติ , 1=อนุมัติ, 2=ปฎิเสธ, 3=สั่งงาน, 4=ให้แก้ไขงาน)
             ->select(
-                'assignments.*', 
-                'assignments_comments.assign_id', 
+                'assignments.*',
+                'assignments_comments.assign_id',
             )
             ->whereMonth('assign_work_date', date('m'))
             ->orderBy('assignments.assign_request_date', 'desc')
@@ -212,7 +212,7 @@ class DailyWorkController extends Controller
             ->select('assignments.*', 'users.name')
             ->orderBy('assignments.id', 'desc')
             ->get();
-            
+
         $data['notes'] = Note::where('employee_id', Auth::user()->id)->whereMonth('note_date', Carbon::now()->format('m'))->get();
 
         $data['list_news_a'] = NewsBanner::where('date', '<=', Carbon::today()->format('Y-m-d'))

@@ -41,7 +41,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6 form-group">
+                        <div class="col-md-12 form-group">
                             <label for="firstName">ไฟล์เอกสาร</label>
                             <input type="file" name="assign_result_fileupload" id="assign_result_fileupload" class="form-control">
                         </div>
@@ -115,16 +115,19 @@ function assignment_result(id) {
                 let date_work = assign_work_date2[2]+"/"+assign_work_date2[1]+"/"+work_year_th;
                 $('#get_assign_work_date').text(date_work);
 
-            let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataGallery.image;
-            if(data.dataGallery.image != ""){
-                ext = data.dataGallery.image.split('.').pop().toLowerCase();
-                console.log(img_name);
-                if(ext == "pdf"){
-                    $('#img_show_text').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');
-                }else{
-                    $('#img_show_text').append('<a href="'+img_name+'" target="_blank"><img src = "'+img_name+'" style="max-width:50%;"></a>');
-                }
-            }
+                $.each(data.dataGallery, function(key, value){
+                    let img_name = '{{ asset("/public/upload/AssignmentFile") }}/' + data.dataGallery[key]['image'];
+                    if(data.dataGallery[key]['image'] != ""){
+                        ext = data.dataGallery[key]['image'].split('.').pop().toLowerCase();
+                        console.log(img_name);
+                        if(ext == "pdf"){
+                            $('#img_show_text').append('<span><a href="'+img_name+'" target="_blank">เปิดไฟล์ PDF</a></span>');
+                        }else{
+                            $('#img_show_text').append('<a href="'+img_name+'" target="_blank"><img src = "'+img_name+'" style="max-width:30%;"></a>');
+                        }
+                    }
+                });
+
 
             if (data.dataResult.assign_result_status != 0) {
                 $('#get_result').val(data.dataResult.assign_result_status);

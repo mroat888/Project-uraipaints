@@ -104,6 +104,7 @@ class AssignmentController extends Controller
                 ->orWhere('assignments.assign_approve_id', $users_id);
         })
         ->orderBy('assignments.assign_work_date', 'desc')
+        ->select('assignments.*', 'users.name')
         ->get();
 
         // dd($data['assignments']);
@@ -158,14 +159,6 @@ class AssignmentController extends Controller
             $auth_team[] = $value;
         }
 
-
-            // if (!empty($request->file('assignment_fileupload'))) {
-            //     $uploadF = $request->file('assignment_fileupload');
-            //     $file_name = 'file-' . time() . '.' . $uploadF->getClientOriginalExtension();
-            //     $uploadF->move(public_path($pathFle), $file_name);
-            //     $uploadfile = $file_name;
-            // }
-
             if ($request->CheckAll) {
             $data['users'] = DB::table('users')
             ->where('status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
@@ -200,6 +193,7 @@ class AssignmentController extends Controller
 
             }
 
+            if ($request->assignment_fileupload) {
             $gallery = array();
             foreach ($request->assignment_fileupload as $key => $gallery) {
                 $pathFle = 'upload/AssignmentFile';
@@ -230,6 +224,7 @@ class AssignmentController extends Controller
                     ]);
                 }
             }
+        }
 
             }else{
                 $assignments_id = array();
@@ -254,6 +249,7 @@ class AssignmentController extends Controller
 
                 }
 
+                if ($request->assignment_fileupload) {
                 $gallery = array();
                     foreach ($request->assignment_fileupload as $key => $gallery) {
                         $pathFle = 'upload/AssignmentFile';
@@ -284,6 +280,7 @@ class AssignmentController extends Controller
                             ]);
                         }
                     }
+                }
 
 
             }
@@ -360,6 +357,7 @@ class AssignmentController extends Controller
 
             }
 
+            if ($request->assignment_fileupload) {
             $gallery = array();
             foreach ($request->assignment_fileupload as $key => $gallery) {
                 $pathFle = 'upload/AssignmentFile';
@@ -390,6 +388,7 @@ class AssignmentController extends Controller
                     ]);
                 }
             }
+        }
 
             }else{
                 $assignments_id = array();
@@ -414,6 +413,7 @@ class AssignmentController extends Controller
 
                 }
 
+                if ($request->assignment_fileupload) {
                 $gallery = array();
                     foreach ($request->assignment_fileupload as $key => $gallery) {
                         $pathFle = 'upload/AssignmentFile';
@@ -444,6 +444,7 @@ class AssignmentController extends Controller
                             ]);
                         }
                     }
+                }
 
 
             }
@@ -479,23 +480,22 @@ class AssignmentController extends Controller
 
         $dataUser = DB::table('users')
             // ->where('team_id', Auth::user()->team_id)
-            ->where('status', 1) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+            ->where('status', '<', Auth::user()->status) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
             ->where(function($query) use ($auth_team) {
                 for ($i = 0; $i < count($auth_team); $i++){
                     $query->orWhere('team_id', $auth_team[$i])
                         ->orWhere('team_id', 'like', $auth_team[$i].',%')
                         ->orWhere('team_id', 'like', '%,'.$auth_team[$i]);
                 }
-            })
-            ->get();
+            })->get();
 
-            $assign_gallery = Assignment_gallery::where('assignment_id', $id)->where('status', 0)->first();
+            $dataGallery = Assignment_gallery::where('assignment_id', $id)->get();
 
 
         $data = array(
             'dataEdit'  => $dataEdit,
             'dataUser'  => $dataUser,
-            'assign_gallery' => $assign_gallery
+            'dataGallery' => $dataGallery
         );
         // dd($data);
 

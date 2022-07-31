@@ -81,16 +81,20 @@
                                             <td>{{Carbon\Carbon::parse($value->assign_work_date)->addYear(543)->format('d/m/Y')}}</td>
                                             <td>
                                                 @if ($value->assign_result_status == 0)
-                                                    <span class="badge badge-soft-secondary" style="font-size: 12px;">รอดำเนินการ</span>
-                                                @elseif ($value->assign_result_status == 3)
-                                                    <span class="badge badge-soft-warning" style="font-size: 12px;">ดำเนินการแล้ว</span>
+                                                @if ($value->assign_work_date < Carbon\Carbon::today()->format('Y-m-d'))
+                                                <span class="btn-expired" style="font-size: 12px;">Expired</span>
+                                                    @else
+                                                    <span class="btn-draf" style="font-size: 12px;">รอดำเนินการ</span>
+                                                @endif
+                                                @elseif ($value->assign_result_status == 1 || $value->assign_result_status == 2 || $value->assign_result_status == 3)
+                                                    <span class="btn-approve" style="font-size: 12px;">ดำเนินการแล้ว</span>
                                                 @endif
                                             </td>
                                             <td>
                                                 @if ($value->assign_result_status == 1)
-                                                    <span class="badge badge-soft-success" style="font-size: 12px;">สำเร็จ</span>
+                                                    <span class="btn-approve" style="font-size: 12px;">สำเร็จ</span>
                                                     @elseif ($value->assign_result_status == 2)
-                                                    <span class="badge badge-soft-danger" style="font-size: 12px;">ไม่สำเร็จ</span>
+                                                    <span class="btn-failed" style="font-size: 12px;">ไม่สำเร็จ</span>
                                                 @endif
                                             </td>
                                             <td>

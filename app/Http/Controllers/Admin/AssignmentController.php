@@ -18,6 +18,7 @@ class AssignmentController extends Controller
         $data['assignments'] = DB::table('assignments')
             ->join('users', 'assignments.assign_emp_id', 'users.id')
             ->where('assignments.created_by', Auth::user()->id)
+            ->where('assignments.assign_status', 3)
             ->select('assignments.*', 'users.name')
             ->orderBy('assignments.id', 'desc')->get();
 
@@ -116,6 +117,7 @@ class AssignmentController extends Controller
 
             }
 
+            if ($request->assignment_fileupload) {
             $gallery = array();
             foreach ($request->assignment_fileupload as $key => $gallery) {
                 $pathFle = 'upload/AssignmentFile';
@@ -146,6 +148,7 @@ class AssignmentController extends Controller
                     ]);
                 }
             }
+        }
 
             }else{
                 $assignments_id = array();
@@ -170,6 +173,7 @@ class AssignmentController extends Controller
 
                 }
 
+                if ($request->assignment_fileupload) {
                 $gallery = array();
                     foreach ($request->assignment_fileupload as $key => $gallery) {
                         $pathFle = 'upload/AssignmentFile';
@@ -200,6 +204,7 @@ class AssignmentController extends Controller
                             ]);
                         }
                     }
+                }
 
 
             }
@@ -226,15 +231,14 @@ class AssignmentController extends Controller
     public function edit($id)
     {
         $dataEdit = Assignment::find($id);
-        $users_team = DB::table('users')->where('id',$dataEdit->assign_approve_id)->first();
 
-        $dataUser = DB::table('users')->whereNotIn('id', [Auth::user()->id])->get();
-        $assign_gallery = Assignment_gallery::where('assignment_id', $id)->where('status', 0)->first();
+        $dataUser = DB::table('users')->get();
+        $dataGallery = Assignment_gallery::where('assignment_id', $id)->get();
 
         $data = array(
             'dataEdit'  => $dataEdit,
             'dataUser'  => $dataUser,
-            'assign_gallery'  => $assign_gallery,
+            'dataGallery'  => $dataGallery,
         );
         echo json_encode($data);
     }

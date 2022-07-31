@@ -77,7 +77,7 @@ class UnionAssignmentController extends Controller
         $emp_approve = DB::table('users')
         ->where('id', $dataResult->assign_approve_id)
         ->first();
-        $dataGallery = Assignment_gallery::where('assignment_id', $id)->where('status', 0)->first();
+        $dataGallery = Assignment_gallery::where('assignment_id', $id)->get();
 
         return response()->json([
             'dataResult' => $dataResult,

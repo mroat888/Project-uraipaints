@@ -379,9 +379,19 @@ class CustomerVisitController extends Controller
 
 
                 if (is_null($events)) {
+                    $api_token = $this->api_token->apiToken();
+                    $response = Http::withToken($api_token)->get(env("API_LINK") . 'api/v1/sellers/' . Auth::user()->api_identify . '/customers');
+                    $res_api = $response->json();
+
+                    foreach ($res_api['data'] as $key => $value) {
+                        if ($value['identify'] == $cust_visit->customer_shop_id) {
+                            $shop_name = $value['title'] . " " . $value['name'];
+                        }
+                    }
                     DB::table('events')
                         ->insert([
-                            'title' => "เยี่ยมลูกค้า : " . $cust_visit->customer_shop_id,
+                            // 'title' => "เยี่ยมลูกค้า : " . $cust_visit->customer_shop_id,
+                            'title' => "เยี่ยมลูกค้า : " . $shop_name,
                             'start' => Carbon::now(),
                             'end' => Carbon::now(),
                             'customer_visits_id' => $cust_visit->id,

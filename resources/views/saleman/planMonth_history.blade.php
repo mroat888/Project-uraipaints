@@ -157,7 +157,7 @@
                                             </thead>
                                             <tbody>
                                                 @if(!is_null($list_saleplan))
-                                                @php 
+                                                @php
                                                     $tag_array = array();
                                                 @endphp
                                                 @foreach ($list_saleplan as $key => $value)
@@ -188,7 +188,7 @@
                                                             @endif
                                                         </td>
                                                         <td style="text-align:center">
-                                                            @php 
+                                                            @php
                                                                 $tag_array = explode(",", $value->sale_plans_tags);
                                                             @endphp
                                                             {{ count($tag_array) }}
@@ -257,7 +257,7 @@
                                                             <td>{{ $value->shop_name }}</td>
                                                             <td>{{ $value->AMPHUR_NAME }}, {{ $value->PROVINCE_NAME }}</td>
                                                             <td>{{$value->cust_name}}</td>
-                                                            <td style="text-align:center;"> 
+                                                            <td style="text-align:center;">
                                                                 @php
                                                                     $count_new = DB::table('customer_shop_comments')
                                                                     ->where('customer_shops_saleplan_id', $value->id)
@@ -305,7 +305,7 @@
                                                     <th>#</th>
                                                     <th>ชื่อร้าน</th>
                                                     <th>อำเภอ,จังหวัด</th>
-                                                    <th>วันสำคัญ</th>
+                                                    <th>วัตถุประสงค์</th>
                                                     <th style="text-align:center">วันที่ Check-in</th>
                                                 </tr>
                                             </thead>
@@ -318,9 +318,9 @@
                                                     <td>{{ $no++ }}</td>
                                                     <td>{{ $customer_visit_api[$key]['shop_name'] }}</td>
                                                     <td>{{ $customer_visit_api[$key]['shop_address'] }}</td>
-                                                    <td>{{ $customer_visit_api[$key]['focusdate'] }}</td>
+                                                    <td>{{ $customer_visit_api[$key]['visit_name'] }}</td>
                                                     <td style="text-align:center">
-                                                        @php 
+                                                        @php
                                                             $cust_visits_result = DB::table('customer_visit_results')
                                                                 ->where('customer_visit_id', $value['id'])
                                                                 ->first();

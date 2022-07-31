@@ -211,8 +211,9 @@ class PlanMonthController extends Controller
 
         // ---- สร้างข้อมูล เยี่ยมลูกค้า โดย link กับ api ------- //
         $customer_visits = CustomerVisit::where('created_by', Auth::user()->id)
+        ->leftjoin('master_objective_visit', 'customer_visits.customer_visit_objective', '=', 'master_objective_visit.id')
             ->where('monthly_plan_id', $id)
-            ->select('customer_visits.*')
+            ->select('customer_visits.*', 'master_objective_visit.visit_name')
             ->orderBy('id', 'desc')->get();
 
         $data['customer_visit_api'] = array();
@@ -252,7 +253,8 @@ class PlanMonthController extends Controller
                         'shop_address' => $res_visit_api['amphoe_name']." , ".$res_visit_api['province_name'],
                         'shop_phone' => $res_visit_api['telephone'],
                         'shop_mobile' => $res_visit_api['mobile'],
-                        'focusdate' => $res_visit_api['focusdate'],
+                        // 'focusdate' => $res_visit_api['focusdate'],
+                        'visit_name' => $cus_visit->visit_name,
                         'monthly_plan_id' => $cus_visit->monthly_plan_id,
                     ];
                 }
