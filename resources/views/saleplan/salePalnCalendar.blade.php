@@ -47,10 +47,10 @@
             });
             var calendar = $('#calendar').fullCalendar({
                 // header: {
-                //     left: 'prev,next today',  
+                //     left: 'prev,next today',
                 //     center: 'title',
                 //     right: 'month,agendaWeek,agendaDay',
-                // },   
+                // },
                 editable: false,
                 events: "calendar", // -- แก้ไข url ได้
                 displayEventTime: false,

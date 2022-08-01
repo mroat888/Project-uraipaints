@@ -1,11 +1,15 @@
-
+@php
+$result = DB::table('assignments')->where('id', $id)->where('assign_result_status', '!=', 0)->first();
+@endphp
     <!-- Container -->
     <div class="container-fluid px-xxl-65 px-xl-20">
          <!-- Title -->
          <div class="hk-pg-header mb-10">
             <div class="topichead-bgred"><i data-feather="image"></i> แกลลอรี่สั่งงาน</div>
             <div class="content-right d-flex">
-                <button type="button" class="btn-green" data-toggle="modal" data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button>
+                @if ($result == '')
+                    <button type="button" class="btn-green" data-toggle="modal" data-target="#exampleModalLarge01"> + เพิ่มใหม่ </button>
+                @endif
                 @if (Auth::user()->status == 2)
                 <a href="{{url('add_assignment')}}" type="button" class="btn btn-secondary btn-rounded ml-2"> ย้อนกลับ</a>
                     @elseif (Auth::user()->status == 3)
@@ -34,9 +38,6 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($assign_gallery as $key => $value)
-                                    @php
-                                        $result = DB::table('assignments')->where('id', $value->assignment_id)->where('assign_result_status', '!=', 0)->first();
-                                    @endphp
                                     <tr>
                                         <td>{{$key + 1}}</td>
                                         <td>

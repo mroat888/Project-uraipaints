@@ -151,7 +151,7 @@
                                                         <span class="btn-draf" style="font-size: 12px;">รอดำเนินการ</span>
                                                     @endif
                                                 @elseif ($value->assign_result_status == 1 || $value->assign_result_status == 2 || $value->assign_result_status == 3)
-                                                <span class="btn-approve" style="font-size: 12px;">ดำเนินการแล้ว</span>
+                                                    <span class="btn-approve" style="font-size: 12px;">ดำเนินการแล้ว</span>
                                                 @endif
                                             </td>
                                             <td>
@@ -170,8 +170,7 @@
                                                     <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">drive_file_rename_outline</span></h4>
                                                 </button>
                                                 <a href="{{url('lead/assignment_file', $value->id)}}" class="btn btn-icon btn-purple" value="{{ $value->id }}">
-                                                    <h4 class="btn-icon-wrap" style="color: white;"><span
-                                                        class="material-icons">collections</span></h4>
+                                                    <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">collections</span></h4>
                                                 </a>
                                                 <button id="btn_assign_delete" class="btn btn-icon btn-danger" value="{{ $value->id }}">
                                                     <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">delete_outline</span></h4>
