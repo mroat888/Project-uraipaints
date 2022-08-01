@@ -115,7 +115,9 @@
                                     <tfoot style="font-weight: bold; text-align:center">
                                         <tr>
                                             <td colspan="4">รวม</td>
-                                            <td style="text-align:right;">{{ number_format($pdgroup_api['sum_sales'],2) }}</td>
+                                            <td style="text-align:right;">
+                                                {{ number_format($pdgroup_api['sum_sales'],2) }}
+                                            </td>
                                             <td></td>
                                         </tr>
                                     </tfoot>

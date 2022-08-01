@@ -252,6 +252,7 @@ class ReportFullYearController extends Controller
 
 
         // dd($path_search_top);
+        $data['sel_month'] = $sel_month;
 
         switch  (Auth::user()->status){
             case 1 :    return view('shareData.report_full_year', $data);
@@ -266,9 +267,11 @@ class ReportFullYearController extends Controller
    
     }
 
-    public function show($pdgroup,$year,$id){
-
+    public function show($pdgroup,$year,$month,$id)
+    {
+        $data[] = null;
         // dd($pdgroup,$year,$id);
+
         switch  (Auth::user()->status){
             case 1 :    $path_search = "reports/years/".$year."/sellers/".Auth::user()->api_identify."/".$pdgroup."/".$id."/customers";
                 break;
@@ -292,16 +295,26 @@ class ReportFullYearController extends Controller
 
         $api_token = $this->api_token->apiToken();
 
+        if($month == 0){
+            $month = "";
+        }else{
+            $month = $month;
+        }
+
         //-- บล๊อคที่ 1 ชื่อกลุ่ม
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$search_listgroups);
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$search_listgroups,[
+            'month' => $month
+        ]);
         $res_group = $response->json();
+
         //-- จบ บล๊อคที่ 1 ชื่อกลุ่ม
 
        // dd($res_group['data'][0]['identify']);
 
         //-- บล๊อคที่ 2 ร้านค้า
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search,[
-            'sortorder' => 'DESC'
+            'sortorder' => 'DESC',
+            'month' => $month
         ]);
         $res_api = $response->json();
 

@@ -201,7 +201,8 @@ Route::post('data_report_product-new/search', 'ShareData\ProductNewController@se
 Route::get('data_report_full-year', 'ShareData_Union\ReportFullYearController@index');
 Route::post('data_report_full-year/search', 'ShareData_Union\ReportFullYearController@search');
 
-Route::get('data_report_full-year/detail/{pdgroup}/{year}/{id}', 'ShareData_Union\ReportFullYearController@show');
+// Route::get('data_report_full-year/detail/{pdgroup}/{year}/{id}', 'ShareData_Union\ReportFullYearController@show');
+Route::get('data_report_full-year/detail/{pdgroup}/{year}/{month}/{id}', 'ShareData_Union\ReportFullYearController@show'); // OAT เพิ่มเดือน
 Route::get('data_report_full-year_compare_group', 'ShareData_Union\ReportFullYearCompareGroupController@index');
 Route::post('data_report_full-year_compare_group/search', 'ShareData_Union\ReportFullYearCompareGroupController@search');
 
@@ -930,7 +931,8 @@ Route::get('admin/data_report_product-new/show/{id}', 'ShareData_Admin\ProductNe
 
 Route::get('admin/data_report_full-year', 'ShareData_Union\ReportFullYearController@index');
 Route::post('admin/data_report_full-year/search', 'ShareData_Union\ReportFullYearController@search');
-Route::get('admin/data_report_full-year/detail/{pdgroup}/{year}/{id}', 'ShareData_Union\ReportFullYearController@show');
+// Route::get('admin/data_report_full-year/detail/{pdgroup}/{year}/{id}', 'ShareData_Union\ReportFullYearController@show');
+Route::get('admin/data_report_full-year/detail/{pdgroup}/{year}/{month}/{id}', 'ShareData_Union\ReportFullYearController@show'); // OAT เพิ่มเดือน
 
 Route::get('admin/data_report_full-year_compare_group', 'ShareData_Union\ReportFullYearCompareGroupController@index');
 Route::post('admin/data_report_full-year_compare_group/search', 'ShareData_Union\ReportFullYearCompareGroupController@search');

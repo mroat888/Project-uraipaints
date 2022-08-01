@@ -55,15 +55,29 @@
                             @endphp 
                             <div class="form-row">
                                 <div class="form-group col-md-12">
+                                    @php 
+                                        if(isset($sel_month) && $sel_month != ""){
+                                            $selmonth = $sel_month;
+                                        }else{
+                                            $selmonth = 0;
+                                        }
+                                    @endphp
+                                    
                                     <select name="sel_month_form" id="sel_month_form" class="form-control">
                                         <option value="">--เลือกเดือน--</option>
                                         <?php
                                             $noindex = 0;
+                                            $selected = '';
                                             for($i = 0; $i<count($month_array); $i++){
                                                 $noindex++;
+                                                if(isset($sel_month)){
+                                                    if($sel_month == $noindex){
+                                                        $selected = 'selected';
+                                                    }
+                                                }
                                         ?>
-                                                <option value="{{ $noindex }}">
-                                                    {{ $month_array[$i] }}
+                                                <option value="{{ $noindex }}" {{ $selected }}>
+                                                    {{ $month_array[$i] }} 
                                                 </option>
                                         <?php
                                             }
@@ -102,9 +116,11 @@
                                     <div class="col-4 form-group mb-2">
                                         <label for="sel_group" class="col-form-label">Group</label>
                                         <select id="sel_group" name="sel_group[]" class="select2 sel_group form-control" multiple="multiple">
-                                            @foreach($group_api as $group)
-                                                <option value="{{ $group['identify'] }}">{{ $group['name']}}</option>
-                                            @endforeach
+                                            @if(isset($group_api) && !is_null($group_api))
+                                                @foreach($group_api as $group)
+                                                    <option value="{{ $group['identify'] }}">{{ $group['name']}}</option>
+                                                @endforeach
+                                            @endif
                                         </select>
                                     </div>
 
@@ -247,7 +263,8 @@
                                                         <td style="text-align:right;">{{ number_format($persent_sale,2) }}%</td>
                                                         <td style="text-align:center;">
                                                             @php
-                                                                $pathurl = url($path_detail).'/pdgroups/'.$value['year']."/".$pdgroup_id;
+                                                                // $pathurl = url($path_detail).'/pdgroups/'.$value['year']."/".$pdgroup_id;
+                                                                $pathurl = url($path_detail).'/pdgroups/'.$value['year']."/".$selmonth."/".$pdgroup_id;
                                                             @endphp
                                                             <a href="{{ $pathurl }}" class="btn btn-icon btn-purple mr-10">
                                                             <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></a>
@@ -271,7 +288,8 @@
                                                         <td style="text-align:right;">{{ number_format($persent_sale,2) }}%</td>
                                                         <td style="text-align:center;">
                                                             @php
-                                                                $pathurl = url($path_detail).'/pdgroups/'.$value['year']."/".$pdgroup_id;
+                                                                // $pathurl = url($path_detail).'/pdgroups/'.$value['year']."/".$pdgroup_id;
+                                                                $pathurl = url($path_detail).'/pdgroups/'.$value['year']."/".$selmonth."/".$pdgroup_id;
                                                             @endphp
                                                             <a href="{{ $pathurl }}" class="btn btn-icon btn-purple mr-10">
                                                             <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></a>
@@ -342,7 +360,8 @@
                                                         <td style="text-align:right;">{{ number_format($persent_sale,2) }}%</td>
                                                         <td style="text-align:center;">
                                                             @php
-                                                                $pathurl = url($path_detail).'/pdsubgroups/'.$value['year']."/".$subgroup_id;
+                                                                // $pathurl = url($path_detail).'/pdsubgroups/'.$value['year']."/".$subgroup_id;
+                                                                $pathurl = url($path_detail).'/pdsubgroups/'.$value['year']."/".$selmonth."/".$subgroup_id;
                                                             @endphp
                                                             <a href="{{ $pathurl }}" class="btn btn-icon btn-purple mr-10">
                                                             <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></a>
@@ -366,7 +385,8 @@
                                                         <td style="text-align:right;">{{ number_format($persent_sale,2) }}%</td>
                                                         <td style="text-align:center;">
                                                             @php
-                                                                $pathurl = url($path_detail).'/pdsubgroups/'.$value['year']."/".$subgroup_id;
+                                                                // $pathurl = url($path_detail).'/pdsubgroups/'.$value['year']."/".$subgroup_id;
+                                                                $pathurl = url($path_detail).'/pdsubgroups/'.$value['year']."/".$selmonth."/".$subgroup_id;
                                                             @endphp
                                                             <a href="{{ $pathurl }}" class="btn btn-icon btn-purple mr-10">
                                                             <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></a>
@@ -437,7 +457,8 @@
                                                         <td style="text-align:right;">{{ number_format($persent_sale,2) }}%</td>
                                                         <td style="text-align:center;">
                                                             @php
-                                                                $pathurl = url($path_detail).'/pdlists/'.$value['year']."/".$pdlist_id;
+                                                                // $pathurl = url($path_detail).'/pdlists/'.$value['year']."/".$pdlist_id;
+                                                                $pathurl = url($path_detail).'/pdlists/'.$value['year']."/".$selmonth."/".$pdlist_id;
                                                             @endphp
                                                             <a href="{{ $pathurl }}" class="btn btn-icon btn-purple mr-10">
                                                             <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></a>
@@ -461,7 +482,8 @@
                                                         <td style="text-align:right;">{{ number_format($persent_sale,2) }}%</td>
                                                         <td style="text-align:center;">
                                                             @php
-                                                                $pathurl = url($path_detail).'/pdlists/'.$value['year']."/".$pdlist_id;
+                                                                // $pathurl = url($path_detail).'/pdlists/'.$value['year']."/".$pdlist_id;
+                                                                $pathurl = url($path_detail).'/pdlists/'.$value['year']."/".$selmonth."/".$pdlist_id;
                                                             @endphp
                                                             <a href="{{ $pathurl }}" class="btn btn-icon btn-purple mr-10">
                                                             <h4 class="btn-icon-wrap" style="color: white;"><i class="ion ion-md-pie"></i></h4></a>
