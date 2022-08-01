@@ -6,13 +6,38 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Api\ApiController;
+use Illuminate\Support\Facades\Http;
 
 class TeamSaleController extends Controller
 {
+    public function __construct(){
+        $this->api_token = new ApiController();
+    }
 
     public function index(){
-        $teamSales = DB::table('master_team_sales')->orderBy('id', 'asc')->get();
-        return view('admin.team_sales', compact('teamSales'));
+        $data['teamSales'] = DB::table('master_team_sales')->orderBy('id', 'asc')->get();
+
+        $api_token = $this->api_token->apiToken();
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/salezones');
+        $res_api = $response->json();
+
+        if(!is_null($res_api) && $res_api['code'] == 200){
+           foreach($res_api['data'] as $key => $value){
+                $data['salezones_api'][] = [
+                    'identify' => $value['identify'],
+                    'description' => $value['description'],
+                    'saleleader_id' => $value['saleleader_id'],
+                    'employee_name' => $value['employee_name'],
+                    'employee_id' => $value['employee_id'],
+                    'mobile_no' => $value['mobile_no'],
+                    'area_info' => $value['area_info'],
+                    'team_info' => $value['team_info']
+                ];
+           }
+        }
+
+        return view('admin.team_sales', $data);
     }
 
     public function add_index(){

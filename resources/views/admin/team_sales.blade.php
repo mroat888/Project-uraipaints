@@ -93,8 +93,15 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12 form-group">
-                                <label for="firstName">รหัสกลุ่ม API</label>
-                                <input type="text" name="team_api" id="team_api" class="form-control">
+                                <label for="firstName">เขตพื้นที่ขาย</label>
+                                <select class="form-control custom-select mt-15" name="team_api" id="team_api">
+                                    <option selected disabled>เลือกสาขา</option>
+                                    @if(isset($salezones_api) && !is_null($salezones_api))
+                                        @foreach ($salezones_api as $key => $value)
+                                            <option value="{{ $value['identify'] }}">{{ $value['description'] }}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -128,8 +135,15 @@
                                 <input type="text" name="team_name_edit" id="team_name_edit" class="form-control">
                             </div>
                             <div class="col-md-12 form-group">
-                                <label for="firstName">รหัสกลุ่ม API</label>
-                                <input type="text" name="team_api_edit" id="team_api_edit" class="form-control">
+                                <label for="firstName">เขตพื้นที่ขาย</label>
+                                <select class="form-control custom-select mt-15" name="team_api_edit" id="team_api_edit">
+                                    <option selected disabled>เลือกสาขา</option>
+                                    @if(isset($salezones_api) && !is_null($salezones_api))
+                                        @foreach ($salezones_api as $key => $value)
+                                            <option value="{{ $value['identify'] }}">{{ $value['description'] }}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
                             </div>
                         </div>
                     </div>
