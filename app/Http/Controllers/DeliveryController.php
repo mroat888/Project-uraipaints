@@ -112,6 +112,33 @@ class DeliveryController extends Controller
             }
         }
 
+        switch (Auth::user()->status) {
+            case '1': $seller_id = Auth::user()->api_identify;
+                break;
+            case '2': $seller_id = Auth::user()->api_identify;
+                break;
+            case '3': $seller_id = Auth::user()->api_identify;
+                break;
+            case '4': $seller_id = "admin";
+                break;
+        }
+
+        $response = $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/branch-db',[
+            'seller_id' => $seller_id
+        ]);
+        $res_branch = $response->json();
+
+        if(!is_null($res_branch['code']) && $res_branch['code'] == 200){
+            $data['branch_api'] = array();
+            foreach ($res_branch['data'][0] as $value) {
+                $data['branch_api'][] =
+                [
+                    'dsn' => $value['dsn'],
+                    'description' => $value['description'],
+                ];
+            }
+        }
+
         if (Auth::user()->status == 1) {
             return view('saleman.delivery_status', $data);
 
@@ -145,7 +172,8 @@ class DeliveryController extends Controller
             'customer_id' => $request->customer,
             'province_id' => $request->province,
             'delivery_date' => $request->date,
-            'delivery_status' => $request->status
+            'delivery_status' => $request->status,
+            'dsn' => $request->branch
         ]);
 
         $res_api = $response->json();
@@ -227,6 +255,33 @@ class DeliveryController extends Controller
                 [
                     'identify' => $value['identify'],
                     'name_thai' => $value['name_thai'],
+                ];
+            }
+        }
+
+        switch (Auth::user()->status) {
+            case '1': $seller_id = Auth::user()->api_identify;
+                break;
+            case '2': $seller_id = Auth::user()->api_identify;
+                break;
+            case '3': $seller_id = Auth::user()->api_identify;
+                break;
+            case '4': $seller_id = "admin";
+                break;
+        }
+
+        $response = $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/branch-db',[
+            'seller_id' => $seller_id
+        ]);
+        $res_branch = $response->json();
+
+        if(!is_null($res_branch['code']) && $res_branch['code'] == 200){
+            $data['branch_api'] = array();
+            foreach ($res_branch['data'][0] as $value) {
+                $data['branch_api'][] =
+                [
+                    'dsn' => $value['dsn'],
+                    'description' => $value['description'],
                 ];
             }
         }

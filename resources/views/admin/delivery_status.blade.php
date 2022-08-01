@@ -23,6 +23,18 @@
                                 @csrf
                             <div class="row">
                                 <div class="col-md-6">
+                                    <select class="form-control custom-select mt-15" name="branch">
+                                        <option selected disabled>เลือกสาขา</option>
+                                        @if(isset($branch_api) && !is_null($branch_api))
+                                            @foreach ($branch_api as $key => $value)
+                                                <option value="{{ $value['dsn'] }}">{{ $value['description'] }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
                                     <input type="date" name="date" class="form-control mt-15">
                                 </div>
                                 <div class="col-md-6">
