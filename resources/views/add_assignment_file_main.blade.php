@@ -17,6 +17,7 @@
         </div>
         <!-- /Title -->
 
+
             <section class="hk-sec-wrapper">
                 <div class="topic-secondgery">รายการแกลลอรี่สั่งงาน</div>
                 <div class="row">
@@ -33,11 +34,23 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($assign_gallery as $key => $value)
+                                    @php
+                                        $result = DB::table('assignments')->where('id', $value->assignment_id)->where('assign_result_status', '!=', 0)->first();
+                                    @endphp
                                     <tr>
                                         <td>{{$key + 1}}</td>
-                                        <td><img src="{{ isset($value->image) ? asset('public/upload/AssignmentFile/' . $value->image) : '' }}" width="100"></td>
+                                        <td>
+                                            @if ($result == '')
+                                                <img src="{{ isset($value->image) ? asset('public/upload/AssignmentFile/' . $value->image) : '' }}" width="100">
+                                            @else
+                                            <a href="{{ isset($value->image) ? asset('public/upload/AssignmentFile/' . $value->image) : '' }}" target="_bank">
+                                                <img src="{{ isset($value->image) ? asset('public/upload/AssignmentFile/' . $value->image) : '' }}" width="100">
+                                            </a>
+                                            @endif
+                                        </td>
                                         <td>
                                             <div class="button-list">
+                                                    @if ($result == '')
                                                     <button onclick="edit_modal({{ $value->id }})"
                                                         class="btn btn-icon btn-edit" data-toggle="modal" data-target="#editAssignment">
                                                         <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">
@@ -46,9 +59,9 @@
                                                         <button id="btn_assignment_delete" class="btn btn-icon btn-danger"
                                                              value="{{ $value->id }}">
                                                              <h4 class="btn-icon-wrap" style="color: white;"><span class="material-icons">
-                                                                delete_outline
-                                                                </span></h4>
-                                                                </button>
+                                                                delete_outline</span></h4>
+                                                        </button>
+                                                    @endif
                                             </div>
                                         </td>
                                     </tr>
