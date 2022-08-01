@@ -73,6 +73,8 @@
                                                 if(isset($sel_month)){
                                                     if($sel_month == $noindex){
                                                         $selected = 'selected';
+                                                    }else{
+                                                        $selected = '';
                                                     }
                                                 }
                                         ?>
