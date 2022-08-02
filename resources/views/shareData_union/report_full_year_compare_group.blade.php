@@ -33,29 +33,72 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="row mb-5">
-                        <div class="col-sm-12 col-md-6">
+                    <div class="row mb-25">
+                        <div class="col-sm-12 col-md-2">
                             <h5 class="hk-sec-title">เปรียบเทียบตามกลุ่มสินค้า</h5>
                         </div>
-                        <div class="col-sm-12 col-md-6" style="text-align:right">
+                        <div class="col-sm-12 col-md-10" style="text-align:right">
                             <span class="form-inline pull-right">
                                     <!-- เงื่อนไขการค้นหา -->
                                 <form action="{{ url($action_search) }}" method="post">
                                     @csrf
-                                    เดือน
+
+                                    @if(Auth::user()->status > 1) <!-- เฉพาะสิทธ์ผู้จัดการและแอดมิน -->
+                                        @if(count($team_sales) >= 1)
+                                        <select name="selectteam_sales" class="form-control mr-2">
+                                            <option value="">เลือกทีม</option>
+                                            @foreach($team_sales as $team)
+                                                @php 
+                                                    $selected = '';
+                                                    if(isset($sel_team_sales) && $sel_team_sales != ""){
+                                                        if($sel_team_sales == $team->team_api){
+                                                            $selected = 'selected';
+                                                        }
+                                                    }
+                                                @endphp
+                                                <option value="{{ $team->team_api }}" {{ $selected }}>{{ $team->team_name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @endif
+                                    @endif
+
+                                    @if(Auth::user()->status > 1)  <!-- เฉพาะสิทธ์ผู้จัดการและแอดมิน -->
+                                    <select name="selectusers" class="form-control mr-2">
+                                        <option value="">ผู้แทนขาย</option>
+                                        @foreach($users as $user)
+                                            @php 
+                                                $selected = '';
+                                                if(isset($sel_users) && $sel_users != ""){
+                                                    if($sel_users == $user->api_identify){
+                                                        $selected = 'selected';
+                                                    }
+                                                }
+                                            @endphp
+                                            <option value="{{ $user->api_identify }}" {{ $selected }}>{{ $user->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @endif
+
                                     @php 
                                         $month_array = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 
                                         'เมษายน', 'พฤษภาคม' ,'มิถุนายน', 'กรกฎาคม', 
                                         'สิงหาคม' ,'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม']
                                     @endphp 
-                                    <select name="sel_month_form" id="sel_month_form" class="form-control form-control-sm">
+                                    <select name="sel_month_form" id="sel_month_form" class="form-control mr-2">
                                         <option value="">--เลือกเดือน--</option>
                                         <?php
                                             $noindex = 0;
                                             for($i = 0; $i<count($month_array); $i++){
                                                 $noindex++;
+                                                if(isset($sel_month)){
+                                                    if($sel_month == $noindex){
+                                                        $selected = 'selected';
+                                                    }else{
+                                                        $selected = '';
+                                                    }
+                                                }
                                         ?>
-                                                <option value="{{ $noindex }}">
+                                                <option value="{{ $noindex }}" {{ $selected }}>
                                                     {{ $month_array[$i] }}
                                                 </option>
                                         <?php
