@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ShareData_Union;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Api\ApiController;
@@ -108,8 +109,38 @@ class ReportFullYearController extends Controller
         ];
         // จบ สินค้า Top Product List  
 
+        $auth_team_id = explode(',',Auth::user()->team_id);
+        $auth_team = array();
+        foreach($auth_team_id as $value){
+            $auth_team[] = $value;
+        }
 
-       // dd($data);
+        if(Auth::user()->status == 4){ // สิทธิ์แอดมิน
+            $data['users'] = DB::table('users')
+            ->whereIn('status', [1]) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+            ->get();
+
+            $data['team_sales'] = DB::table('master_team_sales')->get();
+        }else{
+            $data['users'] = DB::table('users')
+            ->whereIn('status', [1]) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('team_id', $auth_team[$i])
+                        ->orWhere('team_id', 'like', $auth_team[$i].',%')
+                        ->orWhere('team_id', 'like', '%,'.$auth_team[$i]);
+                }
+            })->get();
+
+            $data['team_sales'] = DB::table('master_team_sales')
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('id', $auth_team[$i])
+                        ->orWhere('id', 'like', $auth_team[$i].',%')
+                        ->orWhere('id', 'like', '%,'.$auth_team[$i]);
+                }
+            })->get();
+        }
     
         switch  (Auth::user()->status){
             case 1 :    return view('shareData.report_full_year', $data);
@@ -130,6 +161,8 @@ class ReportFullYearController extends Controller
         $sel_subgroup = "";
         $sel_productlist = "";
         $sel_month = "";
+        $selectteam_sales = "";
+        $selectusers = "";
 
         if(!is_null($request->sel_year)){
             $year = $request->sel_year;
@@ -149,6 +182,12 @@ class ReportFullYearController extends Controller
         }
         if(!is_null($request->sel_month_form)){
             $sel_month = $request->sel_month_form;
+        }
+        if(!is_null($request->selectteam_sales)){
+            $selectteam_sales = $request->selectteam_sales;
+        }
+        if(!is_null($request->selectusers)){
+            $selectusers = $request->selectusers;
         }
 
         switch  (Auth::user()->status){
@@ -180,7 +219,9 @@ class ReportFullYearController extends Controller
         // สินค้า Top Group
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_group_top,[
             'sortorder' => 'DESC',
-            'month' => $sel_month
+            'month' => $sel_month,
+            'team_id' => $selectteam_sales,
+            'seller_id' => $selectusers,
         ]);
         $data['grouptop_api'] = $response->json();
         // dd($data['grouptop_api'] );
@@ -204,7 +245,9 @@ class ReportFullYearController extends Controller
         // สินค้า Top SubGroup
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_subgroup_top,[
             'sortorder' => 'DESC',
-            'month' => $sel_month
+            'month' => $sel_month,
+            'team_id' => $selectteam_sales,
+            'seller_id' => $selectusers,
         ]);
         $data['subgrouptop_api'] = $response->json();
 
@@ -230,7 +273,9 @@ class ReportFullYearController extends Controller
         // สินค้า Top Product List   
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_pdlist_top,[
             'sortorder' => 'DESC',
-            'month' => $sel_month
+            'month' => $sel_month,
+            'team_id' => $selectteam_sales,
+            'seller_id' => $selectusers,
         ]);
         $data['pdlisttop_api'] = $response->json();
 
@@ -250,9 +295,46 @@ class ReportFullYearController extends Controller
         ];
         // จบ สินค้า Top Product List  
 
+        // หาทีม และ ผู้แทนขานในทีม
+        $auth_team_id = explode(',',Auth::user()->team_id);
+        $auth_team = array();
+        foreach($auth_team_id as $value){
+            $auth_team[] = $value;
+        }
+        if(Auth::user()->status == 4){ // สิทธิ์แอดมิน
+            $data['users'] = DB::table('users')
+            ->whereIn('status', [1]) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+            ->get();
+
+            $data['team_sales'] = DB::table('master_team_sales')->get();
+        }else{
+            $data['users'] = DB::table('users')
+            ->whereIn('status', [1]) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('team_id', $auth_team[$i])
+                        ->orWhere('team_id', 'like', $auth_team[$i].',%')
+                        ->orWhere('team_id', 'like', '%,'.$auth_team[$i]);
+                }
+            })->get();
+
+            $data['team_sales'] = DB::table('master_team_sales')
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('id', $auth_team[$i])
+                        ->orWhere('id', 'like', $auth_team[$i].',%')
+                        ->orWhere('id', 'like', '%,'.$auth_team[$i]);
+                }
+            })->get();
+        }
+        // จบ หาทีม และ ผู้แทนขานในทีม
 
         // dd($path_search_top);
         $data['sel_month'] = $sel_month;
+        $data['sel_team_sales'] = $selectteam_sales;
+        $data['sel_users'] = $selectusers;
+
+        
 
         switch  (Auth::user()->status){
             case 1 :    return view('shareData.report_full_year', $data);
@@ -267,7 +349,7 @@ class ReportFullYearController extends Controller
    
     }
 
-    public function show($pdgroup,$year,$month,$id)
+    public function show($pdgroup,$year,$month,$team,$seller,$id)
     {
         $data[] = null;
         // dd($pdgroup,$year,$id);
@@ -295,15 +377,40 @@ class ReportFullYearController extends Controller
 
         $api_token = $this->api_token->apiToken();
 
+       
+
         if($month == 0){
             $month = "";
         }else{
             $month = $month;
         }
 
+        if($team == "0"){
+            $team_id = "";
+        }else{
+            if(Auth::user()->status > 1){ // -- เฉพาะสิทธ์ผู้จัดการและแอดมิน
+                $team_id = $team;
+            }else{
+                $team_id = "";
+            }
+        }
+
+        if($seller == "0"){
+            $seller_id = "";
+        }else{
+            if(Auth::user()->status > 1){ // -- เฉพาะสิทธ์ผู้จัดการและแอดมิน
+                $seller_id = $seller;
+            }else{
+                $seller_id = "";
+            }
+        }
+
+    
         //-- บล๊อคที่ 1 ชื่อกลุ่ม
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$search_listgroups,[
-            'month' => $month
+            'month' => $month,
+            'team_id' => $team_id,
+            'seller_id' => $seller_id,
         ]);
         $res_group = $response->json();
 
@@ -314,7 +421,9 @@ class ReportFullYearController extends Controller
         //-- บล๊อคที่ 2 ร้านค้า
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search,[
             'sortorder' => 'DESC',
-            'month' => $month
+            'month' => $month,
+            'team_id' => $team_id,
+            'seller_id' => $seller_id,
         ]);
         $res_api = $response->json();
 
