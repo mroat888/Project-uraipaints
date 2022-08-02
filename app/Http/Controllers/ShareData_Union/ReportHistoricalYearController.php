@@ -20,8 +20,10 @@ class ReportHistoricalYearController extends Controller
         list($year,$month,$day) = explode('-',date('Y-m-d'));
         $year = $year+0;
         $year_old1 = $year-1; 
+        $sel_team = "";
+        $sel_seller = "";
 
-        $data = $this->queryhistoricalyear($year, $year_old1);
+        $data = $this->queryhistoricalyear($year, $year_old1, $sel_team, $sel_seller);
         
         switch  (Auth::user()->status){
             case 1 :    return view('shareData.report_historical_year', $data);
@@ -41,7 +43,19 @@ class ReportHistoricalYearController extends Controller
         $year = $request->sel_year_form;
         $year_old1 = $request->sel_year_to; 
 
-        $data = $this->queryhistoricalyear($year, $year_old1);
+        if(isset($request->selectteam_sales) && !is_null($request->selectteam_sales)){
+            $sel_team = $request->selectteam_sales;
+        }else{
+            $sel_team = "";
+        }
+
+        if(isset($request->selectusers) && !is_null($request->selectusers)){
+            $sel_seller = $request->selectusers;  
+        }else{
+            $sel_seller = "";
+        }
+
+        $data = $this->queryhistoricalyear($year, $year_old1, $sel_team, $sel_seller);
 
         switch  (Auth::user()->status){
             case 1 :    return view('shareData.report_historical_year', $data);
@@ -55,10 +69,12 @@ class ReportHistoricalYearController extends Controller
         }
     }
 
-    public function queryhistoricalyear($year, $year_old1)
+    public function queryhistoricalyear($year, $year_old1, $sel_team, $sel_seller)
     {
         $year_search = $year.",".$year_old1;
         $data['year_search'] = array($year, $year_old1);
+        $data['sel_users'] = $sel_seller;
+        $data['sel_team_sales'] = $sel_team;
 
         /**
          *   --------- บล๊อกที่ รายปี ------------- 
@@ -76,7 +92,10 @@ class ReportHistoricalYearController extends Controller
         }
 
         $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search);
+        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search,[
+            'team_id' => $sel_team,
+            'seller_id' => $sel_seller,
+        ]);
         $year_api = $response->json();
 
         if(!is_null($year_api)){
@@ -120,7 +139,9 @@ class ReportHistoricalYearController extends Controller
 
         $api_token = $this->api_token->apiToken();
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/'.$path_search, [
-            'year_compare' => 'Y'
+            'year_compare' => 'Y',
+            'team_id' => $sel_team,
+            'seller_id' => $sel_seller,
         ]);
 
         $month_api = $response->json();
@@ -219,6 +240,39 @@ class ReportHistoricalYearController extends Controller
          /**
          *   --------- จบ บล๊อกที่ รายเดือน ------------- 
          */
+
+        // ดึงข้อมูล ทีม และ ผู้แทนขาย
+        $auth_team_id = explode(',',Auth::user()->team_id);
+        $auth_team = array();
+        foreach($auth_team_id as $value){
+            $auth_team[] = $value;
+        }
+        if(Auth::user()->status == 4){ // สิทธิ์แอดมิน
+            $data['users'] = DB::table('users')
+            ->whereIn('status', [1]) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+            ->get();
+
+            $data['team_sales'] = DB::table('master_team_sales')->get();
+        }else{
+            $data['users'] = DB::table('users')
+            ->whereIn('status', [1]) // สถานะ 1 = salemam, 2 = lead , 3 = head , 4 = admin
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('team_id', $auth_team[$i])
+                        ->orWhere('team_id', 'like', $auth_team[$i].',%')
+                        ->orWhere('team_id', 'like', '%,'.$auth_team[$i]);
+                }
+            })->get();
+
+            $data['team_sales'] = DB::table('master_team_sales')
+            ->where(function($query) use ($auth_team) {
+                for ($i = 0; $i < count($auth_team); $i++){
+                    $query->orWhere('id', $auth_team[$i])
+                        ->orWhere('id', 'like', $auth_team[$i].',%')
+                        ->orWhere('id', 'like', '%,'.$auth_team[$i]);
+                }
+            })->get();
+        }
 
         return $data;
     }

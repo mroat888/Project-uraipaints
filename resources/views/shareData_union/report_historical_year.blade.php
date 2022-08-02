@@ -22,16 +22,54 @@
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
                     <div class="row mb-2">
-                        <div class="col-sm-12 col-md-6">
+                        <div class="col-sm-12 col-md-3">
                             <h5 class="hk-sec-title">รายงานสรุปยอดขาย (เทียบปีต่อปี)</h5>
                         </div>
-                        <div class="col-sm-12 col-md-6" style="text-align:right;">
+                        <div class="col-sm-12 col-md-9" style="text-align:right;">
                             <!-- ------ -->
                                 <form action="{{ url($action_search) }}" method="post" enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-row">
-                                        <div class="form-group col-md-3" style="text-align:center; margin-top:10px;">เทียบระหว่างปี</div>
-                                        <div class="form-group col-md-3">
+                                        <div class="form-group col-md-2">
+                                            @if(Auth::user()->status > 1) <!-- เฉพาะสิทธ์ผู้จัดการและแอดมิน -->
+                                                @if(count($team_sales) >= 1)
+                                                <select name="selectteam_sales" class="form-control">
+                                                    <option value="">เลือกทีม</option>
+                                                    @foreach($team_sales as $team)
+                                                        @php 
+                                                            $selected = '';
+                                                            if(isset($sel_team_sales) && $sel_team_sales != ""){
+                                                                if($sel_team_sales == $team->team_api){
+                                                                    $selected = 'selected';
+                                                                }
+                                                            }
+                                                        @endphp
+                                                        <option value="{{ $team->team_api }}" {{ $selected }}>{{ $team->team_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @endif
+                                            @endif
+                                        </div>  
+                                        <div class="form-group col-md-2">
+                                            @if(Auth::user()->status > 1)  <!-- เฉพาะสิทธ์ผู้จัดการและแอดมิน -->
+                                            <select name="selectusers" class="form-control">
+                                                <option value="">ผู้แทนขาย</option>
+                                                @foreach($users as $user)
+                                                    @php 
+                                                        $selected = '';
+                                                        if(isset($sel_users) && $sel_users != ""){
+                                                            if($sel_users == $user->api_identify){
+                                                                $selected = 'selected';
+                                                            }
+                                                        }
+                                                    @endphp
+                                                    <option value="{{ $user->api_identify }}" {{ $selected }}>{{ $user->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @endif       
+                                        </div>
+                                        <div class="form-group col-md-1" style="text-align:center; margin-top:10px;">เทียบระหว่างปี</div>
+                                        <div class="form-group col-md-2">
                                             <select name="sel_year_form" id="sel_year_form" class="form-control" required>
                                                 <option value="">--ค้นหาปี--</option>
                                                 <?php
@@ -50,7 +88,7 @@
                                             </select>
                                         </div>
                                         <div class="form-group col-md-1" style="text-align:center; margin-top:10px;"> กับปี </div>
-                                        <div class="form-group col-md-3">
+                                        <div class="form-group col-md-2">
                                             <select name="sel_year_to" id="sel_year_to" class="form-control" required>
                                                 <option value="">--ค้นหาปี--</option>
                                                 <?php
@@ -68,8 +106,8 @@
                                                 ?>
                                             </select>
                                         </div>
-                                        <div class="form-group col-md-2">
-                                            <button type="submit" class="btn btn-teal btn-sm px-3 ml-2">ค้นหา</button>
+                                        <div class="form-group col-md-1">
+                                            <button type="submit" class="btn btn-teal btn-sm px-3">ค้นหา</button>
                                         </div>
                                     </div>
                                 </form>
