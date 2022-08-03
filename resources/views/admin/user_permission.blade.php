@@ -294,6 +294,7 @@ $(document).on('click', '#btn_permission_delete', function() { // ปุ่ม�
                         }
                     });
 
+                    $('#edit_sel_api_identify').append('<option value="">เลือกข้อมูล</option>');
                     $.each(response.sellers_api, function(key, value){
                         if(response.sellers_api[key]['id'] == response.dataUser.api_identify){
                             $('#edit_sel_api_identify').append('<option value='+response.sellers_api[key]['id']+' selected>'+response.sellers_api[key]['name']+'</option>');

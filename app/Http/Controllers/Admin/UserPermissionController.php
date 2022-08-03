@@ -49,6 +49,7 @@ class UserPermissionController extends Controller
             ->first();
         
             $res_api = $this->apicontroller->getAllSellers();
+
             foreach ($res_api['data'] as $key => $value) {
                 if ($request->sel_api_identify == $value['identify']) {
                     $emp_id = $value['employee_id'];
@@ -68,6 +69,7 @@ class UserPermissionController extends Controller
                 'message' => $message,
             ]);
         }else{
+            
             DB::beginTransaction();
             try{
                 if($request->tpassword != ""){
@@ -81,6 +83,7 @@ class UserPermissionController extends Controller
                     $sel_team = null;
                 }
                 // dd($sel_team, $password_staff);
+                // dd($request, $emp_id, $sel_api_identify, $sel_team, $password_staff);
                 if ($request->image != '') {
                         $path = 'upload/UserSignature';
                         $image = '';
@@ -90,6 +93,20 @@ class UserPermissionController extends Controller
                         $save_path = $img->move(public_path($path), $img_name);
                         $image = $img_name;
 
+                        DB::table('users')->insert([
+                            'name' => $request->tname,
+                            'email' => $request->temail,
+                            'password' => $password_staff,
+                            'api_identify' => $sel_api_identify,
+                            'api_employee_id' => $emp_id,
+                            'status' => $request->sel_status,
+                            'team_id' => $sel_team,
+                            'signature' => $image,
+                            'created_at' => date('Y-m-d H:i:s'),
+                            'created_by' => Auth::user()->id,
+                        ]);
+                    }
+                }else{
                     DB::table('users')->insert([
                         'name' => $request->tname,
                         'email' => $request->temail,
@@ -98,26 +115,10 @@ class UserPermissionController extends Controller
                         'api_employee_id' => $emp_id,
                         'status' => $request->sel_status,
                         'team_id' => $sel_team,
-                        'signature' => $image,
                         'created_at' => date('Y-m-d H:i:s'),
                         'created_by' => Auth::user()->id,
                     ]);
                 }
-            }else {
-                    DB::table('users')->insert([
-                        'name' => $request->tname,
-                        'email' => $request->temail,
-                        'password' => $password_staff,
-                        'api_identify' => $sel_api_identify,
-                        'api_employee_id' => $emp_id,
-                        'status' => $request->sel_status,
-                        'team_id' => $sel_team,
-                        'created_at' => date('Y-m-d H:i:s'),
-                        'created_by' => Auth::user()->id,
-                    ]);
-                }
-
-
 
                 DB::commit();
             } catch (\Exception $e) {
@@ -159,17 +160,29 @@ class UserPermissionController extends Controller
         ]);
     }
 
-    public function update(Request $request){
+    public function update(Request $request)
+    {
         $user_chkid = DB::table('users')
         ->where('id', $request->edit_tuser_id)
         ->first();
         // dd($request->edit_tuser_id, $user_chkid->email, $request->edit_temail, $user_chkid->api_identify, $request->edit_sel_api_identify);
 
-        $res_api = $this->apicontroller->getAllSellers();
-        foreach ($res_api['data'] as $key => $value) {
-            if ($request->edit_sel_api_identify == $value['identify']) {
-                $emp_id = $value['employee_id'];
+        if(!is_null($request->edit_sel_api_identify) && $request->edit_sel_api_identify != ""){
+            $res_api = $this->apicontroller->getAllSellers();
+            $emp_id = null;
+            foreach ($res_api['data'] as $key => $value) {
+                if ($request->edit_sel_api_identify == $value['identify']) {
+                    $emp_id = $value['employee_id'];
+                }
             }
+        }else{
+            $emp_id = null;
+        }
+
+        if(!is_null($request->edit_sel_team) && $request->edit_sel_team != ""){
+            $sel_team = implode( ',', $request->edit_sel_team);
+        }else{
+            $sel_team = null;
         }
 
         if(($user_chkid->email == $request->edit_temail) && ($user_chkid->api_identify == $request->edit_sel_api_identify)){
@@ -177,55 +190,57 @@ class UserPermissionController extends Controller
             if ($request->image != '') {
                 $path = 'upload/UserSignature';
                 $image = '';
-            if (!empty($request->file('image'))) {
+                if (!empty($request->file('image'))) {
 
-                $data = User::find($request->id);
+                    $data = User::find($request->id);
 
-                    //ลบรูปเก่าเพื่ออัพโหลดรูปใหม่แทน
-                    if (!empty($data->signature)) {
-                        $path2 = 'upload/UserSignature/';
-                        unlink(public_path($path2 . $data->signature));
-                    }
+                        //ลบรูปเก่าเพื่ออัพโหลดรูปใหม่แทน
+                        if (!empty($data->signature)) {
+                            $path2 = 'upload/UserSignature/';
+                            unlink(public_path($path2 . $data->signature));
+                        }
+                        
 
-                $img = $request->file('image');
-                $img_name = 'img-' . time() . '.' . $img->getClientOriginalExtension();
-                $save_path = $img->move(public_path($path), $img_name);
-                $image = $img_name;
+                    $img = $request->file('image');
+                    $img_name = 'img-' . time() . '.' . $img->getClientOriginalExtension();
+                    $save_path = $img->move(public_path($path), $img_name);
+                    $image = $img_name;
 
-                    DB::table('users')->where('id', $request->edit_tuser_id)->update([
+                        DB::table('users')->where('id', $request->edit_tuser_id)->update([
+                        'name' => $request->edit_tname,
+                        'status' => $request->edit_sel_status,
+                        // 'team_id' => implode( ',', $request->edit_sel_team),
+                        'team_id' => $sel_team,
+                        'api_employee_id' => $emp_id,
+                        'signature' => $image,
+                        'updated_at' => date('Y-m-d H:i:s'),
+                        'updated_by' =>  Auth::user()->id,
+                    ]);
+
+                }
+            }else {
+                DB::table('users')
+                ->where('id', $request->edit_tuser_id)
+                ->update([
                     'name' => $request->edit_tname,
                     'status' => $request->edit_sel_status,
-                    // 'team_id' => $request->edit_sel_team,
-                    'team_id' => implode( ',', $request->edit_sel_team),
+                    // 'team_id' => implode( ',', $request->edit_sel_team),
+                    'team_id' => $sel_team,
                     'api_employee_id' => $emp_id,
-                    'signature' => $image,
                     'updated_at' => date('Y-m-d H:i:s'),
                     'updated_by' =>  Auth::user()->id,
                 ]);
-
             }
-        }else {
-            DB::table('users')
-            ->where('id', $request->edit_tuser_id)
-            ->update([
-                'name' => $request->edit_tname,
-                'status' => $request->edit_sel_status,
-                // 'team_id' => $request->edit_sel_team,
-                'team_id' => implode( ',', $request->edit_sel_team),
-                'api_employee_id' => $emp_id,
-                'updated_at' => date('Y-m-d H:i:s'),
-                'updated_by' =>  Auth::user()->id,
-            ]);
-        }
 
             $message = "บันทึกข้อมูลสำเร็จ";
-        }else{
 
+        }else{
+            
             $user_check_email = DB::table('users')
             ->where('email', $request->edit_temail)
             ->orWhere('api_identify', $request->edit_sel_api_identify)
             ->first();
-
+            // dd($request->edit_sel_api_identify, $user_check_email);
             if($user_check_email != null){
 
                 if($user_check_email->email == $user_chkid->email){
@@ -240,47 +255,49 @@ class UserPermissionController extends Controller
                             if ($request->image != '') {
                                 $path = 'upload/UserSignature';
                                 $image = '';
-                            if (!empty($request->file('image'))) {
-                                $data = User::find($request->id);
+                                if (!empty($request->file('image'))) {
+                                    $data = User::find($request->id);
 
-                                //ลบรูปเก่าเพื่ออัพโหลดรูปใหม่แทน
-                                if (!empty($data->signature)) {
-                                    $path2 = 'upload/UserSignature/';
-                                    unlink(public_path($path2 . $data->signature));
+                                    //ลบรูปเก่าเพื่ออัพโหลดรูปใหม่แทน
+                                    if (!empty($data->signature)) {
+                                        $path2 = 'upload/UserSignature/';
+                                        unlink(public_path($path2 . $data->signature));
+                                    }
+                                    $img = $request->file('image');
+                                    $img_name = 'img-' . time() . '.' . $img->getClientOriginalExtension();
+                                    $save_path = $img->move(public_path($path), $img_name);
+                                    $image = $img_name;
+
+                                    DB::table('users')->where('id', $request->edit_tuser_id)
+                                    ->update([
+                                        'name' => $request->edit_tname,
+                                        'email' => $request->edit_temail,
+                                        'status' => $request->edit_sel_status,
+                                        // 'team_id' => $request->edit_sel_team,
+                                        // 'team_id' => implode( ',', $request->edit_sel_team),
+                                        'team_id' => $sel_team,
+                                        'api_employee_id' => $emp_id,
+                                        'api_identify' => $request->edit_sel_api_identify,
+                                        'signature' => $image,
+                                        'updated_at' => date('Y-m-d H:i:s'),
+                                        'updated_by' =>  Auth::user()->id,
+                                    ]);
                                 }
-                                $img = $request->file('image');
-                                $img_name = 'img-' . time() . '.' . $img->getClientOriginalExtension();
-                                $save_path = $img->move(public_path($path), $img_name);
-                                $image = $img_name;
-
+                            }else {
                                 DB::table('users')->where('id', $request->edit_tuser_id)
-                            ->update([
-                                'name' => $request->edit_tname,
-                                'email' => $request->edit_temail,
-                                'status' => $request->edit_sel_status,
-                                // 'team_id' => $request->edit_sel_team,
-                                'team_id' => implode( ',', $request->edit_sel_team),
-                                'api_employee_id' => $emp_id,
-                                'api_identify' => $request->edit_sel_api_identify,
-                                'signature' => $image,
-                                'updated_at' => date('Y-m-d H:i:s'),
-                                'updated_by' =>  Auth::user()->id,
-                            ]);
+                                ->update([
+                                    'name' => $request->edit_tname,
+                                    'email' => $request->edit_temail,
+                                    'status' => $request->edit_sel_status,
+                                    // 'team_id' => $request->edit_sel_team,
+                                    // 'team_id' => implode( ',', $request->edit_sel_team),
+                                    'team_id' => $sel_team,
+                                    'api_employee_id' => $emp_id,
+                                    'api_identify' => $request->edit_sel_api_identify,
+                                    'updated_at' => date('Y-m-d H:i:s'),
+                                    'updated_by' =>  Auth::user()->id,
+                                ]);
                             }
-                        }else {
-                            DB::table('users')->where('id', $request->edit_tuser_id)
-                            ->update([
-                                'name' => $request->edit_tname,
-                                'email' => $request->edit_temail,
-                                'status' => $request->edit_sel_status,
-                                // 'team_id' => $request->edit_sel_team,
-                                'team_id' => implode( ',', $request->edit_sel_team),
-                                'api_employee_id' => $emp_id,
-                                'api_identify' => $request->edit_sel_api_identify,
-                                'updated_at' => date('Y-m-d H:i:s'),
-                                'updated_by' =>  Auth::user()->id,
-                            ]);
-                        }
 
                             $message = "บันทึกข้อมูลสำเร็จ";
                             return response()->json([
@@ -299,46 +316,48 @@ class UserPermissionController extends Controller
                         if ($request->image != '') {
                             $path = 'upload/UserSignature';
                             $image = '';
-                        if (!empty($request->file('image'))) {
-                            $data = User::find($request->id);
+                            if (!empty($request->file('image'))) {
+                                $data = User::find($request->id);
 
-                            //ลบรูปเก่าเพื่ออัพโหลดรูปใหม่แทน
-                            if (!empty($data->signature)) {
-                                $path2 = 'upload/UserSignature/';
-                                unlink(public_path($path2 . $data->signature));
+                                //ลบรูปเก่าเพื่ออัพโหลดรูปใหม่แทน
+                                if (!empty($data->signature)) {
+                                    $path2 = 'upload/UserSignature/';
+                                    unlink(public_path($path2 . $data->signature));
+                                }
+
+                                $img = $request->file('image');
+                                $img_name = 'img-' . time() . '.' . $img->getClientOriginalExtension();
+                                $save_path = $img->move(public_path($path), $img_name);
+                                $image = $img_name;
+
+                                DB::table('users')->where('id', $request->edit_tuser_id)->update([
+                                    'name' => $request->edit_tname,
+                                    'email' => $request->edit_temail,
+                                    'status' => $request->edit_sel_status,
+                                    // 'team_id' => $request->edit_sel_team,
+                                    // 'team_id' => implode( ',', $request->edit_sel_team),
+                                    'team_id' => $sel_team,
+                                    'api_identify' => $request->edit_sel_api_identify,
+                                    'api_employee_id' => $emp_id,
+                                    'signature' => $image,
+                                    'updated_at' => date('Y-m-d H:i:s'),
+                                    'updated_by' =>  Auth::user()->id,
+                                ]);
                             }
-
-                            $img = $request->file('image');
-                            $img_name = 'img-' . time() . '.' . $img->getClientOriginalExtension();
-                            $save_path = $img->move(public_path($path), $img_name);
-                            $image = $img_name;
-
+                        }else {
                             DB::table('users')->where('id', $request->edit_tuser_id)->update([
-                            'name' => $request->edit_tname,
-                            'email' => $request->edit_temail,
-                            'status' => $request->edit_sel_status,
-                            // 'team_id' => $request->edit_sel_team,
-                            'team_id' => implode( ',', $request->edit_sel_team),
-                            'api_identify' => $request->edit_sel_api_identify,
-                            'api_employee_id' => $emp_id,
-                            'signature' => $image,
-                            'updated_at' => date('Y-m-d H:i:s'),
-                            'updated_by' =>  Auth::user()->id,
-                        ]);
+                                'name' => $request->edit_tname,
+                                'email' => $request->edit_temail,
+                                'status' => $request->edit_sel_status,
+                                // 'team_id' => $request->edit_sel_team,
+                                // 'team_id' => implode( ',', $request->edit_sel_team),
+                                'team_id' => $sel_team,
+                                'api_identify' => $request->edit_sel_api_identify,
+                                'api_employee_id' => $emp_id,
+                                'updated_at' => date('Y-m-d H:i:s'),
+                                'updated_by' =>  Auth::user()->id,
+                            ]);
                         }
-                    }else {
-                        DB::table('users')->where('id', $request->edit_tuser_id)->update([
-                            'name' => $request->edit_tname,
-                            'email' => $request->edit_temail,
-                            'status' => $request->edit_sel_status,
-                            // 'team_id' => $request->edit_sel_team,
-                            'team_id' => implode( ',', $request->edit_sel_team),
-                            'api_identify' => $request->edit_sel_api_identify,
-                            'api_employee_id' => $emp_id,
-                            'updated_at' => date('Y-m-d H:i:s'),
-                            'updated_by' =>  Auth::user()->id,
-                        ]);
-                    }
 
                         $message = "บันทึกข้อมูลสำเร็จ";
                         return response()->json([
@@ -379,7 +398,8 @@ class UserPermissionController extends Controller
                     'email' => $request->edit_temail,
                     'status' => $request->edit_sel_status,
                     // 'team_id' => $request->edit_sel_team,
-                    'team_id' => implode( ',', $request->edit_sel_team),
+                    // 'team_id' => implode( ',', $request->edit_sel_team),
+                    'team_id' => $sel_team,
                     'api_identify' => $request->edit_sel_api_identify,
                     'api_employee_id' => $emp_id,
                     'signature' => $image,
@@ -393,7 +413,8 @@ class UserPermissionController extends Controller
                     'email' => $request->edit_temail,
                     'status' => $request->edit_sel_status,
                     // 'team_id' => $request->edit_sel_team,
-                    'team_id' => implode( ',', $request->edit_sel_team),
+                    // 'team_id' => implode( ',', $request->edit_sel_team),
+                    'team_id' => $sel_team,
                     'api_identify' => $request->edit_sel_api_identify,
                     'api_employee_id' => $emp_id,
                     'updated_at' => date('Y-m-d H:i:s'),
