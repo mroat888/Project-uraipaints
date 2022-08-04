@@ -279,7 +279,7 @@ $(document).on('click', '#btn_permission_delete', function() { // ปุ่ม�
                     $("#modaledit").modal('show');
 
                     let img_name = '{{ asset('/public/upload/UserSignature') }}/' + response.dataUser.signature;
-                    if (response.dataUser.signature != "") {
+                    if (response.dataUser.signature) {
                         // console.log(img_name);
                         if (img_name) {
                             $('#img_show').append('<img src = "' + img_name + '" style="max-width:20%;">');
