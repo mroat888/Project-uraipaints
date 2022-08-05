@@ -72,7 +72,7 @@ class DeliveryController extends Controller
 
         $res_api2 = $response2->json();
 
-        if($res_api2['code'] == 200){
+        if(!is_null($res_api2) && $res_api2['code'] == 200){
             $data['customer_api'] = array();
             foreach ($res_api2['data'] as $key => $value) {
                 $data['customer_api'][$key] =
@@ -101,7 +101,7 @@ class DeliveryController extends Controller
 
         $res_api3 = $response3->json();
 
-        if($res_api3['code'] == 200){
+        if(!is_null($res_api3) && $res_api3['code'] == 200){
             $data['province_api'] = array();
             foreach ($res_api3['data'] as $key => $value) {
                 $data['province_api'][$key] =
@@ -128,7 +128,7 @@ class DeliveryController extends Controller
         ]);
         $res_branch = $response->json();
 
-        if(!is_null($res_branch['code']) && $res_branch['code'] == 200){
+        if(!is_null($res_branch) && $res_branch['code'] == 200){
             $data['branch_api'] = array();
             foreach ($res_branch['data'][0] as $value) {
                 $data['branch_api'][] =
@@ -219,7 +219,7 @@ class DeliveryController extends Controller
         }
         $res_api2 = $response2->json();
 
-        if($res_api2['code'] == 200){
+        if(!is_null($res_api2) && $res_api2['code'] == 200){
             $data['customer_api'] = array();
             foreach ($res_api2['data'] as $key => $value) {
                 $data['customer_api'][$key] =
@@ -248,7 +248,7 @@ class DeliveryController extends Controller
         // $response3 = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/sellers/'.Auth::user()->api_identify.'/provinces/search?name='.$request->province);
         $res_api3 = $response3->json();
 
-        if($res_api3['code'] == 200){
+        if(!is_null($res_api3) && $res_api3['code'] == 200){
             $data['province_api'] = array();
             foreach ($res_api3['data'] as $key => $value) {
                 $data['province_api'][$key] =
@@ -275,7 +275,7 @@ class DeliveryController extends Controller
         ]);
         $res_branch = $response->json();
 
-        if(!is_null($res_branch['code']) && $res_branch['code'] == 200){
+        if(!is_null($res_branch) && $res_branch['code'] == 200){
             $data['branch_api'] = array();
             foreach ($res_branch['data'][0] as $value) {
                 $data['branch_api'][] =

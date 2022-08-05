@@ -23,7 +23,7 @@ class CatalogController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/groups');
         $res_api = $response->json();
 
-        if(!is_null($res_api)){
+        if(!is_null($res_api) && $res_api['code'] == 200){
             $data['groups'] = array();
             foreach ($res_api['data'] as $key => $value) {
                 $data['groups'][$key] =
@@ -37,7 +37,7 @@ class CatalogController extends Controller
         $response2 = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/brands');
         $res_api2 = $response2->json();
 
-        if(!is_null($res_api2)){
+        if(!is_null($res_api2) && $res_api2['code'] == 200){
             $data['brands'] = array();
             foreach ($res_api2['data'] as $key => $value) {
                 $data['brands'][$key] =
@@ -51,7 +51,7 @@ class CatalogController extends Controller
         $response3 = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/pdglists');
         $res_api3 = $response3->json();
 
-        if(!is_null($res_api3)){
+        if(!is_null($res_api3) && $res_api3['code'] == 200){
             $data['pdglists'] = array();
             foreach ($res_api3['data'] as $key => $value) {
                 $data['pdglists'][$key] =
@@ -90,7 +90,7 @@ class CatalogController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/groups');
         $res_api = $response->json();
 
-        if(!is_null($res_api)){
+        if(!is_null($res_api) && $res_api['code'] == 200){
             $data['groups'] = array();
             foreach ($res_api['data'] as $key => $value) {
                 $data['groups'][$key] =
@@ -104,7 +104,7 @@ class CatalogController extends Controller
         $response2 = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/brands');
         $res_api2 = $response2->json();
 
-        if(!is_null($res_api2)){
+        if(!is_null($res_api2) && $res_api2['code'] == 200){
             $data['brands'] = array();
             foreach ($res_api2['data'] as $key => $value) {
                 $data['brands'][$key] =
@@ -118,7 +118,7 @@ class CatalogController extends Controller
         $response3 = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/pdglists');
         $res_api3 = $response3->json();
 
-        if(!is_null($res_api3)){
+        if(!is_null($res_api3) && $res_api3['code'] == 200){
             $data['pdglists'] = array();
             foreach ($res_api3['data'] as $key => $value) {
                 $data['pdglists'][$key] =
@@ -147,37 +147,43 @@ class CatalogController extends Controller
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/groups');
         $res_api = $response->json();
 
-        $dataGroups = array();
-        foreach ($res_api['data'] as $key => $value) {
-            $dataGroups[$key] =
-            [
-                'id' => $value['identify'],
-                'group_name' => $value['name'],
-            ];
+        if(!is_null($res_api) && $res_api['code'] == 200){
+            $dataGroups = array();
+            foreach ($res_api['data'] as $key => $value) {
+                $dataGroups[$key] =
+                [
+                    'id' => $value['identify'],
+                    'group_name' => $value['name'],
+                ];
+            }
         }
 
         $response2 = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/brands');
         $res_api2 = $response2->json();
 
-        $dataBrands = array();
-        foreach ($res_api2['data'] as $key => $value) {
-            $dataBrands[$key] =
-            [
-                'id' => $value['identify'],
-                'brand_name' => $value['name'],
-            ];
+        if(!is_null($res_api2) && $res_api2['code'] == 200){
+            $dataBrands = array();
+            foreach ($res_api2['data'] as $key => $value) {
+                $dataBrands[$key] =
+                [
+                    'id' => $value['identify'],
+                    'brand_name' => $value['name'],
+                ];
+            }
         }
 
         $response3 = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/pdglists');
         $res_api3 = $response3->json();
 
-        $dataPdglists = array();
-        foreach ($res_api3['data'] as $key => $value) {
-            $dataPdglists[$key] =
-            [
-                'id' => $value['identify'],
-                'pdglist_name' => $value['name'],
-            ];
+        if(!is_null($res_api3) && $res_api3['code'] == 200){
+            $dataPdglists = array();
+            foreach ($res_api3['data'] as $key => $value) {
+                $dataPdglists[$key] =
+                [
+                    'id' => $value['identify'],
+                    'pdglist_name' => $value['name'],
+                ];
+            }
         }
 
 

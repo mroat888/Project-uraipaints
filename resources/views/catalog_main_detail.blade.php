@@ -150,11 +150,13 @@
                         <div class="col-md-6">
                             <div class="boxnews-date">
                                 <p style="font-size: 16px;"><span style="font-weight: bold;">หมวด : </span>
+                                  @if(isset($dataGroups) && !is_null($dataGroups))
                                     @foreach ($dataGroups as $key => $group)
-                                    @if ($dataGroups[$key]['id'] == $data_product->category_id)
-                                        {{$dataGroups[$key]['group_name']}}
-                                    @endif
+                                      @if ($dataGroups[$key]['id'] == $data_product->category_id)
+                                          {{$dataGroups[$key]['group_name']}}
+                                      @endif
                                     @endforeach
+                                  @endif
                                 </p>
                             </div>
                     </div>
@@ -163,20 +165,24 @@
                     </div>
                     <div class="boxnews-date col-md-6">
                         <p style="font-size: 16px;"><span style="font-weight: bold;">แบรนด์สินค้า : </span>
+                          @if(isset($dataBrands) && !is_null($dataBrands))
                             @foreach ($dataBrands as $key => $group)
                                 @if ($dataBrands[$key]['id'] == $data_product->brand_id)
                                     {{$dataBrands[$key]['brand_name']}}
                                 @endif
                             @endforeach
+                          @endif
                         </p>
                     </div>
                     <div class="boxnews-date col-md-6">
                         <p style="font-size: 16px;"><span style="font-weight: bold;">Product List : </span>
+                          @if(isset($dataPdglists) && !is_null($dataPdglists))
                             @foreach ($dataPdglists as $key => $pdglist)
                                 @if ($dataPdglists[$key]['id'] == $data_product->product_list)
                                     {{$dataPdglists[$key]['pdglist_name']}}
                                 @endif
                             @endforeach
+                          @endif
                         </p>
                     </div>
                     <div class="boxnews-date col-md-12">
