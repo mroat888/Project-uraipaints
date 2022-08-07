@@ -19,48 +19,63 @@ class CatalogController extends Controller
     {
         $data['product_catalog'] = Catalog::where('status', "1")->orderBy('id', 'desc')->get();
 
-        $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/groups');
-        $res_api = $response->json();
+        try{
 
-        if(!is_null($res_api) && $res_api['code'] == 200){
-            $data['groups'] = array();
-            foreach ($res_api['data'] as $key => $value) {
-                $data['groups'][$key] =
-                [
-                    'id' => $value['identify'],
-                    'group_name' => $value['name'],
-                ];
+            $api_token = $this->api_token->apiToken();
+            $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/groups');
+            $res_api = $response->json();
+
+            if(!is_null($res_api) && $res_api['code'] == 200){
+                $data['groups'] = array();
+                foreach ($res_api['data'] as $key => $value) {
+                    $data['groups'][$key] =
+                    [
+                        'id' => $value['identify'],
+                        'group_name' => $value['name'],
+                    ];
+                }
             }
-        }
 
-        $response2 = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/brands');
-        $res_api2 = $response2->json();
+            $response2 = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/brands');
+            $res_api2 = $response2->json();
 
-        if(!is_null($res_api2) && $res_api2['code'] == 200){
-            $data['brands'] = array();
-            foreach ($res_api2['data'] as $key => $value) {
-                $data['brands'][$key] =
-                [
-                    'id' => $value['identify'],
-                    'brand_name' => $value['name'],
-                ];
+            if(!is_null($res_api2) && $res_api2['code'] == 200){
+                $data['brands'] = array();
+                foreach ($res_api2['data'] as $key => $value) {
+                    $data['brands'][$key] =
+                    [
+                        'id' => $value['identify'],
+                        'brand_name' => $value['name'],
+                    ];
+                }
             }
-        }
 
-        $response3 = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/pdglists');
-        $res_api3 = $response3->json();
-
-        if(!is_null($res_api3) && $res_api3['code'] == 200){
-            $data['pdglists'] = array();
-            foreach ($res_api3['data'] as $key => $value) {
-                $data['pdglists'][$key] =
-                [
-                    'id' => $value['identify'],
-                    'pdglist_name' => $value['name'],
-                ];
+            $response3 = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/pdglists');
+            $res_api3 = $response3->json();
+    
+            if(!is_null($res_api3) && $res_api3['code'] == 200){
+                $data['pdglists'] = array();
+                foreach ($res_api3['data'] as $key => $value) {
+                    $data['pdglists'][$key] =
+                    [
+                        'id' => $value['identify'],
+                        'pdglist_name' => $value['name'],
+                    ];
+                }
             }
+            
+        } catch( Exception $e ){
+
+            if (Auth::user()->status == 1) {
+                return view('saleman.catalog', $data);
+            }elseif (Auth::user()->status == 2) {
+                return view('leadManager.catalog', $data);
+            }elseif (Auth::user()->status == 3) {
+                return view('headManager.catalog', $data);
+            }
+
         }
+       
 
         if (Auth::user()->status == 1) {
             return view('saleman.catalog', $data);
@@ -86,47 +101,61 @@ class CatalogController extends Controller
 
         $data['product_catalog'] = $data['product_catalog']->where('status', "1")->orderBy('id', 'desc')->get();
 
-        $api_token = $this->api_token->apiToken();
-        $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/groups');
-        $res_api = $response->json();
+        try{
 
-        if(!is_null($res_api) && $res_api['code'] == 200){
-            $data['groups'] = array();
-            foreach ($res_api['data'] as $key => $value) {
-                $data['groups'][$key] =
-                [
-                    'id' => $value['identify'],
-                    'group_name' => $value['name'],
-                ];
+            $api_token = $this->api_token->apiToken();
+            $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/groups');
+            $res_api = $response->json();
+
+            if(!is_null($res_api) && $res_api['code'] == 200){
+                $data['groups'] = array();
+                foreach ($res_api['data'] as $key => $value) {
+                    $data['groups'][$key] =
+                    [
+                        'id' => $value['identify'],
+                        'group_name' => $value['name'],
+                    ];
+                }
             }
-        }
 
-        $response2 = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/brands');
-        $res_api2 = $response2->json();
+            $response2 = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/brands');
+            $res_api2 = $response2->json();
 
-        if(!is_null($res_api2) && $res_api2['code'] == 200){
-            $data['brands'] = array();
-            foreach ($res_api2['data'] as $key => $value) {
-                $data['brands'][$key] =
-                [
-                    'id' => $value['identify'],
-                    'brand_name' => $value['name'],
-                ];
+            if(!is_null($res_api2) && $res_api2['code'] == 200){
+                $data['brands'] = array();
+                foreach ($res_api2['data'] as $key => $value) {
+                    $data['brands'][$key] =
+                    [
+                        'id' => $value['identify'],
+                        'brand_name' => $value['name'],
+                    ];
+                }
             }
-        }
 
-        $response3 = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/pdglists');
-        $res_api3 = $response3->json();
+            $response3 = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER").'/pdglists');
+            $res_api3 = $response3->json();
 
-        if(!is_null($res_api3) && $res_api3['code'] == 200){
-            $data['pdglists'] = array();
-            foreach ($res_api3['data'] as $key => $value) {
-                $data['pdglists'][$key] =
-                [
-                    'id' => $value['identify'],
-                    'pdglist_name' => $value['name'],
-                ];
+            if(!is_null($res_api3) && $res_api3['code'] == 200){
+                $data['pdglists'] = array();
+                foreach ($res_api3['data'] as $key => $value) {
+                    $data['pdglists'][$key] =
+                    [
+                        'id' => $value['identify'],
+                        'pdglist_name' => $value['name'],
+                    ];
+                }
             }
+            
+        } catch( Exception $e ){
+
+            if (Auth::user()->status == 1) {
+                return view('saleman.catalog', $data);
+            }elseif (Auth::user()->status == 2) {
+                return view('leadManager.catalog', $data);
+            }elseif (Auth::user()->status == 3) {
+                return view('headManager.catalog', $data);
+            }
+            
         }
 
         if (Auth::user()->status == 1) {

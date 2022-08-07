@@ -297,6 +297,17 @@ class UserPermissionController extends Controller
                 ]);
             }
 
+            if($request->edit_tpassword != ""){ //-- OAT เพิ่มการรีเซทรหัสใหม่
+                $password_staff = Hash::make($request->edit_tpassword);
+                DB::table('users')
+                ->where('id', $request->edit_tuser_id)
+                ->update([
+                    'password' => $password_staff,
+                    'updated_at' => date('Y-m-d H:i:s'),
+                    'updated_by' =>  Auth::user()->id,
+                ]);
+            }
+
             $message = "บันทึกข้อมูลสำเร็จ";
 
         }else{
@@ -364,6 +375,17 @@ class UserPermissionController extends Controller
                                 ]);
                             }
 
+                            if($request->edit_tpassword != ""){ //-- OAT เพิ่มการรีเซทรหัสใหม่
+                                $password_staff = Hash::make($request->edit_tpassword);
+                                DB::table('users')
+                                ->where('id', $request->edit_tuser_id)
+                                ->update([
+                                    'password' => $password_staff,
+                                    'updated_at' => date('Y-m-d H:i:s'),
+                                    'updated_by' =>  Auth::user()->id,
+                                ]);
+                            }
+
                             $message = "บันทึกข้อมูลสำเร็จ";
                             return response()->json([
                                 'status' => 200,
@@ -424,6 +446,17 @@ class UserPermissionController extends Controller
                             ]);
                         }
 
+                        if($request->edit_tpassword != ""){ //-- OAT เพิ่มการรีเซทรหัสใหม่
+                            $password_staff = Hash::make($request->edit_tpassword);
+                            DB::table('users')
+                            ->where('id', $request->edit_tuser_id)
+                            ->update([
+                                'password' => $password_staff,
+                                'updated_at' => date('Y-m-d H:i:s'),
+                                'updated_by' =>  Auth::user()->id,
+                            ]);
+                        }
+
                         $message = "บันทึกข้อมูลสำเร็จ";
                         return response()->json([
                             'status' => 200,
@@ -443,50 +476,61 @@ class UserPermissionController extends Controller
                 if ($request->image != '') {
                     $path = 'upload/UserSignature';
                     $image = '';
-                if (!empty($request->file('image'))) {
+                    if (!empty($request->file('image'))) {
 
-                    $data = User::find($request->id);
+                        $data = User::find($request->id);
 
-                    //ลบรูปเก่าเพื่ออัพโหลดรูปใหม่แทน
-                    if (!empty($data->signature)) {
-                        $path2 = 'upload/UserSignature/';
-                        unlink(public_path($path2 . $data->signature));
+                        //ลบรูปเก่าเพื่ออัพโหลดรูปใหม่แทน
+                        if (!empty($data->signature)) {
+                            $path2 = 'upload/UserSignature/';
+                            unlink(public_path($path2 . $data->signature));
+                        }
+
+                        $img = $request->file('image');
+                        $img_name = 'img-' . time() . '.' . $img->getClientOriginalExtension();
+                        $save_path = $img->move(public_path($path), $img_name);
+                        $image = $img_name;
+
+                        DB::table('users')->where('id', $request->edit_tuser_id)->update([
+                            'name' => $request->edit_tname,
+                            'email' => $request->edit_temail,
+                            'status' => $request->edit_sel_status,
+                            // 'team_id' => $request->edit_sel_team,
+                            // 'team_id' => implode( ',', $request->edit_sel_team),
+                            'team_id' => $sel_team,
+                            'api_identify' => $request->edit_sel_api_identify,
+                            'api_employee_id' => $emp_id,
+                            'signature' => $image,
+                            'updated_at' => date('Y-m-d H:i:s'),
+                            'updated_by' =>  Auth::user()->id,
+                        ]);                
                     }
-
-                    $img = $request->file('image');
-                    $img_name = 'img-' . time() . '.' . $img->getClientOriginalExtension();
-                    $save_path = $img->move(public_path($path), $img_name);
-                    $image = $img_name;
-
+                }else {
                     DB::table('users')->where('id', $request->edit_tuser_id)->update([
-                    'name' => $request->edit_tname,
-                    'email' => $request->edit_temail,
-                    'status' => $request->edit_sel_status,
-                    // 'team_id' => $request->edit_sel_team,
-                    // 'team_id' => implode( ',', $request->edit_sel_team),
-                    'team_id' => $sel_team,
-                    'api_identify' => $request->edit_sel_api_identify,
-                    'api_employee_id' => $emp_id,
-                    'signature' => $image,
-                    'updated_at' => date('Y-m-d H:i:s'),
-                    'updated_by' =>  Auth::user()->id,
-                ]);
+                        'name' => $request->edit_tname,
+                        'email' => $request->edit_temail,
+                        'status' => $request->edit_sel_status,
+                        // 'team_id' => $request->edit_sel_team,
+                        // 'team_id' => implode( ',', $request->edit_sel_team),
+                        'team_id' => $sel_team,
+                        'api_identify' => $request->edit_sel_api_identify,
+                        'api_employee_id' => $emp_id,
+                        'updated_at' => date('Y-m-d H:i:s'),
+                        'updated_by' =>  Auth::user()->id,
+                    ]);
                 }
-            }else {
-                DB::table('users')->where('id', $request->edit_tuser_id)->update([
-                    'name' => $request->edit_tname,
-                    'email' => $request->edit_temail,
-                    'status' => $request->edit_sel_status,
-                    // 'team_id' => $request->edit_sel_team,
-                    // 'team_id' => implode( ',', $request->edit_sel_team),
-                    'team_id' => $sel_team,
-                    'api_identify' => $request->edit_sel_api_identify,
-                    'api_employee_id' => $emp_id,
-                    'updated_at' => date('Y-m-d H:i:s'),
-                    'updated_by' =>  Auth::user()->id,
-                ]);
-            }
 
+                if($request->edit_tpassword != ""){ //-- OAT เพิ่มการรีเซทรหัสใหม่
+                    $password_staff = Hash::make($request->edit_tpassword);
+                    DB::table('users')
+                    ->where('id', $request->edit_tuser_id)
+                    ->update([
+                        'password' => $password_staff,
+                        'updated_at' => date('Y-m-d H:i:s'),
+                        'updated_by' =>  Auth::user()->id,
+                    ]);
+                }
+                
                 $message = "บันทึกข้อมูลสำเร็จ";
             }
 

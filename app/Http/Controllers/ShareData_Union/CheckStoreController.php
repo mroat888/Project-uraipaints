@@ -218,6 +218,7 @@ class CheckStoreController extends Controller
         }
         // ดึงจังหวัด -- API
         $response = Http::withToken($api_token)->get(env("API_LINK").env("API_PATH_VER")."/".$patch_provinces);
+        $response->throw();
         $res_api = $response->json();
         $provinces = null;
         if(!empty($res_api)){
