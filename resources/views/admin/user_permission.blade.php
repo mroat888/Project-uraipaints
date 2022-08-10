@@ -149,9 +149,11 @@
                                 <label for="username">ชื่อพนักงาน</label>
                                 <select name="sel_api_identify" id="sel_api_identify" class="form-control custom-select select2" placeholder="ชื่อพนักงาน">
                                     <option value="" selected disabled>เลือกข้อมูล</option>
-                                    @foreach ($sellers_api as $key => $value)
-                                        <option value="{{$sellers_api[$key]['id']}}">{{$sellers_api[$key]['name']}}</option>
-                                    @endforeach
+                                    @if(isset($sellers_api))
+                                        @foreach ($sellers_api as $key => $value)
+                                            <option value="{{$sellers_api[$key]['id']}}">{{$sellers_api[$key]['name']}}</option>
+                                        @endforeach
+                                    @endif
                                 </select>
                             </div>
                         </div>

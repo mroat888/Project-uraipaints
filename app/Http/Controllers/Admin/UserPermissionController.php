@@ -24,14 +24,16 @@ class UserPermissionController extends Controller
         $master_team = DB::table('master_team_sales')->get();
 
         $res_api = $this->apicontroller->getAllSellers();
-        $sellers_api = array();
-        foreach ($res_api['data'] as $key => $value) {
-            $sellers_api[$key] =
-            [
-                'id' => $value['identify'],
-                // 'emp_id' => $value['employee_id'],
-                'name' => $value['name'],
-            ];
+        if(!is_null($res_api) && $res_api['code'] == 200){
+            $sellers_api = array();
+            foreach ($res_api['data'] as $key => $value) {
+                $sellers_api[$key] =
+                [
+                    'id' => $value['identify'],
+                    // 'emp_id' => $value['employee_id'],
+                    'name' => $value['name'],
+                ];
+            }
         }
         // -----  END API
 
