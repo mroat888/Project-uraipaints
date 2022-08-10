@@ -86,8 +86,11 @@ class ApiController extends Controller
         if ($this->api_token == '') {
             if (file_exists($pathToken)) {
                 $result = json_decode(file_get_contents($pathToken, true));
-
-                $this->checkTokenValid($result->token);
+                if(!is_null($result)){
+                    $this->checkTokenValid($result->token);
+                }else{
+                    $this->loginAPI();
+                }
             } else {
                 $this->loginAPI();
             }
@@ -100,18 +103,18 @@ class ApiController extends Controller
     {
         // -----  API
         // dd(env("API_LINK"));
-        $response = Http::post(env("API_LINK").'api/auth/login', [
-            'username' => env("API_USER"),
-            'password' => env("API_PASS"),
-        ]);
-        $res = $response->json();
-        $api_token = $res['data'][0]['access_token'];
+        // $response = Http::post(env("API_LINK").'api/auth/login', [
+        //     'username' => env("API_USER"),
+        //     'password' => env("API_PASS"),
+        // ]);
+        // $res = $response->json();
+        // $api_token = $res['data'][0]['access_token'];
 
-        return $api_token;
+        // return $api_token;
 
-        // $this->getAPIToken();
+        $this->getAPIToken();
 
-        // return $this->api_token;
+        return $this->api_token;
     }
 
     public function getAllSellers()
