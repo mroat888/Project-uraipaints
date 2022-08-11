@@ -174,9 +174,12 @@
                             <div>
                                 ข้อมูลสิ้นสุด ณ วันที่ 
                                 @php 
-                                    list($lat_year, $lat_month, $lat_day) = explode("-", $customer_trans_last_date);
-                                    $lat_year_thai = $lat_year + 543;
-                                    $customer_trans_last_date = $lat_day."/".$lat_month."/".$lat_year_thai;
+                                    $customer_trans_last_date = "-";
+                                    if(isset($customer_trans_last_date)){
+                                        list($lat_year, $lat_month, $lat_day) = explode("-", $customer_trans_last_date);
+                                        $lat_year_thai = $lat_year + 543;
+                                        $customer_trans_last_date = $lat_day."/".$lat_month."/".$lat_year_thai;
+                                    }
                                 @endphp 
                                 {{ $customer_trans_last_date }}
                             </div>
